@@ -36,29 +36,30 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetError();
+
     /// <summary>
-    /// Retrieves a message with information about the specific SDL error that occurred, or an empty string if no
-    /// error message has been set since the last call to <see cref="ClearError"/>.
+    /// Retrieve a message about the last error that occurred on the current thread.
     /// </summary>
-    /// <returns>
-    /// A managed string containing the error message from SDL. If there hasn't been an error set since the last
-    /// call to <see cref="ClearError"/>, returns an empty string.
-    /// If an error occurs during the conversion, returns null.
-    /// </returns>
+    /// <returns>Returns a message with information about the specific error that occurred, or an empty string
+    /// if there hasn't been an error message set since the last call to <see cref="ClearError"/>.</returns>
     /// <remarks>
-    /// It is possible for multiple errors to occur before calling <see cref="GetError"/>.
-    /// Only the last error is returned.
-    /// The message is only applicable when an SDL function has signaled an error.
-    /// You must check the return values of SDL function calls to determine when to appropriately
-    /// call <see cref="GetError"/>. Do not use the results of <see cref="GetError"/> to decide if an error has
-    /// occurred, as SDL may set an error string even when reporting success.
-    /// SDL will not clear the error string for successful API calls. You must check return values for failure
-    /// cases before you can assume the error string applies.
-    /// Error strings are set per-thread, so an error set in a different thread will not interfere
-    /// with the current thread's operation.
-    /// The returned string is valid until the current thread's error string is changed. Therefore,
-    /// if the string is to be used after calling into SDL again, the caller should make a copy of the string.
+    /// <para>It is possible for multiple errors to occur before calling <see cref="ClearError"/>.
+    /// Only the last error is returned.</para>
+    /// <para>The message is only applicable when an SDL function has signaled an error.
+    /// You must check the return values of SDL function calls to determine when to appropriately call
+    /// <see cref="GetError"/>. You should not use the results of <see cref="GetError"/> to decide if an error
+    /// has occurred!
+    /// Sometimes SDL will set an error string even when reporting success.</para>
+    /// <para>SDL will not clear the error string for successful API calls.
+    /// You must check return values for failure cases before you can assume the error string applies.</para>
+    /// <para>Error strings are set per-thread, so an error set in a different thread will not interfere with the
+    /// current thread's operation.</para>
+    /// <para>The returned string does NOT follow the <see cref="GetStringRule"/>! The pointer is valid until the
+    /// current thread's error string is changed, so the caller should make a copy if the string is to be
+    /// used after calling into SDL again.</para>
     /// </remarks>
+    /// <seealso cref="ClearError"/>
+    /// <seealso cref="SetError"/>
     public static string? GetError()
     {
         return UTF8_ToManaged(SDL_GetError());
