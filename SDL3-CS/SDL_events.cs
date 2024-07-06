@@ -50,44 +50,44 @@ public static partial class SDL
         Quit = 0x100,
 
         /// <summary>
-        /// The application is being terminated by the OS
-        /// Called on iOS in applicationWillTerminate()
-        /// Called on Android in onDestroy()
+        /// <para>The application is being terminated by the OS</para>
+        /// <para>Called on iOS in applicationWillTerminate()</para>
+        /// <para>Called on Android in onDestroy()</para>
         /// </summary>
         Terminating,
         
         /// <summary>
-        /// The application is low on memory, free memory if possible.
-        /// Called on iOS in applicationDidReceiveMemoryWarning()
-        /// Called on Android in onLowMemory()
+        /// <para>The application is low on memory, free memory if possible.</para>
+        /// <para>Called on iOS in applicationDidReceiveMemoryWarning()</para>
+        /// <para>Called on Android in onLowMemory()</para>
         /// </summary>
         LowMemory,
         
         /// <summary>
-        /// The application is about to enter the background
-        /// Called on iOS in applicationWillResignActive()
-        /// Called on Android in onPause()
+        /// <para>The application is about to enter the background</para>
+        /// <para>Called on iOS in applicationWillResignActive()</para>
+        /// <para>Called on Android in onPause()</para>
         /// </summary>
         WillEnterBackground,
         
         /// <summary>
-        /// The application did enter the background and may not get CPU for some time
-        /// Called on iOS in applicationDidEnterBackground()
-        /// Called on Android in onPause()
+        /// <para>The application did enter the background and may not get CPU for some time</para>
+        /// <para>Called on iOS in applicationDidEnterBackground()</para>
+        /// <para>Called on Android in onPause()</para>
         /// </summary>
         DidEnterBackground,
         
         /// <summary>
-        /// The application is about to enter the foreground
-        /// Called on iOS in applicationWillEnterForeground()
-        /// Called on Android in onResume()
+        /// <para>The application is about to enter the foreground</para>
+        /// <para>Called on iOS in applicationWillEnterForeground()</para>
+        /// <para>Called on Android in onResume()</para>
         /// </summary>
         WillEnterForeground,
         
         /// <summary>
-        /// The application is now interactive
-        /// Called on iOS in applicationDidBecomeActive()
-        /// Called on Android in onResume()
+        /// <para>The application is now interactive</para>
+        /// <para>Called on iOS in applicationDidBecomeActive()</para>
+        /// <para>Called on Android in onResume()</para>
         /// </summary>
         DidEnterForeground,
 
@@ -620,18 +620,29 @@ public static partial class SDL
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_PollEvent(out EventType e);
     /// <summary>
-    /// Polls for currently pending events and returns the next available event from the queue.
+    /// Poll for currently pending events.
     /// </summary>
     /// <param name="e">
-    /// A reference to an EventType object where the event data will be stored if an event is available.
+    /// the <see cref="EventType"/> structure to be filled with the next event from the queue, or NULL.
     /// </param>
     /// <returns>
-    /// 1 if there is a pending event or 0 if there are no events available.
+    /// Returns 1 if this got an event or 0 if there are none available.
     /// </returns>
     /// <remarks>
-    /// This method is a wrapper around the SDL_PollEvent function from the SDL library. It checks for pending events
-    /// and retrieves the next available event if one is present. The event data is stored in the provided EventType
-    /// parameter. The function uses the Cdecl calling convention as specified by the CallConvCdecl attribute.
+    /// <para>If event is not NULL, the next event is removed from the queue and stored in the <see cref="EventType"/>
+    /// structure pointed to by event. The 1 returned refers to this event, immediately stored in the SDL Event
+    /// structure -- not an event to follow.</para>
+    /// <para>If event is NULL, it simply returns 1 if there is an event in the queue, but will not remove it from
+    /// the queue.</para>
+    /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call this function in
+    /// the thread that set the video mode.</para>
+    /// <para><see cref="PollEvent"/> is the favored way of receiving system events since it can be done from the
+    /// main loop and does not suspend the main loop while waiting on an event to be posted.</para>
+    /// <para>The common practice is to fully process the event queue once every frame, usually as a first step
+    /// before updating the game's state</para>
     /// </remarks>
+    /// <seealso cref="PushEvent"/>
+    /// <seealso cref="WaitEvent"/>
+    /// <seealso cref="WaitEventTimeout"/>
     public static int PollEvent(out EventType e) => SDL_PollEvent(out e);
 }
