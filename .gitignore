@@ -1,4 +1,6 @@
 .idea/
 bin/
 obj/
+lib/
 SDL3.dll
+icon.png

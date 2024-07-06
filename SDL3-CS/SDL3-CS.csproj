@@ -14,15 +14,13 @@
         <Description>This is SDL3#, a C# wrapper for SDL3.</Description>
         <Copyright>Copyright (c) 2024 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/edwardgushchin/SDL3-CS/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
-        <RepositoryType>public</RepositoryType>
+        <RepositoryType>git</RepositoryType>
         <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Content Include="bin\Debug\net8.0\SDL3.dll" />
-    </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="bin\**" />
@@ -30,6 +28,10 @@
       <Content Include="lib\SDL3.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Update="icon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -41,7 +43,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="SDL3.dll" />
+      <None Include="../README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>
