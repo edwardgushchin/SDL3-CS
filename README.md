@@ -32,7 +32,7 @@ public static class Program
             return;
         }
         
-        var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, SDL.WindowFlags.Transparent);
+        var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, SDL.WindowFlags.Vulkan);
         
         if (window == IntPtr.Zero)
         {
