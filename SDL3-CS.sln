@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL3-CS", "SDL3-CS\SDL3-CS.csproj", "{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL3 Create Window", "SDL3 Create Window\SDL3 Create Window.csproj", "{5BE5EA0E-972F-459C-8D10-50C8DBF68AA3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE5EA0E-972F-459C-8D10-50C8DBF68AA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE5EA0E-972F-459C-8D10-50C8DBF68AA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE5EA0E-972F-459C-8D10-50C8DBF68AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE5EA0E-972F-459C-8D10-50C8DBF68AA3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
