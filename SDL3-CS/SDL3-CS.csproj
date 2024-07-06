@@ -7,6 +7,17 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.1-preview</Version>
+        <Title>SDL3 C#</Title>
+        <Authors>Eduard Gushchin</Authors>
+        <Description>This is SDL3#, a C# wrapper for SDL3.</Description>
+        <Copyright>Copyright (c) 2024 Eduard Gushchin.</Copyright>
+        <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/edwardgushchin/SDL3-CS/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
+        <RepositoryType>public</RepositoryType>
+        <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +26,10 @@
 
     <ItemGroup>
       <Compile Remove="bin\**" />
+      <None Remove="lib\SDL3.dll" />
+      <Content Include="lib\SDL3.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -27,9 +42,6 @@
 
     <ItemGroup>
       <None Remove="SDL3.dll" />
-      <Content Include="SDL3.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
 </Project>
