@@ -9,7 +9,7 @@ SDL3 and SDL3# are released under the zlib license. See LICENSE for details.
 
 ## About SDL3
 
-For more information about SDL2, visit the SDL wiki:
+For more information about SDL3, visit the SDL wiki:
 
 https://wiki.libsdl.org/SDL3/FrontPage
 
