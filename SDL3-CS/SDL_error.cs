@@ -35,6 +35,18 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_ClearError();
+    /// <summary>
+    /// Clear any previous error message for this thread.
+    /// </summary>
+    /// <returns>Returns 0</returns>
+    /// <seealso cref="GetError"/>
+    /// <seealso cref="SetError"/>
+    public static int ClearError() => SDL_ClearError();
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetError();
 
     /// <summary>
@@ -63,5 +75,38 @@ public static partial class SDL
     public static string? GetError()
     {
         return UTF8_ToManaged(SDL_GetError());
+    }
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_OutOfMemory();
+    /// <summary>
+    /// Set an error indicating that memory allocation failed.
+    /// </summary>
+    /// <returns>Returns -1.</returns>
+    /// <remarks>This function does not do any memory allocation.</remarks>
+    public static int OutOfMemory() => SDL_OutOfMemory();
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial int SDL_SetError(byte* fmt);
+    /// <summary>
+    /// Set the SDL error message for the current thread.
+    /// </summary>
+    /// <param name="error">message format string</param>
+    /// <returns>Returns always -1.</returns>
+    /// <remarks>
+    /// <para>Calling this function will replace any previous error message that was set.</para>
+    /// <para>This function always returns -1, since SDL frequently uses -1 to signify an failing result</para>
+    /// </remarks>
+    /// <seealso cref="ClearError"/>
+    /// <seealso cref="GetError"/>
+    public static unsafe int SetError(string error)
+    {
+        var utf8NameBufSize = Utf8Size(error);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+        return SDL_SetError(Utf8Encode(error, utf8Name, utf8NameBufSize));
     }
 }
