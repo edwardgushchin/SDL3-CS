@@ -33,7 +33,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    #region hints
+    #region Hints
     /// <summary>
     /// Specify the behavior of Alt+Tab while the keyboard is grabbed.
     /// </summary>
@@ -2029,7 +2029,7 @@ public static partial class SDL
     /// </summary>
     /// <remarks>
     /// <para>If set, this will be favored over anything the OS might report for the user's preferred locales.
-    /// Changing this hint at runtime will not generate a <see cref="EventType.LocaleChanged"/> event
+    /// Changing this hint at runtime will not generate an <see cref="EventType.LocaleChanged"/> event
     /// (but if you can change the hint, you can push your own event, if you want).</para>
     /// <para>The format of this hint is a comma-separated list of language and locale, combined with an underscore,
     /// as is a common format: "en_GB". Locale is optional: "en". So you might have a list like this:
@@ -2290,7 +2290,7 @@ public static partial class SDL
     /// A string specifying additional information to use with <see cref="SetThreadPriority"/>.
     /// </summary>
     /// <remarks>
-    /// <para>By default <see cref="SetThreadPriority"/> will make appropriate system changes in order to apply a
+    /// <para>By default, <see cref="SetThreadPriority"/> will make appropriate system changes in order to apply a
     /// thread priority. For example on systems using pthreads the scheduler policy is changed
     /// automatically to a policy that works well with a given priority. Code which has specific
     /// requirements can override SDL's default behavior with this hint.</para>
@@ -3055,15 +3055,148 @@ public static partial class SDL
     public const string HintXInputEnabled = "SDL_XINPUT_ENABLED";
     #endregion
     
+    
+    /// <summary>
+    /// An enumeration of hint priorities.
+    /// </summary>
+    public enum HintPriority
+    {
+        Default,
+        Normal,
+        Override
+    }
+    
+    
+    /// <summary>
+    /// Type definition of the hint callback function.
+    /// </summary>
+    /// <param name="userdata">what was passed as userdata to <see cref="AddHintCallback"/>.</param>
+    /// <param name="name">what was passed as name to <see cref="AddHintCallback"/>.</param>
+    /// <param name="oldValue">the previous hint value.</param>
+    /// <param name="newValue">the new value hint is to be set to.</param>
+    public delegate void HintCallback(IntPtr userdata, string name, string oldValue, string newValue);
+
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial int SDL_AddHintCallback(byte* name, HintCallback callback, IntPtr userdata);
+    /// <summary>
+    /// Add a function to watch a particular hint.
+    /// </summary>
+    /// <param name="name">the hint to watch.</param>
+    /// <param name="callback">an <see cref="HintCallback"/> function that will be called when the
+    /// hint value changes.</param>
+    /// <returns>Returns 0 on success or a negative error code on failure;
+    /// call <see cref="GetError"/> for more information.</returns>
+    /// <remarks>It is NOT safe to call this function from two threads at once.</remarks>
+    public static unsafe int AddHintCallback(string name, HintCallback callback)
+    {
+        var utf8NameBufSize = Utf8Size(name);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+
+        return SDL_AddHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize), callback, IntPtr.Zero);
+    }
+
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial void SDL_DelHintCallback(byte* name, HintCallback callback, IntPtr userdata);
+    /// <summary>
+    /// Remove a function watching a particular hint.
+    /// </summary>
+    /// <param name="name">the hint being watched.</param>
+    /// <param name="callback">	an <see cref="HintCallback"/> function that will be called when the hint
+    /// value changes.</param>
+    public static unsafe void DelHintCallback(string name, HintCallback callback)
+    {
+        var utf8NameBufSize = Utf8Size(name);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+        
+        SDL_DelHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize), callback, IntPtr.Zero);
+    }
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial IntPtr SDL_GetHint(byte* name);
+    /// <summary>
+    /// Get the value of a hint.
+    /// </summary>
+    /// <param name="name">the hint to query.</param>
+    /// <returns>Returns the string value of a hint or NULL if the hint isn't set.</returns>
+    /// <remarks>The returned string follows the <see cref="GetStringRule"/>.</remarks>
+    public static unsafe string? GetHint(string name)
+    {
+        var utf8NameBufSize = Utf8Size(name);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+        
+        return UTF8_ToManaged(SDL_GetHint(Utf8Encode(name, utf8Name, utf8NameBufSize)));
+    }
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial int SDL_GetHintBoolean(byte* name, int defaultValue);
+    /// <summary>
+    /// Get the boolean value of a hint variable.
+    /// </summary>
+    /// <param name="name">the name of the hint to get the boolean value from.</param>
+    /// <param name="defaultValue">the value to return if the hint does not exist.</param>
+    /// <returns>Returns the boolean value of a hint or the provided default value if the hint does not exist.</returns>
+    public static unsafe bool GetHintBoolean(string name, bool defaultValue)
+    {
+        var utf8NameBufSize = Utf8Size(name);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+        return SDL_GetHintBoolean(Utf8Encode(name, utf8Name, utf8NameBufSize), defaultValue ? 1 : 0) != 0;
+    }
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial int SDL_ResetHint(byte* name);
+    /// <summary>
+    /// Reset a hint to the default value.
+    /// </summary>
+    /// <param name="name">the hint to set.</param>
+    /// <returns>Returns True if the hint was set, False otherwise.</returns>
+    /// <remarks>
+    /// This will reset a hint to the value of the environment variable,
+    /// or NULL if the environment isn't set. Callbacks will be called normally with this change.
+    /// </remarks>
+    public static unsafe bool ResetHint(string name)
+    {
+        var utf8NameBufSize = Utf8Size(name);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+        return SDL_ResetHint(Utf8Encode(name, utf8Name, utf8NameBufSize)) != 0;
+    }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial void SDL_ResetHints();
+    /// <summary>
+    /// Reset all hints to the default values.
+    /// </summary>
+    /// <remarks>
+    /// This will reset all hints to the value of the associated environment variable,
+    /// or NULL if the environment isn't set. Callbacks will be called normally with this change.
+    /// </remarks>
+    public static void ResetHints() => SDL_ResetHints();
+    
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static unsafe partial int SDL_SetHint(byte* name, byte* value);
     /// <summary>
-    /// 
+    /// Set a hint with normal priority.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="name">the hint to set.</param>
+    /// <param name="value">the value of the hint variable.</param>
+    /// <returns>Returns True if the hint was set, False otherwise.</returns>
+    /// <remarks>
+    /// Hints will not be set if there is an existing override hint or environment variable that takes precedence.
+    /// You can use <see cref="SetHintWithPriority"/> to set the hint with override priority instead.
+    /// </remarks>
     public static unsafe bool SetHint(string name, string value)
     {
         var utf8NameBufSize = Utf8Size(name);
@@ -3075,5 +3208,32 @@ public static partial class SDL
         return SDL_SetHint(
             Utf8Encode(name, utf8Name, utf8NameBufSize),
             Utf8Encode(value, utf8Value, utf8ValueBufSize)) != 0;
+    }
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial int SDL_SetHintWithPriority(byte* name, byte* value, HintPriority priority);
+    /// <summary>
+    /// Set a hint with a specific priority.
+    /// </summary>
+    /// <param name="name">the hint to set.</param>
+    /// <param name="value">the value of the hint variable.</param>
+    /// <param name="priority">the <see cref="HintPriority"/> level for the hint.</param>
+    /// <returns>Returns True if the hint was set, False otherwise.</returns>
+    /// <remarks>The priority controls the behavior when setting a hint that already has a value.
+    /// Hints will replace existing hints of their priority and lower.
+    /// Environment variables are considered to have override priority.</remarks>
+    public static unsafe bool SetHintWithPriority(string name, string value, HintPriority priority)
+    {
+        var utf8NameBufSize = Utf8Size(name);
+        var utf8Name = stackalloc byte[utf8NameBufSize];
+
+        var utf8ValueBufSize = Utf8Size(value);
+        var utf8Value = stackalloc byte[utf8ValueBufSize];
+
+        return SDL_SetHintWithPriority(
+            Utf8Encode(name, utf8Name, utf8NameBufSize),
+            Utf8Encode(value, utf8Value, utf8ValueBufSize), priority) != 0;
     }
 }
