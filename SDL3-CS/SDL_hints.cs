@@ -3093,7 +3093,6 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-
         return SDL_AddHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize), callback, IntPtr.Zero);
     }
 
@@ -3111,7 +3110,6 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-        
         SDL_DelHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize), callback, IntPtr.Zero);
     }
 
@@ -3129,7 +3127,6 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-        
         return UTF8_ToManaged(SDL_GetHint(Utf8Encode(name, utf8Name, utf8NameBufSize)));
     }
 
