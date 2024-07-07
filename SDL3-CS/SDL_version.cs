@@ -143,7 +143,4 @@ public static partial class SDL
     private static int VersionNumMinor(int version) => version / 1000 % 1000;
     
     private static int VersionNumMicro(int version) => version % 1000;
-    
-    
-
 }
