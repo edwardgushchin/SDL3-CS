@@ -23,11 +23,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="bin\**" />
-      <None Remove="lib\SDL3.dll" />
-      <Content Include="lib\SDL3.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Update="icon.png">
         <Pack>True</Pack>
         <PackagePath></PackagePath>
@@ -35,15 +30,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="bin\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="bin\**" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="native\win-x64\SDL3.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <PackagePath>runtimes/win-x64/native</PackagePath>
+        <Pack>true</Pack>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -12,5 +12,6 @@ Global
 		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C7A02F7-BCE4-485C-9FE3-4C00265CAB5D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

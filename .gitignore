@@ -1,6 +1,6 @@
 .idea/
 bin/
 obj/
-lib/
+runtimes/
 SDL3.dll
 icon.png

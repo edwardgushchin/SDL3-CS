@@ -9,7 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SDL3-CS\SDL3-CS.csproj" />
+      <Reference Include="SDL3-CS">
+        <HintPath>..\..\SDL3-CS\bin\Release\net8.0\SDL3-CS.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
