@@ -177,26 +177,61 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information.
     /// </returns>
     /// <remarks>
-    /// The Window is implicitly shown if <see cref="WindowFlags.Hidden"/> is not set.
-    /// On Apple's macOS, you must set the NSHighResolutionCapable Info.plist property to YES,
-    /// otherwise you will not receive a High-DPI OpenGL canvas.
-    /// The window pixel size may differ from its window coordinate size if the window is on a high pixel density
-    /// display. Use <see cref="GetWindowSize"/> to query the client area's size in window coordinates, and
-    /// <see cref="GetWindowSizeInPixels"/> or <see cref="GetRenderOutputSize"/> to query the drawable size in pixels.
-    /// Note that the drawable size can vary after the window is created and should be queried again if you get an
-    /// <see cref="EventType.WindowPixelSizeChanged"/> event.
-    /// If the window is created with any of the <see cref="WindowFlags.OpenGL"/> or <see cref="WindowFlags.Vulkan"/>
-    /// flags, then the corresponding LoadLibrary function (SDL_GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called
-    /// and the corresponding UnloadLibrary function is called by <see cref="DestroyWindow"/>.
-    /// If <see cref="WindowFlags.Vulkan"/> is specified and there isn't a working Vulkan driver,
-    /// <see cref="CreateWindow"/> will fail because SDL_Vulkan_LoadLibrary() will fail.
-    /// If <see cref="WindowFlags.Metal"/> is specified on an OS that does not support Metal,
-    /// <see cref="CreateWindow"/> will fail.
-    /// If you intend to use this window with an SDL_Renderer, you should use <see cref="CreateWindowAndRenderer"/>
-    /// instead of this function, to avoid window flicker.
-    /// On non-Apple devices, SDL requires you to either not link to the Vulkan loader or link to a dynamic
-    /// library version. This limitation may be removed in a future version of SDL.
+    /// <para>flags may be any of the following OR'd together:</para>
+    /// <list type="bullet">
+    /// <item><see cref="WindowFlags.Fullscreen"/>: fullscreen window at desktop resolution</item>
+    /// <item><see cref="WindowFlags.OpenGL"/>: window usable with an OpenGL context</item>
+    /// <item><see cref="WindowFlags.Occluded"/>: window is occluded</item>
+    /// <item><see cref="WindowFlags.Hidden"/>: window is not visible context</item>
+    /// <item><see cref="WindowFlags.Borderless"/>: no window decoration</item>
+    /// <item><see cref="WindowFlags.Resizable"/>: window can be resized</item>
+    /// <item><see cref="WindowFlags.Minimized"/>: window is minimized</item>
+    /// <item><see cref="WindowFlags.Maximized"/>: window is maximized</item>
+    /// <item><see cref="WindowFlags.MouseGrabbed"/>: window has grabbed mouse focus</item>
+    /// <item><see cref="WindowFlags.InputFocus"/>: window has input focus</item>
+    /// <item><see cref="WindowFlags.MouseFocus"/>: window has mouse focus</item>
+    /// <item><see cref="WindowFlags.External"/>: window not created by SDL</item>
+    /// <item><see cref="WindowFlags.Modal"/>: window is modal</item>
+    /// <item><see cref="WindowFlags.HighPixelDensity"/>: window uses high pixel density back buffer if possible</item>
+    /// <item><see cref="WindowFlags.MouseCapture"/>: window has mouse captured
+    /// (unrelated to <see cref="WindowFlags.MouseGrabbed"/>)</item>
+    /// <item><see cref="WindowFlags.AlwaysOnTop"/>: window should always be above others</item>
+    /// <item><see cref="WindowFlags.Utility"/>: window should be treated as a utility window, not showing in the
+    /// task bar and window list</item>
+    /// <item><see cref="WindowFlags.Tooltip"/>: window should be treated as a tooltip and does not get mouse or
+    /// keyboard focus, requires a parent window</item>
+    /// <item><see cref="WindowFlags.PopupMenu"/>: window should be treated as a popup menu, requires a
+    /// parent window</item>
+    /// <item><see cref="WindowFlags.KeyboardGrabbed"/>: window has grabbed keyboard input</item>
+    /// <item><see cref="WindowFlags.Vulkan"/>: window usable with a Vulkan instance</item>
+    /// <item><see cref="WindowFlags.Metal"/>: window usable with a Metal instance</item>
+    /// <item><see cref="WindowFlags.Transparent"/>: window with transparent buffer</item>
+    /// <item><see cref="WindowFlags.NotFocusable"/>: window should not be focusable</item>
+    /// </list>
+    /// <para>The SDL_Window is implicitly shown if <see cref="WindowFlags.Hidden"/> is not set.</para>
+    /// <para>On Apple's macOS, you must set the NSHighResolutionCapable Info.plist property to YES,
+    /// otherwise you will not receive a High-DPI OpenGL canvas.</para>
+    /// <para>The window pixel size may differ from its window coordinate size if the window is on a high pixel
+    /// density display. Use <see cref="GetWindowSize"/> to query the client area's size in window coordinates,
+    /// and <see cref="GetWindowSizeInPixels"/> or <see cref="GetRenderOutputSize"/> to query the drawable size in
+    /// pixels. Note that the drawable size can vary after the window is created and should be queried again
+    /// if you get an <see cref="EventType.WindowPixelSizeChanged"/> event.</para>
+    /// <para>If the window is created with any of the <see cref="WindowFlags.OpenGL"/> or
+    /// <see cref="WindowFlags.Vulkan"/> flags, then the corresponding LoadLibrary function
+    /// (<see cref="GL_LoadLibrary"/> or <see cref="Vulkan_LoadLibrary"/>) is called and the corresponding
+    /// UnloadLibrary function is called by <see cref="DestroyWindow"/>.</para>
+    /// <para>If <see cref="WindowFlags.Vulkan"/> is specified and there isn't a working Vulkan driver,
+    /// <see cref="CreateWindow"/> will fail because <see cref="Vulkan_LoadLibrary"/> will fail.</para>
+    /// <para>If <see cref="WindowFlags.Metal"/> is specified on an OS that does not support Metal,
+    /// <see cref="CreateWindow"/> will fail.</para>
+    /// <para>If you intend to use this window with an SDL_Renderer, you should use
+    /// <see cref="CreateWindowAndRenderer"/> instead of this function, to avoid window flicker.</para>
+    /// <para>On non-Apple devices, SDL requires you to either not link to the Vulkan loader or link to a dynamic
+    /// library version. This limitation may be removed in a future version of SDL.</para>
     /// </remarks>
+    /// <seealso cref="CreatePopupWindow"/>
+    /// <seealso cref="CreateWindowWithProperties"/>
+    /// <seealso cref="DestroyWindow"/>
     public static unsafe IntPtr CreateWindow(string? title, int w, int h, WindowFlags flags) {
         var utf8TitleBufSize = Utf8Size(title);
         var utf8Title = stackalloc byte[utf8TitleBufSize];
@@ -214,5 +249,8 @@ public static partial class SDL
     /// <remarks>
     /// Any popups or modal windows owned by the window will be recursively destroyed as well.
     /// </remarks>
+    /// <seealso cref="CreatePopupWindow"/>
+    /// <seealso cref="CreateWindow"/>
+    /// <seealso cref="CreateWindowWithProperties"/>
     public static void DestroyWindow(IntPtr window) => SDL_DestroyWindow(window);
 }
