@@ -36,6 +36,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_ClearError();
+    
     /// <summary>
     /// Clear any previous error message for this thread.
     /// </summary>
@@ -48,7 +49,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetError();
-
+    
     /// <summary>
     /// Retrieve a message about the last error that occurred on the current thread.
     /// </summary>
@@ -72,15 +73,13 @@ public static partial class SDL
     /// </remarks>
     /// <seealso cref="ClearError"/>
     /// <seealso cref="SetError"/>
-    public static string? GetError()
-    {
-        return UTF8_ToManaged(SDL_GetError());
-    }
+    public static string? GetError() => UTF8_ToManaged(SDL_GetError());
 
-
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_OutOfMemory();
+    
     /// <summary>
     /// Set an error indicating that memory allocation failed.
     /// </summary>
@@ -91,11 +90,12 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_SetError(byte* fmt);
+    private static unsafe partial int SDL_SetError(byte* message);
+    
     /// <summary>
     /// Set the SDL error message for the current thread.
     /// </summary>
-    /// <param name="error">message format string</param>
+    /// <param name="message">message format string</param>
     /// <returns>Returns always -1.</returns>
     /// <remarks>
     /// <para>Calling this function will replace any previous error message that was set.</para>
@@ -103,10 +103,10 @@ public static partial class SDL
     /// </remarks>
     /// <seealso cref="ClearError"/>
     /// <seealso cref="GetError"/>
-    public static unsafe int SetError(string error)
+    public static unsafe int SetError(string message)
     {
-        var utf8NameBufSize = Utf8Size(error);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_SetError(Utf8Encode(error, utf8Name, utf8NameBufSize));
+        var utf8MessageBufSize = Utf8Size(message);
+        var utf8Message = stackalloc byte[utf8MessageBufSize];
+        return SDL_SetError(Utf8Encode(message, utf8Message, utf8MessageBufSize));
     }
 }

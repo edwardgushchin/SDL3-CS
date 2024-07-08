@@ -163,8 +163,9 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial IntPtr SDL_CreateWindow(byte* title, int w, int h, WindowFlags flags);
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)]) ]
+    private static unsafe partial Window SDL_CreateWindow(byte* title, int w, int h, WindowFlags flags);
+    
     /// <summary>
     /// Create a window with the specified dimensions and flags.
     /// </summary>
@@ -232,25 +233,28 @@ public static partial class SDL
     /// <seealso cref="CreatePopupWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
     /// <seealso cref="DestroyWindow"/>
-    public static unsafe IntPtr CreateWindow(string? title, int w, int h, WindowFlags flags) {
-        var utf8TitleBufSize = Utf8Size(title);
-        var utf8Title = stackalloc byte[utf8TitleBufSize];
-        return SDL_CreateWindow(Utf8Encode(title, utf8Title, utf8TitleBufSize), w, h, flags);
+    public static unsafe Window CreateWindow(string title, int w, int h, WindowFlags flags)
+    { 
+        var utf8StrBufSize = Utf8Size(title); 
+        var utf8Str = stackalloc byte[utf8StrBufSize];
+        return SDL_CreateWindow(Utf8Encode(title, utf8Str, utf8StrBufSize), w, h, flags);
     }
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_DestroyWindow(IntPtr window);
+    private static partial void SDL_DestroyWindow(Window window);
+    
     /// <summary>
     /// Destroy a window.
     /// </summary>
     /// <param name="window">the window to destroy.</param>
     /// <remarks>
-    /// Any popups or modal windows owned by the window will be recursively destroyed as well.
+    /// If window is NULL, this function will return immediately after setting the SDL error message to
+    /// "Invalid window". See <see cref="SetError"/>.
     /// </remarks>
     /// <seealso cref="CreatePopupWindow"/>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
-    public static void DestroyWindow(IntPtr window) => SDL_DestroyWindow(window);
+    public static void DestroyWindow(Window window) => SDL_DestroyWindow(window);
 }

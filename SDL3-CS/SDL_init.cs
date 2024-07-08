@@ -92,11 +92,12 @@ public static partial class SDL
         /// </summary>
         Camera = 0x00010000u
     }
-    
-    
+
+
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_Init(InitFlags flags);
+    
     /// <summary>
     /// Initialize the SDL library.
     /// </summary>
@@ -140,6 +141,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_InitSubSystem(InitFlags flags);
+    
     /// <summary>
     /// Compatibility function to initialize the SDL library.
     /// </summary>
@@ -163,6 +165,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_QuitSubSystem(InitFlags flags);
+    
     /// <summary>
     /// Shut down specific SDL subsystems.
     /// </summary>
@@ -177,6 +180,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial InitFlags SDL_WasInit(InitFlags flags);
+    
     /// <summary>
     /// Get a mask of the specified subsystems which are currently initialized.
     /// </summary>
@@ -195,6 +199,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_Quit();
+    
     /// <summary>
     /// Clean up all initialized subsystems.
     /// </summary>

@@ -26,6 +26,7 @@
  */
 #endregion
 
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SDL3;
@@ -89,5 +90,17 @@ public static partial class SDL
         
         if (freePtr) SDL_free(s);
         return result;
+    }
+    
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Window
+    {
+        public IntPtr Handle;
+    }
+    
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Render
+    {
+        public IntPtr Handle;
     }
 }

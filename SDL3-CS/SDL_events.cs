@@ -616,14 +616,28 @@ public static partial class SDL
         EnumPadding = 0x7FFFFFFF
     }
     
+    /// <summary>
+    /// The structure for all events in SDL.
+    /// </summary>
+    [StructLayout(LayoutKind.Explicit)]
+    public unsafe struct Event
+    {
+        [FieldOffset(0)]
+        public EventType Type;
+        
+        [FieldOffset(0)]
+        private fixed byte padding[128];
+    }
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PollEvent(out EventType e);
+    private static partial int SDL_PollEvent(out Event e);
+    
     /// <summary>
     /// Poll for currently pending events.
     /// </summary>
     /// <param name="e">
-    /// the <see cref="EventType"/> structure to be filled with the next event from the queue, or NULL.
+    /// the <see cref="Event"/> structure to be filled with the next event from the queue, or NULL.
     /// </param>
     /// <returns>
     /// Returns 1 if this got an event or 0 if there are none available.
@@ -644,5 +658,5 @@ public static partial class SDL
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    public static int PollEvent(out EventType e) => SDL_PollEvent(out e);
+    public static int PollEvent(out Event e) => SDL_PollEvent(out e);
 }

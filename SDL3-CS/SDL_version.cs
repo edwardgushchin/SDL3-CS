@@ -94,6 +94,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetRevision();
+    
     /// <summary>
     /// Get the code revision of SDL that is linked against your program.
     /// </summary>
@@ -111,16 +112,13 @@ public static partial class SDL
     /// The string is not intended to be reliable in any way.</para>
     /// <para>The returned string follows the <see cref="GetStringRule"/>.</para>
     /// </remarks>
-    public static string? GetRevision()
-    {
-        return UTF8_ToManaged(SDL_GetRevision());
-    }
+    public static string? GetRevision() => UTF8_ToManaged(SDL_GetRevision());
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetVersion();
-
+    
     /// <summary>
     /// Get the version of SDL that is linked against your program.
     /// </summary>

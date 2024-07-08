@@ -3074,12 +3074,13 @@ public static partial class SDL
     /// <param name="name">what was passed as name to <see cref="AddHintCallback"/>.</param>
     /// <param name="oldValue">the previous hint value.</param>
     /// <param name="newValue">the new value hint is to be set to.</param>
-    public delegate void HintCallback(IntPtr userdata, string name, string oldValue, string newValue);
+    public delegate void HintCallback(IntPtr userdata, string name, string? oldValue, string? newValue);
 
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static unsafe partial int SDL_AddHintCallback(byte* name, HintCallback callback, IntPtr userdata);
+    
     /// <summary>
     /// Add a function to watch a particular hint.
     /// </summary>
@@ -3095,11 +3096,12 @@ public static partial class SDL
         var utf8Name = stackalloc byte[utf8NameBufSize];
         return SDL_AddHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize), callback, IntPtr.Zero);
     }
-
+        
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static unsafe partial void SDL_DelHintCallback(byte* name, HintCallback callback, IntPtr userdata);
+    
     /// <summary>
     /// Remove a function watching a particular hint.
     /// </summary>
@@ -3110,30 +3112,28 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-        SDL_DelHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize), callback, IntPtr.Zero);
+        SDL_DelHintCallback(Utf8Encode(name, utf8Name, utf8NameBufSize),  callback, IntPtr.Zero);
     }
+    
 
-
-    [LibraryImport(SDLLibrary)]
+    [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial IntPtr SDL_GetHint(byte* name);
+    private static partial IntPtr SDL_GetHint(string name);
+    
     /// <summary>
     /// Get the value of a hint.
     /// </summary>
     /// <param name="name">the hint to query.</param>
     /// <returns>Returns the string value of a hint or NULL if the hint isn't set.</returns>
     /// <remarks>The returned string follows the <see cref="GetStringRule"/>.</remarks>
-    public static unsafe string? GetHint(string name)
-    {
-        var utf8NameBufSize = Utf8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return UTF8_ToManaged(SDL_GetHint(Utf8Encode(name, utf8Name, utf8NameBufSize)));
-    }
+    public static string? GetHint(string name) => UTF8_ToManaged(SDL_GetHint(name));
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_GetHintBoolean(byte* name, int defaultValue);
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static unsafe partial bool SDL_GetHintBoolean(byte* name, [MarshalAs(UnmanagedType.Bool)]bool defaultValue);
+    
     /// <summary>
     /// Get the boolean value of a hint variable.
     /// </summary>
@@ -3144,13 +3144,15 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_GetHintBoolean(Utf8Encode(name, utf8Name, utf8NameBufSize), defaultValue ? 1 : 0) != 0;
+        return SDL_GetHintBoolean(Utf8Encode(name, utf8Name, utf8NameBufSize), defaultValue);
     }
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_ResetHint(byte* name);
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static unsafe partial bool SDL_ResetHint(byte* name);
+    
     /// <summary>
     /// Reset a hint to the default value.
     /// </summary>
@@ -3164,13 +3166,14 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_ResetHint(Utf8Encode(name, utf8Name, utf8NameBufSize)) != 0;
+        return SDL_ResetHint(Utf8Encode(name, utf8Name, utf8NameBufSize));
     }
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_ResetHints();
+    private static partial void SDL_ResetHints();
+    
     /// <summary>
     /// Reset all hints to the default values.
     /// </summary>
@@ -3183,7 +3186,9 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_SetHint(byte* name, byte* value);
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static unsafe partial bool SDL_SetHint(byte* name, byte* value);
+    
     /// <summary>
     /// Set a hint with normal priority.
     /// </summary>
@@ -3198,19 +3203,21 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-
+        
         var utf8ValueBufSize = Utf8Size(value);
         var utf8Value = stackalloc byte[utf8ValueBufSize];
-
+        
         return SDL_SetHint(
             Utf8Encode(name, utf8Name, utf8NameBufSize),
-            Utf8Encode(value, utf8Value, utf8ValueBufSize)) != 0;
+            Utf8Encode(value, utf8Value, utf8ValueBufSize));
     }
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_SetHintWithPriority(byte* name, byte* value, HintPriority priority);
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static unsafe partial bool SDL_SetHintWithPriority(byte* name, byte* value, HintPriority priority);
+    
     /// <summary>
     /// Set a hint with a specific priority.
     /// </summary>
@@ -3225,12 +3232,13 @@ public static partial class SDL
     {
         var utf8NameBufSize = Utf8Size(name);
         var utf8Name = stackalloc byte[utf8NameBufSize];
-
+        
         var utf8ValueBufSize = Utf8Size(value);
         var utf8Value = stackalloc byte[utf8ValueBufSize];
-
+        
         return SDL_SetHintWithPriority(
             Utf8Encode(name, utf8Name, utf8NameBufSize),
-            Utf8Encode(value, utf8Value, utf8ValueBufSize), priority) != 0;
+            Utf8Encode(value, utf8Value, utf8ValueBufSize), 
+            priority);
     }
 }

@@ -35,7 +35,8 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial IntPtr SDL_CreateRenderer(IntPtr window, byte* name);
+    private static unsafe partial Render SDL_CreateRenderer(Window window,  byte* name);
+    
     /// <summary>
     /// Create a 2D rendering context for a window.
     /// </summary>
@@ -62,17 +63,18 @@ public static partial class SDL
     /// <seealso cref="GetNumRenderDrivers"/>
     /// <seealso cref="GetRenderDriver"/>
     /// <seealso cref="GetRendererName"/>
-    public static unsafe IntPtr CreateRenderer(IntPtr window, string? name) 
+    public static unsafe Render CreateRenderer(Window window, string? name)
     {
         var utf8TitleBufSize = Utf8Size(name);
         var utf8Title = stackalloc byte[utf8TitleBufSize];
         return SDL_CreateRenderer(window, Utf8Encode(name, utf8Title, utf8TitleBufSize));
     }
-    
-    
+
+
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
+    private static partial void SDL_SetRenderDrawColor(Render renderer, byte r, byte g, byte b, byte a);
+    
     /// <summary>
     /// Set the color used for drawing operations.
     /// </summary>
@@ -88,13 +90,14 @@ public static partial class SDL
     /// and for <see cref="RenderClear"/>.</remarks>
     /// <seealso cref="GetRenderDrawColor"/>
     /// <seealso cref="SetRenderDrawColorFloat"/>
-    public static void SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a) =>
+    public static void SetRenderDrawColor(Render renderer, byte r, byte g, byte b, byte a) =>
         SDL_SetRenderDrawColor(renderer, r, g, b, a);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_RenderClear(IntPtr renderer);
+    private static partial int SDL_RenderClear(Render renderer);
+    
     /// <summary>
     /// Clear the current rendering target with the drawing color.
     /// </summary>
@@ -109,12 +112,13 @@ public static partial class SDL
     /// so make sure to invoke <see cref="SetRenderDrawColor"/> when needed.
     /// </remarks>
     /// <seealso cref="SetRenderDrawColor"/>
-    public static int RenderClear(IntPtr renderer) => SDL_RenderClear(renderer);
+    public static int RenderClear(Render renderer) => SDL_RenderClear(renderer);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_RenderPresent(IntPtr renderer);
+    private static partial int SDL_RenderPresent(Render renderer);
+    
     /// <summary>
     /// Update the screen with any rendering performed since the previous call.
     /// </summary>
@@ -146,12 +150,13 @@ public static partial class SDL
     /// <seealso cref="RenderFillRects"/>
     /// <seealso cref="SetRenderDrawBlendMode"/>
     /// <seealso cref="SetRenderDrawColor"/>
-    public static int RenderPresent(IntPtr renderer) => SDL_RenderPresent(renderer);
+    public static int RenderPresent(Render renderer) => SDL_RenderPresent(renderer);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_DestroyRenderer(IntPtr renderer);
+    private static partial void SDL_DestroyRenderer(Render renderer);
+    
     /// <summary>
     /// Destroy the rendering context for a window and free all associated textures
     /// </summary>
@@ -160,5 +165,28 @@ public static partial class SDL
     /// </remarks>
     /// <param name="renderer">the rendering context.</param>
     /// <seealso cref="CreateRenderer"/>
-    public static void DestroyRenderer(IntPtr renderer) => SDL_DestroyRenderer(renderer);
+    public static void DestroyRenderer(Render renderer) => SDL_DestroyRenderer(renderer);
+
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial IntPtr SDL_GetRenderDriver(int index);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public static string? GetRenderDriver(int index) => UTF8_ToManaged(SDL_GetRenderDriver(index));
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumRenderDrivers();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public static int GetNumRenderDrivers() => SDL_GetNumRenderDrivers();
 }
