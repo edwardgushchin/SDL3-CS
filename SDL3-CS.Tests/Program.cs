@@ -40,7 +40,7 @@ public static class Program
             return;
         }
         
-        var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
+        var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, SDL.WindowFlags.Fullscreen);
         
         if (window.Handle == IntPtr.Zero)
         {
@@ -55,21 +55,32 @@ public static class Program
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
-
-        SDL.SetRenderDrawColor(renderer, 100,149,237,0);
         
         var loop = true;
+        
+        var h = 0.0f; // Начальный оттенок
         
         while (loop)
         {
             
-            while (SDL.PollEvent(out var sdlEvent) != 0)
+            while (SDL.PollEvent(out var e) != 0)
             {
-                if (sdlEvent.Type == SDL.EventType.Quit)
+                if (e.Type == SDL.EventType.Quit)
+                {
+                    loop = false;
+                }
+
+                if (e.Type == SDL.EventType.KeyDown)
                 {
                     loop = false;
                 }
             }
+            
+            var (r, g, b, a, newH) = GetNextColor(h, 1.0f, 1.0f);
+            
+            h = newH;
+            
+            SDL.SetRenderDrawColor(renderer, r,g,b,a);
 
             SDL.RenderClear(renderer);
             SDL.RenderPresent(renderer);
@@ -79,5 +90,36 @@ public static class Program
         SDL.DestroyWindow(window);
         
         SDL.Quit();
+    }
+    
+    private static (byte r, byte g, byte b, byte a, float h) GetNextColor(float h, float s, float v, float step = 0.0001f)
+    {
+        h = (float)((h + step) % 1.0);
+        var (r, g, b) = HsvToRgb(h, s, v);
+        byte a = 255;
+        return (r, g, b, a, h);
+    }
+    
+    private static (byte r, byte g, byte b) HsvToRgb(double h, double s, double v)
+    {
+        var i = (int)(h * 6);
+        var f = h * 6 - i;
+        var p = v * (1 - s);
+        var q = v * (1 - f * s);
+        var t = v * (1 - (1 - f) * s);
+
+        double r = 0, g = 0, b = 0;
+
+        switch (i % 6)
+        {
+            case 0: r = v; g = t; b = p; break;
+            case 1: r = q; g = v; b = p; break;
+            case 2: r = p; g = v; b = t; break;
+            case 3: r = p; g = q; b = v; break;
+            case 4: r = t; g = p; b = v; break;
+            case 5: r = v; g = p; b = q; break;
+        }
+
+        return ((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
     }
 }
