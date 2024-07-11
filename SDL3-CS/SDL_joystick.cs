@@ -30,9 +30,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// 
-    /// </summary>
 	public enum JoystickHat : byte
     {
 	    Centered = 0x00,

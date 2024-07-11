@@ -33,12 +33,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// By default the application category is enabled at the <see cref="LogPriority.Info"/> level,
-    /// the assert category is enabled at the <see cref="LogPriority.Warn"/> level,
-    /// test is enabled at the <see cref="LogPriority.Verbose"/> level and all other categories are
-    /// enabled at the <see cref="LogPriority.Error"/> level.
-    /// </summary>
     public enum LogCategory
     {
         Application,
@@ -67,9 +61,6 @@ public static partial class SDL
         Custom
     }
     
-    /// <summary>
-    /// The predefined log priorities
-    /// </summary>
     public enum LogPriority
     {
         Verbose = 1,
@@ -81,51 +72,74 @@ public static partial class SDL
         Priorities
     }
     
-    /// <summary>
-    /// The prototype for the log output callback function.
-    /// </summary>
-    /// <param name="userdata">what was passed as userdata to <see cref="SetLogOutputFunction"/></param>
-    /// <param name="category">the category of the message.</param>
-    /// <param name="priority">the priority of the message.</param>
-    /// <param name="message">the message being output.</param>
-    /// <remarks>This function is called by SDL when there is new text to be logged.</remarks>
+    
     public delegate void LogOutputFunction(IntPtr userdata, LogCategory category, LogPriority priority, string message);
-
-
+    
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetLogOutputFunction(LogOutputFunction callback);
-    
-    /// <summary>
-    /// Get the current log output function.
-    /// </summary>
-    /// <param name="callback">an <see cref="LogOutputFunction"/> filled in with the current log callback.</param>
-    /// <seealso cref="SetLogOutputFunction"/>
-    public static void GetLogOutputFunction(LogOutputFunction callback) => SDL_GetLogOutputFunction(callback);
+    private static partial void SDL_GetLogOutputFunction(LogOutputFunction callback, IntPtr userdata);
+    public static void GetLogOutputFunction(LogOutputFunction callback, IntPtr userdata) 
+        => SDL_GetLogOutputFunction(callback, userdata);
 
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial LogPriority SDL_GetLogPriority(LogCategory category);
-    
-    /// <summary>
-    /// Get the priority of a particular log category.
-    /// </summary>
-    /// <param name="category">the category to query.</param>
-    /// <returns>Returns the <see cref="LogPriority"/> for the requested category.</returns>
-    /// <seealso cref="SetLogPriority"/>
     public static LogPriority GetLogPriority(LogCategory category) => SDL_GetLogPriority(category);
 
     
-    [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
+    [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Log(string message);
+    private static unsafe partial void SDL_Log(byte* message);
+    public static unsafe void Log(string message)
+    {
+        var utf8MessageBufSize = UTF8Size(message);
+        var utf8Message = stackalloc byte[utf8MessageBufSize];
+        SDL_Log(UTF8Encode(message, utf8Message, utf8MessageBufSize));
+    }
+
     
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="message"></param>
-    public static void Log(string message) => SDL_Log(message);
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial void SDL_LogCritical(LogCategory category, byte* message);
+    public static unsafe void LogCritical(LogCategory category, string message)
+    {
+        var utf8MessageBufSize = UTF8Size(message);
+        var utf8Message = stackalloc byte[utf8MessageBufSize];
+        SDL_LogCritical(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
+    }
 
-
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial void SDL_LogDebug(LogCategory category, byte* message);
+    public static unsafe void LogDebug(LogCategory category, string message)
+    {
+        var utf8MessageBufSize = UTF8Size(message);
+        var utf8Message = stackalloc byte[utf8MessageBufSize];
+        SDL_LogDebug(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
+    }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial void SDL_LogError(LogCategory category, byte* message);
+    public static unsafe void LogError(LogCategory category, string message)
+    {
+        var utf8MessageBufSize = UTF8Size(message);
+        var utf8Message = stackalloc byte[utf8MessageBufSize];
+        SDL_LogError(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
+    }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial void SDL_LogInfo(LogCategory category, byte* message);
+    public static unsafe void LogInfo(LogCategory category, string message)
+    {
+        var utf8MessageBufSize = UTF8Size(message);
+        var utf8Message = stackalloc byte[utf8MessageBufSize];
+        SDL_LogInfo(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
+    }
 }

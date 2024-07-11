@@ -65,9 +65,9 @@ public static partial class SDL
     /// <seealso cref="GetRendererName"/>
     public static unsafe Render CreateRenderer(Window window, string? name)
     {
-        var utf8TitleBufSize = Utf8Size(name);
+        var utf8TitleBufSize = UTF8Size(name);
         var utf8Title = stackalloc byte[utf8TitleBufSize];
-        return SDL_CreateRenderer(window, Utf8Encode(name, utf8Title, utf8TitleBufSize));
+        return SDL_CreateRenderer(window, UTF8Encode(name, utf8Title, utf8TitleBufSize));
     }
 
 
@@ -177,7 +177,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public static string? GetRenderDriver(int index) => UTF8_ToManaged(SDL_GetRenderDriver(index));
+    public static string? GetRenderDriver(int index) => UTF8ToManaged(SDL_GetRenderDriver(index));
     
     
     [LibraryImport(SDLLibrary)]

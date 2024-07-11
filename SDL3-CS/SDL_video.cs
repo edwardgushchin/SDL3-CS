@@ -235,9 +235,9 @@ public static partial class SDL
     /// <seealso cref="DestroyWindow"/>
     public static unsafe Window CreateWindow(string title, int w, int h, WindowFlags flags)
     { 
-        var utf8StrBufSize = Utf8Size(title); 
+        var utf8StrBufSize = UTF8Size(title); 
         var utf8Str = stackalloc byte[utf8StrBufSize];
-        return SDL_CreateWindow(Utf8Encode(title, utf8Str, utf8StrBufSize), w, h, flags);
+        return SDL_CreateWindow(UTF8Encode(title, utf8Str, utf8StrBufSize), w, h, flags);
     }
     
     

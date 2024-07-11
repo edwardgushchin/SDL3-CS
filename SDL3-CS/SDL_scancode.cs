@@ -30,17 +30,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// The SDL keyboard scancode representation.
-    /// </summary>
-    /// <remarks>
-    /// An SDL scancode is the physical representation of a key on the keyboard,
-    /// independent of language and keyboard mapping.
-    /// Values of this type are used to represent keyboard keys,
-    /// among other places in the scancode field of the <see cref="KeyboardEvent"/> structure.
-    /// The values in this enumeration are based on the USB usage
-    /// page standard: https://usb.org/sites/default/files/hut1_5.pdf
-    /// </remarks>
     public enum Scancode
     {
         Unknown             = 0,

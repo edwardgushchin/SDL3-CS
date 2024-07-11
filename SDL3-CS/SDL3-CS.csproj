@@ -8,13 +8,16 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet">
         <Version>0.0.1-preview</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
+        <Company>Eduard Gushchin</Company>
         <Description>This is SDL3#, a C# wrapper for SDL3.</Description>
         <Copyright>Copyright (c) 2024 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
-        <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
@@ -22,27 +25,79 @@
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>x64</PlatformTarget>
-    </PropertyGroup>
-
     <ItemGroup>
-      <None Update="icon.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\SDL3.dll">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/SDL3.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-arm64\SDL3.dll">
+            <PackagePath>runtimes/win-arm64/native</PackagePath>
+            <TargetPath>runtimes/win-arm64/native/SDL3.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\SDL3.dll">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/SDL3.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\osx-x64\libSDL3.dylib">
+            <PackagePath>runtimes/osx-x64/native</PackagePath>
+            <TargetPath>runtimes/osx-x64/native/libSDL3.dylib</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\osx-arm64\libSDL3.dylib">
+            <PackagePath>runtimes/osx-arm64/native</PackagePath>
+            <TargetPath>runtimes/osx-arm64/native/libSDL3.dylib</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-x64\libSDL3.so">
+            <PackagePath>runtimes/linux-x64/native</PackagePath>
+            <TargetPath>runtimes/linux-x64/native/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-x86\libSDL3.so">
+            <PackagePath>runtimes/linux-x86/native</PackagePath>
+            <TargetPath>runtimes/linux-x86/native/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-arm64\libSDL3.so">
+            <PackagePath>runtimes/linux-arm64/native</PackagePath>
+            <TargetPath>runtimes/linux-arm64/native/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-arm\libSDL3.so">
+            <PackagePath>runtimes/linux-arm/native</PackagePath>
+            <TargetPath>runtimes/linux-arm/native/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
+      <None Include="../icon.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="native\win-x64\SDL3.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <PackagePath>runtimes/win-x64/native</PackagePath>
-        <Pack>true</Pack>
-      </None>
-    </ItemGroup>
+    <!-- <ItemGroup>
+        <None Include="./native/win-x64/SDL3.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
+        <None Include="./native/win-x86/SDL3.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
+    </ItemGroup> -->
 
 </Project>

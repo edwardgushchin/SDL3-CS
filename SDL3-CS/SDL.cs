@@ -26,6 +26,7 @@
  */
 #endregion
 
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -33,8 +34,65 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    private const string SDLLibrary = "SDL3.dll";
+    private const string SDLLibrary = "SDL3";
 
+    static SDL()
+    {
+        NativeLibrary.SetDllImportResolver(typeof(SDL).Assembly, ImportResolver);
+    }
+    
+    private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+    {
+        IntPtr libHandle = IntPtr.Zero;
+        var runtimes = "runtimes";
+        var native = "native";
+        var winLib = "SDL3.DLL";
+        var linLib = "libSDL3.so";
+        var osxLib = "libSDL3.dylib";
+            
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            string arch = RuntimeInformation.OSArchitecture switch
+            {
+                Architecture.X64 => "win-x64",
+                Architecture.X86 => "win-x86",
+                Architecture.Arm64 => "win-arm64",
+                _ => ""
+            };
+
+            var handlePath = Path.Combine(runtimes, arch, native, winLib);
+            libHandle = NativeLibrary.Load(handlePath);
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            string arch = RuntimeInformation.OSArchitecture switch
+            {
+                Architecture.X64 => "linux-x64",
+                Architecture.X86 => "linux-x86",
+                Architecture.Arm64 => "linux-arm64",
+                Architecture.Arm => "linux-arm",
+                _ => ""
+            };
+
+            var handlePath = Path.Combine(runtimes, arch, native, linLib);
+            libHandle = NativeLibrary.Load(handlePath);
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            string arch = RuntimeInformation.OSArchitecture switch
+            {
+                Architecture.X64 => "osx-x64",
+                Architecture.Arm64 => "osx-arm64",
+                _ => ""
+            };
+
+            var handlePath = Path.Combine(runtimes, arch, native, osxLib);
+            libHandle = NativeLibrary.Load(handlePath);
+        }
+        return libHandle;
+    }
+
+    
     /// <summary>
     /// Calculates the maximum possible size in bytes of a given string when encoded in UTF-8.
     /// </summary>
@@ -43,12 +101,13 @@ public static partial class SDL
     /// <remarks>
     /// The calculation is based on the assumption that each character can take up to 4 bytes in UTF-8 encoding, plus an additional byte for the null terminator.
     /// </remarks>
-    private static int Utf8Size(string? str)
+    private static int UTF8Size(string? str)
     {
         if (str == null) return 0;
         return str.Length * 4 + 1;
     }
 
+    
     /// <summary>
     /// Encodes a given string into UTF-8 and stores the result in the provided buffer.
     /// </summary>
@@ -59,7 +118,7 @@ public static partial class SDL
     /// <remarks>
     /// This function uses unsafe code to handle pointers and perform the encoding. It assumes that the provided buffer is large enough to hold the encoded string.
     /// </remarks>
-    private static unsafe byte* Utf8Encode(string? str, byte* buffer, int bufferSize)
+    private static unsafe byte* UTF8Encode(string? str, byte* buffer, int bufferSize)
     {
         if (str == null) return (byte*) 0;
         fixed (char* strPtr = str)
@@ -69,6 +128,7 @@ public static partial class SDL
         return buffer;
     }
 
+    
     /// <summary>
     /// Converts a UTF-8 encoded string from an unmanaged memory pointer to a managed string.
     /// </summary>
@@ -79,7 +139,7 @@ public static partial class SDL
     /// This function reads a UTF-8 encoded string from unmanaged memory, converts it to a managed string, 
     /// and optionally frees the unmanaged memory if <paramref name="freePtr"/> is true.
     /// </remarks>
-    private static unsafe string? UTF8_ToManaged(IntPtr s, bool freePtr = false)
+    private static unsafe string? UTF8ToManaged(IntPtr s, bool freePtr = false)
     {
         if (s == IntPtr.Zero) return null;
         
@@ -88,15 +148,17 @@ public static partial class SDL
         
         var result = Encoding.UTF8.GetString((byte*) s, (int) (ptr - (byte*) s));
         
-        if (freePtr) SDL_free(s);
+        if (freePtr) Free(s);
         return result;
     }
+    
     
     [StructLayout(LayoutKind.Sequential)]
     public struct Window
     {
         public IntPtr Handle;
     }
+    
     
     [StructLayout(LayoutKind.Sequential)]
     public struct Render

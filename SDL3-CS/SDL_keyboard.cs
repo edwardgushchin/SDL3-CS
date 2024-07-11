@@ -33,47 +33,41 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [Flags]
-    public enum InitFlags : uint
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasKeyboard();
+    public static bool HasKeyboard() => SDL_HasKeyboard();
+    
+
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetKeyboards(out int count);
+    public static int GetKeyboards(out int count) => SDL_GetKeyboards(out count);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetKeyboardInstanceName(int instanceId);
+    public static string? GetKeyboardInstanceName(int instanceId) =>
+        UTF8ToManaged(SDL_GetKeyboardInstanceName(instanceId));
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Window SDL_GetKeyboardFocus();
+    public static Window GetKeyboardFocus() => SDL_GetKeyboardFocus();
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr  SDL_GetKeyboardState(out int numkeys);
+
+    public static byte[] GetKeyboardState(out int numkeys)
     {
-        Timer =     0x00000001u,
-        Audio =     0x00000010u,
-        Video =     0x00000020u,
-        Joystick =  0x00000200u,
-        Haptic =    0x00001000u,
-        Gamepad =   0x00002000u,
-        Events =    0x00004000u,
-        Sensor =    0x00008000u,
-        Camera =    0x00010000u,
+        var pArray = SDL_GetKeyboardState(out numkeys);
+        var keyboardState = new byte[numkeys];
+        Marshal.Copy(pArray, keyboardState, 0, numkeys);
+        return keyboardState;
     }
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_Init(InitFlags flags);
-    public static int Init(InitFlags flags) => SDL_Init(flags);
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_InitSubSystem(InitFlags flags);
-    public static int InitSubSystem(InitFlags flags) => SDL_InitSubSystem(flags);
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Quit();
-    public static void Quit() => SDL_Quit();
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_QuitSubSystem();
-    public static void QuitSubSystem() => SDL_QuitSubSystem();
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial InitFlags SDL_WasInit(InitFlags flags);
-    public static void WasInit(InitFlags flags) => SDL_WasInit(flags);
 }

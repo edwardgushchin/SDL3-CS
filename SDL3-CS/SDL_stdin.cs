@@ -30,9 +30,9 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
-public static partial class SDL
+public partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free")]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
-    private static partial void SDL_free(IntPtr memblock);
+    private static partial void Free(IntPtr memblock);
 }

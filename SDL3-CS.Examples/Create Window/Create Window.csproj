@@ -3,16 +3,13 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Create_Window</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>SDL3Test</RootNamespace>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="SDL3-CS">
-        <HintPath>..\..\SDL3-CS\bin\Release\net8.0\SDL3-CS.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
     </ItemGroup>
 
 </Project>
