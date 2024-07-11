@@ -2,5 +2,4 @@
 bin/
 obj/
 runtimes/
-SDL3.dll
 icon.png
