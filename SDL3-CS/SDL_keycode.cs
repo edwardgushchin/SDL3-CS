@@ -296,6 +296,7 @@ public static partial class SDL
     /// <summary>
     /// Valid key modifiers (possibly OR'd together).
     /// </summary>
+    [Flags]
     public enum Keymod : uint
     { 
         /// <summary>
