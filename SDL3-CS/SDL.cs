@@ -132,11 +132,51 @@ public static partial class SDL
     public readonly struct Window(IntPtr handle)
     {
         public IntPtr Handle { get; } = handle;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Window other && Handle == other.Handle;
+        }
+
+        public override int GetHashCode()
+        {
+            return Handle.GetHashCode();
+        }
+        
+        public static bool operator ==(Window left, Window right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Window left, Window right)
+        {
+            return !(left == right);
+        }
     }
     
     
     public readonly struct Render(IntPtr handle)
     {
         public IntPtr Handle { get; } = handle;
+        
+        public override bool Equals(object? obj)
+        {
+            return obj is Render other && Handle == other.Handle;
+        }
+
+        public override int GetHashCode()
+        {
+            return Handle.GetHashCode();
+        }
+        
+        public static bool operator ==(Render left, Render right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Render left, Render right)
+        {
+            return !(left == right);
+        }
     }
 }
