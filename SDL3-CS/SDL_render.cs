@@ -35,44 +35,44 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial Render SDL_CreateRenderer(Window window,  byte* name);
+    private static unsafe partial IntPtr SDL_CreateRenderer(IntPtr window,  byte* name);
     public static unsafe Render CreateRenderer(Window window, string? name)
     {
         var utf8TitleBufSize = UTF8Size(name);
         var utf8Title = stackalloc byte[utf8TitleBufSize];
-        return SDL_CreateRenderer(window, UTF8Encode(name, utf8Title, utf8TitleBufSize));
+        return new Render(SDL_CreateRenderer(window.Handle, UTF8Encode(name, utf8Title, utf8TitleBufSize)));
     }
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetRenderDrawColor(Render renderer, byte r, byte g, byte b, byte a);
+    private static partial void SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
     public static void SetRenderDrawColor(Render renderer, byte r, byte g, byte b, byte a) =>
-        SDL_SetRenderDrawColor(renderer, r, g, b, a);
+        SDL_SetRenderDrawColor(renderer.Handle, r, g, b, a);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenderClear(Render renderer);
-    public static int RenderClear(Render renderer) => SDL_RenderClear(renderer);
+    private static partial int SDL_RenderClear(IntPtr renderer);
+    public static int RenderClear(Render renderer) => SDL_RenderClear(renderer.Handle);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenderPresent(Render renderer);
-    public static int RenderPresent(Render renderer) => SDL_RenderPresent(renderer);
+    private static partial int SDL_RenderPresent(IntPtr renderer);
+    public static int RenderPresent(Render renderer) => SDL_RenderPresent(renderer.Handle);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyRenderer(Render renderer);
-    public static void DestroyRenderer(Render renderer) => SDL_DestroyRenderer(renderer);
+    private static partial void SDL_DestroyRenderer(IntPtr renderer);
+    public static void DestroyRenderer(Render renderer) => SDL_DestroyRenderer(renderer.Handle);
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetRenderDriver(int index);
-    public static string? GetRenderDriver(int index) => UTF8ToManaged(SDL_GetRenderDriver(index));
+    public static string? GetRenderDriver(int index) => Marshal.PtrToStringUTF8(SDL_GetRenderDriver(index));
     
     
     [LibraryImport(SDLLibrary)]

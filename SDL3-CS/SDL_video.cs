@@ -65,17 +65,17 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)]) ]
-    private static unsafe partial Window SDL_CreateWindow(byte* title, int w, int h, WindowFlags flags);
+    private static unsafe partial IntPtr SDL_CreateWindow(byte* title, int w, int h, WindowFlags flags);
     public static unsafe Window CreateWindow(string title, int w, int h, WindowFlags flags)
     { 
         var utf8StrBufSize = UTF8Size(title); 
         var utf8Str = stackalloc byte[utf8StrBufSize];
-        return SDL_CreateWindow(UTF8Encode(title, utf8Str, utf8StrBufSize), w, h, flags);
+        return new Window( SDL_CreateWindow(UTF8Encode(title, utf8Str, utf8StrBufSize), w, h, flags));
     }
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyWindow(Window window);
-    public static void DestroyWindow(Window window) => SDL_DestroyWindow(window);
+    private static partial void SDL_DestroyWindow(IntPtr window);
+    public static void DestroyWindow(Window window) => SDL_DestroyWindow(window.Handle);
 }

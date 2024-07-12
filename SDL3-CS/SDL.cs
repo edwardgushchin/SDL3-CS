@@ -127,42 +127,16 @@ public static partial class SDL
         }
         return buffer;
     }
-
     
-    /// <summary>
-    /// Converts a UTF-8 encoded string from an unmanaged memory pointer to a managed string.
-    /// </summary>
-    /// <param name="s">A pointer to the UTF-8 encoded string in unmanaged memory.</param>
-    /// <param name="freePtr">If set to true, the memory pointed to by <paramref name="s"/> will be freed after conversion.</param>
-    /// <returns>A managed string that represents the UTF-8 encoded string. If the input pointer is zero, returns null.</returns>
-    /// <remarks>
-    /// This function reads a UTF-8 encoded string from unmanaged memory, converts it to a managed string, 
-    /// and optionally frees the unmanaged memory if <paramref name="freePtr"/> is true.
-    /// </remarks>
-    private static unsafe string? UTF8ToManaged(IntPtr s, bool freePtr = false)
+    
+    public readonly struct Window(IntPtr handle)
     {
-        if (s == IntPtr.Zero) return null;
-        
-        var ptr = (byte*) s;
-        while (*ptr != 0) ptr++;
-        
-        var result = Encoding.UTF8.GetString((byte*) s, (int) (ptr - (byte*) s));
-        
-        if (freePtr) Free(s);
-        return result;
+        public IntPtr Handle { get; } = handle;
     }
     
     
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Window
+    public readonly struct Render(IntPtr handle)
     {
-        public IntPtr Handle;
-    }
-    
-    
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Render
-    {
-        public IntPtr Handle;
+        public IntPtr Handle { get; } = handle;
     }
 }
