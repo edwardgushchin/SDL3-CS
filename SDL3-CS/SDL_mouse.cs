@@ -26,17 +26,40 @@
  */
 #endregion
 
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
 namespace SDL3;
 
 public static partial class SDL
 {
-    public enum MouseButtonFlags : uint
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Cursor { }
+    
+    
+    public enum SystemCursor
     {
-        Left     = 1,
-        Middle   = 2,
-        Right    = 3,
-        X1       = 4,
-        X2       = 5,
+        Default,      /**< Default cursor. Usually an arrow. */
+        Text,         /**< Text selection. Usually an I-beam. */
+        Wait,         /**< Wait. Usually an hourglass or watch or spinning ball. */
+        Crosshair,    /**< Crosshair. */
+        Progress,     /**< Program is busy but still interactive. Usually it's WAIT with an arrow. */
+        NWSEResize,  /**< Double arrow pointing northwest and southeast. */
+        NESWResize,  /**< Double arrow pointing northeast and southwest. */
+        EWResize,    /**< Double arrow pointing west and east. */
+        NSResize,    /**< Double arrow pointing north and south. */
+        Move,         /**< Four pointed arrow pointing north, south, east, and west. */
+        NotAllowed,  /**< Not permitted. Usually a slashed circle or crossbones. */
+        Pointer,      /**< Pointer that indicates a link. Usually a pointing hand. */
+        NWResize,    /**< Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE. */
+        NResize,     /**< Window resize top. May be NS_RESIZE. */
+        NEResize,    /**< Window resize top-right. May be NESW_RESIZE. */
+        EResize,     /**< Window resize right. May be EW_RESIZE. */
+        SEResize,    /**< Window resize bottom-right. May be NWSE_RESIZE. */
+        SResize,     /**< Window resize bottom. May be NS_RESIZE. */
+        SWResize,    /**< Window resize bottom-left. May be NESW_RESIZE. */
+        WResize,     /**< Window resize left. May be EW_RESIZE. */
+        NumSystemCursors
     }
     
     
@@ -47,7 +70,17 @@ public static partial class SDL
     }
     
     
-    public static uint Button(uint x)
+    public enum MouseButtonFlags : uint
+    {
+        Left     = 1,
+        Middle   = 2,
+        Right    = 3,
+        X1       = 4,
+        X2       = 5,
+    }
+    
+    
+    private static uint Button(uint x)
     {
         return 1u << ((int)x - 1);
     }
@@ -57,4 +90,33 @@ public static partial class SDL
     public static readonly uint ButtonRMask = Button((uint)MouseButtonFlags.Right);
     public static readonly uint ButtonX1Mask = Button((uint)MouseButtonFlags.X1);
     public static readonly uint ButtonX2Mask = Button((uint)MouseButtonFlags.X2);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasMouse();
+    public static bool HasMouse() => SDL_HasMouse();
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetMice(out int count);
+
+    public static uint[] GetMice(out int cout)
+    {
+        var pArray = SDL_GetMice(out cout);
+        var miceArray = new int[cout];
+        Marshal.Copy(pArray, miceArray, 0, cout);
+        Free(pArray);
+        return Array.ConvertAll(miceArray, item => (uint)item);
+    }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetMouseInstanceName(uint instanceId);
+    public static string? GetMouseInstanceName(uint instanceId) =>
+        Marshal.PtrToStringAnsi(SDL_GetMouseInstanceName(instanceId));
+
 }
