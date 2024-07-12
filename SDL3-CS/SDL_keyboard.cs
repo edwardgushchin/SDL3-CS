@@ -56,15 +56,15 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetKeyboardInstanceName(int instanceId);
-    public static string? GetKeyboardInstanceName(int instanceId) =>
-        UTF8ToManaged(SDL_GetKeyboardInstanceName(instanceId));
+    private static partial IntPtr SDL_GetKeyboardInstanceName(uint instanceId);
+    public static string? GetKeyboardInstanceName(uint instanceId) =>
+        Marshal.PtrToStringAnsi(SDL_GetKeyboardInstanceName(instanceId));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Window SDL_GetKeyboardFocus();
-    public static Window GetKeyboardFocus() => SDL_GetKeyboardFocus();
+    private static partial IntPtr SDL_GetKeyboardFocus();
+    public static Window GetKeyboardFocus() => new(SDL_GetKeyboardFocus());
     
     
     [LibraryImport(SDLLibrary)]
@@ -139,7 +139,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetScancodeName(Scancode scancode);
-    public static string? GetScancodeName(Scancode scancode) => UTF8ToManaged(SDL_GetScancodeName(scancode));
+    public static string? GetScancodeName(Scancode scancode) => Marshal.PtrToStringUTF8(SDL_GetScancodeName(scancode));
     
     
     [LibraryImport(SDLLibrary)]
@@ -156,7 +156,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyName(Keycode key);
-    public static string? GetKeyName(Keycode key) => UTF8ToManaged(SDL_GetKeyName(key));
+    public static string? GetKeyName(Keycode key) => Marshal.PtrToStringUTF8(SDL_GetKeyName(key));
     
     
     [LibraryImport(SDLLibrary)]
@@ -172,42 +172,42 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_StartTextInput(Window window);
-    public static int StartTextInput(Window window) => SDL_StartTextInput(window);
+    private static partial int SDL_StartTextInput(IntPtr window);
+    public static int StartTextInput(Window window) => SDL_StartTextInput(window.Handle);
 
     
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_TextInputActive(Window window);
-    public static bool TextInputActive(Window window) => SDL_TextInputActive(window);
+    private static partial bool SDL_TextInputActive(IntPtr window);
+    public static bool TextInputActive(Window window) => SDL_TextInputActive(window.Handle);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_StopTextInput(Window window);
-    public static int StopTextInput(Window window) => SDL_StopTextInput(window);
+    private static partial int SDL_StopTextInput(IntPtr window);
+    public static int StopTextInput(Window window) => SDL_StopTextInput(window.Handle);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ClearComposition(Window window);
-    public static int ClearComposition(Window window) => SDL_ClearComposition(window);
+    private static partial int SDL_ClearComposition(IntPtr window);
+    public static int ClearComposition(Window window) => SDL_ClearComposition(window.Handle);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetTextInputArea(Window window, ref Rect rect, int cursor);
+    private static partial int SDL_SetTextInputArea(IntPtr window, ref Rect rect, int cursor);
     public static int SetTextInputArea(Window window, ref Rect rect, int cursor) => 
-        SDL_SetTextInputArea(window, ref rect, cursor);
+        SDL_SetTextInputArea(window.Handle, ref rect, cursor);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetTextInputArea(Window window, out Rect rect, out int cursor);
+    private static partial int SDL_GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
     public static int GetTextInputArea(Window window, out Rect rect, out int cursor) => 
-        SDL_GetTextInputArea(window, out rect, out cursor);
+        SDL_GetTextInputArea(window.Handle, out rect, out cursor);
     
     
     [LibraryImport(SDLLibrary)]

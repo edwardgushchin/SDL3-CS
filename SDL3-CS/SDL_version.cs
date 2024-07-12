@@ -79,7 +79,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetRevision();
-    public static string? GetRevision() => UTF8ToManaged(SDL_GetRevision());
+    public static string? GetRevision() => Marshal.PtrToStringUTF8(SDL_GetRevision());
     
     
     [LibraryImport(SDLLibrary)]

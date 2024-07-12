@@ -216,8 +216,8 @@ public static partial class SDL
         public float Y;
         private IntPtr source;
         private IntPtr data;
-        public string Source => UTF8ToManaged(source)!;
-        public string Data => UTF8ToManaged(data)!;
+        public string Source => Marshal.PtrToStringUTF8(source)!;
+        public string Data => Marshal.PtrToStringUTF8(data)!;
     }
 
     

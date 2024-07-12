@@ -272,7 +272,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetHint(string name);
-    public static string? GetHint(string name) => UTF8ToManaged(SDL_GetHint(name));
+    public static string? GetHint(string name) => Marshal.PtrToStringUTF8(SDL_GetHint(name));
 
 
     [LibraryImport(SDLLibrary)]
