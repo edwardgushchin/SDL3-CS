@@ -105,7 +105,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="SDL\" />
       <Folder Include="SDL_image\" />
       <Folder Include="SDL_mixer\" />
       <Folder Include="SDL_ttf\" />
