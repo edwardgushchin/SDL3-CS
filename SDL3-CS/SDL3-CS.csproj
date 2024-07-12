@@ -104,6 +104,13 @@
       <None Include="../icon.png" Pack="true" Visible="false" PackagePath="\"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="SDL\" />
+      <Folder Include="SDL_image\" />
+      <Folder Include="SDL_mixer\" />
+      <Folder Include="SDL_ttf\" />
+    </ItemGroup>
+
     <!-- <ItemGroup>
         <None Include="./native/win-x64/SDL3.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
         <None Include="./native/win-x86/SDL3.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
