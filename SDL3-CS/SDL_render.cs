@@ -71,7 +71,7 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial IntPtr SDL_GetRenderDriver(int index);
+    private static partial IntPtr SDL_GetRenderDriver(int index);
     public static string? GetRenderDriver(int index) => UTF8ToManaged(SDL_GetRenderDriver(index));
     
     

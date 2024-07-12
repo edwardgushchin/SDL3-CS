@@ -262,16 +262,16 @@ public static partial class SDL
     
     
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct GamepadSensorEvent
+    public struct GamepadSensorEvent
     {
         public EventType Type;
         public UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public Int32 Sensor;
-        private fixed float data[3];
+        private unsafe fixed float data[3];
         public UInt64 SensorTimestamp;
-        public float[] Data
+        public unsafe float[] Data
         {
             get
             {
@@ -645,7 +645,7 @@ public static partial class SDL
     
     
     [StructLayout(LayoutKind.Explicit)]
-    public unsafe struct Event
+    public struct Event
     {
         [FieldOffset(0)]
         public EventType Type;
@@ -753,7 +753,7 @@ public static partial class SDL
         public ClipboardEvent Clipboard;
 
         [FieldOffset(0)]
-        private fixed byte Padding[128];
+        private unsafe fixed byte Padding[128];
     }
     
     
