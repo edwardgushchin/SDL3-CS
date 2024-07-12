@@ -252,7 +252,7 @@ public static partial class SDL
         RCtrl               = 0x400000e4u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RCTRL) */
         RShift              = 0x400000e5u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RSHIFT) */
         RAlt                = 0x400000e6u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RALT) */
-        RGui                = 0x400000e7u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RGUI) */
+        RGUI                = 0x400000e7u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RGUI) */
         Mode                = 0x40000101u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MODE) */
         Sleep               = 0x40000102u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SLEEP) */
         Wake                = 0x40000103u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_WAKE) */
