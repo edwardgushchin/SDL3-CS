@@ -42,8 +42,16 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetKeyboards(out int count);
-    public static int GetKeyboards(out int count) => SDL_GetKeyboards(out count);
+    private static partial IntPtr SDL_GetKeyboards(out int count);
+
+    public static uint[] GetKeyboards(out int count)
+    {
+        var pArray = SDL_GetMice(out count);
+        var keyboardArray = new int[count];
+        Marshal.Copy(pArray, keyboardArray, 0, count);
+        Free(pArray);
+        return Array.ConvertAll(keyboardArray, item => (uint)item);
+    }
     
     
     [LibraryImport(SDLLibrary)]
