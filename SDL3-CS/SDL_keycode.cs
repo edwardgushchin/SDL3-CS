@@ -36,9 +36,6 @@ public static partial class SDL
     }
     
     
-    /// <summary>
-    /// The SDL virtual key representation.
-    /// </summary>
     public enum Keycode : uint
     {
         Unknown             = 0x00000000u, /* 0 */
@@ -293,95 +290,25 @@ public static partial class SDL
     }
 
     
-    /// <summary>
-    /// Valid key modifiers (possibly OR'd together).
-    /// </summary>
     [Flags]
     public enum Keymod : uint
     { 
-        /// <summary>
-        /// no modifier is applicable.
-        /// </summary>
         None   = 0x0000u,
-        
-        /// <summary>
-        /// the left Shift key is down.
-        /// </summary>
         LShift = 0x0001u,
-        
-        /// <summary>
-        /// the right Shift key is down.
-        /// </summary>
         RShift = 0x0002u,
-        
-        /// <summary>
-        /// the left Ctrl (Control) key is down.
-        /// </summary>
         LCtrl  = 0x0040u,
-        
-        /// <summary>
-        /// the right Ctrl (Control) key is down.
-        /// </summary>
         RCtrl  = 0x0080u,
-        
-        /// <summary>
-        /// the left Alt key is down.
-        /// </summary>
         LAlt   = 0x0100u,
-        
-        /// <summary>
-        /// the right Alt key is down.
-        /// </summary>
         RAlt   = 0x0200u,
-        
-        /// <summary>
-        /// the left GUI key (often the Windows key) is down.
-        /// </summary>
-        LGui   = 0x0400u,
-        
-        /// <summary>
-        /// the right GUI key (often the Windows key) is down.
-        /// </summary>
-        RGui   = 0x0800u,
-        
-        /// <summary>
-        /// the Num Lock key (may be located on an extended keypad) is down.
-        /// </summary>
+        LGUI   = 0x0400u,
+        RGUI   = 0x0800u,
         Num    = 0x1000u,
-        
-        /// <summary>
-        /// the Caps Lock key is down.
-        /// </summary>
         Caps   = 0x2000u,
-        
-        /// <summary>
-        /// the !AltGr key is down.
-        /// </summary>
         Mode   = 0x4000u,
-        
-        /// <summary>
-        /// the Scroll Lock key is down.
-        /// </summary>
         Scroll = 0x8000u,
-        
-        /// <summary>
-        /// Any Ctrl key is down.
-        /// </summary>
         Ctrl   = LCtrl | RCtrl,
-
-        /// <summary>
-        ///  Any Shift key is down.
-        /// </summary>
         Shift  = LShift | RShift,
-        
-        /// <summary>
-        /// Any Alt key is down.
-        /// </summary>
         Alt    = LAlt | RAlt,
-        
-        /// <summary>
-        /// Any GUI key is down.
-        /// </summary>
-        Gui    = LGui | RGui
+        Gui    = LGUI | RGUI
     }
 }

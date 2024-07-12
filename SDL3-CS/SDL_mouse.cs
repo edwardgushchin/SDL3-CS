@@ -34,37 +34,19 @@ public static partial class SDL
     {
         Left     = 1,
         Middle   = 2,
-        Right    = 4,
-        X1       = 3,
+        Right    = 3,
+        X1       = 4,
         X2       = 5,
     }
     
-    /// <summary>
-    /// Scroll direction types for the Scroll event
-    /// </summary>
+    
     public enum MouseWheelDirection
     {
-        /// <summary>
-        /// The scroll direction is normal
-        /// </summary>
         Normal,
-        
-        /// <summary>
-        /// The scroll direction is flipped / natural
-        /// </summary>
         Flipped
     }
     
-    /// <summary>
-    /// Used as a mask when testing buttons in buttonstate.
-    /// </summary>
-    /// <remarks>
-    /// <para>Button 1: Left mouse button</para>
-    /// <para>Button 2: Middle mouse button</para>
-    /// <para>Button 3: Right mouse button</para>
-    /// <para>Button 4: Side mouse button 1</para>
-    /// <para>Button 5: Side mouse button 2</para>
-    /// </remarks>
+    
     public static uint Button(uint x)
     {
         return 1u << ((int)x - 1);
