@@ -156,7 +156,7 @@ public static partial class SDL
     public struct AudioDeviceEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public byte Recording;
@@ -170,7 +170,7 @@ public static partial class SDL
     public struct CameraDeviceEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
     }
@@ -180,7 +180,7 @@ public static partial class SDL
     public struct ClipboardEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
     }
     
@@ -189,7 +189,7 @@ public static partial class SDL
     public struct CommonEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
     }
     
@@ -198,7 +198,7 @@ public static partial class SDL
     public struct DisplayEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 DisplayID;
         public Int32 Data1;
@@ -209,7 +209,7 @@ public static partial class SDL
     public struct DropEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public float X;
@@ -225,15 +225,15 @@ public static partial class SDL
     public struct GamepadAxisEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public byte Axis;
-        public byte Padding1;
-        public byte Padding2;
-        public byte Padding3;
+        private byte Padding1;
+        private byte Padding2;
+        private byte Padding3;
         public Int16 Value;
-        public UInt16 Padding4;
+        private UInt16 Padding4;
     }
 
     
@@ -241,13 +241,13 @@ public static partial class SDL
     public struct GamepadButtonEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public GamepadButton Button;
         public Keystate State;
-        public byte Padding1;
-        public byte Padding2;
+        private byte Padding1;
+        private byte Padding2;
     }
     
     
@@ -255,7 +255,7 @@ public static partial class SDL
     public struct GamepadDeviceEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
     }
@@ -265,7 +265,7 @@ public static partial class SDL
     public struct GamepadSensorEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public Int32 Sensor;
@@ -290,7 +290,7 @@ public static partial class SDL
     public struct GamepadTouchpadEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public Int32 Touchpad;
@@ -305,15 +305,15 @@ public static partial class SDL
     public struct JoyAxisEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public byte Axis; 
-        public byte Padding1;
-        public byte Padding2;
-        public byte Padding3;
+        private byte Padding1;
+        private byte Padding2;
+        private byte Padding3;
         public Int16 Value;
-        public UInt16 Padding4;
+        private UInt16 Padding4;
     }
     
     
@@ -321,13 +321,13 @@ public static partial class SDL
     public struct JoyBallEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which; 
         public byte Ball;
-        public byte Padding1;
-        public byte Padding2;
-        public byte Padding3;
+        private byte Padding1;
+        private byte Padding2;
+        private byte Padding3;
         public Int16 XRel;
         public Int16 YRel;
     }
@@ -337,7 +337,7 @@ public static partial class SDL
     public struct JoyBatteryEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp; 
         public UInt32 Which;
         public PowerState State;
@@ -349,13 +349,13 @@ public static partial class SDL
     public struct JoyButtonEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which; 
         public byte Button;
         public Keystate State;
-        public byte Padding1;
-        public byte Padding2;
+        private byte Padding1;
+        private byte Padding2;
     }
     
     
@@ -363,7 +363,7 @@ public static partial class SDL
     public struct JoyDeviceEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
     }
@@ -373,13 +373,13 @@ public static partial class SDL
     public struct JoyHatEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public byte Hat;
         public JoystickHat Value;
-        public byte Padding1;
-        public byte Padding2;
+        private byte Padding1;
+        private byte Padding2;
     }
     
     
@@ -387,7 +387,7 @@ public static partial class SDL
     public struct KeyboardDeviceEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
     }
@@ -397,7 +397,7 @@ public static partial class SDL
     public struct KeyboardEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
@@ -414,14 +414,14 @@ public static partial class SDL
     public struct MouseButtonEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
         public byte Button; 
         public Keystate State;
         public byte Clicks;
-        public byte Padding;
+        private byte Padding;
         public float X;
         public float Y;
     }
@@ -431,7 +431,7 @@ public static partial class SDL
     public struct MouseDeviceEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
     }
@@ -441,7 +441,7 @@ public static partial class SDL
     public struct MouseMotionEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
@@ -457,7 +457,7 @@ public static partial class SDL
     public struct MouseWheelEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
@@ -473,7 +473,7 @@ public static partial class SDL
     public struct PenButtonEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
@@ -502,12 +502,12 @@ public static partial class SDL
     public struct PenMotionEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
-        public byte Padding1;
-        public byte Padding2;
+        private byte Padding1;
+        private byte Padding2;
         public UInt16 PenState;
         public float X;
         public float Y;
@@ -531,7 +531,7 @@ public static partial class SDL
     public struct PenTipEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public UInt32 Which;
@@ -560,7 +560,7 @@ public static partial class SDL
     public struct QuitEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
     }
     
@@ -569,7 +569,7 @@ public static partial class SDL
     public struct SensorEvent
     {
         public EventType Type;
-        public UInt32 reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
         public unsafe fixed float data[6];
@@ -593,7 +593,7 @@ public static partial class SDL
     public struct TextEditingCandidatesEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public IntPtr Candidates;
@@ -636,7 +636,7 @@ public static partial class SDL
     public struct WindowEvent
     {
         public EventType Type;
-        public UInt32 Reserved;
+        private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
         public Int32 Data1;
@@ -644,116 +644,45 @@ public static partial class SDL
     }
     
     
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential, Pack = 0)]
     public struct Event
     {
-        [FieldOffset(0)]
         public EventType Type;
-        
-        [FieldOffset(0)]
         public CommonEvent Common;
-        
-        [FieldOffset(0)]
         public DisplayEvent Display;
-        
-        [FieldOffset(0)]
         public WindowEvent Window;
-        
-        [FieldOffset(0)]
         public KeyboardDeviceEvent KDevice;
-        
-        [FieldOffset(0)]
         public KeyboardEvent Key;
-        
-        [FieldOffset(0)]
         public TextEditingEvent Edit;
-        
-        [FieldOffset(0)]
         public TextEditingCandidatesEvent EditCandidates;
-        
-        [FieldOffset(0)]
         public TextInputEvent Text;
-        
-        [FieldOffset(0)]
         public MouseDeviceEvent MDevice;
-        
-        [FieldOffset(0)]
         public MouseMotionEvent Motion;
-        
-        [FieldOffset(0)]
         public MouseButtonEvent Button;
-        
-        [FieldOffset(0)]
         public MouseWheelEvent Wheel;
-        
-        [FieldOffset(0)]
         public JoyDeviceEvent JDevice;
-        
-        [FieldOffset(0)]
         public JoyAxisEvent JAxis;
-        
-        [FieldOffset(0)]
         public JoyBallEvent JBall;
-        
-        [FieldOffset(0)]
         public JoyHatEvent JHat;
-        
-        [FieldOffset(0)]
         public JoyButtonEvent JButton;
-        
-        [FieldOffset(0)]
         public JoyBatteryEvent JBattery;
-        
-        [FieldOffset(0)]
         public GamepadDeviceEvent GDevice;
-        
-        [FieldOffset(0)]
         public GamepadAxisEvent GAxis;
-        
-        [FieldOffset(0)]
         public GamepadButtonEvent GButton;
-        
-        [FieldOffset(0)]
         public GamepadTouchpadEvent GTouchpad;
-        
-        [FieldOffset(0)]
         public GamepadSensorEvent GSensor;
-        
-        [FieldOffset(0)]
         public AudioDeviceEvent ADevice;
-        
-        [FieldOffset(0)]
         public CameraDeviceEvent CDevice;
-        
-        [FieldOffset(0)]
         public SensorEvent Sensor;
-        
-        [FieldOffset(0)]
         public QuitEvent Quit;
-        
-        [FieldOffset(0)]
         public UserEvent User;
-        
-        [FieldOffset(0)]
         public TouchFingerEvent TFinger;
-        
-        [FieldOffset(0)]
         public PenTipEvent PTip;
-        
-        [FieldOffset(0)]
         public PenMotionEvent PMotion;
-
-        [FieldOffset(0)]
         public PenButtonEvent PButton;
-
-        [FieldOffset(0)]
         public DropEvent Drop;
-
-        [FieldOffset(0)]
         public ClipboardEvent Clipboard;
-
-        [FieldOffset(0)]
-        private unsafe fixed byte Padding[128];
+        private unsafe fixed byte padding[128];
     }
     
     
