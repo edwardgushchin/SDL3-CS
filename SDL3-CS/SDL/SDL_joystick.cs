@@ -186,8 +186,17 @@ public static partial class SDL
 	private static partial IntPtr SDL_GetJoystickFromPlayerIndex(int playerIndex);
 	public static Joystick GetJoystickFromPlayerIndex(int playerIndex) =>
 		new(SDL_GetJoystickFromPlayerIndex(playerIndex));
+	
+	
+	[StructLayout(LayoutKind.Sequential)]
+	public struct VirtualJoystickTouchpadDesc
+	{
+		public UInt16 NFingers;    /**< the number of simultaneous fingers on this touchpad */
+		//private fixed unsafe UInt16 Padding[3];
+		private unsafe fixed UInt16 Padding[3];
+	}
 
-	/*public enum JoystickHat : byte
+	public enum JoystickHat : byte
     {
 	    Centered = 0x00,
 	    Up = 0x01,
@@ -198,5 +207,5 @@ public static partial class SDL
 	    RightDown = Right | Down,
 	    LeftUp = Left | Up,
 	    LeftDown = Left | Down
-    }*/
+    }
 }
