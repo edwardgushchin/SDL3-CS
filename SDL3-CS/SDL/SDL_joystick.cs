@@ -59,6 +59,7 @@ public static partial class SDL
 		}
 	}
 
+	
 	public enum JoystickType
 	{
 		Unknown,
@@ -192,8 +193,21 @@ public static partial class SDL
 	public struct VirtualJoystickTouchpadDesc
 	{
 		public UInt16 NFingers;    /**< the number of simultaneous fingers on this touchpad */
-		//private fixed unsafe UInt16 Padding[3];
 		private unsafe fixed UInt16 Padding[3];
+	}
+	
+	[StructLayout(LayoutKind.Sequential)]
+	public struct VirtualJoystickSensorDesc
+	{
+		public SensorType Type;
+		public float Rate;
+	}
+	
+	
+	[StructLayout(LayoutKind.Sequential)]
+	public struct VirtualJoystickDesc
+	{
+		
 	}
 
 	public enum JoystickHat : byte
