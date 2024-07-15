@@ -92,26 +92,17 @@ public static partial class SDL
     }
     
     
-    public enum MouseButtonFlags : uint
+    //I don't know why, but it is so
+    [Flags]
+    public enum MouseButtonFlags 
     {
+        None     = 0,
         Left     = 1,
         Middle   = 2,
-        Right    = 3,
-        X1       = 4,
-        X2       = 5,
+        Right    = 4,
+        X2       = 8,
+        X1       = 16
     }
-    
-    
-    private static uint Button(uint x)
-    {
-        return 1u << ((int)x - 1);
-    }
-    
-    public static readonly uint ButtonLMask = Button((uint)MouseButtonFlags.Left);
-    public static readonly uint ButtonMMask = Button((uint)MouseButtonFlags.Middle);
-    public static readonly uint ButtonRMask = Button((uint)MouseButtonFlags.Right);
-    public static readonly uint ButtonX1Mask = Button((uint)MouseButtonFlags.X1);
-    public static readonly uint ButtonX2Mask = Button((uint)MouseButtonFlags.X2);
     
     
     [LibraryImport(SDLLibrary)]
