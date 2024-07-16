@@ -33,7 +33,8 @@ namespace SDL3;
 public static partial class SDL
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct GUID {
+    public struct GUID 
+    {
         private unsafe fixed byte data[16];
         
         public unsafe float[] Data
@@ -42,8 +43,8 @@ public static partial class SDL
             {
                 fixed (byte* ptr = data)
                 {
-                    var array = new float[3];
-                    Marshal.Copy((IntPtr)ptr, array, 0, 3);
+                    var array = new float[16];
+                    Marshal.Copy((IntPtr)ptr, array, 0, 16);
                     return array;
                 }
             }
