@@ -214,10 +214,10 @@ public static partial class SDL
         public UInt32 WindowID;
         public float X;
         public float Y;
-        private IntPtr source;
-        private IntPtr data;
-        public string Source => Marshal.PtrToStringUTF8(source)!;
-        public string Data => Marshal.PtrToStringUTF8(data)!;
+        public IntPtr source;
+        public IntPtr data;
+        public string? Source => Marshal.PtrToStringUTF8(source);
+        public string? Data => Marshal.PtrToStringUTF8(data);
     }
 
     
@@ -644,45 +644,45 @@ public static partial class SDL
     }
     
     
-    [StructLayout(LayoutKind.Sequential, Pack = 0)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct Event
     {
-        public EventType Type;
-        public CommonEvent Common;
-        public DisplayEvent Display;
-        public WindowEvent Window;
-        public KeyboardDeviceEvent KDevice;
-        public KeyboardEvent Key;
-        public TextEditingEvent Edit;
-        public TextEditingCandidatesEvent EditCandidates;
-        public TextInputEvent Text;
-        public MouseDeviceEvent MDevice;
-        public MouseMotionEvent Motion;
-        public MouseButtonEvent Button;
-        public MouseWheelEvent Wheel;
-        public JoyDeviceEvent JDevice;
-        public JoyAxisEvent JAxis;
-        public JoyBallEvent JBall;
-        public JoyHatEvent JHat;
-        public JoyButtonEvent JButton;
-        public JoyBatteryEvent JBattery;
-        public GamepadDeviceEvent GDevice;
-        public GamepadAxisEvent GAxis;
-        public GamepadButtonEvent GButton;
-        public GamepadTouchpadEvent GTouchpad;
-        public GamepadSensorEvent GSensor;
-        public AudioDeviceEvent ADevice;
-        public CameraDeviceEvent CDevice;
-        public SensorEvent Sensor;
-        public QuitEvent Quit;
-        public UserEvent User;
-        public TouchFingerEvent TFinger;
-        public PenTipEvent PTip;
-        public PenMotionEvent PMotion;
-        public PenButtonEvent PButton;
-        public DropEvent Drop;
-        public ClipboardEvent Clipboard;
-        private unsafe fixed byte padding[128];
+        [FieldOffset(0)] public EventType Type;
+        [FieldOffset(0)] public CommonEvent Common;
+        [FieldOffset(0)] public DisplayEvent Display;
+        [FieldOffset(0)] public WindowEvent Window;
+        [FieldOffset(0)] public KeyboardDeviceEvent KDevice;
+        [FieldOffset(0)] public KeyboardEvent Key;
+        [FieldOffset(0)] public TextEditingEvent Edit;
+        [FieldOffset(0)] public TextEditingCandidatesEvent EditCandidates;
+        [FieldOffset(0)] public TextInputEvent Text;
+        [FieldOffset(0)] public MouseDeviceEvent MDevice;
+        [FieldOffset(0)] public MouseMotionEvent Motion;
+        [FieldOffset(0)] public MouseButtonEvent Button;
+        [FieldOffset(0)] public MouseWheelEvent Wheel;
+        [FieldOffset(0)] public JoyDeviceEvent JDevice;
+        [FieldOffset(0)] public JoyAxisEvent JAxis;
+        [FieldOffset(0)] public JoyBallEvent JBall;
+        [FieldOffset(0)] public JoyHatEvent JHat;
+        [FieldOffset(0)] public JoyButtonEvent JButton;
+        [FieldOffset(0)] public JoyBatteryEvent JBattery;
+        [FieldOffset(0)] public GamepadDeviceEvent GDevice;
+        [FieldOffset(0)] public GamepadAxisEvent GAxis;
+        [FieldOffset(0)] public GamepadButtonEvent GButton;
+        [FieldOffset(0)] public GamepadTouchpadEvent GTouchpad;
+        [FieldOffset(0)] public GamepadSensorEvent GSensor;
+        [FieldOffset(0)] public AudioDeviceEvent ADevice;
+        [FieldOffset(0)] public CameraDeviceEvent CDevice;
+        [FieldOffset(0)] public SensorEvent Sensor;
+        [FieldOffset(0)] public QuitEvent Quit;
+        [FieldOffset(0)] public UserEvent User;
+        [FieldOffset(0)] public TouchFingerEvent TFinger;
+        [FieldOffset(0)] public PenTipEvent PTip;
+        [FieldOffset(0)] public PenMotionEvent PMotion;
+        [FieldOffset(0)] public PenButtonEvent PButton;
+        [FieldOffset(0)] public DropEvent Drop;
+        [FieldOffset(0)] public ClipboardEvent Clipboard;
+        [FieldOffset(0)] private unsafe fixed byte padding[128];
     }
     
     
