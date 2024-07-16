@@ -204,22 +204,73 @@ public static partial class SDL
 	}
 	
 	
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct VirtualJoystickDesc
 	{
-		
+		public JoystickType Type;
+		private UInt16 padding;
+		public UInt16 VendorId;
+		public UInt16 ProductId;
+		public UInt16 NAxes;
+		public UInt16 NButtons;
+		public UInt16 NBalls;
+		public UInt16 NHats;
+		public UInt16 NTouchpads;
+		public UInt16 NSensors;
+		private unsafe fixed UInt16 padding2[2];
+		public UInt32 ButtonMask;
+		public UInt32 AxisMask;
+		public string? Name;
+		public VirtualJoystickTouchpadDesc[]? Touchpads;
+		public VirtualJoystickSensorDesc[]? Sensors;
+		public IntPtr? UserData;
+		public VirtualJoystickUpdateCallback Update;
+		public VirtualJoysticSetPlayerIndexCallback? SetPlayerIndex;
+		public VirtualJoysticRumbleCallback? Rumble;
+		public VirtualJoysticRumbleTriggersCallback? RumbleTriggers;
+		public VirtualJoysticSetLEDCallback? SetLED;
+		public VirtualJoysticSendEffectCallback? SendEffect;
+		public VirtualJoysticSetSensorsEnabledCallback? SetSensorsEnabled;
 	}
+	
+	
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void VirtualJoystickUpdateCallback(IntPtr userData);
+	
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void VirtualJoysticSetPlayerIndexCallback(IntPtr userData, int player_index);
 
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate int VirtualJoysticRumbleCallback(IntPtr userData, ushort low_frequency_rumble, ushort high_frequency_rumble);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate int VirtualJoysticRumbleTriggersCallback(IntPtr userData, ushort left_rumble, ushort right_rumble);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate int VirtualJoysticSetLEDCallback(IntPtr userData, byte red, byte green, byte blue);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate int VirtualJoysticSendEffectCallback(IntPtr userData, IntPtr data, int size);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate int VirtualJoysticSetSensorsEnabledCallback(IntPtr userData, bool enabled);
+
+
+	[DllImport(SDLLibrary, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+	private static extern uint SDL_AttachVirtualJoystick([In] in VirtualJoystickDesc desc);
+	public static uint AttachVirtualJoystick(VirtualJoystickDesc desc) => SDL_AttachVirtualJoystick(desc);
+
+	
 	public enum JoystickHat : byte
-    {
-	    Centered = 0x00,
-	    Up = 0x01,
-	    Right = 0x02,
-	    Down = 0x04,
-	    Left = 0x08,
-	    RightUp = Right | Up,
-	    RightDown = Right | Down,
-	    LeftUp = Left | Up,
-	    LeftDown = Left | Down
-    }
+	{
+		Centered = 0x00,
+		Up = 0x01,
+		Right = 0x02,
+		Down = 0x04,
+		Left = 0x08,
+		RightUp = Right | Up,
+		RightDown = Right | Down,
+		LeftUp = Left | Up, 
+		LeftDown = Left | Down
+	}
 }
