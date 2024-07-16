@@ -26,14 +26,10 @@
  */
 #endregion
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 namespace SDL3;
 
 public static partial class SDL
 {
-    #region Hints
     public const string HintAllowAltTabWhileGrabbed = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
     public const string HintAndroidAllowRecreateActivity = "SDL_ANDROID_ALLOW_RECREATE_ACTIVITY";
     public const string HintAndroidBlockOnPause = "SDL_ANDROID_BLOCK_ON_PAUSE";
@@ -235,111 +231,4 @@ public static partial class SDL
     public const string HintX11ForceOverrideRedirect = "SDL_X11_FORCE_OVERRIDE_REDIRECT";
     public const string HintX11WindowType = "SDL_X11_WINDOW_TYPE";
     public const string HintXInputEnabled = "SDL_XINPUT_ENABLED";
-    #endregion
-    
-    public enum HintPriority
-    {
-        Default,
-        Normal,
-        Override
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void HintCallback(IntPtr userdata, string name, string? oldValue, string? newValue);
-
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_AddHintCallback(byte* name, HintCallback callback, IntPtr userdata);
-    public static unsafe int AddHintCallback(string name, HintCallback callback, IntPtr userdata)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_AddHintCallback(UTF8Encode(name, utf8Name, utf8NameBufSize), callback, userdata);
-    }
-        
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_DelHintCallback(byte* name, HintCallback callback, IntPtr userdata);
-    public static unsafe void DelHintCallback(string name, HintCallback callback, IntPtr userdata)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        SDL_DelHintCallback(UTF8Encode(name, utf8Name, utf8NameBufSize),  callback, userdata);
-    }
-    
-
-    [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetHint(string name);
-    public static string? GetHint(string name) => Marshal.PtrToStringUTF8(SDL_GetHint(name));
-
-
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_GetHintBoolean(byte* name, [MarshalAs(UnmanagedType.I1)]bool defaultValue);
-    public static unsafe bool GetHintBoolean(string name, bool defaultValue)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_GetHintBoolean(UTF8Encode(name, utf8Name, utf8NameBufSize), defaultValue);
-    }
-
-
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_ResetHint(byte* name);
-    public static unsafe bool ResetHint(string name)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_ResetHint(UTF8Encode(name, utf8Name, utf8NameBufSize));
-    }
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ResetHints();
-    public static bool ResetHints() => SDL_ResetHints();
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_SetHint(byte* name, byte* value);
-    public static unsafe bool SetHint(string name, string value)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        
-        var utf8ValueBufSize = UTF8Size(value);
-        var utf8Value = stackalloc byte[utf8ValueBufSize];
-        
-        return SDL_SetHint(
-            UTF8Encode(name, utf8Name, utf8NameBufSize),
-            UTF8Encode(value, utf8Value, utf8ValueBufSize));
-    }
-
-
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_SetHintWithPriority(byte* name, byte* value, HintPriority priority);
-    public static unsafe bool SetHintWithPriority(string name, string value, HintPriority priority)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        
-        var utf8ValueBufSize = UTF8Size(value);
-        var utf8Value = stackalloc byte[utf8ValueBufSize];
-        
-        return SDL_SetHintWithPriority(
-            UTF8Encode(name, utf8Name, utf8NameBufSize),
-            UTF8Encode(value, utf8Value, utf8ValueBufSize), 
-            priority);
-    }
 }
