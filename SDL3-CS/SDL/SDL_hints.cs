@@ -244,6 +244,7 @@ public static partial class SDL
         Override
     }
     
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void HintCallback(IntPtr userdata, string name, string? oldValue, string? newValue);
 
     
