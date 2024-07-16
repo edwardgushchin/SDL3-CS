@@ -43,10 +43,6 @@ static class Program
                 }
             }
 
-            var keyboardState = SDL.GetKeyboardState(out var numkeys);
-            
-            Console.WriteLine($"Space state: {keyboardState[(int)SDL.Scancode.Space]}");
-
             SDL.RenderClear(renderer);
             SDL.RenderPresent(renderer);
         }
