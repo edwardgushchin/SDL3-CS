@@ -259,6 +259,12 @@ public static partial class SDL
 	[DllImport(SDLLibrary, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
 	private static extern uint SDL_AttachVirtualJoystick([In] in VirtualJoystickDesc desc);
 	public static uint AttachVirtualJoystick(VirtualJoystickDesc desc) => SDL_AttachVirtualJoystick(desc);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_DetachVirtualJoystick(uint instance_id);
+	public static int DetachVirtualJoystick(uint instance_id) => SDL_DetachVirtualJoystick(instance_id);
 
 	
 	public enum JoystickHat : byte
