@@ -272,7 +272,23 @@ public static partial class SDL
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static partial bool SDL_IsJoystickVirtual(uint instance_id);
 	public static bool IsJoystickVirtual(uint instance_id) => SDL_IsJoystickVirtual(instance_id);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
+	public static int SetJoystickVirtualAxis(Joystick joystick, int axis, short value) => 
+		SDL_SetJoystickVirtualAxis(joystick.Handle, axis, value);
 
+	
+	public const short JoystickAxisMax = short.MaxValue;
+	
+	
+	public const short JoystickAxisMin = short.MinValue;
+	
+	
+	public const float IPhoneMaxGForce = 5.0f;
+	
 	
 	public enum JoystickHat : byte
 	{
