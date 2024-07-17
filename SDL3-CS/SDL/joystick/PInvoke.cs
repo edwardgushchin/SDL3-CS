@@ -189,4 +189,13 @@ public static partial class SDL
 	public static int SetJoystickVirtualTouchpad(Joystick joystick, int touchpad, int finger, 
 		Keystate state, float x, float y, float pressure) => 
 		SDL_SetJoystickVirtualTouchpad(joystick.Handle, touchpad, finger, state, x, y, pressure);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, 
+		ulong sensor_timestamp, [In] float[] data, int num_values);
+	public static int SendJoystickVirtualSensorData(Joystick joystick, SensorType type, 
+		ulong sensor_timestamp, float[] data, int num_values) => 
+		SDL_SendJoystickVirtualSensorData(joystick.Handle, type, sensor_timestamp, data, num_values);
 }
