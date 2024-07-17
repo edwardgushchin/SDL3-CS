@@ -251,9 +251,14 @@ public static partial class SDL
 	public static ushort GetJoystickProduct(Joystick joystick) => SDL_GetJoystickProduct(joystick.Handle);
 	
 	
-	//extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProductVersion(SDL_Joystick *joystick);
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial ushort SDL_GetJoystickProductVersion(IntPtr joystick);
 	public static ushort GetJoystickProductVersion(Joystick joystick) => SDL_GetJoystickProductVersion(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickFirmwareVersion(IntPtr joystick);
+	public static ushort GetJoystickFirmwareVersion(Joystick joystick) => SDL_GetJoystickFirmwareVersion(joystick.Handle);
 }
