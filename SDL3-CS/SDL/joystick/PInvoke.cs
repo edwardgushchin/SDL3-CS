@@ -167,4 +167,12 @@ public static partial class SDL
 	private static partial int SDL_SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
 	public static int SetJoystickVirtualBall(Joystick joystick, int ball, short xrel, short yrel) => 
 		SDL_SetJoystickVirtualBall(joystick.Handle, ball, xrel, yrel);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SetJoystickVirtualButton(IntPtr joystick, int button, byte value);
+	public static int SetJoystickVirtualButton(Joystick joystick, int button, byte value) => 
+		SDL_SetJoystickVirtualButton(joystick.Handle, button, value);
+	
 }
