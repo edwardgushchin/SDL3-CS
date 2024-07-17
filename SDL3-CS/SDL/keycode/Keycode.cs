@@ -30,12 +30,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public static uint ScancodeToKeycode(uint scancode)
-    {
-        return scancode | 1u << 30;
-    }
-    
-    
     public enum Keycode : uint
     {
         Unknown             = 0x00000000u, /* 0 */
@@ -287,28 +281,5 @@ public static partial class SDL
         SoftRight           = 0x40000120u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SOFTRIGHT) */
         Call                = 0x40000121u, /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CALL) */
         EndCall             = 0x40000122u /* SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_ENDCALL) */
-    }
-
-    
-    [Flags]
-    public enum Keymod : uint
-    { 
-        None   = 0x0000u,
-        LShift = 0x0001u,
-        RShift = 0x0002u,
-        LCtrl  = 0x0040u,
-        RCtrl  = 0x0080u,
-        LAlt   = 0x0100u,
-        RAlt   = 0x0200u,
-        LGUI   = 0x0400u,
-        RGUI   = 0x0800u,
-        Num    = 0x1000u,
-        Caps   = 0x2000u,
-        Mode   = 0x4000u,
-        Scroll = 0x8000u,
-        Ctrl   = LCtrl | RCtrl,
-        Shift  = LShift | RShift,
-        Alt    = LAlt | RAlt,
-        Gui    = LGUI | RGUI
     }
 }
