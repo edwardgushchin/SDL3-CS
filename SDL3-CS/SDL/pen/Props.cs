@@ -30,43 +30,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public enum PenAxis
-    {
-        Pressure = 0,
-        XTilt,  
-        YTilt,
-        Distance,
-        Rotation,
-        Slider,
-        NumAxes,
-        Last = NumAxes - 1
-    }
-    
-    
     public const int PenFlagDownBitIndex = 13;
     public const int PenFlagInkBitIndex = 14;
     public const int PenFlagEraserBitIndex = 15;
     public const int PenFlagAxisBitOffset = 16; 
-    
-    
-    public static ulong PenCapability(int capbit)
-    {
-        return 1ul << capbit;
-    }
-
-    
-    public static ulong PenAxisCapability(int axis)
-    {
-        return PenCapability(axis + PenFlagAxisBitOffset);
-    }
-
-    
-    public enum PenTips
-    {
-        Ink = PenFlagInkBitIndex,
-        Eraser = PenFlagEraserBitIndex,
-    }
-
     
     public static readonly ulong PenDownMask = PenCapability(PenFlagDownBitIndex);
     public static readonly ulong PenInkMask = PenCapability(PenFlagInkBitIndex);
