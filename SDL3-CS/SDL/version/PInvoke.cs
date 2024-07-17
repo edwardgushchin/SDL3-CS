@@ -33,49 +33,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Version
-    {
-        public byte Major;
-        public byte Minor;
-        public byte Patch;
-        
-        public static bool operator ==(Version v1, Version v2)
-        {
-            return v1.Major == v2.Major && v1.Minor == v2.Minor && v1.Patch == v2.Patch;
-        }
-        
-        public static bool operator !=(Version v1, Version v2)
-        {
-            return !(v1 == v2);
-        }
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj is not Version version) return false;
-            return this == version;
-        }
-        
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Major, Minor, Patch);
-        }
-
-        public override string ToString()
-        {
-            return $"{Major}.{Minor}.{Patch}";
-        }
-    }
-    
-    
-    public static readonly Version WrapperVersion = new()
-    {
-        Major = 3,
-        Minor = 1,
-        Patch = 2
-    };
-
-
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetRevision();
@@ -95,10 +52,4 @@ public static partial class SDL
             Patch = (byte)VersionNumMicro(version)
         };
     }
-
-    private static int VersionNumMajor(int version) => version / 1000000;
-    
-    private static int VersionNumMinor(int version) => version / 1000 % 1000;
-    
-    private static int VersionNumMicro(int version) => version % 1000;
 }
