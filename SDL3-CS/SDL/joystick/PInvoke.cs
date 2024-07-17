@@ -213,11 +213,15 @@ public static partial class SDL
 	public static string GetJoystickName(Joystick joystick) => SDL_GetJoystickName(joystick.Handle);
 	
 	
-	//extern SDL_DECLSPEC const char *SDLCALL SDL_GetJoystickPath(SDL_Joystick *joystick);
-	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
 	private static partial string SDL_GetJoystickPath(IntPtr joystick);
 	public static string GetJoystickPath(Joystick joystick) => SDL_GetJoystickPath(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetJoystickPlayerIndex(IntPtr joystick);
+	public static int GetJoystickPlayerIndex(Joystick joystick) => SDL_GetJoystickPlayerIndex(joystick.Handle);
 }
