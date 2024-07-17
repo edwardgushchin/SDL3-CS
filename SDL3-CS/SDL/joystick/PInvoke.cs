@@ -269,4 +269,11 @@ public static partial class SDL
 	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
 	private static partial string SDL_GetJoystickSerial(IntPtr joystick);
 	public static string GetJoystickSerial(Joystick joystick) => SDL_GetJoystickSerial(joystick.Handle);
+	
+	
+	//extern SDL_DECLSPEC SDL_JoystickType SDLCALL SDL_GetJoystickType(SDL_Joystick *joystick);
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickType SDL_GetJoystickType(IntPtr joystick);
+	public static JoystickType GetJoystickType(Joystick joystick) => SDL_GetJoystickType(joystick.Handle);
 }
