@@ -244,4 +244,9 @@ public static partial class SDL
 	private static partial ushort SDL_GetJoystickVendor(IntPtr joystick);
 	public static ushort GetJoystickVendor(Joystick joystick) => SDL_GetJoystickVendor(joystick.Handle);
 	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickProduct(IntPtr joystick);
+	public static ushort GetJoystickProduct(Joystick joystick) => SDL_GetJoystickProduct(joystick.Handle);
 }
