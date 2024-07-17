@@ -316,4 +316,16 @@ public static partial class SDL
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static partial bool SDL_JoystickConnected(IntPtr joystick);
 	public static bool JoystickConnected(Joystick joystick) => SDL_JoystickConnected(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial uint SDL_GetJoystickID(IntPtr joystick);
+	public static uint GetJoystickID(Joystick joystick) => SDL_GetJoystickID(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickAxes(IntPtr joystick);
+	public static int GetNumJoystickAxes(Joystick joystick) => SDL_GetNumJoystickAxes(joystick.Handle);
 }
