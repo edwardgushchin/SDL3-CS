@@ -328,4 +328,16 @@ public static partial class SDL
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial int SDL_GetNumJoystickAxes(IntPtr joystick);
 	public static int GetNumJoystickAxes(Joystick joystick) => SDL_GetNumJoystickAxes(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickBalls(IntPtr joystick);
+	public static int GetNumJoystickBalls(Joystick joystick) => SDL_GetNumJoystickBalls(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickHats(IntPtr joystick);
+	public static int GetNumJoystickHats(Joystick joystick) => SDL_GetNumJoystickHats(joystick.Handle);
 }
