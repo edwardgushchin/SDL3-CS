@@ -75,7 +75,7 @@ public static partial class SDL
         WindowPenLeave,
         WindowHdrStateChanged,
         WindowFirst = WindowShown,
-        WindowLast = WindowPenLeave,
+        WindowLast = WindowHdrStateChanged,
         KeyDown = 0x300,
         KeyUp,
         TextEditing,
