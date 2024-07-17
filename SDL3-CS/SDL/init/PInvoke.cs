@@ -33,21 +33,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [Flags]
-    public enum InitFlags : uint
-    {
-        Timer =     0x00000001u,
-        Audio =     0x00000010u,
-        Video =     0x00000020u,
-        Joystick =  0x00000200u,
-        Haptic =    0x00001000u,
-        Gamepad =   0x00002000u,
-        Events =    0x00004000u,
-        Sensor =    0x00008000u,
-        Camera =    0x00010000u,
-    }
-    
-    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_Init(InitFlags flags);
