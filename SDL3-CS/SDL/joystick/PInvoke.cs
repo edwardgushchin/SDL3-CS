@@ -350,6 +350,106 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_SetJoystickEventsEnabled(bool enabled);
+	private static partial void SDL_SetJoystickEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
 	public static void SetJoystickEventsEnabled(bool enabled) => SDL_SetJoystickEventsEnabled(enabled);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_JoystickEventsEnabled();
+	public static bool JoystickEventsEnabled() => SDL_JoystickEventsEnabled();
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_UpdateJoysticks();
+	public static void UpdateJoysticks() => SDL_UpdateJoysticks();
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial short SDL_GetJoystickAxis(IntPtr joystick, int axis);
+	public static short GetJoystickAxis(Joystick joystick, int axis) => SDL_GetJoystickAxis(joystick.Handle, axis);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_GetJoystickAxisInitialState(IntPtr joystick, int axis, out short state);
+	public static bool GetJoystickAxisInitialState(Joystick joystick, int axis, out short state) =>
+		SDL_GetJoystickAxisInitialState(joystick.Handle, axis, out state);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetJoystickBall(IntPtr joystick, int ball, out int dx, out int dy);
+	public static int GetJoystickBall(Joystick joystick, int ball, out int dx, out int dy) =>
+		SDL_GetJoystickBall(joystick.Handle, ball, out dx, out dy);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickHat SDL_GetJoystickHat(IntPtr joystick, int hat);
+	public static JoystickHat GetJoystickHat(Joystick joystick, int hat) => SDL_GetJoystickHat(joystick.Handle, hat);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial byte SDL_GetJoystickButton(IntPtr joystick, int button);
+	public static byte GetJoystickButton(Joystick joystick, int button) => 
+		SDL_GetJoystickButton(joystick.Handle, button);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_RumbleJoystick(IntPtr joystick, ushort low_frequency_rumble, 
+		ushort high_frequency_rumble, uint duration_ms);
+
+	public static int RumbleJoystick(Joystick joystick, ushort low_frequency_rumble, ushort high_frequency_rumble,
+		uint duration_ms) =>
+		SDL_RumbleJoystick(joystick.Handle, low_frequency_rumble, high_frequency_rumble, duration_ms);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_RumbleJoystickTriggers(IntPtr joystick, ushort left_rumble, ushort right_rumble, 
+		uint duration_ms);
+	public static int RumbleJoystickTriggers(Joystick joystick, ushort left_rumble, ushort right_rumble,
+		uint duration_ms) =>
+		SDL_RumbleJoystickTriggers(joystick.Handle, left_rumble, right_rumble, duration_ms);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue);
+	public static int SetJoystickLED(Joystick joystick, byte red, byte green, byte blue) =>
+		SDL_SetJoystickLED(joystick.Handle, red, green, blue);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SendJoystickEffect(IntPtr joystick, IntPtr data, int size);
+	public static int SendJoystickEffect(Joystick joystick, IntPtr data, int size) =>
+		SDL_SendJoystickEffect(joystick.Handle, data, size);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_CloseJoystick(IntPtr joystick);
+	public static void CloseJoystick(Joystick joystick) => SDL_CloseJoystick(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickConnectionState SDL_GetJoystickConnectionState(IntPtr joystick);
+	public static JoystickConnectionState GetJoystickConnectionState(Joystick joystick) => 
+		SDL_GetJoystickConnectionState(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial PowerState SDL_GetJoystickPowerInfo(IntPtr joystick, out int percent);
+	public static PowerState GetJoystickPowerInfo(Joystick joystick, out int percent) =>
+		SDL_GetJoystickPowerInfo(joystick.Handle, out percent);
 }
