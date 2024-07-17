@@ -26,25 +26,17 @@
  */
 #endregion
 
-using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
-
 namespace SDL3;
 
 public static partial class SDL
 {
-	public enum PowerState
-	{
-		Error = -1,
-		Unknown,
-		OnBattery,
-		NoBattery,
-		Charging,
-		Charged
-	}
-
-	[LibraryImport(SDLLibrary)]
-	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial PowerState SDL_GetPowerInfo(int seconds, int percent);
-	public static PowerState GetPowerInfo(int seconds, int percent) => SDL_GetPowerInfo(seconds, percent);
+    public enum PowerState
+    {
+        Error = -1,
+        Unknown,
+        OnBattery,
+        NoBattery,
+        Charging,
+        Charged
+    }
 }
