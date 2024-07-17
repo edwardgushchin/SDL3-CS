@@ -309,4 +309,11 @@ public static partial class SDL
 	public static void GetJoystickGUIDInfo(GUID guid, out ushort vendor, out ushort product,
 		out ushort version, out ushort crc16) =>
 		SDL_GetJoystickGUIDInfo(guid, out vendor, out product, out version, out crc16);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_JoystickConnected(IntPtr joystick);
+	public static bool JoystickConnected(Joystick joystick) => SDL_JoystickConnected(joystick.Handle);
 }
