@@ -260,5 +260,13 @@ public static partial class SDL
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial ushort SDL_GetJoystickFirmwareVersion(IntPtr joystick);
-	public static ushort GetJoystickFirmwareVersion(Joystick joystick) => SDL_GetJoystickFirmwareVersion(joystick.Handle);
+	public static ushort GetJoystickFirmwareVersion(Joystick joystick) => 
+		SDL_GetJoystickFirmwareVersion(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
+	private static partial string SDL_GetJoystickSerial(IntPtr joystick);
+	public static string GetJoystickSerial(Joystick joystick) => SDL_GetJoystickSerial(joystick.Handle);
 }
