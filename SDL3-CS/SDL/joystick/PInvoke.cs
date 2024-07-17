@@ -271,9 +271,23 @@ public static partial class SDL
 	public static string GetJoystickSerial(Joystick joystick) => SDL_GetJoystickSerial(joystick.Handle);
 	
 	
-	//extern SDL_DECLSPEC SDL_JoystickType SDLCALL SDL_GetJoystickType(SDL_Joystick *joystick);
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial JoystickType SDL_GetJoystickType(IntPtr joystick);
 	public static JoystickType GetJoystickType(Joystick joystick) => SDL_GetJoystickType(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static unsafe partial int SDL_GetJoystickGUIDString(GUID guid, byte* pszGUID, int cbGUID);
+
+	public static unsafe int GetJoystickGUIDString(GUID guid, out string? pszGUID, int cbGUID = 33)
+	{
+		var buffer = Marshal.AllocHGlobal(cbGUID);
+		var result = SDL_GetJoystickGUIDString(guid, (byte*)buffer, cbGUID);
+		pszGUID = Marshal.PtrToStringUTF8(buffer);
+		Marshal.FreeHGlobal(buffer);
+		return result;
+	}
+	
 }
