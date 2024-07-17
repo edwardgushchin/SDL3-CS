@@ -45,7 +45,9 @@ public static partial class SDL
                 fixed (byte* ptr = data)
                 {
                     var array = new byte[16];
-                    Marshal.Copy((IntPtr)ptr, array, 0, 16);
+                    var intPtr = (IntPtr) ptr;
+                    Marshal.Copy(intPtr, array, 0, 16);
+                    Free(intPtr);
                     return array;
                 }
             }

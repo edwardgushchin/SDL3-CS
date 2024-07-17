@@ -75,6 +75,7 @@ public static partial class SDL
         var pArray = SDL_GetKeyboardState(out numkeys);
         var keyboardState = new byte[numkeys];
         Marshal.Copy(pArray, keyboardState, 0, numkeys);
+        Free(pArray);
         return keyboardState;
     }
     
