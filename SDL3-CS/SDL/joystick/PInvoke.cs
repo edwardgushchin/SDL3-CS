@@ -233,10 +233,15 @@ public static partial class SDL
 		SDL_SetJoystickPlayerIndex(joystick.Handle, player_index);
 	
 	
-	//extern SDL_DECLSPEC SDL_JoystickGUID SDLCALL SDL_GetJoystickGUID(SDL_Joystick *joystick);
-	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial GUID SDL_GetJoystickGUID(IntPtr joystick);
 	public static GUID GetJoystickGUID(Joystick joystick) => SDL_GetJoystickGUID(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickVendor(IntPtr joystick);
+	public static ushort GetJoystickVendor(Joystick joystick) => SDL_GetJoystickVendor(joystick.Handle);
+	
 }
