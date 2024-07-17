@@ -37,17 +37,32 @@ public static partial class SDL
     {
         private unsafe fixed byte data[16];
         
-        public unsafe float[] Data
+        public unsafe byte[] Data
         {
             get
             {
                 fixed (byte* ptr = data)
                 {
-                    var array = new float[16];
+                    var array = new byte[16];
                     Marshal.Copy((IntPtr)ptr, array, 0, 16);
                     return array;
                 }
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return Data.GetHashCode();
+        }
+        
+        public static bool operator ==(GUID left, GUID right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GUID left, GUID right)
+        {
+            return !(left == right);
         }
     }
 }
