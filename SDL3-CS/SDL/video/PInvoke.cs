@@ -34,7 +34,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)]) ]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static unsafe partial IntPtr SDL_CreateWindow(byte* title, int w, int h, WindowFlags flags);
     public static unsafe Window CreateWindow(string title, int w, int h, WindowFlags flags)
     { 
