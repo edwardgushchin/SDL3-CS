@@ -181,4 +181,12 @@ public static partial class SDL
 	private static partial int SDL_SetJoystickVirtualHat(IntPtr joystick, int hat, byte value);
 	public static int SetJoystickVirtualHat(Joystick joystick, int hat, byte value) => 
 		SDL_SetJoystickVirtualHat(joystick.Handle, hat, value);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, Keystate state, float x, float y, float pressure);
+	public static int SetJoystickVirtualTouchpad(Joystick joystick, int touchpad, int finger, 
+		Keystate state, float x, float y, float pressure) => 
+		SDL_SetJoystickVirtualTouchpad(joystick.Handle, touchpad, finger, state, x, y, pressure);
 }
