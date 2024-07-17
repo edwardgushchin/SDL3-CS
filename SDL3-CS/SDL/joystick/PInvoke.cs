@@ -198,4 +198,10 @@ public static partial class SDL
 	public static int SendJoystickVirtualSensorData(Joystick joystick, SensorType type, 
 		ulong sensor_timestamp, float[] data, int num_values) => 
 		SDL_SendJoystickVirtualSensorData(joystick.Handle, type, sensor_timestamp, data, num_values);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial uint SDL_GetJoystickProperties(IntPtr joystick);
+	public static uint GetJoystickProperties(Joystick joystick) => SDL_GetJoystickProperties(joystick.Handle);
 }
