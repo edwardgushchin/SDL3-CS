@@ -46,6 +46,8 @@ public static partial class SDL
         DisplayAdded,
         DisplayRemoved,
         DisplayMoved,
+        DisplayDesktopModeChanged,
+        DisplayCurrentModeChanged,
         DisplayContentScaleChanged,
         DisplayFirst = DisplayOrientation,
         DisplayLast = DisplayContentScaleChanged,

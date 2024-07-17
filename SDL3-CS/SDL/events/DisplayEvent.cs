@@ -40,5 +40,6 @@ public static partial class SDL
         public UInt64 Timestamp;
         public UInt32 DisplayID;
         public Int32 Data1;
+        public Int32 Data2;
     }
 }
