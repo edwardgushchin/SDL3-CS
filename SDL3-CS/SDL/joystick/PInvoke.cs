@@ -346,4 +346,10 @@ public static partial class SDL
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial int SDL_GetNumJoystickButtons(IntPtr joystick);
 	public static int GetNumJoystickButtons(Joystick joystick) => SDL_GetNumJoystickButtons(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_SetJoystickEventsEnabled(bool enabled);
+	public static void SetJoystickEventsEnabled(bool enabled) => SDL_SetJoystickEventsEnabled(enabled);
 }
