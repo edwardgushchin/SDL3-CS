@@ -300,4 +300,13 @@ public static partial class SDL
 		var utf8Name = stackalloc byte[utf8NameBufSize];
 		return SDL_GetJoystickGUIDFromString(UTF8Encode(pchGUID, utf8Name, utf8NameBufSize));
 	}
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_GetJoystickGUIDInfo(GUID guid, out ushort vendor, out ushort product, 
+		out ushort version, out ushort crc16);
+	public static void GetJoystickGUIDInfo(GUID guid, out ushort vendor, out ushort product,
+		out ushort version, out ushort crc16) =>
+		SDL_GetJoystickGUIDInfo(guid, out vendor, out product, out version, out crc16);
 }
