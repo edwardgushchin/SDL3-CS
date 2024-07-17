@@ -224,4 +224,11 @@ public static partial class SDL
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial int SDL_GetJoystickPlayerIndex(IntPtr joystick);
 	public static int GetJoystickPlayerIndex(Joystick joystick) => SDL_GetJoystickPlayerIndex(joystick.Handle);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index);
+	public static int SetJoystickPlayerIndex(Joystick joystick, int player_index) => 
+		SDL_SetJoystickPlayerIndex(joystick.Handle, player_index);
 }
