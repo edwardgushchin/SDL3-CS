@@ -160,4 +160,11 @@ public static partial class SDL
 	private static partial int SDL_SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
 	public static int SetJoystickVirtualAxis(Joystick joystick, int axis, short value) => 
 		SDL_SetJoystickVirtualAxis(joystick.Handle, axis, value);
+	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
+	public static int SetJoystickVirtualBall(Joystick joystick, int ball, short xrel, short yrel) => 
+		SDL_SetJoystickVirtualBall(joystick.Handle, ball, xrel, yrel);
 }
