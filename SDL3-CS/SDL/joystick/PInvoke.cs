@@ -280,7 +280,6 @@ public static partial class SDL
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static unsafe partial int SDL_GetJoystickGUIDString(GUID guid, byte* pszGUID, int cbGUID);
-
 	public static unsafe int GetJoystickGUIDString(GUID guid, out string? pszGUID, int cbGUID = 33)
 	{
 		var buffer = Marshal.AllocHGlobal(cbGUID);
@@ -290,4 +289,15 @@ public static partial class SDL
 		return result;
 	}
 	
+	
+	[LibraryImport(SDLLibrary)]
+	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static unsafe partial GUID SDL_GetJoystickGUIDFromString(byte* pchGUID);
+
+	public static unsafe GUID GetJoystickGUIDFromString(string pchGUID)
+	{
+		var utf8NameBufSize = UTF8Size(pchGUID);
+		var utf8Name = stackalloc byte[utf8NameBufSize];
+		return SDL_GetJoystickGUIDFromString(UTF8Encode(pchGUID, utf8Name, utf8NameBufSize));
+	}
 }
