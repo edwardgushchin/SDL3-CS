@@ -43,7 +43,7 @@ public static partial class SDL
     
     private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
     {
-        IntPtr libHandle = IntPtr.Zero;
+        var libHandle = IntPtr.Zero;
         var runtimes = "runtimes";
         var native = "native";
         var winLib = "SDL3.DLL";
@@ -52,7 +52,7 @@ public static partial class SDL
             
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            string arch = RuntimeInformation.OSArchitecture switch
+            var arch = RuntimeInformation.OSArchitecture switch
             {
                 Architecture.X64 => "win-x64",
                 Architecture.X86 => "win-x86",
@@ -65,7 +65,7 @@ public static partial class SDL
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            string arch = RuntimeInformation.OSArchitecture switch
+            var arch = RuntimeInformation.OSArchitecture switch
             {
                 Architecture.X64 => "linux-x64",
                 Architecture.X86 => "linux-x86",
@@ -79,7 +79,7 @@ public static partial class SDL
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            string arch = RuntimeInformation.OSArchitecture switch
+            var arch = RuntimeInformation.OSArchitecture switch
             {
                 Architecture.X64 => "osx-x64",
                 Architecture.Arm64 => "osx-arm64",
