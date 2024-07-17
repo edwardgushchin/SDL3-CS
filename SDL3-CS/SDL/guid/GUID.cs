@@ -26,6 +26,7 @@
  */
 #endregion
 
+using System.Collections;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
@@ -48,6 +49,11 @@ public static partial class SDL
                     return array;
                 }
             }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is GUID other && StructuralComparisons.StructuralEqualityComparer.Equals(Data, other.Data);
         }
 
         public override int GetHashCode()
