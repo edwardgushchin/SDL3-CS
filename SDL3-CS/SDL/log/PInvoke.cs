@@ -33,49 +33,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public enum LogCategory
-    {
-        Application,
-        Error,
-        Assert,
-        System,
-        Audio,
-        Video,
-        Render,
-        Input,
-        Test,
-
-        /* Reserved for future SDL library use */
-        Reserved1,
-        Reserved2,
-        Reserved3,
-        Reserved4,
-        Reserved5,
-        Reserved6,
-        Reserved7,
-        Reserved8,
-        Reserved9,
-        Reserved10,
-
-        /* Beyond this point is reserved for application use, e.g. */
-        Custom
-    }
-    
-    public enum LogPriority
-    {
-        Verbose = 1,
-        Debug,
-        Info,
-        Warn,
-        Error,
-        Critical,
-        Priorities
-    }
-    
-    
-    public delegate void LogOutputFunction(IntPtr userdata, LogCategory category, LogPriority priority, string message);
-    
-    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_GetLogOutputFunction(LogOutputFunction callback, IntPtr userdata);
