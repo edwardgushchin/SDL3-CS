@@ -36,7 +36,7 @@ public static partial class SDL
 
         public override bool Equals(object? obj)
         {
-            return obj is Cursor other && Handle == other.Handle;
+            return obj is Gamepad other && Handle == other.Handle;
         }
 
         public override int GetHashCode()
