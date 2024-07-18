@@ -46,9 +46,16 @@ public static partial class SDL
                 {
                     var array = new byte[16];
                     var intPtr = (IntPtr) ptr;
-                    Marshal.Copy(intPtr, array, 0, 16);
-                    Free(intPtr);
-                    return array;
+                    try
+                    {
+                        Marshal.Copy(intPtr, array, 0, 16);
+                        return array;
+                    }
+                    finally
+                    {
+                        Free(intPtr);
+                    }
+                    
                 }
             }
         }

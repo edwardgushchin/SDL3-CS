@@ -50,9 +50,15 @@ public static partial class SDL
                 {
                     var array = new float[3];
                     var intPtr = (IntPtr) ptr;
-                    Marshal.Copy(intPtr, array, 0, 3);
-                    Free(intPtr);
-                    return array;
+                    try
+                    {
+                        Marshal.Copy(intPtr, array, 0, 3);
+                        return array;
+                    }
+                    finally
+                    {
+                        Free(intPtr);
+                    }
                 }
             }
         }

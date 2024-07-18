@@ -58,10 +58,16 @@ public static partial class SDL
 	public static uint[] GetJoysticks(out int cout)
 	{
 		var pArray = SDL_GetJoysticks(out cout);
-		var joystickArray = new int[cout];
-		Marshal.Copy(pArray, joystickArray, 0, cout);
-		Free(pArray);
-		return Array.ConvertAll(joystickArray, item => (uint)item);
+		try
+		{
+			var joystickArray = new int[cout];
+			Marshal.Copy(pArray, joystickArray, 0, cout);
+			return Array.ConvertAll(joystickArray, item => (uint)item);
+		}
+		finally
+		{
+			Free(pArray);
+		}
 	}
 	
 	

@@ -47,10 +47,16 @@ public static partial class SDL
     public static uint[] GetMice(out int cout)
     {
         var pArray = SDL_GetMice(out cout);
-        var miceArray = new int[cout];
-        Marshal.Copy(pArray, miceArray, 0, cout);
-        Free(pArray);
-        return Array.ConvertAll(miceArray, item => (uint)item);
+        try
+        {
+            var miceArray = new int[cout];
+            Marshal.Copy(pArray, miceArray, 0, cout);
+            return Array.ConvertAll(miceArray, item => (uint)item);
+        }
+        finally
+        {
+            Free(pArray);
+        }
     }
     
     

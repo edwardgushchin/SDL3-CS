@@ -53,17 +53,24 @@ public static partial class SDL
             return [];
         }
 
-        var mappings = new string?[count];
-        var ptrArray = new IntPtr[count];
-        Marshal.Copy(arrayPtr, ptrArray, 0, count);
-        Free(arrayPtr);
-
-        for (var i = 0; i < count; i++)
+        try
         {
-            mappings[i] = Marshal.PtrToStringAnsi(ptrArray[i]);
-        }
+            var mappings = new string?[count];
+            var ptrArray = new IntPtr[count];
+            Marshal.Copy(arrayPtr, ptrArray, 0, count);
+            
+            for (var i = 0; i < count; i++)
+            {
+                mappings[i] = Marshal.PtrToStringAnsi(ptrArray[i]);
+            }
 
-        return mappings;
+            return mappings;
+            
+        }
+        finally
+        {
+            Free(arrayPtr);
+        }
     }
     
     
@@ -102,10 +109,16 @@ public static partial class SDL
     public static uint[] GetGamepads(out int cout)
     {
         var pArray = SDL_GetGamepads(out cout);
-        var joystickArray = new int[cout];
-        Marshal.Copy(pArray, joystickArray, 0, cout);
-        Free(pArray);
-        return Array.ConvertAll(joystickArray, item => (uint)item);
+        try
+        {
+            var joystickArray = new int[cout];
+            Marshal.Copy(pArray, joystickArray, 0, cout);
+            return Array.ConvertAll(joystickArray, item => (uint)item);
+        }
+        finally
+        {
+            Free(pArray);
+        }
     }
     
     
