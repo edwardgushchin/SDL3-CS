@@ -41,8 +41,10 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetError();
-    public static string? GetError() => Marshal.PtrToStringUTF8(SDL_GetError());
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    private static partial string SDL_GetError();
+
+    public static string GetError() => SDL_GetError();
 
     
     [LibraryImport(SDLLibrary)]
@@ -53,11 +55,6 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_SetError(byte* message);
-    public static unsafe int SetError(string message)
-    {
-        var utf8MessageBufSize = UTF8Size(message);
-        var utf8Message = stackalloc byte[utf8MessageBufSize];
-        return SDL_SetError(UTF8Encode(message, utf8Message, utf8MessageBufSize));
-    }
+    private static partial int SDL_SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    public static int SetError(string message) => SDL_SetError(message);
 }
