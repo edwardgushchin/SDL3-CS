@@ -35,6 +35,7 @@ public static partial class SDL
 {
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial PowerState SDL_GetPowerInfo(int seconds, int percent);
-	public static PowerState GetPowerInfo(int seconds, int percent) => SDL_GetPowerInfo(seconds, percent);
+	private static partial PowerState SDL_GetPowerInfo(out int seconds, out int percent);
+	public static PowerState GetPowerInfo(out int seconds, out int percent) => 
+		SDL_GetPowerInfo(out seconds, out percent);
 }
