@@ -75,4 +75,32 @@ public static partial class SDL
 
         return mappings;
     }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    private static unsafe partial string SDL_GetGamepadMappingForGUID(GUID guid);
+    public static string GetGamepadMappingForGUID(GUID guid) => SDL_GetGamepadMappingForGUID(guid);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    private static unsafe partial string SDL_GetGamepadMapping(IntPtr gamepad);
+    public static string GetGamepadMapping(Gamepad gamepad) => SDL_GetGamepadMapping(gamepad.Handle);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial int SDL_SetGamepadMapping(uint instance_id, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)]string mapping);
+    public static int SetGamepadMapping(uint instance_id, string mapping) =>
+        SDL_SetGamepadMapping(instance_id, mapping);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_OpenGamepad(uint instance_id);
+    public static Gamepad OpenGamepad(uint instance_id) => new(SDL_OpenGamepad(instance_id));
 }
