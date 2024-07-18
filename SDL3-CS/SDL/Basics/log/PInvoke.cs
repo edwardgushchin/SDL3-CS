@@ -48,55 +48,32 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_Log(byte* message);
-    public static unsafe void Log(string message)
-    {
-        var utf8MessageBufSize = UTF8Size(message);
-        var utf8Message = stackalloc byte[utf8MessageBufSize];
-        SDL_Log(UTF8Encode(message, utf8Message, utf8MessageBufSize));
-    }
+    private static partial void SDL_Log([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    public static void Log(string message) => SDL_Log(message);
 
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_LogCritical(LogCategory category, byte* message);
-    public static unsafe void LogCritical(LogCategory category, string message)
-    {
-        var utf8MessageBufSize = UTF8Size(message);
-        var utf8Message = stackalloc byte[utf8MessageBufSize];
-        SDL_LogCritical(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
-    }
+    private static partial void SDL_LogCritical(LogCategory category, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    public static void LogCritical(LogCategory category, string message) => SDL_LogCritical(category, message);
 
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_LogDebug(LogCategory category, byte* message);
-    public static unsafe void LogDebug(LogCategory category, string message)
-    {
-        var utf8MessageBufSize = UTF8Size(message);
-        var utf8Message = stackalloc byte[utf8MessageBufSize];
-        SDL_LogDebug(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
-    }
+    private static partial void SDL_LogDebug(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    public static void LogDebug(LogCategory category, string message) => SDL_LogDebug(category, message);    
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_LogError(LogCategory category, byte* message);
-    public static unsafe void LogError(LogCategory category, string message)
-    {
-        var utf8MessageBufSize = UTF8Size(message);
-        var utf8Message = stackalloc byte[utf8MessageBufSize];
-        SDL_LogError(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
-    }
+    private static partial void SDL_LogError(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    public static void LogError(LogCategory category, string message) => SDL_LogError(category, message);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_LogInfo(LogCategory category, byte* message);
-    public static unsafe void LogInfo(LogCategory category, string message)
-    {
-        var utf8MessageBufSize = UTF8Size(message);
-        var utf8Message = stackalloc byte[utf8MessageBufSize];
-        SDL_LogInfo(category, UTF8Encode(message, utf8Message, utf8MessageBufSize));
-    }
+    private static partial void SDL_LogInfo(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+
+    public static void LogInfo(LogCategory category, string message) => SDL_LogInfo(category, message);
 }

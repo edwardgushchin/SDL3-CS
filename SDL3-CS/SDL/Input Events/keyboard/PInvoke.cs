@@ -43,10 +43,9 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyboards(out int count);
-
     public static uint[] GetKeyboards(out int count)
     {
-        var pArray = SDL_GetMice(out count);
+        var pArray = SDL_GetKeyboards(out count);
         var keyboardArray = new int[count];
         Marshal.Copy(pArray, keyboardArray, 0, count);
         Free(pArray);
@@ -57,8 +56,9 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyboardInstanceName(uint instanceId);
+
     public static string? GetKeyboardInstanceName(uint instanceId) =>
-        Marshal.PtrToStringAnsi(SDL_GetKeyboardInstanceName(instanceId));
+        Marshal.PtrToStringUTF8(SDL_GetKeyboardInstanceName(instanceId));
     
     
     [LibraryImport(SDLLibrary)]
@@ -128,13 +128,8 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_SetScancodeName(Scancode scancode, byte* name);
-    public static unsafe int SetScancodeName(Scancode scancode, string name)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_SetScancodeName(scancode, UTF8Encode(name, utf8Name, utf8NameBufSize));
-    }
+    private static partial int SDL_SetScancodeName(Scancode scancode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static int SetScancodeName(Scancode scancode, string name) => SDL_SetScancodeName(scancode, name);
     
 
     [LibraryImport(SDLLibrary)]
@@ -145,13 +140,8 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial Scancode SDL_GetScancodeFromName(byte* name);
-    public static unsafe Scancode GetScancodeFromName(string name)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_GetScancodeFromName(UTF8Encode(name, utf8Name, utf8NameBufSize));
-    }
+    private static partial Scancode SDL_GetScancodeFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static Scancode GetScancodeFromName(string name) => SDL_GetScancodeFromName(name);
     
     
     [LibraryImport(SDLLibrary)]
@@ -162,13 +152,8 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial Keycode SDL_GetKeyFromName(byte* name);
-    public static unsafe Keycode GetKeyFromName(string name)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_GetKeyFromName(UTF8Encode(name, utf8Name, utf8NameBufSize));
-    }
+    private static partial Keycode SDL_GetKeyFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static Keycode GetKeyFromName(string name) => SDL_GetKeyFromName(name);
     
     
     [LibraryImport(SDLLibrary)]

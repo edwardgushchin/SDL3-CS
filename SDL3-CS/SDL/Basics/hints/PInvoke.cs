@@ -35,24 +35,18 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial int SDL_AddHintCallback(byte* name, HintCallback callback, IntPtr userdata);
-    public static unsafe int AddHintCallback(string name, HintCallback callback, IntPtr userdata)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_AddHintCallback(UTF8Encode(name, utf8Name, utf8NameBufSize), callback, userdata);
-    }
+    private static partial int SDL_AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        HintCallback callback, IntPtr userdata);
+    public static int AddHintCallback(string name, HintCallback callback, IntPtr userdata) =>
+        SDL_AddHintCallback(name, callback, userdata);
         
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void SDL_DelHintCallback(byte* name, HintCallback callback, IntPtr userdata);
-    public static unsafe void DelHintCallback(string name, HintCallback callback, IntPtr userdata)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        SDL_DelHintCallback(UTF8Encode(name, utf8Name, utf8NameBufSize),  callback, userdata);
-    }
+    private static partial void SDL_DelHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        HintCallback callback, IntPtr userdata);
+    public static void DelHintCallback(string name, HintCallback callback, IntPtr userdata) =>
+        SDL_DelHintCallback(name, callback, userdata);
     
 
     [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
@@ -64,25 +58,16 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_GetHintBoolean(byte* name, [MarshalAs(UnmanagedType.I1)]bool defaultValue);
-    public static unsafe bool GetHintBoolean(string name, bool defaultValue)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_GetHintBoolean(UTF8Encode(name, utf8Name, utf8NameBufSize), defaultValue);
-    }
+    private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.I1)]bool defaultValue);
+    public static bool GetHintBoolean(string name, bool defaultValue) => SDL_GetHintBoolean(name, defaultValue);
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_ResetHint(byte* name);
-    public static unsafe bool ResetHint(string name)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        return SDL_ResetHint(UTF8Encode(name, utf8Name, utf8NameBufSize));
-    }
+    private static partial bool SDL_ResetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static bool ResetHint(string name) => SDL_ResetHint(name);
     
     
     [LibraryImport(SDLLibrary)]
@@ -95,36 +80,16 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_SetHint(byte* name, byte* value);
-    public static unsafe bool SetHint(string name, string value)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        
-        var utf8ValueBufSize = UTF8Size(value);
-        var utf8Value = stackalloc byte[utf8ValueBufSize];
-        
-        return SDL_SetHint(
-            UTF8Encode(name, utf8Name, utf8NameBufSize),
-            UTF8Encode(value, utf8Value, utf8ValueBufSize));
-    }
+    private static unsafe partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+    public static unsafe bool SetHint(string name, string value) => SDL_SetHint(name, value);
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_SetHintWithPriority(byte* name, byte* value, HintPriority priority);
-    public static unsafe bool SetHintWithPriority(string name, string value, HintPriority priority)
-    {
-        var utf8NameBufSize = UTF8Size(name);
-        var utf8Name = stackalloc byte[utf8NameBufSize];
-        
-        var utf8ValueBufSize = UTF8Size(value);
-        var utf8Value = stackalloc byte[utf8ValueBufSize];
-        
-        return SDL_SetHintWithPriority(
-            UTF8Encode(name, utf8Name, utf8NameBufSize),
-            UTF8Encode(value, utf8Value, utf8ValueBufSize), 
-            priority);
-    }
+    private static unsafe partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
+    public static unsafe bool SetHintWithPriority(string name, string value, HintPriority priority) =>
+        SDL_SetHintWithPriority(name, value, priority);
 }

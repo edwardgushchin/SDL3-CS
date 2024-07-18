@@ -41,10 +41,9 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    private static partial string SDL_GetError();
+    private static partial IntPtr SDL_GetError();
 
-    public static string GetError() => SDL_GetError();
+    public static string? GetError() => Marshal.PtrToStringUTF8(SDL_GetError());
 
     
     [LibraryImport(SDLLibrary)]

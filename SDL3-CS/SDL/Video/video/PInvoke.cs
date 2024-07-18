@@ -35,13 +35,10 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial IntPtr SDL_CreateWindow(byte* title, int w, int h, WindowFlags flags);
-    public static unsafe Window CreateWindow(string title, int w, int h, WindowFlags flags)
-    { 
-        var utf8StrBufSize = UTF8Size(title); 
-        var utf8Str = stackalloc byte[utf8StrBufSize];
-        return new Window( SDL_CreateWindow(UTF8Encode(title, utf8Str, utf8StrBufSize), w, h, flags));
-    }
+    private static partial IntPtr SDL_CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, 
+        WindowFlags flags);
+    public static Window CreateWindow(string title, int w, int h, WindowFlags flags) =>
+        new(SDL_CreateWindow(title, w, h, flags));
     
     
     [LibraryImport(SDLLibrary)]

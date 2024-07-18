@@ -35,13 +35,9 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial IntPtr SDL_CreateRenderer(IntPtr window,  byte* name);
-    public static unsafe Render CreateRenderer(Window window, string? name)
-    {
-        var utf8TitleBufSize = UTF8Size(name);
-        var utf8Title = stackalloc byte[utf8TitleBufSize];
-        return new Render(SDL_CreateRenderer(window.Handle, UTF8Encode(name, utf8Title, utf8TitleBufSize)));
-    }
+    private static partial IntPtr SDL_CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static Render CreateRenderer(Window window, string name) => 
+        new(SDL_CreateRenderer(window.Handle, name));
 
 
     [LibraryImport(SDLLibrary)]

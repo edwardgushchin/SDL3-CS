@@ -185,7 +185,8 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, Keystate state, float x, float y, float pressure);
+	private static partial int SDL_SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, 
+		Keystate state, float x, float y, float pressure);
 	public static int SetJoystickVirtualTouchpad(Joystick joystick, int touchpad, int finger, 
 		Keystate state, float x, float y, float pressure) => 
 		SDL_SetJoystickVirtualTouchpad(joystick.Handle, touchpad, finger, state, x, y, pressure);
@@ -208,16 +209,16 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	private static partial string SDL_GetJoystickName(IntPtr joystick);
-	public static string GetJoystickName(Joystick joystick) => SDL_GetJoystickName(joystick.Handle);
+	private static partial IntPtr SDL_GetJoystickName(IntPtr joystick);
+	public static string? GetJoystickName(Joystick joystick) => 
+		Marshal.PtrToStringUTF8(SDL_GetJoystickName(joystick.Handle));
 	
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	private static partial string SDL_GetJoystickPath(IntPtr joystick);
-	public static string GetJoystickPath(Joystick joystick) => SDL_GetJoystickPath(joystick.Handle);
+	private static partial IntPtr SDL_GetJoystickPath(IntPtr joystick);
+	public static string? GetJoystickPath(Joystick joystick) => 
+		Marshal.PtrToStringUTF8(SDL_GetJoystickPath(joystick.Handle));
 	
 	
 	[LibraryImport(SDLLibrary)]
@@ -266,9 +267,9 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	private static partial string SDL_GetJoystickSerial(IntPtr joystick);
-	public static string GetJoystickSerial(Joystick joystick) => SDL_GetJoystickSerial(joystick.Handle);
+	private static partial IntPtr SDL_GetJoystickSerial(IntPtr joystick);
+	public static string? GetJoystickSerial(Joystick joystick) => 
+		Marshal.PtrToStringUTF8(SDL_GetJoystickSerial(joystick.Handle));
 	
 	
 	[LibraryImport(SDLLibrary)]
@@ -279,27 +280,15 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static unsafe partial int SDL_GetJoystickGUIDString(GUID guid, byte* pszGUID, int cbGUID);
-	public static unsafe int GetJoystickGUIDString(GUID guid, out string? pszGUID, int cbGUID = 33)
-	{
-		var buffer = Marshal.AllocHGlobal(cbGUID);
-		var result = SDL_GetJoystickGUIDString(guid, (byte*)buffer, cbGUID);
-		pszGUID = Marshal.PtrToStringUTF8(buffer);
-		Marshal.FreeHGlobal(buffer);
-		return result;
-	}
+	private static partial int SDL_GetJoystickGUIDString(GUID guid, [MarshalAs(UnmanagedType.LPUTF8Str)]out string pszGUID, int cbGUID);
+	public static int GetJoystickGUIDString(GUID guid, out string pszGUID, int cbGUID = 33) =>
+		SDL_GetJoystickGUIDString(guid, out pszGUID, cbGUID);
 	
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static unsafe partial GUID SDL_GetJoystickGUIDFromString(byte* pchGUID);
-
-	public static unsafe GUID GetJoystickGUIDFromString(string pchGUID)
-	{
-		var utf8NameBufSize = UTF8Size(pchGUID);
-		var utf8Name = stackalloc byte[utf8NameBufSize];
-		return SDL_GetJoystickGUIDFromString(UTF8Encode(pchGUID, utf8Name, utf8NameBufSize));
-	}
+	private static partial GUID SDL_GetJoystickGUIDFromString([MarshalAs(UnmanagedType.LPUTF8Str)] string pchGUID);
+	public static GUID GetJoystickGUIDFromString(string pchGUID) => SDL_GetJoystickGUIDFromString(pchGUID);
 	
 	
 	[LibraryImport(SDLLibrary)]
