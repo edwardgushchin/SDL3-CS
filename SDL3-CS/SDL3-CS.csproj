@@ -105,6 +105,25 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="SDL\Additional Functionality\dialog\" />
+      <Folder Include="SDL\Additional Functionality\locale\" />
+      <Folder Include="SDL\Additional Functionality\messagebox\" />
+      <Folder Include="SDL\Additional Functionality\system\" />
+      <Folder Include="SDL\Audio\audio\" />
+      <Folder Include="SDL\Basics\properties\" />
+      <Folder Include="SDL\Force Feedback\haptic\" />
+      <Folder Include="SDL\Input Events\hidapi\" />
+      <Folder Include="SDL\Input Events\touch\" />
+      <Folder Include="SDL\Platform and CPU Information\cpuinfo\" />
+      <Folder Include="SDL\Platform and CPU Information\platform\" />
+      <Folder Include="SDL\Time\timer\" />
+      <Folder Include="SDL\Time\time\" />
+      <Folder Include="SDL\Video\blendmode\" />
+      <Folder Include="SDL\Video\camera\" />
+      <Folder Include="SDL\Video\clipboard\" />
+      <Folder Include="SDL\Video\metal\" />
+      <Folder Include="SDL\Video\pixels\" />
+      <Folder Include="SDL\Video\vulkan\" />
       <Folder Include="SDL_image\" />
       <Folder Include="SDL_mixer\" />
       <Folder Include="SDL_ttf\" />
