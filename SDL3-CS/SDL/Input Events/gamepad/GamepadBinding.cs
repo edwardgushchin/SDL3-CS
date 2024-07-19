@@ -35,11 +35,11 @@ public static partial class SDL
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadBinding
     {
-        public GamepadType InputType;
+        public GamepadBindingType InputType;
 
         public InputData Input;
 
-        public GamepadType OutputType;
+        public GamepadBindingType OutputType;
 
         public OutputData Output;
 

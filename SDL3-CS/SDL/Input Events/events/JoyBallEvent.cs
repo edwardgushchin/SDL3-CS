@@ -35,7 +35,7 @@ public static partial class SDL
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyBallEvent
     {
-        public SDL.EventType Type;
+        public EventType Type;
         private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which; 

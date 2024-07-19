@@ -33,5 +33,5 @@ namespace SDL3;
 public static partial class SDL
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int VirtualJoysticRumbleTriggersCallback(IntPtr userData, ushort left_rumble, ushort right_rumble);
+    public delegate int VirtualJoysticRumbleTriggersCallback(IntPtr userData, ushort leftRumble, ushort rightRumble);
 }

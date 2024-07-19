@@ -60,5 +60,5 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial InitFlags SDL_WasInit(InitFlags flags);
-    public static void WasInit(InitFlags flags) => SDL_WasInit(flags);
+    public static InitFlags WasInit(InitFlags flags) => SDL_WasInit(flags);
 }

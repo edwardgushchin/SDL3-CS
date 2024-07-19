@@ -2,7 +2,7 @@
 
 namespace Create_Window;
 
-static class Program
+internal static class Program
 {
     private static void Main()
     {

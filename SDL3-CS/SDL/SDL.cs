@@ -28,7 +28,6 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SDL3;
 
@@ -44,11 +43,11 @@ public static partial class SDL
     private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
     {
         var libHandle = IntPtr.Zero;
-        var runtimes = "runtimes";
-        var native = "native";
-        var winLib = "SDL3.DLL";
-        var linLib = "libSDL3.so";
-        var osxLib = "libSDL3.dylib";
+        const string runtimes = "runtimes";
+        const string native = "native";
+        const string winLib = "SDL3.DLL";
+        const string linLib = "libSDL3.so";
+        const string osxLib = "libSDL3.dylib";
             
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {

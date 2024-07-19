@@ -33,5 +33,5 @@ namespace SDL3;
 public static partial class SDL
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void VirtualJoysticSetPlayerIndexCallback(IntPtr userData, int player_index);
+    public delegate void VirtualJoysticSetPlayerIndexCallback(IntPtr userData, int playerIndex);
 }

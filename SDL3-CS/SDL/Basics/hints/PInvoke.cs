@@ -80,16 +80,16 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+    private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
-    public static unsafe bool SetHint(string name, string value) => SDL_SetHint(name, value);
+    public static bool SetHint(string name, string value) => SDL_SetHint(name, value);
 
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+    private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
-    public static unsafe bool SetHintWithPriority(string name, string value, HintPriority priority) =>
+    public static bool SetHintWithPriority(string name, string value, HintPriority priority) =>
         SDL_SetHintWithPriority(name, value, priority);
 }

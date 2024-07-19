@@ -150,15 +150,15 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_DetachVirtualJoystick(uint instance_id);
-	public static int DetachVirtualJoystick(uint instance_id) => SDL_DetachVirtualJoystick(instance_id);
+	private static partial int SDL_DetachVirtualJoystick(uint instanceID);
+	public static int DetachVirtualJoystick(uint instanceID) => SDL_DetachVirtualJoystick(instanceID);
 	
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_IsJoystickVirtual(uint instance_id);
-	public static bool IsJoystickVirtual(uint instance_id) => SDL_IsJoystickVirtual(instance_id);
+	private static partial bool SDL_IsJoystickVirtual(uint instanceID);
+	public static bool IsJoystickVirtual(uint instanceID) => SDL_IsJoystickVirtual(instanceID);
 	
 	
 	[LibraryImport(SDLLibrary)]
@@ -201,10 +201,10 @@ public static partial class SDL
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial int SDL_SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, 
-		ulong sensor_timestamp, [In] float[] data, int num_values);
+		ulong sensorTimestamp, [In] float[] data, int numValues);
 	public static int SendJoystickVirtualSensorData(Joystick joystick, SensorType type, 
-		ulong sensor_timestamp, float[] data, int num_values) => 
-		SDL_SendJoystickVirtualSensorData(joystick.Handle, type, sensor_timestamp, data, num_values);
+		ulong sensorTimestamp, float[] data, int numValues) => 
+		SDL_SendJoystickVirtualSensorData(joystick.Handle, type, sensorTimestamp, data, numValues);
 	
 	
 	[LibraryImport(SDLLibrary)]
@@ -235,9 +235,9 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index);
-	public static int SetJoystickPlayerIndex(Joystick joystick, int player_index) => 
-		SDL_SetJoystickPlayerIndex(joystick.Handle, player_index);
+	private static partial int SDL_SetJoystickPlayerIndex(IntPtr joystick, int playerIndex);
+	public static int SetJoystickPlayerIndex(Joystick joystick, int playerIndex) => 
+		SDL_SetJoystickPlayerIndex(joystick.Handle, playerIndex);
 	
 	
 	[LibraryImport(SDLLibrary)]
@@ -398,21 +398,21 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_RumbleJoystick(IntPtr joystick, ushort low_frequency_rumble, 
-		ushort high_frequency_rumble, uint duration_ms);
+	private static partial int SDL_RumbleJoystick(IntPtr joystick, ushort lowFrequencyRumble, 
+		ushort highFrequencyRumble, uint durationMs);
 
-	public static int RumbleJoystick(Joystick joystick, ushort low_frequency_rumble, ushort high_frequency_rumble,
-		uint duration_ms) =>
-		SDL_RumbleJoystick(joystick.Handle, low_frequency_rumble, high_frequency_rumble, duration_ms);
+	public static int RumbleJoystick(Joystick joystick, ushort lowFrequencyRumble, ushort highFrequencyRumble,
+		uint durationMs) =>
+		SDL_RumbleJoystick(joystick.Handle, lowFrequencyRumble, highFrequencyRumble, durationMs);
 	
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_RumbleJoystickTriggers(IntPtr joystick, ushort left_rumble, ushort right_rumble, 
-		uint duration_ms);
-	public static int RumbleJoystickTriggers(Joystick joystick, ushort left_rumble, ushort right_rumble,
-		uint duration_ms) =>
-		SDL_RumbleJoystickTriggers(joystick.Handle, left_rumble, right_rumble, duration_ms);
+	private static partial int SDL_RumbleJoystickTriggers(IntPtr joystick, ushort leftRumble, ushort rightRumble, 
+		uint durationMs);
+	public static int RumbleJoystickTriggers(Joystick joystick, ushort leftRumble, ushort rightRumble,
+		uint durationMs) =>
+		SDL_RumbleJoystickTriggers(joystick.Handle, leftRumble, rightRumble, durationMs);
 	
 	
 	[LibraryImport(SDLLibrary)]

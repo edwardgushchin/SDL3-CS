@@ -30,7 +30,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public struct Joystick(IntPtr handle)
+    public readonly struct Joystick(IntPtr handle)
     {
         public IntPtr Handle { get; } = handle;
 

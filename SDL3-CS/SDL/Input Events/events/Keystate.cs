@@ -33,6 +33,6 @@ public static partial class SDL
     public enum Keystate : byte
     {
         Pressed = 1,
-        Released = 0,
+        Released = 0
     }
 }

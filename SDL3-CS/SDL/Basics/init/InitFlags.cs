@@ -41,6 +41,6 @@ public static partial class SDL
         Gamepad =   0x00002000u,
         Events =    0x00004000u,
         Sensor =    0x00008000u,
-        Camera =    0x00010000u,
+        Camera =    0x00010000u
     }
 }

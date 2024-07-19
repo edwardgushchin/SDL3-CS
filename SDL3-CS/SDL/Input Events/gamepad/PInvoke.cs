@@ -8,6 +8,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_AddGamepadMapping([MarshalAs(UnmanagedType.LPUTF8Str)] string mapping);
+    // ReSharper disable once MemberCanBePrivate.Global
     public static int AddGamepadMapping(string mapping) => SDL_AddGamepadMapping(mapping);
     
 
@@ -90,10 +91,10 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetGamepadMapping(uint instance_id, 
+    private static partial int SDL_SetGamepadMapping(uint instanceID, 
         [MarshalAs(UnmanagedType.LPUTF8Str)]string mapping);
-    public static int SetGamepadMapping(uint instance_id, string mapping) =>
-        SDL_SetGamepadMapping(instance_id, mapping);
+    public static int SetGamepadMapping(uint instanceID, string mapping) =>
+        SDL_SetGamepadMapping(instanceID, mapping);
     
     
     [LibraryImport(SDLLibrary)]
@@ -125,94 +126,94 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_IsGamepad(uint instance_id);
-    public static bool IsGamepad(uint instance_id) => SDL_IsGamepad(instance_id);
+    private static partial bool SDL_IsGamepad(uint instanceID);
+    public static bool IsGamepad(uint instanceID) => SDL_IsGamepad(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGamepadNameForID(uint instance_id);
+    private static partial IntPtr SDL_GetGamepadNameForID(uint instanceID);
 
-    public static string? GetGamepadNameForID(uint instance_id) =>
-        Marshal.PtrToStringUTF8(SDL_GetGamepadNameForID(instance_id));
+    public static string? GetGamepadNameForID(uint instanceID) =>
+        Marshal.PtrToStringUTF8(SDL_GetGamepadNameForID(instanceID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGamepadPathForID(uint instance_id);
-    public static string? GetGamepadPathForID(uint instance_id) =>
-        Marshal.PtrToStringUTF8(SDL_GetGamepadPathForID(instance_id));
+    private static partial IntPtr SDL_GetGamepadPathForID(uint instanceID);
+    public static string? GetGamepadPathForID(uint instanceID) =>
+        Marshal.PtrToStringUTF8(SDL_GetGamepadPathForID(instanceID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetGamepadPlayerIndexForID(uint instance_id);
-    public static int GetGamepadPlayerIndexForID(uint instance_id) => SDL_GetGamepadPlayerIndexForID(instance_id);
+    private static partial int SDL_GetGamepadPlayerIndexForID(uint instanceID);
+    public static int GetGamepadPlayerIndexForID(uint instanceID) => SDL_GetGamepadPlayerIndexForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial GUID SDL_GetGamepadGUIDForID(uint instance_id);
-    public static GUID GetGamepadGUIDForID(uint instance_id) => SDL_GetGamepadGUIDForID(instance_id);
+    private static partial GUID SDL_GetGamepadGUIDForID(uint instanceID);
+    public static GUID GetGamepadGUIDForID(uint instanceID) => SDL_GetGamepadGUIDForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ushort SDL_GetGamepadVendorForID(uint instance_id);
-    public static ushort GetGamepadVendorForID(uint instance_id) => SDL_GetGamepadVendorForID(instance_id);
+    private static partial ushort SDL_GetGamepadVendorForID(uint instanceID);
+    public static ushort GetGamepadVendorForID(uint instanceID) => SDL_GetGamepadVendorForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ushort SDL_GetGamepadProductForID(uint instance_id);
-    public static ushort GetGamepadProductForID(uint instance_id) => SDL_GetGamepadProductForID(instance_id);
+    private static partial ushort SDL_GetGamepadProductForID(uint instanceID);
+    public static ushort GetGamepadProductForID(uint instanceID) => SDL_GetGamepadProductForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ushort SDL_GetGamepadProductVersionForID(uint instance_id);
-    public static ushort GetGamepadProductVersionForID(uint instance_id) => 
-        SDL_GetGamepadProductVersionForID(instance_id);
+    private static partial ushort SDL_GetGamepadProductVersionForID(uint instanceID);
+    public static ushort GetGamepadProductVersionForID(uint instanceID) => 
+        SDL_GetGamepadProductVersionForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial GamepadType SDL_GetGamepadTypeForID(uint instance_id);
-    public static GamepadType GetGamepadTypeForID(uint instance_id) => 
-        SDL_GetGamepadTypeForID(instance_id);
+    private static partial GamepadType SDL_GetGamepadTypeForID(uint instanceID);
+    public static GamepadType GetGamepadTypeForID(uint instanceID) => 
+        SDL_GetGamepadTypeForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial GamepadType SDL_GetRealGamepadTypeForID(uint instance_id);
-    public static GamepadType GetRealGamepadTypeForID(uint instance_id) => 
-        SDL_GetRealGamepadTypeForID(instance_id);
+    private static partial GamepadType SDL_GetRealGamepadTypeForID(uint instanceID);
+    public static GamepadType GetRealGamepadTypeForID(uint instanceID) => 
+        SDL_GetRealGamepadTypeForID(instanceID);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGamepadMappingForID(uint instance_id);
-    public static string? GetGamepadMappingForID(uint instance_id) =>
-        Marshal.PtrToStringUTF8(SDL_GetGamepadMappingForID(instance_id));
+    private static partial IntPtr SDL_GetGamepadMappingForID(uint instanceID);
+    public static string? GetGamepadMappingForID(uint instanceID) =>
+        Marshal.PtrToStringUTF8(SDL_GetGamepadMappingForID(instanceID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_OpenGamepad(uint instance_id);
-    public static Gamepad OpenGamepad(uint instance_id) => new(SDL_OpenGamepad(instance_id));
+    private static partial IntPtr SDL_OpenGamepad(uint instanceID);
+    public static Gamepad OpenGamepad(uint instanceID) => new(SDL_OpenGamepad(instanceID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGamepadFromID(uint instance_id);
-    public static Gamepad GetGamepadFromID(uint instance_id) => new(SDL_GetGamepadFromID(instance_id));
+    private static partial IntPtr SDL_GetGamepadFromID(uint instanceID);
+    public static Gamepad GetGamepadFromID(uint instanceID) => new(SDL_GetGamepadFromID(instanceID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGamepadFromPlayerIndex(int player_index);
-    public static Gamepad GetGamepadFromPlayerIndex(int player_index) => 
-        new(SDL_GetGamepadFromPlayerIndex(player_index));
+    private static partial IntPtr SDL_GetGamepadFromPlayerIndex(int playerIndex);
+    public static Gamepad GetGamepadFromPlayerIndex(int playerIndex) => 
+        new(SDL_GetGamepadFromPlayerIndex(playerIndex));
     
     
     [LibraryImport(SDLLibrary)]
@@ -261,9 +262,9 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetGamepadPlayerIndex(IntPtr gamepad, int player_index);
-    public static int SetGamepadPlayerIndex(Gamepad gamepad, int player_index) =>
-        SDL_SetGamepadPlayerIndex(gamepad.Handle, player_index);
+    private static partial int SDL_SetGamepadPlayerIndex(IntPtr gamepad, int playerIndex);
+    public static int SetGamepadPlayerIndex(Gamepad gamepad, int playerIndex) =>
+        SDL_SetGamepadPlayerIndex(gamepad.Handle, playerIndex);
     
     
     [LibraryImport(SDLLibrary)]
@@ -521,19 +522,19 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int num_values);
+    private static partial int SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
 
-    public static int GetGamepadSensorData(Gamepad gamepad, SensorType type, out float[] data, int num_values)
+    public static int GetGamepadSensorData(Gamepad gamepad, SensorType type, out float[] data, int numValues)
     {
-        data = new float[num_values];
-        var dataPtr = Marshal.AllocHGlobal(num_values * sizeof(float));
+        data = new float[numValues];
+        var dataPtr = Marshal.AllocHGlobal(numValues * sizeof(float));
 
         try
         {
-            var result = SDL_GetGamepadSensorData(gamepad.Handle, type, dataPtr, num_values);
+            var result = SDL_GetGamepadSensorData(gamepad.Handle, type, dataPtr, numValues);
             if (result == 0)
             {
-                Marshal.Copy(dataPtr, data, 0, num_values);
+                Marshal.Copy(dataPtr, data, 0, numValues);
             }
             else
             {
@@ -551,20 +552,20 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RumbleGamepad(IntPtr gamepad, ushort low_frequency_rumble,
-        ushort high_frequency_rumble, ushort duration_ms);
+    private static partial int SDL_RumbleGamepad(IntPtr gamepad, ushort lowFrequencyRumble,
+        ushort highFrequencyRumble, ushort durationMs);
 
-    public static int RumbleGamepad(Gamepad gamepad, ushort low_frequency_rumble, ushort high_frequency_rumble,
-        ushort duration_ms) =>
-        SDL_RumbleGamepad(gamepad.Handle, low_frequency_rumble, high_frequency_rumble, duration_ms);
+    public static int RumbleGamepad(Gamepad gamepad, ushort lowFrequencyRumble, ushort highFrequencyRumble,
+        ushort durationMs) =>
+        SDL_RumbleGamepad(gamepad.Handle, lowFrequencyRumble, highFrequencyRumble, durationMs);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RumbleGamepadTriggers(IntPtr gamepad, ushort left_rumble, ushort right_rumble, 
-        ushort duration_ms);
-    public static int RumbleGamepadTriggers(Gamepad gamepad, ushort left_rumble, ushort right_rumble,
-        ushort duration_ms) => SDL_RumbleGamepadTriggers(gamepad.Handle, left_rumble, right_rumble, duration_ms);
+    private static partial int SDL_RumbleGamepadTriggers(IntPtr gamepad, ushort leftRumble, ushort rightRumble, 
+        ushort durationMs);
+    public static int RumbleGamepadTriggers(Gamepad gamepad, ushort leftRumble, ushort rightRumble,
+        ushort durationMs) => SDL_RumbleGamepadTriggers(gamepad.Handle, leftRumble, rightRumble, durationMs);
     
     
     [LibraryImport(SDLLibrary)]

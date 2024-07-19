@@ -32,26 +32,26 @@ public static partial class SDL
 {
     public enum SystemCursor
     {
-        Default,      /**< Default cursor. Usually an arrow. */
-        Text,         /**< Text selection. Usually an I-beam. */
-        Wait,         /**< Wait. Usually an hourglass or watch or spinning ball. */
-        Crosshair,    /**< Crosshair. */
-        Progress,     /**< Program is busy but still interactive. Usually it's WAIT with an arrow. */
-        NWSEResize,  /**< Double arrow pointing northwest and southeast. */
-        NESWResize,  /**< Double arrow pointing northeast and southwest. */
-        EWResize,    /**< Double arrow pointing west and east. */
-        NSResize,    /**< Double arrow pointing north and south. */
-        Move,         /**< Four pointed arrow pointing north, south, east, and west. */
-        NotAllowed,  /**< Not permitted. Usually a slashed circle or crossbones. */
-        Pointer,      /**< Pointer that indicates a link. Usually a pointing hand. */
-        NWResize,    /**< Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE. */
-        NResize,     /**< Window resize top. May be NS_RESIZE. */
-        NEResize,    /**< Window resize top-right. May be NESW_RESIZE. */
-        EResize,     /**< Window resize right. May be EW_RESIZE. */
-        SEResize,    /**< Window resize bottom-right. May be NWSE_RESIZE. */
-        SResize,     /**< Window resize bottom. May be NS_RESIZE. */
-        SWResize,    /**< Window resize bottom-left. May be NESW_RESIZE. */
-        WResize,     /**< Window resize left. May be EW_RESIZE. */
+        Default,
+        Text,
+        Wait,
+        Crosshair,
+        Progress, 
+        NWSEResize,
+        NESWResize,
+        EWResize,
+        NSResize,
+        Move,
+        NotAllowed,
+        Pointer,
+        NWResize, 
+        NResize,
+        NEResize, 
+        EResize,
+        SEResize,
+        SResize,
+        SWResize,
+        WResize,
         NumSystemCursors
     }
 }

@@ -38,6 +38,7 @@ public static partial class SDL
     {
         private unsafe fixed byte data[16];
         
+        // ReSharper disable once MemberCanBePrivate.Global
         public unsafe byte[] Data
         {
             get

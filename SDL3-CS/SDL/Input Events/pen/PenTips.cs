@@ -33,6 +33,6 @@ public static partial class SDL
     public enum PenTips
     {
         Ink = PenFlagInkBitIndex,
-        Eraser = PenFlagEraserBitIndex,
+        Eraser = PenFlagEraserBitIndex
     }
 }

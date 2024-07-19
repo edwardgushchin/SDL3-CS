@@ -4,11 +4,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    // FIXME: implement SDL_TouchFingerEvent
-    
+    //TODO: Implement SDL_TouchFingerEvent
+
     [StructLayout(LayoutKind.Sequential)]
-    public struct TouchFingerEvent
-    {
-        
-    }
+    public struct TouchFingerEvent;
 }

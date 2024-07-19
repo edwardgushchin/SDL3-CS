@@ -33,11 +33,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    // FIXME: implement SDL_TextEditingEvent
+    //TODO: Implement SDL_TextEditingEvent
     
     [StructLayout(LayoutKind.Sequential)]
-    public struct TextEditingEvent
-    {
-        
-    }
+    public struct TextEditingEvent;
 }
