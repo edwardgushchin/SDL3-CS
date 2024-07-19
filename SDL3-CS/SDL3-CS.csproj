@@ -120,7 +120,6 @@
       <Folder Include="SDL\Video\camera\" />
       <Folder Include="SDL\Video\clipboard\" />
       <Folder Include="SDL\Video\metal\" />
-      <Folder Include="SDL\Video\pixels\" />
       <Folder Include="SDL\Video\vulkan\" />
       <Folder Include="SDL_image\" />
       <Folder Include="SDL_mixer\" />
