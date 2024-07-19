@@ -26,9 +26,12 @@
  */
 #endregion
 
+using System.Runtime.InteropServices;
+
 namespace SDL3;
 
 public static partial class SDL
 {
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LogOutputFunction(IntPtr userdata, LogCategory category, LogPriority priority, string message);
 }
