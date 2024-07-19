@@ -26,15 +26,23 @@
  */
 #endregion
 
-
 using System.Runtime.InteropServices;
 
 namespace SDL3;
 
 public static partial class SDL
 {
-    //TODO: Implement SDL_TextEditingEvent
-    
     [StructLayout(LayoutKind.Sequential)]
-    public struct TextEditingEvent;
+    public struct TextEditingEvent
+    {
+        public EventType Type;
+        private UInt32 reserved;
+        public UInt64 Timestamp;
+        public UInt32 WindowID;
+        private IntPtr text;
+        public Int32 Start;
+        public Int32 Length;
+
+        public string? Text => Marshal.PtrToStringUTF8(text);
+    }
 }
