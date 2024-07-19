@@ -13,6 +13,15 @@ For more information about SDL3, visit the SDL wiki:
 
 https://wiki.libsdl.org/SDL3/FrontPage
 
+
+## Install
+
+```
+git clone https://github.com/edwardgushchin/SDL3-CS
+cd SDL3-CS
+dotnet build -c Release
+```
+
 ## Usage
 
 ```C#
