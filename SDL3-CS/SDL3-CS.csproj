@@ -112,7 +112,6 @@
       <Folder Include="SDL\Audio\audio\" />
       <Folder Include="SDL\Basics\properties\" />
       <Folder Include="SDL\Force Feedback\haptic\" />
-      <Folder Include="SDL\Input Events\hidapi\" />
       <Folder Include="SDL\Platform and CPU Information\cpuinfo\" />
       <Folder Include="SDL\Platform and CPU Information\platform\" />
       <Folder Include="SDL\Time\timer\" />
