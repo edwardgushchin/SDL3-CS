@@ -39,7 +39,7 @@ public static partial class SDL
         private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 WindowID;
-        public Int32 Data1;
-        public Int32 Data2;
+        public IntPtr Data1;
+        public IntPtr Data2;
     }
 }
