@@ -32,23 +32,16 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct HIDDeviceInfo
     {
-        [MarshalAs(UnmanagedType.LPStr)]
-        public string Path;
+        private IntPtr path;
         public ushort VendorId;
         public ushort ProductId;
-
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string SerialNumber;
+        private IntPtr serialNumber;
         public ushort ReleaseNumber;
-
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string ManufacturerString;
-
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string ProductString;
+        private IntPtr manufacturerString;
+        private IntPtr productString;
         public ushort UsagePage;
         public ushort Usage;
         public int InterfaceNumber;
@@ -57,6 +50,11 @@ public static partial class SDL
         public int InterfaceProtocol;
         public HIDBusType BusType;
         private IntPtr next;
+        
+        public string? Path => Marshal.PtrToStringUTF8(path);
+        public string? SerialNumber => Marshal.PtrToStringUTF8(serialNumber);
+        public string? ManufacturerString => Marshal.PtrToStringUTF8(manufacturerString);
+        public string? ProductString => Marshal.PtrToStringUTF8(productString);
         public HIDDeviceInfo Next => Marshal.PtrToStructure<HIDDeviceInfo>(next);
     }
 }
