@@ -35,7 +35,7 @@ internal static class Program
         while (loop)
         {
             
-            while (SDL.PollEvent(out var sdlEvent) != 0)
+            while (SDL.PollEvent(out var sdlEvent))
             {
                 if (sdlEvent.Type == SDL.EventType.Quit)
                 {

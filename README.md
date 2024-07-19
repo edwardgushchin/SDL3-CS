@@ -55,14 +55,14 @@ public static class Program
             return;
         }
 
-        SDL.SetRenderDrawColor(renderer, 100,149,237,0);
+        SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
         
         var loop = true;
         
         while (loop)
         {
             
-            while (SDL.PollEvent(out var sdlEvent) != 0)
+            while (SDL.PollEvent(out var sdlEvent))
             {
                 if (sdlEvent.Type == SDL.EventType.Quit)
                 {
