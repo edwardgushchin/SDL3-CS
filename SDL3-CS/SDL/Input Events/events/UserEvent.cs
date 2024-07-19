@@ -32,11 +32,15 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    // FIXME: implement SDL_UserEvent
-    
     [StructLayout(LayoutKind.Sequential)]
     public struct UserEvent
     {
-        
+        public UInt64 Type;
+        private UInt64 reserved;
+        public UInt64 Timestamp;
+        public UInt32 WindowID;
+        public Int32 Code;
+        public IntPtr Data1;
+        public IntPtr Data2;
     }
 }
