@@ -41,8 +41,8 @@ public static partial class SDL
         public UInt32 WindowID;
         public float X;
         public float Y;
-        public IntPtr source;
-        public IntPtr data;
+        private IntPtr source;
+        private IntPtr data;
         public string? Source => Marshal.PtrToStringUTF8(source);
         public string? Data => Marshal.PtrToStringUTF8(data);
     }
