@@ -357,18 +357,23 @@ public static partial class SDL
             return [];
         }
 
-        var sizeOfBinding = Marshal.SizeOf<GamepadBinding>();
-        var bindings = new GamepadBinding[count];
-
-        for (var i = 0; i < count; i++)
+        try
         {
-            var currentPtr = bindingsPtr + i * sizeOfBinding;
-            bindings[i]  = Marshal.PtrToStructure<GamepadBinding>(currentPtr);
-        }
-        
-        Free(bindingsPtr);
+            var sizeOfBinding = Marshal.SizeOf<GamepadBinding>();
+            var bindings = new GamepadBinding[count];
 
-        return bindings;
+            for (var i = 0; i < count; i++)
+            {
+                var currentPtr = bindingsPtr + i * sizeOfBinding;
+                bindings[i]  = Marshal.PtrToStructure<GamepadBinding>(currentPtr);
+            }
+            
+            return bindings;
+        }
+        finally
+        {
+            Free(bindingsPtr);
+        }
     }
     
     
