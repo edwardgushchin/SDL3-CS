@@ -46,10 +46,16 @@ public static partial class SDL
     public static uint[] GetKeyboards(out int count)
     {
         var pArray = SDL_GetKeyboards(out count);
-        var keyboardArray = new int[count];
-        Marshal.Copy(pArray, keyboardArray, 0, count);
-        Free(pArray);
-        return Array.ConvertAll(keyboardArray, item => (uint)item);
+        try
+        {
+            var keyboardArray = new int[count];
+            Marshal.Copy(pArray, keyboardArray, 0, count);
+            return Array.ConvertAll(keyboardArray, item => (uint)item);
+        }
+        finally
+        {
+            Free(pArray);
+        }
     }
     
     
