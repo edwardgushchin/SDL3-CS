@@ -35,6 +35,12 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumVideoDrivers();
+    public static int GetNumVideoDrivers() => SDL_GetNumVideoDrivers();
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, 
         WindowFlags flags);
     public static Window CreateWindow(string title, int w, int h, WindowFlags flags) =>
