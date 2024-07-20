@@ -360,15 +360,13 @@ public static partial class SDL
 
         try
         {
-            var sizeOfBinding = Marshal.SizeOf<GamepadBinding>();
             var bindings = new GamepadBinding[count];
-
             for (var i = 0; i < count; i++)
             {
-                var currentPtr = bindingsPtr + i * sizeOfBinding;
-                bindings[i]  = Marshal.PtrToStructure<GamepadBinding>(currentPtr);
+                var bindPtr = Marshal.ReadIntPtr(bindingsPtr, i * IntPtr.Size);
+                bindings[i] = Marshal.PtrToStructure<GamepadBinding>(bindPtr);
             }
-            
+
             return bindings;
         }
         finally

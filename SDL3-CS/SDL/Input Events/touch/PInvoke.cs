@@ -67,15 +67,13 @@ public static partial class SDL
 
         try
         {
-            var sizeOfFinger = Marshal.SizeOf<Finger>();
             var fingers = new Finger[count];
-
             for (var i = 0; i < count; i++)
             {
-                var currentPtr = fingersPtr + i * sizeOfFinger;
-                fingers[i]  = Marshal.PtrToStructure<Finger>(currentPtr);
+                var fingerPtr = Marshal.ReadIntPtr(fingersPtr, i * IntPtr.Size);
+                fingers[i] = Marshal.PtrToStructure<Finger>(fingerPtr);
             }
-            
+
             return fingers;
         }
         finally
@@ -83,5 +81,4 @@ public static partial class SDL
             Free(fingersPtr);
         }
     }
-    
 }
