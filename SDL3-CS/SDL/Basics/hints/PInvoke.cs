@@ -35,34 +35,21 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        HintCallback callback, IntPtr userdata);
-    public static int AddHintCallback(string name, HintCallback callback, IntPtr userdata) =>
-        SDL_AddHintCallback(name, callback, userdata);
-        
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
+    public static bool SetHintWithPriority(string name, string value, HintPriority priority) =>
+        SDL_SetHintWithPriority(name, value, priority);
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DelHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        HintCallback callback, IntPtr userdata);
-    public static void DelHintCallback(string name, HintCallback callback, IntPtr userdata) =>
-        SDL_DelHintCallback(name, callback, userdata);
     
-
-    [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetHint(string name);
-    public static string? GetHint(string name) => Marshal.PtrToStringUTF8(SDL_GetHint(name));
-
-
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(UnmanagedType.I1)]bool defaultValue);
-    public static bool GetHintBoolean(string name, bool defaultValue) => SDL_GetHintBoolean(name, defaultValue);
-
-
+    private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+    public static bool SetHint(string name, string value) => SDL_SetHint(name, value);
+    
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -77,19 +64,32 @@ public static partial class SDL
     public static bool ResetHints() => SDL_ResetHints();
     
     
+    [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetHint(string name);
+    public static string? GetHint(string name) => Marshal.PtrToStringUTF8(SDL_GetHint(name));
+    
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
-    public static bool SetHint(string name, string value) => SDL_SetHint(name, value);
-
-
+    private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.I1)]bool defaultValue);
+    public static bool GetHintBoolean(string name, bool defaultValue) => SDL_GetHintBoolean(name, defaultValue);
+    
+    
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
-    public static bool SetHintWithPriority(string name, string value, HintPriority priority) =>
-        SDL_SetHintWithPriority(name, value, priority);
+    private static partial int SDL_AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        HintCallback callback, IntPtr userdata);
+    public static int AddHintCallback(string name, HintCallback callback, IntPtr userdata) =>
+        SDL_AddHintCallback(name, callback, userdata);
+        
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DelHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        HintCallback callback, IntPtr userdata);
+    public static void DelHintCallback(string name, HintCallback callback, IntPtr userdata) =>
+        SDL_DelHintCallback(name, callback, userdata);
 }
