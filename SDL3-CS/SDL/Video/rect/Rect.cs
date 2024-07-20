@@ -33,10 +33,12 @@ namespace SDL3;
 public static partial class SDL
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect
+    public struct Rect(int x, int y, int w, int h)
     {
-        public int X, Y;
-        public int W, H;
+        public int X = x;
+        public int Y = y;
+        public int W = w;
+        public int H = h;
 
         public override string ToString()
         {
