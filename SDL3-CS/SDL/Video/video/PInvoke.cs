@@ -263,8 +263,6 @@ public static partial class SDL
     public static byte[] GetWindowICCProfile(Window window)
     {
         var profilePtr = SDL_GetWindowICCProfile(window.Handle, out var size);
-        
-        if (profilePtr == IntPtr.Zero) throw new SDLException(GetError()!);
 
         try
         {
