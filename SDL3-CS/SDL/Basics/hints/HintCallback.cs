@@ -33,5 +33,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void HintCallback(IntPtr userdata, string name, string? oldValue, string? newValue);
+    public delegate void HintCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string oldValue,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string newValue);
 }
