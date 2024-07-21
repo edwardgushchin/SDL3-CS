@@ -41,22 +41,25 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PeepEvents(Event events, int numevents, EventAction action, uint minType,
+    private static partial int SDL_PeepEvents(IntPtr events, int numevents, EventAction action, uint minType,
         uint maxType);
-    public static int PeepEvents(Event events, int numevents, EventAction action, uint minType, uint maxType) =>
-        SDL_PeepEvents(events, numevents, action, minType, maxType);
+    public static int PeepEvents(Event[] events, int numevents, EventAction action, uint minType, uint maxType)
+    {
+        var eventsPtr = events != null ? Marshal.UnsafeAddrOfPinnedArrayElement(events, 0) : IntPtr.Zero;
+        return SDL_PeepEvents(eventsPtr, numevents, action, minType, maxType);
+    }
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasEvent(uint type);
     public static bool HasEvent(uint type) => SDL_HasEvent(type);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasEvents(uint minType, uint maxType);
     public static bool HasEvents(uint minType, uint maxType) => SDL_HasEvents(minType, maxType);
     
@@ -75,14 +78,14 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_PollEvent(out Event e);
     public static bool PollEvent(out Event e) => SDL_PollEvent(out e);
-    
-    
+
+
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_WaitEvent(out Event e);
     public static bool WaitEvent(out Event e) => SDL_WaitEvent(out e);
     
@@ -96,8 +99,8 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PushEvent(out Event e);
-    public static int PushEvent(out Event e) => SDL_PushEvent(out e);
+    private static partial int SDL_PushEvent(ref Event e);
+    public static int PushEvent(ref Event e) => SDL_PushEvent(ref e);
     
     
     [LibraryImport(SDLLibrary)]
@@ -108,10 +111,10 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetEventFilter(EventFilter filter, out IntPtr userdata);
-    public static bool GetEventFilter(EventFilter filter, out IntPtr userdata) => 
-        SDL_GetEventFilter(filter, out userdata);
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_GetEventFilter(out EventFilter filter, out IntPtr userdata);
+    public static bool GetEventFilter(out EventFilter filter, out IntPtr userdata) =>
+        SDL_GetEventFilter(out filter, out userdata);
     
     
     [LibraryImport(SDLLibrary)]
@@ -134,13 +137,13 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
+    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(SDLBool)] bool enabled);
     public static void SetEventEnabled(uint type, bool enabled) => SDL_SetEventEnabled(type, enabled);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_EventEnabled(uint type);
     public static bool EventEnabled(uint type) => SDL_EventEnabled(type);
     
