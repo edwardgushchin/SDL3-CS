@@ -35,9 +35,9 @@ public static partial class SDL
     public const float IPhoneMaxGForce = 5.0f;
     
     
-    public const string JoystickCapMonoLedBoolean = "SDL.joystick.cap.mono_led";
-    public const string JoystickCapPlayerLedBoolean = "SDL.joystick.cap.player_led";
-    public const string JoystickCapRGBLedBoolean = "SDL.joystick.cap.rgb_led";
-    public const string JoystickCapRumbleBoolean = "SDL.joystick.cap.rumble";
-    public const string JoystickCapTriggerRumbleBoolean = "SDL.joystick.cap.trigger_rumble";
+    public const string PropJoystickCapMonoLedBoolean = "SDL.joystick.cap.mono_led";
+    public const string PropJoystickCapPlayerLedBoolean = "SDL.joystick.cap.player_led";
+    public const string PropJoystickCapRGBLedBoolean = "SDL.joystick.cap.rgb_led";
+    public const string PropJoystickCapRumbleBoolean = "SDL.joystick.cap.rumble";
+    public const string PropJoystickCapTriggerRumbleBoolean = "SDL.joystick.cap.trigger_rumble";
 }
