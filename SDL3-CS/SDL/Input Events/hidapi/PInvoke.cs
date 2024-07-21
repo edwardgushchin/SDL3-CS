@@ -53,15 +53,41 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial HIDDeviceInfo SDL_hid_enumerate(ushort venodrId, ushort productId);
-    public static HIDDeviceInfo HIDEnumerate(ushort vendorId, ushort productId) =>
-        SDL_hid_enumerate(vendorId, productId);
-    
+    private static partial IntPtr SDL_hid_enumerate(ushort venodrId, ushort productId);
+
+    public static HIDDeviceInfo[] HIDEnumerate(ushort vendorId, ushort productId)
+    {
+        var deviceInfoPtr = SDL_hid_enumerate(vendorId, productId);
+        if (deviceInfoPtr == IntPtr.Zero)
+        {
+            return [];
+        }
+
+        // Create a list to hold the managed devices
+        var deviceList = new List<HIDDeviceInfo>();
+
+        // Traverse the linked list
+        var currentPtr = deviceInfoPtr;
+        while (currentPtr != IntPtr.Zero)
+        {
+            var deviceInfo = Marshal.PtrToStructure<HIDDeviceInfo>(currentPtr);
+            deviceList.Add(deviceInfo);
+            
+            // Move to the next node
+            var nextPtr = deviceInfo.Next;
+            currentPtr = nextPtr;
+        }
+
+        // Free the enumeration
+        SDL_hid_free_enumeration(deviceInfoPtr);
+
+        return deviceList.ToArray();
+    }
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_hid_free_enumeration(HIDDeviceInfo devs);
-    public static void HIDFreeEnumeration(HIDDeviceInfo devs) => SDL_hid_free_enumeration(devs);
+    private static partial void SDL_hid_free_enumeration(IntPtr devs);
+    //public static void HIDFreeEnumeration(HIDDeviceInfo devs) => SDL_hid_free_enumeration(devs);
     
     
     [LibraryImport(SDLLibrary)]
@@ -171,18 +197,34 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial HIDDeviceInfo SDL_hid_get_device_info(IntPtr dev);
-    public static HIDDeviceInfo HIDGetDeviceInfo(HIDDevice dev) => SDL_hid_get_device_info(dev.Handle);
+    private static partial IntPtr SDL_hid_get_device_info(IntPtr dev);
+
+    public static HIDDeviceInfo? HIDGetDeviceInfo(HIDDevice dev) =>
+        Marshal.PtrToStructure<HIDDeviceInfo>(SDL_hid_get_device_info(dev.Handle));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_report_descriptor(IntPtr dev, 
-        [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] buf, IntPtr bufSize);
-    public static int HIDGetReportDescriptor(HIDDevice dev, out byte[] buf, int bufSize) =>
-        SDL_hid_get_report_descriptor(dev.Handle, out buf, new IntPtr(bufSize));
-    
-    
+        [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, nint bufSize);
+    public static int HIDGetReportDescriptor(HIDDevice dev, out byte[] buf, int bufSize = 4096)
+    {
+        buf = new byte[bufSize];
+
+        var result = SDL_hid_get_report_descriptor(dev.Handle, buf, bufSize);
+        if (result < 0)
+        {
+            buf = [];
+        }
+        else if (result < buf.Length)
+        {
+            Array.Resize(ref buf, result);
+        }
+
+        return result;
+    }
+
+
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_hid_ble_scan([MarshalAs(UnmanagedType.I1)] bool active);

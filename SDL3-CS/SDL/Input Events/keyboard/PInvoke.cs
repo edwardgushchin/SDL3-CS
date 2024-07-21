@@ -35,7 +35,7 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasKeyboard();
     public static bool HasKeyboard() => SDL_HasKeyboard();
     
@@ -54,7 +54,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(pArray);
+            Marshal.FreeHGlobal(pArray);
         }
     }
     
@@ -79,10 +79,16 @@ public static partial class SDL
     public static byte[] GetKeyboardState(out int numkeys)
     {
         var pArray = SDL_GetKeyboardState(out numkeys);
-        var keyboardState = new byte[numkeys];
-        Marshal.Copy(pArray, keyboardState, 0, numkeys);
-        Free(pArray);
-        return keyboardState;
+        try
+        {
+            var keyboardState = new byte[numkeys];
+            Marshal.Copy(pArray, keyboardState, 0, numkeys);
+            return keyboardState;
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(pArray);
+        }
     }
     
     
@@ -171,7 +177,7 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_TextInputActive(IntPtr window);
     public static bool TextInputActive(Window window) => SDL_TextInputActive(window.Handle);
     
@@ -190,9 +196,9 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetTextInputArea(IntPtr window, ref Rect rect, int cursor);
-    public static int SetTextInputArea(Window window, ref Rect rect, int cursor) => 
-        SDL_SetTextInputArea(window.Handle, ref rect, cursor);
+    private static partial int SDL_SetTextInputArea(IntPtr window, [In] in Rect rect, int cursor);
+    public static int SetTextInputArea(Window window, Rect rect, int cursor) => 
+        SDL_SetTextInputArea(window.Handle, rect, cursor);
     
     
     [LibraryImport(SDLLibrary)]
@@ -204,14 +210,14 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasScreenKeyboardSupport();
     public static bool HasScreenKeyboardSupport() => SDL_HasScreenKeyboardSupport();
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_ScreenKeyboardShown(Window window);
     public static bool ScreenKeyboardShown(Window window) => SDL_ScreenKeyboardShown(window);
 }

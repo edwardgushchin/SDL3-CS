@@ -158,7 +158,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate, [MarshalAs(UnmanagedType.I1)] bool includeHighDensityModes);
+    private static partial IntPtr SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate, [MarshalAs(SDLBool)] bool includeHighDensityModes);
     public static DisplayMode? GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate, bool includeHighDensityModes)
     {
         var displayModePtr = SDL_GetClosestFullscreenDisplayMode(displayID, w, h, refreshRate, includeHighDensityModes);

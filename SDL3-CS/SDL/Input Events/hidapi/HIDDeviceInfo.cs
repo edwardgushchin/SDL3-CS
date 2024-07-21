@@ -26,35 +26,51 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
 
+[SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 public static partial class SDL
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct HIDDeviceInfo
     {
         private IntPtr path;
-        public ushort VendorId;
-        public ushort ProductId;
-        private IntPtr serialNumber;
-        public ushort ReleaseNumber;
-        private IntPtr manufacturerString;
-        private IntPtr productString;
-        public ushort UsagePage;
-        public ushort Usage;
-        public int InterfaceNumber;
-        public int InterfaceClass;
-        public int InterfaceSubclass;
-        public int InterfaceProtocol;
-        public HIDBusType BusType;
+        private ushort vendor_id;
+        private ushort product_id;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        private string serial_number;
+        private ushort release_number;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        private string manufacturer_string;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        private string product_string;
+        private ushort usage_page;
+        private ushort usage;
+        private int interface_number;
+        private int interface_class;
+        private int interface_subclass;
+        private int interface_protocol;
+        private HIDBusType bus_type;
         private IntPtr next;
-        
-        public string? Path => Marshal.PtrToStringUTF8(path);
-        public string? SerialNumber => Marshal.PtrToStringUTF8(serialNumber);
-        public string? ManufacturerString => Marshal.PtrToStringUTF8(manufacturerString);
-        public string? ProductString => Marshal.PtrToStringUTF8(productString);
-        public HIDDeviceInfo Next => Marshal.PtrToStructure<HIDDeviceInfo>(next);
+
+
+        public string? Path => Marshal.PtrToStringAnsi(path);
+        public ushort VendorId => vendor_id;
+        public ushort ProductId => product_id;
+        public string? SerialNumber => serial_number;
+        public ushort ReleaseNumber => release_number;
+        public string? ManufacturerString => manufacturer_string;
+        public string? ProductString => product_string;
+        public ushort UsagePage => usage_page;
+        public ushort Usage => usage;
+        public int InterfaceNumber => interface_number;
+        public int InterfaceClass => interface_class;
+        public int InterfaceSubclass => interface_subclass;
+        public int InterfaceProtocol => interface_protocol;
+        public HIDBusType BusType => bus_type;
+        public IntPtr Next => next;
     }
 }

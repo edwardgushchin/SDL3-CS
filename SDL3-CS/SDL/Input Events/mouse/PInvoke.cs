@@ -35,7 +35,7 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasMouse();
     public static bool HasMouse() => SDL_HasMouse();
     
@@ -105,19 +105,19 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetRelativeMouseMode([MarshalAs(UnmanagedType.I1)] bool enabled);
+    private static partial int SDL_SetRelativeMouseMode([MarshalAs(SDLBool)] bool enabled);
     public static int SetRelativeMouseMode(bool enabled) => SDL_SetRelativeMouseMode(enabled);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_CaptureMouse([MarshalAs(UnmanagedType.I1)] bool enabled);
+    private static partial int SDL_CaptureMouse([MarshalAs(SDLBool)] bool enabled);
     public static int CaptureMouse(bool enabled) => SDL_CaptureMouse(enabled);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GetRelativeMouseMode();
     public static bool GetRelativeMouseMode() => SDL_GetRelativeMouseMode();
     
@@ -183,7 +183,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_CursorVisible();
     public static bool CursorVisible() => SDL_CursorVisible();
 }

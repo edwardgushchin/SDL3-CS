@@ -8,7 +8,6 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_AddGamepadMapping([MarshalAs(UnmanagedType.LPUTF8Str)] string mapping);
-    // ReSharper disable once MemberCanBePrivate.Global
     public static int AddGamepadMapping(string mapping) => SDL_AddGamepadMapping(mapping);
     
 
@@ -48,9 +47,10 @@ public static partial class SDL
     public static string?[] GetGamepadMappings(out int count)
     {
         var arrayPtr = SDL_GetGamepadMappings(out count);
-        
+
         if (arrayPtr == IntPtr.Zero || count == 0)
         {
+            count = 0;
             return [];
         }
 
@@ -62,7 +62,7 @@ public static partial class SDL
             
             for (var i = 0; i < count; i++)
             {
-                mappings[i] = Marshal.PtrToStringAnsi(ptrArray[i]);
+                mappings[i] = Marshal.PtrToStringUTF8(ptrArray[i]);
             }
 
             return mappings;
@@ -99,7 +99,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasGamepad();
     public static bool HasGamepad() => SDL_HasGamepad();
     
@@ -107,25 +107,32 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetGamepads(out int count);
-    public static uint[] GetGamepads(out int cout)
+    public static uint[] GetGamepads(out int count)
     {
-        var pArray = SDL_GetGamepads(out cout);
+        var gamepadsPtr = SDL_GetGamepads(out count);
+        
+        if (gamepadsPtr == IntPtr.Zero || count == 0)
+        {
+            count = 0;
+            return [];
+        }
+        
         try
         {
-            var joystickArray = new int[cout];
-            Marshal.Copy(pArray, joystickArray, 0, cout);
+            var joystickArray = new int[count];
+            Marshal.Copy(gamepadsPtr, joystickArray, 0, count);
             return Array.ConvertAll(joystickArray, item => (uint)item);
         }
         finally
         {
-            Free(pArray);
+            Free(gamepadsPtr);
         }
     }
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_IsGamepad(uint instanceID);
     public static bool IsGamepad(uint instanceID) => SDL_IsGamepad(instanceID);
     
@@ -320,7 +327,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GamepadConnected(IntPtr gamepad);
     public static bool GamepadConnected(Gamepad gamepad) => SDL_GamepadConnected(gamepad.Handle);
     
@@ -333,13 +340,13 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetGamepadEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
+    private static partial void SDL_SetGamepadEventsEnabled([MarshalAs(SDLBool)] bool enabled);
     public static void SetGamepadEventsEnabled(bool enabled) => SDL_SetGamepadEventsEnabled(enabled);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GamepadEventsEnabled();
     public static bool GamepadEventsEnabled() => SDL_GamepadEventsEnabled();
     
@@ -410,7 +417,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GamepadHasAxis(IntPtr gamepad, GamepadAxis axis);
     public static bool GamepadHasAxis(Gamepad gamepad, GamepadAxis axis) => SDL_GamepadHasAxis(gamepad.Handle, axis);
     
@@ -437,7 +444,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GamepadHasButton(IntPtr gamepad, GamepadButton button);
     public static bool GamepadHasButton(Gamepad gamepad, GamepadButton button) => 
         SDL_GamepadHasButton(gamepad.Handle, button);
@@ -490,7 +497,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GamepadHasSensor(IntPtr gamepad, SensorType type);
     public static bool GamepadHasSensor(Gamepad gamepad, SensorType type) => SDL_GamepadHasSensor(gamepad.Handle, type);
     
@@ -498,14 +505,14 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetGamepadSensorEnabled(IntPtr gamepad, SensorType type, 
-        [MarshalAs(UnmanagedType.I1)]bool enabled);
+        [MarshalAs(SDLBool)]bool enabled);
     public static int SetGamepadSensorEnabled(Gamepad gamepad, SensorType type, bool enabled) =>
         SDL_SetGamepadSensorEnabled(gamepad.Handle, type, enabled);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
+    [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GamepadSensorEnabled(IntPtr gamepd, SensorType type);
     public static bool GamepadSensorEnabled(Gamepad gamepad, SensorType type) =>
         SDL_GamepadSensorEnabled(gamepad.Handle, type);
@@ -520,31 +527,13 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private static partial int SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, 
+        [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] float[] data, int numValues);
 
     public static int GetGamepadSensorData(Gamepad gamepad, SensorType type, out float[] data, int numValues)
     {
         data = new float[numValues];
-        var dataPtr = Marshal.AllocHGlobal(numValues * sizeof(float));
-
-        try
-        {
-            var result = SDL_GetGamepadSensorData(gamepad.Handle, type, dataPtr, numValues);
-            if (result == 0)
-            {
-                Marshal.Copy(dataPtr, data, 0, numValues);
-            }
-            else
-            {
-                data = [];
-            }
-
-            return result;
-        }
-        finally
-        {
-            Free(dataPtr);
-        }
+        return SDL_GetGamepadSensorData(gamepad.Handle, type, data, numValues);
     }
     
     
@@ -578,17 +567,16 @@ public static partial class SDL
     private static partial int SDL_SendGamepadEffect(IntPtr gamepad, IntPtr data, int size);
     public static int SendGamepadEffect(Gamepad gamepad, byte[] data)
     {
-        var size = data.Length;
-        var dataPtr = Marshal.AllocHGlobal(size);
+        var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+        var dataPtr = handle.AddrOfPinnedObject();
 
-        try
+        try 
         {
-            Marshal.Copy(data, 0, dataPtr, size);
-            return SDL_SendGamepadEffect(gamepad.Handle, dataPtr, size);
-        }
-        finally
+            return SDL_SendGamepadEffect(gamepad.Handle, dataPtr, data.Length);
+        } 
+        finally 
         {
-            Free(dataPtr);
+            handle.Free();
         }
     }
     
