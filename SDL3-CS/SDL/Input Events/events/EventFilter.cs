@@ -33,5 +33,5 @@ namespace SDL3;
 public static partial class SDL
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int EventFilter(IntPtr userdata, Event e);
+    public delegate int EventFilter(IntPtr userdata, ref Event e);
 }
