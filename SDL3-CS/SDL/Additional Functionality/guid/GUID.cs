@@ -33,6 +33,18 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>An SDL_GUID is a 128-bit identifier for an input device that identifies
+    /// that device across runs of SDL programs on the same platform.</para>
+    /// <para>If the device is detached and then re-attached to a different port, or if
+    /// the base system is rebooted, the device should still report the same GUID.</para>
+    /// <para>GUIDs are as precise as possible but are not guaranteed to distinguish
+    /// physically distinct but equivalent devices. For example, two game
+    /// controllers from the same vendor with the same product ID and revision may
+    /// have the same GUID.</para>
+    /// <para>GUIDs may be platform-dependent (i.e., the same device may report different
+    /// GUIDs on different operating systems).</para>
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct GUID 
     {
@@ -54,7 +66,7 @@ public static partial class SDL
                     }
                     finally
                     {
-                        Marshal.FreeHGlobal(intPtr);
+                        Free(intPtr);
                     }
                 }
             }
