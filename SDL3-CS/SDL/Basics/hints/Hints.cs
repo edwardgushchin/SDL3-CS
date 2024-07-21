@@ -30,12 +30,124 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Specify the behavior of Alt+Tab while the keyboard is grabbed.</para>
+    /// <para>By default, SDL emulates Alt+Tab functionality while the keyboard is
+    /// grabbed and your window is full-screen. This prevents the user from getting
+    /// stuck in your application if you've enabled keyboard grab.</para>
+    /// <para>The variable can be set to the following values:</para>
+    /// <list type="bullet">
+    /// <item>"0": SDL will not handle Alt+Tab. Your application is responsible for
+    /// handling Alt+Tab while the keyboard is grabbed.</item>
+    /// <item>"1": SDL will minimize your window when Alt+Tab is pressed (default)</item>
+    /// </list>
+    /// <para>This hint can be set anytime.</para>
+    /// </summary>
     public const string HintAllowAltTabWhileGrabbed = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
+    
+    /// <summary>
+    /// <para>A variable to control whether the SDL activity is allowed to be re-created.</para>
+    /// <para>If this hint is true, the activity can be recreated on demand by the OS,
+    /// and Java static data and C++ static data remain with their current values.
+    /// If this hint is false, then SDL will call exit() when you return from your
+    /// main function and the application will be terminated and then started fresh
+    /// each time.</para>
+    /// <para>The variable can be set to the following values:</para>
+    /// <list type="bullet">
+    /// <item>"0": The application starts fresh at each launch. (default)</item>
+    /// <item>"1": The application activity can be recreated by the OS.</item>
+    /// </list>
+    /// <para>This hint can be set anytime.</para>
+    /// </summary>
     public const string HintAndroidAllowRecreateActivity = "SDL_ANDROID_ALLOW_RECREATE_ACTIVITY";
+    
+    /// <summary>
+    /// <para>A variable to control whether the event loop will block itself when the app
+    /// is paused.</para>
+    /// <para>The variable can be set to the following values:</para>
+    /// <list type="bullet">
+    /// <item>"0": Non blocking.</item>
+    /// <item>"1": Blocking. (default)</item>
+    /// </list>
+    /// <para>This hint should be set before SDL is initialized.</para>
+    /// </summary>
     public const string HintAndroidBlockOnPause = "SDL_ANDROID_BLOCK_ON_PAUSE";
+    
+    /// <summary>
+    /// <para>A variable to control whether SDL will pause audio in background.</para>
+    /// <para>The variable can be set to the following values:</para>
+    /// <list type="bullet">
+    /// <item>"0": Not paused, requires that SDL_HINT_ANDROID_BLOCK_ON_PAUSE be set to
+    /// "0"</item>
+    /// <item>"1": Paused. (default)</item>
+    /// </list>
+    /// <para>This hint should be set before SDL is initialized.</para>
+    /// </summary>
     public const string HintAndroidBlockOnPausePauseaudio = "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO";
+    
+    /// <summary>
+    /// <para>A variable to control whether we trap the Android back button to handle it
+    /// manually.</para>
+    /// <para>This is necessary for the right mouse button to work on some Android
+    /// devices, or to be able to trap the back button for use in your code
+    /// reliably. If this hint is true, the back button will show up as an
+    /// <see cref="EventType.KeyDown"/> / <see cref="EventType.KeyUp"/> pair with a keycode of
+    /// <see cref="Scancode.AcBack"/>.</para>
+    /// <para>The variable can be set to the following values:</para>
+    /// <list type="bullet">
+    /// <item>"0": Back button will be handled as usual for system. (default)</item>
+    /// <item>"1": Back button will be trapped, allowing you to handle the key press
+    /// manually. (This will also let right mouse click work on systems where the
+    /// right mouse button functions as back.)</item>
+    /// </list>
+    /// <para>This hint can be set anytime.</para>
+    /// </summary>
     public const string HintAndroidTrapBackButton = "SDL_ANDROID_TRAP_BACK_BUTTON";
+    
+    /// <summary>
+    /// <para>A variable setting the app ID string.</para>
+    /// <para>This string is used by desktop compositors to identify and group windows
+    /// together, as well as match applications with associated desktop settings
+    /// and icons.</para>
+    /// <para>On Wayland this corresponds to the "app ID" window property and on X11 this
+    /// corresponds to the WM_CLASS property. Windows inherit the value of this
+    /// hint at creation time. Changing this hint after a window has been created
+    /// will not change the app ID or class of existing windows.</para>
+    /// <para>For *nix platforms, this string should be formatted in reverse-DNS notation
+    /// and follow some basic rules to be valid:</para>
+    /// <list type="table">
+    /// <item>The application ID must be composed of two or more elements separated by
+    /// a period (.) character.</item>
+    /// <item>Each element must contain one or more of the alphanumeric characters
+    /// (A-Z, a-z, 0-9) plus underscore (_) and hyphen (-) and must not start
+    /// with a digit. Note that hyphens, while technically allowed, should not be
+    /// used if possible, as they are not supported by all components that use
+    /// the ID, such as D-Bus. For maximum compatibility, replace hyphens with an
+    /// underscore.</item>
+    /// <item>The empty string is not a valid element (ie: your application ID may not
+    /// start or end with a period and it is not valid to have two periods in a
+    /// row).</item>
+    /// <item>The entire ID must be less than 255 characters in length.</item>
+    /// </list>
+    /// <para>Examples of valid app ID strings:</para>
+    /// <list type="bullet">
+    /// <item>org.MyOrg.MyApp</item>
+    /// <item>com.your_company.your_app</item>
+    /// </list>
+    /// <para>Desktops such as GNOME and KDE require that the app ID string matches your
+    /// application's .desktop file name (e.g. if the app ID string is
+    /// 'org.MyOrg.MyApp', your application's .desktop file should be named
+    /// 'org.MyOrg.MyApp.desktop').</para>
+    /// <para>If you plan to package your application in a container such as Flatpak, the
+    /// app ID should match the name of your Flatpak container as well.</para>
+    /// <para>If not set, SDL will attempt to use the application executable name. If the
+    /// executable name cannot be retrieved, the generic string "SDL_App" will be
+    /// used.</para>
+    /// <para>This hint should be set before SDL is initialized.</para>
+    /// </summary>
     public const string HintAppId = "SDL_APP_ID";
+    
+    
     public const string HintAppName = "SDL_APP_NAME";
     public const string HintAppleTVControllerUIEvents = "SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS";
     public const string HintAppleTVRemoteAllowRotation = "SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION";

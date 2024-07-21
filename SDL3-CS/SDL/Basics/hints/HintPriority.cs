@@ -30,6 +30,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// An enumeration of hint priorities.
+    /// </summary>
     public enum HintPriority
     {
         Default,
