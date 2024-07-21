@@ -1,0 +1,54 @@
+﻿#region License
+/* SDL3# - C# Wrapper for SDL3
+ *
+ * Copyright (c) 2024 Eduard Gushchin.
+ *
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software in a
+ * product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ *
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ *
+ * 3. This notice may not be removed or altered from any source distribution.
+ *
+ * Eduard "edwardgushchin" Gushchin <eduardgushchin@yandex.ru>
+ *
+ */
+#endregion
+
+using System.Runtime.InteropServices;
+
+namespace SDL3;
+
+public static partial class SDL
+{
+    /// <code>typedef void (SDLCALL *SDL_CleanupPropertyCallback)(void *userdata, void *value);</code>
+    /// <summary>
+    /// <para>A callback used to free resources when a property is deleted.</para>
+    /// <para>This should release any resources associated with `value` that are no
+    /// longer needed.</para>
+    /// <para>This callback is set per-property. Different properties in the same group
+    /// can have different cleanup callbacks.</para>
+    /// <para>This callback will be called _during_ <see cref="SetPointerPropertyWithCleanup"/> if
+    /// the function fails for any reason.</para>
+    /// </summary>
+    /// <param name="userdata">an app-defined pointer passed to the callback</param>
+    /// <param name="value">the pointer assigned to the property to clean up</param>
+    /// <remarks>
+    /// This callback may fire without any locks held; if this is a
+    ///               concern, the app should provide its own locking.
+    /// </remarks>
+    /// <seealso cref="SetPointerPropertyWithCleanup"/>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void CleanupPropertyCallback(IntPtr userdata, IntPtr value);
+}
