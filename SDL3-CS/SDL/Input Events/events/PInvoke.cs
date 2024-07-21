@@ -152,4 +152,16 @@ public static partial class SDL
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_RegisterEvents(int numevents);
     public static uint RegisterEvents(int numevents) => SDL_RegisterEvents(numevents);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_AllocateEventMemory(UIntPtr size);
+    public static IntPtr AllocateEventMemory(UIntPtr size) => SDL_AllocateEventMemory(size);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_FreeEventMemory();
+    public static void FreeEventMemory() => SDL_FreeEventMemory();
 }
