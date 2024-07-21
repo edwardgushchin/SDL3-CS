@@ -78,7 +78,7 @@ public static partial class SDL
         }
         finally
         {
-            Marshal.FreeHGlobal(fingersPtr);
+            Free(fingersPtr);
         }
     }
 }

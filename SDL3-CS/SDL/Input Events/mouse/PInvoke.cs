@@ -55,7 +55,7 @@ public static partial class SDL
         }
         finally
         {
-            Marshal.FreeHGlobal(pArray);
+            Free(pArray);
         }
     }
     

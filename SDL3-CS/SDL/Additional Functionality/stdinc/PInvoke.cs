@@ -32,7 +32,7 @@ namespace SDL3;
 
 public partial class SDL
 {
-    /*[LibraryImport(SDLLibrary, EntryPoint = "SDL_free")]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free")]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
-    private static partial void Free(IntPtr memblock);*/
+    private static partial void Free(IntPtr memblock);
 }

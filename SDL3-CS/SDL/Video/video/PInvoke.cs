@@ -154,66 +154,42 @@ public static partial class SDL
             Marshal.FreeHGlobal(displayModesPtr);
         }
     }
-    
-    
+
+
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate, [MarshalAs(SDLBool)] bool includeHighDensityModes);
-    public static DisplayMode? GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate, bool includeHighDensityModes)
-    {
-        var displayModePtr = SDL_GetClosestFullscreenDisplayMode(displayID, w, h, refreshRate, includeHighDensityModes);
-
-        if (displayModePtr == IntPtr.Zero)
-        {
-            return null;
-        }
-        
-        return Marshal.PtrToStructure<DisplayMode>(displayModePtr);
-    }
+    private static partial IntPtr SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate,
+        [MarshalAs(SDLBool)] bool includeHighDensityModes);
+    public static DisplayMode? GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate,
+        bool includeHighDensityModes) =>
+        Marshal.PtrToStructure<DisplayMode>(
+            SDL_GetClosestFullscreenDisplayMode(displayID, w, h, refreshRate, includeHighDensityModes));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetDesktopDisplayMode(uint displayID);
-    public static DisplayMode? GetDesktopDisplayMode(uint displayID)
-    {
-        var displayModePtr = SDL_GetDesktopDisplayMode(displayID);
-
-        if (displayModePtr == IntPtr.Zero)
-        {
-            return null;
-        }
-        
-        return Marshal.PtrToStructure<DisplayMode>(displayModePtr);
-    }
+    public static DisplayMode? GetDesktopDisplayMode(uint displayID) =>
+        Marshal.PtrToStructure<DisplayMode>(SDL_GetDesktopDisplayMode(displayID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetCurrentDisplayMode(uint displayID);
-    public static DisplayMode? GetCurrentDisplayMode(uint displayID)
-    {
-        var displayModePtr = SDL_GetCurrentDisplayMode(displayID);
-
-        if (displayModePtr == IntPtr.Zero)
-        {
-            return null;
-        }
-        
-        return Marshal.PtrToStructure<DisplayMode>(displayModePtr);
-    }
+    public static DisplayMode? GetCurrentDisplayMode(uint displayID) =>
+        Marshal.PtrToStructure<DisplayMode>(SDL_GetCurrentDisplayMode(displayID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForPoint(ref Point point);
-    public static uint GetDisplayForPoint(Point point) => SDL_GetDisplayForPoint(ref point);
+    private static partial uint SDL_GetDisplayForPoint(in Point point);
+    public static uint GetDisplayForPoint(in Point point) => SDL_GetDisplayForPoint(point);
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForRect(ref Rect rect);
-    public static uint GetDisplayForRect(Rect rect) => SDL_GetDisplayForRect(ref rect);
+    private static partial uint SDL_GetDisplayForRect(in Rect rect);
+    public static uint GetDisplayForRect(in Rect rect) => SDL_GetDisplayForRect(rect);
     
     
     [LibraryImport(SDLLibrary)]
@@ -244,25 +220,18 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetWindowFullscreenMode(IntPtr window);
-    public static DisplayMode? GetWindowFullscreenMode(Window window)
-    {
-        var modePtr = SDL_GetWindowFullscreenMode(window.Handle);
-        
-        if (modePtr == IntPtr.Zero)
-        {
-            return null;
-        }
-        
-        return Marshal.PtrToStructure<DisplayMode>(modePtr);
-    }
+    public static DisplayMode? GetWindowFullscreenMode(Window window) =>
+        Marshal.PtrToStructure<DisplayMode>(SDL_GetWindowFullscreenMode(window.Handle));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetWindowICCProfile(IntPtr window, out nuint size);
-    public static byte[] GetWindowICCProfile(Window window)
+    public static byte[]? GetWindowICCProfile(Window window)
     {
         var profilePtr = SDL_GetWindowICCProfile(window.Handle, out var size);
+        
+        if (profilePtr == IntPtr.Zero) return null;
 
         try
         {
@@ -272,9 +241,49 @@ public static partial class SDL
         }
         finally
         {
-            Marshal.FreeHGlobal(profilePtr);
+            Free(profilePtr);
         }
     }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial PixelFormat SDL_GetWindowPixelFormat(IntPtr window);
+    public static PixelFormat GetWindowPixelFormat(Window window) => SDL_GetWindowPixelFormat(window.Handle);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindows(out int count);
+    public static Window[]? GetWindows(out int count)
+    {
+        var windowsPtr = SDL_GetWindows(out count);
+        if (windowsPtr == IntPtr.Zero) return null;
+
+        try
+        {
+            var windowPtrs = new IntPtr[count];
+            Marshal.Copy(windowsPtr, windowPtrs, 0, count);
+            var windows = new Window[count];
+            for (var i = 0; i < count; i++)
+            {
+                windows[i] = new Window(windowPtrs[i]);
+            }
+            return windows;
+        }
+        finally
+        {
+            Free(windowsPtr);
+        }
+    }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreatePopupWindow(IntPtr parent, int offsetX, int offsetY, int w, int h, 
+        WindowFlags flags);
+    public static Window CreatePopupWindow(Window parent, int offsetX, int offsetY, int w, int h, WindowFlags flags) =>
+        new(SDL_CreatePopupWindow(parent.Handle, offsetX, offsetY, w, h, flags));
     
     
     [LibraryImport(SDLLibrary)]
