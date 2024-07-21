@@ -30,6 +30,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>The basic state for the system's power supply.</para>
+    /// <para>These are results returned by <see cref="GetPowerInfo"/>.</para>
+    /// </summary>
     public enum PowerState
     {
         Error = -1,
