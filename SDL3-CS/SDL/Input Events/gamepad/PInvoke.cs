@@ -70,7 +70,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(arrayPtr);
+            Marshal.FreeHGlobal(arrayPtr);
         }
     }
     
@@ -125,7 +125,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(gamepadsPtr);
+            Marshal.FreeHGlobal(gamepadsPtr);
         }
     }
     
@@ -378,7 +378,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(bindingsPtr);
+            Marshal.FreeHGlobal(bindingsPtr);
         }
     }
     

@@ -61,7 +61,7 @@ public static partial class SDL
                     }
                     finally
                     {
-                        Free(intPtr);
+                        Marshal.FreeHGlobal(intPtr);
                     }
                 }
             }

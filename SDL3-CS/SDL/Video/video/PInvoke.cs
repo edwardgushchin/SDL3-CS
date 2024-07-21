@@ -72,7 +72,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(pArray);
+            Marshal.FreeHGlobal(pArray);
         }
     }
     
@@ -151,7 +151,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(displayModesPtr);
+            Marshal.FreeHGlobal(displayModesPtr);
         }
     }
     
@@ -272,7 +272,7 @@ public static partial class SDL
         }
         finally
         {
-            Free(profilePtr);
+            Marshal.FreeHGlobal(profilePtr);
         }
     }
     

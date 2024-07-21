@@ -52,11 +52,18 @@ public static partial class SDL
             {
                 fixed (float* ptr = axes)
                 {
-                    var array = new float[(int)PenAxis.NumAxes];
                     var intPtr = (IntPtr) ptr;
-                    Marshal.Copy(intPtr, array, 0, (int)PenAxis.NumAxes);
-                    Free(intPtr);
-                    return array;
+                    try
+                    {
+                        var array = new float[(int)PenAxis.NumAxes];
+                        Marshal.Copy(intPtr, array, 0, (int)PenAxis.NumAxes);
+                    
+                        return array;
+                    }
+                    finally
+                    {
+                        Marshal.FreeHGlobal(intPtr);
+                    }
                 }
             }
         }

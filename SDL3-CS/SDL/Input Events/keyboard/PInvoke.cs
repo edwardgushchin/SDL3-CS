@@ -196,7 +196,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetTextInputArea(IntPtr window, [In] in Rect rect, int cursor);
+    private static partial int SDL_SetTextInputArea(IntPtr window, in Rect rect, int cursor);
     public static int SetTextInputArea(Window window, Rect rect, int cursor) => 
         SDL_SetTextInputArea(window.Handle, rect, cursor);
     
