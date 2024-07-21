@@ -90,4 +90,7 @@ public static partial class SDL
         }
         return libHandle;
     }
+    
+    public const UnmanagedType SDLBool = UnmanagedType.I1;
+    
 }
