@@ -39,10 +39,23 @@ public static partial class SDL
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr EGLAttribArrayCallback();
     
+    
     /// <code>typedef SDL_EGLint *(SDLCALL *SDL_EGLIntArrayCallback)(void);</code>
     /// <summary>
     /// EGL attribute initialization callback types.
     /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int EGLIntArrayCallback();
+    
+    
+    /// <code>typedef SDL_HitTestResult (SDLCALL *SDL_HitTest)(SDL_Window *win,const SDL_Point *area, void *data);</code>
+    /// <summary>
+    /// Callback used for hit-testing.
+    /// </summary>
+    /// <param name="win">the <see cref="Window.Handle"/> where hit-testing was set on.</param>
+    /// <param name="area">an <see cref="Point"/> which should be hit-tested.</param>
+    /// <param name="data">what was passed as `callback_data` to <see cref="SetWindowHitTest"/>.</param>
+    /// <returns>an <see cref="HitTestResult"/> value.</returns>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate HitTestResult HitTest(IntPtr win, in Point area, IntPtr data);
 }
