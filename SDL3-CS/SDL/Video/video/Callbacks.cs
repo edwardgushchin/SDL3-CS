@@ -32,6 +32,17 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <code>typedef SDL_EGLAttrib *(SDLCALL *SDL_EGLAttribArrayCallback)(void);</code>
+    /// <summary>
+    /// EGL attribute initialization callback types.
+    /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr EGLAttribArrayCallback();
+    
+    /// <code>typedef SDL_EGLint *(SDLCALL *SDL_EGLIntArrayCallback)(void);</code>
+    /// <summary>
+    /// EGL attribute initialization callback types.
+    /// </summary>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int EGLIntArrayCallback();
 }
