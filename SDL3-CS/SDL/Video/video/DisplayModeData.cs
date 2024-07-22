@@ -32,6 +32,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Internal display mode data
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct DisplayModeData;
 }
