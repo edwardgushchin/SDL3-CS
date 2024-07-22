@@ -30,10 +30,17 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Possible values to be set for the <see cref="GLAttr.ContextProfileMask"/> attribute.
+    /// </summary>
     public enum GLProfile
     {
         Core           = 0x0001,
         Compatibility  = 0x0002,
-        ES
+        
+        /// <summary>
+        /// GLX_CONTEXT_ES2_PROFILE_BIT_EXT"/>
+        /// </summary>
+        ES = 0x0004
     }
 }
