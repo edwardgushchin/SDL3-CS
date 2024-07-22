@@ -30,6 +30,19 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>An enumeration of OpenGL configuration attributes.</para>
+    /// <para>While you can set most OpenGL attributes normally, the attributes listed
+    /// above must be known before SDL creates the window that will be used with
+    /// the OpenGL context. These attributes are set and read with
+    /// <see cref="GLSetAttribute"/> and <see cref="GLGetAttribute"/>.</para>
+    /// <para>In some cases, these attributes are minimum requests; the GL does not
+    /// promise to give you exactly what you asked for. It's possible to ask for a
+    /// 16-bit depth buffer and get a 24-bit one instead, for example, or to ask
+    /// for no stencil buffer and still have one available. Context creation should
+    /// fail if the GL can't provide your requested attributes at a minimum, but
+    /// you should check to see exactly what you got.</para>
+    /// </summary>
     public enum GLAttr
     {
        RedSize,
