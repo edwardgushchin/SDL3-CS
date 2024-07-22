@@ -30,6 +30,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Possible values to be set for the <see cref="GLAttr.ContextFlags"/> attribute.
+    /// </summary>
     public enum GLContextFlag
     {
         Debug             = 0x0001,
