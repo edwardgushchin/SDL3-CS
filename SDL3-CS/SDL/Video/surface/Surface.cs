@@ -32,6 +32,28 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Surface;
+    public readonly struct Surface(IntPtr handle)
+    {
+        public IntPtr Handle { get; } = handle;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Surface other && Handle == other.Handle;
+        }
+
+        public override int GetHashCode()
+        {
+            return Handle.GetHashCode();
+        }
+        
+        public static bool operator ==(Surface left, Surface right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Surface left, Surface right)
+        {
+            return !(left == right);
+        }
+    }
 }
