@@ -70,7 +70,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="name">the hint to set.</param>
     /// <param name="value">True if the hint was set, False otherwise.</param>
-    /// <returns></returns>
+    /// <returns>True if the hint was set, False otherwise.</returns>
     /// <seealso cref="GetHint"/>
     /// <seealso cref="ResetHint"/>
     /// <seealso cref="SetHintWithPriority"/>
@@ -98,7 +98,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_ResetHints();
+    private static partial void SDL_ResetHints();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetHints(void);</code>
     /// <summary>
     /// <para>Reset all hints to the default values.</para>
@@ -106,9 +106,8 @@ public static partial class SDL
     /// variable, or NULL if the environment isn't set. Callbacks will be called
     /// normally with this change.</para>
     /// </summary>
-    /// <returns></returns>
     /// <seealso cref="ResetHint"/>
-    public static bool ResetHints() => SDL_ResetHints();
+    public static void ResetHints() => SDL_ResetHints();
     
     
     [LibraryImport(SDLLibrary, StringMarshalling = StringMarshalling.Utf8)]
@@ -136,10 +135,9 @@ public static partial class SDL
     /// Get the boolean value of a hint variable.
     /// </summary>
     /// <param name="name">the name of the hint to get the boolean value from.</param>
-    /// <param name="defaultValue">the value to return if the hint does not exist.
-    /// \returns the boolean value of a hint or the provided default value if the
-    /// hint does not exist.</param>
-    /// <returns></returns>
+    /// <param name="defaultValue">the value to return if the hint does not exist.</param>
+    /// <returns>the boolean value of a hint or the provided default value if the
+    /// hint does not exist.</returns>
     /// <seealso cref="GetHint"/>
     /// <seealso cref="SetHint"/>
     public static bool GetHintBoolean(string name, bool defaultValue) => SDL_GetHintBoolean(name, defaultValue);
