@@ -27,23 +27,74 @@
 #endregion
 
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
 
+[SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 public static partial class SDL
 {
+    /// <summary>
+    /// The structure that defines a display mode.
+    /// </summary>
+    /// <seealso cref="GetFullscreenDisplayModes"/>
+    /// <seealso cref="GetDesktopDisplayMode"/>
+    /// <seealso cref="GetCurrentDisplayMode"/>
+    /// <seealso cref="SetWindowFullscreenMode"/>
+    /// <seealso cref="GetWindowFullscreenMode"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct DisplayMode
     {
-        public UInt32 DisplayID;
-        public PixelFormat Format;
-        public int W;
-        public int H;
-        public float PixelDensity;
-        public float RefreshRate;
-        public int RefreshRateNumerator;
-        public int RefreshRateDenominator;
-        public DisplayModeData Internal;
+        private UInt32 displayID;
+        private PixelFormat format;
+        private int w;
+        private int h;
+        private float pixelDensity;
+        private float refreshRate;
+        private int refreshRateNumerator;
+        private int refreshRateDenominator;
+        private DisplayModeData _internal;
+
+
+        /// <summary>
+        /// The display this mode is associated with
+        /// </summary>
+        public uint DisplayID => displayID;
+
+        /// <summary>
+        /// Pixel format
+        /// </summary>
+        public PixelFormat Format => format;
+
+        /// <summary>
+        /// Width 
+        /// </summary>
+        public int W => w;
+
+        /// <summary>
+        /// Height 
+        /// </summary>
+        public int H => h;
+
+        /// <summary>
+        /// Scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels)
+        /// </summary>
+        public float PixelDensity => pixelDensity;
+
+        /// <summary>
+        /// Refresh rate (or 0.0f for unspecified)
+        /// </summary>
+        public float RefreshRate => refreshRate;
+
+        /// <summary>
+        /// Precise refresh rate numerator (or 0 for unspecified)
+        /// </summary>
+        public int RefreshRateNumerator => refreshRateNumerator;
+
+        /// <summary>
+        /// Precise refresh rate denominator
+        /// </summary>
+        public int RefreshRateDenominator => refreshRateDenominator;
     } 
 }
