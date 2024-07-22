@@ -30,6 +30,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The struct used as an opaque handle to a window.
+    /// </summary>
+    /// <param name="handle">Pointer to SDL_Window</param>
     public readonly struct Window(IntPtr handle)
     {
         public IntPtr Handle { get; } = handle;
