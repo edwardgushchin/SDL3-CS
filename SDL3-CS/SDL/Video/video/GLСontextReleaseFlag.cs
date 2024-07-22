@@ -30,6 +30,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Possible values to be set for the <see cref="GLAttr.ContextReleaseBehavior"/>
+    /// attribute.
+    /// </summary>
     public enum GLСontextReleaseFlag
     {
         None   = 0x0000,
