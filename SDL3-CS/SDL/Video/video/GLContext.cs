@@ -32,6 +32,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// An opaque handle to an OpenGL context.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct GLContext;
 }
