@@ -15,8 +15,8 @@ public class HintsTest
     public void TearDown() => SDL.Quit();
 
     [Test]
-    [TestCase($"{SDL.HintLogging}", "2")]
-    [TestCase($"{SDL.HintRenderDriver}", "3")]
+    [TestCase($"{Hints.Logging}", "2")]
+    [TestCase($"{Hints.RenderDriver}", "3")]
     public void SetHint(string name, string value)
     {
         var result = SDL.SetHint(name, value);
@@ -29,7 +29,7 @@ public class HintsTest
     }
 
     [Test]
-    [TestCase($"{SDL.HintLogging}")]
+    [TestCase($"{Hints.Logging}")]
     public void ResetHint(string name)
     {
         SDL.SetHint(name, "2");
