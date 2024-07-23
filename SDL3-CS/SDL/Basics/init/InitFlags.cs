@@ -30,17 +30,53 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Initialization flags for <see cref="Init"/> and/or <see cref="InitSubSystem"/></para>
+    /// <para>These are the flags which may be passed to <see cref="Init"/>. You should specify
+    /// the subsystems which you will be using in your application.</para>
+    /// </summary>
+    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <seealso cref="Init"/>
+    /// <seealso cref="Quit"/>
+    /// <seealso cref="InitSubSystem"/>
+    /// <seealso cref="QuitSubSystem"/>
+    /// <seealso cref="WasInit"/>
     [Flags]
     public enum InitFlags : uint
     {
         Timer =     0x00000001u,
+        
+        /// <summary>
+        /// <see cref="Audio"/> implies <see cref="Events"/>
+        /// </summary>
         Audio =     0x00000010u,
+        
+        /// <summary>
+        /// <see cref="Video"/> implies <see cref="Events"/>
+        /// </summary>
         Video =     0x00000020u,
+        
+        /// <summary>
+        /// <see cref="Joystick"/> implies <see cref="Events"/>, should be initialized on the same thread as
+        /// <see cref="Video"/> on Windows if you don't set <see cref="Hints.JoystickThread"/>
+        /// </summary>
         Joystick =  0x00000200u,
         Haptic =    0x00001000u,
+        
+        /// <summary>
+        /// <see cref="Gamepad"/> implies <see cref="Events"/>
+        /// </summary>
         Gamepad =   0x00002000u,
         Events =    0x00004000u,
+        
+        /// <summary>
+        /// <see cref="Sensor"/> implies <see cref="Events"/>
+        /// </summary>
         Sensor =    0x00008000u,
+        
+        /// <summary>
+        /// <see cref="Camera"/> implies <see cref="Events"/>
+        /// </summary>
         Camera =    0x00010000u
     }
 }
