@@ -181,7 +181,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? value);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);</code>
     /// <summary>
     /// <para>Set a string property in a group of properties.</para>
@@ -195,7 +195,7 @@ public static partial class SDL
     ///          <see cref="GetError"/> for more information.</returns>
     /// <remarks>It is safe to call this function from any thread.</remarks>
     /// <seealso cref="GetStringProperty"/>
-    public static int SetStringProperty(uint props, string name, string value) => 
+    public static int SetStringProperty(uint props, string name, string? value) => 
         SDL_SetStringProperty(props, name, value);
     
     
