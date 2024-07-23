@@ -42,7 +42,7 @@ internal static class Program
         
         var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
         
-        if (window.Handle == IntPtr.Zero)
+        if (window == null)
         {
             Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
             return;
@@ -50,13 +50,13 @@ internal static class Program
         
         var renderer = SDL.CreateRenderer(window, null);
         
-        if (renderer.Handle == IntPtr.Zero)
+        if (renderer == null)
         {
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
 
-        SDL.SetRenderDrawColor(renderer, 100,149,237,0);
+        SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
         
         var loop = true;
         

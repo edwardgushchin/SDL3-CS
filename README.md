@@ -41,7 +41,7 @@ public static class Program
         
         var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
         
-        if (window.Handle == IntPtr.Zero)
+        if (window == null)
         {
             Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
             return;
@@ -49,7 +49,7 @@ public static class Program
         
         var renderer = SDL.CreateRenderer(window, null);
         
-        if (renderer.Handle == IntPtr.Zero)
+        if (renderer == null)
         {
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;
