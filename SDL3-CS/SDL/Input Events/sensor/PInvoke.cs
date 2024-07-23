@@ -32,14 +32,14 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Sensor SDL_OpenSensor(int instanceID);
-    public static Sensor OpenSensor(int instanceID) => SDL_OpenSensor(instanceID);
+    private static partial IntPtr SDL_OpenSensor(int instanceID);
+    public static Sensor OpenSensor(int instanceID) => new(SDL_OpenSensor(instanceID));
     
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Sensor SDL_GetSensorFromID(int instanceID);
-    public static Sensor GetSensorFromID(int instanceID) => SDL_GetSensorFromID(instanceID);
+    private static partial IntPtr SDL_GetSensorFromID(int instanceID);
+    public static Sensor GetSensorFromID(int instanceID) => new(SDL_GetSensorFromID(instanceID));
     
     
     [LibraryImport(SDLLibrary)]

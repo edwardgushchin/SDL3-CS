@@ -218,6 +218,6 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_ScreenKeyboardShown(Window window);
-    public static bool ScreenKeyboardShown(Window window) => SDL_ScreenKeyboardShown(window);
+    private static partial bool SDL_ScreenKeyboardShown(IntPtr window);
+    public static bool ScreenKeyboardShown(Window window) => SDL_ScreenKeyboardShown(window.Handle);
 }

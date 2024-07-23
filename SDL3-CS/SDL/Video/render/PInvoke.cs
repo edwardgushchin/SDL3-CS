@@ -36,8 +36,12 @@ public static partial class SDL
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
-    public static Render CreateRenderer(Window window, string? name) => 
-        new(SDL_CreateRenderer(window.Handle, name));
+
+    public static Render? CreateRenderer(Window window, string? name)
+    {
+        var renderHandle = SDL_CreateRenderer(window.Handle, name);
+        return renderHandle != IntPtr.Zero ? new Render(renderHandle) : null;
+    }
 
 
     [LibraryImport(SDLLibrary)]
