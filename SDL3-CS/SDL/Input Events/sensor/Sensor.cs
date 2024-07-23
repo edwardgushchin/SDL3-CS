@@ -2,13 +2,15 @@
 
 public static partial class SDL
 {
-    public readonly struct Sensor(IntPtr handle)
+    public class Sensor(IntPtr handle)
     {
-        public IntPtr Handle { get; } = handle;
+        internal IntPtr Handle { get; } = handle;
 
         public override bool Equals(object? obj)
         {
-            return obj is Sensor other && Handle == other.Handle;
+            if (obj is Window other) 
+                return Handle == other.Handle;
+            return false;
         }
 
         public override int GetHashCode()
@@ -16,12 +18,18 @@ public static partial class SDL
             return Handle.GetHashCode();
         }
         
-        public static bool operator ==(Sensor left, Sensor right)
+        public static bool operator ==(Sensor? left, Sensor? right)
         {
-            return left.Equals(right);
+            if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+                return true;
+            
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+                return false;
+            
+            return left.Handle == right.Handle;
         }
 
-        public static bool operator !=(Sensor left, Sensor right)
+        public static bool operator !=(Sensor? left, Sensor? right)
         {
             return !(left == right);
         }

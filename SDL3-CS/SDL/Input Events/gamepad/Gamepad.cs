@@ -30,13 +30,15 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public readonly struct Gamepad(IntPtr handle)
+    public class Gamepad(IntPtr handle)
     {
-        public IntPtr Handle { get; } = handle;
+        internal IntPtr Handle { get; } = handle;
 
         public override bool Equals(object? obj)
         {
-            return obj is Gamepad other && Handle == other.Handle;
+            if (obj is Gamepad other) 
+                return Handle == other.Handle;
+            return false;
         }
 
         public override int GetHashCode()
@@ -44,12 +46,18 @@ public static partial class SDL
             return Handle.GetHashCode();
         }
         
-        public static bool operator ==(Gamepad left, Gamepad right)
+        public static bool operator ==(Gamepad? left, Gamepad? right)
         {
-            return left.Equals(right);
+            if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+                return true;
+            
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+                return false;
+            
+            return left.Handle == right.Handle;
         }
 
-        public static bool operator !=(Gamepad left, Gamepad right)
+        public static bool operator !=(Gamepad? left, Gamepad? right)
         {
             return !(left == right);
         }

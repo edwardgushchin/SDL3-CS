@@ -35,6 +35,36 @@ public static partial class SDL
     /// <summary>
     /// An opaque handle to an OpenGL context.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GLContext;
+    public class GLContext(IntPtr handle)
+    {
+        internal IntPtr Handle { get; } = handle;
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is GLContext other) 
+                return Handle == other.Handle;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Handle.GetHashCode();
+        }
+        
+        public static bool operator ==(GLContext? left, GLContext? right)
+        {
+            if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+                return true;
+            
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+                return false;
+            
+            return left.Handle == right.Handle;
+        }
+
+        public static bool operator !=(GLContext? left, GLContext? right)
+        {
+            return !(left == right);
+        }
+    }
 }
