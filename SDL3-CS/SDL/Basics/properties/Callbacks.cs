@@ -51,4 +51,24 @@ public static partial class SDL
     /// <seealso cref="SetPointerPropertyWithCleanup"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void CleanupPropertyCallback(IntPtr userdata, IntPtr value);
+    
+    
+    /// <code>typedef void (SDLCALL *SDL_EnumeratePropertiesCallback)(void *userdata, SDL_PropertiesID props, const char *name);</code>
+    /// <summary>
+    /// <para>A callback used to enumerate all the properties in a group of properties.</para>
+    /// <para>This callback is called from <see cref="EnumerateProperties"/>, and is called once
+    /// per property in the set.</para>
+    /// </summary>
+    /// <param name="userdata">an app-defined pointer passed to the callback.</param>
+    /// <param name="props">the SDL_PropertiesID that is being enumerated.</param>
+    /// <param name="name">the next property name in the enumeration.</param>
+    /// <remarks><see cref="EnumerateProperties"/> holds a lock on `props` during this
+    ///               callback.</remarks>
+    /// <seealso cref="EnumerateProperties"/>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void EnumeratePropertiesCallback(
+        IntPtr userdata,
+        uint props,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string name
+    );
 }

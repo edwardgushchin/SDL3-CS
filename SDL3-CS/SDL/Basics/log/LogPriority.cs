@@ -30,6 +30,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The predefined log priorities
+    /// </summary>
+    /// <since>since This enum is available since SDL 3.0.0.</since>
     public enum LogPriority
     {
         Verbose = 1,

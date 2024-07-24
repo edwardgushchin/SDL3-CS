@@ -30,6 +30,14 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>The predefined log categories</para>
+    /// <para>By default the application category is enabled at the <see cref="LogPriority.Info"/> level, the
+    /// assert category is enabled at the <see cref="LogPriority.Warn"/> level, test is enabled at the
+    /// <see cref="LogPriority.Verbose"/> level and all other categories are enabled at the
+    /// <see cref="LogPriority.Error"/> level.</para>
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum LogCategory
     {
         Application,
