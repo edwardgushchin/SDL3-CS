@@ -31,17 +31,30 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
+/**
+ * # CategoryVersion
+ *
+ * Functionality to query the current SDL version, both as headers the app was
+ * compiled against, and a library the app is linked to.
+ */
+
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRevision();
-    public static string? GetRevision() => Marshal.PtrToStringUTF8(SDL_GetRevision());
-    
-    
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetVersion();
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetVersion(void);</code>
+    /// <summary>
+    /// <para>Get the version of SDL that is linked against your program.</para>
+    /// <para>If you are linking to SDL dynamically, then it is possible that the current
+    /// version will be different than the version you compiled against. This
+    /// function returns the current version, while SDL_VERSION is the version you
+    /// compiled with.</para>
+    /// </summary>
+    /// <returns>the version of the linked library.</returns>
+    /// <remarks>This function may be called safely at any time, even before SDL_Init().</remarks>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="GetRevision"/>
     public static Version GetVersion()
     {
         var version = SDL_GetVersion();
@@ -52,4 +65,30 @@ public static partial class SDL
             Patch = (byte)VersionNumMicro(version)
         };
     }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRevision();
+    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetRevision(void);</code>
+    /// <summary>
+    /// <para>Get the code revision of SDL that is linked against your program.</para>
+    /// <para>This value is the revision of the code you are linked with and may be
+    /// different from the code you are compiling with, which is found in the
+    /// constant SDL_REVISION.</para>
+    /// <para>The revision is arbitrary string (a hash value) uniquely identifying the
+    /// exact revision of the SDL library in use, and is only useful in comparing
+    /// against other revisions. It is NOT an incrementing number.</para>
+    /// <para>If SDL wasn't built from a git repository with the appropriate tools, this
+    /// will return an empty string.</para>
+    /// <para>You shouldn't use this function for anything but logging it for debugging
+    /// purposes. The string is not intended to be reliable in any way.</para>
+    /// <para>The returned string follows the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// </summary>
+    /// <returns>an arbitrary string, uniquely identifying the exact revision of
+    /// the SDL library in use.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="GetVersion"/>
+    public static string? GetRevision() => Marshal.PtrToStringUTF8(SDL_GetRevision());
 }
