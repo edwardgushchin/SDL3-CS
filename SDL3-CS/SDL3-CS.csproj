@@ -110,6 +110,8 @@
       <Folder Include="SDL\Additional Functionality\messagebox\" />
       <Folder Include="SDL\Additional Functionality\system\" />
       <Folder Include="SDL\Audio\audio\" />
+      <Folder Include="SDL\File and IO Abstractions\filesystem\" />
+      <Folder Include="SDL\File and IO Abstractions\storage\" />
       <Folder Include="SDL\Force Feedback\haptic\" />
       <Folder Include="SDL\Platform and CPU Information\cpuinfo\" />
       <Folder Include="SDL\Platform and CPU Information\platform\" />

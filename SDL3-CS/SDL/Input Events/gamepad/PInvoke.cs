@@ -10,23 +10,37 @@ public static partial class SDL
     private static partial int SDL_AddGamepadMapping([MarshalAs(UnmanagedType.LPUTF8Str)] string mapping);
     public static int AddGamepadMapping(string mapping) => SDL_AddGamepadMapping(mapping);
     
-
-    public static int AddGamepadMappingsFromIO(Stream src, bool closeio = true)
-    {
-        var reader = new StreamReader(src);
-
-        while (!reader.EndOfStream)
-        {
-            var mapping = reader.ReadLine()?.Trim();
-            if (!string.IsNullOrEmpty(mapping))
-            {
-                return AddGamepadMapping(mapping);
-            }
-        }
-
-        if (closeio) reader.Close();
-        return -1;
-    }
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_AddGamepadMappingsFromIO(IntPtr src, [MarshalAs(SDLBool)] bool closeio);
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_AddGamepadMappingsFromIO(SDL_IOStream *src, SDL_bool closeio);</code>
+    /// <summary>
+    /// <para>Load a set of gamepad mappings from an <see cref="IOStream"/>.</para>
+    /// <para>You can call this function several times, if needed, to load different
+    /// database files.</para>
+    /// <para>If a new mapping is loaded for an already known gamepad GUID, the later
+    /// version will overwrite the one currently loaded.</para>
+    /// <para>Mappings not belonging to the current platform or with no platform field
+    /// specified will be ignored (i.e. mappings for Linux will be ignored in
+    /// Windows, etc).</para>
+    /// <para>This function will load the text database entirely in memory before
+    /// processing it, so take this into consideration if you are in a memory
+    /// constrained environment.</para>
+    /// </summary>
+    /// <param name="src">the data stream for the mappings to be added.</param>
+    /// <param name="closeIO">if <c>true</c>, calls <see cref="SDL.CloseIO"/> on <c>src</c> before returning,
+    /// even in the case of an error.</param>
+    /// <returns>the number of mappings added or -1 on error; call <see cref="SDL.GetError"/>
+    /// for more information.</returns>
+    /// <remarks>It is safe to call this function from any thread.</remarks>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="AddGamepadMapping"/>
+    /// <seealso cref="AddGamepadMappingsFromFile"/>
+    /// <seealso cref="GetGamepadMapping"/>
+    /// <seealso cref="GetGamepadMappingForGUID"/>
+    public static int AddGamepadMappingsFromIO(IOStream src, bool closeIO) =>
+        SDL_AddGamepadMappingsFromIO(src.Handle, closeIO);
     
     
     [LibraryImport(SDLLibrary)]
