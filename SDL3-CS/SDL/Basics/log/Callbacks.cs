@@ -32,6 +32,16 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <code>typedef void (SDLCALL *SDL_LogOutputFunction)(void *userdata, int category, SDL_LogPriority priority, const char *message);</code>
+    /// <summary>
+    /// <para>The prototype for the log output callback function.</para>
+    /// <para>The prototype for the log output callback function.</para>
+    /// </summary>
+    /// <remarks>This function is called by SDL when there is new text to be logged.</remarks>
+    /// <param name="userdata">what was passed as <c>userdata</c> to <see cref="SetLogOutputFunction"/>.</param>
+    /// <param name="category">the category of the message.</param>
+    /// <param name="priority">the priority of the message.</param>
+    /// <param name="message">the message being output.</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LogOutputFunction(IntPtr userdata, LogCategory category, LogPriority priority, string message);
 }
