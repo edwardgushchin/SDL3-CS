@@ -1772,9 +1772,9 @@ public static class Hints
     public const string IMEInternalEditing = "SDL_IME_INTERNAL_EDITING";
     
     /// <summary>
-    /// <para>Request <see cref="SDL.AppIterate"/> be called at a specific rate.</para>
+    /// <para>Request SDL_AppIterate be called at a specific rate.</para>
     /// <para>This number is in Hz, so <c>"60"</c> means try to iterate 60 times per second.</para>
-    /// <para>On some platforms, or if you are using <see cref="SDL.Main"/> instead of <see cref="SDL.AppIterate"/>,
+    /// <para>On some platforms, or if you are using SDL_main instead of SDL_AppIterate,
     /// this hint is ignored. When the hint can be used, it is allowed to be changed at any time.</para>
     /// <para>This defaults to <c>60</c>, and specifying <c>null</c> for the hint's value will restore
     /// the default.</para>
