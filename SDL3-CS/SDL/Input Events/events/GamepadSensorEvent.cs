@@ -39,6 +39,7 @@ public static partial class SDL
         private UInt32 Reserved;
         public UInt64 Timestamp;
         public UInt32 Which;
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         public Int32 Sensor;
         private unsafe fixed float data[3];
         public UInt64 SensorTimestamp;

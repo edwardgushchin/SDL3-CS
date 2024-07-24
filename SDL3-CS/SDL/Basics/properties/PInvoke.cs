@@ -332,7 +332,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);</code>
     /// <summary>
     /// <para>Get a string property from a group of properties.</para>
-    /// <para>The returned string follows the <seealso cref="GetStringRule"/>.</para>
+    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>

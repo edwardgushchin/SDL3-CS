@@ -81,7 +81,7 @@ public static partial class SDL
     /// string applies.</para>
     /// <para>Error strings are set per-thread, so an error set in a different thread
     /// will not interfere with the current thread's operation.</para>
-    /// <para>The returned string does **NOT** follow the <see cref="GetStringRule"/>! The pointer
+    /// <para>The returned string does **NOT** follow the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>! The pointer
     /// is valid until the current thread's error string is changed, so the caller
     /// should make a copy if the string is to be used after calling into SDL
     /// again.</para>

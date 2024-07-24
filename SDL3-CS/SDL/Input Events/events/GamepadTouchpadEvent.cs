@@ -40,6 +40,7 @@ public static partial class SDL
         public UInt64 Timestamp;
         public UInt32 Which;
         public Int32 Touchpad;
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         public Int32 Finger;
         public float X;
         public float Y;

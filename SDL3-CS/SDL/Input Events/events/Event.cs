@@ -38,6 +38,7 @@ public static partial class SDL
         [FieldOffset(0)] public EventType Type;
         [FieldOffset(0)] public CommonEvent Common;
         [FieldOffset(0)] public DisplayEvent Display;
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         [FieldOffset(0)] public WindowEvent Window;
         [FieldOffset(0)] public KeyboardDeviceEvent KDevice;
         [FieldOffset(0)] public KeyboardEvent Key;
@@ -61,7 +62,9 @@ public static partial class SDL
         [FieldOffset(0)] public GamepadSensorEvent GSensor;
         [FieldOffset(0)] public AudioDeviceEvent ADevice;
         [FieldOffset(0)] public CameraDeviceEvent CDevice;
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         [FieldOffset(0)] public SensorEvent Sensor;
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         [FieldOffset(0)] public QuitEvent Quit;
         [FieldOffset(0)] public UserEvent User;
         [FieldOffset(0)] public TouchFingerEvent TFinger;

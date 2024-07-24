@@ -116,7 +116,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetHint(const char *name);</code>
     /// <summary>
     /// <para>Get the value of a hint.</para>
-    /// <para>The returned string follows the <see cref="GetStringRule"/>.</para>
+    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="name">the hint to query.</param>
     /// <returns>the string value of a hint or NULL if the hint isn't set.</returns>

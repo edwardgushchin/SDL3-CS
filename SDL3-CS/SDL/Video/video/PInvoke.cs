@@ -57,7 +57,7 @@ public static partial class SDL
     /// <para>The names of drivers are all simple, low-ASCII identifiers, like "cocoa",
     /// "x11" or "windows". These never have Unicode characters, and are not meant
     /// to be proper names.</para>
-    /// <para>The returned string follows the <see cref="GetStringRule"/>.</para>
+    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="index">the index of a video driver.</param>
     /// <returns>the name of the video driver with the given **index**.</returns>
@@ -74,7 +74,7 @@ public static partial class SDL
     /// <para>The names of drivers are all simple, low-ASCII identifiers, like "cocoa",
     /// "x11" or "windows". These never have Unicode characters, and are not meant
     /// to be proper names.</para>
-    /// <para>The returned string follows the <see cref="GetStringRule"/>.</para>
+    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>the name of the current video driver or NULL if no driver has been
     /// initialized.</returns>
@@ -172,7 +172,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetDisplayName(SDL_DisplayID displayID);</code>
     /// <summary>
     /// <para>Get the name of a display in UTF-8 encoding.</para>
-    /// <para>The returned string follows the <see cref="GetStringRule"/>.</para>
+    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>the name of a display or NULL on failure; call <see cref="GetError"/> for
@@ -1104,7 +1104,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetWindowTitle(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the title of a window.</para>
-    /// <para>The returned string follows the SDL_GetStringRule.</para>
+    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="window">window the window to query.</param>
     /// <returns>the title of the window in UTF-8 format or <see cref="string.Empty"/> if there is notitle.</returns>
