@@ -240,7 +240,7 @@ public static partial class SDL
         LCtrl               = 224,
         LShift              = 225,
         LAlt                = 226,
-        LGui                = 227,
+        LGUI                = 227,
         RCtrl               = 228,
         RShift              = 229,
         RAlt                = 230,
