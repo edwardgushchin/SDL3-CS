@@ -118,7 +118,7 @@ public static class Program
 
 | **View information and functions related to...** | **View the header**                                                                       |**Stage**                                                          |
 | ------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Event Handling](CategoryEvents)                 | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Event Handling](CategoryEvents)                 | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Keyboard Support](CategoryKeyboard)             | [SDL_keyboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keyboard.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Keyboard Keycodes](CategoryKeycode)             | [SDL_keycode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keycode.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Keyboard Scancodes](CategoryScancode)           | [SDL_scancode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_scancode.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
