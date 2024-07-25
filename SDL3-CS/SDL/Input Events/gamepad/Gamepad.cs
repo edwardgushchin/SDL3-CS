@@ -30,6 +30,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The structure used to identify an SDL gamepad
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     public class Gamepad(IntPtr handle)
     {
         internal IntPtr Handle { get; } = handle;

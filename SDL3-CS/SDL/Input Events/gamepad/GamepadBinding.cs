@@ -32,6 +32,19 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// A mapping between one joystick input to a gamepad control.
+    /// </summary>
+    /// <remarks>
+    /// <para>A gamepad has a collection of several bindings, to say, for example, when
+    /// joystick button number 5 is pressed, that should be treated like the
+    /// gamepad's "start" button.</para>
+    /// <para>SDL has these bindings built-in for many popular controllers, and can add
+    /// more with a simple text string. Those strings are parsed into a collection
+    /// of these structs to make it easier to operate on the data.</para>
+    /// </remarks>
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <seealso cref="GetGamepadBindings"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadBinding
     {

@@ -30,6 +30,16 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Types of gamepad control bindings.
+    /// </summary>
+    /// <remarks>
+    /// A gamepad is a collection of bindings that map arbitrary joystick buttons,
+    /// axes and hat switches to specific positions on a generic console-style
+    /// gamepad. This enum is used as part of <see cref="GamepadBinding"/> to specify those
+    /// mappings.
+    /// </remarks>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum GamepadBindingType
     {
         None = 0,

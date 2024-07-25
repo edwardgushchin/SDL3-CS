@@ -30,6 +30,17 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Standard gamepad types.
+    /// </summary>
+    /// <remarks>
+    /// This type does not necessarily map to first-party controllers from
+    /// Microsoft/Sony/Nintendo; in many cases, third-party controllers can report
+    /// as these, either because they were designed for a specific console, or they
+    /// simply most closely match that console's controllers (does it have A/B/X/Y
+    /// buttons or X/O/Square/Triangle? Does it have a touchpad? etc).
+    /// </remarks>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     public enum GamepadType
     {
         Unknown = 0,

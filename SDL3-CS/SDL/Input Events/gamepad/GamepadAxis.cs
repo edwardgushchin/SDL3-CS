@@ -30,6 +30,19 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The list of axes available on a gamepad
+    /// </summary>
+    /// <remarks>
+    /// <para>Thumbstick axis values range from <see cref="SDL.JoystickAxisMin"/> to
+    /// <see cref="SDL.JoystickAxisMax"/>, and are centered within ~8000 of zero, though
+    /// advanced UI will allow users to set or autodetect the dead zone, which
+    /// varies between gamepads.</para>
+    /// <para>Trigger axis values range from 0 (released) to <see cref="SDL.JoystickAxisMax"/> (fully
+    /// pressed) when reported by <see cref="SDL.GetGamepadAxis"/>. Note that this is not the
+    /// same range that will be reported by the lower-level <see cref="GetJoystickAxis"/>.</para>
+    /// </remarks>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum GamepadAxis
     {
         Invalid = -1,
