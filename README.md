@@ -90,110 +90,110 @@ public static class Program
 |--------------------------------------------------------| --------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | Application entry points                               | [SDL_main.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_main.h)             | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
 | [Initialization and Shutdown](SDL3-CS/SDL/Basics/init) | [SDL_init.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_init.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)     |
-| [Configuration Variables](CategoryHints)               | [SDL_hints.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hints.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)     |
-| [Object Properties](CategoryProperties)                | [SDL_properties.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_properties.h) | ![Ready](https://img.shields.io/badge/Ready-008000)     |
-| [Error Handling](CategoryError)                        | [SDL_error.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_error.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)     |
-| [Log Handling](CategoryLog)                            | [SDL_log.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_log.h)               | ![Ready](https://img.shields.io/badge/Ready-008000)     |
-| [Assertions](CategoryAssert)                           | [SDL_assert.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_assert.h)         | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
-| [Querying SDL Version](CategoryVersion)                | [SDL_version.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_version.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)     |
+| [Configuration Variables](SDL3-CS/SDL/Basics/hints)    | [SDL_hints.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hints.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)     |
+| [Object Properties](SDL3-CS/SDL/Basics/properties)     | [SDL_properties.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_properties.h) | ![Ready](https://img.shields.io/badge/Ready-008000)     |
+| [Error Handling](SDL3-CS/SDL/Basics/error)             | [SDL_error.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_error.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)     |
+| [Log Handling](SDL3-CS/SDL/Basics/log)                 | [SDL_log.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_log.h)               | ![Ready](https://img.shields.io/badge/Ready-008000)     |
+| Assertions                                             | [SDL_assert.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_assert.h)         | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
+| [Querying SDL Version](SDL3-CS/SDL/Basics/version)     | [SDL_version.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_version.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)     |
 
 
 ### Video
 
-| **View information and functions related to...**        | **View the header**                                                                         | **Stage**                                                         |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Display and Window Management](CategoryVideo)          | [SDL_video.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_video.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [2D Accelerated Rendering](CategoryRender)              | [SDL_render.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_render.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Pixel Formats and Conversion Routines](CategoryPixels) | [SDL_pixels.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pixels.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Blend modes](CategoryBlendmode)                        | [SDL_blendmode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_blendmode.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Rectangle Functions](CategoryRect)                     | [SDL_rect.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_rect.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Surface Creation and Simple Drawing](CategorySurface)  | [SDL_surface.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_surface.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Clipboard Handling](CategoryClipboard)                 | [SDL_clipboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_clipboard.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Vulkan Support](CategoryVulkan)                        | [SDL_vulkan.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_vulkan.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Metal Support](CategoryMetal)                          | [SDL_metal.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL_metal.h)              | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Camera Support](CategoryCamera)                        | [SDL_camera.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL_camera.h)            | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**                  | **View the header**                                                                         | **Stage**                                                         |
+|-------------------------------------------------------------------| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Display and Window Management](SDL3-CS/SDL/Video/video)          | [SDL_video.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_video.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [2D Accelerated Rendering](SDL3-CS/SDL/Video/render)              | [SDL_render.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_render.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Pixel Formats and Conversion Routines](SDL3-CS/SDL/Video/pixels) | [SDL_pixels.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pixels.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Blend modes](SDL3-CS/SDL/Video/blendmode)                        | [SDL_blendmode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_blendmode.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Rectangle Functions](SDL3-CS/SDL/Video/rect)                     | [SDL_rect.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_rect.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Surface Creation and Simple Drawing](SDL3-CS/SDL/Video/surface)  | [SDL_surface.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_surface.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Clipboard Handling](SDL3-CS/SDL/Video/clipboard)                 | [SDL_clipboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_clipboard.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Vulkan Support](SDL3-CS/SDL/Video/vulkan)                        | [SDL_vulkan.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_vulkan.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Metal Support](SDL3-CS/SDL/Video/metal)                          | [SDL_metal.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL_metal.h)              | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Camera Support](SDL3-CS/SDL/Video/camera)                        | [SDL_camera.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL_camera.h)            | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 
 ### Input Events
 
-| **View information and functions related to...** | **View the header**                                                                       | **Stage**                                                         |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
-| [Event Handling](CategoryEvents)                 | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Keyboard Support](CategoryKeyboard)             | [SDL_keyboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keyboard.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Keyboard Keycodes](CategoryKeycode)             | [SDL_keycode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keycode.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Keyboard Scancodes](CategoryScancode)           | [SDL_scancode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_scancode.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Mouse Support](CategoryMouse)                   | [SDL_mouse.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mouse.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Joystick Support](CategoryJoystick)             | [SDL_joystick.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_joystick.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Gamepad Support](CategoryGamepad)               | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Touch Support](CategoryTouch)                   | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Pen Support](CategoryPen)                       | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Sensors](CategorySensor)                        | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [HIDAPI](CategoryHIDAPI)                         | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| **View information and functions related to...**          | **View the header**                                                                       | **Stage**                                                         |
+|-----------------------------------------------------------| ----------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
+| [Event Handling](SDL3-CS/SDL/Input%20Events/events)       | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [Keyboard Support](SDL3-CS/SDL/Input%20Events/keyboard)   | [SDL_keyboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keyboard.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Keyboard Keycodes](SDL3-CS/SDL/Input%20Events/keycode)   | [SDL_keycode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keycode.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Keyboard Scancodes](SDL3-CS/SDL/Input%20Events/scancode) | [SDL_scancode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_scancode.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Mouse Support](SDL3-CS/SDL/Input%20Events/mouse)         | [SDL_mouse.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mouse.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Joystick Support](SDL3-CS/SDL/Input%20Events/joystick)   | [SDL_joystick.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_joystick.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Gamepad Support](SDL3-CS/SDL/Input%20Events/gamepad)     | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [Touch Support](SDL3-CS/SDL/Input%20Events/touch)         | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Pen Support](SDL3-CS/SDL/Input%20Events/pen)             | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Sensors](SDL3-CS/SDL/Input%20Events/sensor)              | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [HIDAPI](SDL3-CS/SDL/Input%20Events/hidapi)               | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
 
 ### Force Feedback ("Haptic")
 
-| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                         |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Force Feedback Support](CategoryHaptic)         | [SDL_haptic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_haptic.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**              | **View the header**                                                                     | **Stage**                                                         |
+|---------------------------------------------------------------| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Force Feedback Support](SDL3-CS/SDL/Force%20Feedback/haptic) | [SDL_haptic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_haptic.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 
 ### Audio
 
-| **View information and functions related to...**       | **View the header**                                                                     | **Stage**                                                         |
-| ------------------------------------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Audio Playback, Recording, and Mixing](CategoryAudio) | [SDL_audio.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_audio.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**                 | **View the header**                                                                     | **Stage**                                                         |
+|------------------------------------------------------------------| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Audio Playback, Recording, and Mixing](SDL3-CS/SDL/Audio/audio) | [SDL_audio.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_audio.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 
 ### Threads
 
-| **View information and functions related to...**   | **View the header**                                                                     | **Stage**                                                         |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Thread Management](CategoryThread)                | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Thread Synchronization Primitives](CategoryMutex) | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Atomic Operations](CategoryAtomic)                | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**               | **View the header**                                                                     | **Stage**                                                         |
+|----------------------------------------------------------------| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Thread Management](SDL3-CS/SDL/Threads/thread)                | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Thread Synchronization Primitives](SDL3-CS/SDL/Threads/mutex) | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Atomic Operations](SDL3-CS/SDL/Threads/atomic)                | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 
 ### Time
 
 | **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                         |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Timer Support](CategoryTimer)                   | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Date and Time](CategoryTime)                    | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+|--------------------------------------------------| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Timer Support](SDL3-CS/SDL/Time/timer)          | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Date and Time](SDL3-CS/SDL/Time/time)           | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 
 ### File and I/O Abstractions
 
-| **View information and functions related to...** | **View the header**                                                                           | **Stage**                                                         |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Filesystem Access](CategoryFilesystem)          | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Storage Abstraction](CategoryStorage)           | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [I/O Streams](CategoryIOStream)                  | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| **View information and functions related to...**                           | **View the header**                                                                           | **Stage**                                                         |
+|----------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Filesystem Access](SDL3-CS/SDL/File%20and%20IO%20Abstractions/filesystem) | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Storage Abstraction](SDL3-CS/SDL/File%20and%20IO%20Abstractions/storage)  | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [I/O Streams](SDL3-CS/SDL/File%20and%20IO%20Abstractions/iostream)         | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
 
 ### Platform and CPU Information
 
-| **View information and functions related to...** | **View the header**                                                                       | **Stage**                                                         |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Platform Detection](CategoryPlatform)           | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [CPU Feature Detection](CategoryCPUInfo)         | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Byte Order and Byte Swapping](CategoryEndian)   | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Bit Manipulation](CategoryBits)                 | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**                                      | **View the header**                                                                       | **Stage**                                                         |
+|---------------------------------------------------------------------------------------| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Platform Detection](SDL3-CS/SDL/Platform%20and%20CPU%20Information/platform)         | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [CPU Feature Detection](SDL3-CS/SDL/Platform%20and%20CPU%20Information/cpuinfo)       | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Byte Order and Byte Swapping](SDL3-CS/SDL/Platform%20and%20CPU%20Information/endian) | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Bit Manipulation](SDL3-CS/SDL/Platform%20and%20CPU%20Information/bits)               | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 
 ### Additional Functionality
 
-| **View information and functions related to...**     | **View the header**                                                                           | **Stage**                                                         |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Shared Object/DLL Management](CategorySharedObject) | [SDL_loadso.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_loadso.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Power Management Status](CategoryPower)             | [SDL_power.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_power.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Message Boxes](CategoryMessagebox)                  | [SDL_messagebox.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_messagebox.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [File Dialogs](CategoryDialog)                       | [SDL_dialog.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_dialog.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Locale Info](CategoryLocale)                        | [SDL_locale.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_locale.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Platform-specific Functionality](CategorySystem)    | [SDL_system.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_system.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Standard Library Functionality](CategoryStdinc)     | [SDL_stdinc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_stdinc.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [GUIDs](CategoryGUID)                                | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Miscellaneous](CategoryMisc)                        | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_stdinc.h)           | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**                                 | **View the header**                                                                           | **Stage**                                                         |
+|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------| ----------------------------------------------------------------- |
+| [Shared Object/DLL Management](SDL3-CS/SDL/Additional%20Functionality/loadso)    | [SDL_loadso.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_loadso.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Power Management Status](SDL3-CS/SDL/Additional%20Functionality/power)          | [SDL_power.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_power.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [Message Boxes](SDL3-CS/SDL/Additional%20Functionality/messagebox)               | [SDL_messagebox.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_messagebox.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [File Dialogs](SDL3-CS/SDL/Additional%20Functionality/dialog)                    | [SDL_dialog.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_dialog.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Locale Info](SDL3-CS/SDL/Additional%20Functionality/locale)                     | [SDL_locale.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_locale.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Platform-specific Functionality](SDL3-CS/SDL/Additional%20Functionality/system) | [SDL_system.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_system.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Standard Library Functionality](SDL3-CS/SDL/Additional%20Functionality/stdinc)  | [SDL_stdinc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_stdinc.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [GUIDs](SDL3-CS/SDL/Additional%20Functionality/guid)                             | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [Miscellaneous](SDL3-CS/SDL/Additional%20Functionality/misc)                     | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_misc.h)             | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
 ## Feedback
 

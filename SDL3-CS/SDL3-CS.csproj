@@ -106,15 +106,22 @@
 
     <ItemGroup>
       <Folder Include="SDL\Additional Functionality\dialog\" />
+      <Folder Include="SDL\Additional Functionality\loadso\" />
       <Folder Include="SDL\Additional Functionality\locale\" />
       <Folder Include="SDL\Additional Functionality\messagebox\" />
+      <Folder Include="SDL\Additional Functionality\misc\" />
       <Folder Include="SDL\Additional Functionality\system\" />
       <Folder Include="SDL\Audio\audio\" />
       <Folder Include="SDL\File and IO Abstractions\filesystem\" />
       <Folder Include="SDL\File and IO Abstractions\storage\" />
       <Folder Include="SDL\Force Feedback\haptic\" />
+      <Folder Include="SDL\Platform and CPU Information\bits\" />
       <Folder Include="SDL\Platform and CPU Information\cpuinfo\" />
+      <Folder Include="SDL\Platform and CPU Information\endian\" />
       <Folder Include="SDL\Platform and CPU Information\platform\" />
+      <Folder Include="SDL\Threads\atomic\" />
+      <Folder Include="SDL\Threads\mutex\" />
+      <Folder Include="SDL\Threads\thread\" />
       <Folder Include="SDL\Time\timer\" />
       <Folder Include="SDL\Time\time\" />
       <Folder Include="SDL\Video\blendmode\" />
