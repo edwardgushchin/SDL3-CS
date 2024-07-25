@@ -112,6 +112,8 @@ public static partial class SDL
 
         if (pArray == IntPtr.Zero) return null;
         
+        if (count == 0) return [];
+        
         try
         {
             var displayArray = new int[count];
@@ -293,12 +295,10 @@ public static partial class SDL
     public static DisplayMode[]? GetFullscreenDisplayModes(uint displayID, out int count)
     {
         var displayModesPtr = SDL_GetFullscreenDisplayModes(displayID, out count);
-
-        if (displayModesPtr == IntPtr.Zero || count == 0)
-        {
-            count = 0;
-            return null;
-        }
+        
+        if (displayModesPtr == IntPtr.Zero) return null;
+        
+        if (count == 0) return [];
 
         try
         {
@@ -619,7 +619,10 @@ public static partial class SDL
     public static Window[]? GetWindows(out int count)
     {
         var windowsPtr = SDL_GetWindows(out count);
+        
         if (windowsPtr == IntPtr.Zero) return null;
+        
+        if (count == 0) return [];
 
         try
         {

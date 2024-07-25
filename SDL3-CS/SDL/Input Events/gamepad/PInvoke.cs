@@ -153,15 +153,13 @@ public static partial class SDL
     /// <returns>an array of the mapping strings, NULL-terminated. Returns <c>null</c> on
     /// error.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static string?[] GetGamepadMappings(out int count)
+    public static string[]? GetGamepadMappings(out int count)
     {
         var arrayPtr = SDL_GetGamepadMappings(out count);
 
-        if (arrayPtr == IntPtr.Zero || count == 0)
-        {
-            count = 0;
-            return [];
-        }
+        if (arrayPtr == IntPtr.Zero) return null;
+        
+        if (count == 0) return [];
 
         try
         {
@@ -174,7 +172,7 @@ public static partial class SDL
                 mappings[i] = Marshal.PtrToStringUTF8(ptrArray[i]);
             }
 
-            return mappings;
+            return mappings!;
             
         }
         finally
@@ -273,15 +271,13 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="HasGamepad"/>
     /// <seealso cref="OpenGamepad"/>
-    public static uint[] GetGamepads(out int count)
+    public static uint[]? GetGamepads(out int count)
     {
         var gamepadsPtr = SDL_GetGamepads(out count);
         
-        if (gamepadsPtr == IntPtr.Zero || count == 0)
-        {
-            count = 0;
-            return [];
-        }
+        if (gamepadsPtr == IntPtr.Zero) return null;
+        
+        if (count == 0) return [];
         
         try
         {
@@ -897,13 +893,11 @@ public static partial class SDL
     public static GamepadBinding[]? GetGamepadBindings(Gamepad gamepad, out int count)
     {
         var bindingsPtr = SDL_GetGamepadBindings(gamepad.Handle, out count);
-
-        if (bindingsPtr == IntPtr.Zero || count == 0)
-        {
-            count = 0;
-            return null;
-        }
-
+        
+        if (bindingsPtr == IntPtr.Zero) return null;
+        
+        if (count == 0) return [];
+        
         try
         {
             var bindings = new GamepadBinding[count];
