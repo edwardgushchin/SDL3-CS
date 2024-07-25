@@ -32,15 +32,38 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Sensor event structure (event.sensor.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct SensorEvent
     {
+        /// <summary>
+        /// <see cref="EventType.SensorUpdate"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The instance ID of the sensor
+        /// </summary>
         public UInt32 Which;
         public unsafe fixed float data[6];
+        
+        /// <summary>
+        /// The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
+        /// </summary>
         public UInt64 SensorTimestamp;
+        
+        /// <summary>
+        /// Up to 6 values from the sensor - additional values can be queried using <see cref="GetSensorData"/>
+        /// </summary>
         public unsafe float[] Data
         {
             get

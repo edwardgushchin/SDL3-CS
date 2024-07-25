@@ -33,14 +33,46 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Joystick hat position change event structure (event.jhat.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyHatEvent
     {
+        /// <summary>
+        /// <see cref="EventType.JoystickHatMotion"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The joystick instance id
+        /// </summary>
         public UInt32 Which;
+        
+        /// <summary>
+        /// The joystick hat index
+        /// </summary>
         public byte Hat;
+        
+        /// <summary>
+        /// The hat position value.
+        /// </summary>
+        /// <seealso cref="JoystickHat.LeftUp"/>
+        /// <seealso cref="JoystickHat.Up"/>
+        /// <seealso cref="JoystickHat.RightUp"/>
+        /// <seealso cref="JoystickHat.Left"/>
+        /// <seealso cref="JoystickHat.Centered"/>
+        /// <seealso cref="JoystickHat.Right"/>
+        /// <seealso cref="JoystickHat.LeftDown"/>
+        /// <seealso cref="JoystickHat.Down"/>
+        /// <seealso cref="JoystickHat.RightDown"/>
         public JoystickHat Value;
         private byte Padding1;
         private byte Padding2;

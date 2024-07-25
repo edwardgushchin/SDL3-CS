@@ -32,15 +32,48 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>A user-defined event type (event.user.*)</para>
+    /// <para>This event is unique; it is never created by SDL, but only by the
+    /// application. The event can be pushed onto the event queue using
+    /// SDL_PushEvent(). The contents of the structure members are completely up to
+    /// the programmer; the only requirement is that '''type''' is a value obtained
+    /// from <see cref="RegisterEvents"/>.</para>
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct UserEvent
     {
+        /// <summary>
+        /// <see cref="EventType.User"/> through <see cref="EventType.Last"/>-1,
+        /// Uint32 because these are not in the <see cref="EventType"/> enumeration
+        /// </summary>
         public UInt64 Type;
         private UInt64 reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The associated window if any
+        /// </summary>
         public UInt32 WindowID;
+        
+        /// <summary>
+        /// User defined event code 
+        /// </summary>
         public Int32 Code;
+        
+        /// <summary>
+        /// User defined data pointer
+        /// </summary>
         public IntPtr Data1;
+        
+        /// <summary>
+        /// User defined data pointer
+        /// </summary>
         public IntPtr Data2;
     }
 }

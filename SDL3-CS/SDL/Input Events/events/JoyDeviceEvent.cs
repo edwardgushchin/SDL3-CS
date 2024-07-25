@@ -32,12 +32,28 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Joystick device event structure (event.jdevice.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyDeviceEvent
     {
+        /// <summary>
+        /// <see cref="EventType.JoystickAdded"/> or <see cref="EventType.JoystickRemoved"/>
+        /// or <see cref="EventType.JoystickUpdateComplete"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The joystick instance id
+        /// </summary>
         public UInt32 Which;
     }
 }

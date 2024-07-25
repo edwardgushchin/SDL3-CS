@@ -32,11 +32,23 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// An event triggered when the clipboard contents have changed
+    /// (event.clipboard.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct ClipboardEvent
     {
+        /// <summary>
+        /// <see cref="EventType.ClipboardUpdate"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
     }
 }

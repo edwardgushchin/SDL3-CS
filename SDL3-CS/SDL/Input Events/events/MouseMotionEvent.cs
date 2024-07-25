@@ -32,18 +32,55 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Mouse motion event structure (event.motion.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct MouseMotionEvent
     {
+        /// <summary>
+        /// <see cref="EventType.MouseMotion"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window with mouse focus, if any
+        /// </summary>
         public UInt32 WindowID;
+        
+        /// <summary>
+        /// The mouse instance id, SDL_TOUCH_MOUSEID, or SDL_PEN_MOUSEID
+        /// </summary>
         public UInt32 Which;
+        
+        /// <summary>
+        /// The current button state
+        /// </summary>
         public MouseButtonFlags State;
+        
+        /// <summary>
+        /// X coordinate, relative to window
+        /// </summary>
         public float X;
+        
+        /// <summary>
+        /// Y coordinate, relative to window
+        /// </summary>
         public float Y;
+        
+        /// <summary>
+        /// The relative motion in the X direction
+        /// </summary>
         public float XRel;
+        
+        //The relative motion in the Y direction
         public float YRel;
     }
 }

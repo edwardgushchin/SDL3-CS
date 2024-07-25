@@ -32,14 +32,37 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Window state change event data (event.window.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct WindowEvent
     {
+        /// <summary>
+        /// SDL_EVENT_WINDOW_
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The associated window
+        /// </summary>
         public UInt32 WindowID;
+        
+        /// <summary>
+        /// event dependent data
+        /// </summary>
         public IntPtr Data1;
+        
+        /// <summary>
+        /// event dependent data
+        /// </summary>
         public IntPtr Data2;
     }
 }

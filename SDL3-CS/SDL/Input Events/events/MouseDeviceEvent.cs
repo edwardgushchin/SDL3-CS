@@ -32,12 +32,27 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Mouse device event structure (event.mdevice.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct MouseDeviceEvent
     {
+        /// <summary>
+        /// <see cref="EventType.MouseAdded"/> or <see cref="EventType.MouseRemoved"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The mouse instance id
+        /// </summary>
         public UInt32 Which;
     }
 }

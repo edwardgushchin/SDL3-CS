@@ -32,20 +32,66 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Pressure-sensitive pen button event structure (event.pbutton.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenButtonEvent
     {
+        /// <summary>
+        /// <see cref="EventType.PenButtonDown"/> or <see cref="EventType.PenButtonUp"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window with pen focus, if any
+        /// </summary>
         public UInt32 WindowID;
+        
+        /// <summary>
+        /// The pen instance id
+        /// </summary>
         public UInt32 Which;
+        
+        /// <summary>
+        /// The pen button index (1 represents the pen tip for compatibility with mouse events)
+        /// </summary>
         public byte Button;
+        
+        /// <summary>
+        /// <see cref="Keystate.Pressed"/> or <see cref="Keystate.Released"/>
+        /// </summary>
         public Keystate State;
+        
+        /// <summary>
+        /// Pen button masks (where Button(1) is the first button, Button(2) is the second button etc.),
+        /// <see cref="SDL.PenDownMask"/> is set if the pen is touching the surface,
+        /// and <see cref="SDL.PenEraserMask"/> is set if the pen is (used as) an eraser.
+        /// </summary>
+        /// <seealso cref="Button"/>
         public UInt64 PenState;
+        
+        /// <summary>
+        /// X coordinate, relative to window
+        /// </summary>
         public float X;
+        
+        /// <summary>
+        /// Y coordinate, relative to window
+        /// </summary>
         public float Y;
         private unsafe fixed float axes[(int)PenAxis.NumAxes];
+        
+        /// <summary>
+        /// Pen axes such as pressure and tilt (ordered as per <see cref="PenAxis"/>)
+        /// </summary>
         public unsafe float[] Axes
         {
             get

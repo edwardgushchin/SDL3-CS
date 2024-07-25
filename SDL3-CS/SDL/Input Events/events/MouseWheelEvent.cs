@@ -32,18 +32,58 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Mouse wheel event structure (event.wheel.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct MouseWheelEvent
     {
+        /// <summary>
+        /// <see cref="EventType.MouseWheel"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window with mouse focus, if any
+        /// </summary>
         public UInt32 WindowID;
+        
+        /// <summary>
+        /// The mouse instance id, SDL_TOUCH_MOUSEID, or SDL_PEN_MOUSEID
+        /// </summary>
         public UInt32 Which;
+        
+        /// <summary>
+        /// The amount scrolled horizontally, positive to the right and negative to the left
+        /// </summary>
         public float X;
+        
+        /// <summary>
+        /// The amount scrolled vertically, positive away from the user and negative toward the user
+        /// </summary>
         public float Y;
+        
+        /// <summary>
+        /// Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite.
+        /// Multiply by -1 to change them back
+        /// </summary>
         public MouseWheelDirection Direction;
+        
+        /// <summary>
+        /// X coordinate, relative to window
+        /// </summary>
         public float MouseX;
+        
+        /// <summary>
+        /// Y coordinate, relative to window
+        /// </summary>
         public float MouseY;
     }
 }

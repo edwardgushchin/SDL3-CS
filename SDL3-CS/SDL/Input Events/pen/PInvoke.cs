@@ -33,17 +33,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public static ulong PenCapability(int capbit)
-    {
-        return 1ul << capbit;
-    }
-
-    
-    public static ulong PenAxisCapability(int axis)
-    {
-        return PenCapability(axis + PenFlagAxisBitOffset);
-    }
-    
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

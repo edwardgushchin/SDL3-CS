@@ -32,17 +32,45 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Gamepad sensor event structure (event.gsensor.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadSensorEvent
     {
+        /// <summary>
+        /// <see cref="EventType.GamepadSensorUpdate"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The joystick instance id
+        /// </summary>
         public UInt32 Which;
+        
         // ReSharper disable once MemberHidesStaticFromOuterClass
-        public Int32 Sensor;
+        /// <summary>
+        /// The type of the sensor, one of the values of <see cref="SensorType"/>
+        /// </summary>
+        public SensorType Sensor;
+        
         private unsafe fixed float data[3];
+        
+        /// <summary>
+        /// The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
+        /// </summary>
         public UInt64 SensorTimestamp;
+        
+        /// <summary>
+        /// Up to 3 values from the sensor, as defined in SDL_sensor.h
+        /// </summary>
         public unsafe float[] Data
         {
             get

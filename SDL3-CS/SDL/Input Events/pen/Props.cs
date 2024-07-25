@@ -30,19 +30,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public const int PenFlagDownBitIndex = 13;
-    public const int PenFlagInkBitIndex = 14;
-    public const int PenFlagEraserBitIndex = 15;
-    public const int PenFlagAxisBitOffset = 16; 
-    
-    public static readonly ulong PenDownMask = PenCapability(PenFlagDownBitIndex);
-    public static readonly ulong PenInkMask = PenCapability(PenFlagInkBitIndex);
-    public static readonly ulong PenEraserMask = PenCapability(PenFlagEraserBitIndex);
-    public static readonly ulong PenAxisPressureMask = PenAxisCapability((int)PenAxis.Pressure);
-    public static readonly ulong PenAxisXTiltMask = PenAxisCapability((int)PenAxis.XTilt);
-    public static readonly ulong PenAxisYTiltMask = PenAxisCapability((int)PenAxis.YTilt);
-    public static readonly ulong PenAxisDistanceMask = PenAxisCapability((int)PenAxis.Distance);
-    public static readonly ulong PenAxisRotationMask = PenAxisCapability((int)PenAxis.Rotation);
-    public static readonly ulong PenAxisSliderMask = PenAxisCapability((int)PenAxis.Slider);
-    public static readonly ulong PenAxisBidirectionalMasks = PenAxisXTiltMask | PenAxisYTiltMask;
+    internal const int PenFlagDownBitIndex = 13;
+    internal const int PenFlagInkBitIndex = 14;
+    internal const int PenFlagEraserBitIndex = 15;
+    internal const int PenFlagAxisBitOffset = 16;
 }

@@ -32,12 +32,27 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Keyboard device event structure (event.kdevice.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct KeyboardDeviceEvent
     {
+        /// <summary>
+        /// <see cref="EventType.KeyboardAdded"/> or <see cref="EventType.KeyboardRemoved"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The keyboard instance id
+        /// </summary>
         public UInt32 Which;
     }
 }

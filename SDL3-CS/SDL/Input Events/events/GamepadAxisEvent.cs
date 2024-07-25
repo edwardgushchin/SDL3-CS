@@ -32,17 +32,40 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Gamepad axis motion event structure (event.gaxis.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadAxisEvent
     {
+        /// <summary>
+        /// <see cref="EventType.GamepadAxisMotion"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The joystick instance id
+        /// </summary>
         public UInt32 Which;
-        public byte Axis;
+        
+        /// <summary>
+        /// The gamepad axis (<see cref="GamepadAxis"/>)
+        /// </summary>
+        public GamepadAxis Axis;
         private byte Padding1;
         private byte Padding2;
         private byte Padding3;
+        
+        /// <summary>
+        /// The axis value (range: -32768 to 32767)
+        /// </summary>
         public Int16 Value;
         private UInt16 Padding4;
     }

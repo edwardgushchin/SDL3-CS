@@ -34,10 +34,10 @@ public static partial class SDL
     public enum MouseButtonFlags 
     {
         None     = 0,
-        Left     = 1,
-        Middle   = 2,
-        Right    = 4,
-        X2       = 8,
-        X1       = 16
+        Left     = (int) (1u << 0),
+        Middle   = (int) (1u << 1),
+        Right    = (int) (1u << 2),
+        X2       = (int) (1u << 3),
+        X1       = (int) (1u << 4),
     }
 }

@@ -32,15 +32,38 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Keyboard text input event structure (event.text.*)</para>
+    /// <para>The text string follows the SDL_GetStringRule.</para>
+    /// <para>his event will never be delivered unless text input is enabled by calling
+    /// <see cref="StartTextInput"/>. Text input is disabled by default!</para>
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <seealso cref="StartTextInput"/>
+    /// <seealso cref="StopTextInput"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextInputEvent
     {
+        /// <summary>
+        /// <see cref="EventType.TextInput"/>
+        /// </summary>
         public EventType Type;
         private UInt32 reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window with keyboard focus, if any
+        /// </summary>
         public UInt32 WindowID;
         private IntPtr text;
         
+        /// <summary>
+        /// The input text, UTF-8 encoded
+        /// </summary>
         public string? Text => Marshal.PtrToStringUTF8(text);
     }
 }

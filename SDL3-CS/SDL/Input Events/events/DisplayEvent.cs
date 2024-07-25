@@ -32,14 +32,37 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Display state change event data (event.display.*)
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct DisplayEvent
     {
+        /// <summary>
+        /// SDL_DISPLAYEVENT_
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// n nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The associated display
+        /// </summary>
         public UInt32 DisplayID;
+        
+        /// <summary>
+        /// event dependent data
+        /// </summary>
         public IntPtr Data1;
+        
+        /// <summary>
+        /// event dependent data
+        /// </summary>
         public IntPtr Data2;
     }
 }

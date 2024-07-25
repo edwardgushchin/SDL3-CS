@@ -32,12 +32,28 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Camera device event structure (event.cdevice.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct CameraDeviceEvent
     {
+        /// <summary>
+        /// <see cref="EventType.CameraDeviceAdded"/>, <see cref="EventType.CameraDeviceRemoved"/>,
+        /// <see cref="EventType.CameraDeviceApproved"/>, <see cref="EventType.CameraDeviceDenied"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// SDL_CameraID for the device being added or removed or changing
+        /// </summary>
         public UInt32 Which;
     }
 }

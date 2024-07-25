@@ -32,12 +32,29 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Gamepad device event structure (event.gdevice.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadDeviceEvent
     {
+        /// <summary>
+        /// <see cref="EventType.GamepadAdded"/>, <see cref="EventType.GamepadRemoved"/>,
+        /// or <see cref="EventType.GamepadRemapped"/>, <see cref="EventType.GamepadUpdateComplete"/>
+        /// or <see cref="EventType.GamepadSteamHandleUpdated"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The joystick instance id
+        /// </summary>
         public UInt32 Which;
     }
 }

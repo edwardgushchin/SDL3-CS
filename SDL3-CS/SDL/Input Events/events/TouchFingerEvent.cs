@@ -32,19 +32,62 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Touch finger event structure (event.tfinger.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TouchFingerEvent
     {
+        /// <summary>
+        /// <see cref="EventType.FingerMotion"/> or <see cref="EventType.FingerDown"/> or <see cref="EventType.FingerUp"/>
+        /// </summary>
         public EventType Type;
         private UInt32 reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The touch device id
+        /// </summary>
         public UInt64 TouchID;
+        
+        /// <summary>
+        /// The touch device id
+        /// </summary>
         public UInt64 FingerID;
+        
+        /// <summary>
+        /// Normalized in the range 0...1
+        /// </summary>
         public float X;
+        
+        /// <summary>
+        /// Normalized in the range 0...1 
+        /// </summary>
         public float Y;
+        
+        /// <summary>
+        /// Normalized in the range -1...1
+        /// </summary>
         public float DX;
+        
+        /// <summary>
+        /// Normalized in the range -1...1
+        /// </summary>
         public float DY;
+        
+        /// <summary>
+        /// Normalized in the range 0...1
+        /// </summary>
         public float Pressure;
+        
+        /// <summary>
+        /// The window underneath the finger, if any
+        /// </summary>
         public UInt32 WindowID;
     }
 }

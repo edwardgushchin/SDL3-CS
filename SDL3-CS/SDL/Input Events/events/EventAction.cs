@@ -30,6 +30,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// @{ 
+    /// </summary>
     public enum EventAction
     {
         AddEvent,

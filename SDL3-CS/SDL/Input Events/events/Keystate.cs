@@ -30,6 +30,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// SDL_BUTTON_PRESSED or SDL_BUTTON_RELEASED
+    /// </summary>
     public enum Keystate : byte
     {
         Pressed = 1,

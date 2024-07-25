@@ -69,6 +69,9 @@ internal static class Program
                 }
             }
 
+            var mouse = SDL.GetMouseState(out var _, out var _);
+            Console.WriteLine($"MouseState: {mouse}");
+
             // Calculate elapsed time
             var elapsed = (DateTime.Now - startTime).TotalSeconds;
 

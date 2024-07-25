@@ -32,17 +32,50 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Keyboard IME candidates event structure (event.edit_candidates.*)</para>
+    /// <para>The candidates follow the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextEditingCandidatesEvent
     {
+        /// <summary>
+        /// <see cref="EventType.TextEditingCandidates"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window with keyboard focus, if any
+        /// </summary>
         public UInt32 WindowID;
+        
+        /// <summary>
+        /// The list of candidates, or NULL if there are no candidates available
+        /// </summary>
         public IntPtr Candidates;
+        
+        /// <summary>
+        /// The number of strings in `candidates`
+        /// </summary>
         public Int32 NumCandidates;
+        
+        /// <summary>
+        /// The index of the selected candidate, or -1 if no candidate is selected 
+        /// </summary>
         public Int32 SelectedCandidate;
         private int horizontal;
+        
+        /// <summary>
+        /// <c>true</c> if the list is horizontal, <c>false</c> if it's vertical
+        /// </summary>
         public bool Horizontal => horizontal != 0;
     }
 }

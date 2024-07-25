@@ -32,17 +32,48 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Keyboard text editing event structure (event.edit.*)</para>
+    /// <para>The start cursor is the position, in UTF-8 characters, where new typing
+    /// will be inserted into the editing text. The length is the number of UTF-8
+    /// characters that will be replaced by new typing.</para>
+    /// <para>The text string follows the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextEditingEvent
     {
+        /// <summary>
+        /// <see cref="EventType.TextEditing"/>
+        /// </summary>
         public EventType Type;
         private UInt32 reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window with keyboard focus, if any
+        /// </summary>
         public UInt32 WindowID;
         private IntPtr text;
+        
+        /// <summary>
+        /// The start cursor of selected editing text, or -1 if not set
+        /// </summary>
         public Int32 Start;
+        
+        /// <summary>
+        /// he length of selected editing text, or -1 if not set
+        /// </summary>
         public Int32 Length;
 
+        /// <summary>
+        /// The editing text
+        /// </summary>
         public string? Text => Marshal.PtrToStringUTF8(text);
     }
 }

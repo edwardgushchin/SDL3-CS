@@ -32,14 +32,37 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Joystick button event structure (event.jbutton.*)
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyButtonEvent
     {
+        /// <summary>
+        /// <seealso cref="EventType.JoystickButtonDown"/> or <see cref="EventType.JoystickButtonUp"/>
+        /// </summary>
         public EventType Type;
         private UInt32 Reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
         public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The joystick instance id
+        /// </summary>
         public UInt32 Which; 
+        
+        /// <summary>
+        /// The joystick button index
+        /// </summary>
         public byte Button;
+        
+        /// <summary>
+        /// <see cref="Keystate.Pressed"/> or <see cref="Keystate.Released"/> 
+        /// </summary>
         public Keystate State;
         private byte Padding1;
         private byte Padding2;

@@ -32,46 +32,190 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The structure for all events in SDL.
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Explicit)]
     public struct Event
     {
+        /// <summary>
+        /// Event type, shared with all events, Uint32 to cover user events which are not in the SDL_EventType enumeration
+        /// </summary>
         [FieldOffset(0)] public EventType Type;
+        
+        /// <summary>
+        /// Common event data
+        /// </summary>
         [FieldOffset(0)] public CommonEvent Common;
+        
+        /// <summary>
+        /// Display event data
+        /// </summary>
         [FieldOffset(0)] public DisplayEvent Display;
+        
         // ReSharper disable once MemberHidesStaticFromOuterClass
+        /// <summary>
+        /// Window event data
+        /// </summary>
         [FieldOffset(0)] public WindowEvent Window;
+        
+        /// <summary>
+        /// Keyboard device change event data
+        /// </summary>
         [FieldOffset(0)] public KeyboardDeviceEvent KDevice;
+        
+        /// <summary>
+        /// Keyboard event data
+        /// </summary>
         [FieldOffset(0)] public KeyboardEvent Key;
+        
+        /// <summary>
+        /// Text editing event data
+        /// </summary>
         [FieldOffset(0)] public TextEditingEvent Edit;
+        
+        /// <summary>
+        /// Text editing candidates event data
+        /// </summary>
         [FieldOffset(0)] public TextEditingCandidatesEvent EditCandidates;
+        
+        /// <summary>
+        /// Text input event data
+        /// </summary>
         [FieldOffset(0)] public TextInputEvent Text;
+        
+        /// <summary>
+        /// Mouse device change event data
+        /// </summary>
         [FieldOffset(0)] public MouseDeviceEvent MDevice;
+        
+        /// <summary>
+        /// Mouse motion event data
+        /// </summary>
         [FieldOffset(0)] public MouseMotionEvent Motion;
+        
+        // ReSharper disable once MemberHidesStaticFromOuterClass
+        /// <summary>
+        /// Mouse button event data
+        /// </summary>
         [FieldOffset(0)] public MouseButtonEvent Button;
+        
+        /// <summary>
+        /// Mouse wheel event data
+        /// </summary>
         [FieldOffset(0)] public MouseWheelEvent Wheel;
+        
+        /// <summary>
+        /// Joystick device change event data
+        /// </summary>
         [FieldOffset(0)] public JoyDeviceEvent JDevice;
+        
+        /// <summary>
+        /// Joystick axis event data
+        /// </summary>
         [FieldOffset(0)] public JoyAxisEvent JAxis;
+        
+        /// <summary>
+        /// Joystick ball event data
+        /// </summary>
         [FieldOffset(0)] public JoyBallEvent JBall;
+        
+        /// <summary>
+        /// Joystick hat event data
+        /// </summary>
         [FieldOffset(0)] public JoyHatEvent JHat;
+        
+        /// <summary>
+        /// Joystick button event data
+        /// </summary>
         [FieldOffset(0)] public JoyButtonEvent JButton;
+        
+        /// <summary>
+        /// Joystick battery event data
+        /// </summary>
         [FieldOffset(0)] public JoyBatteryEvent JBattery;
+        
+        /// <summary>
+        /// Gamepad device event data
+        /// </summary>
         [FieldOffset(0)] public GamepadDeviceEvent GDevice;
+        
+        /// <summary>
+        /// Gamepad axis event data
+        /// </summary>
         [FieldOffset(0)] public GamepadAxisEvent GAxis;
+        
+        /// <summary>
+        /// Gamepad button event data
+        /// </summary>
         [FieldOffset(0)] public GamepadButtonEvent GButton;
+        
+        /// <summary>
+        /// Gamepad touchpad event data
+        /// </summary>
         [FieldOffset(0)] public GamepadTouchpadEvent GTouchpad;
+        
+        /// <summary>
+        /// Gamepad sensor event data
+        /// </summary>
         [FieldOffset(0)] public GamepadSensorEvent GSensor;
+        
+        /// <summary>
+        /// Audio device event data
+        /// </summary>
         [FieldOffset(0)] public AudioDeviceEvent ADevice;
+        
+        /// <summary>
+        /// Camera device event data
+        /// </summary>
         [FieldOffset(0)] public CameraDeviceEvent CDevice;
+        
         // ReSharper disable once MemberHidesStaticFromOuterClass
+        /// <summary>
+        /// Sensor event data
+        /// </summary>
         [FieldOffset(0)] public SensorEvent Sensor;
+        
         // ReSharper disable once MemberHidesStaticFromOuterClass
+        /// <summary>
+        /// Quit request event data
+        /// </summary>
         [FieldOffset(0)] public QuitEvent Quit;
+        
+        /// <summary>
+        /// Custom event data
+        /// </summary>
         [FieldOffset(0)] public UserEvent User;
+        
+        /// <summary>
+        /// Touch finger event data
+        /// </summary>
         [FieldOffset(0)] public TouchFingerEvent TFinger;
+        
+        /// <summary>
+        /// Pen tip touching or leaving drawing surface
+        /// </summary>
         [FieldOffset(0)] public PenTipEvent PTip;
+        
+        /// <summary>
+        /// Pen change in position, pressure, or angle
+        /// </summary>
         [FieldOffset(0)] public PenMotionEvent PMotion;
+        
+        /// <summary>
+        /// Pen button press
+        /// </summary>
         [FieldOffset(0)] public PenButtonEvent PButton;
+        
+        /// <summary>
+        /// Drag and drop event data
+        /// </summary>
         [FieldOffset(0)] public DropEvent Drop;
+        
+        /// <summary>
+        /// Clipboard event data
+        /// </summary>
         [FieldOffset(0)] public ClipboardEvent Clipboard;
         [FieldOffset(0)] private unsafe fixed byte padding[128];
     }
