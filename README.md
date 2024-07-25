@@ -118,13 +118,13 @@ public static class Program
 
 | **View information and functions related to...** | **View the header**                                                                       |**Stage**                                                          |
 | ------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Event Handling](CategoryEvents)                 | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     |  ![Ready](https://img.shields.io/badge/Ready-008000)|
+| [Event Handling](CategoryEvents)                 | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Keyboard Support](CategoryKeyboard)             | [SDL_keyboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keyboard.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Keyboard Keycodes](CategoryKeycode)             | [SDL_keycode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keycode.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Keyboard Scancodes](CategoryScancode)           | [SDL_scancode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_scancode.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Mouse Support](CategoryMouse)                   | [SDL_mouse.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mouse.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Joystick Support](CategoryJoystick)             | [SDL_joystick.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_joystick.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Gamepad Support](CategoryGamepad)               | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   |  ![Ready](https://img.shields.io/badge/Ready-008000) |
+| [Gamepad Support](CategoryGamepad)               | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Touch Support](CategoryTouch)                   | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Pen Support](CategoryPen)                       | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Sensors](CategorySensor)                        | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
