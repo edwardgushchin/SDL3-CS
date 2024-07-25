@@ -381,9 +381,7 @@ public static partial class SDL
     /// <returns>the GUID of the selected gamepad. If called on an invalid index,
     /// this function returns a zero GUID.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    /// <see cref="GUIDToString"/>
-    /// <seealso cref="GetGamepadGUID"/>
-    /// <seealso cref="GetGamepadGUIDString"/>
+    /// <seealso cref="GUIDToString"/>
     /// <seealso cref="GetGamepads"/>
     public static GUID GetGamepadGUIDForID(uint instanceID) => SDL_GetGamepadGUIDForID(instanceID);
     
