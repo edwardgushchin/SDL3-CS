@@ -106,7 +106,7 @@ public static class Hints
     /// devices, or to be able to trap the back button for use in your code
     /// reliably. If this hint is true, the back button will show up as an
     /// <see cref="SDL.EventType.KeyDown"/> / <see cref="SDL.EventType.KeyUp"/> pair with a keycode of
-    /// <see cref="SDL.Scancode.AcBack"/>.</para>
+    /// <see cref="SDL.Scancode.ACBack"/>.</para>
     /// <para>The variable can be set to the following values:</para>
     /// <list type="bullet">
     /// <item>"0": Back button will be handled as usual for system. (default)</item>
@@ -3044,7 +3044,7 @@ public static class Hints
     /// apply its default back button behavior (terminate the app).</para>
     /// <para>SDL registers its own back-button-press callback with the Windows Phone OS.
     /// This callback will emit a pair of SDL key-press events (<see cref="SDL.EventType.KeyDown"/>
-    /// and <see cref="SDL.EventType.KeyUp"/>), each with a scancode of <see cref="SDL.Scancode.AcBack"/>, after
+    /// and <see cref="SDL.EventType.KeyUp"/>), each with a scancode of <see cref="SDL.Scancode.ACBack"/>, after
     /// which it will check the contents of the hint, <see cref="WinRTHandleBackButton"/>. If the hint's
     /// value is set to <c>"1"</c>, the back button event's Handled property will get set to <c>true</c>. If the hint's
     /// value is set to something else, or if it is unset, SDL will leave the
@@ -3055,7 +3055,7 @@ public static class Hints
     /// being pressed.</para>
     /// <para>In order to get notified when a back button is pressed, SDL apps should
     /// register a callback function with <see cref="SDL.AddEventWatch"/>, and have it listen
-    /// for <see cref="SDL.EventType.KeyDown"/> events that have a scancode of <see cref="SDL.Scancode.AcBack"/>
+    /// for <see cref="SDL.EventType.KeyDown"/> events that have a scancode of <see cref="SDL.Scancode.ACBack"/>
     /// (Alternatively, <see cref="SDL.EventType.KeyUp"/> events can be listened-for. Listening for
     /// either event type is suitable.) Any value of <see cref="WinRTHandleBackButton"/> set by such a callback,
     /// will be applied to the OS' current back-button-press event.</para>
