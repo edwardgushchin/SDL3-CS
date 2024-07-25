@@ -30,10 +30,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public static uint ScancodeToKeycode(uint scancode)
+    public static Keycode ScancodeToKeycode(Scancode scancode)
     {
-        return scancode | ScancodeMask;
+        return (Keycode)((uint)scancode | 1u << 30);
     }
-    
-    public const uint ScancodeMask = 1u << 30;
 }
