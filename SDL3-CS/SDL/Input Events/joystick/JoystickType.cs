@@ -25,6 +25,15 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>An enum of some common joystick types.</para>
+    /// <para>In some cases, SDL can identify a low-level joystick as being a certain
+    /// type of device, and will report it through <see cref="GetJoystickType"/> (or
+    /// <see cref="GetJoystickTypeForID"/>).</para>
+    /// <para>This is by no means a complete list of everything that can be plugged into
+    /// a computer.</para>
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum JoystickType
     {
         Unknown,

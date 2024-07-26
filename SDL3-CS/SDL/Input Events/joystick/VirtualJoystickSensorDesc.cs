@@ -27,10 +27,22 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The structure that describes a virtual joystick sensor.
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <seealso cref="VirtualJoystickDesc"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct VirtualJoystickSensorDesc
     {
+        /// <summary>
+        /// the type of this sensor
+        /// </summary>
         public SensorType Type;
+        
+        /// <summary>
+        /// the update frequency of this sensor, may be 0.0f
+        /// </summary>
         public float Rate;
     }
 }

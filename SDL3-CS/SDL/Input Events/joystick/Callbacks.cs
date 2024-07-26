@@ -29,4 +29,23 @@ public static partial class SDL
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void VirtualJoystickUpdateCallback(IntPtr userData);
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int VirtualJoysticRumbleCallback(IntPtr userData, ushort lowFrequencyRumble, 
+        ushort highFrequencyRumble);
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int VirtualJoysticRumbleTriggersCallback(IntPtr userData, ushort leftRumble, ushort rightRumble);
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int VirtualJoysticSendEffectCallback(IntPtr userData, IntPtr data, int size);
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int VirtualJoysticSetLEDCallback(IntPtr userData, byte red, byte green, byte blue);
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void VirtualJoysticSetPlayerIndexCallback(IntPtr userData, int playerIndex);
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int VirtualJoysticSetSensorsEnabledCallback(IntPtr userData, bool enabled);
 }

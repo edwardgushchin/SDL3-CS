@@ -27,9 +27,17 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The structure that describes a virtual joystick touchpad.
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <seealso cref="VirtualJoystickDesc"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct VirtualJoystickTouchpadDesc
     {
+        /// <summary>
+        /// the number of simultaneous fingers on this touchpad
+        /// </summary>
         public UInt16 NFingers;
         private unsafe fixed UInt16 Padding[3];
     }

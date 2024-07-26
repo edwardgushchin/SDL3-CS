@@ -25,6 +25,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Possible connection states for a joystick device.</para>
+    /// <para>This is used by <see cref="GetJoystickConnectionState"/> to report how a device is
+    /// connected to the system.</para>
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum JoystickConnectionState
     {
         Invalid = -1,

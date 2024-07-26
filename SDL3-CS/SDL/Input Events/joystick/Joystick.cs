@@ -23,6 +23,11 @@
 
 namespace SDL3;
 
+
+/// <summary>
+/// <para>The joystick structure used to identify an SDL joystick.</para>
+/// <para>This is opaque data.</para>
+/// </summary>
 public static partial class SDL
 {
     public class Joystick(IntPtr handle)
