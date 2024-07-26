@@ -526,12 +526,4 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="HasScreenKeyboardSupport"/>
     public static bool ScreenKeyboardShown(Window window) => SDL_ScreenKeyboardShown(window.Handle);
-    
-    
-    /*[LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetKeyboardInstanceName(uint instanceId);
-
-    public static string? GetKeyboardInstanceName(uint instanceId) =>
-        Marshal.PtrToStringUTF8(SDL_GetKeyboardInstanceName(instanceId));*/
 }
