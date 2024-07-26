@@ -128,7 +128,7 @@ public static class Program
 | [Touch Support](SDL3-CS/SDL/Input%20Events/touch)         | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Pen Support](SDL3-CS/SDL/Input%20Events/pen)             | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Sensors](SDL3-CS/SDL/Input%20Events/sensor)              | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [HIDAPI](SDL3-CS/SDL/Input%20Events/hidapi)               | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [HIDAPI](SDL3-CS/SDL/Input%20Events/hidapi)               | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 
 
 ### Force Feedback ("Haptic")

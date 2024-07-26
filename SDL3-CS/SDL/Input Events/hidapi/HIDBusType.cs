@@ -25,12 +25,45 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// HID underlying bus types.
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum HIDBusType
     {
+        /// <summary>
+        /// Unknown bus type
+        /// </summary>
         Unknown = 0x00,
+        
+        /// <summary>
+        /// USB bus
+        /// Specifications:
+        /// https://usb.org/hid
+        /// </summary>
         USB = 0x01,
+        
+        /// <summary>
+        /// Bluetooth or Bluetooth LE bus
+        /// Specifications:
+        /// https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+        /// https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+        /// https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
+        /// </summary>
         Bluetooth = 0x02,
+        
+        /// <summary>
+        /// I2C bus
+        /// Specifications:
+        /// https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
+        /// </summary>
         I2C = 0x03,
+        
+        /// <summary>
+        /// SPI bus
+        /// Specifications:
+        /// https://www.microsoft.com/download/details.aspx?id=103325
+        /// </summary>
         SPI = 0x04
     }
 }

@@ -29,6 +29,10 @@ namespace SDL3;
 [SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 public static partial class SDL
 {
+    /// <summary>
+    /// Information about a connected HID device
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct HIDDeviceInfo
     {
@@ -50,22 +54,81 @@ public static partial class SDL
         private int interface_protocol;
         private HIDBusType bus_type;
         private IntPtr next;
-
-
+        
+        
+        /// <summary>
+        /// Platform-specific device path
+        /// </summary>
         public string? Path => Marshal.PtrToStringAnsi(path);
+        
+        /// <summary>
+        /// Device Vendor ID
+        /// </summary>
         public ushort VendorId => vendor_id;
+        
+        /// <summary>
+        /// Device Product ID
+        /// </summary>
         public ushort ProductId => product_id;
+        
+        /// <summary>
+        /// Serial Number
+        /// </summary>
         public string? SerialNumber => serial_number;
+        
+        /// <summary>
+        /// Device Release Number in binary-coded decimal,
+        /// also known as Device Version Number
+        /// </summary>
         public ushort ReleaseNumber => release_number;
+        
+        /// <summary>
+        /// Manufacturer String
+        /// </summary>
         public string? ManufacturerString => manufacturer_string;
+        
+        /// <summary>
+        /// Product string
+        /// </summary>
         public string? ProductString => product_string;
+        
+        /// <summary>
+        /// Usage Page for this Device/Interface
+        /// (Windows/Mac/hidraw only)
+        /// </summary>
         public ushort UsagePage => usage_page;
+        
+        /// <summary>
+        /// Usage for this Device/Interface
+        /// (Windows/Mac/hidraw only)
+        /// </summary>
         public ushort Usage => usage;
+        
+        /// <summary>
+        /// The USB interface which this logical device
+        /// represents.
+        ///
+        /// Valid only if the device is a USB HID device.
+        /// Set to -1 in all other cases.
+        /// </summary>
         public int InterfaceNumber => interface_number;
+        
+        /// <summary>
+        /// Additional information about the USB interface.
+        /// Valid on libusb and Android implementations.
+        /// </summary>
         public int InterfaceClass => interface_class;
         public int InterfaceSubclass => interface_subclass;
         public int InterfaceProtocol => interface_protocol;
+        
+        /// <summary>
+        /// Underlying bus type
+        /// </summary>
         public HIDBusType BusType => bus_type;
+        
+        /// <summary>
+        /// Pointer to the next device
+        /// </summary>
         public IntPtr Next => next;
     }
 }

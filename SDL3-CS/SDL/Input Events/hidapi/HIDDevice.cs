@@ -25,6 +25,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// An opaque handle representing an open HID device.
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     public readonly struct HIDDevice(IntPtr handle)
     {
         public IntPtr Handle { get; } = handle;
