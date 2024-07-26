@@ -32,7 +32,14 @@ public static partial class SDL
 {
     public enum PenTips
     {
+        /// <summary>
+        /// Regular pen tip (for drawing) touched the surface
+        /// </summary>
         Ink = PenFlagInkBitIndex,
+        
+        /// <summary>
+        /// Eraser pen tip touched the surface
+        /// </summary>
         Eraser = PenFlagEraserBitIndex
     }
 }

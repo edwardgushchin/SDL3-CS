@@ -30,14 +30,44 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Pen types</para>
+    /// <para>Some pens identify as a particular type of drawing device (e.g., an
+    /// airbrush or a pencil).</para>
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0</since>
     public enum PenSubtype
     {
         Unknown = 0,
+        
+        /// <summary>
+        /// Eraser
+        /// </summary>
         Eraser = 1,
+        
+        /// <summary>
+        /// Generic pen; this is the default.
+        /// </summary>
         Pen,
+        
+        /// <summary>
+        /// Pencil
+        /// </summary>
         Pencil,
+        
+        /// <summary>
+        /// Brush-like device
+        /// </summary>
         Brush,
+        
+        /// <summary>
+        /// Airbrush device that "sprays" ink 
+        /// </summary>
         Airbrush,
+        
+        /// <summary>
+        /// Last valid pen type
+        /// </summary>
         Last = Airbrush
     }
 }

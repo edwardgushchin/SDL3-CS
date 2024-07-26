@@ -31,4 +31,10 @@ namespace SDL3;
 public static partial class SDL
 {
     public static uint Button(int x) => (1u << (x - 1));
+
+    public static uint ButtonLMask = Button((int)MouseButtonFlags.Left);
+    public static uint ButtonMMask = Button((int)MouseButtonFlags.Middle);
+    public static uint ButtonRMask = Button((int)MouseButtonFlags.Right);
+    public static uint ButtonX1Mask = Button((int)MouseButtonFlags.X1);
+    public static uint ButtonX2Mask = Button((int)MouseButtonFlags.X2);
 }

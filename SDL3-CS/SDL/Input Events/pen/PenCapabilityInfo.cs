@@ -32,11 +32,27 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Pen capabilities, as reported by <see cref="GetPenCapabilities"/>
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenCapabilityInfo
     {
+        /// <summary>
+        /// Physical maximum tilt angle, for XTILT and YTILT, or <see cref="PenInfoUnknown"/>.
+        /// Pens cannot typically tilt all the way to 90 degrees, so this value is usually less than 90.0.
+        /// </summary>
         public float MaxTilt;
+        
+        /// <summary>
+        /// For Wacom devices: wacom tool type ID, otherwise 0 (useful e.g. with libwacom)
+        /// </summary>
         public UInt32 WacomId;
+        
+        /// <summary>
+        /// Number of pen buttons (not counting the pen tip), or <see cref="PenInfoUnknown"/>
+        /// </summary>
         public sbyte NumButtons;
     }
 }

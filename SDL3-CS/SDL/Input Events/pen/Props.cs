@@ -30,8 +30,33 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Bit for storing that pen is touching the surface
+    /// </summary>
     internal const int PenFlagDownBitIndex = 13;
+    
+    /// <summary>
+    /// Bit for storing has-non-eraser-capability status
+    /// </summary>
     internal const int PenFlagInkBitIndex = 14;
+    
+    /// <summary>
+    /// Bit for storing is-eraser or has-eraser-capability property
+    /// </summary>
     internal const int PenFlagEraserBitIndex = 15;
+    
+    /// <summary>
+    /// Bit for storing has-axis-0 property
+    /// </summary>
     internal const int PenFlagAxisBitOffset = 16;
+    
+    /// <summary>
+    /// Marks unknown information when querying the pen
+    /// </summary>
+    public const int PenInfoUnknown = -1;
+    
+    /// <summary>
+    /// Reserved invalid SDL_PenID is valid
+    /// </summary>
+    public const int PenInvalid = 0;
 }
