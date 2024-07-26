@@ -27,6 +27,14 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Data about a single finger in a multitouch event.</para>
+    /// <para>Each touch even is a collection of fingers that are simultaneously in
+    /// contact with the touch device (so a "touch" can be a "multitouch," in
+    /// reality), and this struct reports details of the specific fingers.</para>
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <seealso cref="GetTouchFingers"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Finger
     {
