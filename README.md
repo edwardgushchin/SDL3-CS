@@ -101,11 +101,11 @@ public static class Program
 ### Video
 
 | **View information and functions related to...**                  | **View the header**                                                                         | **Stage**                                                         |
-|-------------------------------------------------------------------| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+|-------------------------------------------------------------------| ------------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
 | [Display and Window Management](SDL3-CS/SDL/Video/video)          | [SDL_video.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_video.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [2D Accelerated Rendering](SDL3-CS/SDL/Video/render)              | [SDL_render.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_render.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Pixel Formats and Conversion Routines](SDL3-CS/SDL/Video/pixels) | [SDL_pixels.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pixels.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [Blend modes](SDL3-CS/SDL/Video/blendmode)                        | [SDL_blendmode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_blendmode.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Blend modes](SDL3-CS/SDL/Video/blendmode)                        | [SDL_blendmode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_blendmode.h) | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Rectangle Functions](SDL3-CS/SDL/Video/rect)                     | [SDL_rect.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_rect.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Surface Creation and Simple Drawing](SDL3-CS/SDL/Video/surface)  | [SDL_surface.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_surface.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Clipboard Handling](SDL3-CS/SDL/Video/clipboard)                 | [SDL_clipboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_clipboard.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
