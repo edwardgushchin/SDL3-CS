@@ -124,7 +124,6 @@
       <Folder Include="SDL\Threads\thread\" />
       <Folder Include="SDL\Time\timer\" />
       <Folder Include="SDL\Time\time\" />
-      <Folder Include="SDL\Video\blendmode\" />
       <Folder Include="SDL\Video\camera\" />
       <Folder Include="SDL\Video\clipboard\" />
       <Folder Include="SDL\Video\metal\" />
