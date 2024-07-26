@@ -30,9 +30,20 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Scroll direction types for the Scroll event
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0.</since>
     public enum MouseWheelDirection
     {
+        /// <summary>
+        /// The scroll direction is normal
+        /// </summary>
         Normal,
+        
+        /// <summary>
+        /// The scroll direction is flipped / natural
+        /// </summary>
         Flipped
     }
 }

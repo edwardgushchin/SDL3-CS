@@ -30,6 +30,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// Implementation dependent
+    /// </summary>
     public class Cursor(IntPtr handle)
     {
         internal IntPtr Handle { get; } = handle;

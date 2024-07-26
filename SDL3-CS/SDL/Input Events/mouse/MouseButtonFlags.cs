@@ -30,6 +30,20 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// A bitmask of pressed mouse buttons, as reported by <see cref="GetMouseState"/>, etc.
+    /// <list type="bullet">
+    /// <item>Button 1: Left mouse button</item>
+    /// <item>Button 2: Middle mouse button</item>
+    /// <item>Button 3: Right mouse button</item>
+    /// <item>Button 4: Side mouse button 1</item>
+    /// <item>Button 5: Side mouse button 2</item>
+    /// </list>
+    /// </summary>
+    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <seealso cref="GetMouseState"/>
+    /// <seealso cref="GetGlobalMouseState"/>
+    /// <seealso cref="GetRelativeMouseState"/>
     [Flags]
     public enum MouseButtonFlags 
     {
