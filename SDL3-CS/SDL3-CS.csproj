@@ -125,7 +125,6 @@
       <Folder Include="SDL\Time\timer\" />
       <Folder Include="SDL\Time\time\" />
       <Folder Include="SDL\Video\camera\" />
-      <Folder Include="SDL\Video\clipboard\" />
       <Folder Include="SDL\Video\metal\" />
       <Folder Include="SDL\Video\vulkan\" />
       <Folder Include="SDL_image\" />
