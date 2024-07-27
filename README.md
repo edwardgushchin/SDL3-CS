@@ -177,8 +177,8 @@ public static class Program
 |---------------------------------------------------------------------------------------| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | [Platform Detection](SDL3-CS/SDL/Platform%20and%20CPU%20Information/platform)         | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 | [CPU Feature Detection](SDL3-CS/SDL/Platform%20and%20CPU%20Information/cpuinfo)       | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Byte Order and Byte Swapping](SDL3-CS/SDL/Platform%20and%20CPU%20Information/endian) | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Bit Manipulation](SDL3-CS/SDL/Platform%20and%20CPU%20Information/bits)               | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| [Byte Order and Byte Swapping](SDL3-CS/SDL/Platform%20and%20CPU%20Information/endian) | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)     | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)           |
+| [Bit Manipulation](SDL3-CS/SDL/Platform%20and%20CPU%20Information/bits)               | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)         | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)           |
 
 
 ### Additional Functionality
