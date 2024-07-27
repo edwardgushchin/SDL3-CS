@@ -37,6 +37,19 @@ public static partial class SDL
         var renderHandle = SDL_CreateRenderer(window.Handle, name);
         return renderHandle != IntPtr.Zero ? new Render(renderHandle) : null;
     }
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_SetRenderVSync(IntPtr renderer, int vsync);
+    public static int SetRenderVSync(Render renderer, int vsync) => SDL_SetRenderVSync(renderer.Handle, vsync);
+    
+    
+    [LibraryImport(SDLLibrary)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetRenderVSync(IntPtr renderer, out int vsync);
+    public static int GetRenderVSync(Render renderer, out int vsync) =>
+        SDL_GetRenderVSync(renderer.Handle, out vsync);
 
 
     [LibraryImport(SDLLibrary)]
