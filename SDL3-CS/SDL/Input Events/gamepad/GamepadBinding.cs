@@ -55,6 +55,7 @@ public static partial class SDL
         public struct InputData
         {
             [FieldOffset(0)]
+            // ReSharper disable once MemberHidesStaticFromOuterClass
             public int Button;
 
             [FieldOffset(0)]
@@ -86,6 +87,7 @@ public static partial class SDL
         public struct OutputData
         {
             [FieldOffset(0)]
+            // ReSharper disable once MemberHidesStaticFromOuterClass
             public GamepadButton Button;
 
             [FieldOffset(0)]

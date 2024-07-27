@@ -156,10 +156,10 @@ public static class Program
 
 ### Time
 
-| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                         |
-|--------------------------------------------------| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Timer Support](SDL3-CS/SDL/Time/timer)          | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Date and Time](SDL3-CS/SDL/Time/time)           | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                     |
+|--------------------------------------------------| --------------------------------------------------------------------------------------- |---------------------------------------------------------------|
+| [Timer Support](SDL3-CS/SDL/Time/timer)          | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)           |
+| [Date and Time](SDL3-CS/SDL/Time/time)           | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D) |
 
 
 ### File and I/O Abstractions

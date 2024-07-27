@@ -122,7 +122,6 @@
       <Folder Include="SDL\Threads\atomic\" />
       <Folder Include="SDL\Threads\mutex\" />
       <Folder Include="SDL\Threads\thread\" />
-      <Folder Include="SDL\Time\timer\" />
       <Folder Include="SDL\Time\time\" />
       <Folder Include="SDL\Video\camera\" />
       <Folder Include="SDL\Video\metal\" />

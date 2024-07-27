@@ -58,6 +58,7 @@ public static partial class SDL
         /// <summary>
         /// The mouse button index
         /// </summary>
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         public byte Button; 
         
         /// <summary>

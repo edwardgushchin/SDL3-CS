@@ -53,6 +53,7 @@ public static partial class SDL
         /// <summary>
         /// The gamepad button (<see cref="GamepadButton"/>)
         /// </summary>
+        // ReSharper disable once MemberHidesStaticFromOuterClass
         public GamepadButton Button;
         
         /// <summary>
