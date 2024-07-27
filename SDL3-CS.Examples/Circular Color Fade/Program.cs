@@ -29,7 +29,7 @@ internal static class Program
 {
     private static void Main()
     {
-        if (SDL.Init(SDL.InitFlags.Video) < 0)
+        if (SDL.Init(SDL.InitFlags.Video | SDL.InitFlags.Timer) < 0)
         {
             Console.WriteLine($"SDL could not initialize! SDL Error: {SDL.GetError()}");
             return;
@@ -52,7 +52,8 @@ internal static class Program
         }
 
         var loop = true;
-        var startTime = DateTime.Now;
+        var startCounter = SDL.GetPerformanceCounter();
+        var frequency = SDL.GetPerformanceFrequency();
 
         while (loop)
         {
@@ -65,7 +66,8 @@ internal static class Program
             }
 
             // Calculate elapsed time
-            var elapsed = (DateTime.Now - startTime).TotalSeconds;
+            var currentCounter = SDL.GetPerformanceCounter();
+            var elapsed = (currentCounter - startCounter) / (double)frequency;
 
             // Calculate color components based on sine wave functions
             var r = (byte)(Math.Sin(elapsed) * 127 + 128);
