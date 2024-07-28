@@ -65,7 +65,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial FunctionPointer SDL_LoadFunction(IntPtr handle,
+    private static partial FunctionPointer? SDL_LoadFunction(IntPtr handle,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_LoadFunction(void *handle, const char *name);</code>
     /// <summary>
@@ -83,7 +83,7 @@ public static partial class SDL
     /// <param name="name">the name of the function to look up.</param>
     /// <returns>a pointer to the function or <c>NULL</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static FunctionPointer LoadFunction(IntPtr handle, string name) => SDL_LoadFunction(handle, name);
+    public static FunctionPointer? LoadFunction(IntPtr handle, string name) => SDL_LoadFunction(handle, name);
     
     
     [LibraryImport(SDLLibrary)]

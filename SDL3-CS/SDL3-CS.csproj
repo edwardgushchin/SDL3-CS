@@ -119,7 +119,6 @@
       <Folder Include="SDL\Time\time\" />
       <Folder Include="SDL\Video\camera\" />
       <Folder Include="SDL\Video\metal\" />
-      <Folder Include="SDL\Video\vulkan\" />
       <Folder Include="SDL_image\" />
       <Folder Include="SDL_mixer\" />
       <Folder Include="SDL_ttf\" />
