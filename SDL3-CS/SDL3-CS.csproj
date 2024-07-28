@@ -109,7 +109,6 @@
       <Folder Include="SDL\Additional Functionality\loadso\" />
       <Folder Include="SDL\Additional Functionality\locale\" />
       <Folder Include="SDL\Additional Functionality\messagebox\" />
-      <Folder Include="SDL\Additional Functionality\misc\" />
       <Folder Include="SDL\Additional Functionality\system\" />
       <Folder Include="SDL\Audio\audio\" />
       <Folder Include="SDL\File and IO Abstractions\filesystem\" />
