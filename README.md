@@ -185,7 +185,7 @@ public static class Program
 
 | **View information and functions related to...**                                 | **View the header**                                                                           | **Stage**                                                     |
 |----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------|
-| [Shared Object/DLL Management](SDL3-CS/SDL/Additional%20Functionality/loadso)    | [SDL_loadso.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_loadso.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D) |
+| [Shared Object/DLL Management](SDL3-CS/SDL/Additional%20Functionality/loadso)    | [SDL_loadso.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_loadso.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 | [Power Management Status](SDL3-CS/SDL/Additional%20Functionality/power)          | [SDL_power.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_power.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 | [Message Boxes](SDL3-CS/SDL/Additional%20Functionality/messagebox)               | [SDL_messagebox.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_messagebox.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D) |
 | [File Dialogs](SDL3-CS/SDL/Additional%20Functionality/dialog)                    | [SDL_dialog.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_dialog.h)         | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D) |

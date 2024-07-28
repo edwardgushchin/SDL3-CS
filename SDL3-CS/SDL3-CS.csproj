@@ -106,7 +106,6 @@
 
     <ItemGroup>
       <Folder Include="SDL\Additional Functionality\dialog\" />
-      <Folder Include="SDL\Additional Functionality\loadso\" />
       <Folder Include="SDL\Additional Functionality\locale\" />
       <Folder Include="SDL\Additional Functionality\messagebox\" />
       <Folder Include="SDL\Additional Functionality\system\" />
