@@ -3,7 +3,7 @@
 # SDL3#
 This is SDL3#, a C# wrapper for SDL3.
 
-SDL3 is still under active development, and the shell is currently under development as of commit e949f12f63cdfcef4bdf456936ee676e0a3f9de6.
+SDL3 is still under active development, and the shell is currently under development as of https://github.com/edwardgushchin/SDL/tree/detached
 
 Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
 
