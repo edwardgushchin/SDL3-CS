@@ -1,9 +1,11 @@
 <p align="center"><img src="logo.png?raw=true" alt="re-frame logo"></p>
 
-# SDL3-CS
+# SDL3#
 This is SDL3#, a C# wrapper for SDL3.
 
-Project Website: https://github.com/edwardgushchin/SDL3-CS
+SDL3 is still under active development, and the shell is currently under development as of commit e949f12f63cdfcef4bdf456936ee676e0a3f9de6.
+
+Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
 
 ## License
 
