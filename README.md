@@ -18,12 +18,14 @@
 </p>
 
 <p align="center">
-  <a href="#🚀-About">About</a> •
-  <a href="#Documentation">Documentation</a> •
-  <a href="#Installation">Installation</a> •
-  <a href="#🎓-Examples">Examples</a> •
-  <a href="#related">Related</a> •
-  <a href="#license">License</a>
+  <a href="#-about">About</a> •
+  <a href="#-documentation">Documentation</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-examples">Examples</a> •
+  <a href="#-readiness">Readiness</a> •
+  <a href="#-feedback-and-contributions">Feedback and Contributions</a> •
+  <a href="#-authors">Authors</a> •
+  <a href="#-license">License</a>
 </p>
 
 <p align="center">⭐ Star us on GitHub — it motivates us a lot!</p>
