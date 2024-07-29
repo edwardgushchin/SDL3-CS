@@ -12,9 +12,18 @@
 
 <p align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0-512BD4">
-    <img alt="Static Badge" src="https://img.shields.io/badge/language-C%23_12-239120">
-    <img alt="Static Badge" src="https://img.shields.io/badge/os-windows%2C%20linux%2C%20macOS-blue">
+    <img alt="Static Badge" src="https://img.shields.io/badge/Language-C%23_12-239120">
+    <img alt="Static Badge" src="https://img.shields.io/badge/OS-Windows%2C%20Linux%2C%20MacOS-blue">
     <img alt="Static Badge" src="https://img.shields.io/badge/CPU-x86%2C%20x64%2C%20ARM%2C%20ARM64-FF8C00">
+</p>
+
+<p align="center">
+  <a href="#🚀-About">About</a> •
+  <a href="#Documentation">Documentation</a> •
+  <a href="#Installation">Installation</a> •
+  <a href="#🎓-Examples">Examples</a> •
+  <a href="#related">Related</a> •
+  <a href="#license">License</a>
 </p>
 
 <p align="center">⭐ Star us on GitHub — it motivates us a lot!</p>
@@ -43,7 +52,7 @@ dotnet build -c Release
 ```
 
 
-## 🎓 Usage/Examples
+## 🎓 Examples
 
 ```C#
 using SDL3;
