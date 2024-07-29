@@ -107,7 +107,6 @@
 
     <ItemGroup>
       <Folder Include="SDL\Additional Functionality\dialog\" />
-      <Folder Include="SDL\Additional Functionality\messagebox\" />
       <Folder Include="SDL\Additional Functionality\system\" />
       <Folder Include="SDL\Audio\audio\" />
       <Folder Include="SDL\File and IO Abstractions\filesystem\" />
