@@ -39,6 +39,7 @@ you can use [this branch](https://github.com/edwardgushchin/SDL/tree/detached).
 
 Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
 
+Also, in the future, I plan to add support for [SDL_image](https://github.com/libsdl-org/SDL_image), [SDL_ttf](https://github.com/libsdl-org/SDL_ttf) and [SDL_mixer](https://github.com/libsdl-org/SDL_mixer)
 
 ## 📚 Documentation
 
