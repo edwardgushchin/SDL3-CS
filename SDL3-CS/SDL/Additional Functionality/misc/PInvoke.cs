@@ -34,8 +34,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_OpenURL(const char *url);</code>
     /// <summary>

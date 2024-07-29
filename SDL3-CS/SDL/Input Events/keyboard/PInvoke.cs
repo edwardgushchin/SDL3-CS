@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasKeyboard();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasKeyboard(void);</code>
@@ -42,8 +41,7 @@ public static partial class SDL
     public static bool HasKeyboard() => SDL_HasKeyboard();
     
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyboards(out int count);
     /// <code>extern SDL_DECLSPEC SDL_KeyboardID *SDLCALL SDL_GetKeyboards(int *count);</code>
     /// <summary>
@@ -81,8 +79,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPStr)]
     private static partial string? SDL_GetKeyboardNameForID(uint instanceId);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetKeyboardNameForID(SDL_KeyboardID instance_id);</code>
@@ -100,8 +97,7 @@ public static partial class SDL
     public static string? GetKeyboardNameForID(uint instanceId) => SDL_GetKeyboardNameForID(instanceId);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyboardFocus();
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);</code>
     /// <summary>
@@ -112,8 +108,7 @@ public static partial class SDL
     public static Window GetKeyboardFocus() => new(SDL_GetKeyboardFocus());
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyboardState(out int numkeys);
     /// <code>extern SDL_DECLSPEC const Uint8 *SDLCALL SDL_GetKeyboardState(int *numkeys);</code>
     /// <summary>
@@ -153,8 +148,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_ResetKeyboard();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetKeyboard(void);</code>
     /// <summary>
@@ -166,8 +160,7 @@ public static partial class SDL
     public static void ResetKeyboard() => SDL_ResetKeyboard();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Keymod SDL_GetModState();
     /// <code>extern SDL_DECLSPEC SDL_Keymod SDLCALL SDL_GetModState(void);</code>
     /// <summary>
@@ -181,8 +174,7 @@ public static partial class SDL
     public static Keymod GetModState() => SDL_GetModState();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_SetModState(Keymod modstate);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetModState(SDL_Keymod modstate);</code>
     /// <summary>
@@ -200,8 +192,7 @@ public static partial class SDL
     public static void SetModState(Keymod modstate) => SDL_SetModState(modstate);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Keycode SDL_GetDefaultKeyFromScancode(Scancode scancode, Keymod modstate);
     /// <code>extern SDL_DECLSPEC SDL_Keycode SDLCALL SDL_GetDefaultKeyFromScancode(SDL_Scancode scancode, SDL_Keymod modstate);</code>
     /// <summary>
@@ -220,8 +211,7 @@ public static partial class SDL
         SDL_GetDefaultKeyFromScancode(scancode, modstate);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Keycode SDL_GetKeyFromScancode(Scancode scancode, Keymod modstate);
     /// <code>extern SDL_DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromScancode(SDL_Scancode scancode, SDL_Keymod modstate);</code>
     /// <summary>
@@ -241,8 +231,7 @@ public static partial class SDL
         SDL_GetKeyFromScancode(scancode, modstate);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Scancode SDL_GetDefaultScancodeFromKey(Keycode key, out Keymod modstate);
     /// <code>extern SDL_DECLSPEC SDL_Scancode SDLCALL SDL_GetDefaultScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);</code>
     /// <summary>
@@ -262,8 +251,7 @@ public static partial class SDL
         SDL_GetDefaultScancodeFromKey(key, out modstate);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Scancode SDL_GetScancodeFromKey(Keycode key, out Keymod modstate);
     /// <code>extern SDL_DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);</code>
     /// <summary>
@@ -284,8 +272,7 @@ public static partial class SDL
         SDL_GetScancodeFromKey(key, out modstate);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetScancodeName(Scancode scancode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetScancodeName(SDL_Scancode scancode, const char *name);</code>
     /// <summary>
@@ -301,8 +288,7 @@ public static partial class SDL
     /// <seealso cref="GetScancodeName"/>
     public static int SetScancodeName(Scancode scancode, string name) => SDL_SetScancodeName(scancode, name);
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetScancodeName(Scancode scancode);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetScancodeName(SDL_Scancode scancode);</code>
     /// <summary>
@@ -328,8 +314,7 @@ public static partial class SDL
     public static string GetScancodeName(Scancode scancode) => Marshal.PtrToStringUTF8(SDL_GetScancodeName(scancode))!;
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Scancode SDL_GetScancodeFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromName(const char *name);</code>
     /// <summary>
@@ -345,8 +330,7 @@ public static partial class SDL
     public static Scancode GetScancodeFromName(string name) => SDL_GetScancodeFromName(name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetKeyName(Keycode key);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetKeyName(SDL_Keycode key);</code>
     /// <summary>
@@ -366,8 +350,7 @@ public static partial class SDL
     public static string GetKeyName(Keycode key) => Marshal.PtrToStringUTF8(SDL_GetKeyName(key))!;
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Keycode SDL_GetKeyFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromName(const char *name);</code>
     /// <summary>
@@ -383,8 +366,7 @@ public static partial class SDL
     public static Keycode GetKeyFromName(string name) => SDL_GetKeyFromName(name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_StartTextInput(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_StartTextInput(SDL_Window *window);</code>
     /// <summary>
@@ -405,8 +387,7 @@ public static partial class SDL
     public static int StartTextInput(Window window) => SDL_StartTextInput(window.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_TextInputActive(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_TextInputActive(SDL_Window *window);</code>
@@ -420,8 +401,7 @@ public static partial class SDL
     public static bool TextInputActive(Window window) => SDL_TextInputActive(window.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_StopTextInput(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_StopTextInput(SDL_Window *window);</code>
     /// <summary>
@@ -437,8 +417,7 @@ public static partial class SDL
     public static int StopTextInput(Window window) => SDL_StopTextInput(window.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_ClearComposition(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearComposition(SDL_Window *window);</code>
     /// <summary>
@@ -453,8 +432,7 @@ public static partial class SDL
     public static int ClearComposition(Window window) => SDL_ClearComposition(window.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetTextInputArea(IntPtr window, in Rect rect, int cursor);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);</code>
     /// <summary>
@@ -476,8 +454,7 @@ public static partial class SDL
         SDL_SetTextInputArea(window.Handle, rect, cursor);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);</code>
     /// <summary>
@@ -497,8 +474,7 @@ public static partial class SDL
         SDL_GetTextInputArea(window.Handle, out rect, out cursor);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasScreenKeyboardSupport();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasScreenKeyboardSupport(void);</code>
@@ -513,8 +489,7 @@ public static partial class SDL
     public static bool HasScreenKeyboardSupport() => SDL_HasScreenKeyboardSupport();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_ScreenKeyboardShown(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ScreenKeyboardShown(SDL_Window *window);</code>

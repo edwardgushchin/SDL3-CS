@@ -34,8 +34,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_Init(InitFlags flags);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_Init(SDL_InitFlags flags);</code>
     /// <summary>
@@ -83,8 +82,7 @@ public static partial class SDL
     public static int Init(InitFlags flags) => SDL_Init(flags);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_InitSubSystem(InitFlags flags);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_InitSubSystem(SDL_InitFlags flags);</code>
     /// <summary>
@@ -101,8 +99,7 @@ public static partial class SDL
     public static int InitSubSystem(InitFlags flags) => SDL_InitSubSystem(flags);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_QuitSubSystem(InitFlags flags);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_QuitSubSystem(SDL_InitFlags flags);</code>
     /// <summary>
@@ -117,8 +114,7 @@ public static partial class SDL
     public static void QuitSubSystem(InitFlags flags) => SDL_QuitSubSystem(flags);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial InitFlags SDL_WasInit(InitFlags flags);
     /// <code>extern SDL_DECLSPEC SDL_InitFlags SDLCALL SDL_WasInit(SDL_InitFlags flags);</code>
     /// <summary>
@@ -133,8 +129,7 @@ public static partial class SDL
     public static InitFlags WasInit(InitFlags flags) => SDL_WasInit(flags);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_Quit();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Quit(void);</code>
     /// <summary>

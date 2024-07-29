@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_PumpEvents();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PumpEvents(void);</code>
     /// <summary>
@@ -52,8 +51,7 @@ public static partial class SDL
     public static void PumpEvents() => SDL_PumpEvents();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_PeepEvents(IntPtr events, int numevents, EventAction action, uint minType,
         uint maxType);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);</code>
@@ -99,8 +97,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasEvent(uint type);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasEvent(Uint32 type);</code>
@@ -116,8 +113,7 @@ public static partial class SDL
     public static bool HasEvent(uint type) => SDL_HasEvent(type);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasEvents(uint minType, uint maxType);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasEvents(Uint32 minType, Uint32 maxType);</code>
@@ -136,8 +132,7 @@ public static partial class SDL
     public static bool HasEvents(uint minType, uint maxType) => SDL_HasEvents(minType, maxType);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_FlushEvent(uint type);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FlushEvent(Uint32 type);</code>
     /// <summary>
@@ -159,8 +154,7 @@ public static partial class SDL
     public static void FlushEvent(uint type) => SDL_FlushEvent(type);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_FlushEvents(uint minType, uint maxType);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FlushEvents(Uint32 minType, Uint32 maxType);</code>
     /// <summary>
@@ -183,8 +177,7 @@ public static partial class SDL
     public static void FlushEvents(uint minType, uint maxType) => SDL_FlushEvents(minType, maxType);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_PollEvent(out Event e);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
@@ -215,8 +208,7 @@ public static partial class SDL
     public static bool PollEvent(out Event e) => SDL_PollEvent(out e);
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_WaitEvent(out Event e);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
@@ -238,8 +230,7 @@ public static partial class SDL
     public static bool WaitEvent(out Event e) => SDL_WaitEvent(out e);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WaitEventTimeout(out Event e, int timeoutMs);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);</code>
@@ -266,8 +257,7 @@ public static partial class SDL
     public static bool WaitEventTimeout(out Event e, int timeoutMs) => SDL_WaitEventTimeout(out e, timeoutMs);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_PushEvent(ref Event e);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PushEvent(SDL_Event *event);</code>
     /// <summary>
@@ -297,8 +287,7 @@ public static partial class SDL
     public static int PushEvent(ref Event e) => SDL_PushEvent(ref e);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_SetEventFilter(EventFilter filter, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -339,8 +328,7 @@ public static partial class SDL
     public static void SetEventFilter(EventFilter filter, IntPtr userdata) => SDL_SetEventFilter(filter, userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GetEventFilter(out EventFilter filter, out IntPtr userdata);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);</code>
@@ -359,8 +347,7 @@ public static partial class SDL
         SDL_GetEventFilter(out filter, out userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_AddEventWatch(EventFilter filter, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -388,8 +375,7 @@ public static partial class SDL
     public static int AddEventWatch(EventFilter filter, IntPtr userdata) => SDL_AddEventWatch(filter, userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DelEventWatch(EventFilter filter, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DelEventWatch(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -404,8 +390,7 @@ public static partial class SDL
     public static void DelEventWatch(EventFilter filter, IntPtr userdata) => SDL_DelEventWatch(filter, userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_FilterEvents(EventFilter filter, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FilterEvents(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -424,8 +409,7 @@ public static partial class SDL
     public static void FilterEvents(EventFilter filter, IntPtr userdata) => SDL_FilterEvents(filter, userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(SDLBool)] bool enabled);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventEnabled(Uint32 type, SDL_bool enabled);</code>
     /// <summary>
@@ -438,8 +422,7 @@ public static partial class SDL
     public static void SetEventEnabled(uint type, bool enabled) => SDL_SetEventEnabled(type, enabled);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_EventEnabled(uint type);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_EventEnabled(Uint32 type);</code>
@@ -453,8 +436,7 @@ public static partial class SDL
     public static bool EventEnabled(uint type) => SDL_EventEnabled(type);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_RegisterEvents(int numevents);
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_RegisterEvents(int numevents);</code>
     /// <summary>
@@ -468,8 +450,7 @@ public static partial class SDL
     public static uint RegisterEvents(int numevents) => SDL_RegisterEvents(numevents);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_AllocateEventMemory(UIntPtr size);
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_AllocateEventMemory(size_t size);</code>
     /// <summary>
@@ -484,8 +465,7 @@ public static partial class SDL
     public static IntPtr AllocateEventMemory(UIntPtr size) => SDL_AllocateEventMemory(size);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_FreeEventMemory();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FreeEventMemory(void);</code>
     /// <summary>

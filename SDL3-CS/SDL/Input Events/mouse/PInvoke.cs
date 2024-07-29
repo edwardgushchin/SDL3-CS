@@ -39,8 +39,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasMouse();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasMouse(void);</code>
@@ -53,8 +52,7 @@ public static partial class SDL
     public static bool HasMouse() => SDL_HasMouse();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetMice(out int count);
     /// <code>extern SDL_DECLSPEC SDL_MouseID *SDLCALL SDL_GetMice(int *count);</code>
     /// <summary>
@@ -92,8 +90,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetMouseNameForID(uint instanceId);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetMouseNameForID(SDL_MouseID instance_id);</code>
     /// <summary>
@@ -111,8 +108,7 @@ public static partial class SDL
         Marshal.PtrToStringAnsi(SDL_GetMouseNameForID(instanceId));
 
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetMouseFocus();
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);</code>
     /// <summary>
@@ -123,8 +119,7 @@ public static partial class SDL
     public static Window GetMouseFocus() => new(SDL_GetMouseFocus());
 
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial MouseButtonFlags SDL_GetMouseState(out float x, out float y);
     /// <code>extern SDL_DECLSPEC SDL_MouseButtonFlags SDLCALL SDL_GetMouseState(float *x, float *y);</code>
     /// <summary>
@@ -146,8 +141,7 @@ public static partial class SDL
     public static MouseButtonFlags GetMouseState(out float x, out float y) => SDL_GetMouseState(out x, out y);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial MouseButtonFlags SDL_GetGlobalMouseState(out float x, out float y);
     /// <code>extern SDL_DECLSPEC SDL_MouseButtonFlags SDLCALL SDL_GetGlobalMouseState(float *x, float *y);</code>
     /// <summary>
@@ -176,8 +170,7 @@ public static partial class SDL
     public static MouseButtonFlags GetGlobalMouseState(out float x, out float y) => SDL_GetGlobalMouseState(out x, out y);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial MouseButtonFlags SDL_GetRelativeMouseState(out float x, out float y);
     /// <code>extern SDL_DECLSPEC SDL_MouseButtonFlags SDLCALL SDL_GetRelativeMouseState(float *x, float *y);</code>
     /// <summary>
@@ -196,8 +189,7 @@ public static partial class SDL
     public static MouseButtonFlags GetRelativeMouseState(out float x, out float y) => SDL_GetRelativeMouseState(out x, out y);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_WarpMouseInWindow(IntPtr window, float x, float y);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);</code>
     /// <summary>
@@ -218,8 +210,7 @@ public static partial class SDL
     public static void WarpMouseInWindow(Window window, float x, float y) => SDL_WarpMouseInWindow(window.Handle, x, y);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_WarpMouseGlobal(float x, float y);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_WarpMouseGlobal(float x, float y);</code>
     /// <summary>
@@ -239,8 +230,7 @@ public static partial class SDL
     public static int WarpMouseGlobal(float x, float y) => SDL_WarpMouseGlobal(x, y);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetRelativeMouseMode([MarshalAs(SDLBool)] bool enabled);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetRelativeMouseMode(SDL_bool enabled);</code>
     /// <summary>
@@ -258,8 +248,7 @@ public static partial class SDL
     public static int SetRelativeMouseMode(bool enabled) => SDL_SetRelativeMouseMode(enabled);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_CaptureMouse([MarshalAs(SDLBool)] bool enabled);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_CaptureMouse(SDL_bool enabled);</code>
     /// <summary>
@@ -301,8 +290,7 @@ public static partial class SDL
     public static int CaptureMouse(bool enabled) => SDL_CaptureMouse(enabled);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GetRelativeMouseMode();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetRelativeMouseMode(void);</code>
@@ -315,8 +303,7 @@ public static partial class SDL
     public static bool GetRelativeMouseMode() => SDL_GetRelativeMouseMode();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateCursor(byte[] data,  byte[] mask, int w, int h, int hotX, int hotY);
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_CreateCursor(const Uint8 * data, const Uint8 * mask, int w, int h, int hot_x, int hot_y);</code>
     /// <summary>
@@ -361,8 +348,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateColorCursor(Surface surface, int hotX, int hotY);
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);</code>
     /// <summary>
@@ -385,8 +371,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateSystemCursor(SystemCursor id);
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_CreateSystemCursor(SDL_SystemCursor id);</code>
     /// <summary>
@@ -403,8 +388,7 @@ public static partial class SDL
     }
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetCursor(IntPtr cursor);
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetCursor(SDL_Cursor * cursor);</code>
@@ -425,8 +409,7 @@ public static partial class SDL
     }
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetCursor();
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_GetCursor(void);</code>
     /// <summary>
@@ -444,8 +427,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetDefaultCursor();
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_GetDefaultCursor(void);</code>
     /// <summary>
@@ -463,8 +445,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyCursor(IntPtr cursor);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyCursor(SDL_Cursor * cursor);</code>
     /// <summary>
@@ -480,8 +461,7 @@ public static partial class SDL
     public static void DestroyCursor(Cursor cursor) => SDL_DestroyCursor(cursor.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_ShowCursor();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowCursor(void);</code>
     /// <summary>
@@ -495,8 +475,7 @@ public static partial class SDL
     public static int ShowCursor() => SDL_ShowCursor();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_HideCursor();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_HideCursor(void);</code>
     /// <summary>
@@ -510,8 +489,7 @@ public static partial class SDL
     public static int HideCursor() => SDL_HideCursor();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_CursorVisible();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_CursorVisible(void);</code>

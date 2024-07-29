@@ -34,8 +34,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPreferredLocales();
     /// <code>extern SDL_DECLSPEC SDL_Locale * SDLCALL SDL_GetPreferredLocales(void);</code>
     /// <summary>

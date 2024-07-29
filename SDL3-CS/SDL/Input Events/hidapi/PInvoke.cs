@@ -57,8 +57,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_init();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_init(void);</code>
     /// <summary>
@@ -77,8 +76,7 @@ public static partial class SDL
     public static int HIDInit() => SDL_hid_init();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_exit();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_exit(void);</code>
     /// <summary>
@@ -93,8 +91,7 @@ public static partial class SDL
     public static int HIDExit() => SDL_hid_exit();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_hid_device_change_count();
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_hid_device_change_count(void);</code>
     /// <summary>
@@ -114,8 +111,7 @@ public static partial class SDL
     public static uint HIDDeviceChangeCount() => SDL_hid_device_change_count();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_hid_enumerate(ushort venodrId, ushort productId);
     /// <code>extern SDL_DECLSPEC SDL_hid_device_info * SDLCALL SDL_hid_enumerate(unsigned short vendor_id, unsigned short product_id);</code>
     /// <summary>
@@ -167,8 +163,7 @@ public static partial class SDL
         return deviceList.ToArray();
     }
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_hid_free_enumeration(IntPtr devs);
     /* I'm not sure how long it is needed in the public domain.
      *
@@ -183,8 +178,7 @@ public static partial class SDL
     //public static void HIDFreeEnumeration(HIDDeviceInfo devs) => SDL_hid_free_enumeration(devs);*/
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_hid_open(ushort vendorId, ushort productId, 
         [MarshalAs(UnmanagedType.LPWStr)]string serialNumber);
     /// <code>extern SDL_DECLSPEC SDL_hid_device * SDLCALL SDL_hid_open(unsigned short vendor_id, unsigned short product_id, const wchar_t *serial_number);</code>
@@ -211,8 +205,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_hid_open_path([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
 
     /// <code>extern SDL_DECLSPEC SDL_hid_device * SDLCALL SDL_hid_open_path(const char *path);</code>
@@ -235,8 +228,7 @@ public static partial class SDL
     }
 
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_write(IntPtr dev, byte[] data, IntPtr length);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);</code>
     /// <summary>
@@ -262,8 +254,7 @@ public static partial class SDL
         new IntPtr(length));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_read_timeout(IntPtr dev, 
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, IntPtr length, int milliseconds);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_read_timeout(SDL_hid_device *dev, unsigned char *data, size_t length, int milliseconds);</code>
@@ -286,8 +277,7 @@ public static partial class SDL
         SDL_hid_read_timeout(dev.Handle, out data, new IntPtr(length), milliseconds);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_read(IntPtr dev, 
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, IntPtr length);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_read(SDL_hid_device *dev, unsigned char *data, size_t length);</code>
@@ -309,8 +299,7 @@ public static partial class SDL
         new IntPtr(length));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_set_nonblocking(IntPtr dev, int nonblock);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_set_nonblocking(SDL_hid_device *dev, int nonblock);</code>
     /// <summary>
@@ -329,8 +318,7 @@ public static partial class SDL
     public static int HIDSetNonBlocking(HIDDevice dev, int nonblock) => SDL_hid_set_nonblocking(dev.Handle, nonblock);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_send_feature_report(IntPtr dev, byte[] data, IntPtr length);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_send_feature_report(SDL_hid_device *dev, const unsigned char *data, size_t length);</code>
     /// <summary>
@@ -356,8 +344,7 @@ public static partial class SDL
         SDL_hid_send_feature_report(dev.Handle, data, new IntPtr(length));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_feature_report(IntPtr dev, 
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, IntPtr length);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_feature_report(SDL_hid_device *dev, unsigned char *data, size_t length);</code>
@@ -382,8 +369,7 @@ public static partial class SDL
         SDL_hid_get_feature_report(dev.Handle, out data, new IntPtr(length));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_input_report(IntPtr dev, 
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, IntPtr length);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_input_report(SDL_hid_device *dev, unsigned char *data, size_t length);</code>
@@ -408,8 +394,7 @@ public static partial class SDL
         SDL_hid_get_input_report(dev.Handle, out data, new IntPtr(length));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_close(IntPtr dev);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_close(SDL_hid_device *dev);</code>
     /// <summary>
@@ -421,8 +406,7 @@ public static partial class SDL
     public static int HIDClose(HIDDevice dev) => SDL_hid_close(dev.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_manufacturer_string(IntPtr dev, [MarshalAs(UnmanagedType.LPWStr)] out string str,
         IntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_manufacturer_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
@@ -439,8 +423,7 @@ public static partial class SDL
         SDL_hid_get_manufacturer_string(dev.Handle, out str, new IntPtr(maxlen));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_product_string(IntPtr dev, [MarshalAs(UnmanagedType.LPWStr)] out string str,
         IntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
@@ -457,8 +440,7 @@ public static partial class SDL
         SDL_hid_get_product_string(dev.Handle, out str, new IntPtr(maxlen));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_serial_number_string(IntPtr dev, [MarshalAs(UnmanagedType.LPWStr)]out string str,
         IntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
@@ -474,8 +456,7 @@ public static partial class SDL
         SDL_hid_get_serial_number_string(dev.Handle, out str, new IntPtr(maxlen));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_indexed_string(IntPtr dev, int stringIndex,
         [MarshalAs(UnmanagedType.LPWStr)] out string str, IntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);</code>
@@ -492,8 +473,7 @@ public static partial class SDL
         SDL_hid_get_indexed_string(dev.Handle, stringIndex, out str, new IntPtr(maxlen));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_hid_get_device_info(IntPtr dev);
     /// <code>extern SDL_DECLSPEC SDL_hid_device_info * SDLCALL SDL_hid_get_device_info(SDL_hid_device *dev);</code>
     /// <summary>
@@ -508,8 +488,7 @@ public static partial class SDL
         Marshal.PtrToStructure<HIDDeviceInfo>(SDL_hid_get_device_info(dev.Handle));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_hid_get_report_descriptor(IntPtr dev, 
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, nint bufSize);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_report_descriptor(SDL_hid_device *dev, unsigned char *buf, size_t buf_size);</code>
@@ -542,8 +521,7 @@ public static partial class SDL
     }
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_hid_ble_scan([MarshalAs(SDLBool)] bool active);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_hid_ble_scan(SDL_bool active);</code>
     /// <summary>

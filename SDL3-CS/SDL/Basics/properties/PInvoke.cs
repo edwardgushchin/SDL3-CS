@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_GetGlobalProperties();
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetGlobalProperties(void);</code>
     /// <summary>
@@ -41,8 +40,7 @@ public static partial class SDL
     public static uint GetGlobalProperties() => SDL_GetGlobalProperties();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_CreateProperties();
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_CreateProperties(void);</code>
     /// <summary>
@@ -59,8 +57,7 @@ public static partial class SDL
     public static uint CreateProperties() => SDL_CreateProperties();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_CopyProperties(uint src, uint dst);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);</code>
     /// <summary>
@@ -80,8 +77,7 @@ public static partial class SDL
     public static int CopyProperties(uint src, uint dst) => SDL_CopyProperties(src, dst);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_LockProperties(uint props);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_LockProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -102,8 +98,7 @@ public static partial class SDL
     public static int LockProperties(uint props) => SDL_LockProperties(props);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_UnlockProperties(uint props);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -115,8 +110,7 @@ public static partial class SDL
     public static void UnlockProperties(uint props) => SDL_UnlockProperties(props);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetPointerPropertyWithCleanup(uint props, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr value, CleanupPropertyCallback cleanup, 
         IntPtr userdata);
@@ -148,8 +142,7 @@ public static partial class SDL
         SDL_SetPointerPropertyWithCleanup(props, name, value, cleanup, userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         IntPtr value);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);</code>
@@ -173,8 +166,7 @@ public static partial class SDL
         SDL_SetPointerProperty(props, name, value);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string? value);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);</code>
@@ -194,8 +186,7 @@ public static partial class SDL
         SDL_SetStringProperty(props, name, value);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         long value
     );
@@ -214,8 +205,7 @@ public static partial class SDL
         SDL_SetNumberProperty(props, name, value);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         float value);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);</code>
@@ -233,8 +223,7 @@ public static partial class SDL
         SDL_SetFloatProperty(props, name, value);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(SDLBool)] bool value);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, SDL_bool value);</code>
@@ -252,8 +241,7 @@ public static partial class SDL
         SDL_SetBooleanProperty(props, name, value);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasProperty(SDL_PropertiesID props, const char *name);</code>
@@ -268,8 +256,7 @@ public static partial class SDL
     public static bool HasProperty(uint props, string name) => SDL_HasProperty(props, name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial PropertyType SDL_GetPropertyType(uint props, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_PropertyType SDLCALL SDL_GetPropertyType(SDL_PropertiesID props, const char *name);</code>
@@ -284,8 +271,7 @@ public static partial class SDL
     public static PropertyType GetPropertyType(uint props, string name) => SDL_GetPropertyType(props, name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         IntPtr defaultValue
     );
@@ -319,8 +305,7 @@ public static partial class SDL
         SDL_GetPointerProperty(props, name, defaultValue);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string defaultValue
     );
@@ -345,8 +330,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial long SDL_GetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         long defaultValue);
     /// <code>extern SDL_DECLSPEC Sint64 SDLCALL SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);</code>
@@ -368,8 +352,7 @@ public static partial class SDL
         SDL_GetNumberProperty(props, name, defaultValue);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial float SDL_GetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         float defaultValue);
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);</code>
@@ -391,8 +374,7 @@ public static partial class SDL
         SDL_GetFloatProperty(props, name, defaultValue);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(SDLBool)] bool defaultValue);
@@ -411,8 +393,7 @@ public static partial class SDL
         SDL_GetBooleanProperty(props, name, defaultValue);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_ClearProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearProperty(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
@@ -427,8 +408,7 @@ public static partial class SDL
     public static int ClearProperty(uint props, string name) => SDL_ClearProperty(props, name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_EnumerateProperties(uint props, EnumeratePropertiesCallback callback, 
         IntPtr userdata);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);</code>
@@ -447,8 +427,7 @@ public static partial class SDL
         SDL_EnumerateProperties(props, callback, userdata);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyProperties(uint props);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyProperties(SDL_PropertiesID props);</code>
     /// <summary>

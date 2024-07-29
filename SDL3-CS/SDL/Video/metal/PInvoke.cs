@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_Metal_CreateView(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_MetalView SDLCALL SDL_Metal_CreateView(SDL_Window * window);</code>
     /// <summary>
@@ -51,8 +50,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_Metal_DestroyView(IntPtr view);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Metal_DestroyView(SDL_MetalView view);</code>
     /// <summary>
@@ -66,8 +64,7 @@ public static partial class SDL
     public static void MetalDestroyView(MetalView view) => SDL_Metal_DestroyView(view.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_Metal_GetLayer(IntPtr view);
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_Metal_GetLayer(SDL_MetalView view);</code>
     /// <summary>

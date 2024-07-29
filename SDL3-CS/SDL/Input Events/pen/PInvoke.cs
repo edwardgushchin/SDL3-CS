@@ -57,8 +57,7 @@ namespace SDL3;
 public static partial class SDL
 {
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPens(out int count);
     /// <code>extern SDL_DECLSPEC SDL_PenID *SDLCALL SDL_GetPens(int *count);</code>
     /// <summary>
@@ -93,8 +92,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_GetPenStatus(uint instanceID, out float x, out float y, out float axes,
         ulong numAxes);
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_GetPenStatus(SDL_PenID instance_id, float *x, float *y, float *axes, size_t num_axes);</code>
@@ -116,8 +114,7 @@ public static partial class SDL
         SDL_GetPenStatus(instanceID, out x, out y, out axes, numAxes);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_GetPenFromGUID(GUID guid);
     /// <code>extern SDL_DECLSPEC SDL_PenID SDLCALL SDL_GetPenFromGUID(SDL_GUID guid);</code>
     /// <summary>
@@ -129,8 +126,7 @@ public static partial class SDL
     public static uint GetPenFromGUID(GUID guid) => SDL_GetPenFromGUID(guid);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial GUID SDL_GetPenGUID(uint instanceID);
     /// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_GetPenGUID(SDL_PenID instance_id);</code>
     /// <summary>
@@ -143,8 +139,7 @@ public static partial class SDL
     public static GUID GetPenGUID(uint instanceID) => SDL_GetPenGUID(instanceID);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_PenConnected(uint instanceID);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_PenConnected(SDL_PenID instance_id);</code>
@@ -158,8 +153,7 @@ public static partial class SDL
     public static bool PenConnected(uint instanceID) => SDL_PenConnected(instanceID);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPenName(uint instanceID);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetPenName(SDL_PenID instance_id);</code>
     /// <summary>
@@ -177,8 +171,7 @@ public static partial class SDL
     public static string? GetPenName(uint instanceID) => Marshal.PtrToStringAnsi(SDL_GetPenName(instanceID));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial PenCapabilityFlags SDL_GetPenCapabilities(uint instanceID,
         out PenCapabilityInfo capabilities);
     /// <code>extern SDL_DECLSPEC SDL_PenCapabilityFlags SDLCALL SDL_GetPenCapabilities(SDL_PenID instance_id, SDL_PenCapabilityInfo *capabilities);</code>
@@ -194,8 +187,7 @@ public static partial class SDL
         SDL_GetPenCapabilities(instanceID, out capabilities);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial PenSubtype SDL_GetPenType(uint instanceID);
     /// <code>extern SDL_DECLSPEC SDL_PenSubtype SDLCALL SDL_GetPenType(SDL_PenID instance_id);</code>
     /// <summary>

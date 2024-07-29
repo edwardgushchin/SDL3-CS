@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);</code>
     /// <summary>
@@ -45,8 +44,7 @@ public static partial class SDL
     public static int SetError(string message) => SDL_SetError(message);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_OutOfMemory();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_OutOfMemory(void);</code>
     /// <summary>
@@ -57,8 +55,7 @@ public static partial class SDL
     public static int OutOfMemory() => SDL_OutOfMemory();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetError();
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetError(void);</code>
     /// <summary>
@@ -89,8 +86,7 @@ public static partial class SDL
     public static string? GetError() => Marshal.PtrToStringUTF8(SDL_GetError());
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_ClearError();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearError(void);</code>
     /// <summary>

@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
 
     public static Render? CreateRenderer(Window window, string? name)
@@ -39,52 +38,44 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetRenderVSync(IntPtr renderer, int vsync);
     public static int SetRenderVSync(Render renderer, int vsync) => SDL_SetRenderVSync(renderer.Handle, vsync);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetRenderVSync(IntPtr renderer, out int vsync);
     public static int GetRenderVSync(Render renderer, out int vsync) =>
         SDL_GetRenderVSync(renderer.Handle, out vsync);
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
     public static void SetRenderDrawColor(Render renderer, byte r, byte g, byte b, byte a) =>
         SDL_SetRenderDrawColor(renderer.Handle, r, g, b, a);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_RenderClear(IntPtr renderer);
     public static int RenderClear(Render renderer) => SDL_RenderClear(renderer.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_RenderPresent(IntPtr renderer);
     public static int RenderPresent(Render renderer) => SDL_RenderPresent(renderer.Handle);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyRenderer(IntPtr renderer);
     public static void DestroyRenderer(Render renderer) => SDL_DestroyRenderer(renderer.Handle);
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetRenderDriver(int index);
     public static string? GetRenderDriver(int index) => Marshal.PtrToStringUTF8(SDL_GetRenderDriver(index));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetNumRenderDrivers();
     public static int GetNumRenderDrivers() => SDL_GetNumRenderDrivers();
 }

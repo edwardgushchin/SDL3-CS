@@ -34,8 +34,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchDevices(out int count);
     /// <code>extern SDL_DECLSPEC SDL_TouchID *SDLCALL SDL_GetTouchDevices(int *count);</code>
     /// <summary>
@@ -70,8 +69,7 @@ public static partial class SDL
     }
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchDeviceName(ulong touchID);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetTouchDeviceName(SDL_TouchID touchID);</code>
     /// <summary>
@@ -85,8 +83,7 @@ public static partial class SDL
     public static string? GetTouchDeviceName(ulong touchID) => Marshal.PtrToStringAnsi(SDL_GetTouchDeviceName(touchID));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial TouchDeviceType SDL_GetTouchDeviceType(ulong touchID);
     /// <code>extern SDL_DECLSPEC SDL_TouchDeviceType SDLCALL SDL_GetTouchDeviceType(SDL_TouchID touchID);</code>
     /// <summary>
@@ -98,8 +95,7 @@ public static partial class SDL
     public static TouchDeviceType GetTouchDeviceType(ulong touchID) => SDL_GetTouchDeviceType(touchID);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchFingers(ulong touchID, out int count);
     /// <code>extern SDL_DECLSPEC SDL_Finger **SDLCALL SDL_GetTouchFingers(SDL_TouchID touchID, int *count);</code>
     /// <summary>

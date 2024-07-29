@@ -35,8 +35,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPlatform();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetPlatform(void);</code>
     /// <summary>

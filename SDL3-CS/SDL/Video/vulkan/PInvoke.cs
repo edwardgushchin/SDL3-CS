@@ -32,8 +32,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_Vulkan_LoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_Vulkan_LoadLibrary(const char *path);</code>
     /// <summary>
@@ -72,8 +71,7 @@ public static partial class SDL
     public static int VulkanLoadLibrary(string path) => SDL_Vulkan_LoadLibrary(path);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial FunctionPointer? SDL_Vulkan_GetVkGetInstanceProcAddr();
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_Vulkan_GetVkGetInstanceProcAddr(void);</code>
     /// <summary>
@@ -91,8 +89,7 @@ public static partial class SDL
     public static FunctionPointer? VulkanGetVkGetInstanceProcAddr() => SDL_Vulkan_GetVkGetInstanceProcAddr();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_Vulkan_UnloadLibrary();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Vulkan_UnloadLibrary(void);</code>
     /// <summary>
@@ -103,8 +100,7 @@ public static partial class SDL
     public static void VulkanUnloadLibrary() => SDL_Vulkan_UnloadLibrary();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_Vulkan_GetInstanceExtensions(out uint count);
     /// <code>extern SDL_DECLSPEC char const* const* SDLCALL SDL_Vulkan_GetInstanceExtensions(Uint32 *count);</code>
     /// <summary>

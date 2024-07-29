@@ -47,8 +47,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_LoadObject([MarshalAs(UnmanagedType.LPUTF8Str)] string sofile);
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_LoadObject(const char *sofile);</code>
     /// <summary>
@@ -63,8 +62,7 @@ public static partial class SDL
     public static IntPtr LoadObject(string sofile) => SDL_LoadObject(sofile);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial FunctionPointer? SDL_LoadFunction(IntPtr handle,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_LoadFunction(void *handle, const char *name);</code>
@@ -86,8 +84,7 @@ public static partial class SDL
     public static FunctionPointer? LoadFunction(IntPtr handle, string name) => SDL_LoadFunction(handle, name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_UnloadObject(IntPtr handle);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnloadObject(void *handle);</code>
     /// <summary>

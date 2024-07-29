@@ -37,8 +37,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetClipboardText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetClipboardText(const char *text);</code>
     /// <summary>
@@ -53,8 +52,7 @@ public static partial class SDL
     public static int SetClipboardText(string text) => SDL_SetClipboardText(text);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetClipboardText();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetClipboardText(void);</code>
     /// <summary>
@@ -79,8 +77,7 @@ public static partial class SDL
     }
 
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasClipboardText();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasClipboardText(void);</code>
@@ -94,8 +91,7 @@ public static partial class SDL
     public static bool HasClipboardText() => SDL_HasClipboardText();
 
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetPrimarySelectionText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetPrimarySelectionText(const char *text);</code>
     /// <summary>
@@ -110,8 +106,7 @@ public static partial class SDL
     public static int SetPrimarySelectionText(string text) => SDL_SetPrimarySelectionText(text);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPrimarySelectionText();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetPrimarySelectionText(void);</code>
     /// <summary>
@@ -136,8 +131,7 @@ public static partial class SDL
     }
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasPrimarySelectionText();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasPrimarySelectionText(void);</code>
@@ -153,8 +147,7 @@ public static partial class SDL
     public static bool HasPrimarySelectionText() => SDL_HasPrimarySelectionText();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetClipboardData(ClipboardDataCallback callback, ClipboardCleanupCallback cleanup, 
         IntPtr userdata, IntPtr mimeTypes, IntPtr numMimeTypes
     );
@@ -208,8 +201,7 @@ public static partial class SDL
         }
     }
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_ClearClipboardData();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearClipboardData(void);</code>
     /// <summary>
@@ -222,8 +214,7 @@ public static partial class SDL
 
     
     // Определяем функцию для получения данных из буфера обмена
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetClipboardData(
         [MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out nuint size);
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_GetClipboardData(const char *mime_type, size_t *size);</code>
@@ -260,8 +251,7 @@ public static partial class SDL
     }
 
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_HasClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasClipboardData(const char *mime_type);</code>

@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial ulong SDL_GetTicks();
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetTicks(void);</code>
     /// <summary>
@@ -41,8 +40,7 @@ public static partial class SDL
     public static ulong GetTicks() => SDL_GetTicks();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial ulong SDL_GetTicksNS();
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetTicksNS(void);</code>
     /// <summary>
@@ -54,8 +52,7 @@ public static partial class SDL
     public static ulong GetTicksNS() => SDL_GetTicksNS();
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial ulong SDL_GetPerformanceCounter();
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetPerformanceCounter(void);</code>
     /// <summary>
@@ -71,8 +68,7 @@ public static partial class SDL
     public static ulong GetPerformanceCounter() => SDL_GetPerformanceCounter();
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial ulong SDL_GetPerformanceFrequency();
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetPerformanceFrequency(void);</code>
     /// <summary>
@@ -84,8 +80,7 @@ public static partial class SDL
     public static ulong GetPerformanceFrequency() => SDL_GetPerformanceFrequency();
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_Delay(uint ms);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Delay(Uint32 ms);</code>
     /// <summary>
@@ -99,8 +94,7 @@ public static partial class SDL
     public static void Delay(uint ms) => SDL_Delay(ms);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DelayNS(uint ns);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DelayNS(Uint64 ns);</code>
     /// <summary>
@@ -114,8 +108,7 @@ public static partial class SDL
     public static void DelayNS(uint ns) => SDL_DelayNS(ns);
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_AddTimer(uint interval, TimerCallback callback, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC SDL_TimerID SDLCALL SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *userdata);</code>
     /// <summary>
@@ -149,8 +142,7 @@ public static partial class SDL
         SDL_AddTimer(interval, callback, userdata);
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_AddTimerNS(ulong interval, NSTimerCallback callback, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC SDL_TimerID SDLCALL SDL_AddTimerNS(Uint64 interval, SDL_NSTimerCallback callback, void *userdata);</code>
     /// <summary>
@@ -184,8 +176,7 @@ public static partial class SDL
         SDL_AddTimerNS(interval, callback, userdata);
 
 
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_RemoveTimer(uint id);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RemoveTimer(SDL_TimerID id);</code>
     /// <summary>

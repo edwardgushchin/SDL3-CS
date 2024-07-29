@@ -28,8 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
@@ -51,8 +50,7 @@ public static partial class SDL
         SDL_SetHintWithPriority(name, value, priority);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
@@ -72,8 +70,7 @@ public static partial class SDL
     public static bool SetHint(string name, string value) => SDL_SetHint(name, value);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_ResetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ResetHint(const char *name);</code>
@@ -90,8 +87,7 @@ public static partial class SDL
     public static bool ResetHint(string name) => SDL_ResetHint(name);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial void SDL_ResetHints();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetHints(void);</code>
@@ -120,8 +116,7 @@ public static partial class SDL
     public static string? GetHint(string name) => Marshal.PtrToStringUTF8(SDL_GetHint(name));
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
     private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(SDLBool)]bool defaultValue);
@@ -138,8 +133,7 @@ public static partial class SDL
     public static bool GetHintBoolean(string name, bool defaultValue) => SDL_GetHintBoolean(name, defaultValue);
     
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         HintCallback callback, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);</code>
@@ -159,8 +153,7 @@ public static partial class SDL
         SDL_AddHintCallback(name, callback, userdata);
         
     
-    [LibraryImport(SDLLibrary)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DelHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         HintCallback callback, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DelHintCallback(const char *name, SDL_HintCallback callback, void *userdata);</code>
