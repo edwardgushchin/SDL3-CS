@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-    <img alt="Static Badge" src="https://img.shields.io/badge/.NET-8.0-512BD4">
-    <img alt="Static Badge" src="https://img.shields.io/badge/language-C%23-239120">
+    <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0-512BD4">
+    <img alt="Static Badge" src="https://img.shields.io/badge/language-C%23_12-239120">
     <img alt="Static Badge" src="https://img.shields.io/badge/os-windows%2C%20linux%2C%20macOS-blue">
     <img alt="Static Badge" src="https://img.shields.io/badge/CPU-x86%2C%20x64%2C%20ARM%2C%20ARM64-FF8C00">
 </p>

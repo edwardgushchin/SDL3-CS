@@ -509,7 +509,7 @@ public static partial class SDL
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial int SDL_SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, 
-		ulong sensorTimestamp, [In] float[] data, int numValues);
+		ulong sensorTimestamp, float[] data, int numValues);
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_SendJoystickVirtualSensorData(SDL_Joystick *joystick, SDL_SensorType type, Uint64 sensor_timestamp, const float *data, int num_values);</code>
 	/// <summary>
 	/// <para>Send a sensor update for an opened virtual joystick.</para>

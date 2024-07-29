@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <RootNamespace>SDL3</RootNamespace>
         <LangVersion>12</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
