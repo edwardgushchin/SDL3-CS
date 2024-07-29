@@ -6,9 +6,19 @@
 
 <p align="center">
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/edwardgushchin/SDL3-CS">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/edwardgushchin/SDL3-CS">
+    <img alt="Static Badge" src="https://img.shields.io/badge/license-zlib-blue">
+</p>
+
+<p align="center">
+    <img alt="Static Badge" src="https://img.shields.io/badge/.NET-8.0-512BD4">
+    <img alt="Static Badge" src="https://img.shields.io/badge/language-C%23-239120">
+    <img alt="Static Badge" src="https://img.shields.io/badge/os-windows%2C%20linux%2C%20macOS-blue">
+    <img alt="Static Badge" src="https://img.shields.io/badge/CPU-x86%2C%20x64%2C%20ARM%2C%20ARM64-FF8C00">
 </p>
 
 <p align="center">⭐ Star us on GitHub — it motivates us a lot!</p>
+
 
 ## 🚀 About
 
@@ -18,11 +28,13 @@ you can use [this branch](https://github.com/edwardgushchin/SDL/tree/detached).
 
 Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
 
+
 ## 📚 Documentation
 
 For more information about SDL3, visit the SDL wiki:
 
 https://wiki.libsdl.org/SDL3/FrontPage
+
 
 ## 📝 Installation
 
@@ -31,6 +43,7 @@ git clone https://github.com/edwardgushchin/SDL3-CS
 cd SDL3-CS
 dotnet build -c Release
 ```
+
 
 ## 🎓 Usage/Examples
 
@@ -91,6 +104,7 @@ public static class Program
     }
 }
 ```
+
 
 ## Readiness
 
@@ -205,9 +219,11 @@ public static class Program
 | [GUIDs](SDL3-CS/SDL/Additional%20Functionality/guid)                             | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 | [Miscellaneous](SDL3-CS/SDL/Additional%20Functionality/misc)                     | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_misc.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 
+
 ## 🤝 Feedback and Contributions
 
 If you have any feedback, please reach out to us at eduardgushchin@yandex.ru
+
 
 ## 📃 License
 
