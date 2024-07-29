@@ -8,8 +8,9 @@
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/edwardgushchin/SDL3-CS">
 </p>
 
-# SDL3#
-This is SDL3#, a C# wrapper for SDL3.
+<p align="center">⭐ Star us on GitHub — it motivates us a lot!</p>
+
+## 🚀 About
 
 SDL3 is still under active development, and the shell is currently under development as of 
 [this commit](https://github.com/libsdl-org/SDL/commit/e949f12f63cdfcef4bdf456936ee676e0a3f9de6). For convenience, 
@@ -17,18 +18,13 @@ you can use [this branch](https://github.com/edwardgushchin/SDL/tree/detached).
 
 Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
 
-## License
-
-SDL3 and SDL3# are released under the zlib license. See LICENSE for details.
-
-## About SDL3
+## 📚 Documentation
 
 For more information about SDL3, visit the SDL wiki:
 
 https://wiki.libsdl.org/SDL3/FrontPage
 
-
-## Installation
+## 📝 Installation
 
 ```
 git clone https://github.com/edwardgushchin/SDL3-CS
@@ -36,7 +32,7 @@ cd SDL3-CS
 dotnet build -c Release
 ```
 
-## Usage/Examples
+## 🎓 Usage/Examples
 
 ```C#
 using SDL3;
@@ -209,6 +205,10 @@ public static class Program
 | [GUIDs](SDL3-CS/SDL/Additional%20Functionality/guid)                             | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 | [Miscellaneous](SDL3-CS/SDL/Additional%20Functionality/misc)                     | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_misc.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 
-## Feedback
+## 🤝 Feedback and Contributions
 
 If you have any feedback, please reach out to us at eduardgushchin@yandex.ru
+
+## 📃 License
+
+SDL3 and SDL3# are released under the zlib license. See LICENSE for details.
