@@ -26,15 +26,6 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
-/**
- * # CategoryClipboard
- *
- * SDL provides access to the system clipboard, both for reading information
- * from other processes and publishing information of its own.
- *
- * This is not just text! SDL apps can access and publish data by mimetype.
- */
-
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

@@ -23,12 +23,6 @@
 
 namespace SDL3;
 
-/**
- * # CategoryScancode
- *
- * Defines keyboard scancodes.
- */
-
 public static partial class SDL
 {
     /// <summary>

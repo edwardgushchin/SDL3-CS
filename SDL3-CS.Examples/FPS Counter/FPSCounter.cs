@@ -28,8 +28,8 @@ namespace FPS_Counter;
 public class FPSCounter
 {
     private ulong _lastTime = SDL.GetPerformanceCounter();
-    private int _frameCount = 0;
-    private double _fps = 0.0;
+    private int _frameCount;
+    private double _fps;
 
     public void Update()
     {

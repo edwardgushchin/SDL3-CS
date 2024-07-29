@@ -67,8 +67,8 @@ public static partial class SDL
         
         /// <summary>
         /// Pen button masks (where Button(1) is the first button, Button(2) is the second button etc.),
-        /// <see cref="SDL.PenDownMask"/> is set if the pen is touching the surface,
-        /// and <see cref="SDL.PenEraserMask"/> is set if the pen is (used as) an eraser.
+        /// <see cref="PenCapabilityFlags.Down"/> is set if the pen is touching the surface,
+        /// and <see cref="PenCapabilityFlags.Eraser"/> is set if the pen is (used as) an eraser.
         /// </summary>
         /// <seealso cref="Button"/>
         public UInt64 PenState;

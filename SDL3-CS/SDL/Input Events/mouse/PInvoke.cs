@@ -29,12 +29,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-/*
- * # CategoryMouse
- * 
- * SDL mouse handling.
- */
-
 namespace SDL3;
 
 public static partial class SDL

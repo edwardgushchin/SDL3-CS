@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
-[SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 public static partial class SDL
 {
     /// <summary>

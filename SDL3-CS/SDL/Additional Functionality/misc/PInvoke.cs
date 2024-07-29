@@ -24,12 +24,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-/*
- * # CategoryMisc
- *
- * SDL API functions that don't fit elsewhere.
- */
-
 namespace SDL3;
 
 public static partial class SDL

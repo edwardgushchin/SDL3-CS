@@ -26,12 +26,6 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
-/**
- * # CategoryInit
- *
- * SDL subsystem init and quit functions.
- */
-
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

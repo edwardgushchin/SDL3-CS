@@ -26,13 +26,6 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
-/**
- * # CategoryVersion
- *
- * Functionality to query the current SDL version, both as headers the app was
- * compiled against, and a library the app is linked to.
- */
-
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

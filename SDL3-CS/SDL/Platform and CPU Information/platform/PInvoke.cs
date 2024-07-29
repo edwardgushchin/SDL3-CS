@@ -26,13 +26,6 @@ using System.Runtime.InteropServices;
 
 namespace SDL3;
 
-/**
- * # CategoryPlatform
- *
- * SDL provides a means to identify the app's platform, both at compile time
- * and runtime.
- */
-
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

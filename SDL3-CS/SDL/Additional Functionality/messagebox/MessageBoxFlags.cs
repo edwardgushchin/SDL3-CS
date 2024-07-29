@@ -26,7 +26,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para><see cref="MessageBox"/> flags.</para>
+    /// <para>MessageBox flags.</para>
     /// <para>If supported will display warning icon, etc.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.0.0.</since>
