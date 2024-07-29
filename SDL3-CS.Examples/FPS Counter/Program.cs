@@ -44,13 +44,6 @@ internal static class Program
         }
         
         var renderer = SDL.CreateRenderer(window, null);
-
-        var drivers = SDL.GetNumRenderDrivers();
-
-        for (var i = 0; i < drivers; i++)
-        {
-            Console.WriteLine($"{i}: {SDL.GetRenderDriver(i)}");
-        }
         
         if (renderer == null)
         {
