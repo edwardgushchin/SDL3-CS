@@ -1,4 +1,4 @@
-![logo](logo.png)
+<p align="center"><img src="logo.png?raw=true" alt="re-frame logo"></p>
 
 # SDL3-CS
 This is SDL3#, a C# wrapper for SDL3.
