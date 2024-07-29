@@ -31,9 +31,7 @@ Once all the features are ready, I plan to bring the wrapper up to date with the
 
 ## 📚 Documentation
 
-For more information about SDL3, visit the SDL wiki:
-
-https://wiki.libsdl.org/SDL3/FrontPage
+For more information about SDL3, visit the [SDL wiki](https://wiki.libsdl.org/SDL3/FrontPage).
 
 
 ## 📝 Installation
@@ -106,7 +104,7 @@ public static class Program
 ```
 
 
-## Readiness
+## ✅ Readiness
 
 ### Basics
 
@@ -222,9 +220,20 @@ public static class Program
 
 ## 🤝 Feedback and Contributions
 
-If you have any feedback, please reach out to us at eduardgushchin@yandex.ru
+Do you have an idea or found a bug? Please open an [issue](https://github.com/edwardgushchin/SDL3-CS/issues) or start a [discussion](https://github.com/edwardgushchin/SDL3-CS/discussions).
 
+Please note we have a code of conduct, please follow it in all your interactions with the project.
+
+If you have any feedback, please reach out to us at [eduardgushchin@yandex.ru](mailto://eduardgushchin@yandex.ru) or https://t.me/eduardgushchin
+
+
+## 💻 Authors
+
+- Eduard Gushchin - Initial work - [edwardgushchin](https://github.com/edwardgushchin)
+
+See also the list of [contributors](https://github.com/edwardgushchin/SDL3-CS/graphs/contributors) who participated in this project.
 
 ## 📃 License
 
-SDL3 and SDL3# are released under the zlib license. See LICENSE for details.
+SDL3 and SDL3# are released under the zlib license. See [LICENSE](LICENSE) for details.
+
