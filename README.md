@@ -1,9 +1,23 @@
-<p align="center"><img src="logo.png?raw=true" alt="re-frame logo"></p>
+<h1 align="center">
+  <br>
+  <img src="logo.png?raw=true" alt="SDL3#">
+  <br>
+  SDL3#
+  <br>
+</h1>
+
+<h4 align="center">This is SDL3#, a C# wrapper for SDL3.</h4>
+
+<p align="center">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/edwardgushchin/SDL3-CS">
+</p>
 
 # SDL3#
 This is SDL3#, a C# wrapper for SDL3.
 
-SDL3 is still under active development, and the shell is currently under development as of https://github.com/edwardgushchin/SDL/tree/detached
+SDL3 is still under active development, and the shell is currently under development as of 
+[this commit](https://github.com/libsdl-org/SDL/commit/e949f12f63cdfcef4bdf456936ee676e0a3f9de6). For convenience, 
+you can use [this branch](https://github.com/edwardgushchin/SDL/tree/detached).
 
 Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
 
