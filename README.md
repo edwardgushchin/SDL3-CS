@@ -1,8 +1,6 @@
-<h1 align="center">
-  <br>
+<p align="center">
   <img src="logo.png?raw=true" alt="SDL3#">
-  <br>
-</h1>
+</p>
 
 <h4 align="center">This is SDL3#, a C# wrapper for SDL3.</h4>
 
