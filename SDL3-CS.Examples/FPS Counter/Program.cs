@@ -57,6 +57,8 @@ internal static class Program
         var startCounter = SDL.GetPerformanceCounter();
         var frequency = SDL.GetPerformanceFrequency();
         var fpsCounter = new FPSCounter();
+        
+        SDL.ShowOpenFolderDialog(SaveFileCallback, 10, window, null, false);
 
         while (loop)
         {
@@ -89,5 +91,10 @@ internal static class Program
         SDL.DestroyWindow(window);
         
         SDL.Quit();
+    }
+
+    private static void SaveFileCallback(object? userData, string[]? fileList, int filters)
+    {
+        Console.WriteLine($"SaveFileCallback: userData={userData}, filtelist={fileList}, filters={filters}");
     }
 }
