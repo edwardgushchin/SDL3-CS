@@ -29,7 +29,7 @@ public static partial class SDL
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     // ReSharper disable once InconsistentNaming
-    public delegate void SDL_DialogFileCallback(IntPtr userdata, IntPtr filelist, int filter);
+    private delegate void SDL_DialogFileCallback(IntPtr userdata, IntPtr filelist, int filter);
     /// <code>typedef void(SDLCALL *SDL_DialogFileCallback)(void *userdata, const char * const *filelist, int filter);</code>
     /// <summary>
     /// <para>Callback used by file dialog functions.</para>
