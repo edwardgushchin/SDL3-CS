@@ -57,8 +57,6 @@ internal static class Program
         var startCounter = SDL.GetPerformanceCounter();
         var frequency = SDL.GetPerformanceFrequency();
         var fpsCounter = new FPSCounter();
-        
-        SDL.ShowOpenFolderDialog(SaveFileCallback, 10, window, null, false);
 
         while (loop)
         {
