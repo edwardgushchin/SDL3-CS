@@ -183,11 +183,11 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### Threads
 
-| **View information and functions related to...**               | **View the header**                                                                     | **Stage**                                                         |
-|----------------------------------------------------------------| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Thread Management](SDL3-CS/SDL/Threads/thread)                | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Thread Synchronization Primitives](SDL3-CS/SDL/Threads/mutex) | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [Atomic Operations](SDL3-CS/SDL/Threads/atomic)                | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)   | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+| **View information and functions related to...**               | **View the header**                                                                     | **Stage**                                                |
+|----------------------------------------------------------------| --------------------------------------------------------------------------------------- |----------------------------------------------------------|
+| [Thread Management](SDL3-CS/SDL/Threads/thread)                | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)   | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)  |
+| [Thread Synchronization Primitives](SDL3-CS/SDL/Threads/mutex) | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)     | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)  |
+| [Atomic Operations](SDL3-CS/SDL/Threads/atomic)                | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)   | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)  |
 
 
 ### Time
@@ -201,8 +201,8 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 ### File and I/O Abstractions
 
 | **View information and functions related to...**                           | **View the header**                                                                           | **Stage**                                                         |
-|----------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Filesystem Access](SDL3-CS/SDL/File%20and%20IO%20Abstractions/filesystem) | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
+|----------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
+| [Filesystem Access](SDL3-CS/SDL/File%20and%20IO%20Abstractions/filesystem) | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)           |
 | [Storage Abstraction](SDL3-CS/SDL/File%20and%20IO%20Abstractions/storage)  | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 | [I/O Streams](SDL3-CS/SDL/File%20and%20IO%20Abstractions/iostream)         | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
