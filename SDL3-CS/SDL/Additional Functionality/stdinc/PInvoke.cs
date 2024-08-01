@@ -21,14 +21,13 @@
  */
 #endregion
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
 
 public partial class SDL
 {
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_free(void *mem);</code>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void Free(IntPtr memblock);
 }
