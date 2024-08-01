@@ -2909,7 +2909,7 @@ public static class Hints
     /// </summary>
     /// <remarks>This hint can be set anytime.</remarks>
     /// <since>This hint is available since SDL 3.0.0.</since>
-    public const string WindowsEnableMessageloop = "SDL_WINDOWS_ENABLE_MESSAGELOOP";
+    public const string WindowsEnableMessageLoop = "SDL_WINDOWS_ENABLE_MESSAGELOOP";
     
     /// <summary>
     /// <para>A variable controlling whether raw keyboard events are used on Windows.</para>
