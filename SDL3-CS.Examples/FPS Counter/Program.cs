@@ -90,9 +90,4 @@ internal static class Program
         
         SDL.Quit();
     }
-
-    private static void SaveFileCallback(object? userData, string[]? fileList, int filters)
-    {
-        Console.WriteLine($"SaveFileCallback: userData={userData}, filtelist={fileList}, filters={filters}");
-    }
 }
