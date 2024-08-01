@@ -97,6 +97,54 @@
             <Pack>true</Pack>
             <Visible>false</Visible>
         </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\android\arm64-v8a\libSDL3.so">
+            <PackagePath>runtimes/android/arm64-v8a</PackagePath>
+            <TargetPath>runtimes/android/arm64-v8a/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\android\armeabi-v7a\libSDL3.so">
+            <PackagePath>runtimes/android/armeabi-v7a</PackagePath>
+            <TargetPath>runtimes/android/armeabi-v7a/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\android\x86\libSDL3.so">
+            <PackagePath>runtimes/android/x86</PackagePath>
+            <TargetPath>runtimes/android/x86/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\android\x86_64\libSDL3.so">
+            <PackagePath>runtimes/android/x86_64</PackagePath>
+            <TargetPath>runtimes/android/x86_64/libSDL3.so</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\ios\SDL3.xcframework\ios-arm64\SDL3.framework\SDL3">
+            <PackagePath>runtimes/ios/SDL3.xcframework/ios-arm64/SDL3.framework</PackagePath>
+            <TargetPath>runtimes/ios/SDL3.xcframework/ios-arm64/SDL3.framework/SDL3</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\ios\SDL3.xcframework\ios-arm64_x86_64-simulator\SDL3.framework\SDL3">
+            <PackagePath>runtimes/ios/SDL3.xcframework/ios-arm64_x86_64-simulator/SDL3.framework</PackagePath>
+            <TargetPath>runtimes/ios/SDL3.xcframework/ios-arm64_x86_64-simulator/SDL3.framework/SDL3</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -106,7 +154,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="SDL\Additional Functionality\system\" />
       <Folder Include="SDL\Audio\audio\" />
       <Folder Include="SDL\File and IO Abstractions\filesystem\" />
       <Folder Include="SDL\File and IO Abstractions\storage\" />

@@ -13,7 +13,7 @@
 <p align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0-512BD4">
     <img alt="Static Badge" src="https://img.shields.io/badge/Language-C%23_12-239120">
-    <img alt="Static Badge" src="https://img.shields.io/badge/OS-Windows%2C%20Linux%2C%20MacOS-blue">
+    <img alt="Static Badge" src="https://img.shields.io/badge/OS-Windows%2C%20Linux%2C%20macOS%2C%20Android%2C%20iOS-blue">
     <img alt="Static Badge" src="https://img.shields.io/badge/CPU-x86%2C%20x64%2C%20ARM%2C%20ARM64-FF8C00">
 </p>
 
