@@ -37,6 +37,8 @@ public static partial class SDL
     
     private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
     {
+        // TODO: Implement loading of Android and iOS libraries
+        
         var libHandle = IntPtr.Zero;
         const string runtimes = "runtimes";
         const string native = "native";
