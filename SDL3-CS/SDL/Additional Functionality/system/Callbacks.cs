@@ -74,4 +74,10 @@ public static partial class SDL
     /// <seealso cref="SetIOSAnimationCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IOSAnimationCallback(IntPtr userdata);
+    
+    
+    /// <code>typedef void (SDLCALL *SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, SDL_bool granted);</code>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void RequestAndroidPermissionCallback(IntPtr userdata,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string permission, [MarshalAs(SDLBool)] bool granted);
 }
