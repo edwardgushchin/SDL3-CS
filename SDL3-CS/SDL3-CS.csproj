@@ -98,7 +98,7 @@
             <Visible>false</Visible>
         </Content>
 
-        <Content Include="$(MSBuildThisFileDirectory)..\native\android\arm64-v8a\libSDL3.so">
+        <!-- <Content Include="$(MSBuildThisFileDirectory)..\native\android\arm64-v8a\libSDL3.so">
             <PackagePath>runtimes/android/arm64-v8a</PackagePath>
             <TargetPath>runtimes/android/arm64-v8a/libSDL3.so</TargetPath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -144,7 +144,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Pack>true</Pack>
             <Visible>false</Visible>
-        </Content>
+        </Content> -->
     </ItemGroup>
 
     <ItemGroup>
