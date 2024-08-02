@@ -85,8 +85,8 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);</code>
     /// <summary>
     /// <para>Set a callback for every X11 event.</para>
-    /// <para>The callback may modify the event, and should return SDL_TRUE if the event
-    /// should continue to be processed, or SDL_FALSE to prevent further
+    /// <para>The callback may modify the event, and should return <c>true</c> if the event
+    /// should continue to be processed, or <c>false</c> to prevent further
     /// processing.</para>
     /// </summary>
     /// <param name="callback">the <see cref="X11EventHook"/> function to call.</param>
@@ -165,7 +165,7 @@ public partial class SDL
     /// <para>Use this function to enable or disable the SDL event pump on Apple iOS.</para>
     /// <para>This function is only available on Apple iOS.</para>
     /// </summary>
-    /// <param name="enabled"><c>true</c> to enable the event pump, SDL_FALSE to disable it.</param>
+    /// <param name="enabled"><c>true</c> to enable the event pump, <c>false</c> to disable it.</param>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetiOSAnimationCallback"/>
     public static void SetiOSEventPump(bool enabled) => SDL_SetiOSEventPump(enabled);
@@ -256,7 +256,7 @@ public partial class SDL
     /// <summary>
     /// Query if the application is running on Android TV.
     /// </summary>
-    /// <returns>SDL_TRUE if this is Android TV, SDL_FALSE otherwise.</returns>
+    /// <returns><c>true</c> if this is Android TV, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     public static bool IsAndroidTV() => SDL_IsAndroidTV();
     
@@ -268,7 +268,7 @@ public partial class SDL
     /// <summary>
     /// Query if the application is running on a Chromebook.
     /// </summary>
-    /// <returns>SDL_TRUE if this is a Chromebook, SDL_FALSE otherwise.</returns>
+    /// <returns><c>true</c> if this is a Chromebook, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     public static bool IsChromebook() => SDL_IsChromebook();
     
@@ -280,7 +280,7 @@ public partial class SDL
     /// <summary>
     /// Query if the application is running on a Samsung DeX docking station.
     /// </summary>
-    /// <returns>SDL_TRUE if this is a DeX docking station, SDL_FALSE otherwise.</returns>
+    /// <returns><c>true</c> if this is a DeX docking station, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     public static bool IsDeXMode() => SDL_IsDeXMode();
     
@@ -307,7 +307,8 @@ public partial class SDL
     /// <c>/data/data/your.app.package/files</c>.</para>
     /// <para>This is a C wrapper over <c>android.content.Context.getFilesDir()</c>:
     /// https://developer.android.com/reference/android/content/Context#getFilesDir()</para>
-    /// <para>The returned string follows the SDL_GetStringRule.</para>
+    /// <para>The returned string follows the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>the path used for internal storage or NULL on failure; call
     /// <see cref="GetError"/> for more information.</returns>
@@ -346,7 +347,8 @@ public partial class SDL
     /// <c>/storage/sdcard0/Android/data/your.app.package/files</c>.</para>
     /// <para>This is a C wrapper over <c>android.content.Context.getExternalFilesDir()</c>:
     /// https://developer.android.com/reference/android/content/Context#getExternalFilesDir()</para>
-    /// <para>The returned string follows the SDL_GetStringRule.</para>
+    /// <para>The returned string follows the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>the path used for external storage for this application on success
     /// or NULL on failure; call <see cref="GetError"/> for more information.</returns>
@@ -366,7 +368,8 @@ public partial class SDL
     /// <para>Your cache path is typically: <c>/data/data/your.app.package/cache/</c>.</para>
     /// <para>This is a C wrapper over <c>android.content.Context.getCacheDir()</c>:
     /// https://developer.android.com/reference/android/content/Context#getCacheDir()</para>
-    /// <para>The returned string follows the SDL_GetStringRule.</para>
+    /// <para>The returned string follows the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>the path used for caches for this application on success or NULL
     /// on failure; call <see cref="GetError"/> for more information.</returns>
@@ -457,7 +460,8 @@ public partial class SDL
     /// <para>Documentation on most app-specific path types on WinRT can be found on
     /// MSDN, at the URL:
     /// https://msdn.microsoft.com/en-us/library/windows/apps/hh464917.aspx</para>
-    /// <para>The returned string follows the SDL_GetStringRule.</para>
+    /// <para>The returned string follows the
+    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="pathType">the type of path to retrieve, one of <see cref="WinRTPath"/>.</param>
     /// <returns>a UTF-8 string (8-bit, multi-byte) containing the path, or NULL if
@@ -484,7 +488,7 @@ public partial class SDL
     /// <summary>
     /// Query if the current device is a tablet.
     /// </summary>
-    /// <returns>SDL_TRUE if the device is a tablet, SDL_FALSE otherwise.</returns>
+    /// <returns><c>true</c> if the device is a tablet, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     public static bool IsTablet() => SDL_IsTablet();
     
