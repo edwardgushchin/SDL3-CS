@@ -23,6 +23,7 @@
   <a href="#-installation">Installation</a> •
   <a href="#-examples">Examples</a> •
   <a href="#-readiness">Readiness</a> •
+  <a href="#-mobile-platform-support">Mobile platform support</a> •
   <a href="#-feedback-and-contributions">Feedback and Contributions</a> •
   <a href="#-authors">Authors</a> •
   <a href="#-license">License</a>
@@ -230,6 +231,11 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [Standard Library Functionality](SDL3-CS/SDL/Additional%20Functionality/stdinc)  | [SDL_stdinc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_stdinc.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)  |
 | [GUIDs](SDL3-CS/SDL/Additional%20Functionality/guid)                             | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)  |
 | [Miscellaneous](SDL3-CS/SDL/Additional%20Functionality/misc)                     | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_misc.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+
+
+## 📱 Mobile platform support
+
+In theory, there is no reason why this shell cannot run on Android and iOS, but I have never worked with these platforms and cannot guarantee 100% work. If you can add support for mobile platforms, I look forward to your Pull Requests!
 
 
 ## 🤝 Feedback and Contributions
