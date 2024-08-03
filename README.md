@@ -22,7 +22,9 @@
   <a href="#-documentation">Documentation</a> •
   <a href="#-installation">Installation</a> •
   <a href="#-examples">Examples</a> •
-  <a href="#-readiness">Readiness</a> •
+  <a href="#-readiness">Readiness</a>
+</p>
+<p align="center">
   <a href="#-mobile-platform-support">Mobile platform support</a> •
   <a href="#-feedback-and-contributions">Feedback and Contributions</a> •
   <a href="#-authors">Authors</a> •
