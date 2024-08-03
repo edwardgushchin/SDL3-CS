@@ -235,7 +235,7 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ## 📱 Mobile platform support
 
-In theory, there is no reason why this shell cannot run on Android and iOS, but I have never worked with these platforms and cannot guarantee 100% work. If you can add support for mobile platforms, I look forward to your Pull Requests!
+In theory, there is no reason why this shell cannot run on Android and iOS, but I have never worked with these platforms and cannot guarantee 100% work. If you can add support for mobile platforms, I look forward to your [Pull requests](https://github.com/edwardgushchin/SDL3-CS/pulls)!
 
 
 ## 🤝 Feedback and Contributions
