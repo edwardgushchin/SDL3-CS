@@ -123,7 +123,7 @@ public static partial class SDL
         /// <summary>
         /// User data pointer passed to callbacks
         /// </summary>
-        public IntPtr? UserData;
+        public IntPtr UserData;
         
         /// <summary>
         /// Called when the joystick state should be updated
