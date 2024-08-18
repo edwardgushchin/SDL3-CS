@@ -349,4 +349,93 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SeekIO"/>
     public static long TellIO(IOStream context) => SDL_TellIO(context.Handle);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial nuint SDL_ReadIO(IntPtr context, IntPtr ptr, nuint size);
+    /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);</code>
+    /// <summary>
+    /// <para>Read from a data source.</para>
+    /// <para>This function reads up <c>size</c> bytes from the data source to the area
+    /// pointed at by <c>ptr</c>. This function may read less bytes than requested. It
+    /// will return zero when the data stream is completely read, or on error. To
+    /// determine if there was an error or all data was read, call
+    /// <see cref="GetIOStatus"/>.</para>
+    /// </summary>
+    /// <param name="context">a pointer to an <see cref="IOStream"/> structure.</param>
+    /// <param name="ptr">a pointer to a buffer to read data into.</param>
+    /// <param name="size">the number of bytes to read from the data source.</param>
+    /// <returns>the number of bytes read, or 0 on end of file or other error.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="WriteIO"/>
+    /// <seealso cref="GetIOStatus"/>
+    public static nuint ReadIO(IOStream context, IntPtr ptr, nuint size) =>
+        SDL_ReadIO(context.Handle, ptr, size);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial nuint SDL_WriteIO(IntPtr context, IntPtr ptr, nuint size);
+    /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);</code>
+    /// <summary>
+    /// <para>Write to an <see cref="IOStream"/> data stream.</para>
+    /// <para>This function writes exactly <c>size</c> bytes from the area pointed at by <c>ptr</c>
+    /// to the stream. If this fails for any reason, it'll return less than <c>size</c>
+    /// to demonstrate how far the write progressed. On success, it returns <c>size</c>.</para>
+    /// <para>On error, this function still attempts to write as much as possible, so it
+    /// might return a positive value less than the requested write size.</para>
+    /// <para>The caller can use <see cref="GetIOStatus"/> to determine if the problem is
+    /// recoverable, such as a non-blocking write that can simply be retried later,
+    /// or a fatal error.</para>
+    /// </summary>
+    /// <param name="context">a pointer to an <see cref="IOStream"/> structure.</param>
+    /// <param name="ptr">a pointer to a buffer containing data to write.</param>
+    /// <param name="size">the number of bytes to write.</param>
+    /// <returns>the number of bytes written, which will be less than <c>size</c> on
+    /// error; call <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="IOprintf"/>
+    /// <seealso cref="ReadIO"/>
+    /// <seealso cref="SeekIO"/>
+    /// <seealso cref="GetIOStatus"/>
+    public static nuint WriteIO(IOStream context, IntPtr ptr, nuint size) =>
+        SDL_WriteIO(context.Handle, ptr, size);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_LoadFile_IO(IntPtr src, out nuint datasize, [MarshalAs(SDLBool)] bool closeio);
+    /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, SDL_bool closeio);</code>
+    /// <summary>
+    /// <para>Load all the data from an SDL data stream.</para>
+    /// <para>The data is allocated with a zero byte at the end (null terminated) for
+    /// convenience. This extra byte is not included in the value reported via
+    /// <c>datasize</c>.</para>
+    /// <para>The data should be freed with <see cref="Free"/>.</para>
+    /// </summary>
+    /// <param name="src">the <see cref="IOStream"/> to read all available data from.</param>
+    /// <param name="datasize">if not <c>NULL</c>, will store the number of bytes read.</param>
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning,
+    /// even in the case of an error.</param>
+    /// <returns>the data, or <c>NULL</c> if there was an error.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="LoadFile"/>
+    public static byte[]? LoadFileIO(IOStream src, out nuint datasize, bool closeio)
+    {
+        var ptr = SDL_LoadFile_IO(src.Handle, out datasize, closeio);
+        if (ptr == IntPtr.Zero)
+        {
+            return null;
+        }
+
+        try
+        {
+            var data = new byte[datasize];
+            Marshal.Copy(ptr, data, 0, (int)datasize);
+            return data;
+        }
+        finally
+        {
+            Free(ptr);
+        }
+    }
+
 }
