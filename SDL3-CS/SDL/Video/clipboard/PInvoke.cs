@@ -237,7 +237,7 @@ public static partial class SDL
         }
         finally
         {
-            Marshal.FreeHGlobal(dataPtr);
+            Free(dataPtr);
         }
     }
 
