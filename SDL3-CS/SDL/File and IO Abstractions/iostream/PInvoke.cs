@@ -208,9 +208,8 @@ public static partial class SDL
         return ioFromDynamicMem == IntPtr.Zero ? null : new IOStream(ioFromDynamicMem);
     }
     
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_OpenIO(ref IOStreamInterface iface, IntPtr userdata);
+    [DllImport(SDLLibrary, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+    private static extern IntPtr SDL_OpenIO([In] in IOStreamInterface iface, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC SDL_IOStream *SDLCALL SDL_OpenIO(const SDL_IOStreamInterface *iface, void *userdata);</code>
     /// <summary>
     /// <para>Create a custom <see cref="IOStream"/>.</para>

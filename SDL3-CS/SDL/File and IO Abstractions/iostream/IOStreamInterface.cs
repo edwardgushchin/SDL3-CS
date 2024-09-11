@@ -34,29 +34,9 @@ public static partial class SDL
     /// already offers several common types of I/O streams, via functions like
     /// <see cref="IOFromFile"/> and <see cref="IOFromMem"/>.</para>
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct IOStreamInterface
     {
-        /// <code>Sint64 (SDLCALL *size)(void *userdata);</code>
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate long SizeDelegate(IntPtr userdata);
-
-        /// <code>Sint64 (SDLCALL *seek)(void *userdata, Sint64 offset, SDL_IOWhence whence);</code>
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate long SeekDelegate(IntPtr userdata, long offset, IOWhence whence);
-
-        /// <code>size_t (SDLCALL *read)(void *userdata, void *ptr, size_t size, SDL_IOStatus *status);</code>
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr ReadDelegate(IntPtr userdata, IntPtr ptr, UIntPtr size, out IOStatus status);
-
-        /// <code>size_t (SDLCALL *write)(void *userdata, const void *ptr, size_t size, SDL_IOStatus *status);</code>
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr WriteDelegate(IntPtr userdata, IntPtr ptr, UIntPtr size, out IOStatus status);
-
-        /// <code>int (SDLCALL *close)(void *userdata);</code>
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int CloseDelegate(IntPtr userdata);
-
         /// <summary>
         /// Return the number of bytes in this <see cref="IOStream"/>
         /// </summary>
