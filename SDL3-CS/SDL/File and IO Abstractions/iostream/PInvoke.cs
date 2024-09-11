@@ -393,7 +393,6 @@ public static partial class SDL
     /// <returns>the number of bytes written, which will be less than <c>size</c> on
     /// error; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="IOprintf"/>
     /// <seealso cref="ReadIO"/>
     /// <seealso cref="SeekIO"/>
     /// <seealso cref="GetIOStatus"/>
@@ -437,5 +436,540 @@ public static partial class SDL
             Free(ptr);
         }
     }
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_LoadFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, out nuint datasize);
+    /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_LoadFile(const char *file, size_t *datasize);</code>
+    /// <summary>
+    /// <para>Load all the data from a file path.</para>
+    /// <para>The data is allocated with a zero byte at the end (null terminated) for
+    /// convenience. This extra byte is not included in the value reported via
+    /// <c>datasize</c>.</para>
+    /// <para>The data should be freed with <see cref="Free"/></para>
+    /// </summary>
+    /// <param name="file">the path to read all available data from.</param>
+    /// <param name="datasize">if not NULL, will store the number of bytes read.</param>
+    /// <returns>the data, or <c>NULL</c> if there was an error.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="LoadFileIO"/>
+    public static byte[]? LoadFile(string file, out nuint datasize)
+    {
+        var ptr =  SDL_LoadFile(file, out datasize);
+        
+        if (ptr == IntPtr.Zero)
+        {
+            return null;
+        }
+        
+        try
+        {
+            var data = new byte[datasize];
+            Marshal.Copy(ptr, data, 0, (int)datasize);
+            return data;
+        }
+        finally
+        {
+            Free(ptr);
+        }
+    }
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU8(IntPtr src, out byte value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU8(SDL_IOStream *src, Uint8 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read a byte from an <see cref="IOStream"/>.</para>
+    /// </summary>
+    /// <param name="src">the <see cref="IOStream"/> to read from.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/>
+    /// for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU8(IOStream src, out byte value) => SDL_ReadU8(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS8(IntPtr src, out sbyte value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS8(SDL_IOStream *src, Sint8 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read a signed byte from an <see cref="IOStream"/>.</para>
+    /// </summary>
+    /// <param name="src">the <see cref="IOStream"/> to read from.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/>
+    /// for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS8(IOStream src, out sbyte value) => SDL_ReadS8(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU16LE(IntPtr src, out ushort value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 16 bits of little-endian data from an
+    /// <see cref="IOStream"/> and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU16LE(IOStream src, out ushort value) => SDL_ReadU16LE(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS16LE(IntPtr src, out short value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 16 bits of little-endian data from an
+    /// <see cref="IOStream"/> and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS16LE(IOStream src, out short value) => SDL_ReadS16LE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU16BE(IntPtr src, out ushort value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 16 bits of big-endian data from an SDL_IOStream
+    /// and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU16BE(IOStream src, out ushort value) => SDL_ReadU16BE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS16BE(IntPtr src, out short value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 16 bits of big-endian data from an <see cref="IOStream"/>
+    /// and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS16BE(IOStream src, out short value) => SDL_ReadS16BE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU32LE(IntPtr src, out uint value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 32 bits of little-endian data from an
+    /// <see cref="IOStream"/> and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU32LE(IOStream src, out uint value) => SDL_ReadU32LE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS32LE(IntPtr src, out int value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 32 bits of little-endian data from an
+    /// <see cref="IOStream"/> and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS32LE(IOStream src, out int value) => SDL_ReadS32LE(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU32BE(IntPtr src, out uint value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 32 bits of big-endian data from an <see cref="IOStream"/>
+    /// and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU32BE(IOStream src, out uint value) => SDL_ReadU32BE(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS32BE(IntPtr src, out int value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 32 bits of big-endian data from an <see cref="IOStream"/>
+    /// and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS32BE(IOStream src, out int value) => SDL_ReadS32BE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU64LE(IntPtr src, out ulong value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 64 bits of little-endian data from an
+    /// <see cref="IOStream"/> and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU64LE(IOStream src, out ulong value) => SDL_ReadU64LE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS64LE(IntPtr src, out long value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 64 bits of little-endian data fro
+    /// <see cref="IOStream"/> and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS64LE(IOStream src, out long value) => SDL_ReadS64LE(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadU64BE(IntPtr src, out ulong value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 64 bits of big-endian data from an <see cref="IOStream"/>
+    /// and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadU64BE(IOStream src, out ulong value) => SDL_ReadU64BE(src.Handle, out value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_ReadS64BE(IntPtr src, out long value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);</code>
+    /// <summary>
+    /// <para>Use this function to read 64 bits of big-endian data from an <see cref="IOStream"/>
+    /// and return in native format.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
+    /// the native byte order.</para>
+    /// </summary>
+    /// <param name="src">the stream from which to read data.</param>
+    /// <param name="value">a pointer filled in with the data read.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool ReadS64BE(IOStream src, out long value) => SDL_ReadS64BE(src.Handle, out value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU8(IntPtr dst, byte value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU8(SDL_IOStream *dst, Uint8 value);</code>
+    /// <summary>
+    /// Use this function to write a byte to an <see cref="IOStream"/>.
+    /// </summary>
+    /// <param name="dst">the <see cref="IOStream"/> to write to.</param>
+    /// <param name="value">the byte value to write.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU8(IOStream dst, byte value) => SDL_WriteU8(dst.Handle, value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS8(IntPtr dst, sbyte value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS8(SDL_IOStream *dst, Sint8 value);</code>
+    /// <summary>
+    /// Use this function to write a signed byte to an <see cref="IOStream"/>.
+    /// </summary>
+    /// <param name="dst">the SDL_IOStream to write to.</param>
+    /// <param name="value">the byte value to write.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS8(IOStream dst, sbyte value) => SDL_WriteS8(dst.Handle, value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU16LE(IntPtr dst, ushort value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 16 bits in native format to an <see cref="IOStream"/> as
+    /// little-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in little-endian
+    /// format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU16LE(IOStream dst, ushort value) => SDL_WriteU16LE(dst.Handle, value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS16LE(IntPtr dst, short value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 16 bits in native format to an <see cref="IOStream"/> as
+    /// little-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in little-endian
+    /// format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS16LE(IOStream dst, short value) => SDL_WriteS16LE(dst.Handle, value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU16BE(IntPtr dst, ushort value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 16 bits in native format to an <see cref="IOStream"/> as
+    /// big-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in big-endian format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU16BE(IOStream dst, ushort value) => SDL_WriteU16BE(dst.Handle, value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS16BE(IntPtr dst, short value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 16 bits in native format to an <see cref="IOStream"/> as
+    /// big-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in big-endian format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS16BE(IOStream dst, short value) => SDL_WriteS16BE(dst.Handle, value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU32LE(IntPtr dst, uint value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 32 bits in native format to an <see cref="IOStream"/> as
+    /// little-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in little-endian
+    /// format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU32LE(IOStream dst, uint value) => SDL_WriteU32LE(dst.Handle, value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS32LE(IntPtr dst, int value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 32 bits in native format to an SDL_IOStream as
+    /// little-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in little-endian
+    /// format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS32LE(IOStream dst, int value) => SDL_WriteS32LE(dst.Handle, value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU32BE(IntPtr dst, uint value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 32 bits in native format to an <see cref="IOStream"/> as
+    /// big-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in big-endian format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU32BE(IOStream dst, uint value) => SDL_WriteU32BE(dst.Handle, value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS32BE(IntPtr dst, int value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 32 bits in native format to an <see cref="IOStream"/> as
+    /// big-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in big-endian format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS32BE(IOStream dst, int value) => SDL_WriteS32BE(dst.Handle, value);
+
+
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU64LE(IntPtr dst, ulong value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 64 bits in native format to an <see cref="IOStream"/> as
+    /// little-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in little-endian
+    /// format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU64LE(IOStream dst, ulong value) => SDL_WriteU64LE(dst.Handle, value);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS64LE(IntPtr dst, long value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 64 bits in native format to an <see cref="IOStream"/> as
+    /// little-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in little-endian
+    /// format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS64LE(IOStream dst, long value) => SDL_WriteS64LE(dst.Handle, value);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteU64BE(IntPtr dst, ulong value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 64 bits in native format to an <see cref="IOStream"/> as
+    /// big-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in big-endian format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteU64BE(IOStream dst, ulong value) => SDL_WriteU64BE(dst.Handle, value);
+
+
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_WriteS64BE(IntPtr dst, long value);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);</code>
+    /// <summary>
+    /// <para>Use this function to write 64 bits in native format to an <see cref="IOStream"/> as
+    /// big-endian data.</para>
+    /// <para>SDL byteswaps the data only if necessary, so the application always
+    /// specifies native format, and the data written will be in big-endian format.</para>
+    /// </summary>
+    /// <param name="dst">the stream to which data will be written.</param>
+    /// <param name="value">the data to be written, in native format.</param>
+    /// <returns><c>true</c> on successful write, <c>false</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    public static bool WriteS64BE(IOStream dst, long value) => SDL_WriteS64BE(dst.Handle, value);
 
 }

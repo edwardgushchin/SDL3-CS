@@ -203,11 +203,11 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### File and I/O Abstractions
 
-| **View information and functions related to...**                          | **View the header**                                                                           | **Stage**                                                         |
-|---------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
-| Filesystem Access                                                         | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)           |
-| [Storage Abstraction](SDL3-CS/SDL/File%20and%20IO%20Abstractions/storage) | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
-| [I/O Streams](SDL3-CS/SDL/File%20and%20IO%20Abstractions/iostream)        | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| **View information and functions related to...**                          | **View the header**                                                                           | **Stage**                                                     |
+|---------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- |---------------------------------------------------------------|
+| Filesystem Access                                                         | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)       |
+| [Storage Abstraction](SDL3-CS/SDL/File%20and%20IO%20Abstractions/storage) | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D) |
+| [I/O Streams](SDL3-CS/SDL/File%20and%20IO%20Abstractions/iostream)        | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)           |
 
 
 ### Platform and CPU Information
