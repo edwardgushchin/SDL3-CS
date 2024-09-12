@@ -36,8 +36,8 @@
 
 ## 🚀 About
 
-SDL3 is still under active development, and the shell is currently under development as of 
-[this commit](https://github.com/libsdl-org/SDL/commit/e949f12f63cdfcef4bdf456936ee676e0a3f9de6). For convenience, 
+SDL3 is still under active development, and the shell is currently under development as of
+[this commit](https://github.com/libsdl-org/SDL/commit/e949f12f63cdfcef4bdf456936ee676e0a3f9de6). For convenience,
 you can use [this branch](https://github.com/edwardgushchin/SDL/tree/detached).
 
 Once all the features are ready, I plan to bring the wrapper up to date with the original SDL and keep it up to date.
@@ -203,11 +203,11 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### File and I/O Abstractions
 
-| **View information and functions related to...**                           | **View the header**                                                                           | **Stage**                                                         |
-|----------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
-| [Filesystem Access](SDL3-CS/SDL/File%20and%20IO%20Abstractions/filesystem) | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Storage Abstraction](SDL3-CS/SDL/File%20and%20IO%20Abstractions/storage)  | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
-| [I/O Streams](SDL3-CS/SDL/File%20and%20IO%20Abstractions/iostream)         | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| **View information and functions related to...**                           | **View the header**                                                                           | **Stage**                                             |
+|----------------------------------------------------------------------------| --------------------------------------------------------------------------------------------- |-------------------------------------------------------|
+| [Filesystem Access](SDL3-CS/SDL/File%20and%20IO%20Abstractions/filesystem) | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [Storage Abstraction](SDL3-CS/SDL/File%20and%20IO%20Abstractions/storage)  | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [I/O Streams](SDL3-CS/SDL/File%20and%20IO%20Abstractions/iostream)         | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)   |
 
 
 ### Platform and CPU Information
@@ -258,4 +258,3 @@ See also the list of [contributors](https://github.com/edwardgushchin/SDL3-CS/gr
 ## 📃 License
 
 SDL3 and SDL3# are released under the zlib license. See [LICENSE](LICENSE) for details.
-
