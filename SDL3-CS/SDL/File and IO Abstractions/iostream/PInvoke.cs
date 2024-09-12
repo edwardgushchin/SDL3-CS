@@ -231,9 +231,9 @@ public static partial class SDL
     /// <seealso cref="IOFromConstMem"/>
     /// <seealso cref="IOFromFile"/>
     /// <seealso cref="IOFromMem"/>
-    public static IOStream? OpenIO(ref IOStreamInterface iface, IntPtr userdata)
+    public static IOStream? OpenIO(IOStreamInterface iface, IntPtr userdata)
     {
-        var openIOPtr = SDL_OpenIO(ref iface, userdata);
+        var openIOPtr = SDL_OpenIO(iface, userdata);
         return openIOPtr == IntPtr.Zero ? null : new IOStream(openIOPtr);
     }
         
