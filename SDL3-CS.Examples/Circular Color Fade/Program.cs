@@ -51,6 +51,10 @@ internal static class Program
             return;
         }
 
+        var basePath = SDL.GetBasePath();
+        
+        Console.WriteLine($"BasePath: {basePath}");
+
         var loop = true;
         var startCounter = SDL.GetPerformanceCounter();
         var frequency = SDL.GetPerformanceFrequency();
