@@ -154,12 +154,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="SDL\Audio\audio\" />
-      <Folder Include="SDL\Force Feedback\haptic\" />
-      <Folder Include="SDL\Video\camera\" />
-      <Folder Include="SDL_image\" />
-      <Folder Include="SDL_mixer\" />
-      <Folder Include="SDL_ttf\" />
+      <Folder Include="SDL\" />
     </ItemGroup>
 
     <!-- <ItemGroup>
