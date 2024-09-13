@@ -130,4 +130,77 @@ public static partial class SDL
 
         return extensions;
     }
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_Vulkan_CreateSurface(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface);
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_Vulkan_CreateSurface(SDL_Window *window, VkInstance instance, const struct VkAllocationCallbacks *allocator, VkSurfaceKHR* surface);</code>
+    /// <summary>
+    /// <para>Create a Vulkan rendering surface for a window.</para>
+    /// <para>The <c>window</c> must have been created with the <see cref="WindowFlags.Vulkan"/> flag and
+    /// <c>instance</c> must have been created with extensions returned by
+    /// <see cref="VulkanGetInstanceExtensions"/> enabled.</para>
+    /// <para>If <c>allocator</c> is <c>null</c>, Vulkan will use the system default allocator. This
+    /// argument is passed directly to Vulkan and isn't used by SDL itself.</para>
+    /// </summary>
+    /// <param name="window">the window to which to attach the Vulkan surface.</param>
+    /// <param name="instance">the Vulkan instance handle.</param>
+    /// <param name="allocator">a VkAllocationCallbacks struct, which lets the app set the
+    /// allocator that creates the surface. Can be NULL.</param>
+    /// <param name="surface">a pointer to a VkSurfaceKHR handle to output the newly
+    /// created surface.</param>
+    /// <returns>0 on success, -1 on error (check SDL_GetError() for specifics).</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="VulkanGetInstanceExtensions"/>
+    /// <seealso cref="VulkanDestroySurface"/>
+    public static int VulkanCreateSurface(Window window, IntPtr instance, IntPtr? allocator, out IntPtr surface) =>
+        SDL_Vulkan_CreateSurface(window.Handle, instance, allocator ?? IntPtr.Zero, out surface);
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_Vulkan_DestroySurface(IntPtr instance, IntPtr surface, IntPtr allocator);
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Vulkan_DestroySurface(VkInstance instance, VkSurfaceKHR surface, const struct VkAllocationCallbacks *allocator);</code>
+    /// <summary>
+    /// <para>Destroy the Vulkan rendering surface of a window.</para>
+    /// <para>This should be called before <see cref="DestroyWindow"/>, if <see cref="VulkanCreateSurface"/>
+    /// was called after <see cref="CreateWindow"/>.</para>
+    /// <para>The <c>instance</c> must have been created with extensions returned by
+    /// <see cref="VulkanGetInstanceExtensions"/> enabled and <c>surface</c> must have been
+    /// created successfully by an <see cref="VulkanCreateSurface"/> call.</para>
+    /// <para>If <c>allocator</c> is <c>null</c>, Vulkan will use the system default allocator. This
+    /// argument is passed directly to Vulkan and isn't used by SDL itself.</para>
+    /// </summary>
+    /// <param name="instance">the Vulkan instance handle.</param>
+    /// <param name="surface">vkSurfaceKHR handle to destroy.</param>
+    /// <param name="allocator">a VkAllocationCallbacks struct, which lets the app set the
+    /// allocator that destroys the surface. Can be NULL.</param>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="VulkanGetInstanceExtensions"/>
+    /// <seealso cref="VulkanCreateSurface"/>
+    public static void VulkanDestroySurface(IntPtr instance, IntPtr surface, IntPtr? allocator) =>
+        SDL_Vulkan_DestroySurface(instance, surface, allocator ?? IntPtr.Zero);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool SDL_Vulkan_GetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex);
+    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_Vulkan_GetPresentationSupport(VkInstance instance, VkPhysicalDevice physicalDevice, Uint32 queueFamilyIndex);</code>
+    /// <summary>
+    /// <para>Query support for presentation via a given physical device and queue
+    /// family.</para>
+    /// <para>The <c>instance</c> must have been created with extensions returned by
+    /// <see cref="VulkanGetInstanceExtensions"/> enabled.</para>
+    /// </summary>
+    /// <param name="instance">the Vulkan instance handle.</param>
+    /// <param name="physicalDevice">a valid Vulkan physical device handle.</param>
+    /// <param name="queueFamilyIndex">a valid queue family index for the given physical
+    /// device.</param>
+    /// <returns><c>true</c> if supported, <c>false</c> if unsupported or an error
+    /// occurred.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="VulkanGetInstanceExtensions"/>
+    public static bool VulkanGetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex) =>
+        SDL_Vulkan_GetPresentationSupport(instance, physicalDevice, queueFamilyIndex);
+
+
 }

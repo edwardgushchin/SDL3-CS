@@ -146,7 +146,7 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [Rectangle Functions](SDL3-CS/Video/rect) | [SDL_rect.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_rect.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Surface Creation and Simple Drawing](SDL3-CS/Video/surface) | [SDL_surface.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_surface.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Clipboard Handling](SDL3-CS/Video/clipboard) | [SDL_clipboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_clipboard.h) | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Vulkan Support](SDL3-CS/Video/vulkan) | [SDL_vulkan.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_vulkan.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Vulkan Support](SDL3-CS/Video/vulkan) | [SDL_vulkan.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_vulkan.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Metal Support](SDL3-CS/Video/metal)  | [SDL_metal.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL_metal.h)              | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Camera Support](SDL3-CS/Video/camera) | [SDL_camera.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL_camera.h)            | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)     |
 
