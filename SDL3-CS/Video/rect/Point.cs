@@ -27,6 +27,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// The structure that defines a point (using integers).
+    /// </summary>
+    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <seealso cref="GetRectEnclosingPoints"/>
+    /// <seealso cref="PointInRect"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Point(int x, int y)
     {

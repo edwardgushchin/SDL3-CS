@@ -28,31 +28,26 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// A rectangle, with the origin at the upper left (using integers).
+    /// A rectangle, with the origin at the upper left (using floating point
+    /// values).
     /// </summary>
     /// <since>This struct is available since SDL 3.0.0.</since>
-    /// <seealso cref="RectEmpty"/>
-    /// <seealso cref="RectsEqual"/>
-    /// <seealso cref="SDL_HasRectIntersection"/>
-    /// <seealso cref="GetRectIntersection"/>
-    /// <seealso cref="GetRectAndLineIntersection"/>
-    /// <seealso cref="GetRectUnion"/>
-    /// <seealso cref="GetRectEnclosingPoints"/>
+    /// <seealso cref="RectEmptyFloat"/>
+    /// <seealso cref="RectsEqualFloat"/>
+    /// <seealso cref="RectsEqualEpsilon"/>
+    /// <seealso cref="HasRectIntersectionFloat"/>
+    /// <seealso cref="GetRectIntersectionFloat"/>
+    /// <seealso cref="GetRectAndLineIntersectionFloat"/>
+    /// <seealso cref="GetRectUnionFloat"/>
+    /// <seealso cref="GetRectEnclosingPointsFloat"/>
+    /// <seealso cref="PointInRectFloat"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect
+    public struct FRect(float x, float y, float w, float h)
     {
-        public int X;
-        public int Y;
-        public int W;
-        public int H;
-
-        public Rect(int x, int y, int w, int h)
-        {
-            X = x;
-            Y = y;
-            W = w;
-            H = h;
-        }
+        public float X = x;
+        public float Y = y;
+        public float W = w;
+        public float H = h;
 
         public override string ToString()
         {

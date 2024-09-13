@@ -153,10 +153,6 @@
       <None Include="../icon.png" Pack="true" Visible="false" PackagePath="\"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="SDL\" />
-    </ItemGroup>
-
     <!-- <ItemGroup>
         <None Include="./native/win-x64/SDL3.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
         <None Include="./native/win-x86/SDL3.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
