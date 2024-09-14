@@ -51,17 +51,6 @@ internal static class Program
             return;
         }
 
-        var basePath = SDL.GetBasePath();
-        
-        Console.WriteLine($"BasePath: {basePath}");
-
-        var rect = new SDL.Rect(0, 0, 100, 100);
-        var point = new SDL.Point(-10, 25);
-
-        var pointInRect = SDL.PointInRect(point, rect);
-        
-        Console.WriteLine($"PointInRect: {pointInRect}");
-
         var loop = true;
         var startCounter = SDL.GetPerformanceCounter();
         var frequency = SDL.GetPerformanceFrequency();
