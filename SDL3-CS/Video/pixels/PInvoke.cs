@@ -30,6 +30,7 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
     private static partial IntPtr SDL_GetPixelFormatName(int format); 
+    /// <code>extern SDL_DECLSPEC const char* SDLCALL SDL_GetPixelFormatName(SDL_PixelFormat format);</code>
     /// <summary>
     /// <para>Get the human readable name of a pixel format.</para>
     /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
@@ -44,6 +45,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetMasksForPixelFormat(int format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask);
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetMasksForPixelFormat(SDL_PixelFormat format, int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask);</code>
     /// <summary>
     /// Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
     /// </summary>
@@ -64,6 +66,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetPixelFormatForMasks(int bpp, uint rmask, uint gmask, uint bmask, uint amask);
+    /// <code>extern SDL_DECLSPEC SDL_PixelFormat SDLCALL SDL_GetPixelFormatForMasks(int bpp, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);</code>
     /// <summary>
     /// Convert a bpp value and RGBA masks to an enumerated pixel format.
     /// This will return <see cref="PixelFormat.Unknown"/> if the conversion wasn't
@@ -85,6 +88,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPixelFormatDetails(int format);
+    /// <code>extern SDL_DECLSPEC const SDL_PixelFormatDetails * SDLCALL SDL_GetPixelFormatDetails(SDL_PixelFormat format);</code>
     /// <summary>
     /// <para>Create an <see cref="PixelFormatDetails"/> structure corresponding to a pixel format.</para>
     /// <para>Returned structure may come from a shared global cache (i.e. not newly
@@ -102,6 +106,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreatePalette(int ncolors);
+    /// <code>extern SDL_DECLSPEC SDL_Palette *SDLCALL SDL_CreatePalette(int ncolors);</code>
     /// <summary>
     /// <para>Create a palette structure with the specified number of color entries.</para>
     /// <para>The palette entries are initialized to white.</para>
@@ -121,6 +126,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetPaletteColors(IntPtr palette, [MarshalAs(UnmanagedType.LPArray)] Color[] colors, int firstcolor, int ncolors);
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetPaletteColors(SDL_Palette *palette, const SDL_Color *colors, int firstcolor, int ncolors);</code>
     /// <summary>
     /// Set a range of colors in a palette.
     /// </summary>
@@ -155,6 +161,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyPalette(IntPtr palette);
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyPalette(SDL_Palette *palette);</code>
     /// <summary>
     /// Free a palette created with <see cref="CreatePalette"/>.
     /// </summary>
@@ -175,6 +182,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_MapRGB(IntPtr format, IntPtr palette, byte r, byte g, byte b);
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_MapRGB(const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b);</code>
     /// <summary>
     /// <para>Map an RGB triple to an opaque pixel value for a given pixel format.</para>
     /// <para>This function maps the RGB color value to the specified pixel format and
@@ -224,6 +232,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_MapRGBA(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a);
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_MapRGBA(const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a);</code>
     /// <summary>
     /// <para>Map an RGBA quadruple to a pixel value for a given pixel format.</para>
     /// <para>This function maps the RGBA color value to the specified pixel format and
@@ -280,6 +289,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_GetRGB(uint pixel, IntPtr format, IntPtr palette, ref byte r, ref byte g, ref byte b);
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
     /// <summary>
     /// <para>Get RGB values from a pixel in the specified format.</para>
     /// <para>This function uses the entire 8-bit [0..255] range when converting color
@@ -328,6 +338,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_GetRGBA(uint pixel, IntPtr format, IntPtr palette, ref byte r, ref byte g, ref byte b, ref byte a);
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
     /// <para>Get RGBA values from a pixel in the specified format.</para>
     /// <para>This function uses the entire 8-bit [0..255] range when converting color
