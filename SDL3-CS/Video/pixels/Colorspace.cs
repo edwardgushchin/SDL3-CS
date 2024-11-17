@@ -25,6 +25,18 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Colorspace definitions.</para>
+    /// <para>Since similar colorspaces may vary in their details (matrix, transfer
+    /// function, etc.), this is not an exhaustive list, but rather a
+    /// representative sample of the kinds of colorspaces supported in SDL.</para>
+    /// </summary>
+    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <seealso cref="ColorPrimaries"/>
+    /// <seealso cref="ColorRange"/>
+    /// <seealso cref="ColorType"/>
+    /// <seealso cref="MatrixCoefficients"/>
+    /// <seealso cref="TransferCharacteristics"/>
     public enum Colorspace : uint
     { 
         Unknown = 0,
