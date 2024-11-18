@@ -82,40 +82,75 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_CreateTexture(IntPtr renderer, PixelFormat format, int access, int w, int h);
-    public static Texture CreateTexture(Render renderer, PixelFormat format, int access, int w, int h) =>
-        new(SDL_CreateTexture(renderer.Handle, format, access, w, h));
+
+    public static Texture? CreateTexture(Render renderer, PixelFormat format, int access, int w, int h)
+    {
+        var ptr = SDL_CreateTexture(renderer.Handle, format, access, w, h);
+        return ptr == IntPtr.Zero ? null : new Texture(ptr);
+    }
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_UpdateTexture(IntPtr texture, in Rect rect, IntPtr pixels, int pitch);
+    private static partial int SDL_UpdateTexture(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch);
     public static int UpdateTexture(Texture texture, Rect? rect, byte[] pixels, int pitch)
     {
-        if (pixels == null || pixels.Length == 0)
-        {
-            return SDL_UpdateTexture(texture.Handle, rect.GetValueOrDefault(), IntPtr.Zero, pitch);
-        }
+        var rectPtr = IntPtr.Zero;
+        var pixelsPtr = IntPtr.Zero;
 
-        var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
         try
         {
-            return SDL_UpdateTexture(texture.Handle, rect.GetValueOrDefault(), handle.AddrOfPinnedObject(), pitch);
+            if (rect.HasValue)
+            {
+                rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
+                Marshal.StructureToPtr(rect.Value, rectPtr, false);
+            }
+
+            pixelsPtr = Marshal.AllocHGlobal(pixels.Length);
+            Marshal.Copy(pixels, 0, pixelsPtr, pixels.Length);
+
+            return SDL_UpdateTexture(texture.Handle, rectPtr, pixelsPtr, pitch);
         }
         finally
         {
-            handle.Free();
+            if (rectPtr != IntPtr.Zero)
+                Marshal.FreeHGlobal(rectPtr);
+
+            if (pixelsPtr != IntPtr.Zero)
+                Marshal.FreeHGlobal(pixelsPtr);
         }
     }
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
+    private static partial int SDL_RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect);
     public static int RenderTexture(Render renderer, Texture texture, FRect? srcrect, FRect? dstrect)
     {
-        if (srcrect.HasValue && dstrect.HasValue)
-            return SDL_RenderTexture(renderer.Handle, texture.Handle, srcrect.Value, dstrect.Value);
-        if (!srcrect.HasValue && !dstrect.HasValue)
-            return SDL_RenderTexture(renderer.Handle, texture.Handle, default, default);
-        return srcrect.HasValue ? SDL_RenderTexture(renderer.Handle, texture.Handle, srcrect.Value, default) : 
-            SDL_RenderTexture(renderer.Handle, texture.Handle, default, dstrect.Value);
+        IntPtr srcPtr = IntPtr.Zero;
+        IntPtr dstPtr = IntPtr.Zero;
+
+        try
+        {
+            if (srcrect.HasValue)
+            {
+                srcPtr = Marshal.AllocHGlobal(Marshal.SizeOf<FRect>());
+                Marshal.StructureToPtr(srcrect.Value, srcPtr, false);
+            }
+
+            if (dstrect.HasValue)
+            {
+                dstPtr = Marshal.AllocHGlobal(Marshal.SizeOf<FRect>());
+                Marshal.StructureToPtr(dstrect.Value, dstPtr, false);
+            }
+
+            return SDL_RenderTexture(renderer.Handle, texture.Handle, srcPtr, dstPtr);
+        }
+        finally
+        {
+            if (srcPtr != IntPtr.Zero)
+                Marshal.FreeHGlobal(srcPtr);
+
+            if (dstPtr != IntPtr.Zero)
+                Marshal.FreeHGlobal(dstPtr);
+        }
     }
 }

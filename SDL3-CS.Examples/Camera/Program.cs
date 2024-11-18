@@ -35,7 +35,7 @@ internal static class Program
             return;
         }
         
-        var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
+        var window = SDL.CreateWindow("SDL3 Camera Example", 800, 600, 0);
         
         if (window == null)
         {
@@ -73,7 +73,7 @@ internal static class Program
         }
         
         
-        SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
+        //SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
 
         SDL.Texture? texture = null;
         
@@ -100,7 +100,7 @@ internal static class Program
                 }
             }
 
-            var frame = SDL.AcquireCameraFrame(camera, out _);
+            var frame = SDL.AcquireCameraFrame(camera, out var timestampNS);
 
             if (frame != null)
             {
@@ -115,14 +115,14 @@ internal static class Program
                     SDL.UpdateTexture(texture, null, frameProps?.Pixels, frameProps!.Value.Pitch);
                 }
                 
-                SDL.ReleaseCameraFrame(camera, frame);
+                var i = SDL.ReleaseCameraFrame(camera, frame);
             }
 
             SDL.SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 255);
             SDL.RenderClear(renderer);
             if (texture != null) 
             {
-                SDL.RenderTexture(renderer, texture, null, null);
+                var i = SDL.RenderTexture(renderer, texture, null, null);
             }
             SDL.RenderPresent(renderer);
         }
