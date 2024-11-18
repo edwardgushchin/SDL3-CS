@@ -916,7 +916,7 @@ public static partial class SDL
     /// headroom above the SDR white point. This property can change dynamically
     /// when <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
     /// <item><see cref="PropWindowSDRWhiteLevelFloat"/>: the value of SDR white in the
-    /// <see cref="Colorspace.SRGBLinear"/> colorspace. On Windows this corresponds to the
+    /// <see cref="ColorSpace.SRGBLinear"/> colorspace. On Windows this corresponds to the
     /// SDR white level in scRGB colorspace, and on Apple platforms this is
     /// always 1.0 for EDR content. This property can change dynamically when
     /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
@@ -1068,7 +1068,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowIcon(IntPtr window, Surface icon);
+    private static partial int SDL_SetWindowIcon(IntPtr window, IntPtr icon);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);</code>
     /// <summary>
     /// Set the icon for a window.
@@ -1077,7 +1077,7 @@ public static partial class SDL
     /// <param name="icon">an <see cref="Surface"/> structure containing the icon for the window.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int SetWindowIcon(Window window, Surface icon) => SDL_SetWindowIcon(window.Handle, icon);
+    public static int SetWindowIcon(Window window, Surface icon) => SDL_SetWindowIcon(window.Handle, icon.Handle);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1625,7 +1625,11 @@ public static partial class SDL
     /// <seealso cref="WindowHasSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
     /// <seealso cref="UpdateWindowSurfaceRects"/>
-    public static Surface GetWindowSurface(Window window) => new(SDL_GetWindowSurface(window.Handle));
+    public static Surface? GetWindowSurface(Window window)
+    {
+        var ptr = SDL_GetWindowSurface(window.Handle);
+        return ptr == IntPtr.Zero ? null : new Surface(ptr);
+    }
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

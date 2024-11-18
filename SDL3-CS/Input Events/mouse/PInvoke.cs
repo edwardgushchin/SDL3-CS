@@ -343,7 +343,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateColorCursor(Surface surface, int hotX, int hotY);
+    private static partial IntPtr SDL_CreateColorCursor(IntPtr surface, int hotX, int hotY);
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);</code>
     /// <summary>
     /// Create a color cursor.
@@ -359,8 +359,7 @@ public static partial class SDL
     /// <seealso cref="SetCursor"/>
     public static Cursor? CreateColorCursor(Surface surface, int hotX, int hotY)
     {
-        var pArray = SDL_CreateColorCursor(surface, hotX, hotY);
-
+        var pArray = SDL_CreateColorCursor(surface.Handle, hotX, hotY);
         return pArray == IntPtr.Zero ? null : new Cursor(pArray);
     }
     

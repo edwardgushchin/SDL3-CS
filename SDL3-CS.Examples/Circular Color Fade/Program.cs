@@ -42,6 +42,17 @@ internal static class Program
             Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
+        var icon = SDL.LoadBMP("icon.bmp");
+        if (icon != null)
+        {
+            SDL.SetWindowIcon(window, icon);
+
+            var properties = icon.GetSurfaceFromPtr();
+        }
+        else
+        {
+            Console.WriteLine(SDL.GetError());
+        }
         
         var renderer = SDL.CreateRenderer(window, null);
         

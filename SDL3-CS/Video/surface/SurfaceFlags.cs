@@ -21,51 +21,36 @@
  */
 #endregion
 
-using System.Runtime.InteropServices;
-
 namespace SDL3;
 
 public static partial class SDL
 {
     /// <summary>
-    /// <para>The details of an output format for a camera device.</para>
-    /// <para>Cameras often support multiple formats; each one will be encapsulated in
-    /// this struct.</para>
+    /// The flags on an <see cref="Surface"/>.
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
-    /// <seealso cref="GetCameraSupportedFormats"/>
-    /// <seealso cref="GetCameraFormat"/>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CameraSpec
+    /// <remarks>These are generally considered read-only.</remarks>
+    /// <since>This datatype is available since SDL 3.0.0.</since>
+    [Flags]
+    public enum SurfaceFlags : uint
     {
         /// <summary>
-        /// Frame format
+        /// Surface uses preallocated pixel memory
         /// </summary>
-        public PixelFormat PixelFormat;
-        
+        Preallocated = 0x00000001u,
+
         /// <summary>
-        /// Frame colorspace
+        /// Surface needs to be locked to access pixels
         /// </summary>
-        public ColorSpace ColorSpace;
-        
+        LockNeeded = 0x00000002u,
+
         /// <summary>
-        /// Frame width
+        /// Surface is currently locked
         /// </summary>
-        public int Width;               // Frame width
-        
+        Locked = 0x00000004u,
+
         /// <summary>
-        /// Frame height
+        /// Surface uses pixel memory allocated with SDL_aligned_alloc()
         /// </summary>
-        public int Height;              // Frame height
-        
-        /// <summary>
-        /// Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds)
-        /// </summary>
-        public int FramerateNumerator;  // Frame rate numerator
-        
-        /// <summary>
-        /// Frame rate demoninator ((num / denom) == FPS, (denom / num) == duration in seconds)
-        /// </summary>
-        public int FramerateDenominator;// Frame rate denominator
+        SimdAligned = 0x00000008u,
     }
 }

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Circular Color Fade", "SDL3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPS Counter", "SDL3-CS.Examples\FPS Counter\FPS Counter.csproj", "{D5ADD538-44FA-4934-86EC-35C0F5E1E080}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camera", "SDL3-CS.Examples\Camera\Camera.csproj", "{6757E645-091D-4E31-AB24-1A7B93936DDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{D5ADD538-44FA-4934-86EC-35C0F5E1E080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5ADD538-44FA-4934-86EC-35C0F5E1E080}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5ADD538-44FA-4934-86EC-35C0F5E1E080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

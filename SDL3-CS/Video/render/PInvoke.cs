@@ -78,4 +78,44 @@ public static partial class SDL
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetNumRenderDrivers();
     public static int GetNumRenderDrivers() => SDL_GetNumRenderDrivers();
+
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTexture(IntPtr renderer, PixelFormat format, int access, int w, int h);
+    public static Texture CreateTexture(Render renderer, PixelFormat format, int access, int w, int h) =>
+        new(SDL_CreateTexture(renderer.Handle, format, access, w, h));
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_UpdateTexture(IntPtr texture, in Rect rect, IntPtr pixels, int pitch);
+    public static int UpdateTexture(Texture texture, Rect? rect, byte[] pixels, int pitch)
+    {
+        if (pixels == null || pixels.Length == 0)
+        {
+            return SDL_UpdateTexture(texture.Handle, rect.GetValueOrDefault(), IntPtr.Zero, pitch);
+        }
+
+        var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+        try
+        {
+            return SDL_UpdateTexture(texture.Handle, rect.GetValueOrDefault(), handle.AddrOfPinnedObject(), pitch);
+        }
+        finally
+        {
+            handle.Free();
+        }
+    }
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
+    public static int RenderTexture(Render renderer, Texture texture, FRect? srcrect, FRect? dstrect)
+    {
+        if (srcrect.HasValue && dstrect.HasValue)
+            return SDL_RenderTexture(renderer.Handle, texture.Handle, srcrect.Value, dstrect.Value);
+        if (!srcrect.HasValue && !dstrect.HasValue)
+            return SDL_RenderTexture(renderer.Handle, texture.Handle, default, default);
+        return srcrect.HasValue ? SDL_RenderTexture(renderer.Handle, texture.Handle, srcrect.Value, default) : 
+            SDL_RenderTexture(renderer.Handle, texture.Handle, default, dstrect.Value);
+    }
 }

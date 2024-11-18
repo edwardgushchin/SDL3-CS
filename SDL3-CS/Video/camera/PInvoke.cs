@@ -395,8 +395,8 @@ public static partial class SDL
     /// <seealso cref="ReleaseCameraFrame"/>
     public static Surface? AcquireCameraFrame(Camera camera, out ulong timestampNS)
     {
-        var surfacePtr = SDL_AcquireCameraFrame(camera.Handle, out timestampNS);
-        return surfacePtr == IntPtr.Zero ? null : new Surface(surfacePtr);
+        var ptr = SDL_AcquireCameraFrame(camera.Handle, out timestampNS);
+        return ptr == IntPtr.Zero ? null : new Surface(ptr);
     }
     
     
