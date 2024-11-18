@@ -112,7 +112,8 @@ internal static class Program
                 }
                 else
                 {
-                    SDL.UpdateTexture(texture, null, frameProps?.Pixels, frameProps!.Value.Pitch);
+                    if (frameProps?.Pixels != null)
+                        SDL.UpdateTexture(texture, null, frameProps.Value.Pixels, frameProps!.Value.Pitch);
                 }
                 
                 var i = SDL.ReleaseCameraFrame(camera, frame);
