@@ -37,7 +37,7 @@ public static partial class SDL
     /// <seealso cref="ColorType"/>
     /// <seealso cref="MatrixCoefficients"/>
     /// <seealso cref="TransferCharacteristics"/>
-    public enum ColorSpace : uint
+    public enum Colorspace : uint
     { 
         Unknown = 0,
         

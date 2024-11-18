@@ -87,10 +87,10 @@ public static partial class SDL
     /// <para>Get the properties associated with a surface.</para>
     /// <para>The following properties are understood by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="PropSurfaceColorspaceNumber"/>: an <see cref="ColorSpace"/> value describing
-    /// the surface colorspace, defaults to <see cref="ColorSpace.SRGBLinear"/> for
-    /// floating point formats, <see cref="ColorSpace.HDR10"/> for 10-bit formats,
-    /// <see cref="ColorSpace.SRGB"/> for other RGB surfaces and <see cref="ColorSpace.BT709Full"/>
+    /// <item><see cref="PropSurfaceColorspaceNumber"/>: an <see cref="Colorspace"/> value describing
+    /// the surface colorspace, defaults to <see cref="Colorspace.SRGBLinear"/> for
+    /// floating point formats, <see cref="Colorspace.HDR10"/> for 10-bit formats,
+    /// <see cref="Colorspace.SRGB"/> for other RGB surfaces and <see cref="Colorspace.BT709Full"/>
     /// for YUV surfaces.</item>
     /// <item><see cref="PropSurfaceSDRWhitePointFloat"/>: for HDR10 and floating point
     /// surfaces, this defines the value of 100% diffuse white, with higher
@@ -116,18 +116,35 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceColorspace(IntPtr surface, ColorSpace colorSpace);
+    private static partial int SDL_SetSurfaceColorspace(IntPtr surface, Colorspace colorspace);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);</code>
     /// <summary>
     /// Set the colorspace used by a surface.
     /// <para>Setting the colorspace doesn't change the pixels, only how they are interpreted in color operations.</para>
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> structure to update.</param>
-    /// <param name="colorspace">an <see cref="ColorSpace"/> value describing the surface colorspace.</param>
+    /// <param name="colorspace">an <see cref="Colorspace"/> value describing the surface colorspace.</param>
     /// <returns>0 on success or a negative error code on failure; call SDL_GetError() for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceColorspace"/>
-    public static int SetSurfaceColorspace(Surface surface, ColorSpace colorspace) => SDL_SetSurfaceColorspace(surface.Handle, colorspace);
+    public static int SetSurfaceColorspace(Surface surface, Colorspace colorspace) => SDL_SetSurfaceColorspace(surface.Handle, colorspace);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Colorspace SDL_GetSurfaceColorspace(IntPtr surface);
+    /// <summary>
+    /// <para>Get the colorspace used by a surface.</para>
+    /// <para>The colorspace defaults to <see cref="Colorspace.SRGBLinear"/> for floating point
+    /// formats, <see cref="Colorspace.HDR10"/> for 10-bit formats, <see cref="Colorspace.SRGB"/> for
+    /// other RGB surfaces and <see cref="Colorspace.BT709Full"/> for YUV textures.</para>
+    /// </summary>
+    /// <param name="surface">the <see cref="Surface"/> structure to query.</param>
+    /// <returns>the colorspace used by the surface, or <see cref="Colorspace.Unknown"/> if
+    /// the surface is <c>NULL</c>.</returns>
+    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <seealso cref="SetSurfaceColorspace"/>
+    public static Colorspace GetSurfaceColorspace(Surface? surface) => SDL_GetSurfaceColorspace(surface != null ? surface.Handle : IntPtr.Zero);
+
 
     
     

@@ -46,7 +46,7 @@ public static partial class SDL
         /// <summary>
         /// Frame colorspace
         /// </summary>
-        public ColorSpace ColorSpace;
+        public Colorspace Colorspace;
         
         /// <summary>
         /// Frame width

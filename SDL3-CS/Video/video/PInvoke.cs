@@ -916,7 +916,7 @@ public static partial class SDL
     /// headroom above the SDR white point. This property can change dynamically
     /// when <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
     /// <item><see cref="PropWindowSDRWhiteLevelFloat"/>: the value of SDR white in the
-    /// <see cref="ColorSpace.SRGBLinear"/> colorspace. On Windows this corresponds to the
+    /// <see cref="Colorspace.SRGBLinear"/> colorspace. On Windows this corresponds to the
     /// SDR white level in scRGB colorspace, and on Apple platforms this is
     /// always 1.0 for EDR content. This property can change dynamically when
     /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
