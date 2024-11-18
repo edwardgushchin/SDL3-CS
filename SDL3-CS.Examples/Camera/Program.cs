@@ -71,9 +71,6 @@ internal static class Program
             Console.WriteLine($"Couldn't open camera: {SDL.GetError()}");
             return;
         }
-        
-        
-        //SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
 
         SDL.Texture? texture = null;
         
@@ -100,34 +97,38 @@ internal static class Program
                 }
             }
 
-            var frame = SDL.AcquireCameraFrame(camera, out var timestampNS);
+            var frame = SDL.AcquireCameraFrame(camera, out _);
 
             if (frame != null)
             {
-                var frameProps = frame!.GetSurfaceFromPtr();
-                if (texture == null)
+                var frameProps = frame.GetSurfaceFromPtr();
+                if (frameProps != null)
                 {
-                    SDL.SetWindowSize(window, frameProps!.Value.Width, frameProps.Value.Height); 
-                    texture = SDL.CreateTexture(renderer, frameProps.Value.Format, (int)SDL.TextureAccess.Streaming, frameProps.Value.Width, frameProps.Value.Height);
+                    if (texture == null)
+                    {
+                        SDL.SetWindowSize(window, frameProps.Value.Width, frameProps.Value.Height); 
+                        texture = SDL.CreateTexture(renderer, frameProps.Value.Format, (int)SDL.TextureAccess.Streaming, 
+                            frameProps.Value.Width, frameProps.Value.Height);
+                    }
+                    else
+                    {
+                        SDL.UpdateTexture(texture, null, frameProps.Value.Pixels, frameProps.Value.Pitch);
+                    }
                 }
-                else
-                {
-                    if (frameProps?.Pixels != null)
-                        SDL.UpdateTexture(texture, null, frameProps.Value.Pixels, frameProps!.Value.Pitch);
-                }
-                
-                var i = SDL.ReleaseCameraFrame(camera, frame);
+                SDL.ReleaseCameraFrame(camera, frame);
             }
 
             SDL.SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 255);
             SDL.RenderClear(renderer);
             if (texture != null) 
             {
-                var i = SDL.RenderTexture(renderer, texture, null, null);
+                SDL.RenderTexture(renderer, texture, null, null);
             }
             SDL.RenderPresent(renderer);
         }
 
+        SDL.CloseCamera(camera);
+        SDL.DestroyTexture(texture!);
         SDL.DestroyRenderer(renderer);
         SDL.DestroyWindow(window);
         

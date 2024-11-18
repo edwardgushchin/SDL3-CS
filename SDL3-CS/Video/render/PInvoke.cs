@@ -66,6 +66,11 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyTexture(IntPtr texture);
+    public static void DestroyTexture(Texture texture) => SDL_RenderPresent(texture.Handle);
+    
+    
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyRenderer(IntPtr renderer);
     public static void DestroyRenderer(Render renderer) => SDL_DestroyRenderer(renderer.Handle);
 
@@ -117,6 +122,25 @@ public static partial class SDL
 
             if (pixelsPtr != IntPtr.Zero)
                 Marshal.FreeHGlobal(pixelsPtr);
+        }
+    }
+    
+    public static int UpdateTexture(Texture texture, Rect? rect, IntPtr pixels, int pitch)
+    {
+        var rectPtr = IntPtr.Zero;
+
+        try
+        {
+            if (!rect.HasValue) return SDL_UpdateTexture(texture.Handle, rectPtr, pixels, pitch);
+            rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
+            Marshal.StructureToPtr(rect.Value, rectPtr, false);
+
+            return SDL_UpdateTexture(texture.Handle, rectPtr, pixels, pitch);
+        }
+        finally
+        {
+            if (rectPtr != IntPtr.Zero)
+                Marshal.FreeHGlobal(rectPtr);
         }
     }
     
