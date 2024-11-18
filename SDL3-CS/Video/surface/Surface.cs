@@ -79,7 +79,7 @@ public static partial class SDL
         /// <summary>
         /// Read-only pointer, writable pixels if non-NULL
         /// </summary>
-        public IntPtr Pixels = pixels;
+        public readonly IntPtr Pixels = pixels;
 
         /// <summary>
         /// Application reference count, used when freeing surface
@@ -94,7 +94,7 @@ public static partial class SDL
         /// <summary>
         /// Gets the pixels as a byte array.
         /// </summary>
-        public byte[]? GetPixelsFormPtr()
+        public byte[]? GetPixelsFromPtr()
         {
             if (Pixels == IntPtr.Zero) return null;
             var managedArray = new byte[Pitch * Height];
