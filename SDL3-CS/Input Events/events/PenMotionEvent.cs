@@ -75,31 +75,10 @@ public static partial class SDL
         /// Y coordinate, relative to window
         /// </summary>
         public float Y;
-        private unsafe fixed float axes[(int)PenAxis.NumAxes];
         
         /// <summary>
         /// Pen axes such as pressure and tilt (ordered as per <see cref="PenAxis"/>)
         /// </summary>
-        public unsafe float[] Axes
-        {
-            get
-            {
-                fixed (float* ptr = axes)
-                {
-                    var intPtr = (IntPtr) ptr;
-                    try
-                    {
-                        var array = new float[(int)PenAxis.NumAxes];
-                        Marshal.Copy(intPtr, array, 0, (int)PenAxis.NumAxes);
-                    
-                        return array;
-                    }
-                    finally
-                    {
-                        Marshal.FreeHGlobal(intPtr);
-                    }
-                }
-            }
-        }
+        public unsafe fixed float Axes[(int)PenAxis.NumAxes];
     }
 }

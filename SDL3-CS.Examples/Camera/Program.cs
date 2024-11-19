@@ -37,13 +37,13 @@ internal static class Program
         
         var window = SDL.CreateWindow("SDL3 Camera Example", 800, 600, 0);
         
-        if (window == null)
+        if (window == IntPtr.Zero)
         {
             Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
         
-        var renderer = SDL.CreateRenderer(window, null);
+        var renderer = SDL.CreateRenderer(window, null!);
         
         if (renderer == IntPtr.Zero)
         {
@@ -71,7 +71,7 @@ internal static class Program
             return;
         }
 
-        IntPtr texture = IntPtr.Zero;
+        var texture = IntPtr.Zero;
         
         var loop = true;
         

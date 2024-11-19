@@ -54,11 +54,10 @@ public static partial class SDL
         /// The window with keyboard focus, if any
         /// </summary>
         public UInt32 WindowID;
-        private IntPtr text;
         
         /// <summary>
         /// The input text, UTF-8 encoded
         /// </summary>
-        public string? Text => Marshal.PtrToStringUTF8(text);
+        public IntPtr Text;
     }
 }

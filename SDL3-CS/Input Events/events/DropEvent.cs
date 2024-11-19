@@ -64,17 +64,15 @@ public static partial class SDL
         /// Y coordinate, relative to window (not on begin)
         /// </summary>
         public float Y;
-        private IntPtr source;
-        private IntPtr data;
         
         /// <summary>
         /// The source app that sent this drop event, or NULL if that isn't available
         /// </summary>
-        public string? Source => Marshal.PtrToStringUTF8(source);
+        public IntPtr Source;
         
         /// <summary>
         /// The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events
         /// </summary>
-        public string? Data => Marshal.PtrToStringUTF8(data);
+        private IntPtr data;
     }
 }

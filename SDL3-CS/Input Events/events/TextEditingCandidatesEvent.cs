@@ -66,11 +66,10 @@ public static partial class SDL
         /// The index of the selected candidate, or -1 if no candidate is selected 
         /// </summary>
         public Int32 SelectedCandidate;
-        private int horizontal;
         
         /// <summary>
         /// <c>true</c> if the list is horizontal, <c>false</c> if it's vertical
         /// </summary>
-        public bool Horizontal => horizontal != 0;
+        public Int32 Horizontal;
     }
 }

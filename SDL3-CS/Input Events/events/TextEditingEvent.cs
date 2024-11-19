@@ -54,7 +54,11 @@ public static partial class SDL
         /// The window with keyboard focus, if any
         /// </summary>
         public UInt32 WindowID;
-        private IntPtr text;
+        
+        /// <summary>
+        /// The editing text
+        /// </summary>
+        public IntPtr Text;
         
         /// <summary>
         /// The start cursor of selected editing text, or -1 if not set
@@ -65,10 +69,5 @@ public static partial class SDL
         /// he length of selected editing text, or -1 if not set
         /// </summary>
         public Int32 Length;
-
-        /// <summary>
-        /// The editing text
-        /// </summary>
-        public string? Text => Marshal.PtrToStringUTF8(text);
     }
 }

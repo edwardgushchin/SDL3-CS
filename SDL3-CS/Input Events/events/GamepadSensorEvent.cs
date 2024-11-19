@@ -56,35 +56,14 @@ public static partial class SDL
         /// </summary>
         public SensorType Sensor;
         
-        private unsafe fixed float data[3];
+        /// <summary>
+        /// Up to 3 values from the sensor, as defined in SDL_sensor.h
+        /// </summary>
+        public unsafe fixed float Data[3];
         
         /// <summary>
         /// The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
         /// </summary>
         public UInt64 SensorTimestamp;
-        
-        /// <summary>
-        /// Up to 3 values from the sensor, as defined in SDL_sensor.h
-        /// </summary>
-        public unsafe float[] Data
-        {
-            get
-            {
-                fixed (float* ptr = data)
-                {
-                    var array = new float[3];
-                    var intPtr = (IntPtr) ptr;
-                    try
-                    {
-                        Marshal.Copy(intPtr, array, 0, 3);
-                        return array;
-                    }
-                    finally
-                    {
-                        Marshal.FreeHGlobal(intPtr);
-                    }
-                }
-            }
-        }
     }
 }

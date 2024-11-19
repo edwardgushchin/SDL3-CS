@@ -49,35 +49,15 @@ public static partial class SDL
         /// The instance ID of the sensor
         /// </summary>
         public UInt32 Which;
-        public unsafe fixed float data[6];
+        
+        /// <summary>
+        /// Up to 6 values from the sensor - additional values can be queried using <see cref="GetSensorData"/>
+        /// </summary>
+        public unsafe fixed float Data[6];
         
         /// <summary>
         /// The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
         /// </summary>
         public UInt64 SensorTimestamp;
-        
-        /// <summary>
-        /// Up to 6 values from the sensor - additional values can be queried using <see cref="GetSensorData"/>
-        /// </summary>
-        public unsafe float[] Data
-        {
-            get
-            {
-                fixed (float* ptr = data)
-                {
-                    var intPtr = (IntPtr) ptr;
-                    try
-                    {
-                        var array = new float[6];
-                        Marshal.Copy(intPtr, array, 0, 6);
-                        return array;
-                    }
-                    finally
-                    {
-                        Marshal.FreeHGlobal(intPtr);
-                    }
-                }
-            }
-        }
     }
 }
