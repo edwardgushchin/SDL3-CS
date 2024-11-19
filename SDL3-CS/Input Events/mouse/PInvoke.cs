@@ -102,15 +102,15 @@ public static partial class SDL
         Marshal.PtrToStringAnsi(SDL_GetMouseNameForID(instanceId));
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetMouseFocus();
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);</code>
     /// <summary>
     /// Get the window which currently has mouse focus.
     /// </summary>
     /// <returns>the window with mouse focus.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static Window GetMouseFocus() => new(SDL_GetMouseFocus());
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetMouseFocus();
+    
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -183,8 +183,6 @@ public static partial class SDL
     public static MouseButtonFlags GetRelativeMouseState(out float x, out float y) => SDL_GetRelativeMouseState(out x, out y);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_WarpMouseInWindow(IntPtr window, float x, float y);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);</code>
     /// <summary>
     /// Move the mouse cursor to the given position within the window.
@@ -201,7 +199,8 @@ public static partial class SDL
     /// <param name="y">The y coordinate within the window.</param>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="WarpMouseGlobal"/>
-    public static void WarpMouseInWindow(Window window, float x, float y) => SDL_WarpMouseInWindow(window.Handle, x, y);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseInWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void WarpMouseInWindow(IntPtr window, float x, float y);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

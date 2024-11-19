@@ -27,9 +27,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    // ReSharper disable once InconsistentNaming
-    private delegate void SDL_DialogFileCallback(IntPtr userdata, IntPtr filelist, int filter);
     /// <code>typedef void(SDLCALL *SDL_DialogFileCallback)(void *userdata, const char * const *filelist, int filter);</code>
     /// <summary>
     /// <para>Callback used by file dialog functions.</para>
@@ -57,5 +54,6 @@ public static partial class SDL
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
-    public delegate void DialogFileCallback(object? userdata, string[]? filelist, int filter);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void DialogFileCallback(IntPtr userdata, IntPtr filelist, int filter);
 }

@@ -406,8 +406,6 @@ public static partial class SDL
     public static uint GetDisplayForRect(in Rect rect) => SDL_GetDisplayForRect(rect);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForWindow(SDL_Window *window);</code>
     /// <summary>
     /// Get the display associated with a window.
@@ -418,11 +416,10 @@ public static partial class SDL
     /// information.</returns>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    public static uint GetDisplayForWindow(Window window) => SDL_GetDisplayForWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetDisplayForWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowPixelDensity(IntPtr window);
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowPixelDensity(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the pixel density of a window.</para>
@@ -434,11 +431,10 @@ public static partial class SDL
     /// <returns>the pixel density or 0.0f on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <seealso cref="GetWindowDisplayScale"/>
-    public static float GetWindowPixelDensity(Window window) => SDL_GetWindowPixelDensity(window.Handle);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelDensity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetWindowPixelDensity(IntPtr window);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowDisplayScale(IntPtr window);
+    
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowDisplayScale(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the content display scale relative to a window's pixel size.</para>
@@ -455,11 +451,10 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the display scale, or 0.0f on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    public static float GetWindowDisplayScale(Window window) => SDL_GetWindowDisplayScale(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowDisplayScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetWindowDisplayScale(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowFullscreenMode(IntPtr window, IntPtr mode);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
     /// <summary>
     /// <para>Set the display mode to use when a window is visible and fullscreen.</para>
@@ -485,32 +480,10 @@ public static partial class SDL
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreen"/>
     /// <see cref="SyncWindow"/>
-    public static int SetWindowFullscreenMode(Window window, DisplayMode? mode)
-    {
-        var modePtr = IntPtr.Zero;
-
-        try
-        {
-            if (mode.HasValue)
-            {
-                modePtr = Marshal.AllocHGlobal(Marshal.SizeOf<DisplayMode>());
-                Marshal.StructureToPtr(mode.Value, modePtr, false);
-            }
-            
-            return SDL_SetWindowFullscreenMode(window.Handle, modePtr);
-        }
-        finally
-        {
-            if (modePtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(modePtr);
-            }
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowFullscreenMode(IntPtr window, DisplayMode mode);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowFullscreenMode(IntPtr window);
     /// <code>extern SDL_DECLSPEC const SDL_DisplayMode *SDLCALL SDL_GetWindowFullscreenMode(SDL_Window *window);</code>
     /// <summary>
     /// Query the display mode to use when a window is visible at fullscreen.
@@ -520,15 +493,10 @@ public static partial class SDL
     /// borderless fullscreen desktop mode.</returns>
     /// <seealso cref="SetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreen"/>
-    public static DisplayMode? GetWindowFullscreenMode(Window window)
-    {
-        var rectPtr = SDL_GetWindowFullscreenMode(window.Handle);
-        return rectPtr == IntPtr.Zero ? null : Marshal.PtrToStructure<DisplayMode>(rectPtr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayMode GetWindowFullscreenMode(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowICCProfile(IntPtr window, out nuint size);
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_GetWindowICCProfile(SDL_Window *window, size_t *size);</code>
     /// <summary>
     /// <para>Get the raw ICC profile data for the screen the window is currently on.</para>
@@ -537,27 +505,10 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the raw ICC profile data on success or NULL on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static byte[]? GetWindowICCProfile(Window window)
-    {
-        var profilePtr = SDL_GetWindowICCProfile(window.Handle, out var size);
-        
-        if (profilePtr == IntPtr.Zero) return null;
-
-        try
-        {
-            var profileData = new byte[(int)size];
-            Marshal.Copy(profilePtr, profileData, 0, (int)size);
-            return profileData;
-        }
-        finally
-        {
-            Free(profilePtr);
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowICCProfile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowICCProfile(IntPtr window, out nuint size);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial PixelFormat SDL_GetWindowPixelFormat(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_PixelFormat SDLCALL SDL_GetWindowPixelFormat(SDL_Window *window);</code>
     /// <summary>
     /// Get the pixel format associated with the window.
@@ -566,11 +517,10 @@ public static partial class SDL
     /// <returns>the pixel format of the window on success or
     /// <see cref="PixelFormat.Unknown"/> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    public static PixelFormat GetWindowPixelFormat(Window window) => SDL_GetWindowPixelFormat(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial PixelFormat GetWindowPixelFormat(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindows(out int count);
     /// <code>extern SDL_DECLSPEC SDL_Window **SDLCALL SDL_GetWindows(int *count);</code>
     /// <summary>
     /// Get a list of valid windows.
@@ -580,35 +530,10 @@ public static partial class SDL
     /// <returns>a 0 terminated array of window pointers which should be freed with
     /// <see cref="Free"/>, or NULL on error; call <see cref="GetError"/> for more
     /// details.</returns>
-    public static Window[]? GetWindows(out int count)
-    {
-        var windowsPtr = SDL_GetWindows(out count);
-        
-        if (windowsPtr == IntPtr.Zero) return null;
-        
-        if (count == 0) return [];
-
-        try
-        {
-            var windowPtrs = new IntPtr[count];
-            Marshal.Copy(windowsPtr, windowPtrs, 0, count);
-            var windows = new Window[count];
-            for (var i = 0; i < count; i++)
-            {
-                windows[i] = new Window(windowPtrs[i]);
-            }
-            return windows;
-        }
-        finally
-        {
-            Free(windowsPtr);
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindows(out int count);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, 
-        WindowFlags flags);
     /// <code>extern SDL_DECLSPEC SDL_Window *SDLCALL SDL_CreateWindow(const char *title, int w, int h, SDL_WindowFlags flags);</code>
     /// <summary>
     /// <para>Create a window with the specified dimensions and flags.</para>
@@ -673,17 +598,10 @@ public static partial class SDL
     /// <seealso cref="CreatePopupWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
     /// <seealso cref="DestroyWindow"/>
-    public static Window? CreateWindow(string title, int w, int h, WindowFlags flags)
-    {
-        var windowHandle = SDL_CreateWindow(title, w, h, flags);
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
-        
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, WindowFlags flags);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreatePopupWindow(IntPtr parent, int offsetX, int offsetY, int w, int h, 
-        WindowFlags flags);
     /// <code>extern SDL_DECLSPEC SDL_Window *SDLCALL SDL_CreatePopupWindow(SDL_Window *parent, int offset_x, int offset_y, int w, int h, SDL_WindowFlags flags);</code>
     /// <summary>
     /// <para>Create a child popup window of the specified parent window.</para>
@@ -728,16 +646,9 @@ public static partial class SDL
     /// <seealso cref="CreateWindowWithProperties"/>
     /// <seealso cref="DestroyWindow"/>
     /// <seealso cref="GetWindowParent"/>
-    public static Window? CreatePopupWindow(Window? parent, int offsetX, int offsetY, int w, int h, WindowFlags flags)
-    {
-        var windowHandle = SDL_CreatePopupWindow(parent?.Handle ?? IntPtr.Zero, offsetX, offsetY, w, h, flags);
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
-        
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreatePopupWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreatePopupWindow(IntPtr parent, int offsetX, int offsetY, int w, int h, WindowFlags flags);
     
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateWindowWithProperties(uint props);
     /// <code>extern SDL_DECLSPEC SDL_Window *SDLCALL SDL_CreateWindowWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Create a window with the specified properties.</para>
@@ -843,16 +754,10 @@ public static partial class SDL
     /// <seealso cref="CreateProperties"/>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="DestroyWindow"/>
-    public static Window? CreateWindowWithProperties(uint props)
-    {
-        var windowHandle = SDL_CreateWindowWithProperties(props);
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
-        
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindowWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateWindowWithProperties(uint props);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetWindowID(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_WindowID SDLCALL SDL_GetWindowID(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the numeric ID of a window.</para>
@@ -863,11 +768,10 @@ public static partial class SDL
     /// <returns>the ID of the window on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFromID"/>
-    public static uint GetWindowID(Window window) => SDL_GetWindowID(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetWindowID(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowFromID(uint id);
     /// <code>extern SDL_DECLSPEC SDL_Window *SDLCALL SDL_GetWindowFromID(SDL_WindowID id);</code>
     /// <summary>
     /// <para>Get a window from a stored ID.</para>
@@ -878,16 +782,10 @@ public static partial class SDL
     /// <returns>he window associated with <c>id</c> or <c>NULL</c> if it doesn't exist; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowID"/>
-    public static Window? GetWindowFromID(uint id)
-    {
-        var windowHandle = SDL_GetWindowFromID(id);
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowFromID(uint id);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowParent(IntPtr window);
-
     /// <code>extern SDL_DECLSPEC SDL_Window *SDLCALL SDL_GetWindowParent(SDL_Window *window);</code>
     /// <summary>
     /// Get parent of a window.
@@ -896,15 +794,10 @@ public static partial class SDL
     /// <returns>the parent of the window on success or <c>NULL</c> if the window has no
     /// parent.</returns>
     /// <seealso cref="CreatePopupWindow"/>
-    public static Window? GetWindowParent(IntPtr window)
-    {
-        var windowHandle = SDL_GetWindowParent(window);
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowParent(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetWindowProperties(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetWindowProperties(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the properties associated with a window.</para>
@@ -1018,7 +911,9 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static uint GetWindowProperties(Window window) => SDL_GetWindowProperties(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetWindowProperties(IntPtr window);
+    
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1039,8 +934,6 @@ public static partial class SDL
     public static WindowFlags GetWindowFlags(IntPtr window) => SDL_GetWindowFlags(window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowTitle(SDL_Window *window, const char *title);</code>
     /// <summary>
     /// <para>Set the title of a window.</para>
@@ -1051,11 +944,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowTitle"/>
-    public static int SetWindowTitle(Window window, string title) => SDL_SetWindowTitle(window.Handle, title);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowTitle(IntPtr window);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetWindowTitle(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the title of a window.</para>
@@ -1063,12 +955,10 @@ public static partial class SDL
     /// </summary>
     /// <param name="window">window the window to query.</param>
     /// <returns>the title of the window in UTF-8 format or <see cref="string.Empty"/> if there is notitle.</returns>
-    public static string GetWindowTitle(Window window) => 
-        Marshal.PtrToStringUTF8(SDL_GetWindowTitle(window.Handle))!;
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowTitle(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowIcon(IntPtr window, IntPtr icon);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);</code>
     /// <summary>
     /// Set the icon for a window.
@@ -1077,11 +967,10 @@ public static partial class SDL
     /// <param name="icon">an <see cref="Surface"/> structure containing the icon for the window.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int SetWindowIcon(Window window, Surface icon) => SDL_SetWindowIcon(window.Handle, icon.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowIcon(IntPtr window, IntPtr icon);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowPosition(IntPtr window, int x, int y);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowPosition(SDL_Window *window, int x, int y);</code>
     /// <summary>
     /// <para>Request that the window's position be set.</para>
@@ -1113,11 +1002,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowPosition"/>
     /// <seealso cref="SyncWindow"/>
-    public static int SetWindowPosition(Window window, int x, int y) => SDL_SetWindowPosition(window.Handle, x, y);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowPosition(IntPtr window, int x, int y);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowPosition(IntPtr window, out int x, out int y);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);</code>
     /// <summary>
     /// <para>Get the position of a window.</para>
@@ -1134,12 +1022,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="SetWindowPosition"/>
-    public static int GetWindowPosition(Window window, out int x, out int y) => 
-        SDL_GetWindowPosition(window.Handle, out x, out y);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowPosition(IntPtr window, out int x, out int y);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowSize(IntPtr window, int w, int h);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowSize(SDL_Window *window, int w, int h);</code>
     /// <summary>
     /// <para>Request that the size of a window's client area be set.</para>
@@ -1167,12 +1053,10 @@ public static partial class SDL
     /// <seealso cref="GetWindowSize"/>
     /// <seealso cref="SetWindowFullscreenMode"/>
     /// <seealso cref="SyncWindow"/>
-    public static int SetWindowSize(Window window, int width, int height) => 
-        SDL_SetWindowSize(window.Handle, width, height);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowSize(IntPtr window, int w, int h);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowSize(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// <para>Get the size of a window's client area.</para>
@@ -1188,12 +1072,10 @@ public static partial class SDL
     /// <seealso cref="GetRenderOutputSize"/>
     /// <seealso cref="GetWindowSizeInPixels"/>
     /// <seealso cref="SetWindowSize"/>
-    public static int GetWindowSize(Window window, out int width, out int height) =>
-        SDL_GetWindowSize(window.Handle, out width, out height);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowSize(IntPtr window, out int w, out int h);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowAspectRatio(IntPtr window, float minAspect, float maxAspect);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowAspectRatio(SDL_Window *window, float min_aspect, float max_aspect);</code>
     /// <summary>
     /// <para>Request that the aspect ratio of a window's client area be set.</para>
@@ -1224,12 +1106,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowAspectRatio"/>
     /// <seealso cref="SyncWindow"/>
-    public static int SetWindowAspectRatio(Window window, float minAspect, float maxAspect) => 
-        SDL_SetWindowAspectRatio(window.Handle, minAspect, maxAspect);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowAspectRatio(IntPtr window, float minAspect, float maxAspect);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect);
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);</code>
     /// <summary>
     /// Get the size of a window's client area.
@@ -1241,13 +1121,10 @@ public static partial class SDL
     /// window, may be NULL.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int GetWindowAspectRatio(Window window, out float minAspect, out float maxAspect) =>
-        SDL_GetWindowAspectRatio(window.Handle, out minAspect, out maxAspect);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, 
-        out int right);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);</code>
     /// <summary>
     /// <para>Get the size of a window's borders (decorations) around the client area.</para>
@@ -1273,12 +1150,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowSize"/>
-    public static int GetWindowBordersSize(Window window, out int top, out int left, out int bottom, out int right) => 
-        SDL_GetWindowBordersSize(window.Handle, out top, out left, out bottom, out right);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowSizeInPixels(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// Get the size of a window's client area, in pixels.
@@ -1292,12 +1167,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="GetWindowSize"/>
-    public static int GetWindowSizeInPixels(Window window, out int width, out int height) =>
-        SDL_GetWindowSizeInPixels(window.Handle, out width, out height);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSizeInPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowSizeInPixels(IntPtr window, out int w, out int h);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowMinimumSize(IntPtr window, int minW, int minH);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h);</code>
     /// <summary>
     /// Set the minimum size of a window's client area.
@@ -1309,12 +1182,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    public static int SetWindowMinimumSize(Window window, int minWidth, int minHeight) =>
-        SDL_SetWindowMinimumSize(window.Handle, minWidth, minHeight);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowMinimumSize(IntPtr window, int minW, int minH);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowMinimumSize(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// Get the minimum size of a window's client area.
@@ -1328,12 +1199,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowMaximumSize"/>
     /// <seealso cref="SetWindowMinimumSize"/>
-    public static int GetWindowMinimumSize(Window window, out int minWidth, out int minHeight) => 
-        SDL_GetWindowMinimumSize(window.Handle, out minWidth, out minHeight);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowMinimumSize(IntPtr window, out int w, out int h);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowMaximumSize(IntPtr window, int maxWidth, int maxHeight);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h);</code>
     /// <summary>
     /// Set the maximum size of a window's client area.
@@ -1346,12 +1215,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetWindowMaximumSize"/>
     /// <seealso cref="SetWindowMinimumSize"/>
-    public static int SetWindowMaximumSize(Window window, int maxWidth, int maxHeight) =>
-        SDL_SetWindowMaximumSize(window.Handle, maxWidth, maxHeight);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowMaximumSize(IntPtr window, int maxWidth, int maxHeight);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowMaximumSize(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// Get the maximum size of a window's client area.
@@ -1365,12 +1232,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    public static int GetWindowMaximumSize(Window window, out int width, out int height) =>
-        SDL_GetWindowMaximumSize(window.Handle, out width, out height);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowMaximumSize(IntPtr window, out int w, out int h);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowBordered(IntPtr window, [MarshalAs(SDLBool)]bool bordered);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowBordered(SDL_Window *window, SDL_bool bordered);</code>
     /// <summary>
     /// <para>Set the border state of a window.</para>
@@ -1384,12 +1249,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFlags"/>
-    public static int SetWindowBordered(Window window, bool bordered) =>
-        SDL_SetWindowBordered(window.Handle, bordered);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowBordered"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowBordered(IntPtr window, [MarshalAs(SDLBool)]bool bordered);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowResizable(IntPtr window, [MarshalAs(SDLBool)] bool resizable);
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable);</code>
     /// <summary>
     /// <para>Set the user-resizable state of a window.</para>
@@ -1402,12 +1265,11 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     ///          <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFlags"/>
-    public static int SetWindowResizable(Window window, bool resizable) =>
-        SDL_SetWindowResizable(window.Handle, resizable);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowResizable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowResizable(IntPtr window, [MarshalAs(SDLBool)] bool resizable);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(SDLBool)] bool onTop);
+    
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowAlwaysOnTop(SDL_Window *window, SDL_bool on_top);</code>
     /// <summary>
     /// <para>Set the window to always be above the others.</para>
@@ -1420,12 +1282,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFlags"/>
-    public static int SetWindowAlwaysOnTop(Window window, bool onTop) =>
-        SDL_SetWindowAlwaysOnTop(window.Handle, onTop);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAlwaysOnTop"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(SDLBool)] bool onTop);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ShowWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowWindow(SDL_Window *window);</code>
     /// <summary>
     /// Show a window.
@@ -1435,11 +1295,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="HideWindow"/>
     /// <seealso cref="RaiseWindow"/>
-    public static int ShowWindow(Window window) => SDL_ShowWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ShowWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_HideWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_HideWindow(SDL_Window *window);</code>
     /// <summary>
     /// Hide a window.
@@ -1448,11 +1307,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="ShowWindow"/>
-    public static int HideWindow(Window window) => SDL_HideWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HideWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int HideWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RaiseWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RaiseWindow(SDL_Window *window);</code>
     /// <summary>
     /// Request that a window be raised above other windows and gain the input
@@ -1461,11 +1319,10 @@ public static partial class SDL
     /// <param name="window">The window to raise.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int RaiseWindow(Window window) => SDL_RaiseWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RaiseWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RaiseWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_MaximizeWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_MaximizeWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para> * Request that the window be made as large as possible.</para>
@@ -1489,11 +1346,10 @@ public static partial class SDL
     /// <seealso cref="MinimizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
     /// <seealso cref="SyncWindow"/>
-    public static int MaximizeWindow(Window window) => SDL_MaximizeWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MaximizeWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int MaximizeWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_MinimizeWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_MinimizeWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para>Request that the window be minimized to an iconic representation.</para>
@@ -1511,11 +1367,10 @@ public static partial class SDL
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
     /// <seealso cref="SyncWindow"/>
-    public static int MinimizeWindow(Window window) => SDL_MinimizeWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MinimizeWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int MinimizeWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RestoreWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RestoreWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para>Request that the size and position of a minimized or maximized window be
@@ -1534,11 +1389,10 @@ public static partial class SDL
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="MinimizeWindow"/>
     /// <seealso cref="SyncWindow"/>
-    public static int RestoreWindow(Window window) => SDL_RestoreWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RestoreWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RestoreWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowFullscreen(IntPtr window, [MarshalAs(SDLBool)] bool fullscreen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowFullscreen(SDL_Window *window, SDL_bool fullscreen);</code>
     /// <summary>
     /// <para>Request that the window's fullscreen state be changed.</para>
@@ -1560,12 +1414,10 @@ public static partial class SDL
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreenMode"/>
     /// <seealso cref="SyncWindow"/>
-    public static int SetWindowFullscreen(Window window, bool fullscreen) => 
-        SDL_SetWindowFullscreen(window.Handle, fullscreen);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreen"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowFullscreen(IntPtr window, [MarshalAs(SDLBool)] bool fullscreen);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SyncWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SyncWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para>Block until any pending window state is finalized.</para>
@@ -1589,12 +1441,10 @@ public static partial class SDL
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
     /// <seealso cref="Hints.VideoSyncWindowOperations"/>
-    public static int SyncWindow(Window window) => SDL_SyncWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SyncWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SyncWindow(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_WindowHasSurface(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WindowHasSurface(SDL_Window *window);</code>
     /// <summary>
     /// Return whether the window has a surface associated with it.
@@ -1602,11 +1452,11 @@ public static partial class SDL
     /// <param name="window">The window to query.</param>
     /// <returns>True if there is a surface associated with the window, otherwise false.</returns>
     /// <seealso cref="GetWindowSurface"/>
-    public static bool WindowHasSurface(Window window) => SDL_WindowHasSurface(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowHasSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    private static partial bool WindowHasSurface(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowSurface(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_GetWindowSurface(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the SDL surface associated with the window.</para>
@@ -1625,15 +1475,10 @@ public static partial class SDL
     /// <seealso cref="WindowHasSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
     /// <seealso cref="UpdateWindowSurfaceRects"/>
-    public static Surface? GetWindowSurface(Window window)
-    {
-        var ptr = SDL_GetWindowSurface(window.Handle);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowSurface(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowSurfaceVSync(IntPtr window, int vsync);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowSurfaceVSync(SDL_Window *window, int vsync);</code>
     /// <summary>
     /// <para>Toggle VSync for the window surface.</para>
@@ -1650,12 +1495,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowSurfaceVSync"/>
-    public static int SetWindowSurfaceVSync(Window window, int vsync) => 
-        SDL_SetWindowSurfaceVSync(window.Handle, vsync);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowSurfaceVSync(IntPtr window, int vsync);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetWindowSurfaceVSync(IntPtr window, out int vsync);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetWindowSurfaceVSync(SDL_Window *window, int *vsync);</code>
     /// <summary>
     /// Get VSync for the window surface.
@@ -1666,12 +1509,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="SetWindowSurfaceVSync"/>
-    public static int GetWindowSurfaceVSync(Window window, out int vsync) => 
-        SDL_GetWindowSurfaceVSync(window.Handle, out vsync);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetWindowSurfaceVSync(IntPtr window, out int vsync);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_UpdateWindowSurface(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_UpdateWindowSurface(SDL_Window *window);</code>
     /// <summary>
     /// <para>Copy the window surface to the screen.</para>
@@ -1684,11 +1525,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="UpdateWindowSurfaceRects"/>
-    public static int UpdateWindowSurface(Window window) => SDL_UpdateWindowSurface(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int UpdateWindowSurface(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_UpdateWindowSurfaceRects(IntPtr window, IntPtr rects, int numrects);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_UpdateWindowSurfaceRects(SDL_Window *window, const SDL_Rect *rects, int numrects);</code>
     /// <summary>
     /// <para>Copy areas of the window surface to the screen.</para>
@@ -1708,15 +1548,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
-    public static int UpdateWindowSurfaceRects(Window window, Rect[] rects, int numrects)
-    {
-        var rectsPtr = rects != null ? Marshal.UnsafeAddrOfPinnedArrayElement(rects, 0) : IntPtr.Zero;
-        return SDL_UpdateWindowSurfaceRects(window.Handle, rectsPtr, numrects);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int UpdateWindowSurfaceRects(IntPtr window, IntPtr rects, int numrects);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_DestroyWindowSurface(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_DestroyWindowSurface(SDL_Window *window);</code>
     /// <summary>
     /// Destroy the surface associated with the window.
@@ -1726,11 +1561,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="WindowHasSurface"/>
-    public static int DestroyWindowSurface(Window window) => SDL_DestroyWindowSurface(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int DestroyWindowSurface(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowKeyboardGrab(IntPtr window, [MarshalAs(SDLBool)] bool grabbed);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowKeyboardGrab(SDL_Window *window, SDL_bool grabbed);</code>
     /// <summary>
     /// <para>Set a window's keyboard grab mode.</para>
@@ -1753,12 +1587,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowKeyboardGrab"/>
     /// <seealso cref="SetWindowMouseGrab"/>
-    public static int SetWindowKeyboardGrab(Window window, bool grabbed) =>
-        SDL_SetWindowKeyboardGrab(window.Handle, grabbed);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowKeyboardGrab(IntPtr window, [MarshalAs(SDLBool)] bool grabbed);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowMouseGrab(IntPtr window, [MarshalAs(SDLBool)] bool grabbed);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowMouseGrab(SDL_Window *window, SDL_bool grabbed);</code>
     /// <summary>
     /// <para>Set a window's mouse grab mode.</para>
@@ -1770,13 +1602,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    public static int SetWindowMouseGrab(Window window, bool grabbed) =>
-        SDL_SetWindowMouseGrab(window.Handle, grabbed);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowMouseGrab(IntPtr window, [MarshalAs(SDLBool)] bool grabbed);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_GetWindowKeyboardGrab(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetWindowKeyboardGrab(SDL_Window *window);</code>
     /// <summary>
     /// Get a window's keyboard grab mode.
@@ -1784,12 +1613,11 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns><c>true</c> if keyboard is grabbed, and <c>false</c> otherwise.</returns>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    public static bool GetWindowKeyboardGrab(Window window) => SDL_GetWindowKeyboardGrab(window.Handle);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_GetWindowMouseGrab(IntPtr window);
+    private static partial bool GetWindowKeyboardGrab(IntPtr window);
+    
+    
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetWindowMouseGrab(SDL_Window *window);</code>
     /// <summary>
     /// Get a window's mouse grab mode.
@@ -1797,12 +1625,11 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns><c>true</c> if mouse is grabbed, and <c>false</c> otherwise.</returns>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    public static bool GetWindowMouseGrab(Window window) => SDL_GetWindowMouseGrab(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    public static partial bool GetWindowMouseGrab(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGrabbedWindow();
-
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetGrabbedWindow(void);</code>
     /// <summary>
     /// Get the window that currently has an input grab enabled.
@@ -1810,16 +1637,10 @@ public static partial class SDL
     /// <returns>the window if input is grabbed or NULL otherwise.</returns>
     /// <seealso cref="SetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    public static Window? GetGrabbedWindow()
-    {
-        var windowHandle = SDL_GetGrabbedWindow();
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGrabbedWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetGrabbedWindow();
+
     
-
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowMouseRect(IntPtr window, IntPtr rect);
-
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);</code>
     /// <summary>
     /// <para>Confines the cursor to the specified area of a window.</para>
@@ -1833,32 +1654,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="SetWindowMouseGrab"/>
-    public static int SetWindowMouseRect(Window window, Rect? rect)
-    {
-        var modePtr = IntPtr.Zero;
-
-        try
-        {
-            if (rect.HasValue)
-            {
-                modePtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-                Marshal.StructureToPtr(rect.Value, modePtr, false);
-            }
-
-            return SDL_SetWindowMouseRect(window.Handle, modePtr);
-        }
-        finally
-        {
-            if (modePtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(modePtr);
-            }
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowMouseRect(IntPtr window, Rect rect);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowMouseRect(IntPtr window);
     /// <code>extern SDL_DECLSPEC const SDL_Rect * SDLCALL SDL_GetWindowMouseRect(SDL_Window *window);</code>
     /// <summary>
     /// Get the mouse confinement rectangle of a window.
@@ -1867,15 +1666,10 @@ public static partial class SDL
     /// <returns>a pointer to the mouse confinement rectangle of a window, or NULL
     /// if there isn't one.</returns>
     /// <seealso cref="SetWindowMouseRect"/>
-    public static Rect? GetWindowMouseRect(Window window)
-    {
-        var rectPtr = SDL_GetWindowMouseRect(window.Handle);
-        return rectPtr == IntPtr.Zero ? null : Marshal.PtrToStructure<Rect>(rectPtr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowMouseRect(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowOpacity(IntPtr window, float opacity);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowOpacity(SDL_Window *window, float opacity);</code>
     /// <summary>
     /// <para>Set the opacity for a window.</para>
@@ -1888,11 +1682,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowOpacity"/>
-    public static int SetWindowOpacity(Window window, float opacity) => SDL_SetWindowOpacity(window.Handle, opacity);
+    [LibraryImport(SDLLibrary, EntryPoint = "SetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SDL_SetWindowOpacity(IntPtr window, float opacity);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowOpacity(IntPtr window);
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowOpacity(SDL_Window *window);</code>
     /// <summary>
     /// <para>Get the opacity of a window.</para>
@@ -1903,11 +1696,10 @@ public static partial class SDL
     /// <returns>the opacity, (0.0f - transparent, 1.0f - opaque), or a negative
     /// error code on failure; call <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="SetWindowOpacity"/>
-    public static float GetWindowOpacity(Window window) => SDL_GetWindowOpacity(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetWindowOpacity(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowModalFor(IntPtr modalWindow, IntPtr parentWindow);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowModalFor(SDL_Window *modal_window, SDL_Window *parent_window);</code>
     /// <summary>
     /// <para>Set the window as a modal to a parent window.</para>
@@ -1921,15 +1713,10 @@ public static partial class SDL
     /// <param name="parentWindow">the parent window for the modal window.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int SetWindowModalFor(Window modalWindow, Window? parentWindow)
-    {
-        var parentHandle = parentWindow?.Handle ?? IntPtr.Zero;
-        return SDL_SetWindowModalFor(modalWindow.Handle, parentHandle);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowModalFor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowModalFor(IntPtr modalWindow, IntPtr parentWindow);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowFocusable(IntPtr window, [MarshalAs(SDLBool)] bool focusable);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowFocusable(SDL_Window *window, SDL_bool focusable);</code>
     /// <summary>
     /// Set whether the window may have input focus.
@@ -1939,12 +1726,11 @@ public static partial class SDL
     /// input focus.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int SetWindowFocusable(Window window, bool focusable) => 
-        SDL_SetWindowFocusable(window.Handle, focusable);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFocusable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowFocusable(IntPtr window, [MarshalAs(SDLBool)] bool focusable);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ShowWindowSystemMenu(IntPtr window, int x, int y);
+    
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowWindowSystemMenu(SDL_Window *window, int x, int y);</code>
     /// <summary>
     /// <para>Display the system-level window menu.</para>
@@ -1962,12 +1748,10 @@ public static partial class SDL
     /// the client area.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int ShowWindowSystemMenu(Window window, int x, int y) =>
-        SDL_ShowWindowSystemMenu(window.Handle, x, y);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindowSystemMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ShowWindowSystemMenu(IntPtr window, int x, int y);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowHitTest(IntPtr window, HitTest callback, IntPtr callbackData);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowHitTest(SDL_Window *window, SDL_HitTest callback, void *callback_data);</code>
     /// <summary>
     /// <para>Provide a callback that decides if a window region has special properties.</para>
@@ -2000,12 +1784,10 @@ public static partial class SDL
     /// <param name="callbackData">an app-defined void pointer passed to **callback**.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int SetWindowHitTest(Window window, HitTest callback, IntPtr callbackData) =>
-        SDL_SetWindowHitTest(window.Handle, callback, callbackData);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowHitTest"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowHitTest(IntPtr window, HitTest callback, IntPtr callbackData);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetWindowShape(IntPtr window, IntPtr shape);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowShape(SDL_Window *window, SDL_Surface *shape);</code>
     /// <summary>
     /// <para>Set the shape of a transparent window.</para>
@@ -2023,12 +1805,10 @@ public static partial class SDL
     /// remove any current shape.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int SetWindowShape(Window window, Surface? shape) =>
-        SDL_SetWindowShape(window.Handle, shape?.Handle ?? IntPtr.Zero);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowShape"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowShape(IntPtr window, IntPtr shape);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_FlashWindow(IntPtr window, FlashOperation operation);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_FlashWindow(SDL_Window *window, SDL_FlashOperation operation);</code>
     /// <summary>
     /// Request a window to demand attention from the user.
@@ -2037,12 +1817,11 @@ public static partial class SDL
     /// <param name="operation">the operation to perform.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int FlashWindow(Window window, FlashOperation operation) =>
-        SDL_FlashWindow(window.Handle, operation);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlashWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int FlashWindow(IntPtr window, FlashOperation operation);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyWindow(IntPtr window);
+    
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para>Destroy a window.</para>
@@ -2053,7 +1832,8 @@ public static partial class SDL
     /// <seealso cref="CreatePopupWindow"/>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
-    public static void DestroyWindow(Window window) => SDL_DestroyWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyWindow(IntPtr window);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2290,8 +2070,6 @@ public static partial class SDL
     public static int GLGetAttribute(GLAttr attr, out int value) => SDL_GL_GetAttribute(attr, out value);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GL_CreateContext(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_GLContext SDLCALL SDL_GL_CreateContext(SDL_Window *window);</code>
     /// <summary>
     /// <para>Create an OpenGL context for an OpenGL window, and make it current.</para>
@@ -2308,15 +2086,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GLDestroyContext"/>
     /// <seealso cref="GLMakeCurrent"/>
-    public static GLContext? GLCreateContext(Window window)
-    {
-        var contextHandle = SDL_GL_CreateContext(window.Handle);
-        return contextHandle != IntPtr.Zero ? new GLContext(contextHandle) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_CreateContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GLCreateContext(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GL_MakeCurrent(IntPtr window, IntPtr context);
+    
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GL_MakeCurrent(SDL_Window *window, SDL_GLContext context);</code>
     /// <summary>
     /// <para>Set up an OpenGL context for rendering into an OpenGL window.</para>
@@ -2328,12 +2102,11 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GLCreateContext"/>
-    public static int GLMakeCurrent(Window window, GLContext context) =>
-        SDL_GL_MakeCurrent(window.Handle, context.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_MakeCurrent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GLMakeCurrent(IntPtr window, IntPtr context);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GL_GetCurrentWindow();
+    
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GL_GetCurrentWindow(void);</code>
     /// <summary>
     /// Get the currently active OpenGL window.
@@ -2341,11 +2114,8 @@ public static partial class SDL
     /// <returns>the currently active OpenGL window on success or NULL on failure;
     /// call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static Window? GLGetCurrentWindow()
-    {
-        var windowHandle = SDL_GL_GetCurrentWindow();
-        return windowHandle != IntPtr.Zero ? new Window(windowHandle) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GLGetCurrentWindow();
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2389,8 +2159,6 @@ public static partial class SDL
     public static IntPtr EGLGetCurrentConfig() => SDL_EGL_GetCurrentEGLConfig();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_EGL_GetWindowEGLSurface(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_EGLSurface SDLCALL SDL_EGL_GetWindowEGLSurface(SDL_Window *window);</code>
     /// <summary>
     /// Get the EGL surface associated with the window.
@@ -2399,7 +2167,8 @@ public static partial class SDL
     /// <returns>the EGLSurface pointer associated with the window, or <see cref="IntPtr.Zero"/> on
     /// failure.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static IntPtr EGLGetWindowEGLSurface(Window window) => SDL_EGL_GetWindowEGLSurface(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetWindowEGLSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr EGLGetWindowEGLSurface(IntPtr window);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2471,8 +2240,6 @@ public static partial class SDL
     public static int GLGetSwapInterval(out int interval) => SDL_GL_GetSwapInterval(out interval);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GL_SwapWindow(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GL_SwapWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para>Update a window with OpenGL rendering.</para>
@@ -2486,7 +2253,9 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static int GLSwapWindow(Window window) => SDL_GL_SwapWindow(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SwapWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GLSwapWindow(IntPtr window);
+    
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

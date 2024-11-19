@@ -28,15 +28,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowOpenFileDialog(
-        SDL_DialogFileCallback callback, 
-        IntPtr userdata, 
-        IntPtr window, 
-        IntPtr filters, 
-        int nfilters, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation, 
-        [MarshalAs(SDLBool)] bool allowMany);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, SDL_bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a file on their filesystem.</para>
@@ -83,42 +74,17 @@ public static partial class SDL
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
-    public static void ShowOpenFileDialog(DialogFileCallback callback, object? userdata, Window? window, DialogFileFilter[]? filters, string? defaultLocation, bool allowMany)
-    {
-        var userDataHandle = GCHandle.Alloc(userdata);
-        var userDataParameter = (IntPtr)userDataHandle;
-        
-        var w = window == null ? IntPtr.Zero : window.Handle;
-        var f = filters != null ? Marshal.UnsafeAddrOfPinnedArrayElement(filters, 0) : IntPtr.Zero;
-        var l = filters?.Length ?? 0;
-            
-        SDL_ShowOpenFileDialog(SDLCallback, userDataParameter, w, f, l, defaultLocation, allowMany);
-        
-        return;
-
-        void SDLCallback(IntPtr sdlUserdata, IntPtr sdlFilelist, int sdlFilter)
-        {
-            var managedFileList = GetFileList(sdlFilelist);
-
-            var sdlUserDataHandle = (GCHandle) sdlUserdata;
-            var userDataObject = sdlUserDataHandle.Target;
-
-            callback(userDataObject, managedFileList, sdlFilter);
-            
-            userDataHandle.Free();
-            sdlUserDataHandle.Free();
-        }
-    }
-    
-
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowSaveFileDialog(
-        SDL_DialogFileCallback callback, 
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowOpenFileDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void ShowOpenFileDialog(
+        DialogFileCallback callback, 
         IntPtr userdata, 
         IntPtr window, 
         IntPtr filters, 
         int nfilters, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation);
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation, 
+        [MarshalAs(SDLBool)] bool allowMany);
+    
+    
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DioalgFileFilter *filters, int nfilters, const char *default_location);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user choose a new or existing file on their
@@ -163,37 +129,16 @@ public static partial class SDL
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
-    public static void ShowSaveFileDialog(DialogFileCallback callback, object? userdata, Window? window, DialogFileFilter[]? filters, string? defaultLocation)
-    {
-        var userDataHandle = GCHandle.Alloc(userdata);
-        var userDataParameter = (IntPtr)userDataHandle;
-        
-        var w = window == null ? IntPtr.Zero : window.Handle;
-        var f = filters != null ? Marshal.UnsafeAddrOfPinnedArrayElement(filters, 0) : IntPtr.Zero;
-        var l = filters?.Length ?? 0;
-            
-        SDL_ShowSaveFileDialog(SDLCallback, userDataParameter, w, f, l, defaultLocation);
-        
-        return;
-
-        void SDLCallback(IntPtr sdlUserdata, IntPtr sdlFilelist, int sdlFilter)
-        {
-            var managedFileList = GetFileList(sdlFilelist);
-
-            var sdlUserDataHandle = (GCHandle) sdlUserdata;
-            var userDataObject = sdlUserDataHandle.Target;
-
-            callback(userDataObject, managedFileList, sdlFilter);
-            
-            userDataHandle.Free();
-            sdlUserDataHandle.Free();
-        }
-    }
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowSaveFileDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void ShowSaveFileDialog(
+        DialogFileCallback callback, 
+        IntPtr userdata, 
+        IntPtr window, 
+        IntPtr filters, 
+        int nfilters, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, IntPtr userdata, IntPtr window, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, SDL_bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a folder on their filesystem.</para>
@@ -232,31 +177,9 @@ public static partial class SDL
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
-    public static void ShowOpenFolderDialog(DialogFileCallback callback, object? userdata, Window? window, 
-        string? defaultLocation, bool allowMany)
-    {
-        var userDataHandle = GCHandle.Alloc(userdata);
-        var userDataParameter = (IntPtr) userDataHandle;
-            
-        var w = window == null ? IntPtr.Zero : window.Handle;
-        
-        SDL_ShowOpenFolderDialog(SDLCallback, userDataParameter, w, defaultLocation, allowMany);
-        
-        return;
-
-        void SDLCallback(IntPtr sdlUserdata, IntPtr sdlFilelist, int sdlFilter)
-        {
-            var managedFileList = GetFileList(sdlFilelist);
-
-            var sdlUserDataHandle = (GCHandle) sdlUserdata;
-            var userDataObject = sdlUserDataHandle.Target;
-
-            callback(userDataObject, managedFileList, sdlFilter);
-            
-            userDataHandle.Free();
-            sdlUserDataHandle.Free();
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowOpenFolderDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SDL_ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
     
     
     private static string[]? GetFileList(IntPtr sdlFilelist)

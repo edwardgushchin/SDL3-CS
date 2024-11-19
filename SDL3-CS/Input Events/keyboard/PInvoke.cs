@@ -96,16 +96,14 @@ public static partial class SDL
     /// <seealso cref="GetKeyboards"/>
     public static string? GetKeyboardNameForID(uint instanceId) => SDL_GetKeyboardNameForID(instanceId);
     
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetKeyboardFocus();
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);</code>
     /// <summary>
     /// Query the window which currently has keyboard focus.
     /// </summary>
     /// <returns>the window with keyboard focus.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static Window GetKeyboardFocus() => new(SDL_GetKeyboardFocus());
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetKeyboardFocus();
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -366,8 +364,6 @@ public static partial class SDL
     public static Keycode GetKeyFromName(string name) => SDL_GetKeyFromName(name);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_StartTextInput(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_StartTextInput(SDL_Window *window);</code>
     /// <summary>
     /// <para>Start accepting Unicode text input events in a window.</para>
@@ -384,12 +380,10 @@ public static partial class SDL
     /// <seealso cref="SetTextInputArea"/>
     /// <seealso cref="StopTextInput"/>
     /// <seealso cref="TextInputActive"/>
-    public static int StartTextInput(Window window) => SDL_StartTextInput(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StartTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int StartTextInput(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_TextInputActive(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_TextInputActive(SDL_Window *window);</code>
     /// <summary>
     /// <para>Check whether or not Unicode text input events are enabled for a window.</para>
@@ -398,11 +392,11 @@ public static partial class SDL
     /// <returns><c>true</c> if text input events are enabled else <c>false</c>.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="StartTextInput"/>
-    public static bool TextInputActive(Window window) => SDL_TextInputActive(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TextInputActive"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    public static partial bool TextInputActive(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_StopTextInput(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_StopTextInput(SDL_Window *window);</code>
     /// <summary>
     /// <para>Stop receiving any text input events in a window.</para>
@@ -414,11 +408,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="StartTextInput"/>
-    public static int StopTextInput(Window window) => SDL_StopTextInput(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int StopTextInput(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ClearComposition(IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearComposition(SDL_Window *window);</code>
     /// <summary>
     /// <para>Dismiss the composition window/IME without disabling the subsystem.</para>
@@ -429,11 +422,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="StopTextInput"/>
-    public static int ClearComposition(Window window) => SDL_ClearComposition(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearComposition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ClearComposition(IntPtr window);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetTextInputArea(IntPtr window, in Rect rect, int cursor);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);</code>
     /// <summary>
     /// <para>Set the area used to type Unicode text input.</para>
@@ -450,12 +442,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetTextInputArea"/>
     /// <seealso cref="StartTextInput"/>
-    public static int SetTextInputArea(Window window, Rect rect, int cursor) => 
-        SDL_SetTextInputArea(window.Handle, rect, cursor);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetTextInputArea(IntPtr window, in Rect rect, int cursor);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);</code>
     /// <summary>
     /// <para>Get the area used to type Unicode text input.</para>
@@ -470,13 +460,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetTextInputArea"/>
-    public static int GetTextInputArea(Window window, out Rect rect, out int cursor) => 
-        SDL_GetTextInputArea(window.Handle, out rect, out cursor);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_HasScreenKeyboardSupport();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasScreenKeyboardSupport(void);</code>
     /// <summary>
     /// <para>Check whether the platform has screen keyboard support.</para>
@@ -486,12 +473,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="ScreenKeyboardShown"/>
-    public static bool HasScreenKeyboardSupport() => SDL_HasScreenKeyboardSupport();
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasScreenKeyboardSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_ScreenKeyboardShown(IntPtr window);
+    public static partial bool HasScreenKeyboardSupport();
+    
+    
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ScreenKeyboardShown(SDL_Window *window);</code>
     /// <summary>
     /// <para>Check whether the screen keyboard is shown for given window.</para>
@@ -500,5 +486,8 @@ public static partial class SDL
     /// <returns><c>true</c> if screen keyboard is shown or <c>false</c> if not.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="HasScreenKeyboardSupport"/>
-    public static bool ScreenKeyboardShown(Window window) => SDL_ScreenKeyboardShown(window.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "ScreenKeyboardShown"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    public static partial bool ScreenKeyboardShown(IntPtr window);
+    
 }

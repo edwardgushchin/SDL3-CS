@@ -42,16 +42,11 @@ public static partial class SDL
     /// <seealso cref="GetRectEnclosingPointsFloat"/>
     /// <seealso cref="PointInRectFloat"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FRect(float x, float y, float w, float h)
+    public struct FRect
     {
-        public float X = x;
-        public float Y = y;
-        public float W = w;
-        public float H = h;
-
-        public override string ToString()
-        {
-            return $"X: {X}, Y: {Y}, W: {W}, H: {H}";
-        }
+        public float X;
+        public float Y;
+        public float W;
+        public float H;
     }
 }

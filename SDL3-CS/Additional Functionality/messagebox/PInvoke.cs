@@ -61,10 +61,6 @@ public static partial class SDL
         SDL_ShowMessageBox(ref messageboxData, out buttonId);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ShowSimpleMessageBox(MessageBoxFlags flags,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string title, [MarshalAs(UnmanagedType.LPUTF8Str)] string message,
-        IntPtr window);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);</code>
     /// <summary>
     /// <para>Display a simple modal message box.</para>
@@ -98,8 +94,8 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="ShowMessageBox"/>
-    public static int ShowSimpleMessageBox(MessageBoxFlags flags, string title, string message, Window? window)
-    {
-        return SDL_ShowSimpleMessageBox(flags, title, message, window == null ? IntPtr.Zero : window.Handle);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowSimpleMessageBox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ShowSimpleMessageBox(MessageBoxFlags flags,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string title, [MarshalAs(UnmanagedType.LPUTF8Str)] string message,
+        IntPtr window);
 }

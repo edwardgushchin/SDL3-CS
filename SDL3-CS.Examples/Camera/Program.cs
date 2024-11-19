@@ -45,7 +45,7 @@ internal static class Program
         
         var renderer = SDL.CreateRenderer(window, null);
         
-        if (renderer == null)
+        if (renderer == IntPtr.Zero)
         {
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;
@@ -71,7 +71,7 @@ internal static class Program
             return;
         }
 
-        SDL.Texture? texture = null;
+        IntPtr texture = IntPtr.Zero;
         
         var loop = true;
         
@@ -102,7 +102,7 @@ internal static class Program
             {
                 var frameProps = frame.GetSurfaceFromPtr();
                 
-                if (texture == null)
+                if (texture == IntPtr.Zero)
                 {
                     SDL.SetWindowSize(window, frameProps.Width, frameProps.Height); 
                     texture = SDL.CreateTexture(renderer, frameProps.Format, SDL.TextureAccess.Streaming, 
@@ -110,16 +110,16 @@ internal static class Program
                 }
                 else
                 {
-                    SDL.UpdateTexture(texture, null, frameProps.Pixels, frameProps.Pitch);
+                    SDL.UpdateTexture(texture, IntPtr.Zero, frameProps.Pixels, frameProps.Pitch);
                 }
                 SDL.ReleaseCameraFrame(camera, frame);
             }
 
             SDL.SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 255);
             SDL.RenderClear(renderer);
-            if (texture != null) 
+            if (texture != IntPtr.Zero) 
             {
-                SDL.RenderTexture(renderer, texture, null, null);
+                SDL.RenderTexture(renderer, texture, IntPtr.Zero, IntPtr.Zero);
             }
             SDL.RenderPresent(renderer);
         }

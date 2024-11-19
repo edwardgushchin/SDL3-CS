@@ -28,8 +28,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_Metal_CreateView(IntPtr window);
     /// <code>extern SDL_DECLSPEC SDL_MetalView SDLCALL SDL_Metal_CreateView(SDL_Window * window);</code>
     /// <summary>
     /// <para>Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
@@ -44,10 +42,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="MetalDestroyView"/>
     /// <seealso cref="MetalGetLayer"/>
-    public static MetalView MetalCreateView(Window window)
-    {
-        return new MetalView(SDL_Metal_CreateView(window.Handle));
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_CreateView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr MetalCreateView(IntPtr window);
+    
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

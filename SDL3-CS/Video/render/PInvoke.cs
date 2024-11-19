@@ -28,157 +28,57 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
-
-    public static Render? CreateRenderer(Window window, string? name)
-    {
-        var renderHandle = SDL_CreateRenderer(window.Handle, name);
-        return renderHandle != IntPtr.Zero ? new Render(renderHandle) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetRenderVSync(IntPtr renderer, int vsync);
-    public static int SetRenderVSync(Render renderer, int vsync) => SDL_SetRenderVSync(renderer.Handle, vsync);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetRenderVSync(IntPtr renderer, int vsync);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetRenderVSync(IntPtr renderer, out int vsync);
-    public static int GetRenderVSync(Render renderer, out int vsync) =>
-        SDL_GetRenderVSync(renderer.Handle, out vsync);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetRenderVSync(IntPtr renderer, out int vsync);
 
 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
-    public static void SetRenderDrawColor(Render renderer, byte r, byte g, byte b, byte a) =>
-        SDL_SetRenderDrawColor(renderer.Handle, r, g, b, a);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawColor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenderClear(IntPtr renderer);
-    public static int RenderClear(Render renderer) => SDL_RenderClear(renderer.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderClear(IntPtr renderer);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenderPresent(IntPtr renderer);
-    public static int RenderPresent(Render renderer) => SDL_RenderPresent(renderer.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPresent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderPresent(IntPtr renderer);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyTexture(IntPtr texture);
-    public static void DestroyTexture(Texture texture) => SDL_DestroyTexture(texture.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyTexture(IntPtr texture);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyRenderer(IntPtr renderer);
-    public static void DestroyRenderer(Render renderer) => SDL_DestroyRenderer(renderer.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyRenderer(IntPtr renderer);
 
 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRenderDriver(int index);
-    public static string? GetRenderDriver(int index) => Marshal.PtrToStringUTF8(SDL_GetRenderDriver(index));
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetRenderDriver(int index);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetNumRenderDrivers();
-    public static int GetNumRenderDrivers() => SDL_GetNumRenderDrivers();
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumRenderDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetNumRenderDrivers();
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTexture(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h);
-
-    public static Texture? CreateTexture(Render renderer, PixelFormat format, TextureAccess access, int w, int h)
-    {
-        var ptr = SDL_CreateTexture(renderer.Handle, format, access, w, h);
-        return ptr == IntPtr.Zero ? null : new Texture(ptr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateTexture(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_UpdateTexture(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch);
-    /*public static int UpdateTexture(Texture texture, Rect? rect, byte[] pixels, int pitch)
-    {
-        var rectPtr = IntPtr.Zero;
-        var pixelsPtr = IntPtr.Zero;
-
-        try
-        {
-            if (rect.HasValue)
-            {
-                rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-                Marshal.StructureToPtr(rect.Value, rectPtr, false);
-            }
-
-            pixelsPtr = Marshal.AllocHGlobal(pixels.Length);
-            Marshal.Copy(pixels, 0, pixelsPtr, pixels.Length);
-
-            return SDL_UpdateTexture(texture.Handle, rectPtr, pixelsPtr, pitch);
-        }
-        finally
-        {
-            if (rectPtr != IntPtr.Zero)
-                Marshal.FreeHGlobal(rectPtr);
-
-            if (pixelsPtr != IntPtr.Zero)
-                Marshal.FreeHGlobal(pixelsPtr);
-        }
-    }*/
-    
-    public static int UpdateTexture(Texture texture, Rect? rect, IntPtr pixels, int pitch)
-    {
-        var rectPtr = IntPtr.Zero;
-
-        try
-        {
-            if (rect.HasValue)
-            {
-                rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-                Marshal.StructureToPtr(rect.Value, rectPtr, false);
-            }
-
-            return SDL_UpdateTexture(texture.Handle, rectPtr, pixels, pitch);
-        }
-        finally
-        {
-            if (rectPtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(rectPtr);
-            }
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int UpdateTexture(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect);
-    public static int RenderTexture(Render renderer, Texture texture, FRect? srcrect, FRect? dstrect)
-    {
-        IntPtr srcPtr = IntPtr.Zero;
-        IntPtr dstPtr = IntPtr.Zero;
-
-        try
-        {
-            if (srcrect.HasValue)
-            {
-                srcPtr = Marshal.AllocHGlobal(Marshal.SizeOf<FRect>());
-                Marshal.StructureToPtr(srcrect.Value, srcPtr, false);
-            }
-
-            if (dstrect.HasValue)
-            {
-                dstPtr = Marshal.AllocHGlobal(Marshal.SizeOf<FRect>());
-                Marshal.StructureToPtr(dstrect.Value, dstPtr, false);
-            }
-
-            return SDL_RenderTexture(renderer.Handle, texture.Handle, srcPtr, dstPtr);
-        }
-        finally
-        {
-            if (srcPtr != IntPtr.Zero)
-                Marshal.FreeHGlobal(srcPtr);
-
-            if (dstPtr != IntPtr.Zero)
-                Marshal.FreeHGlobal(dstPtr);
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderTexture(IntPtr renderer, IntPtr texture, FRect srcrect, FRect dstrect);
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect);
 }

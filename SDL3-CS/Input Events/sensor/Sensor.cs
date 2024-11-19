@@ -37,7 +37,7 @@ public static partial class SDL
 
         public override bool Equals(object? obj)
         {
-            if (obj is Window other) 
+            if (obj is Sensor other) 
                 return Handle == other.Handle;
             return false;
         }

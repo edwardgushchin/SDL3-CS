@@ -132,8 +132,6 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_Vulkan_CreateSurface(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_Vulkan_CreateSurface(SDL_Window *window, VkInstance instance, const struct VkAllocationCallbacks *allocator, VkSurfaceKHR* surface);</code>
     /// <summary>
     /// <para>Create a Vulkan rendering surface for a window.</para>
@@ -153,8 +151,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     /// <seealso cref="VulkanDestroySurface"/>
-    public static int VulkanCreateSurface(Window window, IntPtr instance, IntPtr? allocator, out IntPtr surface) =>
-        SDL_Vulkan_CreateSurface(window.Handle, instance, allocator ?? IntPtr.Zero, out surface);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_CreateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int VulkanCreateSurface(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface);
+    
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

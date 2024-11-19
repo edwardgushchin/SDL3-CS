@@ -37,27 +37,14 @@ public static partial class SDL
     /// <param name="buttons"><see cref="MessageBoxButtonData"/></param>
     /// <param name="colorScheme"><see cref="MessageBoxColorScheme"/>, can be <c>NULL</c> to use system settings</param>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MessageBoxData(
-        MessageBoxFlags flags,
-        string title,
-        string message,
-        MessageBoxButtonData[] buttons,
-        MessageBoxColorScheme[]? colorScheme = null,
-        Window? window = null)
-        : IDisposable
+    public struct MessageBoxData
     {
-        private MessageBoxFlags _flags = flags;
-        private IntPtr _window = window == null ? IntPtr.Zero : window.Handle;
-        private IntPtr _title = Marshal.StringToCoTaskMemUTF8(title);
-        private IntPtr _message = Marshal.StringToCoTaskMemUTF8(message);
-        private int _numButtons = buttons.Length;
-        private IntPtr _buttons = Marshal.UnsafeAddrOfPinnedArrayElement(buttons, 0);
-        private IntPtr _colorScheme = colorScheme == null ? IntPtr.Zero : Marshal.UnsafeAddrOfPinnedArrayElement(colorScheme, 0);
-
-        public void Dispose()
-        {
-            Marshal.FreeCoTaskMem(_title);
-            Marshal.FreeCoTaskMem(_message);
-        }
+        public MessageBoxFlags Flags;
+        public IntPtr Window;
+        public IntPtr Title;
+        public IntPtr Message;
+        public int NumButtons;
+        public IntPtr Buttons;
+        public IntPtr ColorScheme;
     }
 }

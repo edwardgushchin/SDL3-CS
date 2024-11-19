@@ -129,9 +129,6 @@ public partial class SDL
         SDL_SetLinuxThreadPriorityAndPolicy(threadID, priority, schedPolicy);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, 
-        IntPtr callbackParam);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetiOSAnimationCallback(SDL_Window * window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam);</code>
     /// <summary>
     /// <para>Use this function to set the animation callback on Apple iOS.</para>
@@ -154,8 +151,9 @@ public partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetiOSEventPump"/>
-    public static int SetiOSAnimationCallback(Window window, int interval, IOSAnimationCallback callback,
-        IntPtr callbackParam) => SDL_SetiOSAnimationCallback(window.Handle, interval, callback, callbackParam);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSAnimationCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, 
+        IntPtr callbackParam);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

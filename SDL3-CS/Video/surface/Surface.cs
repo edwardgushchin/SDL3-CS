@@ -107,7 +107,7 @@ public static partial class SDL
         
         public override bool Equals(object? obj)
         {
-            if (obj is Render other) 
+            if (obj is Surface other) 
                 return Handle == other.Handle;
             return false;
         }
