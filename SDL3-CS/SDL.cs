@@ -87,5 +87,26 @@ public static partial class SDL
     }
     
     public const UnmanagedType SDLBool = UnmanagedType.I1;
-    
+
+
+    /// <summary>
+    /// Converts an unmanaged pointer to a managed structure of type <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The type of the structure to which the unmanaged pointer should be converted. This type must be a value type (struct).
+    /// </typeparam>
+    /// <param name="pointer">
+    /// A pointer to an unmanaged memory location that contains the data to be converted.
+    /// </param>
+    /// <returns>
+    /// The managed structure of type <typeparamref name="T"/>, or <c>null</c> if the pointer is <c>IntPtr.Zero</c>.
+    /// </returns>
+    /// <remarks>
+    /// This method uses the <see cref="Marshal.PtrToStructure{T}(System.IntPtr)"/> method to convert the unmanaged pointer into a managed structure.
+    /// If the provided pointer is <c>IntPtr.Zero</c>, the method will return <c>null</c> instead of attempting to convert it.
+    /// </remarks>
+    public static T? PointerToManaged<T>(IntPtr pointer) where T : struct
+    {
+        return pointer == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(pointer);
+    }
 }

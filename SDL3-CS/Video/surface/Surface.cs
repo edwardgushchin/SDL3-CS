@@ -42,7 +42,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct SurfaceProperties
+    public struct Surface
     {
         /// <summary>
         /// Read-only
@@ -83,11 +83,20 @@ public static partial class SDL
         /// Private
         /// </summary>
         private IntPtr _internal;
-
+        
         /// <summary>
-        /// Gets the pixels as a byte array.
+        /// Retrieves the pixel data from the surface as a managed byte array.
         /// </summary>
-        public byte[]? GetPixelsFromPtr()
+        /// <returns>
+        /// A byte array containing the pixel data, or null if the surface has no pixels (i.e., if <see cref="Pixels"/> is <c>null</c>).
+        /// The byte array will have a size of <c>Pitch * Height</c> and contain the raw pixel data in the specified format.
+        /// </returns>
+        /// <remarks>
+        /// This method copies the raw pixel data from the unmanaged memory pointed to by <see cref="Pixels"/> into a managed byte array.
+        /// The resulting array represents the pixel data as it is stored in memory, taking into account the pitch (row stride) of the surface.
+        /// Use this method if you need to work with the pixel data in managed code or for processing the pixels outside of the SDL context.
+        /// </remarks>
+        public byte[]? GetManagedPixels()
         {
             if (Pixels == IntPtr.Zero) return null;
             var managedArray = new byte[Pitch * Height];

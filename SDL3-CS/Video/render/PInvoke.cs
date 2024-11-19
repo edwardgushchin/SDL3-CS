@@ -81,4 +81,8 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect);
+    
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTextureFromSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateTextureFromSurface(IntPtr renderer, IntPtr surface);
 }

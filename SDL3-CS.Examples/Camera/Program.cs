@@ -64,9 +64,9 @@ internal static class Program
             return;
         }
         
-        var camera = SDL.OpenCamera(devices[0]);
+        var camera = SDL.OpenCamera(devices[0], default);
         
-        if (camera == null) {
+        if (camera == IntPtr.Zero) {
             Console.WriteLine($"Couldn't open camera: {SDL.GetError()}");
             return;
         }
@@ -96,22 +96,22 @@ internal static class Program
                 }
             }
 
-            var frame = SDL.AcquireCameraFrame(camera, out _) ?? null;
+            var framePtr = SDL.AcquireCameraFrame(camera, out _);
 
-            if (frame != null)
+            if (framePtr != IntPtr.Zero)
             {
+                var frame = SDL.PointerToManaged<SDL.Surface>(framePtr) ?? default;
                 
                 if (texture == IntPtr.Zero)
                 {
                     SDL.SetWindowSize(window, frame.Width, frame.Height); 
-                    texture = SDL.CreateTexture(renderer, frame.Format, SDL.TextureAccess.Streaming, 
-                        frame.Width, frame.Height);
+                    texture = SDL.CreateTexture(renderer, frame.Format, SDL.TextureAccess.Streaming, frame.Width, frame.Height);
                 }
                 else
                 {
                     SDL.UpdateTexture(texture, IntPtr.Zero, frame.Pixels, frame.Pitch);
                 }
-                SDL.ReleaseCameraFrame(camera, frame);
+                SDL.ReleaseCameraFrame(camera, framePtr);
             }
 
             SDL.SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 255);
