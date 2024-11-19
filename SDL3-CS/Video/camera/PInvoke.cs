@@ -359,8 +359,6 @@ public static partial class SDL
     }
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_AcquireCameraFrame(IntPtr camera, out ulong timestampNS);
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_AcquireCameraFrame(SDL_Camera *camera, Uint64 *timestampNS);</code>
     /// <summary>
     /// <para>Acquire a frame.</para>
@@ -393,15 +391,10 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="ReleaseCameraFrame"/>
-    public static Surface? AcquireCameraFrame(Camera camera, out ulong timestampNS)
-    {
-        var ptr = SDL_AcquireCameraFrame(camera.Handle, out timestampNS);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AcquireCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr AcquireCameraFrame(IntPtr camera, out ulong timestampNS);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ReleaseCameraFrame(IntPtr camera, IntPtr frame);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ReleaseCameraFrame(SDL_Camera *camera, SDL_Surface *frame);</code>
     /// <summary>
     /// <para>Release a frame of video acquired from a camera.</para>
@@ -423,8 +416,8 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="AcquireCameraFrame"/>
-    public static int ReleaseCameraFrame(Camera camera, Surface frame) => 
-        SDL_ReleaseCameraFrame(camera.Handle, frame.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ReleaseCameraFrame(IntPtr camera, IntPtr frame);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

@@ -100,17 +100,16 @@ internal static class Program
 
             if (frame != null)
             {
-                var frameProps = frame.GetSurfaceFromPtr();
                 
                 if (texture == IntPtr.Zero)
                 {
-                    SDL.SetWindowSize(window, frameProps.Width, frameProps.Height); 
-                    texture = SDL.CreateTexture(renderer, frameProps.Format, SDL.TextureAccess.Streaming, 
-                        frameProps.Width, frameProps.Height);
+                    SDL.SetWindowSize(window, frame.Width, frame.Height); 
+                    texture = SDL.CreateTexture(renderer, frame.Format, SDL.TextureAccess.Streaming, 
+                        frame.Width, frame.Height);
                 }
                 else
                 {
-                    SDL.UpdateTexture(texture, IntPtr.Zero, frameProps.Pixels, frameProps.Pitch);
+                    SDL.UpdateTexture(texture, IntPtr.Zero, frame.Pixels, frame.Pitch);
                 }
                 SDL.ReleaseCameraFrame(camera, frame);
             }

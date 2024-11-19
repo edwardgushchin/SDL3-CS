@@ -95,42 +95,4 @@ public static partial class SDL
             return managedArray;
         }
     }
-    
-    public class Surface(IntPtr handle)
-    {
-        internal IntPtr Handle { get; } = handle;
-
-        public SurfaceProperties GetSurfaceFromPtr()
-        {
-            return Marshal.PtrToStructure<SurfaceProperties>(Handle);
-        }
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj is Surface other) 
-                return Handle == other.Handle;
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return Handle.GetHashCode();
-        }
-        
-        public static bool operator ==(Surface? left, Surface? right)
-        {
-            if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
-                return true;
-            
-            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
-                return false;
-            
-            return left.Handle == right.Handle;
-        }
-
-        public static bool operator !=(Surface? left, Surface? right)
-        {
-            return !(left == right);
-        }
-    }
 }

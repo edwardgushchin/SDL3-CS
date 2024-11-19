@@ -5,8 +5,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateSurface(int width, int height, PixelFormat format);
     /// <code>extern SDL_DECLSPEC SDL_Surface *SDLCALL SDL_CreateSurface(int width, int height, SDL_PixelFormat format);</code>
     /// <summary>
     /// Allocate a new surface with a specific pixel format.
@@ -18,15 +16,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="CreateSurfaceFrom"/>
     /// <seealso cref="DestroySurface"/>
-    public static Surface? CreateSurface(int width, int height, PixelFormat format)
-    {
-        var ptr = SDL_CreateSurface(width, height, format);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateSurface(int width, int height, PixelFormat format);
     
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateSurfaceFrom(int width, int height, PixelFormat format, IntPtr pixels, int pitch);
     /// <code>extern SDL_DECLSPEC SDL_Surface *SDLCALL SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);</code>
     /// <summary>
     /// Allocate a new surface with a specific pixel format and existing pixel data.
@@ -47,23 +39,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="CreateSurface"/>
     /// <seealso cref="DestroySurface"/>
-    public static Surface? CreateSurfaceFrom(int width, int height, PixelFormat format, byte[] pixels, int pitch)
-    {
-        var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
-        try
-        {
-            var ptr = SDL_CreateSurfaceFrom(width, height, format, handle.AddrOfPinnedObject(), pitch);
-            return ptr == IntPtr.Zero ? null : new Surface(ptr);
-        }
-        finally
-        {
-            handle.Free();
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSurfaceFrom"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateSurfaceFrom(int width, int height, PixelFormat format, IntPtr pixels, int pitch);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroySurface(IntPtr surface);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroySurface(SDL_Surface *surface);</code>
     /// <summary>
     /// <para>Free a surface.</para>
@@ -74,14 +53,10 @@ public static partial class SDL
     /// <seealso cref="CreateStackSurface"/>
     /// <seealso cref="CreateSurface"/>
     /// <seealso cref="CreateSurfaceFrom"/>
-    public static void DestroySurface(Surface? surface)
-    {
-        if (surface != null) SDL_DestroySurface(surface.Handle);
-    }
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroySurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroySurface(IntPtr surface);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetSurfaceProperties(IntPtr surface);
+    
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetSurfaceProperties(SDL_Surface *surface);</code>
     /// <summary>
     /// <para>Get the properties associated with a surface.</para>
@@ -112,11 +87,10 @@ public static partial class SDL
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static uint GetSurfaceProperties(Surface surface) => SDL_GetSurfaceProperties(surface.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetSurfaceProperties(IntPtr surface);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceColorspace(IntPtr surface, Colorspace colorspace);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);</code>
     /// <summary>
     /// Set the colorspace used by a surface.
@@ -127,11 +101,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call SDL_GetError() for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceColorspace"/>
-    public static int SetSurfaceColorspace(Surface surface, Colorspace colorspace) => SDL_SetSurfaceColorspace(surface.Handle, colorspace);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SetSurfaceColorspace(IntPtr surface, Colorspace colorspace);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Colorspace SDL_GetSurfaceColorspace(IntPtr surface);
     /// <summary>
     /// <para>Get the colorspace used by a surface.</para>
     /// <para>The colorspace defaults to <see cref="Colorspace.SRGBLinear"/> for floating point
@@ -143,11 +116,10 @@ public static partial class SDL
     /// the surface is <c>NULL</c>.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetSurfaceColorspace"/>
-    public static Colorspace GetSurfaceColorspace(Surface surface) => SDL_GetSurfaceColorspace(surface.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial Colorspace GetSurfaceColorspace(IntPtr surface);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateSurfacePalette(IntPtr surface);
     /// <summary>
     /// <para>Create a palette and associate it with a surface.</para>
     /// <para>This function creates a palette compatible with the provided surface. The
@@ -168,15 +140,10 @@ public static partial class SDL
     /// more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetPaletteColors"/>
-    public static Palette? CreateSurfacePalette(Surface surface)
-    {
-        var palettePtr = SDL_CreateSurfacePalette(surface.Handle);
-        return palettePtr == IntPtr.Zero ? null : Marshal.PtrToStructure<Palette>(palettePtr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSurfacePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateSurfacePalette(IntPtr surface);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfacePalette(IntPtr surface, IntPtr palette);
     /// <summary>
     /// <para>Set the palette used by a surface.</para>
     /// <remarks>A single palette can be shared with many surfaces.</remarks>
@@ -188,18 +155,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="CreatePalette"/>
     /// <seealso cref="GetSurfacePalette"/>
-    public static int SetSurfacePalette(Surface surface, Palette palette)
-    {
-        var palettePtr = Marshal.AllocHGlobal(Marshal.SizeOf<Palette>());
-        Marshal.StructureToPtr(palette, palettePtr, false);
-        var result = SDL_SetSurfacePalette(surface.Handle, palettePtr);
-        Marshal.FreeHGlobal(palettePtr);
-        return result;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfacePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetSurfacePalette(IntPtr surface, IntPtr palette);
+    
         
-
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetSurfacePalette(IntPtr surface);
     /// <summary>
     /// Get the palette used by a surface.
     /// </summary>
@@ -208,15 +167,9 @@ public static partial class SDL
     /// no palette used.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetSurfacePalette"/>
-    public static Palette? GetSurfacePalette(Surface surface)
-    {
-        var palettePtr = SDL_GetSurfacePalette(surface.Handle);
-        return palettePtr == IntPtr.Zero ? null : Marshal.PtrToStructure<Palette>(palettePtr);
-    }
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfacePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetSurfacePalette(IntPtr surface);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_LockSurface(IntPtr surface);
     /// <summary>
     /// <para>Set up a surface for directly accessing the pixels.</para>
     /// <para>Between calls to <see cref="LockSurface"/> / <see cref="UnlockSurface"/>, you can write to
@@ -233,22 +186,20 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="MustLock"/>
     /// <seealso cref="UnlockSurface"/>
-    public static int LockSurface(IntPtr surface) => SDL_LockSurface(surface);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int LockSurface(IntPtr surface);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnlockSurface(IntPtr surface);
     /// <summary>
     /// Release a surface after directly accessing the pixels.
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> structure to be unlocked.</param>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="LockSurface"/>
-    public static void UnlockSurface(Surface surface) => SDL_UnlockSurface(surface.Handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void UnlockSurface(IntPtr surface);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_LoadBMP_IO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
     /// <summary>
     /// Load a BMP image from a seekable SDL data stream.
     /// <remarks>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
@@ -263,15 +214,10 @@ public static partial class SDL
     /// <seealso cref="DestroySurface"/>
     /// <seealso cref="LoadBMP"/>
     /// <seealso cref="SaveBMP_IO"/>
-    public static Surface? LoadBMP_IO(IOStream src, bool closeio)
-    {
-        var ptr = SDL_LoadBMP_IO(src.Handle, closeio);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadBMP_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadBMPIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_LoadBMP([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
     /// <code>extern SDL_DECLSPEC SDL_Surface *SDLCALL SDL_LoadBMP(const char *file);</code>
     /// <summary>
     /// Load a BMP image from a file.
@@ -284,15 +230,10 @@ public static partial class SDL
     /// <seealso cref="DestroySurface"/>
     /// <seealso cref="LoadBMP_IO"/>
     /// <seealso cref="SaveBMP"/>
-    public static Surface? LoadBMP(string file)
-    {
-        var ptr = SDL_LoadBMP(file);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadBMP"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadBMP([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SaveBMP_IO(IntPtr surface, IntPtr dst, [MarshalAs(UnmanagedType.I1)] bool closeio);
+
     /// <summary>
     /// <para>Save a surface to a seekable SDL data stream in BMP format.</para>
     /// <remarks>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
@@ -310,12 +251,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="LoadBMP_IO"/>
     /// <seealso cref="SaveBMP"/>
-    public static int SaveBMP_IO(Surface surface, IOStream dst, bool closeio) =>
-        SDL_SaveBMP_IO(surface.Handle, dst.Handle, closeio);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveBMP_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SaveBMPIO(IntPtr surface, IntPtr dst, [MarshalAs(SDLBool)] bool closeio);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SaveBMP(IntPtr surface, [MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+
     /// <summary>
     /// Save a surface to a file.
     /// <remarks>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
@@ -330,12 +269,11 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="LoadBMP"/>
-    /// <seealso cref="SaveBMP_IO"/>
-    public static int SaveBMP(Surface surface, string file) => SDL_SaveBMP(surface.Handle, file);
+    /// <seealso cref="SaveBMPIO"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveBMP"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SaveBMP(IntPtr surface, [MarshalAs(UnmanagedType.LPUTF8Str)] string file);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceRLE(IntPtr surface, [MarshalAs(SDLBool)] bool enabled);
     /// <summary>
     /// Set the RLE acceleration hint for a surface.
     /// </summary>
@@ -350,7 +288,9 @@ public static partial class SDL
     /// <seealso cref="BlitSurface"/>
     /// <seealso cref="LockSurface"/>
     /// <seealso cref="UnlockSurface"/>
-    public static int SetSurfaceRLE(Surface surface, bool enabled) => SDL_SetSurfaceRLE(surface.Handle, enabled);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceRLE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetSurfaceRLE(IntPtr surface, [MarshalAs(SDLBool)] bool enabled);
+    
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -367,8 +307,6 @@ public static partial class SDL
     public static bool SurfaceHasRLE(IntPtr surface) => SDL_SurfaceHasRLE(surface);
 
 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceColorKey(IntPtr surface, [MarshalAs(SDLBool)] bool enabled, uint key);
     /// <summary>
     /// <para>Set the color key (transparent pixel) in a surface.</para>
     /// <para>The color key defines a pixel value that will be treated as transparent in
@@ -389,12 +327,10 @@ public static partial class SDL
     /// <seealso cref="GetSurfaceColorKey"/>
     /// <seealso cref="SetSurfaceRLE"/>
     /// <seealso cref="SurfaceHasColorKey"/>
-    public static int SetSurfaceColorKey(Surface surface, bool enabled, uint key) => SDL_SetSurfaceColorKey(surface.Handle, enabled, key);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetSurfaceColorKey(IntPtr surface, [MarshalAs(SDLBool)] bool enabled, uint key);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_SurfaceHasColorKey(IntPtr surface);
+    
     /// <summary>
     /// Returns whether the surface has a color key.
     /// </summary>
@@ -406,11 +342,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetSurfaceColorKey"/>
     /// <seealso cref="GetSurfaceColorKey"/>
-    public static bool SurfaceHasColorKey(Surface surface) => SDL_SurfaceHasColorKey(surface.Handle);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SurfaceHasColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    public static partial bool SurfaceHasColorKey(IntPtr surface);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSurfaceColorKey(IntPtr surface, out uint key);
+
     /// <summary>
     /// <para>Get the color key (transparent pixel) for a surface.</para>
     /// <para>The color key is a pixel of the format used by the surface, as generated by
@@ -426,11 +362,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetSurfaceColorKey"/>
     /// <seealso cref="SurfaceHasColorKey"/>
-    public static int GetSurfaceColorKey(Surface surface, out uint key) => SDL_GetSurfaceColorKey(surface.Handle, out key);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetSurfaceColorKey(IntPtr surface, out uint key);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceColorMod(IntPtr surface, byte r, byte g, byte b);
+
     /// <summary>
     /// <para>Set an additional color value multiplied into blit operations.</para>
     /// <para>When this surface is blitted, during the blit operation each source color
@@ -447,11 +382,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceColorMod"/>
     /// <seealso cref="SetSurfaceAlphaMod"/>
-    public static int SetSurfaceColorMod(Surface surface, byte r, byte g, byte b) => SDL_SetSurfaceColorMod(surface.Handle, r, g, b);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetSurfaceColorMod(IntPtr surface, byte r, byte g, byte b);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSurfaceColorMod(IntPtr surface, out byte r, out byte g, out byte b);
     /// <summary>
     /// Get the additional color value multiplied into blit operations.
     /// </summary>
@@ -464,11 +398,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceAlphaMod"/>
     /// <seealso cref="SetSurfaceColorMod"/>
-    public static int GetSurfaceColorMod(Surface surface, out byte r, out byte g, out byte b) => SDL_GetSurfaceColorMod(surface.Handle, out r, out g, out b);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetSurfaceColorMod(IntPtr surface, out byte r, out byte g, out byte b);
+    
 
-
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceAlphaMod(IntPtr surface, byte alpha);
     /// <summary>
     /// <para>Set an additional alpha value used in blit operations.</para>
     /// <para>When this surface is blitted, during the blit operation the source alpha
@@ -482,11 +415,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceAlphaMod"/>
     /// <seealso cref="SetSurfaceColorMod"/>
-    public static int SetSurfaceAlphaMod(Surface surface, byte alpha) => SDL_SetSurfaceAlphaMod(surface.Handle, alpha);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetSurfaceAlphaMod(IntPtr surface, byte alpha);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSurfaceAlphaMod(IntPtr surface, out byte alpha);
     /// <summary>
     /// Get the additional alpha value used in blit operations.
     /// </summary>
@@ -497,11 +429,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceColorMod"/>
     /// <seealso cref="SetSurfaceAlphaMod"/>
-    public static int GetSurfaceAlphaMod(Surface surface, out byte alpha) => SDL_GetSurfaceAlphaMod(surface.Handle, out alpha);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetSurfaceAlphaMod(IntPtr surface, out byte alpha);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetSurfaceBlendMode(IntPtr surface, int blendMode);
     /// <summary>
     /// Set the blend mode used for blit operations.
     /// </summary>
@@ -514,11 +445,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceBlendMode"/>
-    public static int SetSurfaceBlendMode(Surface surface, BlendMode blendMode) => SDL_SetSurfaceBlendMode(surface.Handle, (int)blendMode);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetSurfaceBlendMode(IntPtr surface, BlendMode blendMode);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSurfaceBlendMode(IntPtr surface, out int blendMode);
+    
     /// <summary>
     /// Get the blend mode used for blit operations.
     /// </summary>
@@ -528,17 +458,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetSurfaceBlendMode"/>
-    public static int GetSurfaceBlendMode(Surface surface, out BlendMode blendMode)
-    {
-        var result = SDL_GetSurfaceBlendMode(surface.Handle, out var mode);
-        blendMode = (BlendMode)mode;
-        return result;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetSurfaceBlendMode(IntPtr surface, out BlendMode blendMode);
 
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
-    private static partial bool SDL_SetSurfaceClipRect(IntPtr surface, in Rect rect);
+
     /// <summary>
     /// <para>Set the clipping rectangle for a surface.</para>
     /// <para>When <c></c> is the destination of a blit, only the area within the clip
@@ -553,11 +476,11 @@ public static partial class SDL
     /// <c>false</c> and blits will be completely clipped.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceClipRect"/>
-    public static bool SetSurfaceClipRect(Surface surface, Rect? rect) => SDL_SetSurfaceClipRect(surface.Handle, rect ?? default);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(SDLBool)]
+    public static partial bool SetSurfaceClipRect(IntPtr surface, Rect rect);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSurfaceClipRect(IntPtr surface, out Rect rect);
+
     /// <summary>
     /// <para>Get the clipping rectangle for a surface.</para>
     /// <para>When <c>surface</c> is the destination of a blit, only the area within the clip
@@ -571,11 +494,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetSurfaceClipRect"/>
-    public static int GetSurfaceClipRect(Surface surface, out Rect rect) => SDL_GetSurfaceClipRect(surface.Handle, out rect);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetSurfaceClipRect(IntPtr surface, out Rect rect);
 
 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_FlipSurface(IntPtr surface, FlipMode flip);
     /// <summary>
     /// Flip a surface vertically or horizontally.
     /// </summary>
@@ -584,11 +506,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static int FlipSurface(Surface surface, FlipMode flip) => SDL_FlipSurface(surface.Handle, flip);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlipSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int FlipSurface(IntPtr surface, FlipMode flip);
+    
 
-
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_DuplicateSurface(IntPtr surface);
     /// <summary>
     /// Creates a new surface identical to the existing surface.
     /// </summary>
@@ -597,15 +518,10 @@ public static partial class SDL
     /// <returns>a copy of the surface, or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static Surface? DuplicateSurface(Surface surface)
-    {
-        var ptr = SDL_DuplicateSurface(surface.Handle);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DuplicateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr DuplicateSurface(IntPtr surface);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_ConvertSurface(IntPtr surface, PixelFormat format);
     /// <summary>
     /// <para>Copy an existing surface to a new surface of the specified format.</para>
     /// <para>This function is used to optimize images for faster *repeat* blitting. This
@@ -622,15 +538,10 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="ConvertSurfaceAndColorspace"/>
     /// <seealso cref="DestroySurface"/>
-    public static Surface? ConvertSurface(Surface surface, PixelFormat format)
-    {
-        var ptr = SDL_ConvertSurface(surface.Handle, format);
-        return ptr == IntPtr.Zero ? null : new Surface(ptr);
-    }
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr ConvertSurface(IntPtr surface, PixelFormat format);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_ConvertSurfaceAndColorspace(IntPtr surface, PixelFormat format, IntPtr palette, Colorspace colorspace, uint props);
+
     /// <summary>
     /// Copy an existing surface to a new surface of the specified format and
     /// colorspace.
@@ -649,12 +560,9 @@ public static partial class SDL
     /// <seealso cref="ConvertSurface"/>
     /// <seealso cref="ConvertSurface"/>
     /// <seealso cref="DestroySurface"/>
-    public static Surface? ConvertSurfaceAndColorspace(Surface surface, PixelFormat format, Palette? palette, Colorspace colorspace, uint props)
-    {
-        //var result = SDL_ConvertSurfaceAndColorspace(surface.Handle, format, palettePtr, colorspace, props);
-        //return result == IntPtr.Zero ? null : new Surface(result);
-        return null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertSurfaceAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr ConvertSurfaceAndColorspace(IntPtr surface, PixelFormat format, IntPtr palette, Colorspace colorspace, uint props);
+    
         
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -731,8 +639,6 @@ public static partial class SDL
         SDL_PremultiplyAlpha(width, height, srcFormat, src, srcPitch, dstFormat, dst, dstPitch, linear);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PremultiplySurfaceAlpha(IntPtr surface, [MarshalAs(SDLBool)] bool linear);
     /// <summary>
     /// Premultiply the alpha in a surface.
     /// </summary>
@@ -743,12 +649,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError()"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static int PremultiplySurfaceAlpha(Surface surface, bool linear) =>
-        SDL_PremultiplySurfaceAlpha(surface.Handle, linear);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplySurfaceAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PremultiplySurfaceAlpha(IntPtr surface, [MarshalAs(SDLBool)] bool linear);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ClearSurface(IntPtr surface, float r, float g, float b, float a);
     /// <summary>
     /// <para>Clear a surface with a specific color, with floating point precision.</para>
     /// <para>This function handles all surface formats, and ignores any clip rectangle.</para>
@@ -763,12 +667,10 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError()"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static int ClearSurface(Surface surface, float r, float g, float b, float a) =>
-        SDL_ClearSurface(surface.Handle, r, g, b, a);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ClearSurface(IntPtr surface, float r, float g, float b, float a);
+    
 
-
-    /*[LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_FillSurfaceRect(IntPtr dst, in Rect? rect, uint color);
     /// <summary>
     /// <para>Perform a fast fill of a rectangle with a specific color.</para>
     /// <para><c>color</c> should be a pixel of the format used by the surface, and can be
@@ -787,12 +689,10 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="FillSurfaceRects"/>
-    public static int FillSurfaceRect(Surface dst, Rect? rect, uint color) =>
-        SDL_FillSurfaceRect(dst.Handle, rect, color);*/
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int FillSurfaceRect(IntPtr dst, Rect rect, uint color);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_FillSurfaceRects(IntPtr dst, IntPtr rects, int count, uint color);
+
     /// <summary>
     /// <para>Perform a fast fill of a set of rectangles with a specific color.</para>
     /// <para><c>color</c> should be a pixel of the format used by the surface, and can be
@@ -811,15 +711,11 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="FillSurfaceRect"/>
-    public static int FillSurfaceRects(Surface dst, Rect[] rects, int count, uint color)
-    {
-        var rectsPtr = rects != null ? Marshal.UnsafeAddrOfPinnedArrayElement(rects, 0) : IntPtr.Zero;
-        return SDL_FillSurfaceRects(dst.Handle, rectsPtr, count, color);
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int FillSurfaceRects(IntPtr dst, IntPtr rects, int count, uint color);
     
     
-    /*[LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_BlitSurface(IntPtr src, in Rect? srcrect, IntPtr dst, ref Rect? dstrect);
+    
     /// <summary>
     /// <para>Performs a fast blit from the source surface to the destination surface.</para>
     /// <para>This assumes that the source and destination rectangles are the same size.
@@ -878,12 +774,10 @@ public static partial class SDL
     /// from multiple threads.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="BlitSurfaceScaled"/>
-    public static int BlitSurface(Surface src, Rect? srcrect, Surface dst, ref Rect? dstrect) => 
-        SDL_BlitSurface(src.Handle, in srcrect, dst.Handle, ref dstrect);*/
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int BlitSurface(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_BlitSurfaceUnchecked(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect);
     /// <summary>
     /// Perform low-level surface blitting only.
     /// </summary>
@@ -902,12 +796,11 @@ public static partial class SDL
     /// from multiple threads.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="BlitSurface"/>
-    public static int BlitSurfaceUnchecked(Surface src, in Rect srcrect, Surface dst, in Rect dstrect) =>
-        SDL_BlitSurfaceUnchecked(src.Handle, srcrect, dst.Handle, dstrect);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceUnchecked"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int BlitSurfaceUnchecked(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SoftStretch(IntPtr src, IntPtr srcrect, IntPtr dst, IntPtr dstrect, ScaleMode scaleMode);
+    
     /// <summary>
     /// Perform stretch blit between two surfaces of the same format.
     /// </summary>
@@ -924,28 +817,11 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="BlitSurfaceScaled"/>
-    public static int SoftStretch(Surface src, Rect srcrect, Surface dst, Rect dstrect, ScaleMode scaleMode)
-    {
-        var srcRectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-        var dstRectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-
-        try
-        {
-            Marshal.StructureToPtr(srcrect, srcRectPtr, false);
-            Marshal.StructureToPtr(dstrect, dstRectPtr, false);
-
-            return SDL_SoftStretch(src.Handle, srcRectPtr, dst.Handle, dstRectPtr, scaleMode);
-        }
-        finally
-        {
-            Marshal.FreeHGlobal(srcRectPtr);
-            Marshal.FreeHGlobal(dstRectPtr);
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SoftStretch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SoftStretch(IntPtr src, Rect srcrect, IntPtr dst, Rect dstrect, ScaleMode scaleMode);
+    
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_BlitSurfaceScaled(IntPtr src, IntPtr srcrect, IntPtr dst, IntPtr dstrect, ScaleMode scaleMode);
     /// <summary>
     /// Perform a scaled blit to a destination surface, which may be of a different
     /// format.
@@ -965,35 +841,10 @@ public static partial class SDL
     /// from multiple threads.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="BlitSurface"/>
-    public static int BlitSurfaceScaled(Surface src, Rect srcrect, Surface dst, ref Rect dstrect, ScaleMode scaleMode)
-    {
-        var srcRectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-        var dstRectPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Rect>());
-
-        try
-        {
-            Marshal.StructureToPtr(srcrect, srcRectPtr, false);
-            Marshal.StructureToPtr(dstrect, dstRectPtr, false);
-
-            var result = SDL_BlitSurfaceScaled(src.Handle, srcRectPtr, dst.Handle, dstRectPtr, scaleMode);
-
-            if (result == 0)
-            {
-                dstrect = Marshal.PtrToStructure<Rect>(dstRectPtr);
-            }
-
-            return result;
-        }
-        finally
-        {
-            Marshal.FreeHGlobal(srcRectPtr);
-            Marshal.FreeHGlobal(dstRectPtr);
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int BlitSurfaceScaled(IntPtr src, Rect srcrect, IntPtr dst, Rect dstrect, ScaleMode scaleMode);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_BlitSurfaceUncheckedScaled(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
     /// <summary>
     /// Perform low-level surface scaled blitting only.
     /// </summary>
@@ -1005,8 +856,7 @@ public static partial class SDL
     /// <param name="dstrect"></param>
     /// <param name="scaleMode"></param>
     /// <returns></returns>
-    public static int BlitSurfaceUncheckedScaled(Surface src, in Rect srcrect, Surface dst, in Rect dstrect, ScaleMode scaleMode) =>
-        SDL_BlitSurfaceUncheckedScaled(src.Handle, srcrect, dst.Handle, dstrect, scaleMode);
-
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceUncheckedScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int BlitSurfaceUncheckedScaled(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
+    
 }
