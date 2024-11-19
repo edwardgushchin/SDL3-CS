@@ -50,7 +50,6 @@ internal static class Program
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
-
         
         var devices = SDL.GetCameras(out var camerasCount);
 
@@ -97,23 +96,21 @@ internal static class Program
                 }
             }
 
-            var frame = SDL.AcquireCameraFrame(camera, out _);
+            var frame = SDL.AcquireCameraFrame(camera, out _) ?? null;
 
             if (frame != null)
             {
                 var frameProps = frame.GetSurfaceFromPtr();
-                if (frameProps != null)
+                
+                if (texture == null)
                 {
-                    if (texture == null)
-                    {
-                        SDL.SetWindowSize(window, frameProps.Value.Width, frameProps.Value.Height); 
-                        texture = SDL.CreateTexture(renderer, frameProps.Value.Format, (int)SDL.TextureAccess.Streaming, 
-                            frameProps.Value.Width, frameProps.Value.Height);
-                    }
-                    else
-                    {
-                        SDL.UpdateTexture(texture, null, frameProps.Value.Pixels, frameProps.Value.Pitch);
-                    }
+                    SDL.SetWindowSize(window, frameProps.Width, frameProps.Height); 
+                    texture = SDL.CreateTexture(renderer, frameProps.Format, SDL.TextureAccess.Streaming, 
+                        frameProps.Width, frameProps.Height);
+                }
+                else
+                {
+                    SDL.UpdateTexture(texture, null, frameProps.Pixels, frameProps.Pitch);
                 }
                 SDL.ReleaseCameraFrame(camera, frame);
             }
@@ -131,7 +128,6 @@ internal static class Program
         SDL.DestroyTexture(texture!);
         SDL.DestroyRenderer(renderer);
         SDL.DestroyWindow(window);
-        
         SDL.Quit();
     }
 }

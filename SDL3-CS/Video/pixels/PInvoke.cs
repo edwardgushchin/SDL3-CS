@@ -40,7 +40,7 @@ public static partial class SDL
     /// <c>SDL_PIXELFORMAT_UNKNOWN</c> if the format isn't recognized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static string GetPixelFormatName(int format) => Marshal.PtrToStringUTF8(SDL_GetPixelFormatName(format)) ?? "SDL_PIXELFORMAT_UNKNOWN";
+    public static string GetPixelFormatName(int format) => Marshal.PtrToStringUTF8(SDL_GetPixelFormatName(format)) ?? PixelFormat.Unknown.ToString();
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -173,10 +173,17 @@ public static partial class SDL
     public static void DestroyPalette(Palette? palette)
     {
         if (palette == null) return;
-        var palettePtr = Marshal.AllocHGlobal(Marshal.SizeOf<Palette>());
-        Marshal.StructureToPtr(palette, palettePtr, false);
-        SDL_DestroyPalette(palettePtr);
-        Marshal.FreeHGlobal(palettePtr);
+        var palettePtr = IntPtr.Zero;
+        try
+        {
+            palettePtr = Marshal.AllocHGlobal(Marshal.SizeOf<Palette>());
+            Marshal.StructureToPtr(palette, palettePtr, false);
+        }
+        finally
+        {
+            SDL_DestroyPalette(palettePtr);
+            Marshal.FreeHGlobal(palettePtr);
+        }
     }
 
     

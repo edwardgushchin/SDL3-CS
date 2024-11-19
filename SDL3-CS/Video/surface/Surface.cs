@@ -42,44 +42,37 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct SDLSurface(
-        SurfaceFlags flags,
-        PixelFormat format,
-        int width,
-        int height,
-        int pitch,
-        IntPtr pixels,
-        IntPtr @internal)
+    public struct SurfaceProperties
     {
         /// <summary>
         /// Read-only
         /// </summary>
-        public readonly SurfaceFlags Flags = flags;
+        public SurfaceFlags Flags;
 
         /// <summary>
         /// Read-only
         /// </summary>
-        public readonly PixelFormat Format = format;
+        public PixelFormat Format;
 
         /// <summary>
         /// Read-only
         /// </summary>
-        public readonly int Width = width;
+        public int Width;
 
         /// <summary>
         /// Read-only
         /// </summary>
-        public readonly int Height = height;
+        public int Height;
 
         /// <summary>
         /// Read-only
         /// </summary>
-        public readonly int Pitch = pitch;
+        public int Pitch;
 
         /// <summary>
         /// Read-only pointer, writable pixels if non-NULL
         /// </summary>
-        public readonly IntPtr Pixels = pixels;
+        public IntPtr Pixels;
 
         /// <summary>
         /// Application reference count, used when freeing surface
@@ -89,7 +82,7 @@ public static partial class SDL
         /// <summary>
         /// Private
         /// </summary>
-        private IntPtr _internal = @internal;
+        private IntPtr _internal;
 
         /// <summary>
         /// Gets the pixels as a byte array.
@@ -107,9 +100,9 @@ public static partial class SDL
     {
         internal IntPtr Handle { get; } = handle;
 
-        public SDLSurface? GetSurfaceFromPtr()
+        public SurfaceProperties GetSurfaceFromPtr()
         {
-            return Marshal.PtrToStructure<SDLSurface>(Handle);
+            return Marshal.PtrToStructure<SurfaceProperties>(Handle);
         }
         
         public override bool Equals(object? obj)
