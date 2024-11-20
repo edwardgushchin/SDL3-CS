@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPS Counter", "SDL3-CS.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camera", "SDL3-CS.Examples\Camera\Camera.csproj", "{6757E645-091D-4E31-AB24-1A7B93936DDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File Dialog", "SDL3-CS.Examples\File Dialog\File Dialog.csproj", "{5F92E664-565A-4E3C-AE0C-D307B8E93BB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6757E645-091D-4E31-AB24-1A7B93936DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F92E664-565A-4E3C-AE0C-D307B8E93BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F92E664-565A-4E3C-AE0C-D307B8E93BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F92E664-565A-4E3C-AE0C-D307B8E93BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F92E664-565A-4E3C-AE0C-D307B8E93BB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

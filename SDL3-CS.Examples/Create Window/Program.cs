@@ -43,7 +43,7 @@ internal static class Program
             return;
         }
         
-        var renderer = SDL.CreateRenderer(window, null);
+        var renderer = SDL.CreateRenderer(window, null!);
         
         if (renderer == IntPtr.Zero)
         {

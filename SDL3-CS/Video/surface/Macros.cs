@@ -27,14 +27,14 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /*/// <summary>
+    /// <summary>
     /// Evaluates to true if the surface needs to be locked before access.
     /// </summary>
     /// <since>This macro is available since SDL 3.0.0.</since>
-    public static bool MustLock(Surface surface)
+    public static bool MustLock(IntPtr surface)
     {
         const int sdlSurfaceLockNeeded = 0x00000001; // Assuming this constant based on SDL documentation
-        var flags = Marshal.ReadInt32(surface.Handle); // Assuming the first 4 bytes represent the flags
+        var flags = Marshal.ReadInt32(surface); // Assuming the first 4 bytes represent the flags
         return (flags & sdlSurfaceLockNeeded) == sdlSurfaceLockNeeded;
-    }*/
+    }
 }

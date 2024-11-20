@@ -37,15 +37,15 @@ internal static class Program
         
         var window = SDL.CreateWindow("SDL3 FPS Counter", 800, 600, 0);
         
-        if (window == null)
+        if (window == IntPtr.Zero)
         {
             Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
         
-        var renderer = SDL.CreateRenderer(window, null);
+        var renderer = SDL.CreateRenderer(window, null!);
         
-        if (renderer == null)
+        if (renderer == IntPtr.Zero)
         {
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;

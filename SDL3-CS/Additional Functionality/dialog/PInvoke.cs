@@ -23,12 +23,16 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, SDL_bool allow_many);</code>
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        IntPtr filters, int nfilters, IntPtr defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a file on their filesystem.</para>
     /// <para>This function should only be invoked from the main thread.</para>
@@ -36,56 +40,83 @@ public static partial class SDL
     /// result will be passed to the callback.</para>
     /// <para>The callback will be invoked with a null-terminated list of files the user
     /// chose. The list will be empty if the user canceled the dialog, and it will
-    /// be <c>NULL</c> if an error occurred.</para>
+    /// be <c>null</c> if an error occurred.</para>
     /// <para>Note that the callback may be called from a different thread than the one
     /// the function was invoked on.</para>
     /// <para>Depending on the platform, the user may be allowed to input paths that
     /// don't yet exist.</para>
     /// <para>On Linux, dialogs may require XDG Portals, which requires DBus, which
     /// requires an event-handling loop. Apps that do not use SDL to handle events
-    /// should add a call to <see cref="PumpEvents"/> in their main loop.</para>
+    /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
-    /// <param name="callback">an SDL_DialogFileCallback to be invoked when the user
+    /// <param name="callback">an <see cref="DialogFileCallback()"/> to be invoked when the user
     /// selects a file and accepts, or cancels the dialog, or an
     /// error occurs. The first argument is a null-terminated list
     /// of C strings, representing the paths chosen by the user.
     /// The list will be empty if the user canceled the dialog, and
-    /// it will be <c>NULL</c> if an error occurred. If an error occurred,
-    /// it can be fetched with <see cref="GetError"/>. The second argument
+    /// it will be NULL if an error occurred. If an error occurred,
+    /// it can be fetched with <see cref="SDL_GetError()"/>. The second argument
     /// is the userdata pointer passed to the function. The third
     /// argument is the index of the filter selected by the user,
     /// or one past the index of the last filter (therefore the
-    /// index of the terminating <c>NULL</c> filter) if no filter was
-    /// chosen, or -1 if the platform does not support detecting
+    /// index of the terminating <c>null</c> filter) if no filter was
+    /// chosen, or <c>-1</c> if the platform does not support detecting
     /// the selected filter.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
-    /// <param name="window">the window that the dialog should be modal for. May be <c>NULL</c>.
+    /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="filters">a list of SDL_DialogFileFilter's. May be <c>NULL</c>. Not all
+    /// <param name="filters">a list of <see cref="DialogFileFilter"/>'s, may be <c>null</c>. Not all
     /// platforms support this option, and platforms that do support
     /// it may allow the user to ignore the filters.</param>
-    /// <param name="defaultLocation">the default folder or file to start the dialog at.
-    /// May be <c>NULL</c>. Not all platforms support this option.</param>
+    /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
+    /// <param name="defaultLocation">the default folder or file to start the dialog at,
+    /// may be <c>null</c>. Not all platforms support this option.</param>
     /// <param name="allowMany">if non-zero, the user will be allowed to select multiple
     /// entries. Not all platforms support this option.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowOpenFileDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowOpenFileDialog(
-        DialogFileCallback callback, 
-        IntPtr userdata, 
-        IntPtr window, 
-        IntPtr filters, 
-        int nfilters, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation, 
-        [MarshalAs(SDLBool)] bool allowMany);
+    public static void ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        DialogFileFilter[]? filters, int nfilters, string? defaultLocation, bool allowMany)
+    {
+        var pathPointer = IntPtr.Zero;
+        var filterPointer = IntPtr.Zero;
+        GCHandle? filterHandle = null;
+        
+        try
+        {
+            if (filters != null)
+            {
+                filterHandle = GCHandle.Alloc(filters, GCHandleType.Pinned);
+                filterPointer = filterHandle.Value.AddrOfPinnedObject();
+            }
+
+            if (defaultLocation != null)
+            {
+                pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
+            }
+            
+            SDL_ShowOpenFileDialog(callback, userdata, window, filterPointer, nfilters, pathPointer, allowMany);
+        }
+        finally
+        {
+            if (pathPointer != IntPtr.Zero)
+            {
+                Marshal.FreeCoTaskMem(pathPointer);
+            }
+
+            filterHandle?.Free();
+        }
+    }
     
     
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DioalgFileFilter *filters, int nfilters, const char *default_location);</code>
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        IntPtr filters, int nfilters, IntPtr defaultLocation);
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user choose a new or existing file on their
     /// filesystem.</para>
@@ -94,52 +125,79 @@ public static partial class SDL
     /// result will be passed to the callback.</para>
     /// <para>The callback will be invoked with a null-terminated list of files the user
     /// chose. The list will be empty if the user canceled the dialog, and it will
-    /// be <c>NULL</c> if an error occurred.</para>
+    /// be <c>null</c> if an error occurred.</para>
     /// <para>Note that the callback may be called from a different thread than the one
     /// the function was invoked on.</para>
     /// <para>The chosen file may or may not already exist.</para>
     /// <para>On Linux, dialogs may require XDG Portals, which requires DBus, which
     /// requires an event-handling loop. Apps that do not use SDL to handle events
-    /// should add a call to <see cref="PumpEvents"/> in their main loop.</para>
+    /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
-    /// <param name="callback">an <see cref="DialogFileCallback"/> to be invoked when the user
+    /// <param name="callback">an <see cref="DialogFileCallback()"/> to be invoked when the user
     /// selects a file and accepts, or cancels the dialog, or an
     /// error occurs. The first argument is a null-terminated list
     /// of C strings, representing the paths chosen by the user.
     /// The list will be empty if the user canceled the dialog, and
-    /// it will be <c>NULL</c> if an error occurred. If an error occurred,
-    /// it can be fetched with <see cref="GetError"/>. The second argument
+    /// it will be <c>null</c> if an error occurred. If an error occurred,
+    /// it can be fetched with <see cref="GetError()"/>. The second argument
     /// is the userdata pointer passed to the function. The third
     /// argument is the index of the filter selected by the user,
     /// or one past the index of the last filter (therefore the
-    /// index of the terminating <c>NULL</c> filter) if no filter was
-    /// chosen, or -1 if the platform does not support detecting
+    /// index of the terminating <c>null</c> filter) if no filter was
+    /// chosen, or <c>-1</c> if the platform does not support detecting
     /// the selected filter.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
-    /// <param name="window">the window that the dialog should be modal for. May be <c>NULL</c>.
+    /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="filters">a list of <see cref="DialogFileFilter"/>. May be <c>NULL</c>. Not all
+    /// <param name="filters">a list of <see cref="DialogFileFilter"/>'s, may be <c>null</c>. Not all
     /// platforms support this option, and platforms that do support
     /// it may allow the user to ignore the filters.</param>
-    /// <param name="defaultLocation">the default folder or file to start the dialog at.
-    /// May be <c>NULL</c>. Not all platforms support this option.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
+    /// <param name="defaultLocation">the default folder or file to start the dialog at,
+    /// may be <c>null</c>. Not all platforms support this option.</param>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowSaveFileDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowSaveFileDialog(
-        DialogFileCallback callback, 
-        IntPtr userdata, 
-        IntPtr window, 
-        IntPtr filters, 
-        int nfilters, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation);
+    public static void ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        DialogFileFilter[]? filters, int nfilters, string? defaultLocation)
+    {
+        var pathPointer = IntPtr.Zero;
+        var filterPointer = IntPtr.Zero;
+        GCHandle? filterHandle = null;
+        
+        try
+        {
+            if (filters != null)
+            {
+                filterHandle = GCHandle.Alloc(filters, GCHandleType.Pinned);
+                filterPointer = filterHandle.Value.AddrOfPinnedObject();
+            }
+
+            if (defaultLocation != null)
+            {
+                pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
+            }
+            
+            SDL_ShowSaveFileDialog(callback, userdata, window, filterPointer, nfilters, pathPointer);
+        }
+        finally
+        {
+            if (pathPointer != IntPtr.Zero)
+            {
+                Marshal.FreeCoTaskMem(pathPointer);
+            }
+
+            filterHandle?.Free();
+        }
+    }
     
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, SDL_bool allow_many);</code>
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        IntPtr defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
     /// <summary>
     /// <para>Displays a dialog that lets the user select a folder on their filesystem.</para>
     /// <para>This function should only be invoked from the main thread.</para>
@@ -147,56 +205,56 @@ public static partial class SDL
     /// result will be passed to the callback.</para>
     /// <para>The callback will be invoked with a null-terminated list of files the user
     /// chose. The list will be empty if the user canceled the dialog, and it will
-    /// be NULL if an error occurred.</para>
+    /// be <c>null</c> if an error occurred.</para>
     /// <para>Note that the callback may be called from a different thread than the one
     /// the function was invoked on.</para>
     /// <para>Depending on the platform, the user may be allowed to input paths that
     /// don't yet exist.</para>
     /// <para>On Linux, dialogs may require XDG Portals, which requires DBus, which
     /// requires an event-handling loop. Apps that do not use SDL to handle events
-    /// should add a call to SDL_PumpEvents in their main loop.</para>
+    /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
     /// <param name="callback">an <see cref="DialogFileCallback"/> to be invoked when the user
     /// selects a file and accepts, or cancels the dialog, or an
     /// error occurs. The first argument is a null-terminated list
     /// of C strings, representing the paths chosen by the user.
     /// The list will be empty if the user canceled the dialog, and
-    /// it will be NULL if an error occurred. If an error occurred,
-    /// it can be fetched with <see cref="GetError"/>. The second argument
+    /// it will be <c>null</c> if an error occurred. If an error occurred,
+    /// it can be fetched with <see cref="GetError()"/>. The second argument
     /// is the userdata pointer passed to the function. The third
-    /// argument is always -1 for <see cref="ShowOpenFolderDialog"/>.</param>
+    /// argument is always <c>-1</c> for <see cref="ShowOpenFolderDialog(DialogFileCallback,nint,nint,string,bool)"/>.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
-    /// <param name="window">the window that the dialog should be modal for. May be NULL.
+    /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="defaultLocation">the default folder or file to start the dialog at.
-    /// May be NULL. Not all platforms support this option</param>
+    /// <param name="defaultLocation">the default folder or file to start the dialog at,
+    /// may be <c>null</c>. Not all platforms support this option.</param>
     /// <param name="allowMany">if non-zero, the user will be allowed to select multiple
     /// entries. Not all platforms support this option.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowOpenFolderDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SDL_ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
-    
-    
-    private static string[]? GetFileList(IntPtr sdlFilelist)
+    public static void ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+        string? defaultLocation, bool allowMany)
     {
-        string[]? managedFileList = null;
-
-        if (sdlFilelist == IntPtr.Zero) return managedFileList;
-        var result = new List<string>();
-        for (var ptr = Marshal.ReadIntPtr(sdlFilelist);
-             ptr != IntPtr.Zero;
-             ptr = Marshal.ReadIntPtr(sdlFilelist, result.Count * IntPtr.Size))
+        var pathPointer = IntPtr.Zero;
+        
+        try
         {
-            result.Add(Marshal.PtrToStringUTF8(ptr)!);
+            if (defaultLocation != null)
+            {
+                pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
+            }
+            
+            SDL_ShowOpenFolderDialog(callback, userdata, window,  pathPointer, allowMany);
         }
-
-        managedFileList = result.ToArray();
-
-        return managedFileList;
+        finally
+        {
+            if (pathPointer != IntPtr.Zero)
+            {
+                Marshal.FreeCoTaskMem(pathPointer);
+            }
+        }
     }
 }

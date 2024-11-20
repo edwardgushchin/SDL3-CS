@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -29,6 +30,8 @@ namespace SDL3;
 public static partial class SDL
 {
     private const string SDLLibrary = "SDL3";
+    
+    public const UnmanagedType SDLBool = UnmanagedType.I1;
 
     static SDL()
     {
@@ -40,7 +43,7 @@ public static partial class SDL
         var libHandle = IntPtr.Zero;
         const string runtimes = "runtimes";
         const string native = "native";
-        const string winLib = "SDL3.DLL";
+        const string winLib = "SDL3.dll";
         const string linLib = "libSDL3.so";
         const string osxLib = "libSDL3.dylib";
             
@@ -85,8 +88,6 @@ public static partial class SDL
         }
         return libHandle;
     }
-    
-    public const UnmanagedType SDLBool = UnmanagedType.I1;
 
 
     /// <summary>
@@ -105,8 +106,57 @@ public static partial class SDL
     /// This method uses the <see cref="Marshal.PtrToStructure{T}(System.IntPtr)"/> method to convert the unmanaged pointer into a managed structure.
     /// If the provided pointer is <c>IntPtr.Zero</c>, the method will return <c>null</c> instead of attempting to convert it.
     /// </remarks>
-    public static T? PointerToManaged<T>(IntPtr pointer) where T : struct
+    /// <exception cref="ArgumentException">The layout of T is not sequential or explicit</exception>
+    public static T? PointerToManagedStruct<T>(IntPtr pointer) where T : struct
     {
         return pointer == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(pointer);
+    }
+    
+    
+    /// <summary>
+    /// Converts a null-terminated array of UTF-8 encoded string pointers in unmanaged memory 
+    /// to a managed array of strings.
+    /// </summary>
+    /// <param name="pointer">
+    /// A pointer to the start of the null-terminated array of UTF-8 encoded string pointers in unmanaged memory.
+    /// </param>
+    /// <returns>
+    /// A managed array of strings if the pointer is not null and contains valid data; 
+    /// <c>null</c> if the pointer is <see cref="IntPtr.Zero"/> or if the array is empty.
+    /// </returns>
+    /// <remarks>
+    /// This method iterates through the memory starting at the specified pointer. Each pointer in the array is read
+    /// and interpreted as a UTF-8 encoded string, which is then converted to a managed string. The process stops
+    /// when a null pointer (indicating the end of the array) is encountered.
+    /// 
+    /// The method assumes that the memory structure follows the format of a null-terminated array of pointers 
+    /// to UTF-8 encoded strings. It is the caller's responsibility to ensure that the memory layout is valid
+    /// and accessible.
+    /// 
+    /// Memory allocated for the unmanaged strings and the array itself must be freed manually if it is no longer needed.
+    /// </remarks>
+    /// <exception cref="AccessViolationException">
+    /// Thrown if the specified pointer references invalid or inaccessible memory.
+    /// </exception>
+    public static string[]? PointerToManagedStringArray(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero) return null;
+
+        var result = new List<string>();
+
+        while (true)
+        {
+            var currentPtr = Marshal.ReadIntPtr(pointer);
+            if (currentPtr == IntPtr.Zero)
+                break;
+
+            var str = Marshal.PtrToStringUTF8(currentPtr);
+            if (str != null)
+                result.Add(str);
+            
+            pointer += IntPtr.Size;
+        }
+        
+        return result.Count > 0 ? result.ToArray() : null;
     }
 }

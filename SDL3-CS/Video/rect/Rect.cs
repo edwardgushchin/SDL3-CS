@@ -33,26 +33,18 @@ public static partial class SDL
     /// <since>This struct is available since SDL 3.0.0.</since>
     /// <seealso cref="RectEmpty"/>
     /// <seealso cref="RectsEqual"/>
-    /// <seealso cref="SDL_HasRectIntersection"/>
+    /// <seealso cref="HasRectIntersection"/>
     /// <seealso cref="GetRectIntersection"/>
     /// <seealso cref="GetRectAndLineIntersection"/>
     /// <seealso cref="GetRectUnion"/>
     /// <seealso cref="GetRectEnclosingPoints"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect
+    public struct Rect(int x, int y, int w, int h)
     {
-        public int X;
-        public int Y;
-        public int W;
-        public int H;
-
-        public Rect(int x, int y, int w, int h)
-        {
-            X = x;
-            Y = y;
-            W = w;
-            H = h;
-        }
+        public int X = x;
+        public int Y = y;
+        public int W = w;
+        public int H = h;
 
         public override string ToString()
         {

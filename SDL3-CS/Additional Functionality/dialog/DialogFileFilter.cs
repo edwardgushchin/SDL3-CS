@@ -28,28 +28,38 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// An entry for filters for file dialogs.
-    /// </summary>
-    /// <param name="name">is a user-readable label for the filter (for example, "Office
-    /// document").</param>
-    /// <param name="pattern">is a semicolon-separated list of file extensions (for example,
-    /// "doc;docx"). File extensions may only contain alphanumeric characters,
+    /// <para>An entry for filters for file dialogs.</para>
+    /// <para><c>name</c> is a user-readable label for the filter (for example, "Office
+    /// document").</para>
+    /// <para><c>pattern</c> is a semicolon-separated list of file extensions (for example,
+    /// <c>"doc;docx"</c>). File extensions may only contain alphanumeric characters,
     /// hyphens, underscores and periods. Alternatively, the whole string can be a
-    /// single asterisk ("*"), which serves as an "All files" filter.</param>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// single asterisk (<c>"*"</c>), which serves as an "<c>All files</c>" filter.</para>
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="pattern"></param>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
+    [StructLayout(LayoutKind.Sequential)]
     public readonly struct DialogFileFilter(string name, string pattern) : IDisposable
     {
-        private readonly IntPtr _name = Marshal.StringToCoTaskMemUTF8(name); 
-        private readonly IntPtr _pattern = Marshal.StringToCoTaskMemUTF8(pattern);
+        public readonly IntPtr Name = Marshal.StringToCoTaskMemUTF8(name);
+        public readonly IntPtr Pattern = Marshal.StringToCoTaskMemUTF8(pattern);
 
         public void Dispose()
         {
-            Marshal.ZeroFreeCoTaskMemUTF8(_name);
-            Marshal.ZeroFreeCoTaskMemUTF8(_pattern);
+            if (Name != IntPtr.Zero)
+            {
+                Marshal.FreeCoTaskMem(Name);
+            }
+
+            if (Pattern != IntPtr.Zero)
+            {
+                Marshal.FreeCoTaskMem(Pattern);
+            }
         }
     }
 }

@@ -27,33 +27,36 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>typedef void(SDLCALL *SDL_DialogFileCallback)(void *userdata, const char * const *filelist, int filter);</code>
+    /// <code>typedef void (SDLCALL *SDL_DialogFileCallback)(void *userdata, const char * const *filelist, int filter);</code>
     /// <summary>
     /// <para>Callback used by file dialog functions.</para>
     /// <para>The specific usage is described in each function.</para>
-    /// <para>If `filelist` is:</para>
+    /// <para>If <c>filelist</c> is:</para>
     /// <list type="bullet">
-    /// <item><c>NULL</c>, an error occurred. Details can be obtained with <see cref="GetError"/>.</item>
-    /// <item>A pointer to <c>NULL</c>, the user either didn't choose any file or canceled the
-    /// dialog</item>
-    /// <item>A pointer to non-<c>NULL</c>, the user chose one or more files. The argument
+    /// <item><c>null</c>, an error occurred. Details can be obtained with <see cref="GetError()"/>.</item>
+    /// <item>A pointer to <c>null</c>, the user either didn't choose any file or canceled the
+    /// dialog.</item>
+    /// <item>A pointer to non-<c>null</c>, the user chose one or more files. The argument
     /// is a null-terminated list of pointers to C strings, each containing a
     /// path.</item>
     /// </list>
     /// <para>The filelist argument does not need to be freed; it will automatically be
     /// freed when the callback returns.</para>
-    /// <para>The filter argument is the index of the filter that was selected, or -1 if
+    /// <para>The filter argument is the index of the filter that was selected, or <c>-1</c> if
     /// no filter was selected or if the platform or method doesn't support
     /// fetching the selected filter.</para>
     /// </summary>
     /// <param name="userdata">an app-provided pointer, for the callback's use.</param>
     /// <param name="filelist">the file(s) chosen by the user.</param>
     /// <param name="filter">index of the selected filter.</param>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void DialogFileCallback(IntPtr userdata, IntPtr filelist, int filter);
+    public delegate void DialogFileCallback(
+        IntPtr userdata, 
+        IntPtr filelist, 
+        int filter);
 }

@@ -29,20 +29,24 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>A structure that represents a color as RGBA components.</para>
-    /// 
     /// <para>The bits of this structure can be directly reinterpreted as an
-    /// integer-packed color which uses the SDL_PIXELFORMAT_RGBA32 format
+    /// integer-packed color which uses the <see cref="PixelFormat.RGBA32"/> format
     /// (<see cref="PixelFormat.ABGR8888"/> on little-endian systems and
     /// <see cref="PixelFormat.RGBA8888"/> on big-endian systems).</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.0.0.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Color
+    public struct Color(byte r, byte g, byte b, byte a)
     {
-        public byte R;
-        public byte G;
-        public byte B;
-        public byte A;
+        public byte R = r;
+        public byte G = g;
+        public byte B = b;
+        public byte A = a;
+
+        public override string ToString()
+        {
+            return $"R: {R}, G: {G}, B: {B}, A: {A}";
+        }
     }
 }
 

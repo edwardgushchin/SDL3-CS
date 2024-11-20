@@ -51,6 +51,8 @@ internal static class Program
             return;
         }
         
+        SDL.SetRenderVSync(renderer, 1);
+        
         var devices = SDL.GetCameras(out var camerasCount);
 
         if (devices == null)
@@ -100,7 +102,7 @@ internal static class Program
 
             if (framePtr != IntPtr.Zero)
             {
-                var frame = SDL.PointerToManaged<SDL.Surface>(framePtr) ?? default;
+                var frame = SDL.PointerToManagedStruct<SDL.Surface>(framePtr) ?? default;
                 
                 if (texture == IntPtr.Zero)
                 {
