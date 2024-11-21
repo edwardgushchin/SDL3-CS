@@ -40,7 +40,7 @@ public static partial class SDL
     /// is a null-terminated list of pointers to C strings, each containing a
     /// path.</item>
     /// </list>
-    /// <para>The filelist argument does not need to be freed; it will automatically be
+    /// <para>The filelist argument should not be freed; it will automatically be
     /// freed when the callback returns.</para>
     /// <para>The filter argument is the index of the filter that was selected, or <c>-1</c> if
     /// no filter was selected or if the platform or method doesn't support

@@ -31,7 +31,7 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
-        IntPtr filters, int nfilters, IntPtr defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
+        IntPtr filters, int nfilters, IntPtr defaultLocation, [MarshalAs(UnmanagedType.I1)] bool allowMany);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a file on their filesystem.</para>
@@ -49,19 +49,9 @@ public static partial class SDL
     /// requires an event-handling loop. Apps that do not use SDL to handle events
     /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
-    /// <param name="callback">an <see cref="DialogFileCallback()"/> to be invoked when the user
+    /// <param name="callback">a function pointer to be invoked when the user
     /// selects a file and accepts, or cancels the dialog, or an
-    /// error occurs. The first argument is a null-terminated list
-    /// of C strings, representing the paths chosen by the user.
-    /// The list will be empty if the user canceled the dialog, and
-    /// it will be NULL if an error occurred. If an error occurred,
-    /// it can be fetched with <see cref="SDL_GetError()"/>. The second argument
-    /// is the userdata pointer passed to the function. The third
-    /// argument is the index of the filter selected by the user,
-    /// or one past the index of the last filter (therefore the
-    /// index of the terminating <c>null</c> filter) if no filter was
-    /// chosen, or <c>-1</c> if the platform does not support detecting
-    /// the selected filter.</param>
+    /// error occurs.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
@@ -133,19 +123,9 @@ public static partial class SDL
     /// requires an event-handling loop. Apps that do not use SDL to handle events
     /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
-    /// <param name="callback">an <see cref="DialogFileCallback()"/> to be invoked when the user
+    /// <param name="callback">a function pointer to be invoked when the user
     /// selects a file and accepts, or cancels the dialog, or an
-    /// error occurs. The first argument is a null-terminated list
-    /// of C strings, representing the paths chosen by the user.
-    /// The list will be empty if the user canceled the dialog, and
-    /// it will be <c>null</c> if an error occurred. If an error occurred,
-    /// it can be fetched with <see cref="GetError()"/>. The second argument
-    /// is the userdata pointer passed to the function. The third
-    /// argument is the index of the filter selected by the user,
-    /// or one past the index of the last filter (therefore the
-    /// index of the terminating <c>null</c> filter) if no filter was
-    /// chosen, or <c>-1</c> if the platform does not support detecting
-    /// the selected filter.</param>
+    /// error occurs.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
@@ -197,7 +177,7 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
-        IntPtr defaultLocation, [MarshalAs(SDLBool)] bool allowMany);
+        IntPtr defaultLocation, [MarshalAs(UnmanagedType.I1)] bool allowMany);
     /// <summary>
     /// <para>Displays a dialog that lets the user select a folder on their filesystem.</para>
     /// <para>This function should only be invoked from the main thread.</para>
@@ -214,15 +194,9 @@ public static partial class SDL
     /// requires an event-handling loop. Apps that do not use SDL to handle events
     /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
-    /// <param name="callback">an <see cref="DialogFileCallback"/> to be invoked when the user
+    /// <param name="callback">a function pointer to be invoked when the user
     /// selects a file and accepts, or cancels the dialog, or an
-    /// error occurs. The first argument is a null-terminated list
-    /// of C strings, representing the paths chosen by the user.
-    /// The list will be empty if the user canceled the dialog, and
-    /// it will be <c>null</c> if an error occurred. If an error occurred,
-    /// it can be fetched with <see cref="GetError()"/>. The second argument
-    /// is the userdata pointer passed to the function. The third
-    /// argument is always <c>-1</c> for <see cref="ShowOpenFolderDialog(DialogFileCallback,nint,nint,string,bool)"/>.</param>
+    /// error occurs.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
