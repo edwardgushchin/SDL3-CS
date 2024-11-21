@@ -25,12 +25,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public static partial class Props
-    {
-        public const string JoystickCapMonoLedBoolean = "SDL.joystick.cap.mono_led";
-        public const string JoystickCapPlayerLedBoolean = "SDL.joystick.cap.player_led";
-        public const string JoystickCapRGBLedBoolean = "SDL.joystick.cap.rgb_led";
-        public const string JoystickCapRumbleBoolean = "SDL.joystick.cap.rumble";
-        public const string JoystickCapTriggerRumbleBoolean = "SDL.joystick.cap.trigger_rumble";
-    }
+    public const short JoystickAxisMax = short.MaxValue;
+    public const short JoystickAxisMin = short.MinValue;
+    public const float IPhoneMaxGForce = 5.0f;
 }

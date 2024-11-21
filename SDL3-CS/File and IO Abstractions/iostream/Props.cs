@@ -25,10 +25,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public const string PropIOStreamWindowsHandlePointer = "SDL.iostream.windows.handle";
-    public const string PropIOStreamSTDIOFilePointer = "SDL.iostream.stdio.file";
-    public const string PropIOStreamAndroidAAssetPointer = "SDL.iostream.android.aasset";
-
-    public const string PropIOStreamDynamicMemoryPointer = "SDL.iostream.dynamic.memory";
-    public const string PropIOStreamDynamicChunkSizeNumber = "SDL.iostream.dynamic.chunksize";
+    public static partial class Props
+    {
+        public const string IOStreamWindowsHandlePointer = "SDL.iostream.windows.handle";
+        public const string IOStreamSTDIOFilePointer = "SDL.iostream.stdio.file";
+        public const string IOStreamAndroidAAssetPointer = "SDL.iostream.android.aasset";
+        public const string IOStreamDynamicMemoryPointer = "SDL.iostream.dynamic.memory";
+        public const string IOStreamDynamicChunkSizeNumber = "SDL.iostream.dynamic.chunksize";
+    }
 }

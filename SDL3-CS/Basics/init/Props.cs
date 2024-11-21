@@ -25,11 +25,14 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public const string PropAppMetadataNameString = "SDL.app.metadata.name";
-    public const string PropAppMetadataVersionString = "SDL.app.metadata.version";
-    public const string PropAppMetadataIdentifierString = "SDL.app.metadata.identifier";
-    public const string PropAppMetadataCreatorString = "SDL.app.metadata.creator";
-    public const string PropAppMetadataCopyrightString = "SDL.app.metadata.copyright";
-    public const string PropAppMetadataURLString = "SDL.app.metadata.url";
-    public const string PropAppMetadataTypeString = "SDL.app.metadata.type";
+    public static partial class Props
+    {
+        public const string AppMetadataNameString = "SDL.app.metadata.name";
+        public const string AppMetadataVersionString = "SDL.app.metadata.version";
+        public const string AppMetadataIdentifierString = "SDL.app.metadata.identifier";
+        public const string AppMetadataCreatorString = "SDL.app.metadata.creator";
+        public const string AppMetadataCopyrightString = "SDL.app.metadata.copyright";
+        public const string AppMetadataURLString = "SDL.app.metadata.url";
+        public const string AppMetadataTypeString = "SDL.app.metadata.type";
+    }
 }

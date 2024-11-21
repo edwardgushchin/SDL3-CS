@@ -25,11 +25,11 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public const string PropSurfaceColorspaceNumber = "SDL.video.wayland.wl_display";
-
-    public const string PropSurfaceSDRWhitePointFloat = "SDL.surface.SDR_white_point";
-
-    public const string PropSurfaceHDRHeadroomFloat = "SDL.surface.HDR_headroom";
-
-    public const string PropSurfaceTonemapOperatorString = "SDL.surface.tonemap";
+    public static partial class Props
+    {
+        public const string SurfaceColorspaceNumber = "SDL.video.wayland.wl_display";
+        public const string SurfaceSDRWhitePointFloat = "SDL.surface.SDR_white_point";
+        public const string SurfaceHDRHeadroomFloat = "SDL.surface.HDR_headroom";
+        public const string SurfaceTonemapOperatorString = "SDL.surface.tonemap";
+    }
 }

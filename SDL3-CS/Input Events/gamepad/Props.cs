@@ -25,9 +25,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    public const string PropGamepadCapMonoLedBoolean = PropJoystickCapMonoLedBoolean;
-    public const string PropGamepadCapRGBLedBoolean = PropJoystickCapRGBLedBoolean;
-    public const string PropGamepadCapPlayerLedBoolean = PropJoystickCapPlayerLedBoolean;
-    public const string PropGamepadCapRumbleBoolean = PropJoystickCapRumbleBoolean;
-    public const string PropGamepadCapTriggerRumbleBoolean = PropJoystickCapTriggerRumbleBoolean;
+    public static partial class Props
+    {
+        public const string GamepadCapMonoLedBoolean = JoystickCapMonoLedBoolean;
+        public const string GamepadCapRGBLedBoolean = JoystickCapRGBLedBoolean;
+        public const string GamepadCapPlayerLedBoolean = JoystickCapPlayerLedBoolean;
+        public const string GamepadCapRumbleBoolean = JoystickCapRumbleBoolean;
+        public const string GamepadCapTriggerRumbleBoolean = JoystickCapTriggerRumbleBoolean;
+    }
 }
