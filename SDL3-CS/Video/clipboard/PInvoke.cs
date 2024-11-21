@@ -69,7 +69,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasClipboardText();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasClipboardText(void);</code>
     /// <summary>
@@ -123,7 +123,7 @@ public static partial class SDL
 
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasPrimarySelectionText();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasPrimarySelectionText(void);</code>
     /// <summary>
@@ -243,7 +243,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasClipboardData(const char *mime_type);</code>
     /// <summary>

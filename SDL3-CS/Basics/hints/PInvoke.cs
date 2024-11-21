@@ -29,7 +29,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);</code>
@@ -51,7 +51,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_SetHint(const char *name, const char *value);</code>
@@ -71,7 +71,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_ResetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ResetHint(const char *name);</code>
     /// <summary>
@@ -88,7 +88,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial void SDL_ResetHints();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetHints(void);</code>
     /// <summary>
@@ -117,9 +117,9 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(SDLBool)]bool defaultValue);
+        [MarshalAs(UnmanagedType.I1)]bool defaultValue);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetHintBoolean(const char *name, SDL_bool default_value);</code>
     /// <summary>
     /// Get the boolean value of a hint variable.

@@ -181,7 +181,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_Vulkan_GetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_Vulkan_GetPresentationSupport(VkInstance instance, VkPhysicalDevice physicalDevice, Uint32 queueFamilyIndex);</code>
     /// <summary>

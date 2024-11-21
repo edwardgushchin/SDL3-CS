@@ -46,7 +46,7 @@ public static partial class SDL
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public delegate bool WindowsMessageHook(IntPtr userdata, IntPtr msg);
     
     
@@ -55,7 +55,7 @@ public static partial class SDL
     /// Platform specific functions for UNIX
     /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public delegate bool X11EventHook(IntPtr userdata, IntPtr xevent);
     
     
@@ -79,5 +79,5 @@ public static partial class SDL
     /// <code>typedef void (SDLCALL *SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, SDL_bool granted);</code>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void RequestAndroidPermissionCallback(IntPtr userdata,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string permission, [MarshalAs(SDLBool)] bool granted);
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string permission, [MarshalAs(UnmanagedType.I1)] bool granted);
 }

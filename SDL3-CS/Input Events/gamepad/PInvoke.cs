@@ -36,7 +36,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_AddGamepadMappingsFromIO(IntPtr src, [MarshalAs(SDLBool)] bool closeio);
+    private static partial int SDL_AddGamepadMappingsFromIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_AddGamepadMappingsFromIO(SDL_IOStream *src, SDL_bool closeio);</code>
     /// <summary>
     /// <para>Load a set of gamepad mappings from an <see cref="IOStream"/>.</para>
@@ -202,7 +202,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasGamepad();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasGamepad(void);</code>
     /// <summary>
@@ -249,7 +249,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_IsGamepad(uint instanceID);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_IsGamepad(SDL_JoystickID instance_id);</code>
     /// <summary>
@@ -734,7 +734,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GamepadConnected(IntPtr gamepad);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GamepadConnected(SDL_Gamepad *gamepad);</code>
     /// <summary>
@@ -768,7 +768,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetGamepadEventsEnabled([MarshalAs(SDLBool)] bool enabled);
+    private static partial void SDL_SetGamepadEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetGamepadEventsEnabled(SDL_bool enabled);</code>
     /// <summary>
     /// <para>Set the state of gamepad event processing.</para>
@@ -783,7 +783,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GamepadEventsEnabled();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GamepadEventsEnabled(void);</code>
     /// <summary>
@@ -926,7 +926,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GamepadHasAxis(IntPtr gamepad, GamepadAxis axis);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GamepadHasAxis(SDL_Gamepad *gamepad, SDL_GamepadAxis axis);</code>
     /// <summary>
@@ -1003,7 +1003,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GamepadHasButton(IntPtr gamepad, GamepadButton button);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GamepadHasButton(SDL_Gamepad *gamepad, SDL_GamepadButton button);</code>
     /// <summary>
@@ -1124,7 +1124,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GamepadHasSensor(IntPtr gamepad, SensorType type);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GamepadHasSensor(SDL_Gamepad *gamepad, SDL_SensorType type);</code>
     /// <summary>
@@ -1142,7 +1142,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetGamepadSensorEnabled(IntPtr gamepad, SensorType type, 
-        [MarshalAs(SDLBool)]bool enabled);
+        [MarshalAs(UnmanagedType.I1)]bool enabled);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetGamepadSensorEnabled(SDL_Gamepad *gamepad, SDL_SensorType type, SDL_bool enabled);</code>
     /// <summary>
     /// <para>Set whether data reporting for a gamepad sensor is enabled.</para>
@@ -1160,7 +1160,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GamepadSensorEnabled(IntPtr gamepd, SensorType type);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GamepadSensorEnabled(SDL_Gamepad *gamepad, SDL_SensorType type);</code>
     /// <summary>

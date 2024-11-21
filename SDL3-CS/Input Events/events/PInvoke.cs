@@ -98,7 +98,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasEvent(uint type);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasEvent(Uint32 type);</code>
     /// <summary>
@@ -114,7 +114,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasEvents(uint minType, uint maxType);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasEvents(Uint32 minType, Uint32 maxType);</code>
     /// <summary>
@@ -178,7 +178,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_PollEvent(out Event e);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
     /// <summary>
@@ -209,7 +209,7 @@ public static partial class SDL
 
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_WaitEvent(out Event e);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
     /// <summary>
@@ -329,7 +329,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetEventFilter(out EventFilter filter, out IntPtr userdata);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);</code>
     /// <summary>
@@ -410,7 +410,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(SDLBool)] bool enabled);
+    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventEnabled(Uint32 type, SDL_bool enabled);</code>
     /// <summary>
     /// Set the state of processing events by type.
@@ -423,7 +423,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_EventEnabled(uint type);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_EventEnabled(Uint32 type);</code>
     /// <summary>

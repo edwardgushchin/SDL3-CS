@@ -21,7 +21,6 @@
  */
 #endregion
 
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -30,8 +29,6 @@ namespace SDL3;
 public static partial class SDL
 {
     private const string SDLLibrary = "SDL3";
-    
-    public const UnmanagedType SDLBool = UnmanagedType.I1;
 
     static SDL()
     {

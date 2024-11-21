@@ -493,7 +493,7 @@ public static partial class SDL
 
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_hid_ble_scan([MarshalAs(SDLBool)] bool active);
+    private static partial void SDL_hid_ble_scan([MarshalAs(UnmanagedType.I1)] bool active);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_hid_ble_scan(SDL_bool active);</code>
     /// <summary>
     /// Start or stop a BLE scan on iOS and tvOS to pair Steam Controllers.

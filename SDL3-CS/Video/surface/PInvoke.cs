@@ -252,7 +252,7 @@ public static partial class SDL
     /// <seealso cref="LoadBMP_IO"/>
     /// <seealso cref="SaveBMP"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveBMP_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SaveBMPIO(IntPtr surface, IntPtr dst, [MarshalAs(SDLBool)] bool closeio);
+    public static partial int SaveBMPIO(IntPtr surface, IntPtr dst, [MarshalAs(UnmanagedType.I1)] bool closeio);
     
 
     /// <summary>
@@ -289,12 +289,12 @@ public static partial class SDL
     /// <seealso cref="LockSurface"/>
     /// <seealso cref="UnlockSurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceRLE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetSurfaceRLE(IntPtr surface, [MarshalAs(SDLBool)] bool enabled);
+    public static partial int SetSurfaceRLE(IntPtr surface, [MarshalAs(UnmanagedType.I1)] bool enabled);
     
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_SurfaceHasRLE(IntPtr surface);
     /// <summary>
     /// Returns whether the surface is RLE enabled.
@@ -328,7 +328,7 @@ public static partial class SDL
     /// <seealso cref="SetSurfaceRLE"/>
     /// <seealso cref="SurfaceHasColorKey"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetSurfaceColorKey(IntPtr surface, [MarshalAs(SDLBool)] bool enabled, uint key);
+    public static partial int SetSurfaceColorKey(IntPtr surface, [MarshalAs(UnmanagedType.I1)] bool enabled, uint key);
     
     
     /// <summary>
@@ -343,7 +343,7 @@ public static partial class SDL
     /// <seealso cref="SetSurfaceColorKey"/>
     /// <seealso cref="GetSurfaceColorKey"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SurfaceHasColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool SurfaceHasColorKey(IntPtr surface);
     
 
@@ -477,7 +477,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceClipRect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool SetSurfaceClipRect(IntPtr surface, Rect rect);
     
 
@@ -617,7 +617,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(SDLBool)] bool linear);
+    private static partial int SDL_PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
     /// <summary>
     /// Premultiply the alpha on a block of pixels.
     /// </summary>
@@ -650,7 +650,7 @@ public static partial class SDL
     /// <see cref="GetError()"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplySurfaceAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int PremultiplySurfaceAlpha(IntPtr surface, [MarshalAs(SDLBool)] bool linear);
+    public static partial int PremultiplySurfaceAlpha(IntPtr surface, [MarshalAs(UnmanagedType.I1)] bool linear);
     
     
     /// <summary>

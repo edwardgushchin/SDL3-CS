@@ -34,7 +34,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasMouse();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasMouse(void);</code>
     /// <summary>
@@ -224,7 +224,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetRelativeMouseMode([MarshalAs(SDLBool)] bool enabled);
+    private static partial int SDL_SetRelativeMouseMode([MarshalAs(UnmanagedType.I1)] bool enabled);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetRelativeMouseMode(SDL_bool enabled);</code>
     /// <summary>
     /// <para>Set relative mouse mode.</para>
@@ -242,7 +242,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_CaptureMouse([MarshalAs(SDLBool)] bool enabled);
+    private static partial int SDL_CaptureMouse([MarshalAs(UnmanagedType.I1)] bool enabled);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_CaptureMouse(SDL_bool enabled);</code>
     /// <summary>
     /// <para>Capture the mouse and to track input outside an SDL window.</para>
@@ -284,7 +284,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRelativeMouseMode();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetRelativeMouseMode(void);</code>
     /// <summary>
@@ -478,7 +478,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_CursorVisible();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_CursorVisible(void);</code>
     /// <summary>

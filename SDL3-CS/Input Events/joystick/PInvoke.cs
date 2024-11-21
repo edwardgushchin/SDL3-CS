@@ -55,7 +55,7 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(SDLBool)]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	private static partial bool SDL_HasJoystick();
 	/// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasJoystick(void);</code>
 	/// <summary>
@@ -342,7 +342,7 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(SDLBool)]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	private static partial bool SDL_IsJoystickVirtual(uint instanceID);
 	/// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_IsJoystickVirtual(SDL_JoystickID instance_id);</code>
 	/// <summary>Query whether or not a joystick is virtual.</summary>
@@ -765,7 +765,7 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(SDLBool)]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	private static partial bool SDL_JoystickConnected(IntPtr joystick);
 	/// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_JoystickConnected(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -872,7 +872,7 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_SetJoystickEventsEnabled([MarshalAs(SDLBool)] bool enabled);
+	private static partial void SDL_SetJoystickEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetJoystickEventsEnabled(SDL_bool enabled);</code>
 	/// <summary>
 	/// Set the state of joystick event processing.
@@ -890,7 +890,7 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(SDLBool)]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	private static partial bool SDL_JoystickEventsEnabled();
 	/// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_JoystickEventsEnabled(void);</code>
 	/// <summary>
@@ -948,7 +948,7 @@ public static partial class SDL
 	
 	[LibraryImport(SDLLibrary)]
 	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(SDLBool)]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	private static partial bool SDL_GetJoystickAxisInitialState(IntPtr joystick, int axis, out short state);
 	/// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetJoystickAxisInitialState(SDL_Joystick *joystick, int axis, Sint16 *state);</code>
 	/// <summary>

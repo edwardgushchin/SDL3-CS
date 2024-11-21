@@ -29,7 +29,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasKeyboard();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasKeyboard(void);</code>
     /// <summary>
@@ -393,7 +393,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="StartTextInput"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TextInputActive"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool TextInputActive(IntPtr window);
     
     
@@ -474,7 +474,7 @@ public static partial class SDL
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="ScreenKeyboardShown"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasScreenKeyboardSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool HasScreenKeyboardSupport();
     
     
@@ -487,7 +487,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="HasScreenKeyboardSupport"/>
     [LibraryImport(SDLLibrary, EntryPoint = "ScreenKeyboardShown"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool ScreenKeyboardShown(IntPtr window);
     
 }

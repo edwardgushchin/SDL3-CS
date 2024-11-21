@@ -156,7 +156,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_StorageReady(IntPtr storage);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_StorageReady(SDL_Storage *storage);</code>
     /// <summary>

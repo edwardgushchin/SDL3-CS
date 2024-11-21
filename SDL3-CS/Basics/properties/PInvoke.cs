@@ -225,7 +225,7 @@ public static partial class SDL
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_SetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(SDLBool)] bool value);
+        [MarshalAs(UnmanagedType.I1)] bool value);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, SDL_bool value);</code>
     /// <summary>
     /// Set a boolean property in a group of properties.
@@ -242,7 +242,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasProperty(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
@@ -375,9 +375,9 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(SDLBool)] bool defaultValue);
+        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, SDL_bool default_value);</code>
     /// <summary>
     /// <para>Get a boolean property from a group of properties.</para>

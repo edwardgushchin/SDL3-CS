@@ -26,21 +26,19 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>Initialization flags for <see cref="Init"/> and/or <see cref="InitSubSystem"/></para>
-    /// <para>These are the flags which may be passed to <see cref="Init"/>. You should specify
+    /// <para>Initialization flags for <see cref="Init(InitFlags)"/> and/or <see cref="InitSubSystem(InitFlags)"/></para>
+    /// <para>These are the flags which may be passed to <see cref="Init(InitFlags)"/>. You should specify
     /// the subsystems which you will be using in your application.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
-    /// <seealso cref="Init"/>
-    /// <seealso cref="Quit"/>
-    /// <seealso cref="InitSubSystem"/>
-    /// <seealso cref="QuitSubSystem"/>
-    /// <seealso cref="WasInit"/>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <seealso cref="Init(InitFlags)"/>
+    /// <seealso cref="Quit()"/>
+    /// <seealso cref="InitSubSystem(InitFlags)"/>
+    /// <seealso cref="QuitSubSystem(InitFlags)"/>
+    /// <seealso cref="WasInit(InitFlags)"/>
     [Flags]
     public enum InitFlags : uint
     {
-        Timer =     0x00000001u,
-        
         /// <summary>
         /// <see cref="Audio"/> implies <see cref="Events"/>
         /// </summary>

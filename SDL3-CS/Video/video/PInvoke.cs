@@ -301,7 +301,7 @@ public static partial class SDL
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate,
-        [MarshalAs(SDLBool)] bool includeHighDensityModes);
+        [MarshalAs(UnmanagedType.I1)] bool includeHighDensityModes);
     /// <code>extern SDL_DECLSPEC const SDL_DisplayMode *SDLCALL SDL_GetClosestFullscreenDisplayMode(SDL_DisplayID displayID, int w, int h, float refresh_rate, SDL_bool include_high_density_modes);</code>
     /// <summary>
     /// <para>Get the closest match to the requested display mode.</para>
@@ -1250,7 +1250,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFlags"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowBordered"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowBordered(IntPtr window, [MarshalAs(SDLBool)]bool bordered);
+    public static partial int SetWindowBordered(IntPtr window, [MarshalAs(UnmanagedType.I1)]bool bordered);
     
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable);</code>
@@ -1266,7 +1266,7 @@ public static partial class SDL
     ///          <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFlags"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowResizable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowResizable(IntPtr window, [MarshalAs(SDLBool)] bool resizable);
+    public static partial int SetWindowResizable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool resizable);
     
     
     
@@ -1283,7 +1283,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <seealso cref="GetWindowFlags"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAlwaysOnTop"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(SDLBool)] bool onTop);
+    public static partial int SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool onTop);
     
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowWindow(SDL_Window *window);</code>
@@ -1415,7 +1415,7 @@ public static partial class SDL
     /// <seealso cref="SetWindowFullscreenMode"/>
     /// <seealso cref="SyncWindow"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreen"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowFullscreen(IntPtr window, [MarshalAs(SDLBool)] bool fullscreen);
+    public static partial int SetWindowFullscreen(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fullscreen);
     
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SyncWindow(SDL_Window *window);</code>
@@ -1453,7 +1453,7 @@ public static partial class SDL
     /// <returns>True if there is a surface associated with the window, otherwise false.</returns>
     /// <seealso cref="GetWindowSurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowHasSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool WindowHasSurface(IntPtr window);
     
     
@@ -1588,7 +1588,7 @@ public static partial class SDL
     /// <seealso cref="GetWindowKeyboardGrab"/>
     /// <seealso cref="SetWindowMouseGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowKeyboardGrab(IntPtr window, [MarshalAs(SDLBool)] bool grabbed);
+    public static partial int SetWindowKeyboardGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed);
     
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowMouseGrab(SDL_Window *window, SDL_bool grabbed);</code>
@@ -1603,7 +1603,7 @@ public static partial class SDL
     /// <seealso cref="GetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowMouseGrab(IntPtr window, [MarshalAs(SDLBool)] bool grabbed);
+    public static partial int SetWindowMouseGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed);
     
     
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetWindowKeyboardGrab(SDL_Window *window);</code>
@@ -1614,7 +1614,7 @@ public static partial class SDL
     /// <returns><c>true</c> if keyboard is grabbed, and <c>false</c> otherwise.</returns>
     /// <seealso cref="SetWindowKeyboardGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool GetWindowKeyboardGrab(IntPtr window);
     
     
@@ -1626,7 +1626,7 @@ public static partial class SDL
     /// <returns><c>true</c> if mouse is grabbed, and <c>false</c> otherwise.</returns>
     /// <seealso cref="SetWindowKeyboardGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool GetWindowMouseGrab(IntPtr window);
     
     
@@ -1727,7 +1727,7 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFocusable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int SetWindowFocusable(IntPtr window, [MarshalAs(SDLBool)] bool focusable);
+    public static partial int SetWindowFocusable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool focusable);
     
     
     
@@ -1837,7 +1837,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_ScreenSaverEnabled();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ScreenSaverEnabled(void);</code>
     /// <summary>
@@ -1999,7 +1999,7 @@ public static partial class SDL
     
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GL_ExtensionSupported([MarshalAs(UnmanagedType.LPUTF8Str)] string extension);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GL_ExtensionSupported(const char *extension);</code>
     /// <summary>

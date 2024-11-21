@@ -94,7 +94,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasRectIntersection(in Rect a, in Rect b);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasRectIntersection(const SDL_Rect * A, const SDL_Rect * B);</code>
     /// <summary>
@@ -111,7 +111,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRectIntersection(in Rect a, in Rect b, out Rect result);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetRectIntersection(const SDL_Rect * A, const SDL_Rect * B, SDL_Rect * result);</code>
     /// <summary>
@@ -145,7 +145,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, ref Rect clip, out Rect result);
     /// <summary>
     /// <para>Calculate a minimal rectangle enclosing a set of points.</para>
@@ -169,7 +169,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRectAndLineIntersection(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
     /// <summary>
     /// <para>Calculate the intersection of a rectangle and line segment.</para>
@@ -289,7 +289,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_HasRectIntersectionFloat(in FRect a, in FRect b);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasRectIntersectionFloat(const SDL_FRect * A, const SDL_FRect * B);</code>
     /// <summary>
@@ -305,7 +305,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRectIntersectionFloat(in FRect a, in FRect b, out FRect result);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetRectIntersectionFloat(const SDL_FRect * A, const SDL_FRect * B, SDL_FRect * result);</code>
     /// <summary>
@@ -341,7 +341,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, ref FRect clip, out FRect result);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetRectEnclosingPointsFloat(const SDL_FPoint * points, int count, const SDL_FRect * clip, SDL_FRect * result);</code>
     /// <summary>
@@ -367,7 +367,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool SDL_GetRectAndLineIntersectionFloat(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
     /// <summary>
     /// <para>Calculate the intersection of a rectangle and line segment with float

@@ -33,7 +33,7 @@ public static partial class SDL
     /// <code>SDL_bool (SDLCALL *ready)(void *userdata);</code>
     /// <summary>Optional, returns whether the storage is currently ready for access</summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: MarshalAs(SDLBool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public delegate bool ReadyDelegate(IntPtr userdata);
 
     
