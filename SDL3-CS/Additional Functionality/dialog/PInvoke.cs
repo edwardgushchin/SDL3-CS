@@ -56,7 +56,7 @@ public static partial class SDL
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="filters">a list of <see cref="DialogFileFilter"/>'s, may be <c>null</c>. Not all
+    /// <param name="filters">a list of filters, may be <c>null</c>. Not all
     /// platforms support this option, and platforms that do support
     /// it may allow the user to ignore the filters.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
@@ -130,7 +130,7 @@ public static partial class SDL
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="filters">a list of <see cref="DialogFileFilter"/>'s, may be <c>null</c>. Not all
+    /// <param name="filters">a list of filters, may be <c>null</c>. Not all
     /// platforms support this option, and platforms that do support
     /// it may allow the user to ignore the filters.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
