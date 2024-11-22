@@ -184,6 +184,11 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 |--------------------------------------------------------------| --------------------------------------------------------------------------------------- |------------------------------------------------------------------|
 | [Audio Playback, Recording, and Mixing](SDL3-CS/Audio/audio) | [SDL_audio.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_audio.h)     | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)    |
 
+### GPU
+
+| **View information and functions related to...** | **View the header**                                                               | **Stage**                                                        |
+|--------------------------------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------------------|
+| [3D Rendering and GPU Compute](SDL3-CS/GPU/gpu)  | [SDL_gpu.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gpu.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)    |
 
 ### Threads
 
