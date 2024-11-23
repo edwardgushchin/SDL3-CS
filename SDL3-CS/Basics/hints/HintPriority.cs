@@ -26,8 +26,9 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// An enumeration of hint priorities.
+    /// <para>An enumeration of hint priorities.</para>
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum HintPriority
     {
         Default,
