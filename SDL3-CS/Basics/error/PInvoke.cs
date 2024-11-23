@@ -28,72 +28,103 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);</code>
+    /// <summary>
+    /// <para>Calling this function will replace any previous error message that was set.</para>
+    /// <para>This function always returns false, since SDL frequently uses false to
+    /// signify a failing result, leading to this idiom:</para>
+    /// <code>
+    /// if (error_code) {
+    ///     return SetError("This operation has failed: {error_code});
+    /// }
+    /// </code>
+    /// </summary>
+    /// <param name="message">a printf()-style message format string.</param>
+    /// <returns>false</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ClearError()"/>
+    /// <seealso cref="GetError()"/>
+    /// <seealso cref="SetErrorV(string,nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetErrorV(SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap) SDL_PRINTF_VARARG_FUNCV(1);</code>
     /// <summary>
     /// <para>Set the SDL error message for the current thread.</para>
     /// <para>Calling this function will replace any previous error message that was set.</para>
-    /// <para>This function always returns -1, since SDL frequently uses -1 to signify an
-    /// failing result, leading to this idiom:</para>
     /// </summary>
-    /// <param name="message">style message format string</param>
-    /// <returns>always -1</returns>
-    /// <seealso cref="ClearError"/>
-    /// <seealso cref="GetError"/>
-    public static int SetError(string message) => SDL_SetError(message);
+    /// <param name="fmt">a printf()-style message format string.</param>
+    /// <param name="ap">a variable argument list.</param>
+    /// <returns>false</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ClearError()"/>
+    /// <seealso cref="GetError()"/>
+    /// <seealso cref="SetError(string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetErrorV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetErrorV([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, IntPtr ap);
     
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_OutOfMemory();
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_OutOfMemory(void);</code>
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_OutOfMemory(void);</code>
     /// <summary>
     /// <para>Set an error indicating that memory allocation failed.</para>
-    /// <para>This function does not do any memory allocation.</para>
     /// </summary>
-    /// <returns>returns -1.</returns>
-    public static int OutOfMemory() => SDL_OutOfMemory();
+    /// <remarks>This function does not do any memory allocation.</remarks>
+    /// <returns>false</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OutOfMemory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool OutOfMemory();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetError();
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetError(void);</code>
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetError(void);</code>
     /// <summary>
     /// <para>Retrieve a message about the last error that occurred on the current
     /// thread.</para>
-    /// <para>It is possible for multiple errors to occur before calling <see cref="GetError"/>.
+    /// <para>It is possible for multiple errors to occur before calling <see cref="GetError()"/>.
     /// Only the last error is returned.</para>
     /// <para>The message is only applicable when an SDL function has signaled an error.
     /// You must check the return values of SDL function calls to determine when to
-    /// appropriately call <see cref="GetError"/>. You should *not* use the results of
-    /// <see cref="GetError"/> to decide if an error has occurred! Sometimes SDL will set
+    /// appropriately call <see cref="GetError()"/>. You should <b>not</b> use the results of
+    /// <see cref="GetError()"/> to decide if an error has occurred! Sometimes SDL will set
     /// an error string even when reporting success.</para>
-    /// <para>SDL will *not* clear the error string for successful API calls. You *must*
+    /// <para>SDL will <b>not</b> clear the error string for successful API calls. You <b>must</b>
     /// check return values for failure cases before you can assume the error
-    /// string applies.</para>
+    /// string applies.
+    /// </para>
     /// <para>Error strings are set per-thread, so an error set in a different thread
     /// will not interfere with the current thread's operation.</para>
-    /// <para>The returned string does **NOT** follow the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>! The pointer
-    /// is valid until the current thread's error string is changed, so the caller
-    /// should make a copy if the string is to be used after calling into SDL
-    /// again.</para>
+    /// <para>The returned value is a thread-local string which will remain valid until
+    /// the current thread's error string is changed. The caller should make a copy
+    /// if the value is needed after the next SDL API call.</para>
     /// </summary>
     /// <returns>a message with information about the specific error that occurred,
     /// or an empty string if there hasn't been an error message set since
-    /// the last call to <see cref="ClearError"/>.</returns>
-    /// <seealso cref="ClearError"/>
-    /// <seealso cref="SetError"/>
-    public static string? GetError() => Marshal.PtrToStringUTF8(SDL_GetError());
+    /// the last call to <see cref="ClearError()"/>.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ClearError()"/>
+    /// <seealso cref="SetError(string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetError();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ClearError();
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearError(void);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearError(void);</code>
     /// <summary>
     /// Clear any previous error message for this thread.
     /// </summary>
-    /// <returns>returns 0.</returns>
-    /// <seealso cref="GetError"/>
-    /// <seealso cref="SetError"/>
-    public static int ClearError() => SDL_ClearError();
+    /// <returns>true.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetError()"/>
+    /// <seealso cref="SetError(string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool ClearError();
 }

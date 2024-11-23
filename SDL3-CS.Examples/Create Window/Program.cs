@@ -29,12 +29,6 @@ internal static class Program
 {
     private static void Main()
     {
-        if (!SDL.Init(SDL.InitFlags.Video))
-        {
-            Console.WriteLine($"SDL could not initialize! SDL Error: {SDL.GetError()}");
-            return;
-        }
-        
         var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
         
         if (window == IntPtr.Zero)
