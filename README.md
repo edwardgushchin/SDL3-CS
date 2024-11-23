@@ -252,7 +252,9 @@ Do you have an idea or found a bug? Please open an [issue](https://github.com/ed
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
-If you have any feedback, please reach out to us at [eduardgushchin@yandex.ru](mailto://eduardgushchin@yandex.ru) or https://t.me/sdl3cs
+If you have any feedback, please reach out to us at [eduardgushchin@yandex.ru](mailto://eduardgushchin@yandex.ru).
+
+We also have a [chat](https://t.me/sdl3cs) in Telegram, where I am ready to answer any of your questions.
 
 
 ## 💻 Authors
