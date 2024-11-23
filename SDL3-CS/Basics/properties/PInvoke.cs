@@ -28,58 +28,51 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetGlobalProperties();
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetGlobalProperties(void);</code>
     /// <summary>
     /// Get the global SDL properties.
     /// </summary>
-    /// <returns>
-    /// a valid property ID on success or 0 on failure; call <see cref="GetError"/> for more information
-    /// </returns>
-    public static uint GetGlobalProperties() => SDL_GetGlobalProperties();
+    /// <returns>a valid property ID on success or <c>0</c> on failure; call
+    /// <see cref="GetError()"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGlobalProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetGlobalProperties();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_CreateProperties();
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_CreateProperties(void);</code>
     /// <summary>
     /// <para>Create a group of properties.</para>
-    /// <para>All properties are automatically destroyed when <see cref="Quit"/> is called.</para>
+    /// <para>All properties are automatically destroyed when <see cref="Quit()"/> is called.</para>
     /// </summary>
-    /// <returns>
-    /// an ID for a new group of properties, or 0 on failure; call
-    ///          <see cref="GetError"/> for more information.
-    /// </returns>
-    /// <remarks>
-    /// It is safe to call this function from any thread.
-    /// </remarks>
-    public static uint CreateProperties() => SDL_CreateProperties();
+    /// <returns>an ID for a new group of properties, or <c>0</c> on failure; call
+    /// <see cref="GetError()"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="DestroyProperties(uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint CreateProperties();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_CopyProperties(uint src, uint dst);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);</code>
     /// <summary>
     /// <para>Copy a group of properties.</para>
     /// <para>Copy all the properties from one group of properties to another, with the
     /// exception of properties requiring cleanup (set using
-    /// <see cref="SetPointerPropertyWithCleanup"/>), which will not be copied. Any
+    /// <see cref="SetPointerPropertyWithCleanup(uint,string,nint,CleanupPropertyCallback,nint)"/>), which will not be copied. Any
     /// property that already exists on `dst` will be overwritten.</para>
     /// </summary>
     /// <param name="src">the properties to copy.</param>
     /// <param name="dst">the destination properties.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information</returns>
-    /// <remarks>
-    /// It is safe to call this function from any thread.
-    /// </remarks>
-    public static int CopyProperties(uint src, uint dst) => SDL_CopyProperties(src, dst);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool CopyProperties(uint src, uint dst);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_LockProperties(uint props);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_LockProperties(SDL_PropertiesID props);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Lock a group of properties.</para>
     /// <para>Obtain a multi-threaded lock for these properties. Other threads will wait
@@ -90,86 +83,85 @@ public static partial class SDL
     /// or want to guarantee that properties being queried aren't freed in another
     /// thread.</para>
     /// </summary>
-    /// <param name="props">props the properties to lock.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="UnlockProperties"/>
-    public static int LockProperties(uint props) => SDL_LockProperties(props);
+    /// <param name="props">the properties to lock.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="UnlockProperties(uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool LockProperties(uint props);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnlockProperties(uint props);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// Unlock a group of properties.
     /// </summary>
-    /// <param name="props">props the properties to unlock</param>
-    /// <remarks>It is safe to call this function from any thread</remarks>
-    /// <seealso cref="LockProperties"/>
-    public static void UnlockProperties(uint props) => SDL_UnlockProperties(props);
+    /// <param name="props">the properties to unlock.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="LockProperties(uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void UnlockProperties(uint props);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetPointerPropertyWithCleanup(uint props, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr value, CleanupPropertyCallback cleanup, 
-        IntPtr userdata);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);</code>
     /// <summary>
     /// <para>Set a pointer property in a group of properties with a cleanup function
     /// that is called when the property is deleted.</para>
     /// <para>The cleanup function is also called if setting the property fails for any
     /// reason.</para>
     /// <para>For simply setting basic data types, like numbers, bools, or strings, use
-    /// SDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty
+    /// <see cref="SetNumberProperty(uint,string,long)"/>, <see cref="SetBooleanProperty(uint,string,bool)"/>, or <see cref="SetStringProperty(uint,string,string)"/>
     /// instead, as those functions will handle cleanup on your behalf. This
     /// function is only for more complex, custom data.</para>
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to modify.</param>
-    /// <param name="value">the new value of the property, or NULL to delete the property.</param>
-    /// <param name="cleanup">the function to call when this property is deleted, or NULL
-    ///                       if no cleanup is necessary.</param>
+    /// <param name="value">the new value of the property, or <c>null</c> to delete the property.</param>
+    /// <param name="cleanup">the function to call when this property is deleted, or <c>null</c>
+    /// if no cleanup is necessary.</param>
     /// <param name="userdata">a pointer that is passed to the cleanup function.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetPointerProperty"/>
-    /// <seealso cref="SetPointerProperty"/>
-    /// <seealso cref="CleanupPropertyCallback"/>
-    public static int SetPointerPropertyWithCleanup(uint props, string name, IntPtr value, 
-        CleanupPropertyCallback cleanup, IntPtr userdata) => 
-        SDL_SetPointerPropertyWithCleanup(props, name, value, cleanup, userdata);
+    /// <returns>true on success or false on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPointerProperty(uint,string,nint)"/>
+    /// <seealso cref="SetPointerProperty(uint,string,nint)"/>
+    /// <seealso cref="CleanupPropertyCallback(IntPtr, IntPtr)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPointerPropertyWithCleanup"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetPointerPropertyWithCleanup(uint props, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr value, CleanupPropertyCallback cleanup, 
+        IntPtr userdata);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        IntPtr value);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);</code>
     /// <summary>
-    /// Set a pointer property in a group of properties.
+    /// <para>Set a pointer property in a group of properties.</para>
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to modify.</param>
-    /// <param name="value">the new value of the property, or NULL to delete the property.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetPointerProperty"/>
-    /// <seealso cref="HasProperty"/>
-    /// <seealso cref="SetBooleanProperty"/>
-    /// <seealso cref="SetFloatProperty"/>
-    /// <seealso cref="SetNumberProperty"/>
-    /// <seealso cref="SetPointerPropertyWithCleanup"/>
-    /// <seealso cref="SetStringProperty"/>
-    public static int SetPointerProperty(uint props, string name, IntPtr value) => 
-        SDL_SetPointerProperty(props, name, value);
+    /// <param name="value">the new value of the property, or <c>null</c> to delete the property.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPointerProperty(uint,string,nint)"/>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    /// <seealso cref="SetBooleanProperty(uint,string,bool)"/>
+    /// <seealso cref="SetFloatProperty(uint,string,float)"/>
+    /// <seealso cref="SetNumberProperty(uint,string,long)"/>
+    /// <seealso cref="SetPointerPropertyWithCleanup(uint,string,nint,CleanupPropertyCallback,nint)"/>
+    /// <seealso cref="SetStringProperty(uint,string,string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        IntPtr value);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? value);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);</code>
     /// <summary>
     /// <para>Set a string property in a group of properties.</para>
     /// <para>This function makes a copy of the string; the caller does not have to
@@ -177,88 +169,87 @@ public static partial class SDL
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to modify.</param>
-    /// <param name="value">the new value of the property, or NULL to delete the property.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetStringProperty"/>
-    public static int SetStringProperty(uint props, string name, string? value) => 
-        SDL_SetStringProperty(props, name, value);
+    /// <param name="value">the new value of the property, or <c>null</c> to delete the property.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetStringProperty(uint,string,string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetStringProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? value);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        long value
-    );
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 value);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 value);</code>
     /// <summary>
     /// Set an integer property in a group of properties.
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to modify.</param>
     /// <param name="value">the new value of the property.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetNumberProperty"/>
-    public static int SetNumberProperty(uint props, string name, long value) => 
-        SDL_SetNumberProperty(props, name, value);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetNumberProperty(uint,string,long)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetNumberProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        long value);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        float value);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);</code>
     /// <summary>
     /// Set a floating point property in a group of properties.
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to modify.</param>
     /// <param name="value">the new value of the property.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetFloatProperty"/>
-    public static int SetFloatProperty(uint props, string name, float value) => 
-        SDL_SetFloatProperty(props, name, value);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetFloatProperty(uint,string,float)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetFloatProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        float value);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_SetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(UnmanagedType.I1)] bool value);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, SDL_bool value);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, bool value);</code>
     /// <summary>
     /// Set a boolean property in a group of properties.
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to modify.</param>
     /// <param name="value">the new value of the property.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetBooleanProperty"/>
-    public static int SetBooleanProperty(uint props, string name, bool value) => 
-        SDL_SetBooleanProperty(props, name, value);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetBooleanProperty(uint,string,bool)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetBooleanProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.I1)] bool value);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_HasProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasProperty(SDL_PropertiesID props, const char *name);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasProperty(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
     /// Return whether a property exists in a group of properties.
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
-    /// <returns>true if the property exists, or false if it doesn't.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetPropertyType"/>
-    public static bool HasProperty(uint props, string name) => SDL_HasProperty(props, name);
+    /// <returns><c>true</c> if the property exists, or <c>false</c> if it doesn't.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPropertyType(uint,string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool HasProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial PropertyType SDL_GetPropertyType(uint props, 
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC SDL_PropertyType SDLCALL SDL_GetPropertyType(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
     /// Get the type of a property in a group of properties.
@@ -266,152 +257,152 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <returns>the type of the property, or <see cref="PropertyType.Invalid"/> if it is
-    ///          not set.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    public static PropertyType GetPropertyType(uint props, string name) => SDL_GetPropertyType(props, name);
+    /// not set.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPropertyType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial PropertyType GetPropertyType(uint props, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        IntPtr defaultValue
-    );
-    /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_GetPointerProperty(SDL_PropertiesID props, const char *name, void *default_value);</code>
+    /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetPointerProperty(SDL_PropertiesID props, const char *name, void *default_value);</code>
     /// <summary>
     /// <para>Get a pointer property from a group of properties.</para>
     /// <para>By convention, the names of properties that SDL exposes on objects will
-    /// start with "SDL.", and properties that SDL uses internally will start with
-    /// "SDL.internal.". These should be considered read-only and should not be
+    /// start with <c>"SDL."</c>, and properties that SDL uses internally will start with
+    /// <c>"SDL.internal."</c>. These should be considered read-only and should not be
     /// modified by applications.</para>
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or defaultValue if it is not set or
-    ///          not a pointer property.</returns>
-    /// <remarks>It is safe to call this function from any thread, although
-    ///               the data returned is not protected and could potentially be
-    ///               freed if you call <see cref="SetPointerProperty"/> or
-    ///               <see cref="ClearProperty"/> on these properties from another thread.
-    ///               If you need to avoid this, use <see cref="LockProperties"/> and
-    ///               <see cref="UnlockProperties"/>.</remarks>
-    /// <seealso cref="GetBooleanProperty"/>
-    /// <seealso cref="GetFloatProperty"/>
-    /// <seealso cref="GetNumberProperty"/>
-    /// <seealso cref="GetPropertyType"/>
-    /// <seealso cref="GetStringProperty"/>
-    /// <seealso cref="HasProperty"/>
-    /// <seealso cref="SetPointerProperty"/>
-    public static IntPtr GetPointerProperty(uint props, string name, IntPtr defaultValue) => 
-        SDL_GetPointerProperty(props, name, defaultValue);
+    /// <returns>the value of the property, or <c>'default_value'</c> if it is not set or
+    /// not a pointer property.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, although
+    /// the data returned is not protected and could potentially be
+    /// freed if you call <see cref="SetPointerProperty(uint,string,nint)"/> or
+    /// <see cref="ClearProperty(uint,string)"/> on these properties from another thread.
+    /// If you need to avoid this, use <see cref="LockProperties(uint)"/> and
+    /// <see cref="UnlockProperties(uint)"/>.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetBooleanProperty(uint,string,bool)"/>
+    /// <seealso cref="GetFloatProperty(uint,string,float)"/>
+    /// <seealso cref="GetNumberProperty(uint,string,long)"/>
+    /// <seealso cref="GetPropertyType(uint,string)"/>
+    /// <seealso cref="GetStringProperty(uint,string,string)"/>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    /// <seealso cref="SetPointerProperty(uint,string,nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        IntPtr defaultValue);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string defaultValue
-    );
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);</code>
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);</code>
     /// <summary>
-    /// <para>Get a string property from a group of properties.</para>
-    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// Get a string property from a group of properties.
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or defaultValue if it is not set or
-    ///          not a string property.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetPropertyType"/>
-    /// <seealso cref="HasProperty"/>
-    /// <seealso cref="SetStringProperty"/>
-    public static string GetStringProperty(uint props, string name, string defaultValue)
-    {
-        var result = SDL_GetStringProperty(props, name, defaultValue);
-        return Marshal.PtrToStringUTF8(result) ?? defaultValue;
-    }
+    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// not a string property.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, although
+    /// the data returned is not protected and could potentially be
+    /// freed if you call <see cref="SetStringProperty(uint,string,string)"/> or
+    /// <see cref="ClearProperty(uint,string)"/> on these properties from another thread.
+    /// If you need to avoid this, use <see cref="LockProperties(uint)"/> and
+    /// <see cref="UnlockProperties(uint)"/>.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPropertyType(uint,string)"/>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    /// <seealso cref="SetStringProperty(uint,string,string)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetStringProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string defaultValue);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial long SDL_GetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        long defaultValue);
     /// <code>extern SDL_DECLSPEC Sint64 SDLCALL SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);</code>
     /// <summary>
     /// <para>Get a number property from a group of properties.</para>
-    /// <para>You can use <see cref="GetPropertyType"/> to query whether the property exists and
+    /// <para>You can use <see cref="GetPropertyType(uint,string)"/> to query whether the property exists and
     /// is a number property.</para>
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or `defaultValue` if it is not set or
-    ///          not a number property.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetPropertyType"/>
-    /// <seealso cref="HasProperty"/>
-    /// <seealso cref="SetNumberProperty"/>
-    public static long GetNumberProperty(uint props, string name, long defaultValue) => 
-        SDL_GetNumberProperty(props, name, defaultValue);
+    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// not a number property.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPropertyType(uint,string)"/>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    /// <seealso cref="SetNumberProperty(uint,string,long)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumberProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial long GetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        long defaultValue);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        float defaultValue);
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);</code>
     /// <summary>
     /// <para>Get a floating point property from a group of properties.</para>
-    /// <para>You can use <see cref="GetPropertyType"/> to query whether the property exists and
+    /// <para>You can use <see cref="GetPropertyType(uint,string)"/> to query whether the property exists and
     /// is a floating point property.</para>
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or `default_value` if it is not set or
-    ///          not a float property.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    /// <seealso cref="GetPropertyType"/>
-    /// <seealso cref="HasProperty"/>
-    /// <seealso cref="SetFloatProperty"/>
-    public static float GetFloatProperty(uint props, string name, float defaultValue) => 
-        SDL_GetFloatProperty(props, name, defaultValue);
+    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// not a float property.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPropertyType(uint,string)"/>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    /// <seealso cref="SetFloatProperty(uint,string,float)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetFloatProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        float defaultValue);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_GetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, SDL_bool default_value);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, bool default_value);</code>
     /// <summary>
     /// <para>Get a boolean property from a group of properties.</para>
-    /// <para>You can use <see cref="GetPropertyType"/> to query whether the property exists and
+    /// <para>You can use <see cref="GetPropertyType(uint,string)"/> to query whether the property exists and
     /// is a boolean property.</para>
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or `defaultValue` if it is not set or
-    ///          not a float property.</returns>
-    public static bool GetBooleanProperty(uint props, string name, bool defaultValue) => 
-        SDL_GetBooleanProperty(props, name, defaultValue);
+    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// not a boolean property.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPropertyType(uint,string)"/>
+    /// <seealso cref="HasProperty(uint,string)"/>
+    /// <seealso cref="SetBooleanProperty(uint,string,bool)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBooleanProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ClearProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ClearProperty(SDL_PropertiesID props, const char *name);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearProperty(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
     /// Clear a property from a group of properties.
-    /// per property in the set.
     /// </summary>
     /// <param name="props">the properties to modify.</param>
     /// <param name="name">the name of the property to clear.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    public static int ClearProperty(uint props, string name) => SDL_ClearProperty(props, name);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ClearProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_EnumerateProperties(uint props, EnumeratePropertiesCallback callback, 
-        IntPtr userdata);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);</code>
     /// <summary>
     /// <para>Enumerate the properties contained in a group of properties.</para>
     /// <para>The callback function is called for each property in the group of
@@ -419,16 +410,17 @@ public static partial class SDL
     /// </summary>
     /// <param name="props">the properties to query.</param>
     /// <param name="callback">the function to call for each property.</param>
-    /// <param name="userdata">a pointer that is passed to `callback`.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <remarks>It is safe to call this function from any thread.</remarks>
-    public static int EnumerateProperties(uint props, EnumeratePropertiesCallback callback, IntPtr userdata) =>
-        SDL_EnumerateProperties(props, callback, userdata);
+    /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
+    /// <returns>true on success or false on failure; call <see cref="GetError()"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnumerateProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool EnumerateProperties(uint props, EnumeratePropertiesCallback callback, 
+        IntPtr userdata);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyProperties(uint props);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Destroy a group of properties.</para>
@@ -436,9 +428,11 @@ public static partial class SDL
     /// any.</para>
     /// </summary>
     /// <param name="props">the properties to destroy.</param>
-    /// <remarks>This function should not be called while these properties are
-    ///               locked or other threads might be setting or getting values
-    ///               from these properties.</remarks>
-    /// <seealso cref="CreateProperties"/>
-    public static void DestroyProperties(uint props) => SDL_DestroyProperties(props);
+    /// <threadsafety>This function should not be called while these properties are
+    /// locked or other threads might be setting or getting values
+    /// from these properties.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="CreateProperties()"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "DestroyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyProperties(uint props);
 }
