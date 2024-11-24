@@ -106,6 +106,7 @@ public static partial class SDL
     public static partial void UnlockProperties(uint props);
     
     
+    // ReSharper disable once InvalidXmlDocComment
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);</code>
     /// <summary>
     /// <para>Set a pointer property in a group of properties with a cleanup function
@@ -433,6 +434,6 @@ public static partial class SDL
     /// from these properties.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateProperties()"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "DestroyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyProperties(uint props);
 }
