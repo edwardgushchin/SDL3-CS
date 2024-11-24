@@ -27,8 +27,11 @@ namespace File_Dialog;
 
 internal static class Program
 {
+    [STAThread]
     private static void Main()
     {
+        SDL.SetLogPriorities(SDL.LogPriority.Trace);
+        
         var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
         
         if (window == IntPtr.Zero)
@@ -44,6 +47,8 @@ internal static class Program
             Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
             return;
         }
+        
+        SDL.SetRenderVSync(renderer, 1);
         
         var callback = new SDL.DialogFileCallback(DialogFileCallback);
 

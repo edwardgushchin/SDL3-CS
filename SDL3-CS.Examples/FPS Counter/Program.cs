@@ -27,8 +27,11 @@ namespace FPS_Counter;
 
 internal static class Program
 {
+    [STAThread]
     private static void Main()
     {
+        SDL.SetLogPriorities(SDL.LogPriority.Trace);
+        
         var window = SDL.CreateWindow("SDL3 FPS Counter", 800, 600, 0);
         
         if (window == IntPtr.Zero)

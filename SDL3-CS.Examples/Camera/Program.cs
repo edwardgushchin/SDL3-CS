@@ -27,8 +27,11 @@ namespace Camera;
 
 internal static class Program
 {
+    [STAThread]
     private static void Main()
     {
+        SDL.SetLogPriorities(SDL.LogPriority.Trace);
+        
         if (!SDL.Init(SDL.InitFlags.Camera))
         {
             Console.WriteLine($"SDL could not initialize! SDL Error: {SDL.GetError()}");
