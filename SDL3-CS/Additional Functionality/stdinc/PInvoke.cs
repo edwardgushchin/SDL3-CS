@@ -28,6 +28,24 @@ namespace SDL3;
 
 public partial class SDL
 {
+    /// <summary>
+    /// <para>Epsilon constant, used for comparing floating-point numbers.</para>
+    /// <para>Equals by default to platform-defined <c>FLT_EPSILON</c>, or
+    /// <c>1.1920928955078125e-07F</c> if that's not available.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    public const float FloatEpsilon = 1.1920928955078125e-07f;
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_free(void *mem);</code>
+    /// <summary>
+    /// <para>Free allocated memory.</para>
+    /// <para>The pointer is no longer valid after this call and cannot be dereferenced
+    /// anymore.</para>
+    /// <para>If <c>mem</c> is <c>null</c>, this function does nothing.</para>
+    /// </summary>
+    /// <param name="mem">a pointer to allocated memory, or <c>null</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void Free(IntPtr memblock);
+    public static partial void Free(IntPtr mem);
 }
