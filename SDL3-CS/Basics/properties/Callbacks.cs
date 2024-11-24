@@ -59,7 +59,7 @@ public static partial class SDL
     /// <threadsafety><see cref="EnumerateProperties(uint,EnumeratePropertiesCallback,nint)"/> holds a lock on <c>props</c> during this
     /// callback.</threadsafety>
     /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="EnumerateProperties"/>
+    /// <seealso cref="EnumerateProperties(uint,EnumeratePropertiesCallback,nint)"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void EnumeratePropertiesCallback(
         IntPtr userdata,
