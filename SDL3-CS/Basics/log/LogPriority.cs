@@ -28,15 +28,17 @@ public static partial class SDL
     /// <summary>
     /// The predefined log priorities
     /// </summary>
-    /// <since>since This enum is available since SDL 3.0.0.</since>
+    /// <since>since This enum is available since SDL 3.1.3.</since>
     public enum LogPriority
     {
-        Verbose = 1,
+        Invalid,
+        Trace,
+        Verbose,
         Debug,
         Info,
         Warn,
         Error,
         Critical,
-        Priorities
+        Count
     }
 }

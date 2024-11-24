@@ -127,7 +127,7 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [Configuration Variables](SDL3-CS/Basics/hints)   | [SDL_hints.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hints.h)           | ![Ready](https://img.shields.io/badge/Ready-008000) |
 | [Object Properties](SDL3-CS/Basics/properties)    | [SDL_properties.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_properties.h) | ![Ready](https://img.shields.io/badge/Ready-008000) |
 | [Error Handling](SDL3-CS/Basics/error)            | [SDL_error.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_error.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)|
-| [Log Handling](SDL3-CS/Basics/log)                | [SDL_log.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_log.h)               | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Log Handling](SDL3-CS/Basics/log)                | [SDL_log.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_log.h)               | ![Ready](https://img.shields.io/badge/Ready-008000) |
 | Assertions                                        | [SDL_assert.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_assert.h)         | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
 | [Querying SDL Version](SDL3-CS/Basics/version)    | [SDL_version.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_version.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
