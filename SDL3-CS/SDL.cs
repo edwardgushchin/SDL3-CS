@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -156,4 +157,11 @@ public static partial class SDL
         
         return result.Count > 0 ? result.ToArray() : null;
     }
+    
+    /// <summary>
+    /// Indicates that a method is a <c>#define</c> macro.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class MacroAttribute : Attribute;
 }
