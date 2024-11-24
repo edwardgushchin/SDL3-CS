@@ -105,9 +105,53 @@ public static partial class SDL
     /// If the provided pointer is <c>IntPtr.Zero</c>, the method will return <c>null</c> instead of attempting to convert it.
     /// </remarks>
     /// <exception cref="ArgumentException">The layout of T is not sequential or explicit</exception>
+    /// <seealso cref="PointerToManagedStringArray(nint)"/>
+    /// <seealso cref="PointerToManagedStructArray{T}(nint,int)"/>
     public static T? PointerToManagedStruct<T>(IntPtr pointer) where T : struct
     {
         return pointer == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(pointer);
+    }
+    
+    
+    /// <summary>
+    /// Converts a pointer to an unmanaged memory block into an array of managed structs.
+    /// </summary>
+    /// <param name="pointer">The pointer to the unmanaged memory block that contains the structs.</param>
+    /// <param name="count">The number of structs to read from the unmanaged memory block.</param>
+    /// <typeparam name="T">The type of the struct to be read from unmanaged memory. Must be a value type (struct).</typeparam>
+    /// <remarks>
+    /// This method assumes that the unmanaged memory is allocated using methods such as <c>CoTaskMemAlloc</c>.
+    /// The method will read <c>count</c> elements of type <c>T</c> from the unmanaged memory block.
+    /// It will return an array of managed structs, or <c>null</c> if the pointer is invalid (e.g., <see cref="IntPtr.Zero"/> or negative).
+    /// </remarks>
+    /// <returns>
+    /// An array of structs of type <c>T</c> read from unmanaged memory, or <c>null</c> if the pointer is invalid.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown when the pointer is <see cref="IntPtr.Zero"/> or negative.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the number of structs to read (<c>count</c>) is less than or equal to 0.</exception>
+    /// <seealso cref="PointerToManagedStruct{T}(nint)"/>
+    /// <seealso cref="PointerToManagedStringArray(nint)"/>
+    public static T[]? PointerToManagedStructArray<T>(IntPtr pointer, int count) where T : struct
+    {
+        if (pointer == IntPtr.Zero) return null;
+        
+        if (count == 0) return [];
+
+        try
+        {
+            var array = new T[count];
+            for (var i = 0; i < count; i++)
+            {
+                var modePtr = Marshal.ReadIntPtr(pointer, i * IntPtr.Size);
+                array[i] = Marshal.PtrToStructure<T>(modePtr);
+            }
+
+            return array;
+        }
+        finally
+        {
+            Free(pointer);
+        }
     }
     
     
@@ -136,6 +180,8 @@ public static partial class SDL
     /// <exception cref="AccessViolationException">
     /// Thrown if the specified pointer references invalid or inaccessible memory.
     /// </exception>
+    /// <seealso cref="PointerToManagedStructArray{T}(nint,int)"/>
+    /// <seealso cref="PointerToManagedStruct{T}(nint)"/>
     public static string[]? PointerToManagedStringArray(IntPtr pointer)
     {
         if (pointer == IntPtr.Zero) return null;
