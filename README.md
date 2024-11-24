@@ -63,6 +63,7 @@ namespace SDL3Test;
 
 internal static class Program
 {
+    [STAThread]
     private static void Main()
     {
         var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
