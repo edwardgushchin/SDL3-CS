@@ -21,15 +21,30 @@
  */
 #endregion
 
-using System.Runtime.InteropServices;
+using SDL3;
 
-namespace SDL3;
+namespace VHS_Camera;
 
-public static partial class SDL
+public class FPSCounter
 {
-    /// <summary>
-    /// Internal display mode data
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DisplayModeData;
+    private ulong _lastTime = SDL.GetPerformanceCounter();
+    private int _frameCount;
+    private double _fps;
+
+    public void Update()
+    {
+        _frameCount++;
+        var currentTime = SDL.GetPerformanceCounter();
+        var elapsedTime = (currentTime - _lastTime) / (double)SDL.GetPerformanceFrequency();
+
+        if (!(elapsedTime >= 1.0)) return;
+        
+        SDL.LogInfo(SDL.LogCategory.System, $"FPS: {_fps}");
+        
+        _fps = _frameCount / elapsedTime;
+        _frameCount = 0;
+        _lastTime = currentTime;
+    }
+    
+    public double FPS => _fps;
 }
