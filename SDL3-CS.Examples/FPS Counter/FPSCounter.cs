@@ -39,7 +39,7 @@ public class FPSCounter
 
         if (!(elapsedTime >= 1.0)) return;
         
-        Console.WriteLine($"FPS: {_fps}");
+        SDL.LogInfo(SDL.LogCategory.System, $"FPS: {_fps}");
         
         _fps = _frameCount / elapsedTime;
         _frameCount = 0;
