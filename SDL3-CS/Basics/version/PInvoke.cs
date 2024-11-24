@@ -28,8 +28,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetVersion();
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetVersion(void);</code>
     /// <summary>
     /// <para>Get the version of SDL that is linked against your program.</para>
@@ -38,25 +36,15 @@ public static partial class SDL
     /// function returns the current version, while SDL_VERSION is the version you
     /// compiled with.</para>
     /// </summary>
+    /// <remarks>This function may be called safely at any time, even before <see cref="Init(InitFlags)"/>.</remarks>
     /// <returns>the version of the linked library.</returns>
-    /// <remarks>This function may be called safely at any time, even before SDL_Init().</remarks>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="GetRevision"/>
-    public static Version GetVersion()
-    {
-        var version = SDL_GetVersion();
-        return new Version
-        {
-            Major = (byte)VersionNumMajor(version),
-            Minor = (byte)VersionNumMinor(version),
-            Patch = (byte)VersionNumMicro(version)
-        };
-    }
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetRevision()"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetVersion();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRevision();
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetRevision(void);</code>
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetRevision(void);</code>
     /// <summary>
     /// <para>Get the code revision of SDL that is linked against your program.</para>
     /// <para>This value is the revision of the code you are linked with and may be
@@ -69,12 +57,12 @@ public static partial class SDL
     /// will return an empty string.</para>
     /// <para>You shouldn't use this function for anything but logging it for debugging
     /// purposes. The string is not intended to be reliable in any way.</para>
-    /// <para>The returned string follows the
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>an arbitrary string, uniquely identifying the exact revision of
     /// the SDL library in use.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="GetVersion"/>
-    public static string? GetRevision() => Marshal.PtrToStringUTF8(SDL_GetRevision());
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetVersion()"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRevision"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetRevision();
 }
