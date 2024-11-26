@@ -50,7 +50,7 @@ internal static class Program
             return;
         }
         
-        _renderer = SDL.CreateRenderer(_window, null!);
+        _renderer = SDL.CreateRenderer(_window, null);
         
         if (_renderer == IntPtr.Zero)
         {

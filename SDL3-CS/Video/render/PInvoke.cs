@@ -29,7 +29,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static partial IntPtr CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
     
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
