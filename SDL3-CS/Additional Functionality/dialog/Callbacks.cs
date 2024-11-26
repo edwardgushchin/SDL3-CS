@@ -33,7 +33,7 @@ public static partial class SDL
     /// <para>The specific usage is described in each function.</para>
     /// <para>If <c>filelist</c> is:</para>
     /// <list type="bullet">
-    /// <item><c>null</c>, an error occurred. Details can be obtained with <see cref="GetError()"/>.</item>
+    /// <item><c>null</c>, an error occurred. Details can be obtained with <see cref="GetError"/>.</item>
     /// <item>A pointer to <c>null</c>, the user either didn't choose any file or canceled the
     /// dialog.</item>
     /// <item>A pointer to non-<c>null</c>, the user chose one or more files. The argument

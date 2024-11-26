@@ -35,8 +35,8 @@ public static partial class SDL
     /// <param name="priority">the <see cref="LogPriority"/> to assign.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ResetLogPriorities()"/>
-    /// <seealso cref="SetLogPriority(LogCategory,LogPriority)"/>
+    /// <seealso cref="ResetLogPriorities"/>
+    /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriorities"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetLogPriorities(LogPriority priority);
     
@@ -49,9 +49,9 @@ public static partial class SDL
     /// <param name="priority">the <see cref="LogPriority"/> to assign.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetLogPriority(LogCategory)"/>
-    /// <seealso cref="ResetLogPriorities()"/>
-    /// <seealso cref="SetLogPriorities(LogPriority)"/>
+    /// <seealso cref="GetLogPriority"/>
+    /// <seealso cref="ResetLogPriorities"/>
+    /// <seealso cref="SetLogPriorities"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetLogPriority(LogCategory category, LogPriority priority);
     
@@ -64,7 +64,7 @@ public static partial class SDL
     /// <returns>the <see cref="LogPriority"/> for the requested category.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetLogPriority(LogCategory,LogPriority)"/>
+    /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial LogPriority GetLogPriority(LogCategory category);
     
@@ -73,11 +73,11 @@ public static partial class SDL
     /// <summary>
     /// Reset all priorities to default.
     /// </summary>
-    /// <remarks>This is called by <see cref="Quit()"/>.</remarks>
+    /// <remarks>This is called by <see cref="Quit"/>.</remarks>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetLogPriorities(LogPriority)"/>
-    /// <seealso cref="SetLogPriority(LogCategory,LogPriority)"/>
+    /// <seealso cref="SetLogPriorities"/>
+    /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetLogPriorities"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ResetLogPriorities();
     
@@ -92,12 +92,12 @@ public static partial class SDL
     /// <param name="priority">the <see cref="LogPriority"/> to modify.</param>
     /// <param name="prefix">the prefix to use for that log priority, or <c>null</c> to use no
     /// prefix.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetLogPriorities(LogPriority)"/>
-    /// <seealso cref="SetLogPriority(LogCategory,LogPriority)"/>
+    /// <seealso cref="SetLogPriorities"/>
+    /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriorityPrefix"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetLogPriorityPrefix(LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string? prefix);
@@ -110,15 +110,15 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Log"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Log([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -131,16 +131,16 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogTrace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogTrace(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -153,14 +153,14 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogVerbose"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogVerbose(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -173,15 +173,15 @@ public static partial class SDL
     /// <param name="message">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogDebug"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogDebug(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
     
@@ -194,15 +194,15 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogInfo(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -215,15 +215,15 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogWarn"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogWarn(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
 
@@ -236,15 +236,15 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogError(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -257,14 +257,14 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogCritical"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogCritical(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -278,15 +278,15 @@ public static partial class SDL
     /// <param name="fmt">the priority of the message.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessageV(LogCategory,LogPriority,string,nint)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessageV"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogMessage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogMessage(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
@@ -301,15 +301,15 @@ public static partial class SDL
     /// <param name="ap">a variable argument list.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Log(string)"/>
-    /// <seealso cref="LogCritical(LogCategory,string)"/>
-    /// <seealso cref="LogDebug(LogCategory,string)"/>
-    /// <seealso cref="LogError(LogCategory,string)"/>
-    /// <seealso cref="LogInfo(LogCategory,string)"/>
-    /// <seealso cref="LogMessage(LogCategory,LogPriority,string)"/>
-    /// <seealso cref="LogTrace(LogCategory,string)"/>
-    /// <seealso cref="LogVerbose(LogCategory,string)"/>
-    /// <seealso cref="LogWarn(LogCategory,string)"/>
+    /// <seealso cref="Log"/>
+    /// <seealso cref="LogCritical"/>
+    /// <seealso cref="LogDebug"/>
+    /// <seealso cref="LogError"/>
+    /// <seealso cref="LogInfo"/>
+    /// <seealso cref="LogMessage"/>
+    /// <seealso cref="LogTrace"/>
+    /// <seealso cref="LogVerbose"/>
+    /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogMessageV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogMessageV(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, IntPtr ap);
     
@@ -321,8 +321,8 @@ public static partial class SDL
     /// <returns>the default log output callback.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetLogOutputFunction(LogOutputFunction,nint)"/>
-    /// <seealso cref="GetLogOutputFunction(out IntPtr, out IntPtr)"/>
+    /// <seealso cref="SetLogOutputFunction"/>
+    /// <seealso cref="GetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial LogOutputFunction GetDefaultLogOutputFunction();
     
@@ -337,8 +337,8 @@ public static partial class SDL
     /// <c>callback</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetDefaultLogOutputFunction()"/>
-    /// <seealso cref="SetLogOutputFunction(LogOutputFunction,nint)"/>
+    /// <seealso cref="GetDefaultLogOutputFunction"/>
+    /// <seealso cref="SetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetLogOutputFunction(out IntPtr callback, out IntPtr userdata);
     
@@ -351,8 +351,8 @@ public static partial class SDL
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetDefaultLogOutputFunction()"/>
-    /// <seealso cref="GetLogOutputFunction(out nint, out nint)"/>
+    /// <seealso cref="GetDefaultLogOutputFunction"/>
+    /// <seealso cref="GetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetLogOutputFunction(LogOutputFunction callback, IntPtr userdata);
 }

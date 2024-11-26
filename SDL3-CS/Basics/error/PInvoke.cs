@@ -43,9 +43,9 @@ public static partial class SDL
     /// <returns>false</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ClearError()"/>
-    /// <seealso cref="GetError()"/>
-    /// <seealso cref="SetErrorV(string,nint)"/>
+    /// <seealso cref="ClearError"/>
+    /// <seealso cref="GetError"/>
+    /// <seealso cref="SetErrorV"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
@@ -61,9 +61,9 @@ public static partial class SDL
     /// <returns>false</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ClearError()"/>
-    /// <seealso cref="GetError()"/>
-    /// <seealso cref="SetError(string)"/>
+    /// <seealso cref="ClearError"/>
+    /// <seealso cref="GetError"/>
+    /// <seealso cref="SetError"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetErrorV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
     public static partial bool SetErrorV([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, IntPtr ap);
@@ -86,12 +86,12 @@ public static partial class SDL
     /// <summary>
     /// <para>Retrieve a message about the last error that occurred on the current
     /// thread.</para>
-    /// <para>It is possible for multiple errors to occur before calling <see cref="GetError()"/>.
+    /// <para>It is possible for multiple errors to occur before calling <see cref="GetError"/>.
     /// Only the last error is returned.</para>
     /// <para>The message is only applicable when an SDL function has signaled an error.
     /// You must check the return values of SDL function calls to determine when to
-    /// appropriately call <see cref="GetError()"/>. You should <b>not</b> use the results of
-    /// <see cref="GetError()"/> to decide if an error has occurred! Sometimes SDL will set
+    /// appropriately call <see cref="GetError"/>. You should <b>not</b> use the results of
+    /// <see cref="GetError"/> to decide if an error has occurred! Sometimes SDL will set
     /// an error string even when reporting success.</para>
     /// <para>SDL will <b>not</b> clear the error string for successful API calls. You <b>must</b>
     /// check return values for failure cases before you can assume the error
@@ -105,11 +105,11 @@ public static partial class SDL
     /// </summary>
     /// <returns>a message with information about the specific error that occurred,
     /// or an empty string if there hasn't been an error message set since
-    /// the last call to <see cref="ClearError()"/>.</returns>
+    /// the last call to <see cref="ClearError"/>.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ClearError()"/>
-    /// <seealso cref="SetError(string)"/>
+    /// <seealso cref="ClearError"/>
+    /// <seealso cref="SetError"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetError();
@@ -122,8 +122,8 @@ public static partial class SDL
     /// <returns>true.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetError()"/>
-    /// <seealso cref="SetError(string)"/>
+    /// <seealso cref="GetError"/>
+    /// <seealso cref="SetError"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
     public static partial bool ClearError();

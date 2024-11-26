@@ -35,7 +35,7 @@ public static partial class SDL
     /// is held so that this function is never called by more than one thread at
     /// once.</remarks>
     /// <param name="userdata">what was passed as <c>userdata</c> to
-    /// <see cref="SetLogOutputFunction(LogOutputFunction,nint)"/>.</param>
+    /// <see cref="SetLogOutputFunction"/>.</param>
     /// <param name="category">the category of the message.</param>
     /// <param name="priority">the priority of the message.</param>
     /// <param name="message">the message being output.</param>

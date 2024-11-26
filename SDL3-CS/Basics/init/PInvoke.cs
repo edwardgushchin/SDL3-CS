@@ -31,16 +31,16 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_Init(SDL_InitFlags flags);</code>
     /// <summary>
     /// <para>Initialize the SDL library.</para>
-    /// <para><see cref="Init(InitFlags)"/> simply forwards to calling <see cref="InitSubSystem(InitFlags)"/>. Therefore, the
+    /// <para><see cref="Init"/> simply forwards to calling <see cref="InitSubSystem"/>. Therefore, the
     /// two may be used interchangeably. Though for readability of your cod
-    /// <see cref="InitSubSystem(InitFlags)"/> might be preferred.</para>
+    /// <see cref="InitSubSystem"/> might be preferred.</para>
     /// <para>The file I/O (for example: SDL_IOFromFile) and threading (<see cref="CreateThread()"/>)
     /// subsystems are initialized by default. Message boxes
     /// (<see cref="ShowSimpleMessageBox(MessageBoxFlags,string,string,nint)"/>) also attempt to work without initializing the
     /// video subsystem, in hopes of being useful in showing an error dialog when
-    /// <see cref="Init(InitFlags)"/> fails. You must specifically initialize other subsystems if you
+    /// <see cref="Init"/> fails. You must specifically initialize other subsystems if you
     /// use them in your application.</para>
-    /// <para>Logging (such as <see cref="Log(string)"/>) works without initialization, too.</para>
+    /// <para>Logging (such as <see cref="Log"/>) works without initialization, too.</para>
     /// <para>`flags` may be any of the following OR'd together:</para>
     /// <list type="bullet">
     /// <item><see cref="InitFlags.Audio"/>: audio subsystem; automatically initializes the events
@@ -58,24 +58,24 @@ public static partial class SDL
     /// <item><see cref="InitFlags.Camera"/>: camera subsystem; automatically initializes the events
     /// subsystem</item>
     /// </list>
-    /// <para>Subsystem initialization is ref-counted, you must call <see cref="QuitSubSystem(InitFlags)"/>
-    /// for each <see cref="InitSubSystem(InitFlags)"/> to correctly shutdown a subsystem manually (or
-    /// call <see cref="Quit()"/> to force shutdown). If a subsystem is already loaded then
+    /// <para>Subsystem initialization is ref-counted, you must call <see cref="QuitSubSystem"/>
+    /// for each <see cref="InitSubSystem"/> to correctly shutdown a subsystem manually (or
+    /// call <see cref="Quit"/> to force shutdown). If a subsystem is already loaded then
     /// this call will increase the ref-count and return.</para>
     /// <para>Consider reporting some basic metadata about your application before
-    /// calling <see cref="Init(InitFlags)"/>, using either <see cref="SetAppMetadata(string,string,string)"/> or
+    /// calling <see cref="Init"/>, using either <see cref="SetAppMetadata(string,string,string)"/> or
     /// <see cref="SetAppMetadataProperty(string,string)"/>.</para>
     /// </summary>
     /// <param name="flags">subsystem initialization flags.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetAppMetadata(string,string,string)"/>
     /// <seealso cref="SetAppMetadataProperty(string,string)"/>
-    /// <seealso cref="InitSubSystem(InitFlags)"/>
+    /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit()"/>
     /// <seealso cref="SetMainReady()"/>
-    /// <seealso cref="WasInit(InitFlags)"/>
+    /// <seealso cref="WasInit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool Init(InitFlags flags);
@@ -85,14 +85,14 @@ public static partial class SDL
     /// <summary>
     /// Compatibility function to initialize the SDL library.
     /// </summary>
-    /// <remarks>This function and <see cref="Init(InitFlags)"/> are interchangeable.</remarks>
-    /// <param name="flags">any of the flags used by <see cref="Init(InitFlags)"/>; see <see cref="Init(InitFlags)"/> for details.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/> for more
+    /// <remarks>This function and <see cref="Init"/> are interchangeable.</remarks>
+    /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Init(InitFlags)"/>
+    /// <seealso cref="Init"/>
     /// <seealso cref="Quit()"/>
-    /// <seealso cref="QuitSubSystem(InitFlags)"/>
+    /// <seealso cref="QuitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_InitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool InitSubSystem(InitFlags flags);
@@ -102,11 +102,11 @@ public static partial class SDL
     /// <summary>
     /// Shut down specific SDL subsystems.
     /// </summary>
-    /// <remarks>You still need to call <see cref="Quit()"/> even if you close all open subsystems
-    /// with <see cref="QuitSubSystem(InitFlags)"/>.</remarks>
-    /// <param name="flags">any of the flags used by <see cref="Init(InitFlags)"/>; see <see cref="Init(InitFlags)"/> for details.</param>
+    /// <remarks>You still need to call <see cref="Quit"/> even if you close all open subsystems
+    /// with <see cref="QuitSubSystem"/>.</remarks>
+    /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="InitSubSystem(InitFlags)"/>
+    /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit()"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_QuitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void QuitSubSystem(InitFlags flags);
@@ -116,12 +116,12 @@ public static partial class SDL
     /// <summary>
     /// Get a mask of the specified subsystems which are currently initialized.
     /// </summary>
-    /// <param name="flags">any of the flags used by <see cref="Init(InitFlags)"/>; see <see cref="Init(InitFlags)"/> for details.</param>
+    /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <returns>a mask of all initialized subsystems if <c>flags</c> is <c>0</c>, otherwise it
     /// returns the initialization status of the specified subsystems.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Init(InitFlags)"/>
-    /// <seealso cref="InitSubSystem(InitFlags)"/>
+    /// <seealso cref="Init"/>
+    /// <seealso cref="InitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WasInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial InitFlags WasInit(InitFlags flags);
     
@@ -130,15 +130,15 @@ public static partial class SDL
     /// <summary>
     /// <para>Clean up all initialized subsystems.</para>
     /// <para>You should call this function even if you have already shutdown each
-    /// initialized subsystem with <seealso cref="QuitSubSystem(InitFlags)"/>. It is safe to call this
+    /// initialized subsystem with <seealso cref="QuitSubSystem"/>. It is safe to call this
     /// function even in the case of errors in initialization.</para>
     /// <para>You can use this function with atexit() to ensure that it is run when your
     /// application is shutdown, but it is not wise to do this from a library or
     /// other dynamically loaded code.</para>
     /// </summary>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="Init(InitFlags)"/>
-    /// <seealso cref="QuitSubSystem(InitFlags)"/>
+    /// <seealso cref="Init"/>
+    /// <seealso cref="QuitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Quit();
     
@@ -152,7 +152,7 @@ public static partial class SDL
     /// box in the macOS menu bar, the name of the app can be shown on some audio
     /// mixers, etc). Any piece of metadata can be left as <c>null</c>, if a specific
     /// detail doesn't make sense for the app.</para>
-    /// <para>This function should be called as early as possible, before <see cref="Init(InitFlags)"/>.
+    /// <para>This function should be called as early as possible, before <see cref="Init"/>.
     /// Multiple calls to this function are allowed, but various state might not
     /// change once it has been set up with a previous call to this function.</para>
     /// <para>Passing a <c>null</c> removes any previous metadata.</para>
@@ -188,7 +188,7 @@ public static partial class SDL
     /// box in the macOS menu bar, the name of the app can be shown on some audio
     /// mixers, etc). Any piece of metadata can be left out, if a specific detail
     /// doesn't make sense for the app.</para>
-    /// <para>This function should be called as early as possible, before <see cref="Init(InitFlags)"/>.
+    /// <para>This function should be called as early as possible, before <see cref="Init"/>.
     /// Multiple calls to this function are allowed, but various state might not
     /// change once it has been set up with a previous call to this function.</para>
     /// <para>Once set, this metadata can be read using <see cref="GetAppMetadataProperty(string)"/>.</para>
@@ -227,7 +227,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="name">the name of the metadata property to set.</param>
     /// <param name="value">the value of the property, or <c>null</c> to remove that property.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError()"/> for more
+    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>

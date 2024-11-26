@@ -277,7 +277,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="enabled"><c>true</c> to enable capturing, <c>false</c> to disable.</param>
     /// <returns><c>0</c> on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetGlobalMouseState"/>
     public static int CaptureMouse(bool enabled) => SDL_CaptureMouse(enabled);

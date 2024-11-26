@@ -30,18 +30,18 @@ public static partial class SDL
     /// <code>typedef void(SDLCALL *SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);</code>
     /// <summary>
     /// <para>A callback used to send notifications of hint value changes.</para>
-    /// <para>This is called an initial time during <see cref="AddHintCallback(string,HintCallback,nint)"/> with the hint's
+    /// <para>This is called an initial time during <see cref="AddHintCallback"/> with the hint's
     /// current value, and then again each time the hint's value changes.</para>
     /// </summary>
-    /// <param name="userdata">what was passed as <c>userdata</c> to <see cref="SDL.AddHintCallback(string,HintCallback,nint)"/>.</param>
-    /// <param name="name">what was passed as <c>name</c> to <see cref="SDL.AddHintCallback(string,HintCallback,nint)"/>.</param>
+    /// <param name="userdata">what was passed as <c>userdata</c> to <see cref="AddHintCallback"/>.</param>
+    /// <param name="name">what was passed as <c>name</c> to <see cref="AddHintCallback"/>.</param>
     /// <param name="oldValue">the previous hint value.</param>
     /// <param name="newValue">the new value hint is to be set to.</param>
     /// <threadsafety>This callback is fired from whatever thread is setting a new
     /// hint value. SDL holds a lock on the hint subsystem when
     /// calling this callback.</threadsafety>
     /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="AddHintCallback(string,HintCallback,nint)"/>
+    /// <seealso cref="AddHintCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void HintCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string oldValue,

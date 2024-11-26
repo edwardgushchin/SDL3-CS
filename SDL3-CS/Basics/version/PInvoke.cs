@@ -36,10 +36,10 @@ public static partial class SDL
     /// function returns the current version, while SDL_VERSION is the version you
     /// compiled with.</para>
     /// </summary>
-    /// <remarks>This function may be called safely at any time, even before <see cref="Init(InitFlags)"/>.</remarks>
+    /// <remarks>This function may be called safely at any time, even before <see cref="Init"/>.</remarks>
     /// <returns>the version of the linked library.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetRevision()"/>
+    /// <seealso cref="GetRevision"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetVersion();
     
@@ -61,7 +61,7 @@ public static partial class SDL
     /// <returns>an arbitrary string, uniquely identifying the exact revision of
     /// the SDL library in use.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetVersion()"/>
+    /// <seealso cref="GetVersion"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRevision"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetRevision();
