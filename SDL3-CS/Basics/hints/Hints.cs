@@ -103,8 +103,8 @@ public static partial class SDL
         /// <para>This is necessary for the right mouse button to work on some Android
         /// devices, or to be able to trap the back button for use in your code
         /// reliably. If this hint is true, the back button will show up as an
-        /// <see cref="SDL.EventType.KeyDown"/> / <see cref="SDL.EventType.KeyUp"/> pair with a keycode of
-        /// <see cref="SDL.Scancode.ACBack"/>.</para>
+        /// <see cref="EventType.KeyDown"/> / <see cref="EventType.KeyUp"/> pair with a keycode of
+        /// <see cref="Scancode.ACBack"/>.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item>"0": Back button will be handled as usual for system. (default)</item>
@@ -122,7 +122,7 @@ public static partial class SDL
         /// <para>This string is used by desktop compositors to identify and group windows
         /// together, as well as match applications with associated desktop settings
         /// and icons.</para>
-        /// <para>This will override <see cref="SDL.Props.AppMetadataIdentifierString"/>, if set by the
+        /// <para>This will override <see cref="Props.AppMetadataIdentifierString"/>, if set by the
         /// application.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
@@ -136,7 +136,7 @@ public static partial class SDL
         /// audio streams, and in lists of applications which are inhibiting the
         /// screensaver. You should use a string that describes your program (<c>"My Game
         /// 2: The Revenge"</c>)</para>
-        /// <para>This will override <see cref="SDL.Props.AppMetadataNameString"/>, if set by the
+        /// <para>This will override <see cref="Props.AppMetadataNameString"/>, if set by the
         /// application.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
@@ -218,7 +218,7 @@ public static partial class SDL
         /// show up in a system control panel that lets the user adjust the volume on
         /// specific audio streams instead of using one giant master volume slider.
         /// Note that this is unrelated to the icon used by the windowing system, which
-        /// may be set with <see cref="SDL.SetWindowIcon"/> (or via desktop file on Wayland).</para>
+        /// may be set with <see cref="SetWindowIcon"/> (or via desktop file on Wayland).</para>
         /// <para>Setting this to <c>""</c> or leaving it unset will have SDL use a reasonable
         /// default, <c>"applications-games"</c>, which is likely to be installed. See
         /// https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html
@@ -393,8 +393,8 @@ public static partial class SDL
         /// input events.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: You'll call <see cref="SDL.UpdateJoysticks()"/> manually.</item>
-        /// <item><c>"1"</c>: SDL will automatically call <see cref="SDL.UpdateJoysticks()"/>. (default)</item>
+        /// <item><c>"0"</c>: You'll call <see cref="UpdateJoysticks"/> manually.</item>
+        /// <item><c>"1"</c>: SDL will automatically call <see cref="UpdateJoysticks"/>. (default)</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
@@ -406,8 +406,8 @@ public static partial class SDL
         /// events.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: You'll call <see cref="SDL.UpdateSensors()"/> manually.</item>
-        /// <item><c>"1"</c>: SDL will automatically call <see cref="SDL.UpdateSensors()"/>. (default)</item>
+        /// <item><c>"0"</c>: You'll call <see cref="UpdateSensors"/> manually.</item>
+        /// <item><c>"1"</c>: SDL will automatically call <see cref="UpdateSensors"/>. (default)</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
@@ -513,9 +513,9 @@ public static partial class SDL
         public const string FileDialogDriver = "SDL_FILE_DIALOG_DRIVER";
         
         /// <summary>
-        /// <para>Override for <see cref="SDL.GetDisplayUsableBounds(uint, out SDL.Rect)"/>.</para>
+        /// <para>Override for <see cref="GetDisplayUsableBounds"/>.</para>
         /// <para>If set, this hint will override the expected results for
-        /// <see cref="SDL.GetDisplayUsableBounds(uint, out SDL.Rect)"/> for display index 0. Generally you don't want
+        /// <see cref="GetDisplayUsableBounds"/> for display index 0. Generally you don't want
         /// to do this, but this allows an embedded system to request that some of the
         /// screen be reserved for other uses when paired with a well-behaved
         /// application.</para>
@@ -580,7 +580,7 @@ public static partial class SDL
         /// <item><c>"1"</c>: Show the on-screen keyboard, if available.</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint must be set before <see cref="SDL.StartTextInput(nint)"/> is called</remarks>
+        /// <remarks>This hint must be set before <see cref="StartTextInput"/> is called</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string EnableScreenKeyboard = "SDL_ENABLE_SCREEN_KEYBOARD";
         
@@ -607,9 +607,9 @@ public static partial class SDL
         /// <item><c>"2"</c>: Include mouse and finger motion events.</item>
         /// <para>This is generally meant to be used to debug SDL itself, but can be useful
         /// for application developers that need better visibility into what is going
-        /// on in the event queue. Logged events are sent through <see cref="SDL.Log(string)"/>, which
+        /// on in the event queue. Logged events are sent through <see cref="Log"/>, which
         /// means by default they appear on stdout on most platforms or <c>maybeOutputDebugString()</c> on Windows, and can be funneled by the app with
-        /// <see cref="SDL.SetLogOutputFunction(SDL.LogOutputFunction,nint)"/>, etc.</para>
+        /// <see cref="SetLogOutputFunction"/>, etc.</para>
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
@@ -647,7 +647,7 @@ public static partial class SDL
         /// rendering drivers. (e.g. <c>"direct3d"</c>, <c>"opengl"</c>, etc.)</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.GetWindowSurface(nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="GetWindowSurface"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string FramebufferAcceleration = "SDL_FRAMEBUFFER_ACCELERATION";
         
@@ -656,7 +656,7 @@ public static partial class SDL
         /// <para>The variable should be newline delimited rows of gamecontroller config
         /// data, see SDL_gamepad.h</para>
         /// <para>You can update mappings after SDL is initialized with
-        /// <see cref="SDL.GetGamepadMappingForGUID(GUID)"/> and <see cref="SDL.AddGamepadMapping(string)"/></para>
+        /// <see cref="GetGamepadMappingForGUID"/> and <see cref="AddGamepadMapping"/></para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
@@ -668,7 +668,7 @@ public static partial class SDL
         /// <para>The file should contain lines of gamecontroller config data, see
         /// SDL_gamepad.h</para>
         /// <para>You can update mappings after SDL is initialized with
-        /// <see cref="SDL.GetGamepadMappingForGUID(GUID)"/> and <see cref="SDL.AddGamepadMapping(string)"/></para>
+        /// <see cref="GetGamepadMappingForGUID"/> and <see cref="AddGamepadMapping"/></para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
@@ -698,7 +698,7 @@ public static partial class SDL
         /// controllers.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -711,7 +711,7 @@ public static partial class SDL
         /// except for the ones listed in this variable.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -729,7 +729,7 @@ public static partial class SDL
         /// </list>
         /// <para>Or the variable can be a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -742,7 +742,7 @@ public static partial class SDL
         /// platforms.</para>
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.StartTextInput(nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string GDKTextInputDefaultText = "SDL_GDK_TEXTINPUT_DEFAULT_TEXT";
         
@@ -751,7 +751,7 @@ public static partial class SDL
         /// platforms.</para>
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.StartTextInput(nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string GDKTextInputDescription = "SDL_GDK_TEXTINPUT_DESCRIPTION";
         
@@ -762,7 +762,7 @@ public static partial class SDL
         /// to 10 characters of text input.</para>
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.StartTextInput(nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string GDKTextInputMaxLength = "SDL_GDK_TEXTINPUT_MAX_LENGTH";
         
@@ -774,7 +774,7 @@ public static partial class SDL
         /// integer, for example <c>"0"</c> for XGameUiTextEntryInputScope::Default.</para>
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.StartTextInput(nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string GDKTextInputScope = "SDL_GDK_TEXTINPUT_SCOPE";
         
@@ -782,7 +782,7 @@ public static partial class SDL
         /// <para>This variable sets the title of the TextInput window on GDK platforms.</para>
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.StartTextInput(nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string GDKTextInputTitle = "SDL_GDK_TEXTINPUT_TITLE";
         
@@ -859,9 +859,9 @@ public static partial class SDL
         /// <para>A variable containing a list of devices to ignore in SDL_hid_enumerate().</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>For example, to ignore the Shanwan DS3 controller and any Valve controller,
-        /// you might use the string <c>"0x2563/0x0523,0x28de/0x0000"</c>;</para>
+        /// you might use the string <c>0x2563/0x0523,0x28de/0x0000</c>;</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
@@ -923,7 +923,7 @@ public static partial class SDL
         /// <para>A variable containing a list of arcade stick style controllers.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -938,7 +938,7 @@ public static partial class SDL
         /// device list.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -951,7 +951,7 @@ public static partial class SDL
         /// joysticks.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -966,7 +966,7 @@ public static partial class SDL
         /// device list.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -986,7 +986,7 @@ public static partial class SDL
         /// <para>A variable containing a list of flightstick style controllers.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>@file</c>, in which case the named file
         /// will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -1001,7 +1001,7 @@ public static partial class SDL
         /// device list.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -1028,7 +1028,7 @@ public static partial class SDL
         /// factor.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -1043,7 +1043,7 @@ public static partial class SDL
         /// device list.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -1780,8 +1780,8 @@ public static partial class SDL
         /// <para>The default value for this hint is <c>"french_numbers,latin_letters"</c>;</para>
         /// <para>Some platforms like Emscripten only provide modified keycodes and the
         /// options are not used.</para>
-        /// <para>These options do not affect the return value of <see cref="SDL.GetKeyFromScancode(Scancode,Keymod)"/> or
-        /// <see cref="SDL.GetScancodeFromKey(Keycode, out Keymod)"/>, they just apply to the keycode included in key
+        /// <para>These options do not affect the return value of <see cref="GetKeyFromScancode"/> or
+        /// <see cref="GetScancodeFromKey"/>, they just apply to the keycode included in key
         /// events.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
@@ -1850,7 +1850,7 @@ public static partial class SDL
         /// (default)</item>
         /// <item><c>"1"</c>: The application may remain in the background when launched.</item>
         /// </list>
-        /// <para>This hint needs to be set before <see cref="SDL.Init(InitFlags)"/>.</para>
+        /// <para>This hint needs to be set before <see cref="Init"/>.</para>
         /// </summary>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string MacBackgroundApp = "SDL_MAC_BACKGROUND_APP";
@@ -1897,7 +1897,7 @@ public static partial class SDL
         /// <item><c>"0"</c>: The mouse wheel events will have no momentum. (default)</item>
         /// <item><c>"1"</c>: The mouse wheel events will have momentum.</item>
         /// </list>
-        /// <para>This hint needs to be set before <see cref="SDL.Init(InitFlags)"/>.</para>
+        /// <para>This hint needs to be set before <see cref="Init"/>.</para>
         /// </summary>
         /// <since>This hint is available since SDL 3.2.0.</since>
         public const string MacScrollMomentum = "SDL_MAC_SCROLL_MOMENTUM";
@@ -1954,6 +1954,7 @@ public static partial class SDL
         /// <remarks>This hint needs to be set before <see cref="Init"/>.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string MouseDefaultSystemCursor = "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR";
+        
         
         /// <summary>
         /// <para>A variable controlling whether warping a hidden mouse cursor will activate
@@ -2165,10 +2166,10 @@ public static partial class SDL
         /// particular OpenGL ES implementation, e.g ANGLE, or emulator, e.g. those
         /// from ARM, Imagination or Qualcomm. - Resolving OpenGL ES function addresses
         /// at link time by linking with the OpenGL ES library instead of querying them
-        /// at run time with <see cref="SDL.GLGetProcAddress(string)"/>.</para>
+        /// at run time with <see cref="GLGetProcAddress"/>.</para>
         /// <para>Caution: for an application to work with the default behaviour across
         /// different OpenGL drivers it must query the OpenGL ES function addresses at
-        /// run time using <see cref="SDL.GLGetProcAddress(string)"/>.</para>
+        /// run time using <see cref="GLGetProcAddress"/>.</para>
         /// <para>This variable is ignored on most platforms because OpenGL ES is native or
         /// not supported.</para>
         /// <para>The variable can be set to the following values:</para>
@@ -2210,9 +2211,9 @@ public static partial class SDL
         /// <summary>
         /// <para>A variable controlling the use of a sentinel event when polling the event
         /// queue.</para>
-        /// <para>When polling for events, <see cref="SDL.PumpEvents()"/> is used to gather new events from
+        /// <para>When polling for events, <see cref="SDL.PumpEvents"/> is used to gather new events from
         /// devices. If a device keeps producing new events between calls to
-        /// <see cref="SDL.PumpEvents()"/>, a poll loop will become stuck until the new events stop.
+        /// <see cref="SDL.PumpEvents"/>, a poll loop will become stuck until the new events stop.
         /// This is most noticeable when moving a high frequency mouse.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
@@ -2403,7 +2404,7 @@ public static partial class SDL
         /// <para>A variable containing a list of ROG gamepad capable mice.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -2418,7 +2419,7 @@ public static partial class SDL
         /// <para>This will override <see cref="ROGGamepadMice"/> and the built in device list.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
         /// hexadecimal form, e.g.</para>
-        /// <para><c>`0xAAAA/0xBBBB,0xCCCC/0xDDDD`</c></para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
         /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
@@ -2441,7 +2442,7 @@ public static partial class SDL
         /// <para>Some platforms, notably Linux desktops, list the applications which are
         /// inhibiting the screensaver or other power-saving features.</para>
         /// <para>This hint lets you specify the <c>"activity name"</c> sent to the OS when
-        /// <see cref="SDL.DisableScreenSaver()"/> is used (or the screensaver is automatically
+        /// <see cref="DisableScreenSaver"/> is used (or the screensaver is automatically
         /// disabled). The contents of this hint are used when the screensaver is
         /// disabled. You should use a string that describes what your program is doing
         /// (and, therefore, why the screensaver is disabled). For example, <c>"Playing a
@@ -2449,33 +2450,16 @@ public static partial class SDL
         /// <para>Setting this toor leaving it unset will have SDL use a reasonable
         /// default: <c>"Playing a game"</c> or something similar.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.DisableScreenSaver()"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="DisableScreenSaver"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string ScreensaverInhibitActivityName = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME";
         
-        /**
-         * A variable controlling whether SDL calls dbus_shutdown() on quit.
-         *
-         * This is useful as a debug tool to validate memory leaks, but shouldn't ever
-         * be set in production applications, as other libraries used by the
-         * application might use dbus under the hood and this can cause crashes if
-         * they continue after SDL_Quit().
-         *
-         * The variable can be set to the following values:
-         *
-         * - "0": SDL will not call dbus_shutdown() on quit. (default)
-         * - "1": SDL will call dbus_shutdown() on quit.
-         *
-         * This hint can be set anytime.
-         *
-         * \since This hint is available since SDL 3.1.3.
-        */
         /// <summary>
         /// <para>A variable controlling whether SDL calls dbus_shutdown() on quit.</para>
         /// <para>This is useful as a debug tool to validate memory leaks, but shouldn't ever
         /// be set in production applications, as other libraries used by the
         /// application might use dbus under the hood and this can cause crashes if
-        /// they continue after <see cref="SDL.Quit()"/>.</para>
+        /// they continue after <see cref="Quit"/>.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item>0: SDL will not call dbus_shutdown() on quit. (default)</item>
@@ -2530,7 +2514,7 @@ public static partial class SDL
         /// policy</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before calling SDL_SetCurrentThreadPriority</remarks>
+        /// <remarks>This hint should be set before calling <see cref="SetCurrentThreadPriority"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string ThreadForceRealtimeTimeCritical = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
         
@@ -2548,7 +2532,7 @@ public static partial class SDL
         /// distro configured execution budget for rtkit. This budget can be queried
         /// through RLIMIT_RTTIME after calling SDL_SetCurrentThreadPriority.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling SDL_SetCurrentThreadPriority</remarks>
+        /// <remarks>This hint should be set before calling <see cref="SetCurrentThreadPriority"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string ThreadPriorityPolicy = "SDL_THREAD_PRIORITY_POLICY";
         
@@ -2627,7 +2611,7 @@ public static partial class SDL
         /// sort to the front of the display list.</para>
         /// <para>When this hint is set, displays with matching name strings will be
         /// prioritized in the list of displays, as exposed by calling
-        /// <see cref="SDL.GetDisplays(out int)"/>, with the first listed becoming the primary display. The
+        /// <see cref="GetDisplays"/>, with the first listed becoming the primary display. The
         /// naming convention can vary depending on the environment, but it is usually
         /// a connector name (e.g. <c>'DP-1'</c>, <c>'DP-2'</c>, <c>'HDMI-A-1'</c>,etc...).</para>
         /// <para>On Wayland and X11 desktops, the connector names associated with displays
@@ -3040,7 +3024,7 @@ public static partial class SDL
         /// <item><c>"1"</c>: Use OpenGL.</item>
         /// </list>>
         /// </summary>
-        /// <remarks>This hint should be set before SDL is initialized.</remarks
+        /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string VitaPvrOpenGL = "SDL_VITA_PVR_OPENGL";
         
@@ -3059,10 +3043,10 @@ public static partial class SDL
         public const string VitaTouchMouseDevice = "SDL_VITA_TOUCH_MOUSE_DEVICE";
         
         /// <summary>
-        /// <para>A variable overriding the display index used in <see cref="SDL.VulkanCreateSurface(nint,nint,nint, out nint)"/></para>
+        /// <para>A variable overriding the display index used in <see cref="SDL.VulkanCreateSurface"/></para>
         /// <para>The display index starts at 0, which is the default.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.VulkanCreateSurface(nint,nint,nint, out nint)"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="SDL.VulkanCreateSurface"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string VulkanDisplay = "SDL_VULKAN_DISPLAY";
         
@@ -3098,7 +3082,7 @@ public static partial class SDL
         /// <item><c>"ignore"</c> - Ignore fact chunk entirely. (default)</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.LoadWAV()"/> or <see cref="SDL.LoadWAVIO()"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string WaveFactChunk = "SDL_WAVE_FACT_CHUNK";
         
@@ -3107,7 +3091,7 @@ public static partial class SDL
         /// <para>This sets an upper bound on the number of chunks in a WAVE file to avoid
         /// wasting time on malformed or corrupt WAVE files. This defaults to <c>"10000"</c>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.LoadWAV()"/> or <see cref="SDL.LoadWAVIO()"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string WaveChunkLimit = "SDL_WAVE_CHUNK_LIMIT";
         
@@ -3131,7 +3115,7 @@ public static partial class SDL
         /// <item><c>"maximum"</c> - Search for chunks until the end of file. (not recommended)</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.LoadWAV()"/> or <see cref="SDL.LoadWAVIO()"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string WaveRiffChunkSize = "SDL_WAVE_RIFF_CHUNK_SIZE";
         
@@ -3148,18 +3132,18 @@ public static partial class SDL
         /// <item><c>"dropblock"</c> - Decode until the first incomplete block. (default)</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SDL.LoadWAV()"/> or <see cref="SDL.LoadWAVIO()"/></remarks>
+        /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string WaveTruncation = "SDL_WAVE_TRUNCATION";
         
         /// <summary>
         /// <para>A variable controlling whether the window is activated when the
-        /// <see cref="SDL.RaiseWindow(nint)"/> function is called.</para>
+        /// <see cref="SDL.RaiseWindow"/> function is called.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: The window is not activated when the <see cref="SDL.RaiseWindow(nint)"/> function is
+        /// <item><c>"0"</c>: The window is not activated when the <see cref="SDL.RaiseWindow"/> function is
         /// called.</item>
-        /// <item><c>"1"</c>: The window is activated when the <see cref="SDL.RaiseWindow(nint)"/> function is called.
+        /// <item><c>"1"</c>: The window is activated when the <see cref="SDL.RaiseWindow"/> function is called.
         /// (default)</item>
         /// </list>
         /// </summary>
@@ -3169,12 +3153,12 @@ public static partial class SDL
         
         /// <summary>
         /// <para>A variable controlling whether the window is activated when the
-        /// <see cref="SDL.ShowWindow(nint)"/> function is called.</para>
+        /// <see cref="SDL.ShowWindow"/> function is called.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: The window is not activated when the <see cref="SDL.ShowWindow(nint)"/> function is
+        /// <item><c>"0"</c>: The window is not activated when the <see cref="SDL.ShowWindow"/> function is
         /// called.</item>
-        /// <item><c>"1"</c>: The window is activated when the <see cref="SDL.ShowWindow(nint)"/> function is called.
+        /// <item><c>"1"</c>: The window is activated when the <see cref="SDL.ShowWindow"/> function is called.
         /// (default)</item>
         /// </list>
         /// </summary>
@@ -3255,7 +3239,7 @@ public static partial class SDL
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c>: The window message loop is not run.</item>
-        /// <item><c>"1"</c>: The window message loop is processed in <see cref="SDL.PumpEvents()"/>. (default)</item>
+        /// <item><c>"1"</c>: The window message loop is processed in <see cref="SDL.PumpEvents"/>. (default)</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
@@ -3379,7 +3363,7 @@ public static partial class SDL
         
         /// <summary>
         /// <para>A variable specifying the type of an X11 window.</para>
-        /// <para>During <see cref="SDL.CreateWindow(string,int,int,WindowFlags)"/>, SDL uses the _NET_WM_WINDOW_TYPE X11 property to
+        /// <para>During <see cref="SDL.CreateWindow"/>, SDL uses the _NET_WM_WINDOW_TYPE X11 property to
         /// report to the window manager the type of window it wants to create. This
         /// might be set to various things if <see cref="WindowFlags.Tooltip"/> or
         /// <see cref="WindowFlags.PopupMenu"/>, etc, were specified. For <c>"normal"</c> windows that
