@@ -2514,7 +2514,7 @@ public static partial class SDL
         /// policy</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SetCurrentThreadPriority"/></remarks>
+        /// <remarks>This hint should be set before calling SDL_SetCurrentThreadPriority</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string ThreadForceRealtimeTimeCritical = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
         
@@ -2532,7 +2532,7 @@ public static partial class SDL
         /// distro configured execution budget for rtkit. This budget can be queried
         /// through RLIMIT_RTTIME after calling SDL_SetCurrentThreadPriority.</para>
         /// </summary>
-        /// <remarks>This hint should be set before calling <see cref="SetCurrentThreadPriority"/></remarks>
+        /// <remarks>This hint should be set before calling SDL_SetCurrentThreadPriority</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string ThreadPriorityPolicy = "SDL_THREAD_PRIORITY_POLICY";
         
@@ -3138,12 +3138,12 @@ public static partial class SDL
         
         /// <summary>
         /// <para>A variable controlling whether the window is activated when the
-        /// <see cref="SDL.RaiseWindow"/> function is called.</para>
+        /// <see cref="RaiseWindow"/> function is called.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: The window is not activated when the <see cref="SDL.RaiseWindow"/> function is
+        /// <item><c>"0"</c>: The window is not activated when the <see cref="RaiseWindow"/> function is
         /// called.</item>
-        /// <item><c>"1"</c>: The window is activated when the <see cref="SDL.RaiseWindow"/> function is called.
+        /// <item><c>"1"</c>: The window is activated when the <see cref="RaiseWindow"/> function is called.
         /// (default)</item>
         /// </list>
         /// </summary>
@@ -3153,12 +3153,12 @@ public static partial class SDL
         
         /// <summary>
         /// <para>A variable controlling whether the window is activated when the
-        /// <see cref="SDL.ShowWindow"/> function is called.</para>
+        /// <see cref="ShowWindow"/> function is called.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: The window is not activated when the <see cref="SDL.ShowWindow"/> function is
+        /// <item><c>"0"</c>: The window is not activated when the <see cref="ShowWindow"/> function is
         /// called.</item>
-        /// <item><c>"1"</c>: The window is activated when the <see cref="SDL.ShowWindow"/> function is called.
+        /// <item><c>"1"</c>: The window is activated when the <see cref="ShowWindow"/> function is called.
         /// (default)</item>
         /// </list>
         /// </summary>

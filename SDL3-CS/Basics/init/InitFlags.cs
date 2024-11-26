@@ -32,7 +32,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This datatype is available since SDL 3.1.3.</since>
     /// <seealso cref="Init"/>
-    /// <seealso cref="Quit()"/>
+    /// <seealso cref="Quit"/>
     /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="QuitSubSystem"/>
     /// <seealso cref="WasInit"/>

@@ -29,15 +29,13 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>An entry for filters for file dialogs.</para>
-    /// <para><c>name</c> is a user-readable label for the filter (for example, "Office
-    /// document").</para>
-    /// <para><c>pattern</c> is a semicolon-separated list of file extensions (for example,
+    /// </summary>
+    /// <param name="name">is a user-readable label for the filter (for example, "Office
+    /// document").</param>
+    /// <param name="pattern">is a semicolon-separated list of file extensions (for example,
     /// <c>"doc;docx"</c>). File extensions may only contain alphanumeric characters,
     /// hyphens, underscores and periods. Alternatively, the whole string can be a
-    /// single asterisk (<c>"*"</c>), which serves as an "<c>All files</c>" filter.</para>
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="pattern"></param>
+    /// single asterisk (<c>"*"</c>), which serves as an "<c>All files</c>" filter.</param>
     /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>

@@ -34,9 +34,9 @@ public static partial class SDL
     /// <para><see cref="Init"/> simply forwards to calling <see cref="InitSubSystem"/>. Therefore, the
     /// two may be used interchangeably. Though for readability of your cod
     /// <see cref="InitSubSystem"/> might be preferred.</para>
-    /// <para>The file I/O (for example: SDL_IOFromFile) and threading (<see cref="CreateThread()"/>)
+    /// <para>The file I/O (for example: <see cref="IOFromFile"/>) and threading (CreateThread)
     /// subsystems are initialized by default. Message boxes
-    /// (<see cref="ShowSimpleMessageBox(MessageBoxFlags,string,string,nint)"/>) also attempt to work without initializing the
+    /// (<see cref="ShowSimpleMessageBox"/>) also attempt to work without initializing the
     /// video subsystem, in hopes of being useful in showing an error dialog when
     /// <see cref="Init"/> fails. You must specifically initialize other subsystems if you
     /// use them in your application.</para>
@@ -63,18 +63,18 @@ public static partial class SDL
     /// call <see cref="Quit"/> to force shutdown). If a subsystem is already loaded then
     /// this call will increase the ref-count and return.</para>
     /// <para>Consider reporting some basic metadata about your application before
-    /// calling <see cref="Init"/>, using either <see cref="SetAppMetadata(string,string,string)"/> or
-    /// <see cref="SetAppMetadataProperty(string,string)"/>.</para>
+    /// calling <see cref="Init"/>, using either <see cref="SetAppMetadata"/> or
+    /// <see cref="SetAppMetadataProperty"/>.</para>
     /// </summary>
     /// <param name="flags">subsystem initialization flags.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetAppMetadata(string,string,string)"/>
-    /// <seealso cref="SetAppMetadataProperty(string,string)"/>
+    /// <seealso cref="SetAppMetadata"/>
+    /// <seealso cref="SetAppMetadataProperty"/>
     /// <seealso cref="InitSubSystem"/>
-    /// <seealso cref="Quit()"/>
-    /// <seealso cref="SetMainReady()"/>
+    /// <seealso cref="Quit"/>
+    /// <seealso cref="SetMainReady"/>
     /// <seealso cref="WasInit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -91,7 +91,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="Init"/>
-    /// <seealso cref="Quit()"/>
+    /// <seealso cref="Quit"/>
     /// <seealso cref="QuitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_InitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -107,7 +107,7 @@ public static partial class SDL
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="InitSubSystem"/>
-    /// <seealso cref="Quit()"/>
+    /// <seealso cref="Quit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_QuitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void QuitSubSystem(InitFlags flags);
     
@@ -158,7 +158,7 @@ public static partial class SDL
     /// <para>Passing a <c>null</c> removes any previous metadata.</para>
     /// <para>This is a simplified interface for the most important information. You can
     /// supply significantly more detailed metadata with
-    /// <see cref="SetAppMetadataProperty(string,string)"/>.</para>
+    /// <see cref="SetAppMetadataProperty"/>.</para>
     /// </summary>
     /// <param name="appname">The name of the application ("My Game 2: Bad Guy's
     /// Revenge!").</param>
@@ -170,7 +170,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetAppMetadataProperty(string,string)"/>
+    /// <seealso cref="SetAppMetadataProperty"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadata"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetAppMetadata(
@@ -191,34 +191,34 @@ public static partial class SDL
     /// <para>This function should be called as early as possible, before <see cref="Init"/>.
     /// Multiple calls to this function are allowed, but various state might not
     /// change once it has been set up with a previous call to this function.</para>
-    /// <para>Once set, this metadata can be read using <see cref="GetAppMetadataProperty(string)"/>.</para>
+    /// <para>Once set, this metadata can be read using <see cref="GetAppMetadataProperty"/>.</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="PropAppMetadataNameString"/>`: The human-readable name of the
+    /// <item><see cref="Props.AppMetadataNameString"/>`: The human-readable name of the
     /// application, like <c>"My Game 2: Bad Guy's Revenge!"</c>. This will show up
     /// anywhere the OS shows the name of the application separately from window
     /// titles, such as volume control applets, etc. This defaults to <c>"SDL
     /// Application"</c>.</item>
-    /// <item><see cref="PropAppMetadataVersionString"/>: The version of the app that is
+    /// <item><see cref="Props.AppMetadataVersionString"/>: The version of the app that is
     /// running; there are no rules on format, so <c>"1.0.3beta2"</c> and <c>"April 22nd,
     /// 2024"</c> and a git hash are all valid options. This has no default.</item>
-    /// <item><see cref="PropAppMetadataIdentifierString"/>: A unique string that
+    /// <item><see cref="Props.AppMetadataIdentifierString"/>: A unique string that
     /// identifies this app. This must be in reverse-domain format, like
     /// <c>"com.example.mygame2"</c>. This string is used by desktop compositors to
     /// identify and group windows together, as well as match applications with
     /// associated desktop settings and icons. If you plan to package your
     /// application in a container such as Flatpak, the app ID should match the
     /// name of your Flatpak container as well. This has no default.</item>
-    /// <item><see cref="PropAppMetadataCreatorString"/>: The human-readable name of the
+    /// <item><see cref="Props.AppMetadataCreatorString"/>: The human-readable name of the
     /// creator/developer/maker of this app, like <c>"MojoWorkshop, LLC"</c></item>
-    /// <item><see cref="PropAppMetadataCopyrightString"/>: The human-readable copyright
+    /// <item><see cref="Props.AppMetadataCopyrightString"/>: The human-readable copyright
     /// notice, like <c>"Copyright (c) 2024 MojoWorkshop, LLC"</c> or whatnot. Keep this
     /// to one line, don't paste a copy of a whole software license in here. This
     /// has no default.</item>
-    /// <item><see cref="PropAppMetadataURLString"/>: A URL to the app on the web. Maybe a
+    /// <item><see cref="Props.AppMetadataURLString"/>: A URL to the app on the web. Maybe a
     /// product page, or a storefront, or even a GitHub repository, for user's
     /// further information This has no default.</item>
-    /// <item><see cref="PropAppMetadataTypeString"/>: The type of application this is.
+    /// <item><see cref="Props.AppMetadataTypeString"/>: The type of application this is.
     /// Currently this string can be <c>"game"</c> for a video game, <c>"mediaplayer"</c> for a
     /// media player, or generically <c>"application"</c> if nothing else applies.
     /// Future versions of SDL might add new types. This defaults to
@@ -231,8 +231,8 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetAppMetadataProperty(string)"/>
-    /// <seealso cref="SetAppMetadata(string,string,string)"/>
+    /// <seealso cref="GetAppMetadataProperty"/>
+    /// <seealso cref="SetAppMetadata"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
@@ -241,8 +241,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAppMetadataProperty(const char *name);</code>
     /// <summary>
     /// <para>Get metadata about your app.</para>
-    /// <para>This returns metadata previously set using <see cref="SetAppMetadata(string,string,string)"/> or
-    /// <see cref="SetAppMetadataProperty(string,string)"/>. See <see cref="SetAppMetadataProperty(string,string)"/> for the list
+    /// <para>This returns metadata previously set using <see cref="SetAppMetadata"/> or
+    /// <see cref="SetAppMetadataProperty"/>. See <see cref="SetAppMetadataProperty"/> for the list
     /// of available properties and their meanings.</para>
     /// </summary>
     /// <param name="name">the name of the metadata property to get.</param>
@@ -250,11 +250,11 @@ public static partial class SDL
     /// is not set, <c>null</c> for properties with no default.</returns>
     /// <threadsafety>It is safe to call this function from any thread, although
     /// the string returned is not protected and could potentially be
-    /// freed if you call <see cref="SetAppMetadataProperty(string,string)"/> to set that
+    /// freed if you call <see cref="SetAppMetadataProperty"/> to set that
     /// property from another thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="SetAppMetadata(string,string,string)"/>
-    /// <seealso cref="SetAppMetadataProperty(string,string)"/>
+    /// <seealso cref="SetAppMetadata"/>
+    /// <seealso cref="SetAppMetadataProperty"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
