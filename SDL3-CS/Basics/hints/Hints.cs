@@ -1947,9 +1947,9 @@ public static partial class SDL
         
         
         /// <summary>
-        /// <para>A variable setting which system cursor to use as the default cursor.
-        /// This should be an integer corresponding to the SDL_SystemCursor enum.
-        /// The default value is zero (SDL_SYSTEM_CURSOR_DEFAULT).</para>
+        /// <para>A variable setting which system cursor to use as the default cursor.</para>
+        /// <para>This should be an integer corresponding to the SDL_SystemCursor enum.
+        /// The default value is zero (<see cref="SystemCursor.Default"/>).</para>
         /// </summary>
         /// <remarks>This hint needs to be set before <see cref="Init"/>.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
