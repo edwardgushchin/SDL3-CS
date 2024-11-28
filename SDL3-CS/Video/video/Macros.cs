@@ -25,14 +25,48 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    private const uint WindowPosUndefinedMask = 0x1FFF0000u;
-    private const uint WindowPosCenteredMask = 0x2FFF0000u;
+    /// <summary>
+    /// Used to indicate that you don't care what the window position is.
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    [Macro]
+    public static uint WindowPosUndefinedDisplay(int displayIndex) => WindowposUndefinedMask | (uint)displayIndex;
+
     
-    public static uint WindowPosUndefinedDisplay(int x) => WindowPosUndefinedMask | (uint)x;
+    /// <summary>
+    /// Used to indicate that you don't care what the window position is.
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    [Macro]
+    public static bool WindowPosIsUndefined(uint position) => (position & 0xFFFF0000u) == WindowposUndefinedMask;
+    
+    
+    /// <summary>
+    /// Used to indicate that the window position should be centered.
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    [Macro]
+    public static uint WindowPosCenteredDisplay(int displayIndex) => WindowposCenteredMask | (uint)displayIndex;
+    
+    
+    /// <summary>
+    /// Used to indicate that the window position should be centered.
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    [Macro]
+    public static bool WindowPosIsCentered(uint position) => (position & 0xFFFF0000u) == WindowposCenteredMask;
+    
+    
+    /// <summary>
+    /// Used to indicate that you don't care what the window position is.
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public static readonly uint WindowPosUndefined = WindowPosUndefinedDisplay(0);
-    public static bool IsWindowPosUndefined(uint x) => (x & 0xFFFF0000) == WindowPosUndefinedMask;
     
-    public static uint WindowPosCenteredDisplay(int x) => WindowPosCenteredMask | (uint)x;
+    
+    /// <summary>
+    /// Used to indicate that the window position should be centered.
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public static readonly uint WindowPosCentered = WindowPosCenteredDisplay(0);
-    public static bool IsWindowPosCentered(uint x) => (x & 0xFFFF0000) == WindowPosCenteredMask;
 }

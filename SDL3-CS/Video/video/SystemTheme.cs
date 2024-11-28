@@ -28,6 +28,7 @@ public static partial class SDL
     /// <summary>
     /// System theme.
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum SystemTheme
     {
         /// <summary>

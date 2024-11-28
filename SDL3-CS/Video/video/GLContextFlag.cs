@@ -26,14 +26,15 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Possible values to be set for the <see cref="GLAttr.ContextFlags"/> attribute.
+    /// Possible flags to be set for the <see cref="GLAttr.ContextFlags"/> attribute.
     /// </summary>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     [Flags]
     public enum GLContextFlag
     {
-        Debug             = 0x0001,
+        Debug = 0x0001,
         ForwardCompatible = 0x0002,
-        RobustAccess     = 0x0004,
-        Isolation    = 0x0008
+        RobustAccess = 0x0004,
+        Isolation = 0x0008
     }
 }

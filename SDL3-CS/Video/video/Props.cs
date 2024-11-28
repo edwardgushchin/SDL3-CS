@@ -28,390 +28,91 @@ public static partial class SDL
 	public static partial class Props
 	{
 		/// <summary>
-		/// <para>The pointer to the global `wl_display` object used by the Wayland video
+		/// <para>The pointer to the global <c>wl_display</c> object used by the Wayland video
 		/// backend.</para>
 		/// <para>Can be set before the video subsystem is initialized to import an external
-		/// `wl_display` object from an application or toolkit for use in SDL, or read
-		/// after initialization to export the `wl_display` used by the Wayland video
+		/// <c>wl_display</c> object from an application or toolkit for use in SDL, or read
+		/// after initialization to export the <c>wl_display</c> used by the Wayland video
 		/// backend. Setting this property after the video subsystem has been
 		/// initialized has no effect, and reading it when the video subsystem is
 		/// uninitialized will either return the user provided value, if one was set
-		/// prior to initialization, or NULL. See docs/README-wayland.md for more
+		/// prior to initialization, or <c>null</c>. See docs/README-wayland.md for more
 		/// information.</para>
 		/// </summary>
 		public const string GlobalVideoWaylandWLDisplayPointer = "SDL.video.wayland.wl_display";
 		
-		/// <summary>
-		/// true if the display has HDR headroom above the SDR white point. This is for informational and
-		/// diagnostic purposes only, as not all platforms provide this information
-		/// at the display level.
-		/// </summary>
 		public const string DisplayHDREnabledBoolean = "SDL.display.HDR_enabled";
-		
-		/// <summary>
-		/// The "panel orientation"
-		/// property for the display in degrees of clockwise rotation. Note that this
-		/// is provided only as a hint, and the application is responsible for any
-		/// coordinate transformations needed to conform to the requested display
-		/// orientation.
-		/// </summary>
 	    public const string DisplayKMSDRMPanelOrientationNumber = "SDL.display.KMSDRM.panel_orientation";
 	    
-	    /// <summary>
-	    /// True if the window should be always on top
-	    /// </summary>
-	    public const string WindowCreateAlwaysOnTopBoolean = "always_on_top";
-	    
-	    /// <summary>
-	    /// True if the window has no window decoration
-	    /// </summary>
-		public const string WindowCreateBorderlessBoolean = "borderless";
-	    
-	    /// <summary>
-	    /// True if the window should accept keyboard input (defaults true)
-	    /// </summary>
-		public const string WindowCreateFocusableBoolean = "focusable";
+	    public const string WindowCreateAlwaysOnTopBoolean = "SDL.window.create.always_on_top";
+		public const string WindowCreateBorderlessBoolean = "SDL.window.create.borderless";
+		public const string WindowCreateFocusableBoolean = "SDL.window.create.focusable";
+		public const string WindowCreateExternalGraphicsContextBoolean = "SDL.window.create.external_graphics_context";
+		public const string WindowCreateFlagsNumber = "SDL.window.create.flags";
+		public const string WindowCreateFullscreenBoolean = "SDL.window.create.fullscreen";
+		public const string WindowCreateHeightNumber = "SDL.window.create.height";
+		public const string WindowCreateHiddenBoolean = "SDL.window.create.hidden";
+		public const string WindowCreateHighPixelDensityBoolean = "SDL.window.create.high_pixel_density";
+		public const string WindowCreateMaximizedBoolean = "SDL.window.create.maximized";
+		public const string WindowCreateMenuBoolean = "SDL.window.create.menu";
+		public const string WindowCreateMetalBoolean = "SDL.window.create.metal";
+		public const string WindowCreateMinimizedBoolean = "SDL.window.create.minimized";
+		public const string WindowCreateModalBoolean = "SDL.window.create.modal";
+		public const string WindowCreateMouseGrabbedBoolean = "SDL.window.create.mouse_grabbed";
+		public const string WindowCreateOpenGLBoolean = "SDL.window.create.opengl";
+		public const string WindowCreateParentPointer = "SDL.window.create.parent";
+		public const string WindowCreateResizableBoolean = "SDL.window.create.resizable";
+		public const string WindowCreateTitleString = "SDL.window.create.title";
+		public const string WindowCreateTransparentBoolean = "SDL.window.create.transparent";
+		public const string WindowCreateTooltipBoolean = "SDL.window.create.tooltip";
+		public const string WindowCreateUtilityBoolean = "SDL.window.create.utility";
+		public const string WindowCreateVulkanBoolean = "SDL.window.create.vulkan";
+		public const string WindowCreateWidthNumber = "SDL.window.create.width";
+		public const string WindowCreateXNumber = "SDL.window.create.x";
+		public const string WindowCreateYNumber = "SDL.window.create.y";
+		public const string WindowCreateCocoaWindowPointer = "SDL.window.create.cocoa.window";
+		public const string WindowCreateCocoaViewPointer = "SDL.window.create.cocoa.view";
+		public const string WindowCreateWaylandSurfaceRoleCustomBoolean = "SDL.window.create.wayland.surface_role_custom";
+		public const string WindowCreateWaylandCreateEGLWindowBoolean = "SDL.window.create.wayland.create_egl_window";
+		public const string WindowCreateWaylandWLSurfacePointer = "SDL.window.create.wayland.wl_surface";
+		public const string WindowCreateWin32HWNDPointer = "SDL.window.create.win32.hwnd";
+		public const string WindowCreateWin32PixelFormatHWNDPointer = "SDL.window.create.win32.pixel_format_hwnd";
+		public const string WindowCreateX11WindowNumber = "SDL.window.create.x11.window";
 		
-		/// <summary>
-		/// True if the window will be used with an externally managed graphics context.
-		/// </summary>
-		public const string WindowCreateExternalGraphicsContextBoolean = "external_graphics_context";
-		
-		/// <summary>
-		/// True if the window should start in fullscreen mode at desktop resolution
-		/// </summary>
-		public const string WindowCreateFullscreenBoolean = "fullscreen";
-		
-		/// <summary>
-		/// The height of the window
-		/// </summary>
-		public const string WindowCreateHeightNumber = "height";
-		
-		/// <summary>
-		/// True if the window should start hidden
-		/// </summary>
-		public const string WindowCreateHiddenBoolean = "hidden";
-		
-		/// <summary>
-		/// True if the window uses a high pixel density buffer if possible
-		/// </summary>
-		public const string WindowCreateHighPixelDensityBoolean = "high_pixel_density";
-		
-		/// <summary>
-		/// True if the window should start maximized
-		/// </summary>
-		public const string WindowCreateMaximizedBoolean = "maximized";
-		
-		/// <summary>
-		/// True if the window is a popup menu
-		/// </summary>
-		public const string WindowCreateMenuBoolean = "menu";
-		
-		/// <summary>
-		/// True if the window will be used with Metal rendering
-		/// </summary>
-		public const string WindowCreateMetalBoolean = "metal";
-		
-		/// <summary>
-		/// True if the window should start minimized
-		/// </summary>
-		public const string WindowCreateMinimizedBoolean = "minimized";
-		
-		/// <summary>
-		/// True if the window is modal to its parent
-		/// </summary>
-		public const string WindowCreateModalBoolean = "modal";
-		
-		/// <summary>
-		/// True if the window starts with grabbed mouse focus
-		/// </summary>
-		public const string WindowCreateMouseGrabbedBoolean = "mouse_grabbed";
-		
-		/// <summary>
-		/// True if the window will be used with OpenGL rendering
-		/// </summary>
-		public const string WindowCreateOpenGLBoolean = "opengl";
-		
-		/// <summary>
-		/// An Window that will be the parent of this window, required for windows with the "toolip", "menu",
-		/// and "modal" properties
-		/// </summary>
-		public const string WindowCreateParentPointer = "parent";
-		
-		/// <summary>
-		/// True if the window should be resizable
-		/// </summary>
-		public const string WindowCreateResizableBoolean = "resizable";
-		
-		/// <summary>
-		/// The title of the window, in UTF-8 encoding
-		/// </summary>
-		public const string WindowCreateTitleString = "title";
-		
-		/// <summary>
-		/// True if the window show transparent in the areas with alpha of 0
-		/// </summary>
-		public const string WindowCreateTransparentBoolean = "transparent";
-		
-		/// <summary>
-		/// True if the window is a tooltip
-		/// </summary>
-		public const string WindowCreateTooltipBoolean = "tooltip";
-		
-		/// <summary>
-		/// True if the window is a utility window, not showing in the task bar and window list
-		/// </summary>
-		public const string WindowCreateUtilityBoolean = "utility";
-		
-		/// <summary>
-		/// True if the window will be used with Vulkan rendering
-		/// </summary>
-		public const string WindowCreateVulkanBoolean = "vulkan";
-		
-		/// <summary>
-		/// The width of the window
-		/// </summary>
-		public const string WindowCreateWidthNumber = "width";
-		
-		/// <summary>
-		/// The x position of the window, or
-		/// <see cref="WindowPosCentered"/>, defaults to <see cref="WindowPosUndefined"/>`. This is
-		/// relative to the parent for windows with the "parent" property set.
-		/// </summary>
-		public const string WindowCreateXNumber = "x";
-		
-		/// <summary>
-		/// The y position of the window, or
-		/// <see cref="WindowPosCentered"/>, defaults to <see cref="WindowPosUndefined"/>`. This is
-		/// relative to the parent for windows with the "parent" property set.
-		/// </summary>
-		public const string WindowCreateYNumber = "y";
-		
-		/// <summary>
-		/// The`(__unsafe_unretained)` NSWindow associated with the window, if you want to wrap an existing window.
-		/// </summary>
-		public const string WindowCreateCocoaWindowPointer = "cocoa.window";
-		
-		/// <summary>
-		/// The `(__unsafe_unretained)`NSView associated with the window, defaults to `[window contentView]`
-		/// </summary>
-		public const string WindowCreateCocoaViewPointer = "cocoa.view";
-		
-		/// <summary>
-		/// True if
-		/// the application wants to use the Wayland surface for a custom role and
-		/// does not want it attached to an XDG toplevel window. See
-		/// [README/wayland](README/wayland) for more information on using custom
-		/// surfaces.
-		/// </summary>
-		public const string WindowCreateWaylandSurfaceRoleCustomBoolean = "wayland.surface_role_custom";
-		
-		/// <summary>
-		/// True if the
-		/// application wants an associated `wl_egl_window` object to be created,
-		/// even if the window does not have the OpenGL property or flag set.
-		/// </summary>
-		public const string WindowCreateCreateEGLWindowBoolean = "wayland.create_egl_window";
-		
-		/// <summary>
-		/// The wl_surface
-		/// associated with the window, if you want to wrap an existing window. See
-		/// [README/wayland](README/wayland) for more information.
-		/// </summary>
-		public const string WindowCreateWaylandWLSurfacePointer = "wayland.wl_surface";
-		
-		/// <summary>
-		/// The HWND associated with the window, if you want to wrap an existing window.
-		/// </summary>
-		public const string WindowCreateWin32HWNDPointer = "win32.hwnd";
-		
-		/// <summary>
-		/// Optional, another window to share pixel format with, useful for OpenGL windows
-		/// </summary>
-		public const string WindowCreateWin32PixelFormatHWNDPointer = "win32.pixel_format_hwnd";
-		
-		/// <summary>
-		/// The X11 Window associated with the window, if you want to wrap an existing window.
-		/// </summary>
-		public const string WindowCreateX11WindowNumber = "x11.window";
-		
-		/// <summary>
-		/// The surface associated with a shaped window
-		/// </summary>
 		public const string WindowShapePointer = "SDL.window.shape";
-		
-		/// <summary>
-		/// True if the window has HDR headroom above the SDR white point. This property can change dynamically
-		/// when <see cref="EventType.WindowHDRStateChanged"/> is sent.
-		/// </summary>
 		public const string WindowHDREnabledBoolean = "SDL.window.HDR_enabled";
-		
-		/// <summary>
-		/// The value of SDR white in the <see cref="Colorspace.SRGBLinear"/> colorspace. On Windows this corresponds to the
-		/// SDR white level in scRGB colorspace, and on Apple platforms this is
-		/// always 1.0 for EDR content. This property can change dynamically when
-		/// <see cref="EventType.WindowHDRStateChanged"/> is sent.
-		/// </summary>
 		public const string WindowSDRWhiteLevelFloat = "SDL.window.SDR_white_level";
-		
-		/// <summary>
-		/// The additional high dynamic range
-		/// that can be displayed, in terms of the SDR white point. When HDR is not
-		/// enabled, this will be 1.0. This property can change dynamically when
-		/// <see cref="EventType.WindowHDRStateChanged"/> is sent.
-		/// </summary>
 		public const string WindowHDRHeadroomFloat = "SDL.window.HDR_headroom";
-		
-		/// <summary>
-		/// The ANativeWindow associated with the window
-		/// </summary>
 		public const string WindowAndroidWindowPointer = "SDL.window.android.window";
-		
-		/// <summary>
-		/// The EGLSurface associated with the window
-		/// </summary>
 		public const string WindowAndroidSurfacePointer = "SDL.window.android.surface";
-		
-		/// <summary>
-		/// The `(__unsafe_unretained)` UIWindow associated with the window
-		/// </summary>
 		public const string WindowUIKitWindowPointer = "SDL.window.uikit.window";
-		
-		/// <summary>
-		/// The NSInteger tag assocated with metal views on the window
-		/// </summary>
 		public const string WindowUIKitMetalViewTagNumber = "SDL.window.uikit.metal_view_tag";
-		
-		/// <summary>
-		/// The OpenGL view's framebuffer object. It must be bound when rendering to the screen using OpenGL.
-		/// </summary>
-		public const string WindowUIKitOpenGLFrameBufferNumber = "SDL.window.uikit.opengl.framebuffer";
-		
-		/// <summary>
-		/// The OpenGL view's renderbuffer object. It must be bound when <see cref="GLSwapWindow"/> is called.
-		/// </summary>
-		public const string WindowUIKitOpenGLRenderBufferNumber = "SDL.window.uikit.opengl.renderbuffer";
-		
-		/// <summary>
-		/// The OpenGL view's resolve framebuffer, when MSAA is used.
-		/// </summary>
-		public const string WindowUIKitOpenGLResolveFrameBufferNumber = "SDL.window.uikit.opengl.resolve_framebuffer";
-		
-		/// <summary>
-		/// The device index associated with the window (e.g. the X in /dev/dri/cardX)
-		/// </summary>
+		public const string WindowUIKitOpenglFramebufferNumber = "SDL.window.uikit.opengl.framebuffer";
+		public const string WindowUIKitOpenglRenderbufferNumber = "SDL.window.uikit.opengl.renderbuffer";
+		public const string WindowUIKitOpenglResolveFramebufferNumber = "SDL.window.uikit.opengl.resolve_framebuffer";
 		public const string WindowKMSDRMDeviceIndexNumber = "SDL.window.kmsdrm.dev_index";
-		
-		/// <summary>
-		/// The DRM FD associated with the window
-		/// </summary>
 		public const string WindowKMSDRMDRMFDNumber = "SDL.window.kmsdrm.drm_fd";
-		
-		/// <summary>
-		/// The GBM device associated with the window
-		/// </summary>
 		public const string WindowKMSDRMGBMDevicePointer = "SDL.window.kmsdrm.gbm_dev";
-		
-		/// <summary>
-		/// The `(__unsafe_unretained)` NSWindow associated with the window
-		/// </summary>
 		public const string WindowCocoaWindowPointer = "SDL.window.cocoa.window";
-		
-		/// <summary>
-		/// The NSInteger tag assocated with metal views on the window
-		/// </summary>
 		public const string WindowCocoaMetalViewTagNumber = "SDL.window.cocoa.metal_view_tag";
-		
-		/// <summary>
-		/// The EGLNativeDisplayType associated with the window
-		/// </summary>
+		public const string WindowOpenVROverlayID = "SDL.window.openvr.overlay_id";
 		public const string WindowVivanteDisplayPointer = "SDL.window.vivante.display";
-		
-		/// <summary>
-		/// The EGLNativeWindowType associated with the window
-		/// </summary>
 		public const string WindowVivanteWindowPointer = "SDL.window.vivante.window";
-		
-		/// <summary>
-		/// The EGLSurface associated with the window
-		/// </summary>
 		public const string WindowVivanteSurfacePointer = "SDL.window.vivante.surface";
-		
-		/// <summary>
-		/// The IInspectable CoreWindow associated with the window
-		/// </summary>
-		public const string WindowWinRTWindowPointer = "SDL.window.winrt.window";
-		
-		/// <summary>
-		/// The HWND associated with the window
-		/// </summary>
 		public const string WindowWin32HWNDPointer = "SDL.window.win32.hwnd";
-		
-		/// <summary>
-		/// The HDC associated with the window
-		/// </summary>
 		public const string WindowWin32HDCPointer = "SDL.window.win32.hdc";
-		
-		/// <summary>
-		/// The HINSTANCE associated with the window
-		/// </summary>
 		public const string WindowWin32InstancePointer = "SDL.window.win32.instance";
-		
-		/// <summary>
-		/// The wl_display associated with the window
-		/// </summary>
 		public const string WindowWaylandDisplayPointer = "SDL.window.wayland.display";
-		
-		/// <summary>
-		/// The wl_surface associated with the window
-		/// </summary>
 		public const string WindowWaylandSurfacePointer = "SDL.window.wayland.surface";
-		
-		/// <summary>
-		/// The wl_egl_window associated with the window
-		/// </summary>
+		public const string WindowWaylandViewportPointer = "SDL.window.wayland.viewport";
 		public const string WindowWaylandEGLWindowPointer = "SDL.window.wayland.egl_window";
-		
-		/// <summary>
-		/// The xdg_surface associated with the window
-		/// </summary>
 		public const string WindowWaylandXDGSurfacePointer = "SDL.window.wayland.xdg_surface";
-		
-		/// <summary>
-		/// The xdg_toplevel role associated with the window
-		/// </summary>
-		public const string WindowWaylandXDGTopLevelPointer = "SDL.window.wayland.xdg_toplevel";
-		
-		/// <summary>
-		/// The export handle associated with the window
-		/// </summary>
-		public const string WindowWaylandXDGTopLevelExportHandleString = "SDL.window.wayland.xdg_toplevel_export_handle";
-		
-		/// <summary>
-		/// The xdg_popup role associated with the window
-		/// </summary>
+		public const string WindowWaylandXDGToplevelPointer  = "SDL.window.wayland.xdg_toplevel";
+		public const string WindowWaylandXDGToplevelExportHandleString = "SDL.window.wayland.xdg_toplevel_export_handle";
 		public const string WindowWaylandXDGPopupPointer = "SDL.window.wayland.xdg_popup";
-		
-		/// <summary>
-		/// The xdg_positioner associated with the window, in popup mode
-		/// </summary>
 		public const string WindowWaylandXDGPositionerPointer = "SDL.window.wayland.xdg_positioner";
-		
-		/// <summary>
-		/// The X11 Display associated with the window
-		/// </summary>
 		public const string WindowX11DisplayPointer = "SDL.window.x11.display";
-		
-		/// <summary>
-		/// The screen number associated with the window
-		/// </summary>
 		public const string WindowX11ScreenNumber = "SDL.window.x11.screen";
-		
-		/// <summary>
-		/// The X11 Window associated with the window
-		/// </summary>
 		public const string WindowX11WindowNumber = "SDL.window.x11.window";
 	}
-	
-    
 }

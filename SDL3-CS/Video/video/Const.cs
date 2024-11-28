@@ -25,35 +25,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// Display orientation values; the way a display is rotated.
-    /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
-    public enum DisplayOrientation
-    {
-        /// <summary>
-        /// The display orientation can't be determined
-        /// </summary>
-        Unknown,
-        
-        /// <summary>
-        /// The display is in landscape mode, with the right side up, relative to portrait mode
-        /// </summary>
-        Landscape,
-        
-        /// <summary>
-        /// The display is in landscape mode, with the left side up, relative to portrait mode
-        /// </summary>
-        LandscapeFlipped,
-        
-        /// <summary>
-        /// The display is in portrait mode
-        /// </summary>
-        Portrait,
-        
-        /// <summary>
-        /// The display is in portrait mode, upside down
-        /// </summary>
-        PortraitFlipped
-    }
+    public const uint WindowposUndefinedMask = 0x1FFF0000u;
+    public const uint WindowposCenteredMask = 0x2FFF0000u;
+    
+    public const int WindowSurfaceVSyncDisabled = 0;
+    public const int WindowSurfaceVSyncAdaptive = -1;
 }

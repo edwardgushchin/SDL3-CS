@@ -27,30 +27,62 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>typedef SDL_EGLAttrib *(SDLCALL *SDL_EGLAttribArrayCallback)(void);</code>
+    /// <code>typedef SDL_EGLAttrib *(SDLCALL *SDL_EGLAttribArrayCallback)(void *userdata);</code>
     /// <summary>
-    /// EGL attribute initialization callback types.
+    /// <para>EGL platform attribute initialization callback.</para>
+    /// <para>This is called when SDL is attempting to create an EGL context, to let the
+    /// app add extra attributes to its eglGetPlatformDisplay() call.</para>
+    /// <para>The callback should return a pointer to an EGL attribute array terminated
+    /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the SDL_CreateWindow
+    /// process will fail gracefully.</para>
+    /// <para>The returned pointer should be allocated with SDL_malloc() and will be
+    /// passed to <see cref="Free(nint)"/>.</para>
+    /// <para>The arrays returned by each callback will be appended to the existing
+    /// attribute arrays defined by SDL.</para>
     /// </summary>
+    /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
+    /// <returns>a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</returns>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <seealso cref="EGLSetAttributeCallbacks()"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr EGLAttribArrayCallback();
+    public delegate IntPtr EGLAttribArrayCallback(IntPtr userdata);
     
     
-    /// <code>typedef SDL_EGLint *(SDLCALL *SDL_EGLIntArrayCallback)(void);</code>
+    /// <code>typedef SDL_EGLint *(SDLCALL *SDL_EGLIntArrayCallback)(void *userdata, SDL_EGLDisplay display, SDL_EGLConfig config);</code>
     /// <summary>
-    /// EGL attribute initialization callback types.
+    /// <para>EGL surface/context attribute initialization callback types.</para>
+    /// <para>This is called when SDL is attempting to create an EGL surface, to let the
+    /// app add extra attributes to its eglCreateWindowSurface() or
+    /// eglCreateContext calls.</para>
+    /// <para>For convenience, the EGLDisplay and EGLConfig to use are provided to the
+    /// callback.</para>
+    /// <para>The callback should return a pointer to an EGL attribute array terminated
+    /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the <see cref="CreateWindow(string,int,int,WindowFlags)"/>
+    /// process will fail gracefully.</para>
+    /// <para>The returned pointer should be allocated with SDL_malloc() and will be
+    /// passed to <see cref="Free(nint)"/>.</para>
+    /// <para>The arrays returned by each callback will be appended to the existing
+    /// attribute arrays defined by SDL.</para>
     /// </summary>
+    /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
+    /// <param name="display">the EGL display to be used.</param>
+    /// <param name="config">the EGL config to be used.</param>
+    /// <returns>a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</returns>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <seealso cref="EGLSetAttributeCallbacks()"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int EGLIntArrayCallback();
+    public delegate IntPtr EGLIntArrayCallback(IntPtr userdata, IntPtr display, IntPtr config);
     
     
-    /// <code>typedef SDL_HitTestResult (SDLCALL *SDL_HitTest)(SDL_Window *win,const SDL_Point *area, void *data);</code>
+    /// <code>typedef SDL_HitTestResult (SDLCALL *SDL_HitTest)(SDL_Window *win, const SDL_Point *area, void *data);</code>
     /// <summary>
     /// Callback used for hit-testing.
     /// </summary>
-    /// <param name="win">the <see cref="Window.Handle"/> where hit-testing was set on.</param>
+    /// <param name="win">the SDL_Window where hit-testing was set on.</param>
     /// <param name="area">an <see cref="Point"/> which should be hit-tested.</param>
-    /// <param name="data">what was passed as `callback_data` to <see cref="SetWindowHitTest"/>.</param>
+    /// <param name="data">what was passed as <c>callback_data</c> to <see cref="SetWindowHitTest"/>.</param>
     /// <returns>an <see cref="HitTestResult"/> value.</returns>
+    /// <seealso cref="SetWindowHitTest"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate HitTestResult HitTest(IntPtr win, in Point area, IntPtr data);
 }

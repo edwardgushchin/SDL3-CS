@@ -29,6 +29,7 @@ public static partial class SDL
     /// <summary>
     /// Possible return values from the SDL_HitTest callback.
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     /// <seealso cref="HitTest"/>
     public enum HitTestResult
     {

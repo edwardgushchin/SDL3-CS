@@ -28,9 +28,10 @@ public static partial class SDL
     /// <summary>
     /// Possible values to be set <see cref="GLAttr.ContextResetNotification"/> attribute.
     /// </summary>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     public enum GLContextResetNotification
     {
         NoNotification = 0x0000,
-        LoseContext    = 0x0001
+        LoseContext = 0x0001
     }
 }

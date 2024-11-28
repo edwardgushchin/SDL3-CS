@@ -29,6 +29,7 @@ public static partial class SDL
     /// Possible values to be set for the <see cref="GLAttr.ContextReleaseBehavior"/>
     /// attribute.
     /// </summary>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     [Flags]
     public enum GLСontextReleaseFlag
     {
