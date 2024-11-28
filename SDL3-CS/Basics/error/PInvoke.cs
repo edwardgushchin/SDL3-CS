@@ -60,7 +60,7 @@ public static partial class SDL
     /// <param name="ap">a variable argument list.</param>
     /// <returns>false</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="ClearError"/>
     /// <seealso cref="GetError"/>
     /// <seealso cref="SetError"/>

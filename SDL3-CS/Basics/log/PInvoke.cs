@@ -320,7 +320,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the default log output callback.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="SetLogOutputFunction"/>
     /// <seealso cref="GetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
