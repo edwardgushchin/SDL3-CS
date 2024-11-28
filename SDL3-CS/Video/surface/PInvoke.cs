@@ -534,7 +534,7 @@ public static partial class SDL
     /// <param name="surface">the existing <see cref="Surface"/> structure to convert.</param>
     /// <param name="format">the new pixel format.</param>
     /// <returns>the new <see cref="Surface"/> structure that is created or NULL if it fails;
-    /// call <see cref="GetError()"/> for more information.</returns>
+    /// call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="ConvertSurfaceAndColorspace"/>
     /// <seealso cref="DestroySurface"/>
@@ -555,7 +555,7 @@ public static partial class SDL
     /// <param name="colorspace">the new colorspace.</param>
     /// <param name="props">an SDL_PropertiesID with additional color properties, or 0.</param>
     /// <returns>the new <see cref="Surface"/> structure that is created or <c>null</c> if it fails;
-    /// call <see cref="GetError()"/> for more information.</returns>
+    /// call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="ConvertSurface"/>
     /// <seealso cref="ConvertSurface"/>
@@ -579,7 +579,7 @@ public static partial class SDL
     /// <param name="dst">a pointer to be filled in with new pixel data.</param>
     /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="ConvertPixelsAndColorspace"/>
     public static int ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, out IntPtr dst, int dstPitch) =>
@@ -609,7 +609,7 @@ public static partial class SDL
     /// <param name="dst">a pointer to be filled in with new pixel data.</param>
     /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <see cref="ConvertPixels"/>
     public static int ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, out IntPtr dst, int dstPitch) =>
@@ -633,7 +633,7 @@ public static partial class SDL
     /// <param name="linear"><c>true</c> to convert from sRGB to linear space for the alpha
     /// multiplication, <c>false</c> to do multiplication in sRGB space.</param>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     public static int PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, bool linear) =>
         SDL_PremultiplyAlpha(width, height, srcFormat, src, srcPitch, dstFormat, dst, dstPitch, linear);
@@ -647,7 +647,7 @@ public static partial class SDL
     /// <param name="linear"><c>tree</c> to convert from sRGB to linear space for the alpha
     /// multiplication, <c>false</c> to do multiplication in sRGB space.</param>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplySurfaceAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int PremultiplySurfaceAlpha(IntPtr surface, [MarshalAs(UnmanagedType.I1)] bool linear);
@@ -665,7 +665,7 @@ public static partial class SDL
     /// <param name="b">the blue component of the pixel, normally in the range 0-1.</param>
     /// <param name="a">the alpha component of the pixel, normally in the range 0-1.</param>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int ClearSurface(IntPtr surface, float r, float g, float b, float a);

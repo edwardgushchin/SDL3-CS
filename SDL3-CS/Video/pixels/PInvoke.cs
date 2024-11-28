@@ -135,7 +135,7 @@ public static partial class SDL
     /// <param name="firstcolor">the index of the first palette entry to modify.</param>
     /// <param name="ncolors">the number of entries to modify.</param>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError()"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified or destroyed in another thread.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
