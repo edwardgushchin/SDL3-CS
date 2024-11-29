@@ -32,19 +32,16 @@ internal static class Program
     {
         SDL.SetLogPriorities(SDL.LogPriority.Trace);
         
-        var window = SDL.CreateWindow("SDL3 Create Window", 800, 600, 0);
-        
-        if (window == IntPtr.Zero)
+        var init = SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer);
+
+        if (!init)
         {
-            Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
-            return;
-        }
-        
-        var renderer = SDL.CreateRenderer(window, null);
-        
-        if (renderer == IntPtr.Zero)
-        {
-            Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
+            if (window == IntPtr.Zero)
+                Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
+            
+            if (renderer == IntPtr.Zero) 
+                Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
+            
             return;
         }
         

@@ -42,21 +42,21 @@ internal static class Program
             return;
         }
         
-        _window = SDL.CreateWindow("SDL3 VHS Camera Example", 800, 600, 0);
+        var init = SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer);
         
-        if (_window == IntPtr.Zero)
+        if (!init)
         {
-            Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
+            if (window == IntPtr.Zero)
+                Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
+            
+            if (renderer == IntPtr.Zero) 
+                Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
+            
             return;
         }
         
-        _renderer = SDL.CreateRenderer(_window, null);
-        
-        if (_renderer == IntPtr.Zero)
-        {
-            Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
-            return;
-        }
+        _window = window;
+        _renderer = renderer;
         
         SDL.SetRenderVSync(_renderer, 1);
         
