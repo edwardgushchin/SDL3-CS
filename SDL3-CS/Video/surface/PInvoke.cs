@@ -859,4 +859,9 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceUncheckedScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int BlitSurfaceUncheckedScaled(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
     
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceFlags"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetSurfaceFlags(IntPtr surface, out SurfaceFlags flags);
+    
 }

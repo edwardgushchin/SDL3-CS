@@ -37,9 +37,7 @@ public class FPSCounter
         var currentTime = SDL.GetPerformanceCounter();
         var elapsedTime = (currentTime - _lastTime) / (double)SDL.GetPerformanceFrequency();
 
-        if (!(elapsedTime >= 1.0)) return;
-        
-        SDL.LogInfo(SDL.LogCategory.System, $"FPS: {_fps}");
+        if (!(elapsedTime >= 0.1)) return;
         
         _fps = _frameCount / elapsedTime;
         _frameCount = 0;

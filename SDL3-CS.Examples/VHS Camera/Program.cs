@@ -134,8 +134,8 @@ internal static class Program
                      *
                      * Consider this code as a demonstration of the capabilities, and not a working version.
                      */
-                    
-                    var frameBuffer = frame.GetManagedPixels();
+
+                    var frameBuffer = SDL.PointerToByteArray(frame.Pixels, frame.Pitch * frame.Height);
                     
                     ApplyVHSEffectYUY22(frameBuffer!, frame.Width, frame.Height);
     
@@ -166,9 +166,12 @@ internal static class Program
                 SDL.RenderTexture(_renderer, texture, IntPtr.Zero, IntPtr.Zero);
             }
             
-            SDL.RenderPresent(_renderer);
-            
             fpsCounter.Update();
+            
+            SDL.SetRenderDrawColor(_renderer, 0x00, 0xFF, 0x00, 255);
+            SDL.RenderDebugText(_renderer, 10, 10, $"FPS: {fpsCounter.FPS:N0}");
+            
+            SDL.RenderPresent(_renderer);
         }
 
         SDL.CloseCamera(camera);

@@ -25,25 +25,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// The access pattern allowed for a texture.
-    /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
-    public enum TextureAccess
-    {
-        /// <summary>
-        /// Changes rarely, not lockable
-        /// </summary>
-        Static,
-        
-        /// <summary>
-        /// Changes frequently, lockable
-        /// </summary>
-        Streaming,
-        
-        /// <summary>
-        /// Texture can be used as a render target
-        /// </summary>
-        Target
-    }
+    public const int RendererVSyncDisabled = 0;
+    public const int RendererVSyncAdaptive = -1;
+
+    public const int DebugTextFontCharacterSize = 0;
 }

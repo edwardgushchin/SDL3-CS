@@ -87,102 +87,95 @@ public static partial class SDL
         return libHandle;
     }
 
-
-    /// <summary>
-    /// Converts an unmanaged pointer to a managed structure of type <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T">
-    /// The type of the structure to which the unmanaged pointer should be converted. This type must be a value type (struct).
-    /// </typeparam>
-    /// <param name="pointer">
-    /// A pointer to an unmanaged memory location that contains the data to be converted.
-    /// </param>
-    /// <returns>
-    /// The managed structure of type <typeparamref name="T"/>, or <c>null</c> if the pointer is <c>IntPtr.Zero</c>.
-    /// </returns>
-    /// <remarks>
-    /// This method uses the <see cref="Marshal.PtrToStructure{T}(System.IntPtr)"/> method to convert the unmanaged pointer into a managed structure.
-    /// If the provided pointer is <c>IntPtr.Zero</c>, the method will return <c>null</c> instead of attempting to convert it.
-    /// </remarks>
-    /// <exception cref="ArgumentException">The layout of T is not sequential or explicit</exception>
-    /// <seealso cref="PointerToManagedStringArray(nint)"/>
-    /// <seealso cref="PointerToManagedStructArray{T}(nint,int)"/>
+    
+    // IntPtr to struct
     public static T? PointerToManagedStruct<T>(IntPtr pointer) where T : struct
     {
         return pointer == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(pointer);
     }
     
     
-    /// <summary>
-    /// Converts a pointer to an unmanaged memory block into an array of managed structs.
-    /// </summary>
-    /// <param name="pointer">The pointer to the unmanaged memory block that contains the structs.</param>
-    /// <param name="count">The number of structs to read from the unmanaged memory block.</param>
-    /// <typeparam name="T">The type of the struct to be read from unmanaged memory. Must be a value type (struct).</typeparam>
-    /// <remarks>
-    /// This method assumes that the unmanaged memory is allocated using methods such as <c>CoTaskMemAlloc</c>.
-    /// The method will read <c>count</c> elements of type <c>T</c> from the unmanaged memory block.
-    /// It will return an array of managed structs, or <c>null</c> if the pointer is invalid (e.g., <see cref="IntPtr.Zero"/> or negative).
-    /// </remarks>
-    /// <returns>
-    /// An array of structs of type <c>T</c> read from unmanaged memory, or <c>null</c> if the pointer is invalid.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">Thrown when the pointer is <see cref="IntPtr.Zero"/> or negative.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the number of structs to read (<c>count</c>) is less than or equal to 0.</exception>
-    /// <seealso cref="PointerToManagedStruct{T}(nint)"/>
-    /// <seealso cref="PointerToManagedStringArray(nint)"/>
-    public static T[]? PointerToManagedStructArray<T>(IntPtr pointer, int count) where T : struct
+    // struct to IntPtr
+    // After calling Marshal.FreeHGlobal()
+    public static IntPtr ManagedStructToPointer<T>(T? strct) where T : struct
     {
-        if (pointer == IntPtr.Zero) return null;
+        if (!strct.HasValue) return IntPtr.Zero;
         
-        if (count == 0) return [];
+        var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
+        
+        Marshal.StructureToPtr(strct, ptr, false);
+    
+        return ptr;
+    }
+
+    
+    // struct[] to IntPtr
+    public static IntPtr ManagedStructArrayToPointer<T>(T[] array) where T : struct
+    {
+        if (array == null || array.Length == 0) return IntPtr.Zero;
+        
+        var structSize = Marshal.SizeOf<T>();
+        
+        var pointer = Marshal.AllocHGlobal(structSize * array.Length);
 
         try
         {
-            var array = new T[count];
-            for (var i = 0; i < count; i++)
+            if (typeof(T).IsPrimitive)
             {
-                var modePtr = Marshal.ReadIntPtr(pointer, i * IntPtr.Size);
-                array[i] = Marshal.PtrToStructure<T>(modePtr);
+                for (var i = 0; i < array.Length; i++)
+                {
+                    var elementPtr = IntPtr.Add(pointer, i * structSize);
+                    Marshal.StructureToPtr(array[i], elementPtr, false);
+                }
             }
-
-            return array;
+            else
+            {
+                for (var i = 0; i < array.Length; i++)
+                {
+                    var elementPtr = Marshal.ReadIntPtr(pointer, i * IntPtr.Size);
+                    Marshal.StructureToPtr(array[i], elementPtr, false);
+                }
+            }
         }
-        finally
+        catch
         {
-            Free(pointer);
+            Marshal.FreeHGlobal(pointer);
+            throw;
         }
+
+        return pointer;
+    }
+
+    
+    // IntPtr to IntPtr[]
+    public static IntPtr[]? PointerToPointerArray(IntPtr pointer, int size)
+    {
+        if (pointer == IntPtr.Zero) return null;
+        
+        if (size == 0) return [];
+        
+        var pointers = new IntPtr[size];
+        
+        Marshal.Copy(pointer, pointers, 0, pointers.Length);
+        
+        return pointers;
     }
     
     
-    /// <summary>
-    /// Converts a null-terminated array of UTF-8 encoded string pointers in unmanaged memory 
-    /// to a managed array of strings.
-    /// </summary>
-    /// <param name="pointer">
-    /// A pointer to the start of the null-terminated array of UTF-8 encoded string pointers in unmanaged memory.
-    /// </param>
-    /// <returns>
-    /// A managed array of strings if the pointer is not null and contains valid data; 
-    /// <c>null</c> if the pointer is <see cref="IntPtr.Zero"/> or if the array is empty.
-    /// </returns>
-    /// <remarks>
-    /// This method iterates through the memory starting at the specified pointer. Each pointer in the array is read
-    /// and interpreted as a UTF-8 encoded string, which is then converted to a managed string. The process stops
-    /// when a null pointer (indicating the end of the array) is encountered.
-    /// 
-    /// The method assumes that the memory structure follows the format of a null-terminated array of pointers 
-    /// to UTF-8 encoded strings. It is the caller's responsibility to ensure that the memory layout is valid
-    /// and accessible.
-    /// 
-    /// Memory allocated for the unmanaged strings and the array itself must be freed manually if it is no longer needed.
-    /// </remarks>
-    /// <exception cref="AccessViolationException">
-    /// Thrown if the specified pointer references invalid or inaccessible memory.
-    /// </exception>
-    /// <seealso cref="PointerToManagedStructArray{T}(nint,int)"/>
-    /// <seealso cref="PointerToManagedStruct{T}(nint)"/>
-    public static string[]? PointerToManagedStringArray(IntPtr pointer)
+    // IntPtr to byte[]
+    public static byte[]? PointerToByteArray(IntPtr pointer, int size)
+    {
+        if (pointer == IntPtr.Zero) return null;
+        
+        var array = new byte[size];
+        
+        Marshal.Copy(pointer, array, 0, array.Length);
+        
+        return array;
+    }
+    
+    // IntPtr to string[]
+    public static string[]? PointerToStringArray(IntPtr pointer)
     {
         if (pointer == IntPtr.Zero) return null;
 
@@ -203,6 +196,7 @@ public static partial class SDL
         
         return result.Count > 0 ? result.ToArray() : null;
     }
+    
     
     /// <summary>
     /// Indicates that a method is a <c>#define</c> macro.

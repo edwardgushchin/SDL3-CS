@@ -21,29 +21,32 @@
  */
 #endregion
 
+using System.Runtime.InteropServices;
+
 namespace SDL3;
 
 public static partial class SDL
 {
     /// <summary>
-    /// The access pattern allowed for a texture.
+    /// Vertex structure.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
-    public enum TextureAccess
+    /// <since>This struct is available since SDL 3.1.3.</since>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Vertex
     {
         /// <summary>
-        /// Changes rarely, not lockable
+        /// Vertex position, in SDL_Renderer coordinates
         /// </summary>
-        Static,
-        
+        public FPoint Position;
+
         /// <summary>
-        /// Changes frequently, lockable
+        /// Vertex color
         /// </summary>
-        Streaming,
-        
+        public FColor Color;
+
         /// <summary>
-        /// Texture can be used as a render target
+        /// Normalized texture coordinates, if needed
         /// </summary>
-        Target
+        public FPoint TexCoord;
     }
 }

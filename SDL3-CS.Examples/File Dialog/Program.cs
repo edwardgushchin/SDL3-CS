@@ -107,7 +107,7 @@ internal static class Program
             Console.WriteLine($"SDL Error: {SDL.GetError()!}");
         }
 
-        var list = SDL.PointerToManagedStringArray(filelist) ?? [];
+        var list = SDL.PointerToStringArray(filelist) ?? [];
         
         var type = filter switch
         {

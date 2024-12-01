@@ -26,24 +26,34 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// The access pattern allowed for a texture.
+    /// How the logical size is mapped to the output.
     /// </summary>
     /// <since>This enum is available since SDL 3.1.3.</since>
-    public enum TextureAccess
+    public enum RendererLogicalPresentation
     {
         /// <summary>
-        /// Changes rarely, not lockable
+        /// There is no logical size in effect
         /// </summary>
-        Static,
+        Disabled,
         
         /// <summary>
-        /// Changes frequently, lockable
+        /// The rendered content is stretched to the output resolution
         /// </summary>
-        Streaming,
+        Stretch,
         
         /// <summary>
-        /// Texture can be used as a render target
+        /// The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars
         /// </summary>
-        Target
+        Letterbox,
+        
+        /// <summary>
+        /// The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds
+        /// </summary>
+        Overscan,
+        
+        /// <summary>
+        /// The rendered content is scaled up by integer multiples to fit the output resolution
+        /// </summary>
+        IntegerScale
     }
 }
