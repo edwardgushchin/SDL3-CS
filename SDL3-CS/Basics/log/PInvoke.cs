@@ -340,7 +340,7 @@ public static partial class SDL
     /// <seealso cref="GetDefaultLogOutputFunction"/>
     /// <seealso cref="SetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void GetLogOutputFunction(out IntPtr callback, out IntPtr userdata);
+    public static partial void GetLogOutputFunction(out LogOutputFunction callback, out IntPtr userdata);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);</code>

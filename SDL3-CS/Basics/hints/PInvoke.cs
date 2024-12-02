@@ -142,7 +142,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHintBoolean"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
-        [MarshalAs(UnmanagedType.I1)]bool defaultValue);
+        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);</code>
