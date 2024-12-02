@@ -80,17 +80,17 @@ public static partial class SDL
         /// <summary>
         /// IEC 61966-2-1 (sRGB or sYCC)
         /// </summary>
-        sRGB = 13,
+        SRGB = 13,
         
         /// <summary>
         /// ITU-R BT2020 for 10-bit system
         /// </summary>
-        BT2020_10Bit = 14,
+        BT202010Bit = 14,
         
         /// <summary>
         /// ITU-R BT2020 for 12-bit system
         /// </summary>
-        BT2020_12Bit = 15,
+        BT202012Bit = 15,
         
         /// <summary>
         /// SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems

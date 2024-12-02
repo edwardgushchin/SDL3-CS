@@ -355,7 +355,7 @@ public static partial class SDL
     /// <seealso cref="DestroyCursor"/>
     /// <seealso cref="SetCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateColorCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr CreateColorCursor(IntPtr surface, int hotX, int hotY);
+    public static partial IntPtr CreateColorCursor(IntPtr surface, int hotX, int hotY);
     
     
     

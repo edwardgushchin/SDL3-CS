@@ -509,15 +509,15 @@ public static partial class SDL
 	/// <para>Get the properties associated with a joystick.</para>
 	/// <para>The following read-only properties are provided by SDL:</para>
 	/// <list type="bullet">
-	/// <item><see cref="PropJoystickCapMonoLedBoolean"/>:
+	/// <item><see cref="Props.JoystickCapMonoLedBoolean"/>:
 	/// true if this joystick has an LED that has adjustable brightness</item>
-	/// <item><see cref="PropJoystickCapRGBLedBoolean"/>:
+	/// <item><see cref="Props.JoystickCapRGBLedBoolean"/>:
 	/// true if this joystick has an LED that has adjustable color</item>
-	/// <item><see cref="PropJoystickCapPlayerLedBoolean"/>:
+	/// <item><see cref="Props.JoystickCapPlayerLedBoolean"/>:
 	/// true if this joystick has a player LED</item>
-	/// <item><see cref="PropJoystickCapRumbleBoolean"/>:
+	/// <item><see cref="Props.JoystickCapRumbleBoolean"/>:
 	/// true if this joystick has left/right rumble</item>
-	/// <item><see cref="PropJoystickCapTriggerRumbleBoolean"/>: true if this joystick has simple trigger rumble</item>
+	/// <item><see cref="Props.JoystickCapTriggerRumbleBoolean"/>: true if this joystick has simple trigger rumble</item>
 	/// </list>
 	/// </summary>
 	/// <param name="joystick">the <see cref="Joystick"/> obtained from <see cref="OpenJoystick"/>.</param>

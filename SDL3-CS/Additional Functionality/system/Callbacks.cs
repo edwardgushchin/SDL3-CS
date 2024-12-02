@@ -65,13 +65,13 @@ public static partial class SDL
     /// <para>The prototype for an Apple iOS animation callback.</para>
     /// <para>This datatype is only useful on Apple iOS.</para>
     /// <para>After passing a function pointer of this type to
-    /// <see cref="SetIOSAnimationCallback"/>, the system will call that function pointer at
+    /// <see cref="SetiOSAnimationCallback"/>, the system will call that function pointer at
     /// a regular interval.</para>
     /// <param name="userdata">what was passed as <c>callbackParam</c> to
-    /// <see cref="SetIOSAnimationCallback"/> as <c>callbackParam</c>.</param>
+    /// <see cref="SetiOSAnimationCallback"/> as <c>callbackParam</c>.</param>
     /// </summary>
     /// <since>This datatype is available since SDL 3.0.0.</since>
-    /// <seealso cref="SetIOSAnimationCallback"/>
+    /// <seealso cref="SetiOSAnimationCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IOSAnimationCallback(IntPtr userdata);
     

@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// <para>A structure that represents a color as RGBA components.</para>
     /// <para>The bits of this structure can be directly reinterpreted as an
-    /// integer-packed color which uses the <see cref="PixelFormat.RGBA32"/> format
+    /// integer-packed color which uses the format
     /// (<see cref="PixelFormat.ABGR8888"/> on little-endian systems and
     /// <see cref="PixelFormat.RGBA8888"/> on big-endian systems).</para>
     /// </summary>

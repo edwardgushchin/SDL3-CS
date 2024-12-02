@@ -34,7 +34,7 @@ public static partial class SDL
     /// <seealso cref="GetFullscreenDisplayModes"/>
     /// <seealso cref="GetDesktopDisplayMode(uint)"/>
     /// <seealso cref="GetCurrentDisplayMode(uint)"/>
-    /// <seealso cref="SetWindowFullscreenMode"/>
+    /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="GetWindowFullscreenMode(nint)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct DisplayMode

@@ -74,18 +74,18 @@ public static partial class SDL
     /// <para>Closing the <see cref="IOStream"/> will close SDL's internal file handle.</para>
     /// <para>The following properties may be set at creation time by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="PropIOStreamWindowsHandlePointer"/>: a pointer, that can be cast
+    /// <item><see cref="Props.IOStreamWindowsHandlePointer"/>: a pointer, that can be cast
     /// to a win32 <c>HANDLE</c>, that this <see cref="IOStream"/> is using to access the
     /// filesystem. If the program isn't running on Windows, or SDL used some
     /// other method to access the filesystem, this property will not be set.</item>
-    /// <item><see cref="PropIOStreamSTDIOFilePointer"/>: a pointer, that can be cast to a
+    /// <item><see cref="Props.IOStreamSTDIOFilePointer"/>: a pointer, that can be cast to a
     /// stdio <c>FILE *</c>, that this <see cref="IOStream"/> is using to access the filesystem.
     /// If SDL used some other method to access the filesystem, this property
     /// will not be set. <b>PLEASE NOTE</b> that if SDL is using a different C runtime
     /// than your app, trying to use this pointer will almost certainly result in
     /// a crash! This is mostly a problem on Windows; make sure you build SDL and
     /// your app with the same compiler and settings to avoid it.</item>
-    /// <item><see cref="PropIOStreamAndroidAAssetPointer"/>: a pointer,
+    /// <item><see cref="Props.IOStreamAndroidAAssetPointer"/>: a pointer,
     /// that can be cast
     /// to an Android NDK <c>AAsset *</c>, that this <see cref="IOStream"/> is using to access
     /// the filesystem. If SDL used some other method to access the filesystem,
@@ -185,12 +185,12 @@ public static partial class SDL
     /// <para>This supports the following properties to provide access to the memory and
     /// control over allocations:</para>
     /// <list type="bullet">
-    /// <item><see cref="PropIOStreamDynamicMemoryPointer"/>: a pointer to the internal
+    /// <item><see cref="Props.IOStreamDynamicMemoryPointer"/>: a pointer to the internal
     /// memory of the stream. This can be set to <c>NULL</c> to transfer ownership of
     /// the memory to the application, which should free the memory with
     /// <see cref="Free"/>. If this is done, the next operation on the stream must be
     /// <see cref="CloseIO"/>.</item>
-    /// <item><see cref="PropIOStreamDynamicChunkSizeNumber"/>: memory will be allocated in
+    /// <item><see cref="Props.IOStreamDynamicChunkSizeNumber"/>: memory will be allocated in
     /// multiples of this size, defaulting to <c>1024</c>.</item>
     /// </list>
     /// </summary>

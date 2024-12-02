@@ -30,12 +30,6 @@ public static partial class SDL
     /// <summary>
     /// MessageBox structure containing title, text, window, etc.
     /// </summary>
-    /// <param name="flags"><see cref="MessageBoxFlags"/></param>
-    /// <param name="window">Parent window, can be <c>NULL</c></param>
-    /// <param name="title">UTF-8 title</param>
-    /// <param name="message">UTF-8 message text</param>
-    /// <param name="buttons"><see cref="MessageBoxButtonData"/></param>
-    /// <param name="colorScheme"><see cref="MessageBoxColorScheme"/>, can be <c>NULL</c> to use system settings</param>
     [StructLayout(LayoutKind.Sequential)]
     public struct MessageBoxData
     {

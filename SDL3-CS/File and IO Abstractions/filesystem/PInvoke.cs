@@ -99,9 +99,6 @@ public static partial class SDL
     /// <item>...only use letters, numbers, and spaces. Avoid punctuation like "Game
     /// Name 2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.</item>
     /// </list>
-    /// <para>The returned path is guaranteed to end with a path separator ('\\' on
-    /// Windows, '/' on most other platforms).</para>
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <param name="org">the name of your organization.</param>
     /// <param name="app">the name of your application.</param>

@@ -445,7 +445,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>a gamepad identifier or <c>NULL</c> if an error occurred;
-    /// call <see cref="SDL_GetError"/> for more information.</returns>
+    /// call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="CloseGamepad"/>
     /// <seealso cref="IsGamepad"/>
@@ -492,11 +492,11 @@ public static partial class SDL
     /// <para>These properties are shared with the underlying joystick object.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="PropGamepadCapMonoLedBoolean"/> true if this gamepad has an LED that has adjustable brightness</item>
-    /// <item><see cref="PropGamepadCapRGBLedBoolean"/> true if this gamepad has an LED that has adjustable color</item>
-    /// <item><see cref="PropGamepadCapPlayerLedBoolean"/> true if this gamepad has a player LED</item>
-    /// <item><see cref="PropGamepadCapRumbleBoolean"/> true if this gamepad has left/right rumble</item>
-    /// <item><see cref="PropGamepadCapTriggerRumbleBoolean"/> true if this gamepad has simple trigger rumble</item>
+    /// <item><see cref="Props.GamepadCapMonoLedBoolean"/> true if this gamepad has an LED that has adjustable brightness</item>
+    /// <item><see cref="Props.GamepadCapRGBLedBoolean"/> true if this gamepad has an LED that has adjustable color</item>
+    /// <item><see cref="Props.GamepadCapPlayerLedBoolean"/> true if this gamepad has a player LED</item>
+    /// <item><see cref="Props.GamepadCapRumbleBoolean"/> true if this gamepad has left/right rumble</item>
+    /// <item><see cref="Props.GamepadCapTriggerRumbleBoolean"/> true if this gamepad has simple trigger rumble</item>
     /// </list>
     /// </summary>
     /// <param name="gamepad">a gamepad identifier previously returned by <see cref="OpenGamepad"/>.</param>

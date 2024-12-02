@@ -152,7 +152,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SetiOSEventPump"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSAnimationCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, 
+    public static partial int SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, 
         IntPtr callbackParam);
     
     

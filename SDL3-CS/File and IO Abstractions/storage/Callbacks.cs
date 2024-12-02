@@ -40,7 +40,7 @@ public static partial class SDL
     /// <code>int (SDLCALL *enumerate)(void *userdata, const char *path, SDL_EnumerateDirectoryCallback callback, void *callback_userdata);</code>
     /// <summary>Enumerate a directory, optional for write-only storage</summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int EnumerateDelegate(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, EnumerateDirectoryCallback callback, IntPtr callback_userdata);
+    public delegate int EnumerateDelegate(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, EnumerateDirectoryCallback callback, IntPtr callbackUserdata);
 
     
     /// <code>int (SDLCALL *info)(void *userdata, const char *path, SDL_PathInfo *info);</code>

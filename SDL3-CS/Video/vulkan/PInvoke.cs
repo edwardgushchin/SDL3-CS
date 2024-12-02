@@ -73,7 +73,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the address of the <c>vkGetInstanceProcAddr</c> function.</para>
     /// <para>This should be called after either calling <see cref="VulkanLoadLibrary"/>() or
-    /// creating an <see cref="Window"/> with the <see cref="WindowFlags.Vulkan"/> flag.</para>
+    /// creating an SDL_Window with the <see cref="WindowFlags.Vulkan"/> flag.</para>
     /// <para>The actual type of the returned function pointer is
     /// PFN_vkGetInstanceProcAddr, but that isn't available because the Vulkan
     /// headers are not included here. You should cast the return value of this
@@ -102,7 +102,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the Vulkan instance extensions needed for vkCreateInstance.</para>
     /// <para>This should be called after either calling <see cref="VulkanLoadLibrary"/> or
-    /// creating an <see cref="Window"/> with the <see cref="WindowFlags.Vulkan"/> flag.</para>
+    /// creating an SDL_Window with the <see cref="WindowFlags.Vulkan"/> flag.</para>
     /// <para>On return, the variable pointed to by <c>count</c> will be set to the number of
     /// elements returned, suitable for using with
     /// <c>VkInstanceCreateInfo::enabledExtensionCount</c>, and the returned array can be

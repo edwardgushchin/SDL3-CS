@@ -21,7 +21,6 @@
  */
 #endregion
 
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;

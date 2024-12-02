@@ -1090,7 +1090,7 @@ public static partial class SDL
     /// for more information.</returns>
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="LockTextureToSurface(nint, nint, out Surface)"/>
+    /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1120,7 +1120,7 @@ public static partial class SDL
     /// for more information.</returns>
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="LockTextureToSurface(nint, nint, out Surface)"/>
+    /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

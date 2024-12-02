@@ -116,7 +116,7 @@ public static partial class SDL
     /// <param name="devid">the camera device instance ID to query.</param>
     /// <param name="count">a pointer filled in with the number of elements in the list.
     /// Can be <c>null</c>.</param>
-    /// <returns>a 0 terminated array of <see cref="CameraSpecs"/>, which should be freed
+    /// <returns>a 0 terminated array of <see cref="CameraSpec"/>, which should be freed
     /// with <see cref="Free"/>, or <c>null</c> on error; call <see cref="GetError"/> for more
     /// details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -147,7 +147,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetCameraName(uint instance_id);
+    private static partial IntPtr SDL_GetCameraName(uint instanceID);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetCameraName(SDL_CameraID instance_id);</code>
     /// <summary>
     /// <para>Get the human-readable device name for a camera.</para>
@@ -167,7 +167,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial CameraPosition SDL_GetCameraPosition(uint instance_id);
+    private static partial CameraPosition SDL_GetCameraPosition(uint instanceID);
     /// <code>extern SDL_DECLSPEC SDL_CameraPosition SDLCALL SDL_GetCameraPosition(SDL_CameraID instance_id);</code>
     /// <summary>
     /// <para>Get the position of the camera in relation to the system.</para>
@@ -195,7 +195,7 @@ public static partial class SDL
     /// <see cref="Surface"/>'s conversion/scaling functions directly if necessary).</para>
     /// <para>You can call <see cref="GetCameraFormat"/> to get the actual data format if passing
     /// a <c>null</c> spec here. You can see the exact specs a device can support without
-    /// conversion with <see cref="GetCameraSupportedSpecs"/>.</para>
+    /// conversion with .</para>
     /// <para>SDL will not attempt to emulate framerate; it will try to set the hardware
     /// to the rate closest to the requested speed, but it won't attempt to limit
     /// or duplicate frames artificially; call <see cref="GetCameraFormat"/> to see the
@@ -206,7 +206,7 @@ public static partial class SDL
     /// the camera, and they can choose Yes or No at that point. Until they do, the
     /// camera will not be usable. The app should either wait for an
     /// <see cref="EventType.CameraDeviceApproved"/> (or <see cref="EventType.CameraDeviceDenied"/>) event,
-    /// or poll <see cref="IsCameraApproved"/> occasionally until it returns non-zero. On
+    /// or poll occasionally until it returns non-zero. On
     /// platforms that don't require explicit user approval (and perhaps in places
     /// where the user previously permitted access), the approval event might come
     /// immediately, but it might come seconds, minutes, or hours later!</para>
@@ -256,7 +256,7 @@ public static partial class SDL
     /// <summary>
     /// Get the instance ID of an opened camera.
     /// </summary>
-    /// <param name="camera">an <see cref="Camera"/> to query.</param>
+    /// <param name="camera">an SDL_Camera to query.</param>
     /// <returns>the instance ID of the specified camera on success or 0 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -270,7 +270,7 @@ public static partial class SDL
     /// <summary>
     /// Get the properties associated with an opened camera.
     /// </summary>
-    /// <param name="camera">the <see cref="Camera"/> obtained from <see cref="OpenCamera"/>.</param>
+    /// <param name="camera">the SDL_Camera obtained from <see cref="OpenCamera"/>.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -287,7 +287,7 @@ public static partial class SDL
     /// <para>If the system is waiting for the user to approve access to the camera, as
     /// some platforms require, this will return -1, but this isn't necessarily a
     /// fatal error; you should either wait for an <see cref="EventType.CameraDeviceApproved"/>
-    /// (or <see cref="EventType.CameraDeviceDenied"/>) event, or poll <see cref="IsCameraApproved"/>
+    /// (or <see cref="EventType.CameraDeviceDenied"/>) event, or poll
     /// occasionally until it returns non-zero.</para>
     /// </summary>
     /// <param name="camera">opened camera device.</param>
@@ -318,12 +318,12 @@ public static partial class SDL
     /// of memory condition.</para>
     /// <para>After use, the frame should be released with <see cref="ReleaseCameraFrame"/>. If
     /// you don't do this, the system may stop providing more video!</para>
-    /// <para>Do not call <see cref="FreeSurface"/> on the returned surface! It must be given
+    /// <para>Do not call  on the returned surface! It must be given
     /// back to the camera subsystem with <see cref="ReleaseCameraFrame"/>!</para>
     /// <para>If the system is waiting for the user to approve access to the camera, as
     /// some platforms require, this will return <c>null</c> (no frames available); you
     /// should either wait for an <see cref="EventType.CameraDeviceApproved"/> (or
-    /// <see cref="EventType.CameraDeviceDenied"/>) event, or poll <see cref="IsCameraApproved"/>
+    /// <see cref="EventType.CameraDeviceDenied"/>) event, or poll
     /// occasionally until it returns non-zero.</para>
     /// </summary>
     /// <param name="camera">opened camera device.</param>
@@ -371,7 +371,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but no
     /// thread may reference <c>device</c> once this function is called.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="OpenCameraWithSpec"/>
     /// <seealso cref="OpenCamera"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseCamera(IntPtr camera);

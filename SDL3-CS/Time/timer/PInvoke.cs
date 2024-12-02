@@ -113,7 +113,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_TimerID SDLCALL SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *userdata);</code>
     /// <summary>
     /// <para>Call a callback function at a future time.</para>
-    /// <para>If you use this function, you must pass <see cref="InitFlags.Timer"/> to <see cref="Init"/>.</para>
+    /// <para>If you use this function, you must pass  to <see cref="Init"/>.</para>
     /// <para>The callback function is passed the current timer interval and the user
     /// supplied parameter from the <see cref="AddTimer"/> call and should return the next
     /// timer interval. If the value returned from the callback is 0, the timer is
@@ -147,7 +147,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_TimerID SDLCALL SDL_AddTimerNS(Uint64 interval, SDL_NSTimerCallback callback, void *userdata);</code>
     /// <summary>
     /// <para>Call a callback function at a future time.</para>
-    /// <para>If you use this function, you must pass <see cref="InitFlags.Timer"/> to <see cref="Init"/>.</para>
+    /// <para>If you use this function, you must pass to <see cref="Init"/>.</para>
     /// <para>The callback function is passed the current timer interval and the user
     /// supplied parameter from the <see cref="AddTimerNS"/> call and should return the
     /// next timer interval. If the value returned from the callback is 0, the

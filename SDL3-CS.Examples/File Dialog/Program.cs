@@ -104,7 +104,7 @@ internal static class Program
     {
         if (filelist == IntPtr.Zero && filter == -1)
         {
-            Console.WriteLine($"SDL Error: {SDL.GetError()!}");
+            Console.WriteLine($"SDL Error: {SDL.GetError()}");
         }
 
         var list = SDL.PointerToStringArray(filelist) ?? [];

@@ -74,7 +74,6 @@ public static partial class SDL
     /// <seealso cref="SetAppMetadataProperty"/>
     /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit"/>
-    /// <seealso cref="SetMainReady"/>
     /// <seealso cref="WasInit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

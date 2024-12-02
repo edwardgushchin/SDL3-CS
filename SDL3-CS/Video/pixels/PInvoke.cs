@@ -267,7 +267,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetRGBA"/>
     /// <seealso cref="MapRGB"/>
-    /// <seealso cref="MapSurfaceRGBA"/>
     public static uint MapRGBA(PixelFormatDetails format, Palette? palette, byte r, byte g, byte b, byte a)
     {
         var formatPtr = Marshal.AllocHGlobal(Marshal.SizeOf<PixelFormatDetails>());

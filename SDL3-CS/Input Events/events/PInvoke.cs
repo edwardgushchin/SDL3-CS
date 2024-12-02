@@ -458,7 +458,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="size">The amount of memory to allocate.</param>
     /// <returns>A pointer to the allocated memory, or <c>null</c> on failure; call
-    /// <see cref="SDL_GetError"/> for more information.</returns>
+    /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="SDL_FreeEventMemory"/>

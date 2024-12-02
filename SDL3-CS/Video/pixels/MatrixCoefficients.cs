@@ -66,12 +66,12 @@ public static partial class SDL
         /// <summary>
         /// ITU-R BT.2020-2 non-constant luminance
         /// </summary>
-        BT2020_NCL = 9,
+        BT2020NCL = 9,
         
         /// <summary>
         /// ITU-R BT.2020-2 constant luminance
         /// </summary>
-        BT2020_CL = 10,
+        BT2020CL = 10,
         
         /// <summary>
         /// SMPTE ST 2085

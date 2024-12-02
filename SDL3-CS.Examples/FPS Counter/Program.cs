@@ -70,13 +70,16 @@ internal static class Program
             var r = (byte)(Math.Sin(elapsed) * 127 + 128);
             var g = (byte)(Math.Sin(elapsed + Math.PI / 2) * 127 + 128);
             var b = (byte)(Math.Sin(elapsed + Math.PI) * 127 + 128);
-
-            SDL.SetRenderDrawColor(renderer, r, g, b, 255);
-            
-            SDL.RenderClear(renderer);
-            SDL.RenderPresent(renderer);
             
             fpsCounter.Update();
+
+            SDL.SetRenderDrawColor(renderer, r, g, b, 255);
+            SDL.RenderClear(renderer);
+            
+            SDL.SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 255);
+            SDL.RenderDebugText(renderer, 10, 10, $"FPS: {fpsCounter.FPS:N0}");
+            
+            SDL.RenderPresent(renderer);
         }
         
         SDL.DestroyRenderer(renderer);

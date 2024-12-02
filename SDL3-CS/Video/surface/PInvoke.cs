@@ -51,7 +51,6 @@ public static partial class SDL
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> to free.</param>
     /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="CreateStackSurface"/>
     /// <seealso cref="CreateSurface"/>
     /// <seealso cref="CreateSurfaceFrom"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroySurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -63,20 +62,20 @@ public static partial class SDL
     /// <para>Get the properties associated with a surface.</para>
     /// <para>The following properties are understood by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="PropSurfaceColorspaceNumber"/>: an <see cref="Colorspace"/> value describing
+    /// <item><see cref="Props.SurfaceColorspaceNumber"/>: an <see cref="Colorspace"/> value describing
     /// the surface colorspace, defaults to <see cref="Colorspace.SRGBLinear"/> for
     /// floating point formats, <see cref="Colorspace.HDR10"/> for 10-bit formats,
     /// <see cref="Colorspace.SRGB"/> for other RGB surfaces and <see cref="Colorspace.BT709Full"/>
     /// for YUV surfaces.</item>
-    /// <item><see cref="PropSurfaceSDRWhitePointFloat"/>: for HDR10 and floating point
+    /// <item><see cref="Props.SurfaceSDRWhitePointFloat"/>: for HDR10 and floating point
     /// surfaces, this defines the value of 100% diffuse white, with higher
     /// values being displayed in the High Dynamic Range headroom. This defaults
     /// to 203 for HDR10 surfaces and 1.0 for floating point surfaces.</item>
-    /// <item><see cref="PropSurfaceHDRHeadroomFloat"/>: for HDR10 and floating point
+    /// <item><see cref="Props.SurfaceHDRHeadroomFloat"/>: for HDR10 and floating point
     /// surfaces, this defines the maximum dynamic range used by the content, in
     /// terms of the SDR white point. This defaults to 0.0, which disables tone
     /// mapping.</item>
-    /// <item><see cref="PropSurfaceTonemapOperatorString"/>: the tone mapping operator
+    /// <item><see cref="Props.SurfaceTonemapOperatorString"/>: the tone mapping operator
     /// used when compressing from a surface with high dynamic range to another
     /// with lower dynamic range. Currently this supports "chrome", which uses
     /// the same tone mapping that Chrome uses for HDR content, the form "*=N",
@@ -103,7 +102,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="GetSurfaceColorspace"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SetSurfaceColorspace(IntPtr surface, Colorspace colorspace);
+    public static partial int SetSurfaceColorspace(IntPtr surface, Colorspace colorspace);
     
     
     /// <summary>
@@ -214,7 +213,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="DestroySurface"/>
     /// <seealso cref="LoadBMP"/>
-    /// <seealso cref="SaveBMP_IO"/>
+    /// <seealso cref="SaveBMPIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadBMP_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr LoadBMPIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
     
@@ -229,7 +228,7 @@ public static partial class SDL
     /// <returns>a pointer to a new <see cref="Surface"/> structure or null if there was an error; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="DestroySurface"/>
-    /// <seealso cref="LoadBMP_IO"/>
+    /// <seealso cref="LoadBMPIO"/>
     /// <seealso cref="SaveBMP"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadBMP"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr LoadBMP([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
@@ -250,7 +249,7 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="LoadBMP_IO"/>
+    /// <seealso cref="LoadBMPIO"/>
     /// <seealso cref="SaveBMP"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveBMP_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SaveBMPIO(IntPtr surface, IntPtr dst, [MarshalAs(UnmanagedType.I1)] bool closeio);
@@ -596,14 +595,14 @@ public static partial class SDL
     /// <param name="width">the width of the block to copy, in pixels.</param>
     /// <param name="height">the height of the block to copy, in pixels.</param>
     /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
-    /// <param name="srcColorspace">an <see cref="ColorSpace"/> value describing the colorspace of
+    /// <param name="srcColorspace">an <see cref="Colorspace"/> value describing the colorspace of
     /// the <c>src</c> pixels.</param>
     /// <param name="srcProperties">an SDL_PropertiesID with additional source color
     /// properties, or 0.</param>
     /// <param name="src">a pointer to the source pixels.</param>
     /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
     /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
-    /// <param name="dstColorspace">an <see cref="ColorSpace"/> value describing the colorspace of
+    /// <param name="dstColorspace">an <see cref="Colorspace"/> value describing the colorspace of
     /// the <c>dst</c> pixels.</param>
     /// <param name="dstProperties">an SDL_PropertiesID with additional destination color
     /// properties, or 0.</param>
