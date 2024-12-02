@@ -162,19 +162,32 @@ public static partial class SDL
     }
     
     
-    // IntPtr to byte[]
+    // IntPtr to byte[]?
     public static byte[]? PointerToByteArray(IntPtr pointer, int size)
     {
         if (pointer == IntPtr.Zero) return null;
         
         var array = new byte[size];
         
-        Marshal.Copy(pointer, array, 0, array.Length);
+        Marshal.Copy(pointer, array, 0, size);
+        
+        return array;
+    }
+
+
+    public static unsafe uint[]? PointerToUIntArray(IntPtr pointer, int size)
+    {
+        if (pointer == IntPtr.Zero) return null;
+        
+        var array = new uint[size];
+        
+        new Span<uint>((void*)pointer, size).CopyTo(new Span<uint>(array, 0, size));
         
         return array;
     }
     
-    // IntPtr to string[]
+    
+    // IntPtr to string[]?
     public static string[]? PointerToStringArray(IntPtr pointer)
     {
         if (pointer == IntPtr.Zero) return null;
@@ -195,6 +208,26 @@ public static partial class SDL
         }
         
         return result.Count > 0 ? result.ToArray() : null;
+    }
+    
+    
+    // IntPtr to struct[]?
+    public static T[]? PointerToManagedStructArray<T>(IntPtr pointer, int count) where T : struct
+    {
+        if (pointer == IntPtr.Zero || count <= 0) return null;
+        
+        if (typeof(T).IsPrimitive)
+            throw new Exception("This method is not suitable for primitive structures. Use more specialized methods.");
+        
+        var array = new T[count];
+        
+        for (var i = 0; i < count; i++)
+        {
+            var elementPtr = Marshal.ReadIntPtr(pointer);
+            array[i] = Marshal.PtrToStructure<T>(elementPtr);
+        }
+
+        return array;
     }
     
     

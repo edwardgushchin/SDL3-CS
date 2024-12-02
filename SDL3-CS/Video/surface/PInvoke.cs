@@ -19,6 +19,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateSurface(int width, int height, PixelFormat format);
     
+    
     /// <code>extern SDL_DECLSPEC SDL_Surface *SDLCALL SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);</code>
     /// <summary>
     /// Allocate a new surface with a specific pixel format and existing pixel data.

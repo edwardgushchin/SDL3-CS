@@ -28,12 +28,12 @@ public static partial class SDL
     /// <summary>
     /// <para>The flags on a window.</para>
     /// <para>These cover a lot of true/false, or on/off, window state. Some of it is
-    /// immutable after being set through <see cref="CreateWindow(string,int,int,WindowFlags)"/>, some of it can be
+    /// immutable after being set through <see cref="CreateWindow"/>, some of it can be
     /// changed on existing windows by the app, and some of it might be altered by
     /// the user or system outside of the app's control.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetWindowFlags(nint)"/>
+    /// <seealso cref="GetWindowFlags"/>
     [Flags]
     public enum WindowFlags : ulong
     {
@@ -53,7 +53,7 @@ public static partial class SDL
         Occluded = 0x0000000000000004,
         
         /// <summary>
-        /// window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; <see cref="ShowWindow(nint)"/> is required for it to become visible
+        /// window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; <see cref="ShowWindow"/> is required for it to become visible
         /// </summary>
         Hidden = 0x0000000000000008,
         

@@ -31,10 +31,10 @@ public static partial class SDL
     /// The structure that defines a display mode.
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetFullscreenDisplayModes(uint,nint)"/>
+    /// <seealso cref="GetFullscreenDisplayModes"/>
     /// <seealso cref="GetDesktopDisplayMode(uint)"/>
     /// <seealso cref="GetCurrentDisplayMode(uint)"/>
-    /// <seealso cref="SetWindowFullscreenMode(nint,DisplayMode)"/>
+    /// <seealso cref="SetWindowFullscreenMode"/>
     /// <seealso cref="GetWindowFullscreenMode(nint)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct DisplayMode

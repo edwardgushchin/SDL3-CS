@@ -177,9 +177,9 @@ public static partial class SDL
     /// <para>Two other API which can be used to create SDL_Renderer:
     /// <see cref="CreateRenderer"/> and <see cref="CreateWindowAndRenderer"/>. These can _also_
     /// create a software renderer, but they are intended to be used with an
-    /// SDL_Window as the final destination and not an SDL_Surface.</para>
+    /// SDL_Window as the final destination and not an <see cref="Surface"/>.</para>
     /// </summary>
-    /// <param name="surface">the SDL_Surface structure representing the surface where
+    /// <param name="surface">the <see cref="Surface"/> structure representing the surface where
     /// rendering is done.</param>
     /// <returns>a valid rendering context or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
@@ -398,7 +398,7 @@ public static partial class SDL
     /// <seealso cref="CreateTextureWithProperties"/>
     /// <seealso cref="DestroyTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTextureFromSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateTextureFromSurface(IntPtr renderer, ref Surface surface);
+    public static partial IntPtr CreateTextureFromSurface(IntPtr renderer, IntPtr surface);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL SDL_CreateTextureWithProperties(SDL_Renderer *renderer, SDL_PropertiesID props);</code>
@@ -632,9 +632,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     public static bool GetTextureSize(IntPtr texture, out float? w, out float? h)
     {
-        w = null;
-        h = null;
-        
         if (SDL_GetTextureSize(texture, out var width, out var height))
         {
             w = width;
@@ -642,6 +639,9 @@ public static partial class SDL
             
             return true;
         }
+        
+        w = null;
+        h = null;
 
         return false;
     }
@@ -948,7 +948,7 @@ public static partial class SDL
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateTexture(IntPtr texture, in Rect rect, IntPtr pixels, int pitch);
+    public static partial bool UpdateTexture(IntPtr texture, Rect rect, IntPtr pixels, int pitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);</code>
@@ -1010,7 +1010,7 @@ public static partial class SDL
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateYUVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateYUVTexture(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
+    public static partial bool UpdateYUVTexture(IntPtr texture, Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);</code>
@@ -1037,7 +1037,7 @@ public static partial class SDL
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateNVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateNVTexture(IntPtr texture, IntPtr rect, IntPtr yplane, int ypitch, IntPtr  uvplane, int uvpitch);
+    public static partial bool UpdateNVTexture(IntPtr texture, IntPtr rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);</code>
@@ -1064,7 +1064,7 @@ public static partial class SDL
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateNVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateNVTexture(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr  uvplane, int uvpitch);
+    public static partial bool UpdateNVTexture(IntPtr texture, Rect rect, IntPtr yplane, int ypitch, IntPtr  uvplane, int uvpitch);
     
     
     //extern SDL_DECLSPEC bool SDLCALL SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
@@ -1124,7 +1124,7 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool LockTexture(IntPtr texture, in Rect rect, out IntPtr pixels, out int pitch);
+    public static partial bool LockTexture(IntPtr texture, Rect rect, out IntPtr pixels, out int pitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);</code>
@@ -1156,7 +1156,7 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTextureToSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool LockTextureToSurface(IntPtr texture, IntPtr rect, out Surface surface);
+    public static partial bool LockTextureToSurface(IntPtr texture, IntPtr rect, out IntPtr surface);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);</code>
@@ -1188,7 +1188,7 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTextureToSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool LockTextureToSurface(IntPtr texture, in Rect rect, out Surface surface);
+    public static partial bool LockTextureToSurface(IntPtr texture, Rect rect, out IntPtr surface);
     
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockTexture(SDL_Texture *texture);</code>
@@ -1454,7 +1454,7 @@ public static partial class SDL
     /// <seealso cref="RenderViewportSet"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetRenderViewport(IntPtr renderer, in Rect rect);
+    public static partial bool SetRenderViewport(IntPtr renderer, Rect rect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);</code>
@@ -1548,7 +1548,7 @@ public static partial class SDL
     /// <seealso cref="RenderClipEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetRenderClipRect(IntPtr renderer, in Rect rect);
+    public static partial bool SetRenderClipRect(IntPtr renderer, Rect rect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);</code>
@@ -2667,15 +2667,14 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static Surface? RenderReadPixels(IntPtr renderer, Rect? rect)
+    public static IntPtr RenderReadPixels(IntPtr renderer, Rect? rect)
     {
         var rectPtr = IntPtr.Zero;
         
         try
         {
             rectPtr = ManagedStructToPointer(rect);
-            var ptr = SDL_RenderReadPixels(renderer, rectPtr);
-            return PointerToManagedStruct<Surface>(ptr);
+            return SDL_RenderReadPixels(renderer, rectPtr);
         }
         finally
         {
@@ -2691,7 +2690,7 @@ public static partial class SDL
     /// <para>SDL's rendering functions operate on a backbuffer; that is, calling a
     /// rendering function such as <see cref="RenderLine"/> does not directly put a line on
     /// the screen, but rather updates the backbuffer. As such, you compose your
-    /// entire scene and *present* the composed backbuffer to the screen as a
+    /// entire scene and <b>present</b> the composed backbuffer to the screen as a
     /// complete picture.</para>
     /// <para>Therefore, when using SDL's rendering API, one does all drawing intended
     /// for the frame, and then calls this function once per frame to present the
@@ -2857,11 +2856,11 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderVSync(SDL_Renderer *renderer, int vsync);</code>
     /// <summary>
     /// <para>Toggle VSync of the given renderer.</para>
-    /// <para>When a renderer is created, vsync defaults to <see cref="WindowRendererVSyncDisabled"/>.</para>
+    /// <para>When a renderer is created, vsync defaults to <see cref="RendererVSyncDisabled"/>.</para>
     /// <para>The `vsync` parameter can be 1 to synchronize present with every vertical
     /// refresh, 2 to synchronize present with every second vertical refresh, etc.,
-    /// <see cref="WindowRendererVSyncAdaptive"/> for late swap tearing (adaptive vsync), or
-    /// <see cref="WindowRendererVSyncDisabled"/> to disable. Not every value is supported by
+    /// <see cref="RendererVSyncAdaptive"/> for late swap tearing (adaptive vsync), or
+    /// <see cref="RendererVSyncDisabled"/> to disable. Not every value is supported by
     /// every driver, so you should check the return value to see whether the
     /// requested setting is supported.</para>
     /// </summary>

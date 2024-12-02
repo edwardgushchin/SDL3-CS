@@ -36,14 +36,14 @@ public static partial class SDL
     /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the SDL_CreateWindow
     /// process will fail gracefully.</para>
     /// <para>The returned pointer should be allocated with SDL_malloc() and will be
-    /// passed to <see cref="Free(nint)"/>.</para>
+    /// passed to <see cref="Free"/>.</para>
     /// <para>The arrays returned by each callback will be appended to the existing
     /// attribute arrays defined by SDL.</para>
     /// </summary>
     /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
     /// <returns>a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</returns>
     /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="EGLSetAttributeCallbacks()"/>
+    /// <seealso cref="EGLSetAttributeCallbacks"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr EGLAttribArrayCallback(IntPtr userdata);
     
@@ -57,10 +57,10 @@ public static partial class SDL
     /// <para>For convenience, the EGLDisplay and EGLConfig to use are provided to the
     /// callback.</para>
     /// <para>The callback should return a pointer to an EGL attribute array terminated
-    /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the <see cref="CreateWindow(string,int,int,WindowFlags)"/>
+    /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the <see cref="CreateWindow"/>
     /// process will fail gracefully.</para>
     /// <para>The returned pointer should be allocated with SDL_malloc() and will be
-    /// passed to <see cref="Free(nint)"/>.</para>
+    /// passed to <see cref="Free"/>.</para>
     /// <para>The arrays returned by each callback will be appended to the existing
     /// attribute arrays defined by SDL.</para>
     /// </summary>
@@ -69,7 +69,7 @@ public static partial class SDL
     /// <param name="config">the EGL config to be used.</param>
     /// <returns>a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</returns>
     /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="EGLSetAttributeCallbacks()"/>
+    /// <seealso cref="EGLSetAttributeCallbacks"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr EGLIntArrayCallback(IntPtr userdata, IntPtr display, IntPtr config);
     
@@ -84,5 +84,5 @@ public static partial class SDL
     /// <returns>an <see cref="HitTestResult"/> value.</returns>
     /// <seealso cref="SetWindowHitTest"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate HitTestResult HitTest(IntPtr win, in Point area, IntPtr data);
+    public delegate HitTestResult HitTest(IntPtr win, Point area, IntPtr data);
 }
