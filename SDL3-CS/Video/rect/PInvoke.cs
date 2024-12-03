@@ -168,9 +168,6 @@ public static partial class SDL
     public static partial bool GetRectUnion(in Rect a, in Rect b, out Rect result);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, IntPtr clip, out Rect result);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);</code>
     /// <summary>
     /// <para>Calculate a minimal rectangle enclosing a set of points.</para>
@@ -186,22 +183,30 @@ public static partial class SDL
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static bool GetRectEnclosingPoints(Point[] points, int count, in Rect? clip, out Rect result)
-    {
-        var clipPtr = IntPtr.Zero;
-
-        try
-        {
-            if (clip.HasValue) clipPtr = ManagedStructToPointer<Rect>(clip.Value);
-
-            return SDL_GetRectEnclosingPoints(points, count, clipPtr, out result);
-        }
-        finally
-        {
-            if(clipPtr != IntPtr.Zero) Marshal.FreeHGlobal(clipPtr);
-        }
-    }
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, IntPtr clip, out Rect result);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);</code>
+    /// <summary>
+    /// <para>Calculate a minimal rectangle enclosing a set of points.</para>
+    /// <para>If <c>clip</c> is not <c>null</c> then only points inside of the clipping rectangle are
+    /// considered.</para>
+    /// </summary>
+    /// <param name="points">an array of <see cref="Point"/> structures representing points to be
+    /// enclosed.</param>
+    /// <param name="count">the number of structures in the <c>points</c> array.</param>
+    /// <param name="clip">an <see cref="Rect"/> used for clipping or <c>null</c> to enclose all points.</param>
+    /// <param name="result">an <see cref="Rect"/> structure filled in with the minimal enclosing
+    /// rectangle.</param>
+    /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
+    /// outside of the clipping rectangle.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, in Rect clip, out Rect result);
+    
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);</code>
     /// <summary>
@@ -374,9 +379,6 @@ public static partial class SDL
     public static partial bool GetRectUnionFloat(in FRect a, in FRect b, out FRect result);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, IntPtr clip, out FRect result);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);</code>
     /// <summary>
     /// <para>Calculate a minimal rectangle enclosing a set of points with float
@@ -393,21 +395,30 @@ public static partial class SDL
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static bool GetRectEnclosingPointsFloat(FPoint[] points, int count, in FRect? clip, out FRect result)
-    {
-        var clipPtr = IntPtr.Zero;
-
-        try
-        {
-            if (clip.HasValue) clipPtr = ManagedStructToPointer<FRect>(clip.Value);
-
-            return SDL_GetRectEnclosingPointsFloat(points, count, clipPtr, out result);
-        }
-        finally
-        {
-            if(clipPtr != IntPtr.Zero) Marshal.FreeHGlobal(clipPtr);
-        }
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, IntPtr clip, out FRect result);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);</code>
+    /// <summary>
+    /// <para>Calculate a minimal rectangle enclosing a set of points with float
+    /// precision.</para>
+    /// <para>If <c>clip</c> is not <c>null</c> then only points inside of the clipping rectangle are
+    /// considered.</para>
+    /// </summary>
+    /// <param name="points">an array of <see cref="FPoint"/> structures representing points to be
+    /// enclosed.</param>
+    /// <param name="count">the number of structures in the <c>points</c> array.</param>
+    /// <param name="clip">an <see cref="FRect"/> used for clipping or <c>null</c> to enclose all points.</param>
+    /// <param name="result">an <see cref="FRect"/> structure filled in with the minimal enclosing
+    /// rectangle.</param>
+    /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
+    /// outside of the clipping rectangle.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, in FRect clip, out FRect result);
     
     
     /// <summary>
