@@ -58,6 +58,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPixelFormatForMasks"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMasksForPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetMasksForPixelFormat(PixelFormat format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask);
 
     
@@ -129,6 +130,7 @@ public static partial class SDL
     /// the palette is not modified or destroyed in another thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPaletteColors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetPaletteColors(IntPtr palette, [MarshalAs(UnmanagedType.LPArray)] Color[] colors, int firstcolor, int ncolors);
     
     
