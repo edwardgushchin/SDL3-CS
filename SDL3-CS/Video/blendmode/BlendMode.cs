@@ -30,7 +30,7 @@ public static partial class SDL
     /// <para>These predefined blend modes are supported everywhere.</para>
     /// <para>Additional values may be obtained from <see cref="ComposeCustomBlendMode"/>.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     /// <seealso cref="ComposeCustomBlendMode"/>
     public enum BlendMode : uint
     {
@@ -42,12 +42,12 @@ public static partial class SDL
         /// <summary>
         /// alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))
         /// </summary>
-        Blend =                 0x00000001u,
+        Blend = 0x00000001u,
         
         /// <summary>
         /// pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
         /// </summary>
-        BlendPremultiplied =   0x00000010u,
+        BlendPremultiplied = 0x00000010u,
         
         /// <summary>
         /// additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA

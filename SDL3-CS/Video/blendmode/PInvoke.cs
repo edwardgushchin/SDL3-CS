@@ -28,17 +28,15 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial BlendMode SDL_ComposeCustomBlendMode(BlendFactor srcColorFactor, 
-        BlendFactor dstColorFactor,
-        BlendOperation colorOperation, 
-        BlendFactor srcAlphaFactor, 
-        BlendFactor dstAlphaFactor,
-        BlendOperation alphaOperation);
-        /// <code>extern SDL_DECLSPEC SDL_BlendMode SDLCALL SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation);</code>
+    /// <code>extern SDL_DECLSPEC SDL_BlendMode SDLCALL SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor,
+    /// SDL_BlendFactor dstColorFactor,
+    /// SDL_BlendOperation colorOperation,
+    /// SDL_BlendFactor srcAlphaFactor,
+    /// SDL_BlendFactor dstAlphaFactor,
+    /// SDL_BlendOperation alphaOperation);</code>
     /// <summary>
     /// <para>Compose a custom blend mode for renderers.</para>
-    /// <para>The functions <see cref="SetRenderDrawBlendMode"/> and <see cref="SetTextureBlendMode"/> accept
+    /// <para>The functions <see cref="SetRenderDrawBlendMode"/> and <seealso cref="SetTextureBlendMode"/> accept
     /// the <see cref="BlendMode"/> returned by this function if the renderer supports it.</para>
     /// <para>A blend mode controls how the pixels from a drawing operation (source) get
     /// combined with the pixels from the render target (destination). First, the
@@ -50,8 +48,8 @@ public static partial class SDL
     /// dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);
     /// dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);
     /// </code>
-    /// <para>Where the functions <c>colorOperation(src, dst)</c> and <c>alphaOperation(src, dst)</c>
-    /// can return one of the following:</para>
+    /// <para>Where the functions <c>colorOperation(src, dst)</c> and <c>alphaOperation(src,
+    /// dst)</c> can return one of the following:</para>
     /// <list type="bullet">
     /// <item><c>src + dst</c></item>
     /// <item><c>src - dst</c></item>
@@ -70,18 +68,18 @@ public static partial class SDL
     /// either <see cref="SetRenderDrawBlendMode"/> or <see cref="SetTextureBlendMode"/>. They will
     /// return with an error if the blend mode is not supported.</para>
     /// <para>This list describes the support of custom blend modes for each renderer.
-    /// All renderers support the four blend modes listed in the <see cref="BlendMode"/>
+    /// All renderers support the four blend modes listed in the SDL_BlendMode
     /// enumeration.</para>
     /// <list type="bullet">
     /// <item><b>direct3d</b>: Supports all operations with all factors. However, some
-    ///   factors produce unexpected results with <see cref="BlendOperation.Minimum"/> and
-    ///   <see cref="BlendOperation.Maximum"/>.</item>
+    /// factors produce unexpected results with <see cref="BlendOperation.Minimum"/> and
+    /// <see cref="BlendOperation.Maximum"/>.</item>
     /// <item><b>direct3d11</b>: Same as Direct3D 9.</item>
     /// <item><b>opengl</b>: Supports the <see cref="BlendOperation.Add"/> operation with all
-    ///   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.</item>
+    /// factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.</item>
     /// <item><b>opengles2</b>: Supports the <see cref="BlendOperation.Add"/>,
-    ///   <see cref="BlendOperation.Subtract"/>, <see cref="BlendOperation.RevSubtract"/>
-    ///   operations with all factors.</item>
+    /// <see cref="BlendOperation.Subtract"/>, <see cref="BlendOperation.RevSubtract"/>
+    /// operations with all factors.</item>
     /// <item><b>psp</b>: No custom blend mode support.</item>
     /// <item><b>software</b>: No custom blend mode support.</item>
     /// </list>
@@ -91,30 +89,31 @@ public static partial class SDL
     /// case.</para>
     /// </summary>
     /// <param name="srcColorFactor">the <see cref="BlendFactor"/> applied to the red, green, and
-    ///                       blue components of the source pixels.</param>
+    /// blue components of the source pixels.</param>
     /// <param name="dstColorFactor">the <see cref="BlendFactor"/> applied to the red, green, and
-    ///                       blue components of the destination pixels.</param>
+    /// blue components of the destination pixels.</param>
     /// <param name="colorOperation">the <see cref="BlendOperation"/> used to combine the red,
-    ///                       green, and blue components of the source and
-    ///                       destination pixels.</param>
+    /// green, and blue components of the source and
+    /// destination pixels.</param>
     /// <param name="srcAlphaFactor">the <see cref="BlendFactor"/> applied to the alpha component of
-    ///                       the source pixels.</param>
+    /// the source pixels.</param>
     /// <param name="dstAlphaFactor">the <see cref="BlendFactor"/> applied to the alpha component of
-    ///                       the destination pixels.</param>
+    /// the destination pixels.</param>
     /// <param name="alphaOperation">the <see cref="BlendOperation"/> used to combine the alpha
-    ///                       component of the source and destination pixels.</param>
+    /// component of the source and destination pixels.</param>
     /// <returns>an <see cref="BlendMode"/> that represents the chosen factors and
-    ///          operations.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// operations.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderDrawBlendMode"/>
     /// <seealso cref="GetRenderDrawBlendMode"/>
     /// <seealso cref="SetTextureBlendMode"/>
     /// <seealso cref="GetTextureBlendMode"/>
-    public static BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ComposeCustomBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor, 
         BlendFactor dstColorFactor,
-        BlendOperation colorOperation,
-        BlendFactor srcAlphaFactor,
+        BlendOperation colorOperation, 
+        BlendFactor srcAlphaFactor, 
         BlendFactor dstAlphaFactor,
-        BlendOperation alphaOperation) => SDL_ComposeCustomBlendMode(srcColorFactor, dstColorFactor, colorOperation,
-        srcAlphaFactor, dstAlphaFactor, alphaOperation);
+        BlendOperation alphaOperation);
 }

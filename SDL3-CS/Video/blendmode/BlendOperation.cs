@@ -29,32 +29,32 @@ public static partial class SDL
     /// The blend operation used when combining source and destination pixel
     /// components.
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum BlendOperation
     {
         /// <summary>
         /// dst + src: supported by all renderers
         /// </summary>
-        Add              = 0x1,
+        Add = 0x1,
         
         /// <summary>
         /// src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
         /// </summary>
-        Subtract         = 0x2,
+        Subtract = 0x2,
         
         /// <summary>
         /// dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
         /// </summary>
-        RevSubtract     = 0x3,
+        RevSubtract = 0x3,
         
         /// <summary>
         /// min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
         /// </summary>
-        Minimum          = 0x4,
+        Minimum = 0x4,
         
         /// <summary>
         /// max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
         /// </summary>
-        Maximum          = 0x5
+        Maximum = 0x5
     }
 }
