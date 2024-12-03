@@ -28,6 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Pixel type. 
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum PixelType
     {
         Unknown,
@@ -42,6 +43,10 @@ public static partial class SDL
         ArrayU32,
         ArrayF16,
         ArrayF32,
+        
+        /// <summary>
+        /// appended at the end for compatibility with sdl2-compat:
+        /// </summary>
         Index2
     }
 }

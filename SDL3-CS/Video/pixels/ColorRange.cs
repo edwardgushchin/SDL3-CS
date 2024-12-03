@@ -29,13 +29,13 @@ public static partial class SDL
     /// <para>Colorspace color range, as described by</para>
     /// <para>https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum ColorRange
     {
         Unknown = 0,
         
         /// <summary>
-        /// Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma 
+        /// Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
         /// </summary>
         Limited = 1,
         

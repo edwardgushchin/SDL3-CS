@@ -28,6 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Array component order, low byte -> high byte.
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum ArrayOrder
     {
         None,

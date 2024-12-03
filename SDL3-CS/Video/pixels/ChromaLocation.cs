@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Colorspace chroma sample location.
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum ChromaLocation
     {
         /// <summary>
@@ -45,14 +45,14 @@ public static partial class SDL
         
         /// <summary>
         /// In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2 square.
-        /// In other words, they are offset one-half pixel to the right and one-half pixel down
-        /// compared to the top-left pixel.
+        /// In other words, they are offset one-half pixel to the right and one-half pixel down compared to
+        /// the top-left pixel.
         /// </summary>
         Center = 2,
         
         /// <summary>
-        /// In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays),
-        /// Cb and Cr are sampled at the same location as the group's top-left Y pixel ("co-sited", "co-located").
+        /// In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and Cr are sampled at the
+        /// same location as the group's top-left Y pixel ("co-sited", "co-located").
         /// </summary>
         TopLeft = 3        
     }

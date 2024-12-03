@@ -25,20 +25,9 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// Packed component layout.
-    /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
-    public enum PackedLayout
-    {
-        None,
-        Layout332,
-        Layout4444,
-        Layout1555,
-        Layout5551,
-        Layout565,
-        Layout8888,
-        Layout2101010,
-        Layout1010102
-    }
+    [Macro]
+	public static uint FourCC(byte a, byte b, byte c, byte d)
+	{
+		return (uint)(a | (b << 8) | (c << 16) | (d << 24));
+	}
 }

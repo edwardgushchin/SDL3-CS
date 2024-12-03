@@ -31,19 +31,17 @@ public static partial class SDL
     /// <para>The bits of this structure can be directly reinterpreted as a float-packed
     /// color which uses the <see cref="PixelFormat.RGBA128Float"/> format</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FColor(float r, float g, float b, float a)
+    public struct FColor
     {
-        public float R = r;
-        public float G = g;
-        public float B = b;
-        public float A = a;
+        public float R;
         
-        public override string ToString()
-        {
-            return $"R: {R}, G: {G}, B: {B}, A: {A}";
-        }
+        public float G;
+        
+        public float B;
+        
+        public float A;
     }
 }
 

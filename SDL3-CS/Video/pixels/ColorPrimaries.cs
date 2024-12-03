@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Colorspace color primaries, as described by</para>
     /// <para>https://www.itu.int/rec/T-REC-H.273-201612-S/en</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum ColorPrimaries
     {
         Unknown = 0,
@@ -57,7 +57,7 @@ public static partial class SDL
         BT601 = 6,
         
         /// <summary>
-        /// SMPTE 240M, functionally the same as BT601
+        /// SMPTE 240M, functionally the same as <see cref="ColorPrimaries.BT601"/>
         /// </summary>
         SMPTE240 = 7,
         

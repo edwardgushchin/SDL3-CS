@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Colorspace matrix coefficients.</para>
     /// <para>These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum MatrixCoefficients
     {
         Identity = 0,
@@ -47,7 +47,7 @@ public static partial class SDL
         FCC = 4,
         
         /// <summary>
-        /// ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as BT601
+        /// ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as <see cref="BT601"/>
         /// </summary>
         BT470BG = 5,
         

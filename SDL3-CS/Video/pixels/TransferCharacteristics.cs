@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Colorspace transfer characteristics.</para>
     /// <para>These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum TransferCharacteristics
     {
         Unknown = 0,

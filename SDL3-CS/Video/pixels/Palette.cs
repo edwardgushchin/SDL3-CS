@@ -30,28 +30,28 @@ public static partial class SDL
     /// <summary>
     /// A set of indexed colors representing a palette.
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="SDL.SetPaletteColors"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Palette
     {
         /// <summary>
-        /// Number of elements in 'colors'
+        /// number of elements in <c>colors</c>.
         /// </summary>
         public int NColors;
         
         /// <summary>
-        /// An array of <see cref="Color"/>, with a length of <see cref="Palette.NColors"/>
+        /// an array of colors, <c>ncolors</c> long.
         /// </summary>
         public Color[] Colors;
         
         /// <summary>
-        /// Internal use only, do not touch
+        /// internal use only, do not touch.
         /// </summary>
         public uint Version;
         
         /// <summary>
-        /// Internal use only, do not touch
+        /// internal use only, do not touch.
         /// </summary>
         public int Refcount;
     }
