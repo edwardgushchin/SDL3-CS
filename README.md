@@ -70,12 +70,7 @@ internal static class Program
 
         if (!init)
         {
-            if (window == IntPtr.Zero)
-                Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
-            
-            if (renderer == IntPtr.Zero) 
-                Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
-            
+            Console.WriteLine($"SDL initialization error! {SDL.GetError()}");
             return;
         }
 
