@@ -27,9 +27,10 @@ public static partial class SDL
 {
     public static partial class Props
     {
-        public const string SurfaceColorspaceNumber = "SDL.video.wayland.wl_display";
         public const string SurfaceSDRWhitePointFloat = "SDL.surface.SDR_white_point";
         public const string SurfaceHDRHeadroomFloat = "SDL.surface.HDR_headroom";
         public const string SurfaceTonemapOperatorString = "SDL.surface.tonemap";
+        
+        //public const string SurfaceColorspaceNumber = "SDL.video.wayland.wl_display";
     }
 }

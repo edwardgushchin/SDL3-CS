@@ -40,37 +40,39 @@ public static partial class SDL
     /// remaining bytes to reach the pitch are used as padding to reach a desired
     /// alignment, and have undefined contents.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <seealso cref="CreateSurface"/>
+    /// <seealso cref="DestroySurface"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Surface
     {
         /// <summary>
-        /// Read-only
+        /// RThe flags of the surface, read-only
         /// </summary>
         public SurfaceFlags Flags;
 
         /// <summary>
-        /// Read-only
+        /// The format of the surface, read-only
         /// </summary>
         public PixelFormat Format;
 
         /// <summary>
-        /// Read-only
+        /// The width of the surface, read-only.
         /// </summary>
         public int Width;
 
         /// <summary>
-        /// Read-only
+        /// The height of the surface, read-only.
         /// </summary>
         public int Height;
 
         /// <summary>
-        /// Read-only
+        /// The distance in bytes between rows of pixels, read-only
         /// </summary>
         public int Pitch;
 
         /// <summary>
-        /// Read-only pointer, writable pixels if non-NULL
+        /// A pointer to the pixels of the surface, the pixels are writeable if non-NULL
         /// </summary>
         public IntPtr Pixels;
 
@@ -80,7 +82,7 @@ public static partial class SDL
         public int Refcount;
 
         /// <summary>
-        /// Private
+        /// Reserved for internal use
         /// </summary>
         private IntPtr _internal;
     }

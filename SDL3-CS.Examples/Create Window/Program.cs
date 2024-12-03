@@ -45,18 +45,6 @@ internal static class Program
             return;
         }
 
-        var rect1 = new SDL.Rect()
-        {
-            X = 0, Y = 0, H = 100, W = 100
-        };
-
-        var rect2 = new SDL.Rect()
-        {
-            X = 200, H = 100, W = 100, Y = 200
-        };
-
-        var hasIntersection = SDL.HasRectIntersection(rect1, rect2);
-
         SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
         
         var loop = true;

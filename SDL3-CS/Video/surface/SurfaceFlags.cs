@@ -29,7 +29,7 @@ public static partial class SDL
     /// The flags on an <see cref="Surface"/>.
     /// </summary>
     /// <remarks>These are generally considered read-only.</remarks>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     [Flags]
     public enum SurfaceFlags : uint
     {
