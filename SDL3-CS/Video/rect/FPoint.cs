@@ -31,7 +31,7 @@ public static partial class SDL
     /// The structure that defines a point (using floating point values).
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetRectEnclosingPointsFloat"/>
+    /// <seealso cref="GetRectEnclosingPointsFloat(FPoint[], int, IntPtr, out FRect)"/>
     /// <seealso cref="PointInRectFloat"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct FPoint

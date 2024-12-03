@@ -31,7 +31,7 @@ public static partial class SDL
     /// The structure that defines a point (using integers).
     /// </summary>
     /// <since>his struct is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetRectEnclosingPoints"/>
+    /// <seealso cref="GetRectEnclosingPoints(Point[], int, IntPtr, out Rect)"/>
     /// <seealso cref="PointInRect"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Point

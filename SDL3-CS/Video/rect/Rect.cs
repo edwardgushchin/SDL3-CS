@@ -37,7 +37,7 @@ public static partial class SDL
     /// <seealso cref="GetRectIntersection"/>
     /// <seealso cref="GetRectAndLineIntersection"/>
     /// <seealso cref="GetRectUnion"/>
-    /// <seealso cref="GetRectEnclosingPoints"/>
+    /// <seealso cref="GetRectEnclosingPoints(Point[], int, IntPtr, out Rect)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect
     {

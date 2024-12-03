@@ -39,7 +39,7 @@ public static partial class SDL
     /// <seealso cref="GetRectIntersectionFloat"/>
     /// <seealso cref="GetRectAndLineIntersectionFloat"/>
     /// <seealso cref="GetRectUnionFloat"/>
-    /// <seealso cref="GetRectEnclosingPointsFloat"/>
+    /// <seealso cref="GetRectEnclosingPointsFloat(FPoint[], int, IntPtr, out FRect)"/>
     /// <seealso cref="PointInRectFloat"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct FRect
