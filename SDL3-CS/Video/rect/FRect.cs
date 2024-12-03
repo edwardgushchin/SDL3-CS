@@ -31,7 +31,7 @@ public static partial class SDL
     /// A rectangle, with the origin at the upper left (using floating point
     /// values).
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="RectEmptyFloat"/>
     /// <seealso cref="RectsEqualFloat"/>
     /// <seealso cref="RectsEqualEpsilon"/>
@@ -42,16 +42,14 @@ public static partial class SDL
     /// <seealso cref="GetRectEnclosingPointsFloat"/>
     /// <seealso cref="PointInRectFloat"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FRect(float x, float y, float w, float h)
+    public struct FRect
     {
-        public float X = x;
-        public float Y = y;
-        public float W = w;
-        public float H = h;
-
-        public override string ToString()
-        {
-            return $"X: {X}, Y: {Y}, W: {W}, H: {H}";
-        }
+        public float X;
+        
+        public float Y;
+        
+        public float W;
+        
+        public float H;
     }
 }

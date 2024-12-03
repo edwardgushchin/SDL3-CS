@@ -30,18 +30,14 @@ public static partial class SDL
     /// <summary>
     /// The structure that defines a point (using floating point values).
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRectEnclosingPointsFloat"/>
     /// <seealso cref="PointInRectFloat"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FPoint(float x, float y)
+    public struct FPoint
     {
-        public float X = x;
-        public float Y = y;
+        public float X;
         
-        public override string ToString()
-        {
-            return $"X: {X}, Y: {Y}";
-        }
+        public float Y;
     }
 }

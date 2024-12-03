@@ -30,18 +30,14 @@ public static partial class SDL
     /// <summary>
     /// The structure that defines a point (using integers).
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>his struct is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRectEnclosingPoints"/>
     /// <seealso cref="PointInRect"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Point(int x, int y)
+    public struct Point
     {
-        public int X = x;
-        public int Y = y;
-        
-        public override string ToString()
-        {
-            return $"X: {X}, Y: {Y}";
-        }
+        public int X;
+
+        public int Y;
     }
 }

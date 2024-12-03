@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A rectangle, with the origin at the upper left (using integers).
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="RectEmpty"/>
     /// <seealso cref="RectsEqual"/>
     /// <seealso cref="HasRectIntersection"/>
@@ -39,16 +39,14 @@ public static partial class SDL
     /// <seealso cref="GetRectUnion"/>
     /// <seealso cref="GetRectEnclosingPoints"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect(int x, int y, int w, int h)
+    public struct Rect
     {
-        public int X = x;
-        public int Y = y;
-        public int W = w;
-        public int H = h;
-
-        public override string ToString()
-        {
-            return $"X: {X}, Y: {Y}, W: {W}, H: {H}";
-        }
+        public int X;
+        
+        public int Y;
+        
+        public int W;
+        
+        public int H;
     }
 }
