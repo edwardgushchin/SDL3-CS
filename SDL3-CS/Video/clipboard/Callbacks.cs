@@ -30,22 +30,25 @@ public static partial class SDL
 {
     /// <code>typedef const void *(SDLCALL *SDL_ClipboardDataCallback)(void *userdata, const char *mime_type, size_t *size);</code>
     /// <summary>
-    /// Callback function that will be called when data for the specified mime-type
-    /// is requested by the OS.
+    /// <para>Callback function that will be called when data for the specified mime-type
+    /// is requested by the OS.</para>
+    /// <para>The callback function is called with <c>null</c> as the mime_type when the
+    /// clipboard is cleared or new data is set. The clipboard is automatically
+    /// cleared in <see cref="Quit()"/>.</para>
     /// </summary>
     /// <param name="userdata">a pointer to provided user data.</param>
     /// <param name="mimeType">the requested mime-type.</param>
     /// <param name="size">a pointer filled in with the length of the returned data.</param>
     /// <returns>a pointer to the data for the provided mime-type. Returning <c>null</c>
-    ///          or setting length to 0 will cause no data to be sent to the
-    ///          "receiver". It is up to the receiver to handle this. Essentially
-    ///          returning no data is more or less undefined behavior and may cause
-    ///          breakage in receiving applications. The returned data will not be
-    ///          freed so it needs to be retained and dealt with internally.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// or setting length to 0 will cause no data to be sent to the
+    /// "receiver". It is up to the receiver to handle this. Essentially
+    /// returning no data is more or less undefined behavior and may cause
+    /// breakage in receiving applications. The returned data will not be
+    /// freed so it needs to be retained and dealt with internally.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr ClipboardDataCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPStr)] string mimeType, out IntPtr size);
+    public delegate IntPtr ClipboardDataCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out uint size);
     
     
     /// <code>typedef void (SDLCALL *SDL_ClipboardCleanupCallback)(void *userdata);</code>
@@ -54,7 +57,7 @@ public static partial class SDL
     /// data is set.
     /// </summary>
     /// <param name="userdata">a pointer to provided user data.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void ClipboardCleanupCallback(IntPtr userdata);
