@@ -445,7 +445,7 @@ public static partial class SDL
     public static partial float GetWindowDisplayScale(IntPtr window);
     
     
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
     /// <summary>
     /// <para>Set the display mode to use when a window is visible and fullscreen.</para>
     /// <para>This only affects the display mode used when the window is fullscreen. To
@@ -476,7 +476,7 @@ public static partial class SDL
     public static partial bool SetWindowFullscreenMode(IntPtr window, IntPtr mode);
     
     
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
     /// <summary>
     /// <para>Set the display mode to use when a window is visible and fullscreen.</para>
     /// <para>This only affects the display mode used when the window is fullscreen. To
