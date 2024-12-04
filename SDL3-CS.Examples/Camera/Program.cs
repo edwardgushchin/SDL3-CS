@@ -30,24 +30,15 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        SDL.SetLogPriorities(SDL.LogPriority.Trace);
-        
-        if (!SDL.Init(SDL.InitFlags.Camera))
+        if (!SDL.Init(SDL.InitFlags.Video | SDL.InitFlags.Camera))
         {
-            Console.WriteLine($"SDL could not initialize! SDL Error: {SDL.GetError()}");
+            SDL.LogError(SDL.LogCategory.System, $"SDL could not initialize: {SDL.GetError()}");
             return;
         }
         
-        var init = SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer);
-
-        if (!init)
+        if (!SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer))
         {
-            if (window == IntPtr.Zero)
-                Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
-            
-            if (renderer == IntPtr.Zero) 
-                Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
-            
+            SDL.LogError(SDL.LogCategory.Application, $"Error creating window and rendering: {SDL.GetError()}");
             return;
         }
         
@@ -57,19 +48,21 @@ internal static class Program
 
         if (devices == null)
         {
-            Console.WriteLine($"Couldn't enumerate camera devices: {SDL.GetError()}");
+            SDL.LogError(SDL.LogCategory.Application, $"Couldn't enumerate camera devices: {SDL.GetError()}");
             return;
         }
+        
         if (camerasCount == 0)
         {
-            Console.WriteLine("Couldn't find any camera devices! Please connect a camera and try again.");
+            SDL.LogError(SDL.LogCategory.Application, "Couldn't find any camera devices! Please connect a camera and try again.");
             return;
         }
         
         var camera = SDL.OpenCamera(devices[0], default);
         
-        if (camera == IntPtr.Zero) {
-            Console.WriteLine($"Couldn't open camera: {SDL.GetError()}");
+        if (camera == IntPtr.Zero) 
+        {
+            SDL.LogError(SDL.LogCategory.Application, $"Couldn't open camera: {SDL.GetError()}");
             return;
         }
 
@@ -89,12 +82,12 @@ internal static class Program
 
                 if (sdlEvent.Type == SDL.EventType.CameraDeviceApproved)
                 {
-                    SDL.Log("Camera use approved by user!");
+                    SDL.LogInfo(SDL.LogCategory.Application, "Camera use approved by user!");
                 }
 
                 if (sdlEvent.Type == SDL.EventType.CameraDeviceDenied)
                 {
-                    SDL.Log("Camera use denied by user!");
+                    SDL.LogInfo(SDL.LogCategory.Application, "Camera use denied by user!");
                 }
             }
 
@@ -113,20 +106,26 @@ internal static class Program
                 {
                     SDL.UpdateTexture(texture, IntPtr.Zero, frame.Pixels, frame.Pitch);
                 }
+                
                 SDL.ReleaseCameraFrame(camera, framePtr);
             }
 
             SDL.SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 255);
             SDL.RenderClear(renderer);
+            
             if (texture != IntPtr.Zero) 
             {
                 SDL.RenderTexture(renderer, texture, IntPtr.Zero, IntPtr.Zero);
             }
+            
             SDL.RenderPresent(renderer);
         }
 
         SDL.CloseCamera(camera);
-        SDL.DestroyTexture(texture!);
+        
+        if(texture != IntPtr.Zero) 
+            SDL.DestroyTexture(texture);
+        
         SDL.DestroyRenderer(renderer);
         SDL.DestroyWindow(window);
         SDL.Quit();

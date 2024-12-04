@@ -34,29 +34,17 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        SDL.SetLogPriorities(SDL.LogPriority.Trace);
-        
-        if (!SDL.Init(SDL.InitFlags.Camera))
+        if (!SDL.Init(SDL.InitFlags.Video | SDL.InitFlags.Camera))
         {
-            Console.WriteLine($"SDL could not initialize! SDL Error: {SDL.GetError()}");
+            SDL.LogError(SDL.LogCategory.System, $"SDL could not initialize: {SDL.GetError()}");
             return;
         }
-        
-        var init = SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer);
-        
-        if (!init)
+
+        if (!SDL.CreateWindowAndRenderer("SDL3 VHS Camera", 800, 600, 0, out _window, out _renderer))
         {
-            if (window == IntPtr.Zero)
-                Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
-            
-            if (renderer == IntPtr.Zero) 
-                Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
-            
+            SDL.LogError(SDL.LogCategory.Application, $"Error creating window and rendering: {SDL.GetError()}");
             return;
         }
-        
-        _window = window;
-        _renderer = renderer;
         
         SDL.SetRenderVSync(_renderer, 1);
         
@@ -106,12 +94,12 @@ internal static class Program
 
                 if (e.Type == SDL.EventType.CameraDeviceApproved)
                 {
-                    SDL.Log("Camera use approved by user!");
+                    SDL.LogInfo(SDL.LogCategory.Application, "Camera use approved by user!");
                 }
 
                 if (e.Type == SDL.EventType.CameraDeviceDenied)
                 {
-                    SDL.Log("Camera use denied by user!");
+                    SDL.LogInfo(SDL.LogCategory.Application, "Camera use denied by user!");
                 }
             }
 

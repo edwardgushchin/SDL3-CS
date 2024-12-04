@@ -59,18 +59,22 @@ dotnet build -c Release
 ```C#
 using SDL3;
 
-namespace SDL3Test;
+namespace Create_Window;
 
 internal static class Program
 {
     [STAThread]
     private static void Main()
     {
-        var init = SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer);
-
-        if (!init)
+        if (!SDL.Init(SDL.InitFlags.Video))
         {
-            Console.WriteLine($"SDL initialization error! {SDL.GetError()}");
+            SDL.LogError(SDL.LogCategory.System, $"SDL could not initialize: {SDL.GetError()}");
+            return;
+        }
+
+        if (!SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer))
+        {
+            SDL.LogError(SDL.LogCategory.Application, $"Error creating window and rendering: {SDL.GetError()}");
             return;
         }
 

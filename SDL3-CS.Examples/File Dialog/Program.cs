@@ -30,18 +30,15 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        SDL.SetLogPriorities(SDL.LogPriority.Trace);
-        
-        var init = SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer);
-
-        if (!init)
+        if (!SDL.Init(SDL.InitFlags.Video))
         {
-            if (window == IntPtr.Zero)
-                Console.WriteLine($"Window could not be created! SDL Error: {SDL.GetError()}");
-            
-            if (renderer == IntPtr.Zero) 
-                Console.WriteLine($"Renderer could not be created! SDL Error: {SDL.GetError()}");
-            
+            SDL.LogError(SDL.LogCategory.System, $"SDL could not initialize: {SDL.GetError()}");
+            return;
+        }
+
+        if (!SDL.CreateWindowAndRenderer("SDL3 File Dialog", 800, 600, 0, out var window, out var renderer))
+        {
+            SDL.LogError(SDL.LogCategory.Application, $"Error creating window and rendering: {SDL.GetError()}");
             return;
         }
         
@@ -104,7 +101,7 @@ internal static class Program
     {
         if (filelist == IntPtr.Zero && filter == -1)
         {
-            Console.WriteLine($"SDL Error: {SDL.GetError()}");
+            SDL.LogError(SDL.LogCategory.Application, $"SDL Error: {SDL.GetError()}");
         }
 
         var list = SDL.PointerToStringArray(filelist) ?? [];
@@ -118,17 +115,17 @@ internal static class Program
 
         if (list.Length == 0)
         {
-            Console.WriteLine("File not selected");
+            SDL.LogInfo(SDL.LogCategory.Application, "File not selected");
         }
         
         if (list.Length == 1)
         {
-            Console.WriteLine($"Selected filter: {filter}, Selected {type}: {list[0]}");
+            SDL.LogInfo(SDL.LogCategory.Application, $"Selected filter: {filter}, Selected {type}: {list[0]}");
         }
 
         if (list.Length > 1)
         {
-            Console.WriteLine($"Selected filter: {filter}, Selected {type}s:");
+            SDL.LogInfo(SDL.LogCategory.Application, $"Selected filter: {filter}, Selected {type}s:");
             
             for (var i = 0; i < list.Length; i++)
             {
