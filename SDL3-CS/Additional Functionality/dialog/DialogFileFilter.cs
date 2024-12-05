@@ -41,6 +41,7 @@ public static partial class SDL
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
+    /// <seealso cref="ShowFileDialogWithProperties"/>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct DialogFileFilter(string name, string pattern) : IDisposable
     {

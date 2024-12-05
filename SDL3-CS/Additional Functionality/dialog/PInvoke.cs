@@ -57,17 +57,22 @@ public static partial class SDL
     /// Not all platforms support this option.</param>
     /// <param name="filters">a list of filters, may be <c>null</c>. Not all
     /// platforms support this option, and platforms that do support
-    /// it may allow the user to ignore the filters.</param>
+    /// it may allow the user to ignore the filters. If non-NULL, it must remain valid
+    /// at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
     /// may be <c>null</c>. Not all platforms support this option.</param>
     /// <param name="allowMany">if non-zero, the user will be allowed to select multiple
     /// entries. Not all platforms support this option.</param>
+    /// <threadsafety>This function should be called only from the main thread. The
+    /// callback may be invoked from the same thread or from a
+    /// different one, depending on the OS's constraints.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
+    /// <seealso cref="ShowFileDialogWithProperties"/>
     public static void ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation, bool allowMany)
     {
@@ -131,15 +136,20 @@ public static partial class SDL
     /// Not all platforms support this option.</param>
     /// <param name="filters">a list of filters, may be <c>null</c>. Not all
     /// platforms support this option, and platforms that do support
-    /// it may allow the user to ignore the filters.</param>
+    /// it may allow the user to ignore the filters. f non-NULL, it must remain valid
+    /// at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
     /// may be <c>null</c>. Not all platforms support this option.</param>
+    /// <threadsafety>This function should be called only from the main thread. The
+    /// callback may be invoked from the same thread or from a
+    /// different one, depending on the OS's constraints.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
+    /// <seealso cref="ShowFileDialogWithProperties"/>
     public static void ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation)
     {
@@ -204,12 +214,15 @@ public static partial class SDL
     /// may be <c>null</c>. Not all platforms support this option.</param>
     /// <param name="allowMany">if non-zero, the user will be allowed to select multiple
     /// entries. Not all platforms support this option.</param>
+    /// <threadsafety>This function should be called only from the main thread. The
+    /// callback may be invoked from the same thread or from a
+    /// different one, depending on the OS's constraints.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
-    public static void ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
-        string? defaultLocation, bool allowMany)
+    /// <seealso cref="ShowFileDialogWithProperties"/>
+    public static void ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, string? defaultLocation, bool allowMany)
     {
         var pathPointer = IntPtr.Zero;
         
@@ -230,4 +243,52 @@ public static partial class SDL
             }
         }
     }
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);</code>
+    /// <summary>
+    /// <para>Create and launch a file dialog with the specified properties.</para>
+    /// <para>These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.FileDialogFiltersPointer"/>: a pointer to a list of
+    /// <see cref="DialogFileFilter"/>'s, which will be used as filters for file-based
+    /// selections. Ignored if the dialog is an "Open Folder" dialog. If non-NULL,
+    /// the array of filters must remain valid at least until the callback is
+    /// invoked.</item>
+    /// <item><see cref="Props.FileDialogNFiltersNumber"/>: the number of filters in the array
+    /// of filters, if it exists.</item>
+    /// <item><see cref="Props.FileDialogWindowPointer"/>: the window that the dialog should
+    /// be modal for.</item>
+    /// <item><see cref="Props.FileDialogLocationString"/>: the default folder or file to
+    /// start the dialog at.</item>
+    /// <item><see cref="Props.FileDialogManyBoolean"/>: true to allow the user to select more
+    /// than one entry.</item>
+    /// <item><see cref="Props.FileDialogTitleString"/>: the title for the dialog.</item>
+    /// <item><see cref="Props.FileDialogAcceptString"/>: the label that the accept button
+    /// should have.</item>
+    /// <item><see cref="Props.FileDialogCancelString"/>: the label that the cancel button
+    /// should have.</item>
+    /// </list>
+    /// <para>Note that each platform may or may not support any of the properties.</para>
+    /// </summary>
+    /// <param name="type">the type of file dialog.</param>
+    /// <param name="callback">a function pointer to be invoked when the user selects a
+    /// file and accepts, or cancels the dialog, or an error
+    /// occurs.</param>
+    /// <param name="userdata">an optional pointer to pass extra data to the callback when
+    /// it will be invoked.</param>
+    /// <param name="props">the properties to use.</param>
+    /// <threadsafety>This function should be called only from the main thread. The
+    /// callback may be invoked from the same thread or from a
+    /// different one, depending on the OS's constraints.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="FileDialogType"/>
+    /// <seealso cref="DialogFileCallback"/>
+    /// <seealso cref="DialogFileFilter"/>
+    /// <seealso cref="ShowOpenFileDialog"/>
+    /// <seealso cref="ShowSaveFileDialog"/>
+    /// <seealso cref="ShowOpenFolderDialog"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowFileDialogWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
+    
 }
