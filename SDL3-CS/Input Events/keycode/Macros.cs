@@ -32,6 +32,6 @@ public static partial class SDL
 {
     public static Keycode ScancodeToKeycode(Scancode scancode)
     {
-        return (Keycode)((uint)scancode | 1u << 30);
+        return (Keycode)((uint)scancode | ScanCodeMask);
     }
 }

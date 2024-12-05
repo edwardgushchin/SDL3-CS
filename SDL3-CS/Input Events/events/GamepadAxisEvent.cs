@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Gamepad axis motion event structure (event.gaxis.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadAxisEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.GamepadAxisMotion"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -54,14 +55,18 @@ public static partial class SDL
         /// The gamepad axis (<see cref="GamepadAxis"/>)
         /// </summary>
         public GamepadAxis Axis;
-        private byte Padding1;
-        private byte Padding2;
-        private byte Padding3;
+        
+        private Byte _padding1;
+        
+        private Byte _padding2;
+        
+        private Byte _padding3;
         
         /// <summary>
         /// The axis value (range: -32768 to 32767)
         /// </summary>
         public Int16 Value;
-        private UInt16 Padding4;
+        
+        private UInt16 _padding4;
     }
 }

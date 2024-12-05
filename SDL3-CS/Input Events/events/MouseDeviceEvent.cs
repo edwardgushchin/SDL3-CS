@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Mouse device event structure (event.mdevice.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct MouseDeviceEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.MouseAdded"/> or <see cref="EventType.MouseRemoved"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>

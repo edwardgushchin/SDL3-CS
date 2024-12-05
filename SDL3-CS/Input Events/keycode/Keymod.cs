@@ -33,74 +33,74 @@ public static partial class SDL
     /// <summary>
     /// Valid key modifiers (possibly OR'd together).
     /// </summary>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     [Flags]
-    public enum Keymod : uint
+    public enum Keymod : ushort
     { 
         /// <summary>
-        /// No modifier is applicable.
+        /// no modifier is applicable.
         /// </summary>
-        None   = 0x0000u,
+        None   = 0x0000,
         
         /// <summary>
-        /// The left Shift key is down.
+        /// the left Shift key is down.
         /// </summary>
-        LShift = 0x0001u,
+        LShift = 0x0001,
         
         /// <summary>
-        /// The right Shift key is down.
+        /// the right Shift key is down.
         /// </summary>
-        RShift = 0x0002u,
+        RShift = 0x0002,
         
         /// <summary>
-        /// The left Ctrl (Control) key is down.
+        /// the left Ctrl (Control) key is down.
         /// </summary>
-        LCtrl  = 0x0040u,
+        LCtrl  = 0x0040,
         
         /// <summary>
-        /// The right Ctrl (Control) key is down.
+        /// the right Ctrl (Control) key is down.
         /// </summary>
-        RCtrl  = 0x0080u,
+        RCtrl  = 0x0080,
         
         /// <summary>
-        /// The left Alt key is down.
+        /// the left Alt key is down.
         /// </summary>
-        LAlt   = 0x0100u,
+        LAlt   = 0x0100,
         
         /// <summary>
-        /// The right Alt key is down.
+        /// the right Alt key is down.
         /// </summary>
-        RAlt   = 0x0200u,
+        RAlt   = 0x0200,
         
         /// <summary>
-        /// The left GUI key (often the Windows key) is down.
+        /// the left GUI key (often the Windows key) is down.
         /// </summary>
-        LGUI   = 0x0400u,
+        LGUI   = 0x0400,
         
         /// <summary>
-        /// The right GUI key (often the Windows key) is down.
+        /// the right GUI key (often the Windows key) is down.
         /// </summary>
-        RGUI   = 0x0800u,
+        RGUI   = 0x0800,
         
         /// <summary>
-        /// The Num Lock key (may be located on an extended keypad) is down.
+        /// the Num Lock key (may be located on an extended keypad) is down.
         /// </summary>
-        Num    = 0x1000u,
+        Num    = 0x1000,
         
         /// <summary>
-        /// The Caps Lock key is down.
+        /// the Caps Lock key is down.
         /// </summary>
-        Caps   = 0x2000u,
+        Caps   = 0x2000,
         
         /// <summary>
-        /// The !AltGr key is down.
+        /// the !AltGr key is down.
         /// </summary>
-        Mode   = 0x4000u,
+        Mode   = 0x4000,
         
         /// <summary>
-        /// The Scroll Lock key is down.
+        /// the Scroll Lock key is down.
         /// </summary>
-        Scroll = 0x8000u,
+        Scroll = 0x8000,
         
         /// <summary>
         /// Any Ctrl key is down.

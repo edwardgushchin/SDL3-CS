@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Joystick trackball motion event structure (event.jball.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyBallEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.JoystickBallMotion"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -53,10 +54,13 @@ public static partial class SDL
         /// <summary>
         /// The joystick trackball index
         /// </summary>
-        public byte Ball;
-        private byte Padding1;
-        private byte Padding2;
-        private byte Padding3;
+        public Byte Ball;
+        
+        private Byte _padding1;
+        
+        private Byte _padding2;
+        
+        private Byte _padding3;
         
         /// <summary>
         /// The relative motion in the X direction

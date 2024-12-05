@@ -28,57 +28,57 @@ public static partial class SDL
     /// <summary>
     /// The types of events that can be delivered.
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
-    public enum EventType
+    /// <since>This enum is available since SDL 3.1.3.</since>
+    public enum EventType : uint
     {
         /// <summary>
         /// Unused (do not remove)
         /// </summary>
         First = 0,
-        
+
+        #region Application events
         /// <summary>
         /// User-requested quit
         /// </summary>
         Quit = 0x100,
         
         /// <summary>
-        /// These application events have special meaning on iOS, see README-ios.md for details
-        /// The application is being terminated by the OS
+        /// The application is being terminated by the OS. This event must be handled in a callback set with <see cref="AddEventWatch"/>.
         /// Called on iOS in applicationWillTerminate()
         /// Called on Android in onDestroy()
         /// </summary>
         Terminating,
         
         /// <summary>
-        /// The application is low on memory, free memory if possible.
+        /// The application is low on memory, free memory if possible. This event must be handled in a callback set with <see cref="AddEventWatch"/>.
         /// Called on iOS in applicationDidReceiveMemoryWarning()
-        /// Called on Android in onLowMemory()
+        /// Called on Android in onTrimMemory()
         /// </summary>
         LowMemory,
         
         /// <summary>
-        /// The application is about to enter the background
+        /// The application is about to enter the background. This event must be handled in a callback set with <see cref="AddEventWatch"/>.
         /// Called on iOS in applicationWillResignActive()
         /// Called on Android in onPause()
         /// </summary>
         WillEnterBackground,
         
         /// <summary>
-        /// The application did enter the background and may not get CPU for some time
+        /// The application did enter the background and may not get CPU for some time. This event must be handled in a callback set with <see cref="AddEventWatch"/>.
         /// Called on iOS in applicationDidEnterBackground()
         /// Called on Android in onPause()
         /// </summary>
         DidEnterBackground,
         
         /// <summary>
-        /// The application is about to enter the foreground
+        /// The application is about to enter the foreground. This event must be handled in a callback set with <see cref="AddEventWatch"/>.
         /// Called on iOS in applicationWillEnterForeground()
         /// Called on Android in onResume()
         /// </summary>
         WillEnterForeground,
         
         /// <summary>
-        /// The application is now interactive
+        /// The application is now interactive. This event must be handled in a callback set with <see cref="AddEventWatch"/>.
         /// Called on iOS in applicationDidBecomeActive()
         /// Called on Android in onResume()
         /// </summary>
@@ -93,7 +93,9 @@ public static partial class SDL
         /// The system theme changed
         /// </summary>
         SystemThemeChanged,
-        
+        #endregion
+
+        #region Display events
         /// <summary>
         /// Display orientation has changed to data1
         /// </summary>
@@ -130,7 +132,9 @@ public static partial class SDL
         DisplayContentScaleChanged,
         DisplayFirst = DisplayOrientation,
         DisplayLast = DisplayContentScaleChanged,
-        
+        #endregion
+
+        #region Window events
         /// <summary>
         /// Window has been shown
         /// </summary>
@@ -160,6 +164,11 @@ public static partial class SDL
         /// The pixel size of the window has changed to data1xdata2
         /// </summary>
         WindowPixelSizeChanged,
+        
+        /// <summary>
+        /// The pixel size of a Metal view associated with the window has changed
+        /// </summary>
+        WindowMetalViewResized,
         
         /// <summary>
         /// Window has been minimized
@@ -209,7 +218,7 @@ public static partial class SDL
         /// <summary>
         /// The ICC profile of the window's display has changed
         /// </summary>
-        WindowIccProfChanged,
+        WindowICCProfChanged,
         
         /// <summary>
         /// Window has been moved to display data1
@@ -220,6 +229,11 @@ public static partial class SDL
         /// Window display scale has been changed
         /// </summary>
         WindowDisplayScaleChanged,
+        
+        /// <summary>
+        /// The window safe area has been changed
+        /// </summary>
+        WindowSafeAreaChanged,
         
         /// <summary>
         /// The window has been occluded
@@ -238,21 +252,11 @@ public static partial class SDL
         
         /// <summary>
         /// The window with the associated ID is being or has been destroyed. If this message is being handled
-        /// in an event watcher, the window handle is still valid and can still be used to retrieve any userdata
+        /// in an event watcher, the window handle is still valid and can still be used to retrieve any properties
         /// associated with the window. Otherwise, the handle has already been destroyed and all resources
         /// associated with it are invalid
         /// </summary>
         WindowDestroyed,
-        
-        /// <summary>
-        /// Window has gained focus of the pressure-sensitive pen with ID "data1"
-        /// </summary>
-        WindowPenEnter,
-        
-        /// <summary>
-        /// Window has lost focus of the pressure-sensitive pen with ID "data1"
-        /// </summary>
-        WindowPenLeave,
         
         /// <summary>
         /// Window HDR properties have changed
@@ -260,7 +264,9 @@ public static partial class SDL
         WindowHDRStateChanged,
         WindowFirst = WindowShown,
         WindowLast = WindowHDRStateChanged,
-        
+        #endregion
+
+        #region Keyboard events
         /// <summary>
         /// Key pressed
         /// </summary>
@@ -301,7 +307,9 @@ public static partial class SDL
         /// Keyboard text editing candidates
         /// </summary>
         TextEditingCandidates,
-        
+        #endregion
+
+        #region Mouse events
         /// <summary>
         /// Mouse moved
         /// </summary>
@@ -331,7 +339,9 @@ public static partial class SDL
         /// A mouse has been removed
         /// </summary>
         MouseRemoved,
-        
+        #endregion
+
+        #region Joystick events
         /// <summary>
         /// Joystick axis motion
         /// </summary>
@@ -376,7 +386,9 @@ public static partial class SDL
         /// Joystick update is complete
         /// </summary>
         JoystickUpdateComplete,
-        
+        #endregion
+
+        #region Gamepad events
         /// <summary>
         /// Gamepad axis motion
         /// </summary>
@@ -433,18 +445,25 @@ public static partial class SDL
         GamepadUpdateComplete,
         
         /// <summary>
-        /// Gamepad Steam handle has changed
+        /// Gamepad Steam handle has changed 
         /// </summary>
         GamepadSteamHandleUpdated,
+        #endregion
+
+        #region Touch events
         FingerDown      = 0x700,
         FingerUp,
         FingerMotion,
-        
+        #endregion
+
+        #region Clipboard events
         /// <summary>
         /// The clipboard or primary selection changed
         /// </summary>
         ClipboardUpdate = 0x900,
-        
+        #endregion
+
+        #region Drag and drop events
         /// <summary>
         /// The system requests a file open
         /// </summary>
@@ -469,7 +488,9 @@ public static partial class SDL
         /// Position while moving over the window
         /// </summary>
         DropPosition,
-        
+        #endregion
+
+        #region Audio hotplug events
         /// <summary>
         /// A new audio device is available
         /// </summary>
@@ -484,26 +505,35 @@ public static partial class SDL
         /// An audio device's format has been changed by the system.
         /// </summary>
         AudioDeviceFormatChanged,
-        
+        #endregion
+
+        #region Sensor events
         /// <summary>
         /// A sensor was updated
         /// </summary>
         SensorUpdate = 0x1200,
+        #endregion
+
+        #region Pressure-sensitive pen events
+        /// <summary>
+        /// Pressure-sensitive pen has become available
+        /// </summary>
+        PenProximityIn = 0x1300,
+        
+        /// <summary>
+        /// Pressure-sensitive pen has become unavailable
+        /// </summary>
+        PenProximityOut,
         
         /// <summary>
         /// Pressure-sensitive pen touched drawing surface
         /// </summary>
-        PenDown = 0x1300,
+        PenDown,
         
         /// <summary>
         /// Pressure-sensitive pen stopped touching drawing surface
         /// </summary>
         PenUp,
-        
-        /// <summary>
-        /// Pressure-sensitive pen moved, or angle/pressure changed
-        /// </summary>
-        PenMotion,
         
         /// <summary>
         /// Pressure-sensitive pen button pressed
@@ -515,6 +545,18 @@ public static partial class SDL
         /// </summary>
         PenButtonUp,
         
+        /// <summary>
+        /// Pressure-sensitive pen is moving on the tablet
+        /// </summary>
+        PenMotion,
+        
+        /// <summary>
+        /// Pressure-sensitive pen angle/pressure/etc changed
+        /// </summary>
+        PenAxis,
+        #endregion
+
+        #region Camera hotplug events
         /// <summary>
         /// A new camera device is available
         /// </summary>
@@ -534,7 +576,9 @@ public static partial class SDL
         /// A camera device has been denied for use by the user.
         /// </summary>
         CameraDeviceDenied,
-        
+        #endregion
+
+        #region Render events
         /// <summary>
         /// The render targets have been reset and their contents need to be updated
         /// </summary>
@@ -546,12 +590,26 @@ public static partial class SDL
         RenderDeviceReset,
         
         /// <summary>
+        /// The device has been lost and can't be recovered.
+        /// </summary>
+        RenderDeviceLost,
+        #endregion
+
+        #region Reserved events for private platforms
+        Privated0 = 04000,
+        Privated1,
+        Privated2,
+        Privated3,
+        #endregion
+
+        #region Internal events
+        /// <summary>
         /// Signals the end of an event poll cycle
         /// </summary>
         PollSentinel = 0x7F00,
         
         /// <summary>
-        /// vents SDL_EVENT_USER through <see cref="Last"/> are for your use,
+        /// Events <see cref="User"/> through <see cref="Last"/> are for your use,
         /// and should be allocated with <see cref="RegisterEvents"/>
         /// </summary>
         User = 0x8000,
@@ -565,5 +623,7 @@ public static partial class SDL
         /// This just makes sure the enum is the size of Uint32
         /// </summary>
         EnumPadding = 0x7FFFFFFF
+        #endregion
+        
     }
 }

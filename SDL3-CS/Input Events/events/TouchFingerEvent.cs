@@ -28,9 +28,21 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Touch finger event structure (event.tfinger.*)
+    /// <para>Touch finger event structure (event.tfinger.*)</para>
+    /// <para>Coordinates in this event are normalized. <c>x</c> and <c>y</c> are normalized to a
+    /// range between 0.0f and 1.0f, relative to the window, so (0,0) is the top
+    /// left and (1,1) is the bottom right. Delta coordinates <c>dx</c> and <c>dy</c> are
+    /// normalized in the ranges of -1.0f (traversed all the way from the bottom or
+    /// right to all the way up or left) to 1.0f (traversed all the way from the
+    /// top or left to all the way down or right).</para>
+    /// <para>Note that while the coordinates are _normalized_, they are not _clamped_,
+    /// which means in some circumstances you can get a value outside of this
+    /// range. For example, a renderer using logical presentation might give a
+    /// negative value when the touch is in the letterboxing. Some platforms might
+    /// report a touch outside of the window, which will also be outside of the
+    /// range.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TouchFingerEvent
     {
@@ -38,7 +50,8 @@ public static partial class SDL
         /// <see cref="EventType.FingerMotion"/> or <see cref="EventType.FingerDown"/> or <see cref="EventType.FingerUp"/>
         /// </summary>
         public EventType Type;
-        private UInt32 reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -61,7 +74,7 @@ public static partial class SDL
         public float X;
         
         /// <summary>
-        /// Normalized in the range 0...1 
+        /// Normalized in the range 0...1
         /// </summary>
         public float Y;
         

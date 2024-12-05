@@ -28,18 +28,21 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Joystick device event structure (event.jdevice.*)
+    /// <para>Joystick device event structure (event.jdevice.*)</para>
+    /// <para>SDL will send <see cref="EventType.JoystickAdded"/> events for devices that are already plugged in
+    /// during <see cref="Init"/>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <seealso cref="GamepadDeviceEvent"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyDeviceEvent
     {
         /// <summary>
-        /// <see cref="EventType.JoystickAdded"/> or <see cref="EventType.JoystickRemoved"/>
-        /// or <see cref="EventType.JoystickUpdateComplete"/>
+        /// <see cref="EventType.JoystickAdded"/> or <see cref="EventType.JoystickRemoved"/> or <see cref="EventType.JoystickUpdateComplete"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>

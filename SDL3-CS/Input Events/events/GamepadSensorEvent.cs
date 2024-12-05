@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Gamepad sensor event structure (event.gsensor.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadSensorEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.GamepadSensorUpdate"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -50,7 +51,6 @@ public static partial class SDL
         /// </summary>
         public UInt32 Which;
         
-        // ReSharper disable once MemberHidesStaticFromOuterClass
         /// <summary>
         /// The type of the sensor, one of the values of <see cref="SensorType"/>
         /// </summary>

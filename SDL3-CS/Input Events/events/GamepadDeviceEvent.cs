@@ -28,9 +28,15 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Gamepad device event structure (event.gdevice.*)
+    /// <para>Gamepad device event structure (event.gdevice.*)</para>
+    /// <para>Joysticks that are supported gamepads receive both an <see cref="JoyDeviceEvent"/>
+    /// and an <see cref="GamepadDeviceEvent"/>.</para>
+    /// <para>SDL will send <see cref="EventType.GamepadAdded"/> events for joysticks that are already plugged
+    /// in during <see cref="Init"/> and are recognized as gamepads. It will also send
+    /// events for joysticks that get gamepad mappings at runtime.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <seealso cref="JoyDeviceEvent"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadDeviceEvent
     {
@@ -40,7 +46,8 @@ public static partial class SDL
         /// or <see cref="EventType.GamepadSteamHandleUpdated"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>

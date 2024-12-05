@@ -26,12 +26,24 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// @{ 
+    /// The type of action to request from <see cref="PeepEvents"/>.
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum EventAction
     {
+        /// <summary>
+        /// Add events to the back of the queue.
+        /// </summary>
         AddEvent,
+        
+        /// <summary>
+        /// Check but don't remove events from the queue front.
+        /// </summary>
         PeekEvent,
+        
+        /// <summary>
+        /// Retrieve/remove events from the front of the queue.
+        /// </summary>
         GetEvent
     }
 }

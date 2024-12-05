@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Camera device event structure (event.cdevice.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct CameraDeviceEvent
     {
@@ -39,7 +39,8 @@ public static partial class SDL
         /// <see cref="EventType.CameraDeviceApproved"/>, <see cref="EventType.CameraDeviceDenied"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>

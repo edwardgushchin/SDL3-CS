@@ -31,32 +31,45 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Bit for storing that pen is touching the surface
+    /// Pen input flags, as reported by various pen events' <c>pen_state</c> field.
     /// </summary>
-    internal const int PenFlagDownBitIndex = 13;
-    
-    /// <summary>
-    /// Bit for storing has-non-eraser-capability status
-    /// </summary>
-    internal const int PenFlagInkBitIndex = 14;
-    
-    /// <summary>
-    /// Bit for storing is-eraser or has-eraser-capability property
-    /// </summary>
-    internal const int PenFlagEraserBitIndex = 15;
-    
-    /// <summary>
-    /// Bit for storing has-axis-0 property
-    /// </summary>
-    internal const int PenFlagAxisBitOffset = 16;
-    
-    /// <summary>
-    /// Marks unknown information when querying the pen
-    /// </summary>
-    public const int PenInfoUnknown = -1;
-    
-    /// <summary>
-    /// Reserved invalid SDL_PenID is valid
-    /// </summary>
-    public const int PenInvalid = 0;
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    [Flags]
+    public enum PenInputFlags : uint
+    {
+        /// <summary>
+        /// pen is pressed down
+        /// </summary>
+        Down = 1u << 0,
+        
+        /// <summary>
+        /// button 1 is pressed
+        /// </summary>
+        Button1 = 1u << 1,
+        
+        /// <summary>
+        /// button 2 is pressed
+        /// </summary>
+        Button2 = 1u << 2,
+        
+        /// <summary>
+        /// button 3 is pressed
+        /// </summary>
+        Button3 = 1u << 3,
+        
+        /// <summary>
+        /// button 4 is pressed
+        /// </summary>
+        Button4 = 1u << 4,
+        
+        /// <summary>
+        /// button 5 is pressed
+        /// </summary>
+        Button5 = 1u << 5,
+        
+        /// <summary>
+        /// eraser tip is used
+        /// </summary>
+        EraserTip = 1u << 30
+    }
 }

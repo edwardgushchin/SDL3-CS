@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Mouse button event structure (event.button.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct MouseButtonEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.GamepadButtonDown"/> or <see cref="EventType.MouseButtonUp"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -51,32 +52,32 @@ public static partial class SDL
         public UInt32 WindowID;
         
         /// <summary>
-        /// The mouse instance id, SDL_TOUCH_MOUSEID, or SDL_PEN_MOUSEID
+        /// The mouse instance id, <see cref="TouchMouseID"/>
         /// </summary>
         public UInt32 Which;
         
         /// <summary>
         /// The mouse button index
         /// </summary>
-        // ReSharper disable once MemberHidesStaticFromOuterClass
-        public byte Button; 
-        
+        public Byte Button;
+
         /// <summary>
-        /// <see cref="Keystate.Pressed"/> or <see cref="Keystate.Released"/>
+        /// true if the button is pressed
         /// </summary>
-        public Keystate State;
-        
+        public Byte Down;
+
         /// <summary>
         /// 1 for single-click, 2 for double-click, etc.
         /// </summary>
-        public byte Clicks;
-        private byte Padding;
-        
+        public Byte Clicks;
+
+        private Byte _padding;
+
         /// <summary>
         /// X coordinate, relative to window
         /// </summary>
         public float X;
-        
+
         /// <summary>
         /// Y coordinate, relative to window
         /// </summary>

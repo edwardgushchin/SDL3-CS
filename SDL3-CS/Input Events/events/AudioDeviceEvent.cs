@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Audio device event structure (event.adevice.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct AudioDeviceEvent
     {
@@ -39,7 +39,8 @@ public static partial class SDL
         /// or <see cref="EventType.AudioDeviceFormatChanged"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
         /// </summary>
@@ -51,11 +52,14 @@ public static partial class SDL
         public UInt32 Which;
         
         /// <summary>
-        /// zero if a playback device, non-zero if a recording device.
+        /// false if a playback device, true if a recording device.
         /// </summary>
-        public byte Recording;
-        private byte Padding1;
-        private byte Padding2;
-        private byte Padding3;
+        public Byte Recording;
+        
+        private Byte _padding1;
+        
+        private Byte _padding2;
+        
+        private Byte _padding3;
     }
 }

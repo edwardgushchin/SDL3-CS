@@ -28,17 +28,20 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Pressure-sensitive pen touched or stopped touching surface (event.ptip.*)
+    /// <para>Pressure-sensitive pen pressure / angle event structure (event.paxis.*)</para>
+    /// <para>You might get some of these events even if the pen isn't touching the
+    /// tablet.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct PenTipEvent
+    public struct PenAxisEvent
     {
         /// <summary>
-        /// <see cref="EventType.PenDown"/> or <see cref="EventType.PenUp"/>
+        /// <see cref="EventType.PenAxis"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -56,25 +59,9 @@ public static partial class SDL
         public UInt32 Which;
         
         /// <summary>
-        /// <see cref="PenTips.Ink"/> when using a regular pen tip, or <see cref="PenTips.Eraser"/> if the pen is
-        /// being used as an eraser (e.g., flipped to use the eraser tip)
+        /// Complete pen input state at time of event
         /// </summary>
-        public PenTips Tip;
-        
-        /// <summary>
-        /// <see cref="Keystate.Pressed"/> on <see cref="EventType.PenDown"/> and
-        /// <see cref="Keystate.Released"/> on <see cref="EventType.PenUp"/>
-        /// </summary>
-        public Keystate State;
-        
-        /// <summary>
-        /// Pen button masks (where Button(1) is the first button, Button(2) is the second button etc.),
-        /// <see cref="PenCapabilityFlags.Down"/> is set
-        /// if the pen is touching the surface, and <see cref="PenCapabilityFlags.Eraser"/> is set if
-        /// the pen is (used as) an eraser.
-        /// </summary>
-        /// <seealso cref="Button"/>
-        public UInt16 PenState;
+        public PenInputFlags PenState;
         
         /// <summary>
         /// X coordinate, relative to window
@@ -85,10 +72,15 @@ public static partial class SDL
         /// Y coordinate, relative to window
         /// </summary>
         public float Y;
-        
+
         /// <summary>
-        /// Pen axes such as pressure and tilt (ordered as per <see cref="PenAxis"/>)
+        /// Axis that has changed
         /// </summary>
-        public unsafe fixed float Axes[(int)PenAxis.NumAxes];
+        public PenAxis Axis;
+
+        /// <summary>
+        /// New value of axis
+        /// </summary>
+        public float Value;
     }
 }

@@ -28,11 +28,9 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>Keyboard IME candidates event structure (event.edit_candidates.*)</para>
-    /// <para>The candidates follow the
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// Keyboard IME candidates event structure (event.edit_candidates.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextEditingCandidatesEvent
     {
@@ -40,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.TextEditingCandidates"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -53,23 +52,29 @@ public static partial class SDL
         public UInt32 WindowID;
         
         /// <summary>
-        /// The list of candidates, or NULL if there are no candidates available
+        /// The list of candidates, or <c>null</c> if there are no candidates available
         /// </summary>
         public IntPtr Candidates;
         
         /// <summary>
-        /// The number of strings in `candidates`
+        /// The number of strings in <c>candidates</c>
         /// </summary>
         public Int32 NumCandidates;
         
         /// <summary>
-        /// The index of the selected candidate, or -1 if no candidate is selected 
+        /// The index of the selected candidate, or -1 if no candidate is selected
         /// </summary>
         public Int32 SelectedCandidate;
         
         /// <summary>
-        /// <c>true</c> if the list is horizontal, <c>false</c> if it's vertical
+        /// true if the list is horizontal, false if it's vertical
         /// </summary>
-        public Int32 Horizontal;
+        public Byte Horizontal;
+
+        private Byte _padding1;
+
+        private Byte _padding2;
+
+        private Byte _padding3;
     }
 }

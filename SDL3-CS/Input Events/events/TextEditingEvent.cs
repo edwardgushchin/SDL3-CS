@@ -32,10 +32,8 @@ public static partial class SDL
     /// <para>The start cursor is the position, in UTF-8 characters, where new typing
     /// will be inserted into the editing text. The length is the number of UTF-8
     /// characters that will be replaced by new typing.</para>
-    /// <para>The text string follows the
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextEditingEvent
     {
@@ -43,7 +41,8 @@ public static partial class SDL
         /// <see cref="EventType.TextEditing"/>
         /// </summary>
         public EventType Type;
-        private UInt32 reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -66,7 +65,7 @@ public static partial class SDL
         public Int32 Start;
         
         /// <summary>
-        /// he length of selected editing text, or -1 if not set
+        /// The length of selected editing text, or -1 if not set
         /// </summary>
         public Int32 Length;
     }

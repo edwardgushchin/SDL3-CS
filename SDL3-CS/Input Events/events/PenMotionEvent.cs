@@ -28,10 +28,14 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Pressure-sensitive pen motion / pressure / angle event structure
-    /// (event.pmotion.*)
+    /// <para>Pressure-sensitive pen motion event structure (event.pmotion.*)</para>
+    /// <para>Depending on the hardware, you may get motion events when the pen is not
+    /// touching a tablet, for tracking a pen even when it isn't drawing. You
+    /// should listen for <see cref="EventType.PenDown"/> and <see cref="EventType.PenUp"/> events, or check
+    /// <c>pen_state & PenInputFlags.Down</c> to decide if a pen is "drawing" when
+    /// dealing with pen motion.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenMotionEvent
     {
@@ -39,7 +43,8 @@ public static partial class SDL
         /// <see cref="EventType.PenMotion"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>()
@@ -55,19 +60,14 @@ public static partial class SDL
         /// The pen instance id
         /// </summary>
         public UInt32 Which;
-        private byte Padding1;
-        private byte Padding2;
-        
+
         /// <summary>
-        /// Pen button masks (where Button(1) is the first button, Button(2) is the second button etc.),
-        /// <see cref="PenCapabilityFlags.Down"/> is set if the pen is touching the surface,
-        /// and <see cref="PenCapabilityFlags.Eraser"/> is set if the pen is (used as) an eraser.
+        /// Complete pen input state at time of event
         /// </summary>
-        /// <seealso cref="SDL.Button"/>
-        public UInt16 PenState;
+        public PenInputFlags PenState;
         
         /// <summary>
-        /// X coordinate, relative to window
+        /// X coordinate, relative to window 
         /// </summary>
         public float X;
         
@@ -75,10 +75,5 @@ public static partial class SDL
         /// Y coordinate, relative to window
         /// </summary>
         public float Y;
-        
-        /// <summary>
-        /// Pen axes such as pressure and tilt (ordered as per <see cref="PenAxis"/>)
-        /// </summary>
-        public unsafe fixed float Axes[(int)PenAxis.NumAxes];
     }
 }

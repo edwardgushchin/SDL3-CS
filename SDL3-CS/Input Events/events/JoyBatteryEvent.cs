@@ -28,9 +28,9 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Joysick battery level change event structure (event.jbattery.*)
+    /// Joystick battery level change event structure (event.jbattery.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyBatteryEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.JoystickBatteryUpdated"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -58,6 +59,6 @@ public static partial class SDL
         /// <summary>
         /// The joystick battery percent charge remaining
         /// </summary>
-        public int Percent;
+        public Int32 Percent;
     }
 }

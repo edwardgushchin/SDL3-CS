@@ -21,16 +21,34 @@
  */
 #endregion
 
+using System.Runtime.InteropServices;
+
 namespace SDL3;
 
 public static partial class SDL
 {
     /// <summary>
-    /// SDL_BUTTON_PRESSED or SDL_BUTTON_RELEASED
+    /// Renderer event structure (event.render.*)
     /// </summary>
-    public enum Keystate : byte
+    /// <since>This struct is available since SDL 3.1.7.</since>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RenderEvent
     {
-        Pressed = 1,
-        Released = 0
+        /// <summary>
+        /// <see cref="EventType.RenderTargetsReset"/>, <see cref="EventType.RenderDeviceReset"/>, <see cref="EventType.RenderDeviceLost"/>
+        /// </summary>
+        public EventType Type;
+        
+        private UInt32 _reserved;
+        
+        /// <summary>
+        /// In nanoseconds, populated using <see cref="GetTicksNS"/>
+        /// </summary>
+        public UInt64 Timestamp;
+        
+        /// <summary>
+        /// The window containing the renderer in question.
+        /// </summary>
+        public UInt32 WindowID;
     }
 }

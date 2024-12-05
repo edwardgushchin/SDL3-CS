@@ -31,9 +31,7 @@ public static partial class SDL
     /// An event used to drop text or request a file open by the system
     /// (event.drop.*)
     /// </summary>
-    /// <remarks>The source and data strings follow the
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</remarks>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct DropEvent
     {
@@ -43,7 +41,8 @@ public static partial class SDL
         /// or <see cref="EventType.DropPosition"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -71,7 +70,7 @@ public static partial class SDL
         public IntPtr Source;
         
         /// <summary>
-        /// The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events
+        /// The text for <see cref="EventType.DropText"/> and the file name for <see cref="EventType.DropFile"/>, <c>null</c> for other events
         /// </summary>
         private IntPtr data;
     }

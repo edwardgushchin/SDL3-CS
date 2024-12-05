@@ -28,53 +28,40 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Gamepad touchpad event structure (event.gtouchpad.*)
+    /// <para>Pressure-sensitive pen proximity event structure (event.pmotion.*)</para>
+    /// <para>When a pen becomes visible to the system (it is close enough to a tablet,
+    /// etc), SDL will send an <see cref="EventType.PenProximityIn"/> event with the new pen's
+    /// ID. This ID is valid until the pen leaves proximity again (has been removed
+    /// from the tablet's area, the tablet has been unplugged, etc). If the same
+    /// pen reenters proximity again, it will be given a new ID.</para>
+    /// <para>Note that "proximity" means "close enough for the tablet to know the tool
+    /// is there." The pen touching and lifting off from the tablet while not
+    /// leaving the area are handled by <see cref="EventType.PenDown"/> and <see cref="EventType.PenUp"/>.</para>
     /// </summary>
-    /// <since>TThis struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct GamepadTouchpadEvent
+    public struct PenProximityEvent
     {
         /// <summary>
-        /// <see cref="EventType.GamepadTouchpadDown"/> or <see cref="EventType.GamepadTouchpadMotion"/>
-        /// or <see cref="EventType.GamepadTouchpadUp"/>
+        /// <see cref="EventType.PenProximityIn"/> or <see cref="EventType.PenProximityOut"/>
         /// </summary>
         public EventType Type;
-        
+
         private UInt32 _reserved;
-        
+
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
         /// </summary>
         public UInt64 Timestamp;
-        
+
         /// <summary>
-        /// The joystick instance id
+        /// The window with pen focus, if any
+        /// </summary>
+        public UInt32 WindowID;
+
+        /// <summary>
+        /// The pen instance id
         /// </summary>
         public UInt32 Which;
-        
-        /// <summary>
-        /// The index of the touchpad
-        /// </summary>
-        public Int32 Touchpad;
-        
-        /// <summary>
-        /// The index of the finger on the touchpad
-        /// </summary>
-        public Int32 Finger;
-        
-        /// <summary>
-        /// Normalized in the range 0...1 with 0 being on the left
-        /// </summary>
-        public float X;
-        
-        /// <summary>
-        /// Normalized in the range 0...1 with 0 being at the top
-        /// </summary>
-        public float Y;
-        
-        /// <summary>
-        /// Normalized in the range 0...1
-        /// </summary>
-        public float Pressure;
     }
 }

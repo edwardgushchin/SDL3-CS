@@ -45,7 +45,7 @@ public static partial class SDL
     /// <see cref="GetGamepadButtonLabel"/></para>
     /// </remarks>
     /// <since>This enum is available since SDL 3.0.0.</since>
-    public enum GamepadButton
+    public enum GamepadButton : sbyte
     {
         Invalid = -1,
         

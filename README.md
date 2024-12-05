@@ -147,19 +147,19 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### Input Events
 
-| **View information and functions related to...** | **View the header**                                                                       | **Stage**                                            |
-|-----------------------------------------| ----------------------------------------------------------------------------------------- |------------------------------------------------------|
-| [Event Handling](SDL3-CS/Input%20Events/events) | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Keyboard Support](SDL3-CS/Input%20Events/keyboard) | [SDL_keyboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keyboard.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Keyboard Keycodes](SDL3-CS/Input%20Events/keycode) | [SDL_keycode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keycode.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Keyboard Scancodes](SDL3-CS/Input%20Events/scancode) | [SDL_scancode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_scancode.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Mouse Support](SDL3-CS/Input%20Events/mouse) | [SDL_mouse.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mouse.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Joystick Support](SDL3-CS/Input%20Events/joystick) | [SDL_joystick.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_joystick.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Gamepad Support](SDL3-CS/Input%20Events/gamepad) | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Touch Support](SDL3-CS/Input%20Events/touch) | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Pen Support](SDL3-CS/Input%20Events/pen) | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Sensors](SDL3-CS/Input%20Events/sensor) | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [HIDAPI](SDL3-CS/Input%20Events/hidapi) | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| **View information and functions related to...** | **View the header**                                                                       | **Stage**                                                         |
+|-----------------------------------------| ----------------------------------------------------------------------------------------- |-------------------------------------------------------------------|
+| [Event Handling](SDL3-CS/Input%20Events/events) | [SDL_events.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_events.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [Keyboard Support](SDL3-CS/Input%20Events/keyboard) | [SDL_keyboard.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keyboard.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Keyboard Keycodes](SDL3-CS/Input%20Events/keycode) | [SDL_keycode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_keycode.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Keyboard Scancodes](SDL3-CS/Input%20Events/scancode) | [SDL_scancode.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_scancode.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Mouse Support](SDL3-CS/Input%20Events/mouse) | [SDL_mouse.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mouse.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Joystick Support](SDL3-CS/Input%20Events/joystick) | [SDL_joystick.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_joystick.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Gamepad Support](SDL3-CS/Input%20Events/gamepad) | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Touch Support](SDL3-CS/Input%20Events/touch) | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Pen Support](SDL3-CS/Input%20Events/pen) | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Sensors](SDL3-CS/Input%20Events/sensor) | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [HIDAPI](SDL3-CS/Input%20Events/hidapi) | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
 
 ### Force Feedback ("Haptic")

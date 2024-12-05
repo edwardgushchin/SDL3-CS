@@ -27,21 +27,22 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>typedef int (SDLCALL *SDL_EventFilter)(void *userdata, SDL_Event *event);</code>
+    /// <code>typedef bool (SDLCALL *SDL_EventFilter)(void *userdata, SDL_Event *event);</code>
     /// <summary>
     /// A function pointer used for callbacks that watch the event queue.
     /// </summary>
     /// <param name="userdata">what was passed as <c>userdata</c> to <see cref="SetEventFilter"/> or
-    /// SDL_AddEventWatch, etc.</param>
-    /// <param name="e">the event that triggered the callback.</param>
-    /// <returns>1 to permit event to be added to the queue, and 0 to disallow it.
-    /// When used with <see cref="AddEventWatch"/>, the return value is ignored.</returns>
-    /// <remarks>SDL may call this callback at any time from any thread; the
+    /// <see cref="AddEventWatch"/>, etc.</param>
+    /// <param name="event">the event that triggered the callback.</param>
+    /// <returns>true to permit event to be added to the queue, and false to
+    /// disallow it. When used with <see cref="AddEventWatch"/>, the return value is
+    /// ignored.</returns>
+    /// <threadsafety>SDL may call this callback at any time from any thread; the
     /// application is responsible for locking resources the callback
-    /// touches that need to be protected.</remarks>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// touches that need to be protected.</threadsafety>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     /// <seealso cref="SetEventFilter"/>
     /// <seealso cref="AddEventWatch"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int EventFilter(IntPtr userdata, ref Event e);
+    public delegate bool EventFilter(IntPtr userdata, ref Event @event);
 }

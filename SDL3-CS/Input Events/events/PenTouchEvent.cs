@@ -28,15 +28,16 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Gamepad touchpad event structure (event.gtouchpad.*)
+    /// <para>Pressure-sensitive pen touched event structure (event.ptouch.*)</para>
+    /// <para>These events come when a pen touches a surface (a tablet, etc), or lifts
+    /// off from one.</para>
     /// </summary>
-    /// <since>TThis struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct GamepadTouchpadEvent
+    public struct PenTouchEvent
     {
         /// <summary>
-        /// <see cref="EventType.GamepadTouchpadDown"/> or <see cref="EventType.GamepadTouchpadMotion"/>
-        /// or <see cref="EventType.GamepadTouchpadUp"/>
+        /// <see cref="EventType.PenDown"/> or <see cref="EventType.PenUp"/>
         /// </summary>
         public EventType Type;
         
@@ -48,33 +49,38 @@ public static partial class SDL
         public UInt64 Timestamp;
         
         /// <summary>
-        /// The joystick instance id
+        /// The window with pen focus, if any
+        /// </summary>
+        public UInt32 WindowID;
+        
+        /// <summary>
+        /// The pen instance id
         /// </summary>
         public UInt32 Which;
         
         /// <summary>
-        /// The index of the touchpad
+        /// Complete pen input state at time of event
         /// </summary>
-        public Int32 Touchpad;
+        public PenInputFlags PenState;
         
         /// <summary>
-        /// The index of the finger on the touchpad
-        /// </summary>
-        public Int32 Finger;
-        
-        /// <summary>
-        /// Normalized in the range 0...1 with 0 being on the left
+        /// X coordinate, relative to window
         /// </summary>
         public float X;
         
         /// <summary>
-        /// Normalized in the range 0...1 with 0 being at the top
+        /// Y coordinate, relative to window
         /// </summary>
         public float Y;
-        
+
         /// <summary>
-        /// Normalized in the range 0...1
+        /// true if eraser end is used (not all pens support this).
         /// </summary>
-        public float Pressure;
+        public Byte Eraset;
+
+        /// <summary>
+        /// true if the pen is touching or false if the pen is lifted off
+        /// </summary>
+        public Byte Down;
     }
 }

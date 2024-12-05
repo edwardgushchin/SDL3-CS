@@ -28,9 +28,11 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Pressure-sensitive pen button event structure (event.pbutton.*)
+    /// <para>Pressure-sensitive pen button event structure (event.pbutton.*)</para>
+    /// <para>This is for buttons on the pen itself that the user might click. The pen
+    /// itself pressing down to draw triggers a <see cref="EventType.PenDown"/> event instead.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenButtonEvent
     {
@@ -38,7 +40,8 @@ public static partial class SDL
         /// <see cref="EventType.PenButtonDown"/> or <see cref="EventType.PenButtonUp"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -56,22 +59,9 @@ public static partial class SDL
         public UInt32 Which;
         
         /// <summary>
-        /// The pen button index (1 represents the pen tip for compatibility with mouse events)
+        /// Complete pen input state at time of event
         /// </summary>
-        public byte Button;
-        
-        /// <summary>
-        /// <see cref="Keystate.Pressed"/> or <see cref="Keystate.Released"/>
-        /// </summary>
-        public Keystate State;
-        
-        /// <summary>
-        /// Pen button masks (where Button(1) is the first button, Button(2) is the second button etc.),
-        /// <see cref="PenCapabilityFlags.Down"/> is set if the pen is touching the surface,
-        /// and <see cref="PenCapabilityFlags.Eraser"/> is set if the pen is (used as) an eraser.
-        /// </summary>
-        /// <seealso cref="Button"/>
-        public UInt64 PenState;
+        public PenInputFlags PenState;
         
         /// <summary>
         /// X coordinate, relative to window
@@ -82,30 +72,15 @@ public static partial class SDL
         /// Y coordinate, relative to window
         /// </summary>
         public float Y;
-        private unsafe fixed float axes[(int)PenAxis.NumAxes];
-        
+
         /// <summary>
-        /// Pen axes such as pressure and tilt (ordered as per <see cref="PenAxis"/>)
+        /// The pen button index (first button is 1).
         /// </summary>
-        public unsafe float[] Axes
-        {
-            get
-            {
-                fixed (float* ptr = axes)
-                {
-                    var intPtr = (IntPtr) ptr;
-                    try
-                    {
-                        var array = new float[(int)PenAxis.NumAxes];
-                        Marshal.Copy(intPtr, array, 0, (int)PenAxis.NumAxes);
-                        return array;
-                    }
-                    finally
-                    {
-                        Marshal.FreeHGlobal(intPtr);
-                    }
-                }
-            }
-        }
+        public Byte Button;
+
+        /// <summary>
+        /// true if the button is pressed
+        /// </summary>
+        public Byte Down;
     }
 }

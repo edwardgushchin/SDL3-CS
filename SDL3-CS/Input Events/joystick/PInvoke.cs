@@ -444,35 +444,9 @@ public static partial class SDL
 		SDL_SetJoystickVirtualHat(joystick.Handle, hat, value);
 	
 	
-	[LibraryImport(SDLLibrary)]
-	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, 
-		Keystate state, float x, float y, float pressure);
-	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_SetJoystickVirtualTouchpad(SDL_Joystick *joystick, int touchpad, int finger, Uint8 state, float x, float y, float pressure);</code>
-	/// <summary>
-	/// <para>Set touchpad finger state on an opened virtual joystick.</para>
-	/// <para>Please note that values set here will not be applied until the next call to
-	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
-	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
-	/// <see cref="WaitEvent"/>.</para>
-	/// </summary>
-	/// <param name="joystick">the virtual joystick on which to set state.</param>
-	/// <param name="touchpad">the index of the touchpad on the virtual joystick to update.</param>
-	/// <param name="finger">the index of the finger on the touchpad to set.</param>
-	/// <param name="state"><see cref="Keystate.Pressed"/> if the finger is pressed,
-	/// <see cref="Keystate.Released"/> if the finger is released.</param>
-	/// <param name="x">the x coordinate of the finger on the touchpad, normalized 0 to 1,
-	/// with the origin in the upper left.</param>
-	/// <param name="y">the y coordinate of the finger on the touchpad, normalized 0 to 1,
-	/// with the origin in the upper left.</param>
-	/// <param name="pressure">the pressure of the finger.</param>
-	/// <returns><c>0</c> on success or a negative error code on failure; call
-	/// <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.0.0.</since>
-	public static int SetJoystickVirtualTouchpad(Joystick joystick, int touchpad, int finger, 
-		Keystate state, float x, float y, float pressure) => 
-		SDL_SetJoystickVirtualTouchpad(joystick.Handle, touchpad, finger, state, x, y, pressure);
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualTouchpad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	public static partial bool SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] bool down, float x, float y, float pressure);
 	
 	
 	[LibraryImport(SDLLibrary)]

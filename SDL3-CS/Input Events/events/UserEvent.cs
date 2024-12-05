@@ -31,11 +31,11 @@ public static partial class SDL
     /// <para>A user-defined event type (event.user.*)</para>
     /// <para>This event is unique; it is never created by SDL, but only by the
     /// application. The event can be pushed onto the event queue using
-    /// SDL_PushEvent(). The contents of the structure members are completely up to
-    /// the programmer; the only requirement is that '''type''' is a value obtained
+    /// <see cref="PushEvent"/>. The contents of the structure members are completely up to
+    /// the programmer; the only requirement is that <c>type</c> is a value obtained
     /// from <see cref="RegisterEvents"/>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct UserEvent
     {
@@ -43,8 +43,9 @@ public static partial class SDL
         /// <see cref="EventType.User"/> through <see cref="EventType.Last"/>-1,
         /// Uint32 because these are not in the <see cref="EventType"/> enumeration
         /// </summary>
-        public UInt64 Type;
-        private UInt64 reserved;
+        public UInt32 Type;
+        
+        private UInt64 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>

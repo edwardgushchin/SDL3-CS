@@ -28,15 +28,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_PumpEvents();
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PumpEvents(void);</code>
     /// <summary>
     /// <para>Pump the event loop, gathering events from the input devices.</para>
     /// <para>This function updates the event queue and internal input device state.</para>
-    /// <para><b>WARNING</b>: This should only be run in the thread that initialized the
-    /// video subsystem, and for extra safety, you should consider only doing those
-    /// things on the main thread in any case.</para>
     /// <para><see cref="PumpEvents"/> gathers all the pending input information from devices and
     /// places it in the event queue. Without calls to <see cref="PumpEvents"/> no events
     /// would ever be placed on the queue. Often the need for calls to
@@ -45,15 +40,16 @@ public static partial class SDL
     /// polling or waiting for events (e.g. you are filtering them), then you must
     /// call <see cref="PumpEvents"/> to force an event queue update.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <threadsafety>This should only be run in the thread that initialized the
+    /// video subsystem, and for extra safety, you should consider
+    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="WaitEvent"/>
-    public static void PumpEvents() => SDL_PumpEvents();
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PeepEvents(IntPtr events, int numevents, EventAction action, uint minType,
-        uint maxType);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PumpEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void PumpEvents();
+
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);</code>
     /// <summary>
     /// <para>Check the event queue for messages and optionally return them.</para>
@@ -63,15 +59,16 @@ public static partial class SDL
     /// event queue.</item>
     /// <item><see cref="EventAction.PeekEvent"/>: <c>numevents</c> events at the front of the event queue,
     /// within the specified minimum and maximum type, will be returned to the
-    /// caller and will <i>not</i> be removed from the queue.</item>
+    /// caller and will <b>not</b> be removed from the queue. If you pass <c>null</c> for</item>
+    /// <item><c>events</c>, then <c>numevents</c> is ignored and the total number of matching
+    /// events will be returned.</item>
     /// <item><see cref="EventAction.GetEvent"/>: up to <c>numevents</c> events at the front of the event queue,
     /// within the specified minimum and maximum type, will be returned to the
     /// caller and will be removed from the queue.</item>
     /// </list>
-    /// <para>You may have to call <see cref="SDL.PumpEvents"/> before calling this function.
+    /// <para>You may have to call <see cref="PumpEvents"/> before calling this function.
     /// Otherwise, the events may not be ready to be filtered when you call
-    /// <see cref="SDL.PeepEvents"/>.</para>
-    /// <para>This function is thread-safe.</para>
+    /// <see cref="PeepEvents(nint, int, EventAction, uint, uint)"/>.</para>
     /// </summary>
     /// <param name="events">destination buffer for the retrieved events, may be <c>null</c> to
     /// leave the events in the queue and return the number of events
@@ -84,83 +81,123 @@ public static partial class SDL
     /// <see cref="EventType.First"/> is a safe choice.</param>
     /// <param name="maxType">maximum value of the event type to be considered;
     /// <see cref="EventType.Last"/> is a safe choice.</param>
-    /// <returns>the number of events actually stored or a negative error code on
-    /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <returns>the number of events actually stored or -1 on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
-    public static int PeepEvents(Event[] events, int numevents, EventAction action, uint minType, uint maxType)
-    {
-        var eventsPtr = events != null ? Marshal.UnsafeAddrOfPinnedArrayElement(events, 0) : IntPtr.Zero;
-        return SDL_PeepEvents(eventsPtr, numevents, action, minType, maxType);
-    }
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_HasEvent(uint type);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasEvent(Uint32 type);</code>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PeepEvents(IntPtr events, int numevents, EventAction action, uint minType, uint maxType);
+
+
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);</code>
+    /// <summary>
+    /// <para>Check the event queue for messages and optionally return them.</para>
+    /// <para><c>action</c> may be any of the following:</para>
+    /// <list type="bullet">
+    /// <item><see cref="EventAction.AddEvent"/>: up to <c>numevents</c> events will be added to the back of the
+    /// event queue.</item>
+    /// <item><see cref="EventAction.PeekEvent"/>: <c>numevents</c> events at the front of the event queue,
+    /// within the specified minimum and maximum type, will be returned to the
+    /// caller and will <b>not</b> be removed from the queue. If you pass <c>null</c> for</item>
+    /// <item><c>events</c>, then <c>numevents</c> is ignored and the total number of matching
+    /// events will be returned.</item>
+    /// <item><see cref="EventAction.GetEvent"/>: up to <c>numevents</c> events at the front of the event queue,
+    /// within the specified minimum and maximum type, will be returned to the
+    /// caller and will be removed from the queue.</item>
+    /// </list>
+    /// <para>You may have to call <see cref="PumpEvents"/> before calling this function.
+    /// Otherwise, the events may not be ready to be filtered when you call
+    /// <see cref="PeepEvents(nint, int, EventAction, uint, uint)"/>.</para>
+    /// </summary>
+    /// <param name="events">destination buffer for the retrieved events, may be <c>null</c> to
+    /// leave the events in the queue and return the number of events
+    /// that would have been stored.</param>
+    /// <param name="numevents">if action is <see cref="EventAction.AddEvent"/>, the number of events to add
+    /// back to the event queue; if action is <see cref="EventAction.PeekEvent"/> or
+    /// <see cref="EventAction.GetEvent"/>, the maximum number of events to retrieve.</param>
+    /// <param name="action">action to take; see [[#action|Remarks]] for details.</param>
+    /// <param name="minType">minimum value of the event type to be considered;
+    /// <see cref="EventType.First"/> is a safe choice.</param>
+    /// <param name="maxType">maximum value of the event type to be considered;
+    /// <see cref="EventType.Last"/> is a safe choice.</param>
+    /// <returns>the number of events actually stored or -1 on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PumpEvents"/>
+    /// <seealso cref="PushEvent"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PeepEvents(Event[] events, int numevents, EventAction action, uint minType, uint maxType);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasEvent(Uint32 type);</code>
     /// <summary>
     /// <para>Check for the existence of a certain event type in the event queue.</para>
-    /// <para>If you need to check for a range of event types, use <see cref="HasEvents"/> instead.</para>
+    /// <para>If you need to check for a range of event types, use <see cref="HasEvents"/>
+    /// instead.</para>
     /// </summary>
-    /// <param name="type">The type of event to be queried; see <see cref="EventType"/> for details.</param>
-    /// <returns><c>true</c> if events matching <c>type</c> are present, or <c>false</c> if
-    /// events matching <c>type</c> are not present.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="type">the type of event to be queried; see <see cref="EventType"/> for details.</param>
+    /// <returns><c>true</c> if events matching <c>type</c> are present, or <c>false</c> if events
+    /// matching <c>type</c> are not present.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasEvents"/>
-    public static bool HasEvent(uint type) => SDL_HasEvent(type);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_HasEvents(uint minType, uint maxType);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasEvents(Uint32 minType, Uint32 maxType);</code>
+    public static partial bool HasEvent(uint type);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasEvents(Uint32 minType, Uint32 maxType);</code>
     /// <summary>
     /// <para>Check for the existence of certain event types in the event queue.</para>
     /// <para>If you need to check for a single event type, use <see cref="HasEvent"/> instead.</para>
     /// </summary>
-    /// <param name="minType">The low end of the event type range to be queried, inclusive; see
+    /// <param name="minType">the low end of event type to be queried, inclusive; see
     /// <see cref="EventType"/> for details.</param>
-    /// <param name="maxType">The high end of the event type range to be queried, inclusive; see
+    /// <param name="maxType">the high end of event type to be queried, inclusive; see
     /// <see cref="EventType"/> for details.</param>
     /// <returns><c>true</c> if events with type >= <c>minType</c> and &lt;= <c>maxType</c> are
-    /// present, or <c>false</c> if not.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// present, or false if not.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasEvent"/>
-    public static bool HasEvents(uint minType, uint maxType) => SDL_HasEvents(minType, maxType);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FlushEvent(uint type);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool HasEvents(uint minType, uint maxType);
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FlushEvent(Uint32 type);</code>
     /// <summary>
     /// <para>Clear events of a specific type from the event queue.</para>
     /// <para>This will unconditionally remove any events from the queue that match
-    /// <c>type</c>. If you need to remove a range of event types, use <see cref="FlushEvents"/> instead.</para>
+    /// <c>type</c>. If you need to remove a range of event types, use <see cref="FlushEvents"/>
+    /// instead.</para>
     /// <para>It's also normal to just ignore events you don't care about in your event
     /// loop without calling this function.</para>
     /// <para>This function only affects currently queued events. If you want to make
     /// sure that all pending OS events are flushed, you can call <see cref="PumpEvents"/>
     /// on the main thread immediately before the flush call.</para>
     /// <para>If you have user events with custom data that needs to be freed, you should
-    /// use <see cref="PeepEvents"/> to remove and clean up those events before calling
+    /// use <see cref="PeepEvents(nint, int, EventAction, uint, uint)"/> to remove and clean up those events before calling
     /// this function.</para>
     /// </summary>
-    /// <param name="type">The type of event to be cleared; see <see cref="EventType"/> for details.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="type">the type of event to be cleared; see <see cref="EventType"/> for details.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="FlushEvents"/>
-    public static void FlushEvent(uint type) => SDL_FlushEvent(type);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FlushEvents(uint minType, uint maxType);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FlushEvent(uint type);
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FlushEvents(Uint32 minType, Uint32 maxType);</code>
     /// <summary>
     /// <para>Clear events of a range of types from the event queue.</para>
     /// <para>This will unconditionally remove any events from the queue that are in the
-    /// range of <paramref name="minType"/> to <paramref name="maxType"/>, inclusive. If you need to remove a single
+    /// range of <c>minType</c> to <c>maxType</c>, inclusive. If you need to remove a single
     /// event type, use <see cref="FlushEvent"/> instead.</para>
     /// <para>It's also normal to just ignore events you don't care about in your event
     /// loop without calling this function.</para>
@@ -168,28 +205,24 @@ public static partial class SDL
     /// sure that all pending OS events are flushed, you can call <see cref="PumpEvents"/>
     /// on the main thread immediately before the flush call.</para>
     /// </summary>
-    /// <param name="minType">The low end of event type to be cleared, inclusive; see
+    /// <param name="minType">the low end of event type to be cleared, inclusive; see
     /// <see cref="EventType"/> for details.</param>
-    /// <param name="maxType">The high end of event type to be cleared, inclusive; see
+    /// <param name="maxType">the high end of event type to be cleared, inclusive; see
     /// <see cref="EventType"/> for details.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="FlushEvent"/>
-    public static void FlushEvents(uint minType, uint maxType) => SDL_FlushEvents(minType, maxType);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_PollEvent(out Event e);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FlushEvents(uint minType, uint maxType);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
     /// <summary>
-    /// Poll for currently pending events.
-    /// </summary>
-    /// <para>If <c>e</c> is not <c>null</c>, the next event is removed from the queue and stored
-    /// in the <see cref="Event"/> structure pointed to by <c>e</c> . The 1 returned refers to
-    /// this event, immediately stored in the <see cref="Event"/> structure—not an event
+    /// <para>Poll for currently pending events.</para>
+    /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
+    /// in the SDL_Event structure pointed to by `event`. The 1 returned refers to
+    /// this event, immediately stored in the SDL Event structure -- not an event
     /// to follow.</para>
-    /// <para>If <c>e</c>  is <c>null</c>, it simply returns 1 if there is an event in the queue,
-    /// but will not remove it from the queue.</para>
     /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
     /// this function in the thread that set the video mode.</para>
     /// <para><see cref="PollEvent"/> is the favored way of receiving system events since it can
@@ -197,292 +230,284 @@ public static partial class SDL
     /// on an event to be posted.</para>
     /// <para>The common practice is to fully process the event queue once every frame,
     /// usually as a first step before updating the game's state:</para>
-    /// <param name="e">The <see cref="Event"/> structure to be filled with the next event from
+    /// <code>
+    /// while (game_is_still_running) {
+    ///     while (SDL.PollEvent(out var e)) {  // poll until all events are handled!
+    ///         // decide what to do with this event.
+    ///     }
+    ///
+    /// // update game state, draw the current frame
+    /// }
+    /// </code>
+    /// </summary>
+    /// <param name="event">the <see cref="Event"/> structure to be filled with the next event from
     /// the queue, or <c>null</c>.</param>
-    /// <returns><c>true</c> if this got an event or <c>false</c> if there are none
-    /// available.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <returns><c>true</c> if this got an event or <c>false</c> if there are none available.</returns>
+    /// <threadsafety>This should only be run in the thread that initialized the
+    /// video subsystem, and for extra safety, you should consider
+    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    public static bool PollEvent(out Event e) => SDL_PollEvent(out e);
-
-
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_WaitEvent(out Event e);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
+    public static partial bool PollEvent(out Event @event);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
     /// <summary>
-    /// Wait indefinitely for the next available event.
-    /// </summary>
-    /// <para>If <c>e</c> is not <c>null</c>, the next event is removed from the queue and stored
-    /// in the <see cref="Event"/> structure pointed to by <c>e</c>.</para>
+    /// <para>Wait indefinitely for the next available event.</para>
+    /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
+    /// in the <see cref="Event"/> structure pointed to by <c>event</c>.</para>
     /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
     /// this function in the thread that initialized the video subsystem.</para>
-    /// <param name="e">The <see cref="Event"/> structure to be filled in with the next event
+    /// </summary>
+    /// <param name="event">the <see cref="Event"/> structure to be filled in with the next event
     /// from the queue, or <c>null</c>.</param>
-    /// <returns><c>true</c> on success or <c>false</c> if there was an error while
-    /// waiting for events; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <returns>true on success or false if there was an error while waiting for
+    /// events; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This should only be run in the thread that initialized the
+    /// video subsystem, and for extra safety, you should consider
+    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    public static bool WaitEvent(out Event e) => SDL_WaitEvent(out e);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool WaitEvent(out Event @event);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_WaitEventTimeout(out Event e, int timeoutMs);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);</code>
     /// <summary>
-    /// Wait until the specified timeout (in milliseconds) for the next available
-    /// event.
-    /// </summary>
-    /// <para>If <c>e</c> is not <c>null</c>, the next event is removed from the queue and stored
-    /// in the <see cref="Event"/> structure pointed to by <c>e</c>.</para>
+    /// <para>Wait until the specified timeout (in milliseconds) for the next available
+    /// event.</para>
+    /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
+    /// in the <seealso cref="Event"/> structure pointed to by <c>event</c>.</para>
     /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
     /// this function in the thread that initialized the video subsystem.</para>
-    /// <para>The timeout is not guaranteed; the actual wait time could be longer due to
+    /// <para>The timeout is not guaranteed, the actual wait time could be longer due to
     /// system scheduling.</para>
-    /// <param name="e">The <see cref="Event"/> structure to be filled in with the next event
+    /// </summary>
+    /// <param name="event">the <see cref="Event"/> structure to be filled in with the next event
     /// from the queue, or <c>null</c>.</param>
-    /// <param name="timeoutMs">The maximum number of milliseconds to wait for the next
+    /// <param name="timeoutMs">the maximum number of milliseconds to wait for the next
     /// available event.</param>
-    /// <returns><c>true</c> if this got an event or <c>false</c> if the timeout elapsed
-    /// without any events available.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <returns><c>true</c> if this got an event or <c>false</c> if the timeout elapsed without
+    /// any events available.</returns>
+    /// <threadsafety>This should only be run in the thread that initialized the
+    /// video subsystem, and for extra safety, you should consider
+    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
-    public static bool WaitEventTimeout(out Event e, int timeoutMs) => SDL_WaitEventTimeout(out e, timeoutMs);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitEventTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool WaitEventTimeout(out Event @event, int timeoutMs);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PushEvent(ref Event e);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PushEvent(SDL_Event *event);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PushEvent(SDL_Event *event);</code>
     /// <summary>
-    /// Add an event to the event queue.
-    /// </summary>
-    /// <para>The event queue can actually be used as a two-way communication channel.
+    /// <para>Add an event to the event queue.</para>
+    /// <para>The event queue can actually be used as a two way communication channel.
     /// Not only can events be read from the queue, but the user can also push
-    /// their own events onto it. <c>e</c> is a pointer to the event structure you
+    /// their own events onto it. <c>event</c> is a pointer to the event structure you
     /// wish to push onto the queue. The event is copied into the queue, and the
     /// caller may dispose of the memory pointed to after <see cref="PushEvent"/> returns.</para>
-    /// <para><b>Note:</b> Pushing device input events onto the queue doesn't modify the state
+    /// <para>Note: Pushing device input events onto the queue doesn't modify the state
     /// of the device within SDL.</para>
-    /// <para>This function is thread-safe, and can be called from other threads safely.</para>
-    /// <para><b>Note:</b> Events pushed onto the queue with <see cref="PushEvent"/> get passed through
-    /// the event filter but events added with <see cref="PeepEvents"/> do not.</para>
+    /// <para>Note: Events pushed onto the queue with <see cref="PushEvent"/> get passed through
+    /// the event filter but events added with <see cref="PeepEvents(nint, int, EventAction, uint, uint)"/> do not.</para>
     /// <para>For pushing application-specific events, please use <see cref="RegisterEvents"/> to
     /// get an event type that does not conflict with other code that also wants
     /// its own custom event types.</para>
-    /// <param name="e">The SDL_Event to be added to the queue.</param>
-    /// <returns><c>1</c> on success, <c>0</c> if the event was filtered, or a negative error
-    /// code on failure; call <see cref="GetError"/> for more information. A
-    /// common reason for error is the event queue being full.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="PeepEvents"/>
+    /// </summary>
+    /// <param name="event">the <see cref="Event"/> to be added to the queue.</param>
+    /// <returns><c>true</c> on success, <c>false</c> if the event was filtered or on failure;
+    /// call <see cref="GetError"/> for more information. A common reason for
+    /// error is the event queue being full.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="RegisterEvents"/>
-    public static int PushEvent(ref Event e) => SDL_PushEvent(ref e);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool PushEvent(ref Event @event);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetEventFilter(EventFilter filter, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
-    /// Set up a filter to process all events before they change internal state and
-    /// are posted to the internal event queue.
-    /// </summary>
-    /// <para>If the filter function returns <c>1</c> when called, then the event will be added
-    /// to the internal queue. If it returns <c>0</c>, then the event will be dropped from
-    /// the queue, but the internal state will still be updated. This allows
-    /// selective filtering of dynamically arriving events.</para>
+    /// <para>Set up a filter to process all events before they change internal state and
+    /// are posted to the internal event queue.</para>
+    /// <para>If the filter function returns true when called, then the event will be
+    /// added to the internal queue. If it returns false, then the event will be
+    /// dropped from the queue, but the internal state will still be updated. This
+    /// allows selective filtering of dynamically arriving events.</para>
     /// <para><b>WARNING</b>: Be very careful of what you do in the event filter function,
     /// as it may run in a different thread!</para>
     /// <para>On platforms that support it, if the quit event is generated by an
     /// interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
     /// application at the next event poll.</para>
-    /// <para>There is one caveat when dealing with the <see cref="EventType.Quit"/> event type. The
+    /// <para>There is one caveat when dealing with the <see cref="QuitEvent"/> event type. The
     /// event filter is only called when the window manager desires to close the
-    /// application window. If the event filter returns <c>1</c>, then the window will be
+    /// application window. If the event filter returns 1, then the window will be
     /// closed, otherwise the window will remain open if possible.</para>
     /// <para>Note: Disabled events never make it to the event filter function; see
-    /// <see cref="SDL.SetEventEnabled"/>.</para>
+    /// <see cref="SetEventEnabled"/>.</para>
     /// <para>Note: If you just want to inspect events without filtering, you should use
-    /// <see cref="SDL.AddEventWatch"/> instead.</para>
-    /// <para>Note: Events pushed onto the queue with <see cref="SDL.PushEvent"/> get passed through
-    /// the event filter, but events pushed onto the queue with <see cref="SDL.PeepEvents"/> do
+    /// <see cref="AddEventWatch"/> instead.</para>
+    /// <para>Note: Events pushed onto the queue with <see cref="PushEvent"/> get passed through
+    /// the event filter, but events pushed onto the queue with <see cref="PeepEvents(nint, int, EventAction, uint, uint)"/> do
     /// not.</para>
-    /// <param name="filter">An <see cref="SDL.EventFilter"/> function to call when an event happens.</param>
-    /// <param name="userdata">A pointer that is passed to <c>filter</c>.</param>
-    /// <threadsafety>SDL may call the filter callback at any time from any thread;
-    /// the application is responsible for locking resources the
-    /// callback touches that need to be protected.</threadsafety>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.AddEventWatch"/>
-    /// <seealso cref="SDL.SetEventEnabled"/>
-    /// <seealso cref="SDL.GetEventFilter"/>
-    /// <seealso cref="SDL.PeepEvents"/>
-    /// <seealso cref="SDL.PushEvent"/>
-    public static void SetEventFilter(EventFilter filter, IntPtr userdata) => SDL_SetEventFilter(filter, userdata);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_GetEventFilter(out EventFilter filter, out IntPtr userdata);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);</code>
-    /// <summary>
-    /// Query the current event filter.
     /// </summary>
+    /// <param name="filter">an <see cref="EventFilter"/> function to call when an event happens.</param>
+    /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="AddEventWatch"/>
+    /// <seealso cref="SetEventEnabled"/>
+    /// <seealso cref="GetEventFilter"/>
+    /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
+    /// <seealso cref="PushEvent"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetEventFilter(EventFilter filter, IntPtr userdata);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);</code>
+    /// <summary>
+    /// <para>Query the current event filter.</para>
     /// <para>This function can be used to "chain" filters, by saving the existing filter
     /// before replacing it with a function that will call that saved filter.</para>
-    /// <param name="filter">The current callback function will be stored here.</param>
-    /// <param name="userdata">The pointer that is passed to the current event filter will
+    /// </summary>
+    /// <param name="filter">the current callback function will be stored here.</param>
+    /// <param name="userdata">the pointer that is passed to the current event filter will
     /// be stored here.</param>
     /// <returns><c>true</c> on success or <c>false</c> if there is no event filter set.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.SetEventFilter"/>
-    public static bool GetEventFilter(out EventFilter filter, out IntPtr userdata) =>
-        SDL_GetEventFilter(out filter, out userdata);
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="SetEventFilter"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetEventFilter(out EventFilter filter, out IntPtr userdata);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_AddEventWatch(EventFilter filter, IntPtr userdata);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
-    /// Add a callback to be triggered when an event is added to the event queue.
-    /// </summary>
+    /// <para>Add a callback to be triggered when an event is added to the event queue.</para>
     /// <para><c>filter</c> will be called when an event happens, and its return value is
     /// ignored.</para>
-    /// <para><b>WARNING:</b> Be very careful of what you do in the event filter function,
+    /// <para><b>WARNING</b>: Be very careful of what you do in the event filter function,
     /// as it may run in a different thread!</para>
-    /// <para>If the quit event is generated by a signal (e.g., SIGINT), it will bypass
+    /// <para>If the quit event is generated by a signal (e.g. SIGINT), it will bypass
     /// the internal queue and be delivered to the watch callback immediately, and
     /// arrive at the next event poll.</para>
-    /// <para>Note: The callback is called for events posted by the user through
-    /// <see cref="SDL.PushEvent"/> but not for disabled events, nor for events by a filter
-    /// callback set with <see cref="SDL.SetEventFilter"/>, nor for events posted by the user
-    /// through <see cref="SDL.PeepEvents"/>.</para>
-    /// <param name="filter">An <c>SDL_EventFilter</c> function to call when an event happens.</param>
-    /// <param name="userdata">A pointer that is passed to <c>filter</c>.</param>
-    /// <returns>0 on success, or a negative error code on failure; call <see cref="SDL.GetError"/> 
-    /// for more information.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.DelEventWatch"/>
-    /// <seealso cref="SDL.SetEventFilter"/>
-    public static int AddEventWatch(EventFilter filter, IntPtr userdata) => SDL_AddEventWatch(filter, userdata);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DelEventWatch(EventFilter filter, IntPtr userdata);
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DelEventWatch(SDL_EventFilter filter, void *userdata);</code>
-    /// <summary>
-    /// Remove an event watch callback added with <see cref="SDL.AddEventWatch"/>.
+    /// <para>Note: the callback is called for events posted by the user through
+    /// <see cref="PushEvent"/>, but not for disabled events, nor for events by a filter
+    /// callback set with <see cref="SetEventFilter"/>, nor for events posted by the user
+    /// through <see cref="PeepEvents(nint, int, EventAction, uint, uint)"/>.</para>
     /// </summary>
-    /// <para>This function takes the same input as <see cref="SDL.AddEventWatch"/> to identify and
+    /// <param name="filter">an <see cref="EventFilter"/> function to call when an event happens.</param>
+    /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="RemoveEventWatch"/>
+    /// <seealso cref="SetEventFilter"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool AddEventWatch(EventFilter filter, IntPtr userdata);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);</code>
+    /// <summary>
+    /// <para>Remove an event watch callback added with <see cref="AddEventWatch"/>.</para>
+    /// <para>This function takes the same input as <see cref="AddEventWatch"/> to identify and
     /// delete the corresponding callback.</para>
-    /// <param name="filter">The function originally passed to <see cref="SDL.AddEventWatch"/>.</param>
-    /// <param name="userdata">The pointer originally passed to <see cref="SDL.AddEventWatch"/>.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.AddEventWatch"/>
-    public static void DelEventWatch(EventFilter filter, IntPtr userdata) => SDL_DelEventWatch(filter, userdata);
+    /// </summary>
+    /// <param name="filter">the function originally passed to <see cref="AddEventWatch"/>.</param>
+    /// <param name="userdata">the pointer originally passed to <see cref="AddEventWatch"/>.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="AddEventWatch"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RemoveEventWatch(EventFilter filter, IntPtr userdata);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FilterEvents(EventFilter filter, IntPtr userdata);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FilterEvents(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
-    /// Run a specific filter function on the current event queue, removing any
-    /// events for which the filter returns 0.
+    /// <para>Run a specific filter function on the current event queue, removing any
+    /// events for which the filter returns false.</para>
+    /// <para>See <see cref="SetEventFilter"/> for more information. Unlike <see cref="SetEventFilter"/>,
+    /// this function does not change the filter permanently, it only uses the
+    /// supplied filter until this function returns.</para>
     /// </summary>
-    /// <para>This function uses the provided filter function to process events in the
-    /// queue, removing those for which the filter returns 0. Unlike <see cref="SDL.SetEventFilter"/>,
-    /// this function does not permanently set the filter; it only applies the filter
-    /// during the execution of this function.</para>
-    /// <param name="filter">The <see cref="EventFilter"/> function to call when an event happens.</param>
-    /// <param name="userdata">A pointer that is passed to the <c>filter</c> function.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.GetEventFilter"/>
-    /// <seealso cref="SDL.SetEventFilter"/>
-    public static void FilterEvents(EventFilter filter, IntPtr userdata) => SDL_FilterEvents(filter, userdata);
+    /// <param name="filter">the <see cref="EventFilter"/> function to call when an event happens.</param>
+    /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEventFilter"/>
+    /// <seealso cref="SetEventFilter"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FilterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FilterEvents(EventFilter filter, IntPtr userdata);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventEnabled(Uint32 type, SDL_bool enabled);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventEnabled(Uint32 type, bool enabled);</code>
     /// <summary>
     /// Set the state of processing events by type.
     /// </summary>
-    /// <param name="type">The type of event; see <see cref="EventType"/> for details.</param>
-    /// <param name="enabled">Whether to process the event or not. Use <c>true</c> to enable processing or <c>false</c> to disable.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="type">the type of event; see <see cref="EventType"/> for details.</param>
+    /// <param name="enabled">whether to process the event or not.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="EventEnabled"/>
-    public static void SetEventEnabled(uint type, bool enabled) => SDL_SetEventEnabled(type, enabled);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SDL_EventEnabled(uint type);
-    /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_EventEnabled(Uint32 type);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EventEnabled(Uint32 type);</code>
     /// <summary>
     /// Query the state of processing events by type.
     /// </summary>
-    /// <param name="type">The type of event; see <see cref="EventType"/> for details.</param>
+    /// <param name="type">the type of event; see <see cref="EventType"/> for details.</param>
     /// <returns><c>true</c> if the event is being processed, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.SetEventEnabled"/>
-    public static bool EventEnabled(uint type) => SDL_EventEnabled(type);
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="SetEventEnabled"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool EventEnabled(uint type);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_RegisterEvents(int numevents);
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_RegisterEvents(int numevents);</code>
     /// <summary>
-    /// Allocate a set of user-defined events and return the beginning event number for that set of events.
+    /// Allocate a set of user-defined events, and return the beginning event
+    /// number for that set of events.
     /// </summary>
-    /// <param name="numevents">The number of events to be allocated.</param>
-    /// <returns>The beginning event number for the allocated set, or 0 if <paramref name="numevents"/> is
-    /// invalid or if there are not enough user-defined events left.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL.PushEvent"/>
-    public static uint RegisterEvents(int numevents) => SDL_RegisterEvents(numevents);
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_AllocateEventMemory(UIntPtr size);
-    /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_AllocateEventMemory(size_t size);</code>
-    /// <summary>
-    /// Allocate temporary memory for an SDL event.
-    /// </summary>
-    /// <param name="size">The amount of memory to allocate.</param>
-    /// <returns>A pointer to the allocated memory, or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <param name="numevents">the number of events to be allocated.</param>
+    /// <returns>the beginning event number, or 0 if numevents is invalid or if
+    /// there are not enough user-defined events left.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="SDL_FreeEventMemory"/>
-    public static IntPtr AllocateEventMemory(UIntPtr size) => SDL_AllocateEventMemory(size);
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="PushEvent"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RegisterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint RegisterEvents(int numevents);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FreeEventMemory();
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FreeEventMemory(void);</code>
+    /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetWindowFromEvent(const SDL_Event *event);</code>
     /// <summary>
-    /// Free temporary event memory allocated by SDL.
+    /// Get window associated with an event.
     /// </summary>
-    /// <remarks>
-    /// This function frees temporary memory allocated for events and APIs that
-    /// return temporary strings. This memory is local to the thread that creates
-    /// it and is automatically freed for the main thread when pumping the event
-    /// loop. For other threads, you may want to call this function periodically to
-    /// free any temporary memory created by that thread.
-    /// Note that if you call <see cref="AllocateEventMemory"/> on one thread and
-    /// pass it to another thread (e.g., via a user event), then you should be sure
-    /// the other thread has finished processing it before calling this function.
-    /// </remarks>
+    /// <param name="event">an event containing a <c>windowID</c>.</param>
+    /// <returns>the associated window on success or <c>null</c> if there is none.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="AllocateEventMemory"/>
-    public static void FreeEventMemory() => SDL_FreeEventMemory();
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="WaitEvent"/>
+    /// <seealso cref="WaitEventTimeout"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetWindowFromEvent(in Event @event);
 }

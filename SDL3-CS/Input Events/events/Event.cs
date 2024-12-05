@@ -187,11 +187,16 @@ public static partial class SDL
         /// Touch finger event data
         /// </summary>
         [FieldOffset(0)] public TouchFingerEvent TFinger;
+
+        /// <summary>
+        /// Pen proximity event data
+        /// </summary>
+        [FieldOffset(0)] public PenProximityEvent PProximity;
         
         /// <summary>
-        /// Pen tip touching or leaving drawing surface
+        /// Pen tip touching event data
         /// </summary>
-        [FieldOffset(0)] public PenTipEvent PTip;
+        [FieldOffset(0)] public PenTouchEvent PTouch;
         
         /// <summary>
         /// Pen change in position, pressure, or angle
@@ -204,6 +209,16 @@ public static partial class SDL
         [FieldOffset(0)] public PenButtonEvent PButton;
         
         /// <summary>
+        /// Pen axis event data
+        /// </summary>
+        [FieldOffset(0)] public PenAxisEvent PAxis;
+
+        /// <summary>
+        /// Render event data
+        /// </summary>
+        [FieldOffset(0)] public RenderEvent Render;
+        
+        /// <summary>
         /// Drag and drop event data
         /// </summary>
         [FieldOffset(0)] public DropEvent Drop;
@@ -212,6 +227,21 @@ public static partial class SDL
         /// Clipboard event data
         /// </summary>
         [FieldOffset(0)] public ClipboardEvent Clipboard;
+        
+        /// <summary>
+        /// This is necessary for ABI compatibility between Visual C++ and GCC.
+        /// Visual C++ will respect the push pack pragma and use 52 bytes (size of
+        /// SDL_TextEditingEvent, the largest structure for 32-bit and 64-bit
+        /// architectures) for this union, and GCC will use the alignment of the
+        /// largest datatype within the union, which is 8 bytes on 64-bit
+        /// architectures.
+        ///
+        /// So... we'll add padding to force the size to be the same for both.
+        ///
+        /// On architectures where pointers are 16 bytes, this needs rounding up to
+        /// the next multiple of 16, 64, and on architectures where pointers are
+        /// even larger the size of SDL_UserEvent will dominate as being 3 pointers.
+        /// </summary>
         [FieldOffset(0)] private unsafe fixed byte padding[128];
     }
 }

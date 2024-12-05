@@ -31,7 +31,7 @@ public static partial class SDL
     /// An event triggered when the clipboard contents have changed
     /// (event.clipboard.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct ClipboardEvent
     {
@@ -39,11 +39,27 @@ public static partial class SDL
         /// <see cref="EventType.ClipboardUpdate"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
         /// </summary>
         public UInt64 Timestamp;
+
+        /// <summary>
+        /// are we owning the clipboard (internal update)
+        /// </summary>
+        public Byte Owner;
+
+        /// <summary>
+        /// number of mime types
+        /// </summary>
+        public Int32 NMimeTypes;
+
+        /// <summary>
+        /// current mime types
+        /// </summary>
+        public IntPtr MimeTypes;
     }
 }

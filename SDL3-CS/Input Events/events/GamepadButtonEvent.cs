@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Gamepad button event structure (event.gbutton.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadButtonEvent
     {
@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.GamepadButtonDown"/> or <see cref="EventType.GamepadButtonUp"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -53,14 +54,16 @@ public static partial class SDL
         /// <summary>
         /// The gamepad button (<see cref="GamepadButton"/>)
         /// </summary>
-        // ReSharper disable once MemberHidesStaticFromOuterClass
         public GamepadButton Button;
-        
+
         /// <summary>
-        /// <see cref="Keystate.Pressed"/> or <see cref="Keystate.Released"/>
+        /// true if the button is pressed
         /// </summary>
-        public Keystate State;
-        private byte Padding1;
-        private byte Padding2;
+        public Byte Down;
+        
+        
+        private Byte _padding1;
+        
+        private Byte _padding2;
     }
 }
