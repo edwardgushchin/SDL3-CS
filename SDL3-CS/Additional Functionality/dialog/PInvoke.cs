@@ -55,10 +55,10 @@ public static partial class SDL
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="filters">a list of filters, may be <c>null</c>. Not all
-    /// platforms support this option, and platforms that do support
-    /// it may allow the user to ignore the filters. If non-NULL, it must remain valid
-    /// at least until the callback is invoked.</param>
+    /// <param name="filters">a list of filters, may be <c>null</c>. Not all platforms support
+    /// this option, and platforms that do support it may allow the
+    /// user to ignore the filters. If non-NULL, it must remain
+    /// valid at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
     /// may be <c>null</c>. Not all platforms support this option.</param>
@@ -134,10 +134,10 @@ public static partial class SDL
     /// it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
     /// Not all platforms support this option.</param>
-    /// <param name="filters">a list of filters, may be <c>null</c>. Not all
-    /// platforms support this option, and platforms that do support
-    /// it may allow the user to ignore the filters. f non-NULL, it must remain valid
-    /// at least until the callback is invoked.</param>
+    /// <param name="filters">a list of filters, may be <c>null</c>. Not all platforms support
+    /// this option, and platforms that do support it may allow the
+    /// user to ignore the filters. If non-NULL, it must remain
+    /// valid at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
     /// may be <c>null</c>. Not all platforms support this option.</param>
@@ -252,17 +252,17 @@ public static partial class SDL
     /// <list type="bullet">
     /// <item><see cref="Props.FileDialogFiltersPointer"/>: a pointer to a list of
     /// <see cref="DialogFileFilter"/>'s, which will be used as filters for file-based
-    /// selections. Ignored if the dialog is an "Open Folder" dialog. If non-NULL,
-    /// the array of filters must remain valid at least until the callback is
-    /// invoked.</item>
-    /// <item><see cref="Props.FileDialogNFiltersNumber"/>: the number of filters in the array
-    /// of filters, if it exists.</item>
+    /// selections. Ignored if the dialog is an "Open Folder" dialog. If
+    /// non-NULL, the array of filters must remain valid at least until the
+    /// callback is invoked.</item>
+    /// <item><see cref="Props.FileDialogNFiltersNumber"/>: the number of filters in the
+    /// array of filters, if it exists.</item>
     /// <item><see cref="Props.FileDialogWindowPointer"/>: the window that the dialog should
     /// be modal for.</item>
     /// <item><see cref="Props.FileDialogLocationString"/>: the default folder or file to
     /// start the dialog at.</item>
-    /// <item><see cref="Props.FileDialogManyBoolean"/>: true to allow the user to select more
-    /// than one entry.</item>
+    /// <item><see cref="Props.FileDialogManyBoolean"/>: true to allow the user to select
+    /// more than one entry.</item>
     /// <item><see cref="Props.FileDialogTitleString"/>: the title for the dialog.</item>
     /// <item><see cref="Props.FileDialogAcceptString"/>: the label that the accept button
     /// should have.</item>
