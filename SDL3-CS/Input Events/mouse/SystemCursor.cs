@@ -33,7 +33,7 @@ public static partial class SDL
     /// <summary>
     /// Cursor types for <see cref="CreateSystemCursor"/>.
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum SystemCursor
     {
         /// <summary>
@@ -97,7 +97,7 @@ public static partial class SDL
         Pointer,
         
         /// <summary>
-        /// Window resize top-left. This may be a single arrow or a double arrow like <see cref="NWSEResize"/>.
+        /// Window resize top-left. This may be a single arrow or a double arrow  like <see cref="NWSEResize"/>.
         /// </summary>
         NWResize,
         
@@ -135,6 +135,7 @@ public static partial class SDL
         /// Window resize left. May be <see cref="EWResize"/>.
         /// </summary>
         WResize,
+        
         SDLNumSystemCursors
     }
 }

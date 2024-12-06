@@ -26,7 +26,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// The type of action to request from <see cref="PeepEvents"/>.
+    /// The type of action to request from <see cref="PeepEvents(Event[], int, EventAction, uint, uint) "/>.
     /// </summary>
     /// <since>This enum is available since SDL 3.1.3.</since>
     public enum EventAction

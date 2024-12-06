@@ -103,10 +103,6 @@ internal static class Program
                 }
             }
 
-            var state = SDL.GetKeyboardState(out var numkeys);
-            
-            if(state[(int)SDL.Scancode.Alpha0]) Console.WriteLine("ALPHA 0!!!");
-
             var framePtr = SDL.AcquireCameraFrame(camera, out _);
 
             if (framePtr != IntPtr.Zero)
