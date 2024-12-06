@@ -145,11 +145,16 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsMainThread(void);</code>
     /// <summary>
     /// <para>Return whether this is the main thread.</para>
-    /// <para>On Apple platforms, the main thread is the thread that runs your program's main() entry point. On other platforms, the main thread is the one that calls Init(WindowFlags.Video), which should usually be the one that runs your program's main() entry point. If you are using the main callbacks, SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.</para>
+    /// <para>On Apple platforms, the main thread is the thread that runs your program's
+    /// main() entry point. On other platforms, the main thread is the one that
+    /// calls Init(WindowFlags.Video), which should usually be the one that runs
+    /// your program's main() entry point. If you are using the main callbacks,
+    /// SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
+    /// main thread.</para>
     /// </summary>
     /// <returns><c>true</c> if this thread is the main thread, or <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.8.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RunOnMainThread"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -159,16 +164,21 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);</code>
     /// <summary>
     /// <para>Call a function on the main thread during event processing.</para>
-    /// <para>If this is called on the main thread, the callback is executed immediately. If this is called on another thread, this callback is queued for execution on the main thread during event processing.</para>
-    /// <para>Be careful of deadlocks when using this functionality. You should not have the main thread wait for the current thread while this function is being called with <c>waitComplete</c> true.</para>
+    /// <para>If this is called on the main thread, the callback is executed immediately.
+    /// If this is called on another thread, this callback is queued for execution
+    /// on the main thread during event processing.</para>
+    /// <para>Be careful of deadlocks when using this functionality. You should not have
+    /// the main thread wait for the current thread while this function is being
+    /// called with <c>waitComplete</c> true.</para>
     /// </summary>
     /// <param name="callback">the callback to call on the main thread.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
-    /// <param name="waitComplete"><c>true</c> to wait for the callback to complete, <c>false</c> to return immediately.</param>
+    /// <param name="waitComplete"><c>true</c> to wait for the callback to complete, <c>false</c> to
+    /// return immediately.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.8.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="IsMainThread"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunOnMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
