@@ -21,7 +21,6 @@
  */
 #endregion
 
-
 namespace SDL3;
 
 public static partial class SDL
