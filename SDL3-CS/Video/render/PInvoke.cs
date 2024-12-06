@@ -1324,7 +1324,7 @@ public static partial class SDL
     {
         var ptr = SDL_GetRenderLogicalPresentationRect(renderer, out var r);
 
-        rect = PointerToManagedStruct<FRect>(r);
+        rect = PointerToStruct<FRect>(r);
 
         return ptr;
     }
@@ -2673,7 +2673,7 @@ public static partial class SDL
         
         try
         {
-            rectPtr = ManagedStructToPointer(rect);
+            rectPtr = StructToPointer(rect);
             return SDL_RenderReadPixels(renderer, rectPtr);
         }
         finally

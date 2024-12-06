@@ -110,7 +110,7 @@ public static partial class SDL
 
         count = size;
         
-        return PointerToUIntArray(ptr, size);
+        return PointerToStructArray<uint>(ptr, size);
     }
     
     
@@ -156,7 +156,7 @@ public static partial class SDL
 
         count = size;
 
-        return PointerToManagedStructArray<CameraSpec>(ptr, size);
+        return PointerToStructArray<CameraSpec>(ptr, size);
     }
     
     

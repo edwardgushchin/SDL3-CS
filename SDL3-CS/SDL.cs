@@ -89,7 +89,7 @@ public static partial class SDL
 
     
     // IntPtr to struct
-    public static T? PointerToManagedStruct<T>(IntPtr pointer) where T : struct
+    public static T? PointerToStruct<T>(IntPtr pointer) where T : struct
     {
         return pointer == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(pointer);
     }
@@ -97,7 +97,7 @@ public static partial class SDL
     
     // struct to IntPtr
     // After calling Marshal.FreeHGlobal()
-    public static IntPtr ManagedStructToPointer<T>(T? strct) where T : struct
+    public static IntPtr StructToPointer<T>(T? strct) where T : struct
     {
         if (!strct.HasValue) return IntPtr.Zero;
         
@@ -110,7 +110,7 @@ public static partial class SDL
 
     
     // struct[] to IntPtr
-    public static IntPtr ManagedStructArrayToPointer<T>(T[] array) where T : struct
+    public static IntPtr StructArrayToPointer<T>(T[] array) where T : struct
     {
         if (array == null || array.Length == 0) return IntPtr.Zero;
         
@@ -162,31 +162,6 @@ public static partial class SDL
     }
     
     
-    // IntPtr to byte[]?
-    public static byte[]? PointerToByteArray(IntPtr pointer, int size)
-    {
-        if (pointer == IntPtr.Zero) return null;
-        
-        var array = new byte[size];
-        
-        Marshal.Copy(pointer, array, 0, size);
-        
-        return array;
-    }
-
-
-    public static unsafe uint[]? PointerToUIntArray(IntPtr pointer, int size)
-    {
-        if (pointer == IntPtr.Zero) return null;
-        
-        var array = new uint[size];
-        
-        new Span<uint>((void*)pointer, size).CopyTo(new Span<uint>(array, 0, size));
-        
-        return array;
-    }
-    
-    
     // IntPtr to string[]?
     public static string[]? PointerToStringArray(IntPtr pointer)
     {
@@ -212,21 +187,25 @@ public static partial class SDL
     
     
     // IntPtr to struct[]?
-    public static T[]? PointerToManagedStructArray<T>(IntPtr pointer, int count) where T : struct
+    public static unsafe T[]? PointerToStructArray<T>(IntPtr pointer, int count) where T : struct
     {
         if (pointer == IntPtr.Zero || count <= 0) return null;
-        
-        if (typeof(T).IsPrimitive)
-            throw new Exception("This method is not suitable for primitive structures. Use more specialized methods.");
-        
+
         var array = new T[count];
         
-        for (var i = 0; i < count; i++)
+        if (typeof(T).IsPrimitive)
         {
-            var elementPtr = Marshal.ReadIntPtr(pointer);
-            array[i] = Marshal.PtrToStructure<T>(elementPtr);
+            new Span<T>((void*)pointer, count).CopyTo(new Span<T>(array, 0, count));
         }
-
+        else
+        {
+            for (var i = 0; i < count; i++)
+            {
+                var elementPtr = Marshal.ReadIntPtr(pointer);
+                array[i] = Marshal.PtrToStructure<T>(elementPtr);
+            }
+        }
+    
         return array;
     }
     

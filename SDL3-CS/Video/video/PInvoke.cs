@@ -106,7 +106,7 @@ public static partial class SDL
             if (ptr == IntPtr.Zero) return null;
         
             count = c;
-            return PointerToUIntArray(ptr, count.Value);
+            return PointerToStructArray<uint>(ptr, count.Value);
         }
         finally
         {
@@ -285,7 +285,7 @@ public static partial class SDL
         try
         {
             count = size;
-            return PointerToManagedStructArray<DisplayMode>(ptr, size);
+            return PointerToStructArray<DisplayMode>(ptr, size);
         }
         finally
         {
@@ -341,7 +341,7 @@ public static partial class SDL
     /// <seealso cref="GetCurrentDisplayMode"/>
     /// <seealso cref="GetDisplays"/>
     public static DisplayMode? GetDesktopDisplayMode(uint displayID) =>
-        PointerToManagedStruct<DisplayMode>(SDL_GetDesktopDisplayMode(displayID));
+        PointerToStruct<DisplayMode>(SDL_GetDesktopDisplayMode(displayID));
 
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDisplayMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -361,7 +361,7 @@ public static partial class SDL
     /// <seealso cref="GetDesktopDisplayMode"/>
     /// <seealso cref="GetDisplays"/>
     public static DisplayMode? GetCurrentDisplayMode(uint displayID) =>
-        PointerToManagedStruct<DisplayMode>(SDL_GetCurrentDisplayMode(displayID));
+        PointerToStruct<DisplayMode>(SDL_GetCurrentDisplayMode(displayID));
 
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForPoint(const SDL_Point *point);</code>
@@ -520,7 +520,7 @@ public static partial class SDL
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SetWindowFullscreen"/>
     public static DisplayMode? GetWindowFullscreenMode(IntPtr window) =>
-        PointerToManagedStruct<DisplayMode>(SDL_GetWindowFullscreenMode(window));
+        PointerToStruct<DisplayMode>(SDL_GetWindowFullscreenMode(window));
     
     
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetWindowICCProfile(SDL_Window *window, size_t *size);</code>

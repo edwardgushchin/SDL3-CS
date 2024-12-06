@@ -103,11 +103,15 @@ internal static class Program
                 }
             }
 
+            var state = SDL.GetKeyboardState(out var numkeys);
+            
+            if(state[(int)SDL.Scancode.Alpha0]) Console.WriteLine("ALPHA 0!!!");
+
             var framePtr = SDL.AcquireCameraFrame(camera, out _);
 
             if (framePtr != IntPtr.Zero)
             {
-                var frame = SDL.PointerToManagedStruct<SDL.Surface>(framePtr) ?? default;
+                var frame = SDL.PointerToStruct<SDL.Surface>(framePtr) ?? default;
                 
                 if (vhs)
                 {
@@ -123,7 +127,7 @@ internal static class Program
                      * Consider this code as a demonstration of the capabilities, and not a working version.
                      */
 
-                    var frameBuffer = SDL.PointerToByteArray(frame.Pixels, frame.Pitch * frame.Height);
+                    var frameBuffer = SDL.PointerToStructArray<byte>(frame.Pixels, frame.Pitch * frame.Height);
                     
                     ApplyVHSEffectYUY22(frameBuffer!, frame.Width, frame.Height);
     
