@@ -21,1246 +21,1246 @@ public static partial class SDL
         /// <summary>
         /// 0
         /// </summary>
-        Unknown             = 0x00000000u,
+        Unknown = 0x00000000u,
         
         /// <summary>
-        /// '\r'
+        /// <c>\r</c>
         /// </summary>
-        Return              = 0x0000000du,
+        Return = 0x0000000du,
         
         /// <summary>
-        /// '\x1B'
+        /// <c>\x1B</c>
         /// </summary>
-        Escape              = 0x0000001bu,
+        Escape = 0x0000001bu,
         
         /// <summary>
-        /// '\b'
+        /// <c>\b</c>
         /// </summary>
-        Backspace           = 0x00000008u,
+        Backspace = 0x00000008u,
         
         /// <summary>
-        /// '\t'
+        /// <c>\t</c>
         /// </summary>
-        Tab                 = 0x00000009u,
+        Tab = 0x00000009u,
         
         /// <summary>
         /// ' '
         /// </summary>
-        Space               = 0x00000020u,
+        Space = 0x00000020u,
         
         /// <summary>
-        /// '!'
+        /// <c>!</c>
         /// </summary>
-        Exclaim             = 0x00000021u,
+        Exclaim = 0x00000021u,
         
         /// <summary>
-        /// '"'
+        /// <c>"</c>
         /// </summary>
-        DblApostrophe       = 0x00000022u,
+        DblApostrophe = 0x00000022u,
         
         /// <summary>
-        /// '#'
+        /// <c>#</c>
         /// </summary>
-        Hash                = 0x00000023u,
+        Hash = 0x00000023u,
         
         /// <summary>
-        /// '$'
+        /// <c>$</c>
         /// </summary>
-        Dollar              = 0x00000024u,
+        Dollar = 0x00000024u,
         
         /// <summary>
-        /// '%'
+        /// <c>%</c>
         /// </summary>
-        Percent             = 0x00000025u,
+        Percent = 0x00000025u,
         
         /// <summary>
-        /// '&amp;'
+        /// <c>&amp;</c>
         /// </summary>
-        Ampersand           = 0x00000026u,
+        Ampersand = 0x00000026u,
         
         /// <summary>
-        /// '\''
+        /// <c>\</c>
         /// </summary>
-        Apostrophe          = 0x00000027u,
+        Apostrophe = 0x00000027u,
         
         /// <summary>
-        /// '('
+        /// <c>(</c>
         /// </summary>
-        LeftParen           = 0x00000028u,
+        LeftParen = 0x00000028u,
         
         /// <summary>
-        /// ')'
+        /// <c>)</c>
         /// </summary>
-        RightParen          = 0x00000029u,
+        RightParen = 0x00000029u,
         
         /// <summary>
-        /// '*'
+        /// <c>*</c>
         /// </summary>
-        Asterisk            = 0x0000002au,
+        Asterisk = 0x0000002au,
         
         /// <summary>
-        /// '+'
+        /// <c>+</c>
         /// </summary>
-        Plus                = 0x0000002bu,
+        Plus = 0x0000002bu,
         
         /// <summary>
-        /// ','
+        /// <c>,</c>
         /// </summary>
-        Comma               = 0x0000002cu,
+        Comma = 0x0000002cu,
         
         /// <summary>
-        /// '-'
+        /// <c>-</c>
         /// </summary>
-        Minus               = 0x0000002du,
+        Minus = 0x0000002du,
         
         /// <summary>
-        /// '.'
+        /// <c>.</c>
         /// </summary>
-        Period              = 0x0000002eu,
+        Period = 0x0000002eu,
         
         /// <summary>
-        /// '/'
+        /// <c>/</c>
         /// </summary>
-        Slash               = 0x0000002fu,
+        Slash = 0x0000002fu,
         
         /// <summary>
-        /// '0'
+        /// <c>0</c>
         /// </summary>
-        Alpha0              = 0x00000030u,
+        Alpha0 = 0x00000030u,
         
         /// <summary>
-        /// '1'
+        /// <c>1</c>
         /// </summary>
-        Alpha1              = 0x00000031u,
+        Alpha1 = 0x00000031u,
         
         /// <summary>
-        /// '2'
+        /// <c>2</c>
         /// </summary>
-        Alpha2              = 0x00000032u,
+        Alpha2 = 0x00000032u,
         
         /// <summary>
-        /// '3'
+        /// <c>3</c>
         /// </summary>
-        Alpha3              = 0x00000033u,
+        Alpha3 = 0x00000033u,
         
         /// <summary>
-        /// '4'
+        /// <c>4</c>
         /// </summary>
-        Alpha4              = 0x00000034u,
+        Alpha4 = 0x00000034u,
         
         /// <summary>
-        /// '5'
+        /// <c>5</c>
         /// </summary>
-        Alpha5              = 0x00000035u,
+        Alpha5 = 0x00000035u,
         
         /// <summary>
-        /// '6'
+        /// <c>6</c>
         /// </summary>
-        Alpha6              = 0x00000036u,
+        Alpha6 = 0x00000036u,
         
         /// <summary>
-        /// '7'
+        /// <c>7</c>
         /// </summary>
-        Alpha7              = 0x00000037u,
+        Alpha7 = 0x00000037u,
         
         /// <summary>
-        /// '8'
+        /// <c>8</c>
         /// </summary>
-        Alpha8              = 0x00000038u,
+        Alpha8 = 0x00000038u,
         
         /// <summary>
-        /// '9'
+        /// <c>9</c>
         /// </summary>
-        Alpha9              = 0x00000039u,
+        Alpha9 = 0x00000039u,
         
         /// <summary>
-        /// ':'
+        /// <c>:</c>
         /// </summary>
-        Colon               = 0x0000003au,
+        Colon = 0x0000003au,
         
         /// <summary>
-        /// ';'
+        /// <c>;</c>
         /// </summary>
-        Semicolon           = 0x0000003bu,
+        Semicolon = 0x0000003bu,
         
         /// <summary>
-        /// '&lt;'
+        /// <c>&lt;</c>
         /// </summary>
-        Less                = 0x0000003cu,
+        Less = 0x0000003cu,
         
         /// <summary>
-        /// '='
+        /// <c>=</c>
         /// </summary>
-        Equals              = 0x0000003du,
+        Equals = 0x0000003du,
         
         /// <summary>
-        /// '>'
+        /// <c>&gt;</c>
         /// </summary>
-        Greater             = 0x0000003eu,
+        Greater = 0x0000003eu,
         
         /// <summary>
-        /// '?'
+        /// <c>?</c>
         /// </summary>
-        Question            = 0x0000003fu,
+        Question = 0x0000003fu,
         
         /// <summary>
-        /// '@'
+        /// <c>@</c>
         /// </summary>
-        At                  = 0x00000040u, 
+        At = 0x00000040u, 
         
         /// <summary>
-        /// '['
+        /// <c>[</c>
         /// </summary>
-        LeftBracket         = 0x0000005bu, 
+        LeftBracket = 0x0000005bu, 
         
         /// <summary>
-        /// '\\'
+        /// <c>\</c>
         /// </summary>
-        Backslash           = 0x0000005cu, 
+        Backslash = 0x0000005cu, 
         
         /// <summary>
-        /// ']'
+        /// <c>]</c>
         /// </summary>
-        RightBracket        = 0x0000005du,
+        RightBracket = 0x0000005du,
         
         /// <summary>
-        /// '^'
+        /// <c>^</c>
         /// </summary>
-        Caret               = 0x0000005eu,
+        Caret = 0x0000005eu,
         
         /// <summary>
-        /// '_'
+        /// <c>_</c>
         /// </summary>
-        Underscore          = 0x0000005fu, 
+        Underscore = 0x0000005fu, 
         
         /// <summary>
-        /// '`'
+        /// <c>`</c>
         /// </summary>
-        Grave               = 0x00000060u,
+        Grave = 0x00000060u,
         
         /// <summary>
-        /// 'a'
+        /// <c>a</c>
         /// </summary>
-        A                   = 0x00000061u,
+        A = 0x00000061u,
         
         /// <summary>
-        /// 'b'
+        /// <c>b</c>
         /// </summary>
-        B                   = 0x00000062u,
+        B = 0x00000062u,
         
         /// <summary>
-        /// 'c'
+        /// <c>c</c>
         /// </summary>
-        C                   = 0x00000063u,
+        C = 0x00000063u,
         
         /// <summary>
-        /// 'd'
+        /// <c>d</c>
         /// </summary>
-        D                   = 0x00000064u,
+        D = 0x00000064u,
         
         /// <summary>
-        /// 'e'
+        /// <c>e</c>
         /// </summary>
-        E                   = 0x00000065u,
+        E = 0x00000065u,
         
         /// <summary>
-        /// 'f'
+        /// <c>f</c>
         /// </summary>
-        F                   = 0x00000066u,
+        F = 0x00000066u,
         
         /// <summary>
-        /// 'g'
+        /// <c>g</c>
         /// </summary>
-        G                   = 0x00000067u,
+        G = 0x00000067u,
         
         /// <summary>
-        /// 'h'
+        /// <c>h</c>
         /// </summary>
-        H                   = 0x00000068u,
+        H = 0x00000068u,
         
         /// <summary>
-        /// 'i'
+        /// <c>i</c>
         /// </summary>
-        I                   = 0x00000069u,
+        I = 0x00000069u,
         
         /// <summary>
-        /// 'j'
+        /// <c>j</c>
         /// </summary>
-        J                   = 0x0000006au,
+        J = 0x0000006au,
         
         /// <summary>
-        /// 'k'
+        /// <c>k</c>
         /// </summary>
-        K                   = 0x0000006bu,
+        K = 0x0000006bu,
         
         /// <summary>
-        /// 'l'
+        /// <c>l</c>
         /// </summary>
-        L                   = 0x0000006cu,
+        L = 0x0000006cu,
         
         /// <summary>
-        /// 'm'
+        /// <c>m</c>
         /// </summary>
-        M                   = 0x0000006du,
+        M = 0x0000006du,
         
         /// <summary>
-        /// 'n'
+        /// <c>n</c>
         /// </summary>
-        N                   = 0x0000006eu,
+        N = 0x0000006eu,
         
         /// <summary>
-        /// 'o'
+        /// <c>o</c>
         /// </summary>
-        O                   = 0x0000006fu,
+        O = 0x0000006fu,
         
         /// <summary>
-        /// 'p'
+        /// <c>p</c>
         /// </summary>
-        P                   = 0x00000070u,
+        P = 0x00000070u,
         
         /// <summary>
-        /// 'q'
+        /// <c>q</c>
         /// </summary>
-        Q                   = 0x00000071u,
+        Q = 0x00000071u,
         
         /// <summary>
-        /// 'r'
+        /// <c>r</c>
         /// </summary>
-        R                   = 0x00000072u,
+        R = 0x00000072u,
         
         /// <summary>
-        /// 's'
+        /// <c>s</c>
         /// </summary>
-        S                   = 0x00000073u,
+        S = 0x00000073u,
         
         /// <summary>
-        /// 't'
+        /// <c>t</c>
         /// </summary>
-        T                   = 0x00000074u,
+        T = 0x00000074u,
         
         /// <summary>
-        /// 'u'
+        /// <c>u</c>
         /// </summary>
-        U                   = 0x00000075u,
+        U = 0x00000075u,
         
         /// <summary>
-        /// 'v'
+        /// <c>v</c>
         /// </summary>
-        V                   = 0x00000076u,
+        V = 0x00000076u,
         
         /// <summary>
-        /// 'w'
+        /// <c>w</c>
         /// </summary>
-        W                   = 0x00000077u,
+        W = 0x00000077u,
         
         /// <summary>
-        /// 'x'
+        /// <c>x</c>
         /// </summary>
-        X                   = 0x00000078u,
+        X = 0x00000078u,
         
         /// <summary>
-        /// 'y'
+        /// <c>y</c>
         /// </summary>
-        Y                   = 0x00000079u,
+        Y = 0x00000079u,
         
         /// <summary>
-        /// 'z'
+        /// <c>z</c>
         /// </summary>
-        Z                   = 0x0000007au,
+        Z = 0x0000007au,
         
         /// <summary>
-        /// '{'
+        /// <c>{</c>
         /// </summary>
-        LeftBrace           = 0x0000007bu,
+        LeftBrace = 0x0000007bu,
         
         /// <summary>
-        /// '|'
+        /// <c>|</c>
         /// </summary>
-        Pipe                = 0x0000007cu,
+        Pipe = 0x0000007cu,
         
         /// <summary>
-        /// '}'
+        /// <c>}</c>
         /// </summary>
-        RightBrace          = 0x0000007du,
+        RightBrace = 0x0000007du,
         
         /// <summary>
-        /// '~'
+        /// <c>~</c>
         /// </summary>
-        Tilde               = 0x0000007eu,
+        Tilde = 0x0000007eu,
         
         /// <summary>
-        /// '\x7F'
+        /// <c>\x7F</c>
         /// </summary>
-        Delete              = 0x0000007fu,
+        Delete = 0x0000007fu,
         
         /// <summary>
-        /// '±'
+        /// <c>±</c>
         /// </summary>
-        PlusMinus           = 0x000000b1u,
+        PlusMinus = 0x000000b1u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Capslock)
         /// </summary>
-        Capslock            = 0x40000039u,
+        Capslock = 0x40000039u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F1)
         /// </summary>
-        F1                  = 0x4000003au,
+        F1 = 0x4000003au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F2)
         /// </summary>
-        F2                  = 0x4000003bu,
+        F2 = 0x4000003bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F3)
         /// </summary>
-        F3                  = 0x4000003cu,
+        F3 = 0x4000003cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F4)
         /// </summary>
-        F4                  = 0x4000003du,
+        F4 = 0x4000003du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F5)
         /// </summary>
-        F5                  = 0x4000003eu,
+        F5 = 0x4000003eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F6)
         /// </summary>
-        F6                  = 0x4000003fu,
+        F6 = 0x4000003fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F7)
         /// </summary>
-        F7                  = 0x40000040u,
+        F7 = 0x40000040u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F8)
         /// </summary>
-        F8                  = 0x40000041u,
+        F8 = 0x40000041u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F9)
         /// </summary>
-        F9                  = 0x40000042u,
+        F9 = 0x40000042u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F10)
         /// </summary>
-        F10                 = 0x40000043u,
+        F10 = 0x40000043u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F11)
         /// </summary>
-        F11                 = 0x40000044u,
+        F11 = 0x40000044u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F12)
         /// </summary>
-        F12                 = 0x40000045u,
+        F12 = 0x40000045u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.PrintScreen)
         /// </summary>
-        PrintScreen         = 0x40000046u,
+        PrintScreen = 0x40000046u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ScrollLock)
         /// </summary>
-        ScrolLlock          = 0x40000047u,
+        ScrolLlock = 0x40000047u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Pause)
         /// </summary>
-        Pause               = 0x40000048u,
+        Pause = 0x40000048u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Insert)
         /// </summary>
-        Insert              = 0x40000049u,
+        Insert = 0x40000049u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Home)
         /// </summary>
-        Home                = 0x4000004au,
+        Home = 0x4000004au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Pageup)
         /// </summary>
-        Pageup              = 0x4000004bu,
+        Pageup = 0x4000004bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.End)
         /// </summary>
-        End                 = 0x4000004du,
+        End = 0x4000004du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Pagedown)
         /// </summary>
-        Pagedown            = 0x4000004eu,
+        Pagedown = 0x4000004eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Right)
         /// </summary>
-        Right               = 0x4000004fu,
+        Right = 0x4000004fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Left)
         /// </summary>
-        Left                = 0x40000050u,
+        Left = 0x40000050u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Down)
         /// </summary>
-        Down                = 0x40000051u,
+        Down = 0x40000051u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Up)
         /// </summary>
-        Up                  = 0x40000052u,
+        Up = 0x40000052u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.NumLockClear)
         /// </summary>
-        NumLockClear        = 0x40000053u,
+        NumLockClear = 0x40000053u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpDivide)
         /// </summary>
-        KpDivide            = 0x40000054u,
+        KpDivide = 0x40000054u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMultiply)
         /// </summary>
-        KpMultiply          = 0x40000055u,
+        KpMultiply = 0x40000055u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMinus)
         /// </summary>
-        KpMinus             = 0x40000056u,
+        KpMinus = 0x40000056u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpPlus)
         /// </summary>
-        KpPlus              = 0x40000057u,
+        KpPlus = 0x40000057u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpEnter)
         /// </summary>
-        KpEnter             = 0x40000058u,
+        KpEnter = 0x40000058u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp1)
         /// </summary>
-        Kp1                 = 0x40000059u,
+        Kp1 = 0x40000059u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp2)
         /// </summary>
-        Kp2                 = 0x4000005au,
+        Kp2 = 0x4000005au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp3)
         /// </summary>
-        Kp3                 = 0x4000005bu,
+        Kp3 = 0x4000005bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp4)
         /// </summary>
-        Kp4                 = 0x4000005cu,
+        Kp4 = 0x4000005cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp5)
         /// </summary>
-        Kp5                 = 0x4000005du,
+        Kp5 = 0x4000005du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp6)
         /// </summary>
-        Kp6                 = 0x4000005eu,
+        Kp6 = 0x4000005eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp7)
         /// </summary>
-        Kp7                 = 0x4000005fu,
+        Kp7 = 0x4000005fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp8)
         /// </summary>
-        Kp8                 = 0x40000060u,
+        Kp8 = 0x40000060u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp9)
         /// </summary>
-        Kp9                 = 0x40000061u,
+        Kp9 = 0x40000061u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp0)
         /// </summary>
-        Kp0                 = 0x40000062u,
+        Kp0 = 0x40000062u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpPeriod)
         /// </summary>
-        KpPeriod            = 0x40000063u,
+        KpPeriod = 0x40000063u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Application)
         /// </summary>
-        Application         = 0x40000065u,
+        Application = 0x40000065u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Power)
         /// </summary>
-        Power               = 0x40000066u,
+        Power = 0x40000066u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpEquals)
         /// </summary>
-        KpEquals            = 0x40000067u,
+        KpEquals = 0x40000067u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F13)
         /// </summary>
-        F13                 = 0x40000068u,
+        F13 = 0x40000068u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F14)
         /// </summary>
-        F14                 = 0x40000069u,
+        F14 = 0x40000069u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F15)
         /// </summary>
-        F15                 = 0x4000006au,
+        F15 = 0x4000006au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F16)
         /// </summary>
-        F16                 = 0x4000006bu,
+        F16 = 0x4000006bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F17)
         /// </summary>
-        F17                 = 0x4000006cu,
+        F17 = 0x4000006cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F18)
         /// </summary>
-        F18                 = 0x4000006du,
+        F18 = 0x4000006du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F19)
         /// </summary>
-        F19                 = 0x4000006eu,
+        F19 = 0x4000006eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F20)
         /// </summary>
-        F20                 = 0x4000006fu,
+        F20 = 0x4000006fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F21)
         /// </summary>
-        F21                 = 0x40000070u,
+        F21 = 0x40000070u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F22)
         /// </summary>
-        F22                 = 0x40000071u,
+        F22 = 0x40000071u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F23)
         /// </summary>
-        F23                 = 0x40000072u,
+        F23 = 0x40000072u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.F24)
         /// </summary>
-        F24                 = 0x40000073u,
+        F24 = 0x40000073u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Execute)
         /// </summary>
-        Execute             = 0x40000074u,
+        Execute = 0x40000074u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Help)
         /// </summary>
-        Help                = 0x40000075u,
+        Help = 0x40000075u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Menu)
         /// </summary>
-        Menu                = 0x40000076u,
+        Menu = 0x40000076u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Select)
         /// </summary>
-        Select              = 0x40000077u,
+        Select = 0x40000077u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Stop)
         /// </summary>
-        Stop                = 0x40000078u,
+        Stop = 0x40000078u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Again)
         /// </summary>
-        Again               = 0x40000079u,
+        Again = 0x40000079u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Undo)
         /// </summary>
-        Undo                = 0x4000007au,
+        Undo = 0x4000007au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Cut)
         /// </summary>
-        Cut                 = 0x4000007bu,
+        Cut = 0x4000007bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Copy)
         /// </summary>
-        Copy                = 0x4000007cu,
+        Copy = 0x4000007cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Paste)
         /// </summary>
-        Paste               = 0x4000007du,
+        Paste = 0x4000007du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Find)
         /// </summary>
-        Find                = 0x4000007eu,
+        Find = 0x4000007eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Mute)
         /// </summary>
-        Mute                = 0x4000007fu,
+        Mute = 0x4000007fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.VolumeUp)
         /// </summary>
-        VolumeUp            = 0x40000080u,
+        VolumeUp = 0x40000080u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.VolumeDown)
         /// </summary>
-        VolumeDown          = 0x40000081u,
+        VolumeDown = 0x40000081u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpComma)
         /// </summary>
-        KpComma             = 0x40000085u,
+        KpComma = 0x40000085u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpEqualsAs400)
         /// </summary>
-        KpEqualAas400       = 0x40000086u,
+        KpEqualAas400 = 0x40000086u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AltErase)
         /// </summary>
-        AltErase            = 0x40000099u,
+        AltErase = 0x40000099u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.SysReq)
         /// </summary>
-        SysReq              = 0x4000009au,
+        SysReq = 0x4000009au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Cancel)
         /// </summary>
-        Cancel              = 0x4000009bu,
+        Cancel = 0x4000009bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Clear)
         /// </summary>
-        Clear               = 0x4000009cu,
+        Clear = 0x4000009cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Prior)
         /// </summary>
-        Prior               = 0x4000009du,
+        Prior = 0x4000009du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Return2)
         /// </summary>
-        Return2             = 0x4000009eu,
+        Return2 = 0x4000009eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Separator)
         /// </summary>
-        Separator           = 0x4000009fu,
+        Separator = 0x4000009fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Out)
         /// </summary>
-        Out                 = 0x400000a0u,
+        Out = 0x400000a0u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Oper)
         /// </summary>
-        Oper                = 0x400000a1u,
+        Oper = 0x400000a1u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ClearAgain)
         /// </summary>
-        ClearAgain          = 0x400000a2u,
+        ClearAgain = 0x400000a2u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.CrSel)
         /// </summary>
-        CrSel               = 0x400000a3u,
+        CrSel = 0x400000a3u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ExSel)
         /// </summary>
-        ExSel               = 0x400000a4u,
+        ExSel = 0x400000a4u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp00)
         /// </summary>
-        Kp00                = 0x400000b0u,
+        Kp00 = 0x400000b0u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp000)
         /// </summary>
-        Kp000               = 0x400000b1u,
+        Kp000 = 0x400000b1u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ThousandsSeparator)
         /// </summary>
-        ThousandsSeparator  = 0x400000b2u,
+        ThousandsSeparator = 0x400000b2u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.DecimalSeparator)
         /// </summary>
-        DecimalSeparator    = 0x400000b3u,
+        DecimalSeparator = 0x400000b3u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.CurrencyUnit)
         /// </summary>
-        CurrenCyUnit        = 0x400000b4u,
+        CurrenCyUnit = 0x400000b4u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.CurrencySubunit)
         /// </summary>
-        CurrenCySubunit     = 0x400000b5u,
+        CurrenCySubunit = 0x400000b5u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpLeftParen)
         /// </summary>
-        KpLeftParen         = 0x400000b6u,
+        KpLeftParen = 0x400000b6u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpRightParen)
         /// </summary>
-        KpRightParen        = 0x400000b7u,
+        KpRightParen = 0x400000b7u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpLeftBrace)
         /// </summary>
-        KpLeftBrace         = 0x400000b8u,
+        KpLeftBrace = 0x400000b8u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpRightBrace)
         /// </summary>
-        KpRightBrace        = 0x400000b9u,
+        KpRightBrace = 0x400000b9u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpTab)
         /// </summary>
-        KpTab               = 0x400000bau,
+        KpTab = 0x400000bau,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpBackspace)
         /// </summary>
-        KpBackspace         = 0x400000bbu,
+        KpBackspace = 0x400000bbu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpA)
         /// </summary>
-        KpA                 = 0x400000bcu,
+        KpA = 0x400000bcu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpB)
         /// </summary>
-        KpB                 = 0x400000bdu,
+        KpB = 0x400000bdu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpC)
         /// </summary>
-        KpC                 = 0x400000beu,
+        KpC = 0x400000beu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpD)
         /// </summary>
-        KpD                 = 0x400000bfu,
+        KpD = 0x400000bfu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpE)
         /// </summary>
-        KpE                 = 0x400000c0u,
+        KpE = 0x400000c0u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpF)
         /// </summary>
-        KpF                 = 0x400000c1u,
+        KpF = 0x400000c1u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpXor)
         /// </summary>
-        KpXor               = 0x400000c2u,
+        KpXor = 0x400000c2u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpPower)
         /// </summary>
-        KpPower             = 0x400000c3u,
+        KpPower = 0x400000c3u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpPercent)
         /// </summary>
-        KpPercent           = 0x400000c4u,
+        KpPercent = 0x400000c4u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpLess)
         /// </summary>
-        KpLess              = 0x400000c5u,
+        KpLess = 0x400000c5u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpGreater)
         /// </summary>
-        KpGreater           = 0x400000c6u,
+        KpGreater = 0x400000c6u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpAmpersand)
         /// </summary>
-        KpAmpersand         = 0x400000c7u,
+        KpAmpersand = 0x400000c7u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpDblAmpersand)
         /// </summary>
-        KpDblAmpersand      = 0x400000c8u,
+        KpDblAmpersand = 0x400000c8u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpVerticalBar)
         /// </summary>
-        KpVerticalBar       = 0x400000c9u,
+        KpVerticalBar = 0x400000c9u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpDBLVERTICALBAR)
         /// </summary>
-        KpDblVerticalBar    = 0x400000cau,
+        KpDblVerticalBar = 0x400000cau,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpDblVerticalBar)
         /// </summary>
-        KpColon             = 0x400000cbu,
+        KpColon = 0x400000cbu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpHash)
         /// </summary>
-        KpHash              = 0x400000ccu,
+        KpHash = 0x400000ccu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpSpace)
         /// </summary>
-        KpSpace             = 0x400000cdu,
+        KpSpace = 0x400000cdu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpAt) 
         /// </summary>
-        KpAt                = 0x400000ceu,
+        KpAt = 0x400000ceu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpExClam)
         /// </summary>
-        KpExClam            = 0x400000cfu,
+        KpExClam = 0x400000cfu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemStore)
         /// </summary>
-        KpMemStore          = 0x400000d0u,
+        KpMemStore = 0x400000d0u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemRecall)
         /// </summary>
-        KpMemRecall         = 0x400000d1u,
+        KpMemRecall = 0x400000d1u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemClear)
         /// </summary>
-        KpMemClear          = 0x400000d2u,
+        KpMemClear = 0x400000d2u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemAdd)
         /// </summary>
-        KpMemAdd            = 0x400000d3u,
+        KpMemAdd = 0x400000d3u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemSubtract)
         /// </summary>
-        KpMemSubtract       = 0x400000d4u,
+        KpMemSubtract = 0x400000d4u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemMultiply)
         /// </summary>
-        KpMemMultiply       = 0x400000d5u,
+        KpMemMultiply = 0x400000d5u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpMemDivide)
         /// </summary>
-        KpMemDivide         = 0x400000d6u,
+        KpMemDivide = 0x400000d6u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpPlusMinus)
         /// </summary>
-        KpPlusMinus         = 0x400000d7u,
+        KpPlusMinus = 0x400000d7u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpClear)
         /// </summary>
-        KpClear             = 0x400000d8u,
+        KpClear = 0x400000d8u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpClearEntry)
         /// </summary>
-        KpClearEntry        = 0x400000d9u,
+        KpClearEntry = 0x400000d9u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpBinary)
         /// </summary>
-        KpBinary            = 0x400000dau,
+        KpBinary = 0x400000dau,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpOctal)
         /// </summary>
-        KpOctal             = 0x400000dbu,
+        KpOctal = 0x400000dbu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpDecimal)
         /// </summary>
-        KpDecimal           = 0x400000dcu,
+        KpDecimal = 0x400000dcu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.KpHexadecimal)
         /// </summary>
-        KpHexadecimal       = 0x400000ddu,
+        KpHexadecimal = 0x400000ddu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.LCtrl)
         /// </summary>
-        LCtrl               = 0x400000e0u,
+        LCtrl = 0x400000e0u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.LShift)
         /// </summary>
-        LShift              = 0x400000e1u,
+        LShift = 0x400000e1u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.LAlt)
         /// </summary>
-        LAlt                = 0x400000e2u,
+        LAlt = 0x400000e2u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.LGUI)
         /// </summary>
-        LGui                = 0x400000e3u,
+        LGui = 0x400000e3u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.RCtrl)
         /// </summary>
-        RCtrl               = 0x400000e4u,
+        RCtrl = 0x400000e4u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.RShift)
         /// </summary>
-        RShift              = 0x400000e5u,
+        RShift = 0x400000e5u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.RAlt)
         /// </summary>
-        RAlt                = 0x400000e6u,
+        RAlt = 0x400000e6u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.RGui)
         /// </summary>
-        RGUI                = 0x400000e7u,
+        RGUI = 0x400000e7u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Mode)
         /// </summary>
-        Mode                = 0x40000101u,
+        Mode = 0x40000101u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Sleep)
         /// </summary>
-        Sleep               = 0x40000102u,
+        Sleep = 0x40000102u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Wake)
         /// </summary>
-        Wake                = 0x40000103u,
+        Wake = 0x40000103u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ChannelIncrement)
         /// </summary>
-        ChannelIncrement    = 0x40000104u,
+        ChannelIncrement = 0x40000104u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ChannelDecrement)
         /// </summary>
-        ChannelDecrement    = 0x40000105u,
+        ChannelDecrement = 0x40000105u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaPlay)
         /// </summary>
-        MediaPlay           = 0x40000106u,
+        MediaPlay = 0x40000106u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaPause)
         /// </summary>
-        MediaPause          = 0x40000107u,
+        MediaPause = 0x40000107u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaRecord)
         /// </summary>
-        MediaRecord         = 0x40000108u,
+        MediaRecord = 0x40000108u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaFastForward)
         /// </summary>
-        MediaFastForward    = 0x40000109u, 
+        MediaFastForward = 0x40000109u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaRewind)
         /// </summary>
-        MediaRewind         = 0x4000010au,
+        MediaRewind = 0x4000010au,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaNextTrack)
         /// </summary>
-        MediaNextTrack      = 0x4000010bu,
+        MediaNextTrack = 0x4000010bu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaPreviousTrack)
         /// </summary>
-        MediaPreviousTrack  = 0x4000010cu,
+        MediaPreviousTrack = 0x4000010cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaStop)
         /// </summary>
-        MediaStop           = 0x4000010du, 
+        MediaStop = 0x4000010du, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaEject)
         /// </summary>
-        MediaEject          = 0x4000010eu, 
+        MediaEject = 0x4000010eu, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaPlayPause)
         /// </summary>
-        MediaPlayPause      = 0x4000010fu, 
+        MediaPlayPause = 0x4000010fu, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.MediaSelect)
         /// </summary>
-        MediaSelect         = 0x40000110u, 
+        MediaSelect = 0x40000110u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcNew)
         /// </summary>
-        AcNew               = 0x40000111u, 
+        AcNew = 0x40000111u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcOpen)
         /// </summary>
-        AcOpen              = 0x40000112u, 
+        AcOpen = 0x40000112u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcClose)
         /// </summary>
-        AcClose             = 0x40000113u, 
+        AcClose = 0x40000113u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcExit)
         /// </summary>
-        AcExit              = 0x40000114u, 
+        AcExit = 0x40000114u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcSave)
         /// </summary>
-        AcSave              = 0x40000115u, 
+        AcSave = 0x40000115u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcPrint)
         /// </summary>
-        AcPrint             = 0x40000116u, 
+        AcPrint = 0x40000116u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcProperties)
         /// </summary>
-        AcProperties        = 0x40000117u, 
+        AcProperties = 0x40000117u, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcSearch)
         /// </summary>
-        AcSearch            = 0x40000118u,
+        AcSearch = 0x40000118u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcHome)
         /// </summary>
-        AcHome              = 0x40000119u,
+        AcHome = 0x40000119u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcBack)
         /// </summary>
-        AcBack              = 0x4000011au, 
+        AcBack = 0x4000011au, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcForward)
         /// </summary>
-        AcForward           = 0x4000011bu, 
+        AcForward = 0x4000011bu, 
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcStop)
         /// </summary>
-        AcStop              = 0x4000011cu,
+        AcStop = 0x4000011cu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcRefresh)
         /// </summary>
-        AcRefresh           = 0x4000011du,
+        AcRefresh = 0x4000011du,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.AcBookmarks)
         /// </summary>
-        AcBookmarks         = 0x4000011eu,
+        AcBookmarks = 0x4000011eu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.SoftLeft)
         /// </summary>
-        SoftLeft            = 0x4000011fu,
+        SoftLeft = 0x4000011fu,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.SoftRight)
         /// </summary>
-        SoftRight           = 0x40000120u,
+        SoftRight = 0x40000120u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Call)
         /// </summary>
-        Call                = 0x40000121u,
+        Call = 0x40000121u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.EndCall)
         /// </summary>
-        EndCall             = 0x40000122u
+        EndCall = 0x40000122u
     }
 }

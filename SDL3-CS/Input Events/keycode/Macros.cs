@@ -30,6 +30,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [Macro]
     public static Keycode ScancodeToKeycode(Scancode scancode)
     {
         return (Keycode)((uint)scancode | ScanCodeMask);
