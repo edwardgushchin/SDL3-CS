@@ -33,6 +33,7 @@ public static partial class SDL
     /// Get the number of video drivers compiled into SDL.
     /// </summary>
     /// <returns>the number of built in video drivers.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetVideoDriver"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumVideoDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -50,6 +51,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="index">the index of a video driver.</param>
     /// <returns>the name of the video driver with the given <c>"index"</c>.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetNumVideoDrivers"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVideoDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -66,6 +68,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the name of the current video driver or <c>null</c> if no driver has been
     /// initialized.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetNumVideoDrivers"/>
     /// <seealso cref="GetVideoDriver"/>
@@ -79,6 +82,7 @@ public static partial class SDL
     /// Get the current system theme.
     /// </summary>
     /// <returns>the current system theme, light, dark, or unknown.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemTheme"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SystemTheme GetSystemTheme();
@@ -95,6 +99,7 @@ public static partial class SDL
     /// <returns>a <c>0</c> terminated array of display instance IDs or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     public static uint[]? GetDisplays(out int? count)
     {
@@ -121,6 +126,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the instance ID of the primary display on success or <c>0</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimaryDisplay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -149,6 +155,7 @@ public static partial class SDL
     /// <param name="displayID">displayID the instance ID of the display to query.</param>
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetDisplayProperties(uint displayID);
@@ -161,6 +168,7 @@ public static partial class SDL
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>the name of a display or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -177,6 +185,7 @@ public static partial class SDL
     /// <param name="rect">the <see cref="Rect"/> structure filled in with the display bounds.</param>
     /// <returns><c>success</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplayUsableBounds"/>
     /// <seealso cref="GetDisplays"/>
@@ -200,6 +209,7 @@ public static partial class SDL
     /// <param name="rect">the <see cref="Rect"/> structure filled in with the display bounds.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
@@ -215,6 +225,7 @@ public static partial class SDL
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>the <see cref="DisplayOrientation"/> enum value of the display, or
     /// <see cref="DisplayOrientation.Unknown"/> if it isn't available.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNaturalDisplayOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -228,6 +239,7 @@ public static partial class SDL
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>the <see cref="DisplayOrientation"/> enum value of the display, or
     /// <see cref="DisplayOrientation.Unknown"/> if it isn't available.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDisplayOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -245,6 +257,7 @@ public static partial class SDL
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>the content scale of the display, or <c>0.0f</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayContentScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -273,6 +286,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information. This is a
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     public static DisplayMode[]? GetFullscreenDisplayModes(uint displayID, out int? count)
@@ -315,6 +329,7 @@ public static partial class SDL
     /// or larger than the desired mode.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
     /// <seealso cref="GetFullscreenDisplayModes"/>
@@ -337,6 +352,7 @@ public static partial class SDL
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>a pointer to the desktop display mode or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetCurrentDisplayMode"/>
     /// <seealso cref="GetDisplays"/>
@@ -357,6 +373,7 @@ public static partial class SDL
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>a pointer to the desktop display mode or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDesktopDisplayMode"/>
     /// <seealso cref="GetDisplays"/>
@@ -371,6 +388,7 @@ public static partial class SDL
     /// <param name="point">the point to query.</param>
     /// <returns>the instance ID of the display containing the point or <c>0</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
@@ -386,6 +404,7 @@ public static partial class SDL
     /// <returns>the instance ID of the display entirely containing the rect or
     /// closest to the center of the rect on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
@@ -401,6 +420,7 @@ public static partial class SDL
     /// <returns>the instance ID of the display containing the center of the window
     /// on success or <c>0</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
@@ -418,6 +438,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the pixel density or <c>0.0f</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowDisplayScale"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelDensity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -440,6 +461,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the display scale, or <c>0.0f</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowDisplayScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetWindowDisplayScale(IntPtr window);
@@ -467,6 +489,7 @@ public static partial class SDL
     /// exclusive fullscreen mode.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreen"/>
@@ -498,6 +521,7 @@ public static partial class SDL
     /// exclusive fullscreen mode.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreen"/>
@@ -516,6 +540,7 @@ public static partial class SDL
     /// <param name="window">window the window to query.</param>
     /// <returns>a pointer to the exclusive fullscreen mode to use or <c>null</c> for
     /// borderless fullscreen desktop mode.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SetWindowFullscreen"/>
@@ -531,6 +556,8 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <param name="size">the size of the ICC profile.</param>
     /// <returns>the raw ICC profile data on success or <c>null</c> on failure; call
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowICCProfile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -545,6 +572,7 @@ public static partial class SDL
     /// <returns>the pixel format of the window on success or
     /// <see cref="PixelFormat.Unknown"/> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial PixelFormat GetWindowPixelFormat(IntPtr window);
@@ -562,6 +590,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This is a single
     /// allocation that should be freed with <see cref="Free"/> when it is no
     /// longer needed.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     public static IntPtr[]? GetWindows(out int? count)
     {
@@ -654,6 +683,7 @@ public static partial class SDL
     /// <param name="flags">0, or one or more <see cref="WindowFlags"/> OR'd together.</param>
     /// <returns>the window that was created or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateWindowAndRenderer"/>
     /// <seealso cref="CreatePopupWindow"/>
@@ -710,6 +740,7 @@ public static partial class SDL
     /// additional <see cref="WindowFlags"/> OR'd together.</param>
     /// <returns>the window that was created or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
@@ -825,6 +856,7 @@ public static partial class SDL
     /// <param name="props">the properties to use.</param>
     /// <returns>the window that was created or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateProperties"/>
     /// <seealso cref="CreateWindow"/>
@@ -842,6 +874,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the ID of the window on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFromID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -857,6 +890,7 @@ public static partial class SDL
     /// <param name="id">the ID of the window.</param>
     /// <returns>the window associated with <c>id</c> or <c>null</c> if it doesn't exist; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -870,6 +904,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the parent of the window on success or <c>null</c> if the window has no
     /// parent.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreatePopupWindow"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -991,6 +1026,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetWindowProperties(IntPtr window);
@@ -1002,6 +1038,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="window">the window to query.</param>
     /// <returns>a mask of the <see cref="WindowFlags"/> associated with <c>window</c>.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="HideWindow"/>
@@ -1023,6 +1060,7 @@ public static partial class SDL
     /// <param name="title">the desired window title in UTF-8 format.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowTitle"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1037,6 +1075,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the title of the window in UTF-8 format or "" if there is no
     /// title.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowTitle"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1061,6 +1100,7 @@ public static partial class SDL
     /// <param name="icon">an <see cref="Surface"/> structure containing the icon for the window.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1096,6 +1136,7 @@ public static partial class SDL
     /// <see cref="WindowPosUndefined"/>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowPosition"/>
     /// <seealso cref="SyncWindow"/>
@@ -1122,6 +1163,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowPosition"/>
     public static bool GetWindowPosition(IntPtr window, out int? x, out int? y)
@@ -1165,6 +1207,7 @@ public static partial class SDL
     /// <param name="h">the height of the window, must be > 0.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSize"/>
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
@@ -1189,6 +1232,7 @@ public static partial class SDL
     /// <param name="h">a pointer filled in with the height of the window, may be <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderOutputSize"/>
     /// <seealso cref="GetWindowSizeInPixels"/>
@@ -1224,6 +1268,7 @@ public static partial class SDL
     /// interactive content.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSafeArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1258,6 +1303,7 @@ public static partial class SDL
     /// limit.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowAspectRatio"/>
     /// <seealso cref="SyncWindow"/>
@@ -1280,6 +1326,7 @@ public static partial class SDL
     /// window, may be <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowAspectRatio"/>
     public static bool GetWindowAspectRatio(IntPtr window, out float? minAspect, out float? maxAspect)
@@ -1299,6 +1346,9 @@ public static partial class SDL
     }
 
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);</code>
     /// <summary>
     /// <para>Get the size of a window's borders (decorations) around the client area.</para>
@@ -1325,12 +1375,9 @@ public static partial class SDL
     /// <c>null</c> is permitted.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSize"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
-
     public static bool GetWindowBordersSize(IntPtr window, out int? top, out int? left, out int? bottom, out int? right)
     {
         if (SDL_GetWindowBordersSize(window, out var t, out var l, out var b, out var r))
@@ -1366,6 +1413,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="GetWindowSize"/>
@@ -1395,6 +1443,7 @@ public static partial class SDL
     /// <param name="minH">the minimum height of the window, or 0 for no limit.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
@@ -1417,6 +1466,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
@@ -1446,6 +1496,7 @@ public static partial class SDL
     /// <param name="maxHeight">the maximum height of the window, or 0 for no limit.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMaximumSize"/>
     /// <seealso cref="SetWindowMinimumSize"/>
@@ -1468,6 +1519,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
@@ -1500,6 +1552,7 @@ public static partial class SDL
     /// <param name="bordered"><c>false</c> to remove border, <c>true</c> to add border.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFlags"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowBordered"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1519,6 +1572,7 @@ public static partial class SDL
     /// <param name="resizable"><c>true</c> to allow resizing, <c>false</c> to disallow.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFlags"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowResizable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1536,6 +1590,7 @@ public static partial class SDL
     /// <param name="onTop"><c>true</c> to set the window always on top, <c>false</c> to disable.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFlags"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAlwaysOnTop"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1550,6 +1605,7 @@ public static partial class SDL
     /// <param name="window">the window to show.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HideWindow"/>
     /// <seealso cref="RaiseWindow"/>
@@ -1565,6 +1621,7 @@ public static partial class SDL
     /// <param name="window">the window to hide.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ShowWindow"/>
     /// <seealso cref="WindowFlags.Hidden"/>
@@ -1586,6 +1643,7 @@ public static partial class SDL
     /// <param name="window">the window to raise.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RaiseWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1612,6 +1670,7 @@ public static partial class SDL
     /// <param name="window">the window to maximize.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="MinimizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
@@ -1635,6 +1694,7 @@ public static partial class SDL
     /// <param name="window">the window to minimize.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
@@ -1659,6 +1719,7 @@ public static partial class SDL
     /// <param name="window">the window to restore.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="MinimizeWindow"/>
@@ -1686,6 +1747,7 @@ public static partial class SDL
     /// <param name="fullscreen"><c>true</c> for fullscreen mode, <c>false</c> for windowed mode.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
@@ -1711,6 +1773,7 @@ public static partial class SDL
     /// applied.</param>
     /// <returns><c>true</c> on success or <c>false</c> if the operation timed out before the
     /// window was in the requested state.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowSize"/>
     /// <seealso cref="SetWindowPosition"/>
@@ -1731,6 +1794,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns><c>true</c> if there is a surface associated with the window, or <c>false</c>
     /// otherwise.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowHasSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1752,6 +1816,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the surface associated with the window, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DestroyWindowSurface"/>
     /// <seealso cref="WindowHasSurface"/>
@@ -1777,6 +1842,7 @@ public static partial class SDL
     /// <param name="vsync">the vertical refresh sync interval.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSurfaceVSync"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1793,6 +1859,7 @@ public static partial class SDL
     /// See <see cref="SetWindowSurfaceVSync"/> for the meaning of the value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowSurfaceVSync"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1810,6 +1877,7 @@ public static partial class SDL
     /// <param name="window">the window to update.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="UpdateWindowSurfaceRects"/>
@@ -1835,6 +1903,7 @@ public static partial class SDL
     /// <param name="numrects">the number of rectangles.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
@@ -1850,6 +1919,7 @@ public static partial class SDL
     /// <param name="window">the window to update.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="WindowHasSurface"/>
@@ -1878,6 +1948,7 @@ public static partial class SDL
     /// <param name="grabbed">this is <c>true</c> to grab keyboard, and <c>false</c> to release.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowKeyboardGrab(nint)"/>
     /// <seealso cref="SetWindowMouseGrab"/>
@@ -1895,6 +1966,7 @@ public static partial class SDL
     /// <param name="grabbed">this is <c>true</c> to grab mouse, and <c>false</c> to release.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
@@ -1911,6 +1983,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="window">the window to query.</param>
     /// <returns><c>true</c> if keyboard is grabbed, and <c>false</c> otherwise.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowKeyboardGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1924,6 +1997,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="window">the window to query.</param>
     /// <returns><c>true</c> if mouse is grabbed, and <c>false</c> otherwise.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
@@ -1939,6 +2013,7 @@ public static partial class SDL
     /// Get the window that currently has an input grab enabled.
     /// </summary>
     /// <returns>the window if input is grabbed or <c>null</c> otherwise.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
@@ -1957,6 +2032,7 @@ public static partial class SDL
     /// barrier for the specified window will be destroyed.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="GetWindowMouseGrab"/>
@@ -1977,13 +2053,14 @@ public static partial class SDL
     /// barrier for the specified window will be destroyed.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="GetWindowMouseGrab"/>
     /// <seealso cref="SetWindowMouseGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetWindowMouseRect(IntPtr window, Rect rect);
+    public static partial bool SetWindowMouseRect(IntPtr window, in Rect rect);
 
     
     /// <code>extern SDL_DECLSPEC const SDL_Rect * SDLCALL SDL_GetWindowMouseRect(SDL_Window *window);</code>
@@ -1993,6 +2070,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>a pointer to the mouse confinement rectangle of a window, or <c>null</c>
     /// if there isn't one.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
     /// <seealso cref="GetWindowMouseGrab"/>
@@ -2012,6 +2090,7 @@ public static partial class SDL
     /// <param name="opacity">the opacity value (0.0f - transparent, 1.0f - opaque).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowOpacity"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2028,6 +2107,7 @@ public static partial class SDL
     /// <param name="window">the window to get the current opacity value from.</param>
     /// <returns>the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowOpacity"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2055,6 +2135,7 @@ public static partial class SDL
     /// <param name="parent">the new parent window for the child window.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowModal"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2072,6 +2153,7 @@ public static partial class SDL
     /// <param name="modal"><c>true</c> to toggle modal status on, <c>false</c> to toggle it off.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowParent"/>
     /// <seealso cref="WindowFlags.Modal"/>
@@ -2088,6 +2170,7 @@ public static partial class SDL
     /// <param name="focusable"><c>true</c> to allow input focus, <c>false</c> to not allow input focus.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFocusable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2111,6 +2194,7 @@ public static partial class SDL
     /// the client area.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindowSystemMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2149,6 +2233,7 @@ public static partial class SDL
     /// <param name="callbackData">an app-defined void pointer passed to <c>callback</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for mor
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowHitTest"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2174,6 +2259,7 @@ public static partial class SDL
     /// remove any current shape.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowShape"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2188,6 +2274,7 @@ public static partial class SDL
     /// <param name="operation">the operation to perform.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlashWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2200,6 +2287,7 @@ public static partial class SDL
     /// <para>Any child windows owned by the window will be recursively destroyed as
     /// well.</para>
     /// </summary>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <param name="window">the window to destroy.</param>
     /// <seealso cref="CreatePopupWindow"/>
@@ -2216,6 +2304,7 @@ public static partial class SDL
     /// </summary>
     /// <remarks>The default can also be changed using <see cref="Hints.VideoAllowScreensaver"/></remarks>
     /// <returns><c>true</c> if the screensaver is enabled, <c>false</c> if it is disabled.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DisableScreenSaver"/>
     /// <seealso cref="EnableScreenSaver"/>
@@ -2230,6 +2319,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DisableScreenSaver"/>
     /// <seealso cref="ScreenSaverEnabled"/>
@@ -2248,6 +2338,7 @@ public static partial class SDL
     /// <see cref="Hints.VideoAllowScreensaver"/>.</remarks>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="EnableScreenSaver"/>
     /// <seealso cref="ScreenSaverEnabled"/>
@@ -2269,6 +2360,7 @@ public static partial class SDL
     /// default OpenGL library.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLGetProcAddress"/>
     /// <seealso cref="GLUnloadLibrary"/>
@@ -2318,6 +2410,7 @@ public static partial class SDL
     /// <param name="proc">the name of an OpenGL function.</param>
     /// <returns>a pointer to the named OpenGL function. The returned pointer
     /// should be cast to the appropriate function signature.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <see cref="GLExtensionSupported"/>
     /// <see cref="GLLoadLibrary"/>
@@ -2336,6 +2429,7 @@ public static partial class SDL
     /// <param name="proc">the name of an EGL function.</param>
     /// <returns>a pointer to the named EGL function. The returned pointer should
     /// be cast to the appropriate function signature.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="EGLGetCurrentDisplay"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2346,6 +2440,7 @@ public static partial class SDL
     /// <summary>
     /// Unload the OpenGL library previously loaded by <see cref="GLLoadLibrary"/>.
     /// </summary>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLLoadLibrary"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2366,6 +2461,7 @@ public static partial class SDL
     /// every time you need to know.</para>
     /// </summary>
     /// <param name="extension">the name of the extension to check.</param>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <returns>true if the extension is supported, false otherwise.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_ExtensionSupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2377,6 +2473,7 @@ public static partial class SDL
     /// <summary>
     /// Reset all previously set OpenGL context attributes to their default values.
     /// </summary>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLGetAttribute"/>
     /// <seealso cref="GLSetAttribute"/>
@@ -2397,6 +2494,7 @@ public static partial class SDL
     /// <param name="value">the desired value for the attribute.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLGetAttribute"/>
     /// <seealso cref="GLResetAttributes"/>
@@ -2414,6 +2512,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the current value of <c>attr</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLResetAttributes"/>
     /// <seealso cref="GLSetAttribute"/>
@@ -2435,6 +2534,7 @@ public static partial class SDL
     /// <param name="window">the window to associate with the context.</param>
     /// <returns>the OpenGL context associated with <c>window</c> or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLDestroyContext"/>
     /// <seealso cref="GLMakeCurrent"/>
@@ -2451,6 +2551,7 @@ public static partial class SDL
     /// <param name="context">the OpenGL context to associate with the window.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLCreateContext"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_MakeCurrent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2464,6 +2565,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the currently active OpenGL window on success or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GLGetCurrentWindow();
@@ -2475,6 +2577,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the currently active OpenGL context or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLMakeCurrent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2487,6 +2590,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the currently active EGL display or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetCurrentDisplay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr EGLGetCurrentDisplay();
@@ -2498,6 +2602,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the currently active EGL config or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetCurrentConfig"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr EGLGetCurrentConfig();
@@ -2510,6 +2615,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns>the EGLSurface pointer associated with the window, or <c>null</c> on
     /// failure.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr EGLGetWindowSurface(IntPtr window);
@@ -2531,6 +2637,7 @@ public static partial class SDL
     /// <param name="contextAttribCallback">callback for attributes to pass to
     /// eglCreateContext. May be NULL.</param>
     /// <param name="userdata">a pointer that is passed to the callbacks.</param>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_SetAttributeCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void EGLSetAttributeCallbacks(EGLAttribArrayCallback? platformAttribCallback,
@@ -2557,6 +2664,7 @@ public static partial class SDL
     /// the vertical retrace, -1 for adaptive vsync.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLGetSwapInterval"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SetSwapInterval"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2576,6 +2684,7 @@ public static partial class SDL
     /// immediately instead of waiting for the next retrace.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLSetSwapInterval"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetSwapInterval"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2595,6 +2704,7 @@ public static partial class SDL
     /// <param name="window">the window to change.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SwapWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2608,6 +2718,7 @@ public static partial class SDL
     /// <param name="window">the OpenGL context to be deleted.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GLCreateContext"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_DestroyContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

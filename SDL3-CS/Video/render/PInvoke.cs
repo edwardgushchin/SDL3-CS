@@ -80,7 +80,7 @@ public static partial class SDL
     /// <param name="renderer">a pointer filled with the renderer, or <c>null</c> on error.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateRenderer"/>
     /// <seealso cref="CreateWindow"/>
@@ -107,7 +107,7 @@ public static partial class SDL
     /// SDL choose one.</param>
     /// <returns>a valid rendering context or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateRendererWithProperties"/>
     /// <seealso cref="CreateSoftwareRenderer"/>
@@ -160,7 +160,7 @@ public static partial class SDL
     /// <param name="props">the properties to use.</param>
     /// <returns>a valid rendering context or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateProperties"/>
     /// <seealso cref="CreateRenderer"/>
@@ -183,7 +183,7 @@ public static partial class SDL
     /// rendering is done.</param>
     /// <returns>a valid rendering context or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="DestroyRenderer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSoftwareRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -324,7 +324,7 @@ public static partial class SDL
     /// <param name="h">a pointer filled in with the height in pixels.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetCurrentRenderOutputSize"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderOutputSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -345,7 +345,7 @@ public static partial class SDL
     /// <param name="h">a pointer filled in with the current height.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderOutputSize"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentRenderOutputSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -366,7 +366,7 @@ public static partial class SDL
     /// <returns>a pointer to the created texture or <c>null</c> if no rendering context
     /// was active, the format was unsupported, or the width or height
     /// were out of range; call <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateTextureFromSurface"/>
     /// <seealso cref="CreateTextureWithProperties"/>
@@ -392,7 +392,7 @@ public static partial class SDL
     /// the texture.</param>
     /// <returns>the created texture or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateTexture"/>
     /// <seealso cref="CreateTextureWithProperties"/>
@@ -501,7 +501,7 @@ public static partial class SDL
     /// <returns>a pointer to the created texture or <c>null</c> if no rendering context
     /// was active, the format was unsupported, or the width or heigh
     /// were out of range; call <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateProperties"/>
     /// <seealso cref="CreateTexture"/>
@@ -628,7 +628,7 @@ public static partial class SDL
     /// argument can be <c>null</c> if you don't need this information.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     public static bool GetTextureSize(IntPtr texture, out float? w, out float? h)
     {
@@ -663,7 +663,7 @@ public static partial class SDL
     /// <param name="b">the blue color value multiplied into copy operations.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureColorMod"/>
     /// <seealso cref="SetTextureAlphaMod"/>
@@ -689,7 +689,7 @@ public static partial class SDL
     /// <param name="b">the blue color value multiplied into copy operations.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureColorModFloat"/>
     /// <seealso cref="SetTextureAlphaModFloat"/>
@@ -709,7 +709,7 @@ public static partial class SDL
     /// <param name="b">a pointer filled in with the current blue color value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureAlphaMod"/>
     /// <seealso cref="GetTextureColorModFloat"/>
@@ -729,7 +729,7 @@ public static partial class SDL
     /// <param name="b">a pointer filled in with the current blue color value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety></threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureAlphaModFloat"/>
     /// <seealso cref="GetTextureColorMod"/>
@@ -752,7 +752,7 @@ public static partial class SDL
     /// <param name="alpha">the source alpha value multiplied into copy operations.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureAlphaMod"/>
     /// <seealso cref="SetTextureAlphaModFloat"/>
@@ -775,7 +775,7 @@ public static partial class SDL
     /// <param name="alpha">the source alpha value multiplied into copy operations.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureAlphaModFloat"/>
     /// <seealso cref="SetTextureAlphaMod"/>
@@ -793,7 +793,7 @@ public static partial class SDL
     /// <param name="alpha">a pointer filled in with the current alpha value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureAlphaModFloat"/>
     /// <seealso cref="GetTextureColorMod"/>
@@ -811,7 +811,7 @@ public static partial class SDL
     /// <param name="alpha">a pointer filled in with the current alpha value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureAlphaMod"/>
     /// <seealso cref="GetTextureColorModFloat"/>
@@ -831,7 +831,7 @@ public static partial class SDL
     /// <param name="blendMode">the <see cref="BlendMode"/> to use for texture blending.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -847,7 +847,7 @@ public static partial class SDL
     /// <param name="blendMode">a pointer filled in with the current <see cref="BlendMode"/>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetTextureBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -865,7 +865,7 @@ public static partial class SDL
     /// <param name="scaleMode">the <seealso cref="ScaleMode"/> to use for texture scaling.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTextureScaleMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -881,7 +881,7 @@ public static partial class SDL
     /// <param name="scaleMode">a pointer filled in with the current scale mode.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetTextureScaleMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -909,7 +909,7 @@ public static partial class SDL
     /// between lines.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
     /// <seealso cref="UnlockTexture"/>
@@ -940,7 +940,7 @@ public static partial class SDL
     /// between lines.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
     /// <seealso cref="UnlockTexture"/>
@@ -973,7 +973,7 @@ public static partial class SDL
     /// plane.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
@@ -1004,7 +1004,7 @@ public static partial class SDL
     /// plane.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
@@ -1031,7 +1031,7 @@ public static partial class SDL
     /// plane.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
@@ -1058,7 +1058,7 @@ public static partial class SDL
     /// plane.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
@@ -1088,7 +1088,7 @@ public static partial class SDL
     /// <returns>true on success or false if the texture is not valid or was not
     /// created with <see cref="TextureAccess.Streaming"/>; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
     /// <seealso cref="UnlockTexture"/>
@@ -1118,7 +1118,7 @@ public static partial class SDL
     /// <returns>true on success or false if the texture is not valid or was not
     /// created with <see cref="TextureAccess.Streaming"/>; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
     /// <seealso cref="UnlockTexture"/>
@@ -1150,7 +1150,7 @@ public static partial class SDL
     /// locked area.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
     /// <seealso cref="UnlockTexture"/>
@@ -1182,7 +1182,7 @@ public static partial class SDL
     /// locked area.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
     /// <seealso cref="UnlockTexture"/>
@@ -1202,7 +1202,7 @@ public static partial class SDL
     /// corrupted textures, depending on the renderer in use.</para>
     /// </summary>
     /// <param name="texture">a texture locked by <see cref="LockTexture(nint, nint, out nint, out int)"/>.</param>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1222,7 +1222,7 @@ public static partial class SDL
     /// window instead of a texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderTarget"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderTarget"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1238,7 +1238,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <returns>the current render target or <c>null</c> for the default render target.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderTarget"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTarget"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1271,7 +1271,7 @@ public static partial class SDL
     /// <param name="mode">the presentation mode used.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ConvertEventToRenderCoordinates"/>
     /// <seealso cref="GetRenderLogicalPresentation"/>
@@ -1293,7 +1293,7 @@ public static partial class SDL
     /// <param name="mode">the presentation mode used.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1317,7 +1317,7 @@ public static partial class SDL
     /// be <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
     public static bool GetRenderLogicalPresentationRect(IntPtr renderer, out FRect? rect)
@@ -1348,7 +1348,7 @@ public static partial class SDL
     /// <param name="y">a pointer filled with the y coordinate in render coordinates.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
     /// <seealso cref="SetRenderScale"/>
@@ -1377,7 +1377,7 @@ public static partial class SDL
     /// coordinates.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
     /// <seealso cref="SetRenderScale"/>
@@ -1405,7 +1405,7 @@ public static partial class SDL
     /// <param name="event">the event to modify.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderCoordinatesFromWindow"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertEventToRenderCoordinates"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1426,7 +1426,7 @@ public static partial class SDL
     /// to set the viewport to the entire target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="RenderViewportSet"/>
@@ -1448,7 +1448,7 @@ public static partial class SDL
     /// to set the viewport to the entire target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="RenderViewportSet"/>
@@ -1465,7 +1465,7 @@ public static partial class SDL
     /// <param name="rect">an <see cref="Rect"/> structure filled in with the current drawing area.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderViewportSet"/>
     /// <seealso cref="SetRenderViewport(nint, nint)"/>
@@ -1484,7 +1484,7 @@ public static partial class SDL
     /// <param name="renderer">the rendering context.</param>
     /// <returns>true if the viewport was set to a specific rectangle, or false if
     /// it was set to <c>null</c> (the entire target).</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="SetRenderViewport(nint, nint)"/>
@@ -1508,7 +1508,7 @@ public static partial class SDL
     /// content.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderSafeArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1524,7 +1524,7 @@ public static partial class SDL
     /// the viewport, or <c>null</c> to disable clipping.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderClipRect"/>
     /// <seealso cref="RenderClipEnabled"/>
@@ -1542,7 +1542,7 @@ public static partial class SDL
     /// the viewport, or <c>null</c> to disable clipping.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderClipRect"/>
     /// <seealso cref="RenderClipEnabled"/>
@@ -1560,7 +1560,7 @@ public static partial class SDL
     /// or an empty rectangle if clipping is disabled.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderClipEnabled"/>
     /// <seealso cref="SetRenderClipRect(nint, nint)"/>
@@ -1576,7 +1576,7 @@ public static partial class SDL
     /// <param name="renderer">the rendering context.</param>
     /// <returns><c>true</c> if clipping is enabled or <c>false</c> if not; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderClipRect"/>
     /// <seealso cref="SetRenderClipRect(nint, nint)"/>
@@ -1600,7 +1600,7 @@ public static partial class SDL
     /// <param name="scaley">the vertical scaling factor.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderScale"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1617,7 +1617,7 @@ public static partial class SDL
     /// <param name="scaley">a pointer filled in with the vertical scaling factor.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderScale"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1640,7 +1640,7 @@ public static partial class SDL
     /// specify how the alpha channel is used.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderDrawColor"/>
     /// <seealso cref="SetRenderDrawColorFloat"/>
@@ -1664,7 +1664,7 @@ public static partial class SDL
     /// used.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderDrawColorFloat"/>
     /// <seealso cref="SetRenderDrawColor"/>
@@ -1688,7 +1688,7 @@ public static partial class SDL
     /// rendering target; usually <see cref="AlphaOpaque"/> (255).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderDrawColorFloat"/>
     /// <seealso cref="SetRenderDrawColor"/>
@@ -1712,7 +1712,7 @@ public static partial class SDL
     /// rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call SDL_GetError() for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderDrawColorFloat"/>
     /// <seealso cref="GetRenderDrawColor"/>
@@ -1735,7 +1735,7 @@ public static partial class SDL
     /// <param name="scale">the color scale value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderColorScale"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderColorScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1751,7 +1751,7 @@ public static partial class SDL
     /// <param name="scale">a pointer filled in with the current color scale value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderColorScale"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderColorScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1768,7 +1768,7 @@ public static partial class SDL
     /// <param name="blendMode">the <see cref="BlendMode"/> to use for blending.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderDrawBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1784,7 +1784,7 @@ public static partial class SDL
     /// <param name="blendMode">a pointer filled in with the current <see cref="BlendMode"/>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderDrawBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1803,7 +1803,7 @@ public static partial class SDL
     /// <param name="renderer">the rendering context.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderDrawColor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1820,7 +1820,7 @@ public static partial class SDL
     /// <param name="y">the y coordinate of the point.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderPoints"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1837,7 +1837,7 @@ public static partial class SDL
     /// <param name="count">the number of points to draw.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderPoint"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1856,7 +1856,7 @@ public static partial class SDL
     /// <param name="y2">the y coordinate of the end point.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderLines"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1874,7 +1874,7 @@ public static partial class SDL
     /// <param name="count">the number of points, drawing count-1 lines.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderLine"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLines"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1891,7 +1891,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1908,7 +1908,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1926,7 +1926,7 @@ public static partial class SDL
     /// <param name="count">the number of rectangles.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <see cref="RenderRect(nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1944,7 +1944,7 @@ public static partial class SDL
     /// rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderFillRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1962,7 +1962,7 @@ public static partial class SDL
     /// rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderFillRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1980,7 +1980,7 @@ public static partial class SDL
     /// <param name="count">the number of rectangles.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderFillRect(nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2002,7 +2002,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
@@ -2024,7 +2024,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
@@ -2046,7 +2046,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
@@ -2068,7 +2068,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
@@ -2099,7 +2099,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2127,7 +2127,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2155,7 +2155,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2183,7 +2183,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2211,7 +2211,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2239,7 +2239,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2267,7 +2267,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2295,7 +2295,7 @@ public static partial class SDL
     /// performed on the texture.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2323,7 +2323,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2349,7 +2349,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2375,7 +2375,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2401,7 +2401,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2436,7 +2436,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2469,7 +2469,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2502,7 +2502,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2535,7 +2535,7 @@ public static partial class SDL
     /// entire rendering target.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2560,7 +2560,7 @@ public static partial class SDL
     /// <param name="numIndices">number of indices.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2584,7 +2584,7 @@ public static partial class SDL
     /// <param name="numIndices">number of indices.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2613,7 +2613,7 @@ public static partial class SDL
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2642,7 +2642,7 @@ public static partial class SDL
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2665,7 +2665,7 @@ public static partial class SDL
     /// to the to current viewport, or <c>null</c> for the entire viewport.</param>
     /// <returns>a new <see cref="Surface"/> on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     public static IntPtr RenderReadPixels(IntPtr renderer, Rect? rect)
     {
@@ -2711,7 +2711,7 @@ public static partial class SDL
     /// <param name="renderer">the rendering context.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateRenderer"/>
     /// <seealso cref="RenderClear"/>
@@ -2737,7 +2737,7 @@ public static partial class SDL
     /// to "Invalid texture".</para>
     /// </summary>
     /// <param name="texture">the texture to destroy.</param>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateTexture"/>
     /// <seealso cref="CreateTextureFromSurface"/>
@@ -2752,7 +2752,7 @@ public static partial class SDL
     /// </summary>
     /// <para>This should be called before destroying the associated window.</para>
     /// <param name="renderer">the rendering context.</param>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateRenderer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2781,7 +2781,7 @@ public static partial class SDL
     /// <param name="renderer">the rendering context.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2797,7 +2797,7 @@ public static partial class SDL
     /// <param name="renderer">the renderer to query.</param>
     /// <returns>a <c>CAMetalLayer *</c> on success, or <c>null</c> if the renderer isn't a
     /// Metal renderer.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderMetalCommandEncoder"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderMetalLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2817,7 +2817,7 @@ public static partial class SDL
     /// <param name="renderer">the renderer to query.</param>
     /// <returns>an <c>id&lt;MTLRenderCommandEncoder&gt;</c> on success, or <c>null</c> if the
     /// renderer isn't a Metal renderer or there was an error.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderMetalLayer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderMetalCommandEncoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2868,7 +2868,7 @@ public static partial class SDL
     /// <param name="vsync">the vertical refresh sync interval.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRenderVSync"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2885,7 +2885,7 @@ public static partial class SDL
     /// See <see cref="SetRenderVSync"/> for the meaning of the value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderVSync"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2921,7 +2921,7 @@ public static partial class SDL
     /// <param name="str">the string to render.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="DebugTextFontCharacterSize"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

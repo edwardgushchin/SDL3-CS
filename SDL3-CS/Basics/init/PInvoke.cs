@@ -46,7 +46,7 @@ public static partial class SDL
     /// <item><see cref="InitFlags.Audio"/>: audio subsystem; automatically initializes the events
     /// subsystem</item>
     /// <item><see cref="InitFlags.Video"/>: video subsystem; automatically initializes the events
-    /// subsystem</item>
+    /// subsystem, should be initialized on the main thread.</item>
     /// <item><see cref="InitFlags.Joystick"/>: joystick subsystem; automatically initializes the
     /// events subsystem</item>
     /// <item><see cref="InitFlags.Haptic"/>: haptic (force feedback) subsystem</item>

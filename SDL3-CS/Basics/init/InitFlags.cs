@@ -45,7 +45,7 @@ public static partial class SDL
         Audio =     0x00000010u,
         
         /// <summary>
-        /// <see cref="Video"/> implies <see cref="Events"/>
+        /// <see cref="Video"/> implies <see cref="Events"/>, should be initialized on the main thread
         /// </summary>
         Video =     0x00000020u,
         

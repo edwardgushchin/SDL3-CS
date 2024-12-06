@@ -35,7 +35,7 @@ public static partial class SDL
     /// <param name="text">the text to store in the clipboard.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="HasClipboardText"/>
@@ -53,7 +53,7 @@ public static partial class SDL
     /// <returns>the clipboard text on success or an empty string on failure; call
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
@@ -67,7 +67,7 @@ public static partial class SDL
     /// Query whether the clipboard exists and contains a non-empty text string.
     /// </summary>
     /// <returns><c>true</c> if the clipboard has text, or <c>false</c> if it does not.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
@@ -83,7 +83,7 @@ public static partial class SDL
     /// <param name="text">the text to store in the primary selection.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="HasPrimarySelectionText"/>
@@ -101,7 +101,7 @@ public static partial class SDL
     /// <returns>the primary selection text on success or an empty string on
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
@@ -116,7 +116,7 @@ public static partial class SDL
     /// string.
     /// </summary>
     /// <returns><c>true</c> if the primary selection has text, or <c>false</c> if it does not.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
@@ -145,7 +145,7 @@ public static partial class SDL
     /// <param name="numMimeTypes">the number of mime-types in the mime_types list.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ClearClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
@@ -162,7 +162,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -181,7 +181,7 @@ public static partial class SDL
     /// <returns>the retrieved data buffer or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information. This should be freed with <see cref="Free"/> when it
     /// is no longer needed.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasClipboardData"/>
     /// <seealso cref="SetClipboardData"/>
@@ -196,7 +196,7 @@ public static partial class SDL
     /// <param name="mimeType">the mime type to check for data for.</param>
     /// <returns><c>true</c> if there exists data in clipboard for the provided mime type,
     /// <c>false</c> if it does not.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
@@ -216,7 +216,7 @@ public static partial class SDL
     /// <returns>a null terminated array of strings with mime types, or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
     public static string[]? GetClipboardMimeTypes(out uint? numMimeTypes)

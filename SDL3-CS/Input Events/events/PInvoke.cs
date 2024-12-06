@@ -40,9 +40,7 @@ public static partial class SDL
     /// polling or waiting for events (e.g. you are filtering them), then you must
     /// call <see cref="PumpEvents"/> to force an event queue update.</para>
     /// </summary>
-    /// <threadsafety>This should only be run in the thread that initialized the
-    /// video subsystem, and for extra safety, you should consider
-    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="WaitEvent"/>
@@ -243,9 +241,7 @@ public static partial class SDL
     /// <param name="event">the <see cref="Event"/> structure to be filled with the next event from
     /// the queue, or <c>null</c>.</param>
     /// <returns><c>true</c> if this got an event or <c>false</c> if there are none available.</returns>
-    /// <threadsafety>This should only be run in the thread that initialized the
-    /// video subsystem, and for extra safety, you should consider
-    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
@@ -267,9 +263,7 @@ public static partial class SDL
     /// from the queue, or <c>null</c>.</param>
     /// <returns>true on success or false if there was an error while waiting for
     /// events; call <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>This should only be run in the thread that initialized the
-    /// video subsystem, and for extra safety, you should consider
-    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
@@ -296,9 +290,7 @@ public static partial class SDL
     /// available event.</param>
     /// <returns><c>true</c> if this got an event or <c>false</c> if the timeout elapsed without
     /// any events available.</returns>
-    /// <threadsafety>This should only be run in the thread that initialized the
-    /// video subsystem, and for extra safety, you should consider
-    /// only doing those things on the main thread in any case.</threadsafety>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
