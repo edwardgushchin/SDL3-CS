@@ -2304,6 +2304,454 @@ public static partial class SDL
     #endregion
     
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, in FRect down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, IntPtr down);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down);
+    
+    
     #region RenderTextureTiled
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
