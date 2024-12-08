@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// The structure that describes a virtual joystick touchpad.
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="VirtualJoystickDesc"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct VirtualJoystickTouchpadDesc

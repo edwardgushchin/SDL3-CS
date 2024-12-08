@@ -764,7 +764,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad object that you want to get a joystick from.</param>
     /// <returns>an <see cref="Joystick"/> object; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
-    public static Joystick GetGamepadJoystick(Gamepad gamepad) => new(SDL_GetGamepadJoystick(gamepad.Handle));
+    //public static Joystick GetGamepadJoystick(Gamepad gamepad) => new(SDL_GetGamepadJoystick(gamepad.Handle));
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

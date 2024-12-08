@@ -29,34 +29,40 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>The structure that describes a virtual joystick.</para>
-    /// <para>All elements of this structure are optional and can be left 0.</para>
+    /// <para>This structure should be initialized using SDL_INIT_INTERFACE(). All
+    /// elements of this structure are optional.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="AttachVirtualJoystick"/>
     /// <seealso cref="VirtualJoystickSensorDesc"/>
     /// <seealso cref="VirtualJoystickTouchpadDesc"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct VirtualJoystickDesc
     {
+        /// <summary>
+        /// the version of this interface
+        /// </summary>
+        public UInt32 Version;
+
         /// <summary>
         /// <see cref="JoystickType"/>
         /// </summary>
         public JoystickType Type;
-        
+
         /// <summary>
         /// unused
         /// </summary>
-        private UInt16 padding;
-        
+        private UInt16 _padding;
+
         /// <summary>
         /// the USB vendor ID of this joystick
         /// </summary>
-        public UInt16 VendorId;
+        public UInt16 VendorID;
         
         /// <summary>
         /// the USB product ID of this joystick
         /// </summary>
-        public UInt16 ProductId;
+        public UInt16 ProductID;
         
         /// <summary>
         /// the number of axes on this joystick
@@ -79,19 +85,19 @@ public static partial class SDL
         public UInt16 NHats;
         
         /// <summary>
-        /// the number of touchpads on this joystick, requires `touchpads` to point at valid descriptions
+        /// the number of touchpads on this joystick, requires <c>touchpads</c> to point at valid descriptions
         /// </summary>
         public UInt16 NTouchpads;
         
         /// <summary>
-        /// the number of sensors on this joystick, requires `sensors` to point at valid descriptions
+        /// the number of sensors on this joystick, requires <c>sensors</c> to point at valid descriptions
         /// </summary>
         public UInt16 NSensors;
-        
+
         /// <summary>
         /// unused
         /// </summary>
-        private unsafe fixed UInt16 padding2[2];
+        private unsafe fixed UInt16 _padding2[2];
         
         /// <summary>
         /// A mask of which buttons are valid for this controller
@@ -104,60 +110,65 @@ public static partial class SDL
         /// e.g. (1 &lt;&lt; <see cref="GamepadAxis.LeftX"/>)
         /// </summary>
         public UInt32 AxisMask;
-        
+
         /// <summary>
         /// the name of the joystick
         /// </summary>
-        public string? Name;
-        
+        public IntPtr Name;
+
         /// <summary>
-        /// A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0
+        /// A pointer to an array of touchpad descriptions, required if <see cref="NTouchpads"/> is > 0
         /// </summary>
-        public VirtualJoystickTouchpadDesc[]? Touchpads;
-        
+        public IntPtr TouchPads;
+
         /// <summary>
-        /// A pointer to an array of sensor descriptions, required if `nsensors` is > 0
+        /// A pointer to an array of sensor descriptions, required if <see cref="NSensors"/> is > 0
         /// </summary>
-        public VirtualJoystickSensorDesc[]? Sensors;
-        
+        public IntPtr Sensors;
+
         /// <summary>
         /// User data pointer passed to callbacks
         /// </summary>
-        public IntPtr UserData;
-        
+        public IntPtr Userdata;
+
         /// <summary>
         /// Called when the joystick state should be updated
         /// </summary>
         public VirtualJoystickUpdateCallback Update;
-        
+
         /// <summary>
         /// Called when the player index is set
         /// </summary>
-        public VirtualJoysticSetPlayerIndexCallback? SetPlayerIndex;
-        
+        public VirtualJoystickSetPlayerIndexCallback SetPlayerIndex;
+
         /// <summary>
         /// Implements <see cref="RumbleJoystick"/>
         /// </summary>
-        public VirtualJoysticRumbleCallback? Rumble;
-        
+        public VirtualJoystickRumbleCallback Ramble;
+
         /// <summary>
         /// Implements <see cref="RumbleJoystickTriggers"/>
         /// </summary>
-        public VirtualJoysticRumbleTriggersCallback? RumbleTriggers;
-        
+        public VirtualJoystickRumbleTriggersCallback RumbleTriggers;
+
         /// <summary>
         /// Implements <see cref="SetJoystickLED"/>
         /// </summary>
-        public VirtualJoysticSetLEDCallback? SetLED;
-        
+        public VirtualJoystickSetLEDCallback SetLED;
+
         /// <summary>
         /// Implements <see cref="SendJoystickEffect"/>
         /// </summary>
-        public VirtualJoysticSendEffectCallback? SendEffect;
-        
+        public VirtualJoystickSendEffectCallback SendEffect;
+
         /// <summary>
         /// Implements <see cref="SetGamepadSensorEnabled"/>
         /// </summary>
-        public VirtualJoysticSetSensorsEnabledCallback? SetSensorsEnabled;
+        public VirtualJoystickSetSensorsEnabledCallback SetSensorsEnabled;
+
+        /// <summary>
+        ///  Cleans up the userdata when the joystick is detached
+        /// </summary>
+        public VirtualJoystickCleanupCallback Cleanup;
     }
 }

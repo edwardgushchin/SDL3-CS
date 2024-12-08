@@ -120,21 +120,10 @@ public static partial class SDL
 
         try
         {
-            if (typeof(T).IsPrimitive)
+            for (var i = 0; i < array.Length; i++)
             {
-                for (var i = 0; i < array.Length; i++)
-                {
-                    var elementPtr = IntPtr.Add(pointer, i * structSize);
-                    Marshal.StructureToPtr(array[i], elementPtr, false);
-                }
-            }
-            else
-            {
-                for (var i = 0; i < array.Length; i++)
-                {
-                    var elementPtr = Marshal.ReadIntPtr(pointer, i * IntPtr.Size);
-                    Marshal.StructureToPtr(array[i], elementPtr, false);
-                }
+                var elementPtr = IntPtr.Add(pointer, i * structSize);
+                Marshal.StructureToPtr(array[i], elementPtr, false);
             }
         }
         catch

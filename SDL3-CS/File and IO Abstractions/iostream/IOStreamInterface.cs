@@ -37,6 +37,8 @@ public static partial class SDL
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct IOStreamInterface
     {
+        public UInt32 Version;
+        
         /// <summary>
         /// Return the number of bytes in this <see cref="IOStream"/>
         /// </summary>

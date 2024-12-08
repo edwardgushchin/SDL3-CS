@@ -36,6 +36,7 @@ public static partial class SDL
     /// <since>This struct is available since SDL 3.0.0.</since>
     public struct StorageInterface
     {
+        public UInt32 Version;
         public CloseDelegate Close;
         public ReadyDelegate Ready;
         public EnumerateDelegate Enumerate;
