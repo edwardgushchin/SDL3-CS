@@ -29,9 +29,9 @@ public static partial class SDL
     /// <para>A constant to represent standard gravity for accelerometer sensors.</para>
     /// <para>The accelerometer returns the current acceleration in SI meters per second
     /// squared. This measurement includes the force of gravity, so a device at
-    /// rest will have an value of <see cref="StandardGravity"/> away from the center of the
+    /// rest will have an value of SDL_STANDARD_GRAVITY away from the center of the
     /// earth, which is a positive Y value.</para>
     /// </summary>
-    /// <since>This macro is available since SDL 3.0.0.</since>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const float StandardGravity = 9.80665f;
 }

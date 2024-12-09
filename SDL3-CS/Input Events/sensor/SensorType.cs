@@ -29,15 +29,11 @@ public static partial class SDL
     /// <para>The different sensors defined by SDL.</para>
     /// <para>Additional sensors may be available, using platform dependent semantics.</para>
     /// <para>Here are the additional Android sensors:</para>
-    /// <para>
-    /// <a href="https://developer.android.com/reference/android/hardware/SensorEvent.html#values">
-    /// https://developer.android.com/reference/android/hardware/SensorEvent.html#values
-    /// </a>
-    /// </para>
+    /// <para>https://developer.android.com/reference/android/hardware/SensorEvent.html#values</para>
     /// <para>Accelerometer sensor notes:</para>
     /// <para>The accelerometer returns the current acceleration in SI meters per second
     /// squared. This measurement includes the force of gravity, so a device at
-    /// rest will have an value of <see cref="StandardGravity"/> away from the center of the
+    /// rest will have an value of <see cref="SDL.StandardGravity"/> away from the center of the
     /// earth, which is a positive Y value.</para>
     /// <list type="bullet">
     /// <item><c>values[0]</c>: Acceleration on the x axis</item>
@@ -72,7 +68,7 @@ public static partial class SDL
     /// </list>
     /// <para>The gyroscope axis data is not changed when the device is rotated.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     /// <seealso cref="GetCurrentDisplayOrientation"/>
     public enum SensorType
     {

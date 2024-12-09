@@ -158,7 +158,7 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [Gamepad Support](SDL3-CS/Input%20Events/gamepad) | [SDL_gamepad.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gamepad.h)   | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Touch Support](SDL3-CS/Input%20Events/touch) | [SDL_touch.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_touch.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Pen Support](SDL3-CS/Input%20Events/pen) | [SDL_pen.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_pen.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Sensors](SDL3-CS/Input%20Events/sensor) | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Sensors](SDL3-CS/Input%20Events/sensor) | [SDL_sensor.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_sensor.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [HIDAPI](SDL3-CS/Input%20Events/hidapi) | [SDL_hidapi.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_hidapi.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
 
