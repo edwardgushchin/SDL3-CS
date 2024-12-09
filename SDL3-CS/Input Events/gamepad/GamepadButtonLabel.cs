@@ -26,15 +26,13 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// The set of gamepad button labels
-    /// </summary>
-    /// <remarks>
+    /// <para>The set of gamepad button labels</para>
     /// <para>This isn't a complete set, just the face buttons to make it easy to show
     /// button prompts.</para>
     /// <para>For a complete set, you should look at the button and gamepad type and have
     /// a set of symbols that work well with your art style.</para>
-    /// </remarks>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
     public enum GamepadButtonLabel
     {
         Unknown,

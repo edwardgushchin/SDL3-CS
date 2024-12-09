@@ -561,5 +561,4 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "ScreenKeyboardShown"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ScreenKeyboardShown(IntPtr window);
-    
 }

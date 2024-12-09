@@ -174,6 +174,27 @@ public static partial class SDL
         return result.Count > 0 ? result.ToArray() : null;
     }
     
+    // IntPtr to string[]?
+    public static string[]? PointerToStringArray(IntPtr pointer, int size)
+    {
+        if (pointer == IntPtr.Zero) return null;
+        
+        if (size == 0) return [];
+        
+        var result = new string[size];
+        
+        var ptrArray = new IntPtr[size];
+        
+        Marshal.Copy(pointer, ptrArray, 0, size);
+            
+        for (var i = 0; i < size; i++)
+        {
+            result[i] = Marshal.PtrToStringUTF8(ptrArray[i])!;
+        }
+
+        return result;
+    }
+    
     
     // IntPtr to struct[]?
     public static unsafe T[]? PointerToStructArray<T>(IntPtr pointer, int count) where T : struct

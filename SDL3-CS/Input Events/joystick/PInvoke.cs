@@ -546,7 +546,7 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.1.3.</since>
 	/// <seealso cref="GetJoystickVendorForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial short GetJoystickVendor(IntPtr joystick);
+	public static partial ushort GetJoystickVendor(IntPtr joystick);
 	
 	
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProduct(SDL_Joystick *joystick);</code>
@@ -559,7 +559,7 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.1.3.</since>
 	/// <seealso cref="GetJoystickProductForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProduct"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial short GetJoystickProduct(IntPtr joystick);
+	public static partial ushort GetJoystickProduct(IntPtr joystick);
 	
 	
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProductVersion(SDL_Joystick *joystick);</code>
@@ -572,7 +572,7 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.1.3.</since>
 	/// <seealso cref="GetJoystickProductVersionForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial short GetJoystickProductVersion(IntPtr joystick);
+	public static partial ushort GetJoystickProductVersion(IntPtr joystick);
 	
 	
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickFirmwareVersion(SDL_Joystick *joystick);</code>
@@ -585,7 +585,7 @@ public static partial class SDL
 	/// unavailable.</returns>
 	/// <since>This function is available since SDL 3.1.3.</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFirmwareVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial short GetJoystickFirmwareVersion(IntPtr joystick);
+	public static partial ushort GetJoystickFirmwareVersion(IntPtr joystick);
 	
 	
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetJoystickSerial(SDL_Joystick *joystick);</code>

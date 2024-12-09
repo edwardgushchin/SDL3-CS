@@ -26,9 +26,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// The list of buttons available on a gamepad
-    /// </summary>
-    /// <remarks>
+    /// <para>The list of buttons available on a gamepad</para>
     /// <para>For controllers that use a diamond pattern for the face buttons, the
     /// south/east/west/north buttons below correspond to the locations in the
     /// diamond pattern. For Xbox controllers, this would be A/B/X/Y, for Nintendo
@@ -43,9 +41,9 @@ public static partial class SDL
     /// should allow remapping actions based on user preferences.</para>
     /// <para>You can query the labels for the face buttons using
     /// <see cref="GetGamepadButtonLabel"/></para>
-    /// </remarks>
-    /// <since>This enum is available since SDL 3.0.0.</since>
-    public enum GamepadButton : sbyte
+    /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
+    public enum GamepadButton
     {
         Invalid = -1,
         
@@ -81,8 +79,7 @@ public static partial class SDL
         DPadRight,
         
         /// <summary>
-        /// Additional button (e.g. Xbox Series X share button, PS5 microphone button,
-        /// Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)
+        /// Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)
         /// </summary>
         Misc1,
         
@@ -135,6 +132,6 @@ public static partial class SDL
         /// Additional button
         /// </summary>
         Misc6,
-        Max
+        Count
     }
 }
