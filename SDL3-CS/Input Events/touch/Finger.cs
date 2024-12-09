@@ -33,14 +33,29 @@ public static partial class SDL
     /// contact with the touch device (so a "touch" can be a "multitouch," in
     /// reality), and this struct reports details of the specific fingers.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     /// <seealso cref="GetTouchFingers"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Finger
     {
-        public UInt64 Id;
+        /// <summary>
+        /// the finger ID
+        /// </summary>
+        public UInt64 ID;
+        
+        /// <summary>
+        /// the x-axis location of the touch event, normalized (0...1)
+        /// </summary>
         public float X;
+        
+        /// <summary>
+        /// the y-axis location of the touch event, normalized (0...1)
+        /// </summary>
         public float Y;
+        
+        /// <summary>
+        /// the quantity of pressure applied, normalized (0...1)
+        /// </summary>
         public float Pressure;
     }
 }

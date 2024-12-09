@@ -199,7 +199,9 @@ public static partial class SDL
     // IntPtr to struct[]?
     public static unsafe T[]? PointerToStructArray<T>(IntPtr pointer, int count) where T : struct
     {
-        if (pointer == IntPtr.Zero || count <= 0) return null;
+        if (pointer == IntPtr.Zero || count < 0) return null;
+
+        if (count == 0) return [];
 
         var array = new T[count];
         

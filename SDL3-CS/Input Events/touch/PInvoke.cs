@@ -30,98 +30,97 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchDevices(out int count);
-    /// <code>extern SDL_DECLSPEC SDL_TouchID *SDLCALL SDL_GetTouchDevices(int *count);</code>
+    /// <code>extern SDL_DECLSPEC SDL_TouchID * SDLCALL SDL_GetTouchDevices(int *count);</code>
     /// <summary>
     /// <para>Get a list of registered touch devices.</para>
     /// <para>On some platforms SDL first sees the touch device if it was actually used.
     /// Therefore the returned list might be empty, although devices are available.
     /// After using all devices at least once the number will be correct.</para>
     /// </summary>
-    /// <param name="count">a pointer filled in with the number of devices returned, can be <c>NULL</c>.</param>
-    /// <returns>a 0 terminated array of touch device IDs which should be freed with <see cref="Free"/>,
-    /// or <c>NULL</c> on error; call <see cref="GetError"/> for more details.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static ulong[]? GetTouchDevices(out int count)
+    /// <param name="count">a pointer filled in with the number of devices returned, may
+    /// be <c>null</c>.</param>
+    /// <returns>a 0 terminated array of touch device IDs or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information. This should be freed with
+    /// <see cref="Free"/> when it is no longer needed.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    public static ulong[]? GetTouchDevices(out int? count)
     {
-        var touchPtr = SDL_GetTouchDevices(out count);
-        if (touchPtr == IntPtr.Zero) return null;
+        var ptr = SDL_GetTouchDevices(out var size);
+
+        if (ptr == IntPtr.Zero)
+        {
+            count = null;
+            return null;
+        }
 
         try
         {
-            var sensorIds = new ulong[count];
-            for (var i = 0; i < count; i++)
-            {
-                sensorIds[i] = (ulong)Marshal.ReadInt64(touchPtr, i * sizeof(uint));
-            }
-
-            return sensorIds;
+            count = size;
+            return PointerToStructArray<ulong>(ptr, size);
         }
         finally
         {
-            Free(touchPtr);
+            if(ptr != IntPtr.Zero) Free(ptr);
         }
     }
 
 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTouchDeviceName(ulong touchID);
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetTouchDeviceName(SDL_TouchID touchID);</code>
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetTouchDeviceName(SDL_TouchID touchID);</code>
     /// <summary>
-    /// <para>Get the touch device name as reported from the driver.</para>
-    /// <para>The returned string follows the
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// Get the touch device name as reported from the driver.
     /// </summary>
     /// <param name="touchID">the touch device instance ID.</param>
-    /// <returns>touch device name, or <c>NULL</c> on error; call <see cref="GetError"/> for more details.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static string? GetTouchDeviceName(ulong touchID) => Marshal.PtrToStringAnsi(SDL_GetTouchDeviceName(touchID));
+    /// <returns>touch device name, or <c>null</c> on failure; call <see cref="GetError"/> for
+    /// more information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string? GetTouchDeviceName(ulong touchID);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial TouchDeviceType SDL_GetTouchDeviceType(ulong touchID);
     /// <code>extern SDL_DECLSPEC SDL_TouchDeviceType SDLCALL SDL_GetTouchDeviceType(SDL_TouchID touchID);</code>
     /// <summary>
-    /// <para>Get the type of the given touch device.</para>
+    /// Get the type of the given touch device.
     /// </summary>
     /// <param name="touchID">the ID of a touch device.</param>
     /// <returns>touch device type.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static TouchDeviceType GetTouchDeviceType(ulong touchID) => SDL_GetTouchDeviceType(touchID);
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial TouchDeviceType GetTouchDeviceType(ulong touchID);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchFingers(ulong touchID, out int count);
-    /// <code>extern SDL_DECLSPEC SDL_Finger **SDLCALL SDL_GetTouchFingers(SDL_TouchID touchID, int *count);</code>
+    /// <code>extern SDL_DECLSPEC SDL_Finger ** SDLCALL SDL_GetTouchFingers(SDL_TouchID touchID, int *count);</code>
     /// <summary>
-    /// <para>Get a list of active fingers for a given touch device.</para>
+    /// Get a list of active fingers for a given touch device.
     /// </summary>
     /// <param name="touchID">the ID of a touch device.</param>
-    /// <param name="count">a pointer filled in with the number of fingers returned, can be <c>NULL</c>.</param>
-    /// <returns>a <c>NULL</c> terminated array of <see cref="Finger"/> pointers which should be freed with
-    /// <see cref="Free"/>, or <c>NULL</c> on error; call <see cref="GetError"/> for more details.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static Finger[]? GetTouchFingers(ulong touchID, out int count)
+    /// <param name="count">a pointer filled in with the number of fingers returned, can
+    /// be <c>null</c>.</param>
+    /// <returns>a <c>null</c> terminated array of <see cref="Finger"/> pointers or <c>null</c> on failure;
+    /// call <see cref="GetError"/> for more information. This is a single
+    /// allocation that should be freed with <see cref="Free"/> when it is no
+    /// longer needed.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    public static Finger[]? GetTouchFingers(ulong touchID, out int? count)
     {
-        var fingersPtr = SDL_GetTouchFingers(touchID, out count);
+        var ptr = SDL_GetTouchFingers(touchID, out var size);
 
-        if (fingersPtr == IntPtr.Zero) return null;
-
-        if (count == 0) return [];
+        if (ptr == IntPtr.Zero)
+        {
+            count = null;
+            return null;
+        }
 
         try
         {
-            var fingers = new Finger[count];
-            for (var i = 0; i < count; i++)
-            {
-                var fingerPtr = Marshal.ReadIntPtr(fingersPtr, i * IntPtr.Size);
-                fingers[i] = Marshal.PtrToStructure<Finger>(fingerPtr);
-            }
-
-            return fingers;
+            count = size;
+            return PointerToStructArray<Finger>(ptr, size);
         }
         finally
         {
-            Free(fingersPtr);
+            Free(ptr);
         }
     }
 }
