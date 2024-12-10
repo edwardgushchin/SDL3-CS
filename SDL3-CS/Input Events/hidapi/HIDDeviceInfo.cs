@@ -30,78 +30,58 @@ public static partial class SDL
     /// <summary>
     /// Information about a connected HID device
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct HIDDeviceInfo
     {
-        private IntPtr path;
-        private ushort vendor_id;
-        private ushort product_id;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        private string serial_number;
-        private ushort release_number;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        private string manufacturer_string;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        private string product_string;
-        private ushort usage_page;
-        private ushort usage;
-        private int interface_number;
-        private int interface_class;
-        private int interface_subclass;
-        private int interface_protocol;
-        private HIDBusType bus_type;
-        private IntPtr next;
-        
-        
         /// <summary>
         /// Platform-specific device path
         /// </summary>
-        public string? Path => Marshal.PtrToStringAnsi(path);
-        
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string Path;
+
         /// <summary>
         /// Device Vendor ID
         /// </summary>
-        public ushort VendorId => vendor_id;
+        public ushort VendorID;
         
         /// <summary>
         /// Device Product ID
         /// </summary>
-        public ushort ProductId => product_id;
-        
+        public ushort ProductID;
+
         /// <summary>
         /// Serial Number
         /// </summary>
-        public string? SerialNumber => serial_number;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string SerialNumber;
         
         /// <summary>
         /// Device Release Number in binary-coded decimal,
         /// also known as Device Version Number
         /// </summary>
-        public ushort ReleaseNumber => release_number;
+        public ushort ReleaseNumber;
         
         /// <summary>
         /// Manufacturer String
         /// </summary>
-        public string? ManufacturerString => manufacturer_string;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string ManufacturerString;
         
         /// <summary>
         /// Product string
         /// </summary>
-        public string? ProductString => product_string;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string ProductString;
         
         /// <summary>
         /// Usage Page for this Device/Interface
         /// (Windows/Mac/hidraw only)
         /// </summary>
-        public ushort UsagePage => usage_page;
+        public ushort UsagePage;
         
         /// <summary>
         /// Usage for this Device/Interface
         /// (Windows/Mac/hidraw only)
         /// </summary>
-        public ushort Usage => usage;
-        
+        public ushort Usage;
+
         /// <summary>
         /// The USB interface which this logical device
         /// represents.
@@ -109,24 +89,26 @@ public static partial class SDL
         /// Valid only if the device is a USB HID device.
         /// Set to -1 in all other cases.
         /// </summary>
-        public int InterfaceNumber => interface_number;
+        public int InterfaceNumber;
         
         /// <summary>
         /// Additional information about the USB interface.
         /// Valid on libusb and Android implementations.
         /// </summary>
-        public int InterfaceClass => interface_class;
-        public int InterfaceSubclass => interface_subclass;
-        public int InterfaceProtocol => interface_protocol;
+        public int InterfaceClass;
         
+        public int InterfaceSubclass;
+        
+        public int InterfaceProtocol;
+
         /// <summary>
         /// Underlying bus type
         /// </summary>
-        public HIDBusType BusType => bus_type;
-        
+        public HIDBusType BusType;
+
         /// <summary>
         /// Pointer to the next device
         /// </summary>
-        public IntPtr Next => next;
+        public IntPtr Next;
     }
 }

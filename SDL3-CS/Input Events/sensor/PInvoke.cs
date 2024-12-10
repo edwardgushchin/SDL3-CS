@@ -57,7 +57,7 @@ public static partial class SDL
         }
         finally
         {
-            if (ptr != IntPtr.Zero) Free(ptr);
+            Free(ptr);
         }
     }
     
