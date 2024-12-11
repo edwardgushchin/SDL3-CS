@@ -184,6 +184,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetPresentationSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool VulkanGetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex);
 }

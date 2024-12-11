@@ -46,7 +46,7 @@ public static partial class SDL
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public delegate bool WindowsMessageHook(IntPtr userdata, IntPtr msg);
     
     
@@ -55,7 +55,7 @@ public static partial class SDL
     /// Platform specific functions for UNIX
     /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public delegate bool X11EventHook(IntPtr userdata, IntPtr xevent);
     
     

@@ -422,7 +422,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetSurfaceRLE"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SurfaceHasRLE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SurfaceHasRLE(IntPtr surface);
 
 
@@ -445,7 +445,7 @@ public static partial class SDL
     /// <seealso cref="SetSurfaceRLE"/>
     /// <seealso cref="SurfaceHasColorKey"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetSurfaceColorKey(IntPtr surface, [MarshalAs(UnmanagedType.I1)] bool enabled, uint key);
     
     
@@ -460,7 +460,7 @@ public static partial class SDL
     /// <seealso cref="SetSurfaceColorKey"/>
     /// <seealso cref="GetSurfaceColorKey"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SurfaceHasColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SurfaceHasColorKey(IntPtr surface);
     
 
@@ -479,7 +479,7 @@ public static partial class SDL
     /// <seealso cref="SetSurfaceColorKey"/>
     /// <seealso cref="SurfaceHasColorKey"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceColorKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetSurfaceColorKey(IntPtr surface, out uint key);
     
 
@@ -501,7 +501,7 @@ public static partial class SDL
     /// <seealso cref="GetSurfaceColorMod"/>
     /// <seealso cref="SetSurfaceAlphaMod"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetSurfaceColorMod(IntPtr surface, byte r, byte g, byte b);
     
     
@@ -519,7 +519,7 @@ public static partial class SDL
     /// <seealso cref="GetSurfaceAlphaMod"/>
     /// <seealso cref="SetSurfaceColorMod"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetSurfaceColorMod(IntPtr surface, out byte r, out byte g, out byte b);
     
 
@@ -538,7 +538,7 @@ public static partial class SDL
     /// <seealso cref="GetSurfaceAlphaMod"/>
     /// <seealso cref="SetSurfaceColorMod"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetSurfaceAlphaMod(IntPtr surface, byte alpha);
     
     
@@ -554,7 +554,7 @@ public static partial class SDL
     /// <seealso cref="GetSurfaceColorMod"/>
     /// <seealso cref="SetSurfaceAlphaMod"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetSurfaceAlphaMod(IntPtr surface, out byte alpha);
     
     
@@ -572,7 +572,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetSurfaceBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetSurfaceBlendMode(IntPtr surface, BlendMode blendMode);
     
     
@@ -587,7 +587,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetSurfaceBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetSurfaceBlendMode(IntPtr surface, out BlendMode blendMode);
 
 
@@ -607,7 +607,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetSurfaceClipRect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetSurfaceClipRect(IntPtr surface, IntPtr rect);
     
     
@@ -627,7 +627,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetSurfaceClipRect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetSurfaceClipRect(IntPtr surface, in Rect rect);
     
 
@@ -646,7 +646,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetSurfaceClipRect(nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetSurfaceClipRect(IntPtr surface, out Rect rect);
 
 
@@ -660,7 +660,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlipSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FlipSurface(IntPtr surface, FlipMode flip);
     
 
@@ -762,7 +762,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ConvertPixelsAndColorspace"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, out IntPtr dst, int dstPitch);
     
 
@@ -792,7 +792,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ConvertPixels"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, out IntPtr dst, int dstPitch);
 
     
@@ -815,7 +815,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SDL_PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
 
     
@@ -831,7 +831,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplySurfaceAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool PremultiplySurfaceAlpha(IntPtr surface, [MarshalAs(UnmanagedType.I1)] bool linear);
     
     
@@ -851,7 +851,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ClearSurface(IntPtr surface, float r, float g, float b, float a);
     
 
@@ -875,7 +875,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="FillSurfaceRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FillSurfaceRect(IntPtr dst, IntPtr rect, uint color);
     
     
@@ -899,7 +899,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="FillSurfaceRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FillSurfaceRect(IntPtr dst, in Rect rect, uint color);
     
 
@@ -923,7 +923,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="FillSurfaceRect(nint, nint, uint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FillSurfaceRects(IntPtr dst, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Rect[] rects, int count, uint color);
     
     
@@ -993,7 +993,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurfaceScaled(nint, nint, nint, nint, ScaleMode)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface(IntPtr src, IntPtr srcrect, IntPtr dst, IntPtr dstrect);
     
     
@@ -1063,7 +1063,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurfaceScaled(nint, nint, nint, nint, ScaleMode)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface(IntPtr src, IntPtr srcrect, IntPtr dst, in Rect dstrect);
     
     
@@ -1133,7 +1133,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurfaceScaled(nint, nint, nint, nint, ScaleMode)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface(IntPtr src, in Rect srcrect, IntPtr dst, IntPtr dstrect);
     
     
@@ -1203,7 +1203,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurfaceScaled(nint, nint, nint, nint, ScaleMode)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect);
     
     
@@ -1227,7 +1227,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceUnchecked"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceUnchecked(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect);
     
     
@@ -1252,7 +1252,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceScaled(IntPtr src, IntPtr srcrect, IntPtr dst, IntPtr dstrect, ScaleMode scaleMode);
     
     
@@ -1277,7 +1277,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceScaled(IntPtr src, in Rect srcrect, IntPtr dst, IntPtr dstrect, ScaleMode scaleMode);
     
     
@@ -1302,7 +1302,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceScaled(IntPtr src, IntPtr srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
     
     
@@ -1327,7 +1327,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceScaled(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
     
     
@@ -1352,7 +1352,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurfaceScaled(nint, nint, nint, nint, ScaleMode)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceUncheckedScaled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceUncheckedScaled(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
 
     
@@ -1377,7 +1377,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiled(IntPtr src, IntPtr srcrect, IntPtr dst, IntPtr dstrect);
     
     
@@ -1402,7 +1402,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiled(IntPtr src, in Rect srcrect, IntPtr dst, IntPtr dstrect);
     
     
@@ -1427,7 +1427,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiled(IntPtr src, IntPtr srcrect, IntPtr dst, in Rect dstrect);
     
     
@@ -1452,7 +1452,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiled(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect);
     
     
@@ -1481,7 +1481,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiledWithScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiledWithScale(IntPtr src, IntPtr srcrect, float scale, ScaleMode scaleMode, IntPtr dst, IntPtr dstrect);
     
     
@@ -1510,7 +1510,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiledWithScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiledWithScale(IntPtr src, in Rect srcrect, float scale, ScaleMode scaleMode, IntPtr dst, IntPtr dstrect);
     
     
@@ -1539,7 +1539,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiledWithScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiledWithScale(IntPtr src, IntPtr srcrect, float scale, ScaleMode scaleMode, IntPtr dst, in Rect dstrect);
     
     
@@ -1568,7 +1568,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurfaceTiledWithScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurfaceTiledWithScale(IntPtr src, in Rect srcrect, float scale, ScaleMode scaleMode, IntPtr dst, in Rect dstrect);
     
     
@@ -1604,7 +1604,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface9Grid(IntPtr src, IntPtr srcrect, int leftWidth, int rightWidth, int topHeight, int bottomHeight, float scale, ScaleMode scaleMode, IntPtr dst, IntPtr dstrect);
     
     
@@ -1640,7 +1640,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface9Grid(IntPtr src, in Rect srcrect, int leftWidth, int rightWidth, int topHeight, int bottomHeight, float scale, ScaleMode scaleMode, IntPtr dst, IntPtr dstrect);
     
     
@@ -1676,7 +1676,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface9Grid(IntPtr src, IntPtr srcrect, int leftWidth, int rightWidth, int topHeight, int bottomHeight, float scale, ScaleMode scaleMode, IntPtr dst, in Rect dstrect);
     
     
@@ -1712,7 +1712,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitSurface9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool BlitSurface9Grid(IntPtr src, in Rect srcrect, int leftWidth, int rightWidth, int topHeight, int bottomHeight, float scale, ScaleMode scaleMode, IntPtr dst, in Rect dstrect);
     
     
@@ -1770,7 +1770,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadSurfacePixel(IntPtr surface, int x, int y, out byte r, out byte g, out byte b, out byte a);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
@@ -1816,7 +1816,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float r, out float g, out float b, out float a);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);</code>
     /// <summary>
@@ -1878,7 +1878,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteSurfacePixel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteSurfacePixel(IntPtr surface, int x, int y, byte r, byte g, byte b, byte a);
     
     
@@ -1899,6 +1899,6 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteSurfacePixelFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteSurfacePixelFloat(IntPtr surface, int x, int y, float r, float g, float b, float a);
 }

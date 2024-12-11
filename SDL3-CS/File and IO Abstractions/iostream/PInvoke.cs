@@ -475,7 +475,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU8(IntPtr src, out byte value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU8(SDL_IOStream *src, Uint8 *value);</code>
     /// <summary>
@@ -490,7 +490,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS8(IntPtr src, out sbyte value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS8(SDL_IOStream *src, Sint8 *value);</code>
     /// <summary>
@@ -505,7 +505,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU16LE(IntPtr src, out ushort value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);</code>
     /// <summary>
@@ -523,7 +523,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS16LE(IntPtr src, out short value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);</code>
     /// <summary>
@@ -541,7 +541,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU16BE(IntPtr src, out ushort value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);</code>
     /// <summary>
@@ -559,7 +559,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS16BE(IntPtr src, out short value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);</code>
     /// <summary>
@@ -577,7 +577,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU32LE(IntPtr src, out uint value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);</code>
     /// <summary>
@@ -595,7 +595,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS32LE(IntPtr src, out int value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);</code>
     /// <summary>
@@ -613,7 +613,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU32BE(IntPtr src, out uint value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);</code>
     /// <summary>
@@ -631,7 +631,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS32BE(IntPtr src, out int value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);</code>
     /// <summary>
@@ -649,7 +649,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU64LE(IntPtr src, out ulong value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);</code>
     /// <summary>
@@ -667,7 +667,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS64LE(IntPtr src, out long value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);</code>
     /// <summary>
@@ -685,7 +685,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadU64BE(IntPtr src, out ulong value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);</code>
     /// <summary>
@@ -703,7 +703,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_ReadS64BE(IntPtr src, out long value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);</code>
     /// <summary>
@@ -721,7 +721,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU8(IntPtr dst, byte value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU8(SDL_IOStream *dst, Uint8 value);</code>
     /// <summary>
@@ -736,7 +736,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS8(IntPtr dst, sbyte value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS8(SDL_IOStream *dst, Sint8 value);</code>
     /// <summary>
@@ -751,7 +751,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU16LE(IntPtr dst, ushort value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);</code>
     /// <summary>
@@ -770,7 +770,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS16LE(IntPtr dst, short value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);</code>
     /// <summary>
@@ -789,7 +789,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU16BE(IntPtr dst, ushort value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);</code>
     /// <summary>
@@ -807,7 +807,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS16BE(IntPtr dst, short value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);</code>
     /// <summary>
@@ -825,7 +825,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU32LE(IntPtr dst, uint value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);</code>
     /// <summary>
@@ -844,7 +844,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS32LE(IntPtr dst, int value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);</code>
     /// <summary>
@@ -863,7 +863,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU32BE(IntPtr dst, uint value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);</code>
     /// <summary>
@@ -881,7 +881,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS32BE(IntPtr dst, int value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);</code>
     /// <summary>
@@ -899,7 +899,7 @@ public static partial class SDL
 
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU64LE(IntPtr dst, ulong value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);</code>
     /// <summary>
@@ -918,7 +918,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS64LE(IntPtr dst, long value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);</code>
     /// <summary>
@@ -937,7 +937,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteU64BE(IntPtr dst, ulong value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);</code>
     /// <summary>
@@ -955,7 +955,7 @@ public static partial class SDL
 
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_WriteS64BE(IntPtr dst, long value);
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);</code>
     /// <summary>

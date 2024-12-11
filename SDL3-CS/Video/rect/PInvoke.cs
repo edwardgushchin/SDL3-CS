@@ -131,7 +131,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasRectIntersection(in Rect a, in Rect b);
     
     
@@ -148,7 +148,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectIntersection(in Rect a, in Rect b, out Rect result);
     
 
@@ -164,7 +164,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectUnion(in Rect a, in Rect b, out Rect result);
     
     
@@ -184,7 +184,7 @@ public static partial class SDL
     /// outside of the clipping rectangle.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, IntPtr clip, out Rect result);
     
     
@@ -204,7 +204,7 @@ public static partial class SDL
     /// outside of the clipping rectangle.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, in Rect clip, out Rect result);
     
     
@@ -225,7 +225,7 @@ public static partial class SDL
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectAndLineIntersection(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
     
     
@@ -342,7 +342,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasRectIntersectionFloat(in FRect a, in FRect b);
     
     
@@ -359,7 +359,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasRectIntersectionFloat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectIntersectionFloat(in FRect a, in FRect b, out FRect result);
     
 
@@ -375,7 +375,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectUnionFloat(in FRect a, in FRect b, out FRect result);
 
     
@@ -396,7 +396,7 @@ public static partial class SDL
     /// outside of the clipping rectangle.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, IntPtr clip, out FRect result);
     
     
@@ -417,7 +417,7 @@ public static partial class SDL
     /// outside of the clipping rectangle.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, in FRect clip, out FRect result);
     
     
@@ -438,6 +438,6 @@ public static partial class SDL
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
     /// <since></since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectAndLineIntersectionFloat(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
 }

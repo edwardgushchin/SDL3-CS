@@ -248,7 +248,7 @@ public partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_IsAndroidTV();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_IsAndroidTV(void);</code>
     /// <summary>
@@ -260,7 +260,7 @@ public partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_IsChromebook();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_IsChromebook(void);</code>
     /// <summary>
@@ -272,7 +272,7 @@ public partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_IsDeXMode();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_IsDeXMode(void);</code>
     /// <summary>
@@ -480,7 +480,7 @@ public partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_IsTablet();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_IsTablet(void);</code>
     /// <summary>

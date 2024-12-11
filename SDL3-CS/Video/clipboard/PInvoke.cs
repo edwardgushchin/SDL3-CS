@@ -72,7 +72,7 @@ public static partial class SDL
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasClipboardText();
 
     
@@ -121,7 +121,7 @@ public static partial class SDL
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasPrimarySelectionText();
     
     
@@ -201,7 +201,7 @@ public static partial class SDL
     /// <seealso cref="SetClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType);
     
     

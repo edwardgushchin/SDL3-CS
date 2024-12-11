@@ -42,7 +42,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetMice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasMouse();
     
     
@@ -506,6 +506,6 @@ public static partial class SDL
     /// <seealso cref="HideCursor"/>
     /// <seealso cref="ShowCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CursorVisible"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool CursorVisible();
 }

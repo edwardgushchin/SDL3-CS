@@ -145,7 +145,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasEvents"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasEvent(uint type);
 
 
@@ -164,7 +164,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasEvents(uint minType, uint maxType);
 
 
@@ -247,7 +247,7 @@ public static partial class SDL
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool PollEvent(out Event @event);
 
 
@@ -269,7 +269,7 @@ public static partial class SDL
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WaitEvent(out Event @event);
     
     
@@ -382,7 +382,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetEventFilter"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetEventFilter(out EventFilter filter, out IntPtr userdata);
     
     
@@ -470,7 +470,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetEventEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool EventEnabled(uint type);
     
     

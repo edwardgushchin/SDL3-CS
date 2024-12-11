@@ -55,7 +55,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasAltiVec();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasAltiVec(void);</code>
     /// <summary>
@@ -69,7 +69,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasMMX();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasMMX(void);</code>
     /// <summary>
@@ -82,7 +82,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasSSE();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasSSE(void);</code>
     /// <summary>
@@ -99,7 +99,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasSSE2();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasSSE2(void);</code>
     /// <summary>
@@ -116,7 +116,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasSSE3();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasSSE3(void);</code>
     /// <summary>
@@ -133,7 +133,7 @@ public static partial class SDL
 
 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasSSE41();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasSSE41(void);</code>
     /// <summary>
@@ -150,7 +150,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasSSE42();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasSSE42(void);</code>
     /// <summary>
@@ -165,7 +165,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasAVX();
     /// <summary>
     /// <para>Determine whether the CPU has AVX features.</para>
@@ -179,7 +179,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasAVX2();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasAVX2(void);</code>
     /// <summary>
@@ -194,7 +194,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasAVX512F();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasAVX512F(void);</code>
     /// <summary>
@@ -209,7 +209,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasARMSIMD();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasARMSIMD(void);</code>
     /// <summary>
@@ -224,7 +224,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasNEON();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasNEON(void);</code>
     /// <summary>
@@ -237,7 +237,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasLSX();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasLSX(void);</code>
     /// <summary>
@@ -252,7 +252,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasLASX();
     /// <code>extern SDL_DECLSPEC SDL_bool SDLCALL SDL_HasLASX(void);</code>
     /// <summary>
