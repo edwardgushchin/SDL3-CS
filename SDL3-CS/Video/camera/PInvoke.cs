@@ -100,17 +100,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
-    public static uint[]? GetCameras(out int? count)
+    public static uint[]? GetCameras(out int count)
     {
-        count = null;
-        
-        var ptr = SDL_GetCameras(out var size);
+        var ptr = SDL_GetCameras(out count);
 
-        if (ptr == IntPtr.Zero) return null;
-
-        count = size;
-        
-        return PointerToStructArray<uint>(ptr, size);
+        try
+        {
+            return PointerToStructArray<uint>(ptr, count);
+        }
+        finally
+        {
+            if (ptr != IntPtr.Zero) Free(ptr);
+        }
     }
     
     
@@ -146,17 +147,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetCameras"/>
     /// <seealso cref="OpenCamera(uint, nint)"/>
-    public static CameraSpec[]? GetCameraSupportedFormats(uint devid, out int? count)
+    public static CameraSpec[]? GetCameraSupportedFormats(uint devid, out int count)
     {
-        count = null;
-
-        var ptr = SDL_GetCameraSupportedFormats(devid, out var size);
-
-        if (ptr == IntPtr.Zero) return null;
-
-        count = size;
-
-        return PointerToStructArray<CameraSpec>(ptr, size);
+        var ptr = SDL_GetCameraSupportedFormats(devid, out count);
+        
+        try
+        {
+            return PointerToStructArray<CameraSpec>(ptr, count);
+        }
+        finally
+        {
+            if (ptr != IntPtr.Zero) Free(ptr);
+        }
     }
     
     

@@ -40,24 +40,17 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static uint[]? GetSensors(out int? count)
+    public static uint[]? GetSensors(out int count)
     {
-        var ptr = SDL_GetSensors(out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-
+        var ptr = SDL_GetSensors(out count);
+        
         try
         {
-            count = size;
-            return PointerToStructArray<uint>(ptr, size);
+            return PointerToStructArray<uint>(ptr, count);
         }
         finally
         {
-            Free(ptr);
+            if (ptr != IntPtr.Zero) Free(ptr);
         }
     }
     

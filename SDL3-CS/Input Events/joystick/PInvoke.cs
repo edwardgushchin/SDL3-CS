@@ -75,20 +75,13 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.1.3.</since>
 	/// <seealso cref="HasJoystick"/>
 	/// <seealso cref="OpenJoystick"/>
-	public static uint[]? GetJoysticks(out int? count)
+	public static uint[]? GetJoysticks(out int count)
 	{
-		var ptr = SDL_GetJoysticks(out var size);
-
-		if (ptr == IntPtr.Zero)
-		{
-			count = null;
-			return null;
-		}
+		var ptr = SDL_GetJoysticks(out count);
 
 		try
 		{
-			count = size;
-			return PointerToStructArray<uint>(ptr, size);
+			return PointerToStructArray<uint>(ptr, count);
 		}
 		finally
 		{

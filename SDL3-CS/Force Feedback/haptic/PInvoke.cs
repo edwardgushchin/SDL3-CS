@@ -41,20 +41,13 @@ public static partial class SDL
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="OpenHaptic"/>
-    public static int[]? GetHaptics(out int? count)
+    public static int[]? GetHaptics(out int count)
     {
-        var ptr = SDL_GetHaptics(out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-
+        var ptr = SDL_GetHaptics(out count);
+        
         try
         {
-            count = size;
-            return PointerToStructArray<int>(ptr, size);
+            return PointerToStructArray<int>(ptr, count);
         }
         finally
         {

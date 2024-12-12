@@ -242,25 +242,17 @@ public static partial class SDL
     /// <seealso cref="AddSurfaceAlternateImage"/>
     /// <seealso cref="RemoveSurfaceAlternateImages"/>
     /// <seealso cref="SurfaceHasAlternateImages"/>
-    public static IntPtr[]? GetSurfaceImages(IntPtr surface, out int? count)
+    public static IntPtr[]? GetSurfaceImages(IntPtr surface, out int count)
     {
-        var ptr = SDL_GetSurfaceImages(surface, out var size);
-
+        var ptr = SDL_GetSurfaceImages(surface, out count);
+        
         try
         {
-            if (ptr == IntPtr.Zero)
-            {
-                count = null;
-                return null;
-            }
-        
-            count = size;
-
-            return PointerToPointerArray(ptr, size);
+            return PointerToPointerArray(ptr, count);
         }
         finally
         {
-            Free(ptr);
+            if (ptr != IntPtr.Zero) Free(ptr);
         }
     }
     
@@ -1769,9 +1761,6 @@ public static partial class SDL
     public static partial uint MapSurfaceRGBA(IntPtr surface, byte r, byte g, byte b, byte a);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ReadSurfacePixel(IntPtr surface, int x, int y, out byte r, out byte g, out byte b, out byte a);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
     /// <para>Retrieves a single pixel from a surface.</para>
@@ -1794,30 +1783,11 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static bool ReadSurfacePixel(IntPtr surface, int x, int y, out byte? r, out byte? g, out byte? b, out byte? a)
-    {
-        if (SDL_ReadSurfacePixel(surface, x, y, out var red, out var green, out var blue, out var alpha))
-        {
-            r = red;
-            g = green;
-            b = blue;
-            a = alpha;
-
-            return true;
-        }
-        
-        r = null;
-        g = null;
-        b = null;
-        a = null;
-
-        return false;
-    }
-    
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadSurfacePixel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float r, out float g, out float b, out float a);
+    public static partial bool ReadSurfacePixel(IntPtr surface, int x, int y, out byte r, out byte g, out byte b, out byte a);
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);</code>
     /// <summary>
     /// <para>Retrieves a single pixel from a surface.</para>
@@ -1838,25 +1808,9 @@ public static partial class SDL
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static bool ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float? r, out float? g, out float? b, out float? a)
-    {
-        if (SDL_ReadSurfacePixelFloat(surface, x, y, out var red, out var green, out var blue, out var alpha))
-        {
-            r = red;
-            g = green;
-            b = blue;
-            a = alpha;
-
-            return true;
-        }
-        
-        r = null;
-        g = null;
-        b = null;
-        a = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadSurfacePixelFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float r, out float g, out float b, out float a);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);</code>

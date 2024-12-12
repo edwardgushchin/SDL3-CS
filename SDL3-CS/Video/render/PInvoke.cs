@@ -614,9 +614,6 @@ public static partial class SDL
     public static partial IntPtr GetRendererFromTexture(IntPtr texture);
 
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureSize(IntPtr texture, out float w, out float h);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureSize(SDL_Texture *texture, float *w, float *h);</code>
     /// <summary>
     /// Get the size of a texture, as floating point values.
@@ -630,21 +627,9 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static bool GetTextureSize(IntPtr texture, out float? w, out float? h)
-    {
-        if (SDL_GetTextureSize(texture, out var width, out var height))
-        {
-            w = width;
-            h = height;
-            
-            return true;
-        }
-        
-        w = null;
-        h = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetTextureSize(IntPtr texture, out float w, out float h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b);</code>
@@ -1301,9 +1286,6 @@ public static partial class SDL
     public static partial bool GetRenderLogicalPresentation(IntPtr renderer, out int w, out int h, out RendererLogicalPresentation mode);
     
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentationRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderLogicalPresentationRect(IntPtr renderer, out IntPtr rect);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderLogicalPresentationRect(SDL_Renderer *renderer, SDL_FRect *rect);</code>
     /// <summary>
     /// <para>Get the final presentation rectangle for rendering.</para>
@@ -1320,14 +1302,9 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
-    public static bool GetRenderLogicalPresentationRect(IntPtr renderer, out FRect? rect)
-    {
-        var ptr = SDL_GetRenderLogicalPresentationRect(renderer, out var r);
-
-        rect = PointerToStruct<FRect>(r);
-
-        return ptr;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentationRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetRenderLogicalPresentationRect(IntPtr renderer, out FRect rect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderCoordinatesFromWindow(SDL_Renderer *renderer, float window_x, float window_y, float *x, float *y);</code>

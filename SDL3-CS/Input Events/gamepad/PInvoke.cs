@@ -130,20 +130,13 @@ public static partial class SDL
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static string[]? GetGamepadMappings(out int? count)
+    public static string[]? GetGamepadMappings(out int count)
     {
-        var ptr = SDL_GetGamepadMappings(out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-
+        var ptr = SDL_GetGamepadMappings(out count);
+        
         try
         {
-            count = size;
-            return PointerToStringArray(ptr, size);
+            return PointerToStringArray(ptr, count);
         }
         finally
         {
@@ -231,20 +224,13 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="HasGamepad"/>
     /// <seealso cref="OpenGamepad"/>
-    public static uint[]? GetGamepads(out int? count)
+    public static uint[]? GetGamepads(out int count)
     {
-        var ptr = SDL_GetGamepads(out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-
+        var ptr = SDL_GetGamepads(out count);
+        
         try
         {
-            count = size;
-            return PointerToStructArray<uint>(ptr, size);
+            return PointerToStructArray<uint>(ptr, count);
         }
         finally
         {
@@ -1021,9 +1007,6 @@ public static partial class SDL
     public static partial int GetNumGamepadTouchpadFingers(IntPtr gamepad, int touchpad);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetGamepadTouchpadFinger(IntPtr gamepad, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] out bool down, out float x, out float y, out float pressure);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGamepadTouchpadFinger(SDL_Gamepad *gamepad, int touchpad, int finger, bool *down, float *x, float *y, float *pressure);</code>
     /// <summary>
     /// Get the current state of a finger on a touchpad on a gamepad.
@@ -1042,23 +1025,9 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetNumGamepadTouchpadFingers"/>
-    public static bool GetGamepadTouchpadFinger(IntPtr gamepad, int touchpad, int finger, out bool? down, out float? x, out float? y, out float? pressure)
-    {
-        if (SDL_GetGamepadTouchpadFinger(gamepad, touchpad, finger, out var downPtr, out var xPtr, out var yPtr, out var pressurePtr))
-        {
-            down = downPtr;
-            x = xPtr;
-            y = yPtr;
-            pressure = pressurePtr;
-            return true;
-        }
-
-        down = null;
-        x = null;
-        y = null;
-        pressure = null;
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadTouchpadFinger"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetGamepadTouchpadFinger(IntPtr gamepad, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] out bool down, out float x, out float y, out float pressure);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GamepadHasSensor(SDL_Gamepad *gamepad, SDL_SensorType type);</code>

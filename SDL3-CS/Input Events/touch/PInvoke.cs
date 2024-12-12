@@ -43,20 +43,13 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static ulong[]? GetTouchDevices(out int? count)
+    public static ulong[]? GetTouchDevices(out int count)
     {
-        var ptr = SDL_GetTouchDevices(out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-
+        var ptr = SDL_GetTouchDevices(out count);
+        
         try
         {
-            count = size;
-            return PointerToStructArray<ulong>(ptr, size);
+            return PointerToStructArray<ulong>(ptr, count);
         }
         finally
         {
@@ -103,20 +96,13 @@ public static partial class SDL
     /// allocation that should be freed with <see cref="Free"/> when it is no
     /// longer needed.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static Finger[]? GetTouchFingers(ulong touchID, out int? count)
+    public static Finger[]? GetTouchFingers(ulong touchID, out int count)
     {
-        var ptr = SDL_GetTouchFingers(touchID, out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-
+        var ptr = SDL_GetTouchFingers(touchID, out count);
+        
         try
         {
-            count = size;
-            return PointerToStructArray<Finger>(ptr, size);
+            return PointerToStructArray<Finger>(ptr, count);
         }
         finally
         {

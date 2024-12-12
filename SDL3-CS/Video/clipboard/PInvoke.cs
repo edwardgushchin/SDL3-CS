@@ -219,18 +219,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
-    public static string[]? GetClipboardMimeTypes(out uint? numMimeTypes)
+    public static string[]? GetClipboardMimeTypes(out uint numMimeTypes)
     {
-        var ptr = SDL_GetClipboardMimeTypes(out var size);
+        var ptr = SDL_GetClipboardMimeTypes(out numMimeTypes);
 
-        if (ptr == IntPtr.Zero)
+        try
         {
-            numMimeTypes = null;
-            return null;
+            return PointerToStringArray(ptr);
         }
-
-        numMimeTypes = size;
-        
-        return PointerToStringArray(ptr);
+        finally
+        {
+            if (ptr != IntPtr.Zero) Free(ptr);
+        }
     }
 }

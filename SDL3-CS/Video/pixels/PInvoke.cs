@@ -202,6 +202,7 @@ public static partial class SDL
     /// the palette is not modified.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPixelFormatDetails"/>
+    /// ReSharper disable once InvalidXmlDocComment
     /// <seealso cref="GetRGBA"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapSurfaceRGBA"/>
@@ -209,8 +210,6 @@ public static partial class SDL
     public static partial uint MapRGBA(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetRGB(uint pixel, IntPtr format, IntPtr palette, out IntPtr r, out IntPtr g, out IntPtr b);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
     /// <summary>
     /// <para>Get RGB values from a pixel in the specified format.</para>
@@ -229,18 +228,32 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static void GetRGB(uint pixel, IntPtr format, IntPtr palette, out byte? r, out byte? g, out byte? b)
-    {
-        SDL_GetRGB(pixel, format, palette, out var red, out var green, out var blue);
-
-        r = red != IntPtr.Zero ? Marshal.ReadByte(red) : null;
-        g = green != IntPtr.Zero ? Marshal.ReadByte(green) : null;
-        b = blue != IntPtr.Zero ? Marshal.ReadByte(blue) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GetRGB(uint pixel, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
+    /// <summary>
+    /// <para>Get RGB values from a pixel in the specified format.</para>
+    /// <para>This function uses the entire 8-bit [0..255] range when converting color
+    /// components from pixel formats with less than 8-bits per RGB component
+    /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+    /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
+    /// </summary>
+    /// <param name="pixel">a pixel value.</param>
+    /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
+    /// format.</param>
+    /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
+    /// <param name="r">a pointer filled in with the red component, may be <c>null</c>.</param>
+    /// <param name="g">a pointer filled in with the green component, may be <c>null</c>.</param>
+    /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread, as long as
+    /// the palette is not modified.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [DllImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static extern void GetRGB(uint pixel, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetRGBA(uint pixel, IntPtr format, IntPtr palette, out IntPtr r, out IntPtr g, out IntPtr b, out IntPtr a);
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
     /// <para>Get RGBA values from a pixel in the specified format.</para>
@@ -263,17 +276,40 @@ public static partial class SDL
     /// the palette is not modified.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPixelFormatDetails"/>
+    /// ReSharper disable once InvalidXmlDocComment
     /// <seealso cref="GetRGB"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapRGBA"/>
-    public static void GetRGBA(uint pixel, IntPtr format, IntPtr palette, out byte? r, out byte? g, out byte? b, out byte? a)
-    {
-        SDL_GetRGBA(pixel, format, palette, out var red, out var green, out var blue, out var alpha);
-
-        r = red != IntPtr.Zero ? Marshal.ReadByte(red) : null;
-        g = green != IntPtr.Zero ? Marshal.ReadByte(green) : null;
-        b = blue != IntPtr.Zero ? Marshal.ReadByte(blue) : null;
-        a = alpha != IntPtr.Zero ? Marshal.ReadByte(alpha) : null;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GetRGBA(uint pixel, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b, out byte a);
     
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
+    /// <summary>
+    /// <para>Get RGBA values from a pixel in the specified format.</para>
+    /// <para>This function uses the entire 8-bit [0..255] range when converting color
+    /// components from pixel formats with less than 8-bits per RGB component
+    /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+    /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
+    /// <para>If the surface has no alpha component, the alpha will be returned as 0xff
+    /// (100% opaque).</para>
+    /// </summary>
+    /// <param name="pixel">a pixel value.</param>
+    /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
+    /// format.</param>
+    /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
+    /// <param name="r">a pointer filled in with the red component, may be <c>null</c>.</param>
+    /// <param name="g">a pointer filled in with the green component, may be <c>null</c>.</param>
+    /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
+    /// <param name="a">a pointer filled in with the alpha component, may be <c>null</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread, as long as
+    /// the palette is not modified.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetPixelFormatDetails"/>
+    /// ReSharper disable once InvalidXmlDocComment
+    /// <seealso cref="GetRGB"/>
+    /// <seealso cref="MapRGB"/>
+    /// <seealso cref="MapRGBA"/>
+    [DllImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static extern void GetRGBA(uint pixel, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
 }

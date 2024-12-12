@@ -101,21 +101,17 @@ public static partial class SDL
     /// with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static uint[]? GetDisplays(out int? count)
+    public static uint[]? GetDisplays(out int count)
     {
-        count = null;
-
-        var ptr = SDL_GetDisplays(out var c);
+        var ptr = SDL_GetDisplays(out count);
+        
         try
         {
-            if (ptr == IntPtr.Zero) return null;
-        
-            count = c;
-            return PointerToStructArray<uint>(ptr, count.Value);
+            return PointerToStructArray<uint>(ptr, count);
         }
         finally
         {
-            Free(ptr);
+            if (ptr != IntPtr.Zero) Free(ptr);
         }
     }
     
@@ -289,17 +285,13 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetDisplays"/>
-    public static DisplayMode[]? GetFullscreenDisplayModes(uint displayID, out int? count)
+    public static DisplayMode[]? GetFullscreenDisplayModes(uint displayID, out int count)
     {
-        count = null;
-        
-        var ptr = SDL_GetFullscreenDisplayModes(displayID, out var size);
-        if (ptr == IntPtr.Zero) return null;
+        var ptr = SDL_GetFullscreenDisplayModes(displayID, out count);
 
         try
         {
-            count = size;
-            return PointerToStructArray<DisplayMode>(ptr, size);
+            return PointerToStructArray<DisplayMode>(ptr, count);
         }
         finally
         {
@@ -592,25 +584,17 @@ public static partial class SDL
     /// longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static IntPtr[]? GetWindows(out int? count)
+    public static IntPtr[]? GetWindows(out int count)
     {
-        var pointer = IntPtr.Zero;
-        
-        count = null;
+        var ptr = SDL_GetWindows(out count);
         
         try
         {
-            pointer = SDL_GetWindows(out var size);
-
-            if (pointer == IntPtr.Zero) return null;
-
-            count = size;
-        
-            return PointerToPointerArray(pointer, size);
+            return PointerToPointerArray(ptr, count);
         }
         finally
         {
-            if (pointer != IntPtr.Zero) Free(pointer);
+            if (ptr != IntPtr.Zero) Free(ptr);
         }
         
     }
@@ -1145,9 +1129,6 @@ public static partial class SDL
     public static partial bool SetWindowPosition(IntPtr window, int x, int y);
     
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowPosition(IntPtr window, out int x, out int y);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);</code>
     /// <summary>
     /// <para>Get the position of a window.</para>
@@ -1166,21 +1147,9 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowPosition"/>
-    public static bool GetWindowPosition(IntPtr window, out int? x, out int? y)
-    {
-        if (SDL_GetWindowPosition(window, out var resultX, out var resultY))
-        {
-            x = resultX;
-            y = resultY;
-            
-            return true;
-        }
-        
-        x = null;
-        y = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetWindowPosition(IntPtr window, out int x, out int y);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowSize(SDL_Window *window, int w, int h);</code>
@@ -1217,9 +1186,6 @@ public static partial class SDL
     public static partial bool SetWindowSize(IntPtr window, int w, int h);
     
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowSize(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// <para>Get the size of a window's client area.</para>
@@ -1237,20 +1203,9 @@ public static partial class SDL
     /// <seealso cref="GetRenderOutputSize"/>
     /// <seealso cref="GetWindowSizeInPixels"/>
     /// <seealso cref="SetWindowSize"/>
-    public static bool GetWindowSize(IntPtr window, out int? w, out int? h)
-    {
-        if (SDL_GetWindowSize(window, out var resultW, out var resultH))
-        {
-            w = resultW;
-            h = resultH;
-            return true;
-        }
-        
-        w = null;
-        h = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetWindowSize(IntPtr window, out int w, out int h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);</code>
@@ -1312,9 +1267,6 @@ public static partial class SDL
     public static partial bool SetWindowAspectRatio(IntPtr window, float minAspect, float maxAspect);
     
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);</code>
     /// <summary>
     /// Get the size of a window's client area.
@@ -1329,26 +1281,11 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowAspectRatio"/>
-    public static bool GetWindowAspectRatio(IntPtr window, out float? minAspect, out float? maxAspect)
-    {
-        if (SDL_GetWindowAspectRatio(window, out var min, out var max))
-        {
-            minAspect = min;
-            maxAspect = max;
-            
-            return true;
-        }
-        
-        minAspect = null;
-        maxAspect = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect);
 
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);</code>
     /// <summary>
     /// <para>Get the size of a window's borders (decorations) around the client area.</para>
@@ -1378,30 +1315,11 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowSize"/>
-    public static bool GetWindowBordersSize(IntPtr window, out int? top, out int? left, out int? bottom, out int? right)
-    {
-        if (SDL_GetWindowBordersSize(window, out var t, out var l, out var b, out var r))
-        {
-            top = t;
-            left = l;
-            bottom = b;
-            right = r;
-
-            return true;
-        }
-        
-        top = null;
-        left = null;
-        bottom = null;
-        right = null;
-
-        return false;
-    }
-    
-    
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSizeInPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowSizeInPixels(IntPtr window, out int w, out int h);
+    public static partial bool GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// Get the size of a window's client area, in pixels.
@@ -1417,21 +1335,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="GetWindowSize"/>
-    public static bool GetWindowSizeInPixels(IntPtr window, out int? w, out int? h)
-    {
-        if (SDL_GetWindowSizeInPixels(window, out var resultW, out var resultH))
-        {
-            w = resultW;
-            h = resultH;
-
-            return true;
-        }
-
-        w = null;
-        h = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSizeInPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetWindowSizeInPixels(IntPtr window, out int w, out int h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h);</code>
@@ -1452,9 +1358,6 @@ public static partial class SDL
     public static partial bool SetWindowMinimumSize(IntPtr window, int minW, int minH);
     
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowMinimumSize(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// Get the minimum size of a window's client area.
@@ -1470,21 +1373,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    public static bool GetWindowMinimumSize(IntPtr window, out int? w, out int? h)
-    {
-        if (SDL_GetWindowMinimumSize(window, out var resultW, out var resultH))
-        {
-            w = resultW;
-            h = resultH;
-
-            return true;
-        }
-
-        w = null;
-        h = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetWindowMinimumSize(IntPtr window, out int w, out int h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h);</code>
@@ -1505,9 +1396,6 @@ public static partial class SDL
     public static partial bool SetWindowMaximumSize(IntPtr window, int maxWidth, int maxHeight);
     
     
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowMaximumSize(IntPtr window, out int w, out int h);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
     /// Get the maximum size of a window's client area.
@@ -1523,21 +1411,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    public static bool GetWindowMaximumSize(IntPtr window, out int? w, out int? h)
-    {
-        if (SDL_GetWindowMaximumSize(window, out var resultW, out var resultH))
-        {
-            w = resultW;
-            h = resultH;
-
-            return true;
-        }
-
-        w = null;
-        h = null;
-
-        return false;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetWindowMaximumSize(IntPtr window, out int w, out int h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowBordered(SDL_Window *window, bool bordered);</code>

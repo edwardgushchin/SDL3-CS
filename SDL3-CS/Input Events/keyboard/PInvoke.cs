@@ -60,20 +60,13 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetKeyboardNameForID"/>
     /// <seealso cref="HasKeyboard"/>
-    public static uint[]? GetKeyboards(out int? count)
+    public static uint[]? GetKeyboards(out int count)
     {
-        var ptr = SDL_GetKeyboards(out var size);
+        var ptr = SDL_GetKeyboards(out count);
 
-        if (ptr == IntPtr.Zero)
-        {
-            count = null;
-            return null;
-        }
-        
         try
         {
-            count = size;
-            return PointerToStructArray<uint>(ptr, size);
+            return PointerToStructArray<uint>(ptr, count);
         }
         finally
         {
@@ -109,8 +102,6 @@ public static partial class SDL
     public static partial IntPtr GetKeyboardFocus();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetKeyboardState(out int numkeys);
     /// <code>extern SDL_DECLSPEC const bool * SDLCALL SDL_GetKeyboardState(int *numkeys);</code>
     /// <summary>
     /// <para>Get a snapshot of the current state of the keyboard.</para>
@@ -133,20 +124,10 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="PumpEvents"/>
-    /// <seealso cref="ResetKeyboard"/>
-    public static bool[] GetKeyboardState(out int? numkeys)
-    {
-        var ptr = SDL_GetKeyboardState(out var size);
-
-        if (ptr == IntPtr.Zero)
-        {
-            numkeys = null;
-            return [];
-        }
-
-        numkeys = size;
-        return PointerToStructArray<bool>(ptr, size)!;
-    }
+    /// <seealso cref="ResetKeyboard"/> 
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.I1)]
+    public static partial bool[] GetKeyboardState(out int numkeys);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetKeyboard(void);</code>
@@ -230,19 +211,8 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetScancodeName"/>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Scancode SDL_GetScancodeFromKey(Keycode key, out IntPtr modstate);
-
-    public static Scancode GetScancodeFromKey(Keycode key, out Keymod? modstate)
-    {
-        var ptr = SDL_GetScancodeFromKey(key, out var state);
-
-        if (state == IntPtr.Zero) modstate = null;
-
-        modstate = (Keymod) PointerToStruct<short>(state)!;
-
-        return ptr;
-    }
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeFromKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial Scancode GetScancodeFromKey(Keycode key, out Keymod modstate);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetScancodeName(SDL_Scancode scancode, const char *name);</code>
@@ -502,9 +472,6 @@ public static partial class SDL
     public static partial bool SetTextInputArea(IntPtr window, in Rect rect, int cursor);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextInputArea(IntPtr window, out IntPtr rect, out IntPtr cursor);
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);</code>
     /// <summary>
     /// <para>Get the area used to type Unicode text input.</para>
@@ -520,18 +487,9 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetTextInputArea(nint, nint, int)"/>
-    public static bool GetTextInputArea(IntPtr window, out Rect? rect, out int? cursor)
-    {
-        var ptr = SDL_GetTextInputArea(window, out var rectPtr, out var cursorPtr);
-
-        if (rectPtr == IntPtr.Zero) rect = null;
-        if (cursorPtr == IntPtr.Zero) cursor = null;
-
-        rect = PointerToStruct<Rect>(rectPtr);
-        cursor = PointerToStruct<int>(cursorPtr);
-
-        return ptr;
-    }
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasScreenKeyboardSupport(void);</code>
