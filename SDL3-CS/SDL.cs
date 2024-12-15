@@ -110,6 +110,7 @@ public static partial class SDL
 
     
     // struct[] to IntPtr
+    // After calling Marshal.FreeHGlobal()
     public static IntPtr StructArrayToPointer<T>(T[] array) where T : struct
     {
         if (array == null || array.Length == 0) return IntPtr.Zero;
@@ -173,6 +174,7 @@ public static partial class SDL
         
         return result.Count > 0 ? result.ToArray() : null;
     }
+    
     
     // IntPtr to string[]?
     public static string[]? PointerToStringArray(IntPtr pointer, int size)
