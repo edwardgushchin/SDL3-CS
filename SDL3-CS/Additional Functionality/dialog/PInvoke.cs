@@ -251,9 +251,9 @@ public static partial class SDL
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.FileDialogFiltersPointer"/>: a pointer to a list of
-    /// <see cref="DialogFileFilter"/>'s, which will be used as filters for file-based
-    /// selections. Ignored if the dialog is an "Open Folder" dialog. If
-    /// non-NULL, the array of filters must remain valid at least until the
+    /// <see cref="DialogFileFilter"/> structs, which will be used as filters for
+    /// file-based selections. Ignored if the dialog is an "Open Folder" dialog.
+    /// If non-NULL, the array of filters must remain valid at least until the
     /// callback is invoked.</item>
     /// <item><see cref="Props.FileDialogNFiltersNumber"/>: the number of filters in the
     /// array of filters, if it exists.</item>
