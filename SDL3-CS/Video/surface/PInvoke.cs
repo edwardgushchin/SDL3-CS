@@ -757,6 +757,69 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, out IntPtr dst, int dstPitch);
     
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);</code>
+    /// <summary>
+    /// Copy a block of pixels of one format to another format.
+    /// </summary>
+    /// <param name="width">the width of the block to copy, in pixels.</param>
+    /// <param name="height">the height of the block to copy, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dst">a pointer to be filled in with new pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] src, int srcPitch, PixelFormat dstFormat, out IntPtr dst, int dstPitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);</code>
+    /// <summary>
+    /// Copy a block of pixels of one format to another format.
+    /// </summary>
+    /// <param name="width">the width of the block to copy, in pixels.</param>
+    /// <param name="height">the height of the block to copy, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dst">a pointer to be filled in with new pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out byte[] dst, int dstPitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);</code>
+    /// <summary>
+    /// Copy a block of pixels of one format to another format.
+    /// </summary>
+    /// <param name="width">the width of the block to copy, in pixels.</param>
+    /// <param name="height">the height of the block to copy, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dst">a pointer to be filled in with new pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] src, int srcPitch, PixelFormat dstFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out byte[] dst, int dstPitch);
+    
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);</code>
     /// <summary>
@@ -786,6 +849,96 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, out IntPtr dst, int dstPitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);</code>
+    /// <summary>
+    /// Copy a block of pixels of one format and colorspace to another format and
+    /// colorspace.
+    /// </summary>
+    /// <param name="width">the width of the block to copy, in pixels.</param>
+    /// <param name="height">the height of the block to copy, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="srcColorspace">an <see cref="Colorspace"/> value describing the colorspace of
+    /// the <c>src</c> pixels.</param>
+    /// <param name="srcProperties">an SDL_PropertiesID with additional source color
+    /// properties, or 0.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dstColorspace">an <see cref="Colorspace"/> value describing the colorspace of
+    /// the <c>dst</c> pixels.</param>
+    /// <param name="dstProperties">an SDL_PropertiesID with additional destination color
+    /// properties, or 0.</param>
+    /// <param name="dst">a pointer to be filled in with new pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ConvertPixels"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] byte[] src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, out IntPtr dst, int dstPitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);</code>
+    /// <summary>
+    /// Copy a block of pixels of one format and colorspace to another format and
+    /// colorspace.
+    /// </summary>
+    /// <param name="width">the width of the block to copy, in pixels.</param>
+    /// <param name="height">the height of the block to copy, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="srcColorspace">an <see cref="Colorspace"/> value describing the colorspace of
+    /// the <c>src</c> pixels.</param>
+    /// <param name="srcProperties">an SDL_PropertiesID with additional source color
+    /// properties, or 0.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dstColorspace">an <see cref="Colorspace"/> value describing the colorspace of
+    /// the <c>dst</c> pixels.</param>
+    /// <param name="dstProperties">an SDL_PropertiesID with additional destination color
+    /// properties, or 0.</param>
+    /// <param name="dst">a pointer to be filled in with new pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ConvertPixels"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] out byte[] dst, int dstPitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);</code>
+    /// <summary>
+    /// Copy a block of pixels of one format and colorspace to another format and
+    /// colorspace.
+    /// </summary>
+    /// <param name="width">the width of the block to copy, in pixels.</param>
+    /// <param name="height">the height of the block to copy, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="srcColorspace">an <see cref="Colorspace"/> value describing the colorspace of
+    /// the <c>src</c> pixels.</param>
+    /// <param name="srcProperties">an SDL_PropertiesID with additional source color
+    /// properties, or 0.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dstColorspace">an <see cref="Colorspace"/> value describing the colorspace of
+    /// the <c>dst</c> pixels.</param>
+    /// <param name="dstProperties">an SDL_PropertiesID with additional destination color
+    /// properties, or 0.</param>
+    /// <param name="dst">a pointer to be filled in with new pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ConvertPixels"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] byte[] src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] out byte[] dst, int dstPitch);
 
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);</code>
@@ -806,9 +959,78 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplyAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
+    public static partial bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);</code>
+    /// <summary>
+    /// <para>Premultiply the alpha on a block of pixels.</para>
+    /// <para>This is safe to use with src == dst, but not for other overlapping areas.</para>
+    /// </summary>
+    /// <param name="width">the width of the block to convert, in pixels.</param>
+    /// <param name="height">the height of the block to convert, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dst">a pointer to be filled in with premultiplied pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <param name="linear">true to convert from sRGB to linear space for the alpha
+    /// multiplication, false to do multiplication in sRGB space.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplyAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);</code>
+    /// <summary>
+    /// <para>Premultiply the alpha on a block of pixels.</para>
+    /// <para>This is safe to use with src == dst, but not for other overlapping areas.</para>
+    /// </summary>
+    /// <param name="width">the width of the block to convert, in pixels.</param>
+    /// <param name="height">the height of the block to convert, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dst">a pointer to be filled in with premultiplied pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <param name="linear">true to convert from sRGB to linear space for the alpha
+    /// multiplication, false to do multiplication in sRGB space.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplyAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out byte[] dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);</code>
+    /// <summary>
+    /// <para>Premultiply the alpha on a block of pixels.</para>
+    /// <para>This is safe to use with src == dst, but not for other overlapping areas.</para>
+    /// </summary>
+    /// <param name="width">the width of the block to convert, in pixels.</param>
+    /// <param name="height">the height of the block to convert, in pixels.</param>
+    /// <param name="srcFormat">an <see cref="PixelFormat"/> value of the <c>src</c> pixels format.</param>
+    /// <param name="src">a pointer to the source pixels.</param>
+    /// <param name="srcPitch">the pitch of the source pixels, in bytes.</param>
+    /// <param name="dstFormat">an <see cref="PixelFormat"/> value of the <c>dst</c> pixels format.</param>
+    /// <param name="dst">a pointer to be filled in with premultiplied pixel data.</param>
+    /// <param name="dstPitch">the pitch of the destination pixels, in bytes.</param>
+    /// <param name="linear">true to convert from sRGB to linear space for the alpha
+    /// multiplication, false to do multiplication in sRGB space.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplyAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] src, int srcPitch, PixelFormat dstFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out byte[] dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear);
 
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PremultiplySurfaceAlpha(SDL_Surface *surface, bool linear);</code>

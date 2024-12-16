@@ -1189,6 +1189,21 @@ public static partial class SDL
     public static partial bool SendGamepadEffect(IntPtr gamepad, IntPtr data, int size);
     
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SendGamepadEffect(SDL_Gamepad *gamepad, const void *data, int size);</code>
+    /// <summary>
+    /// Send a gamepad specific effect packet.
+    /// </summary>
+    /// <param name="gamepad">the gamepad to affect.</param>
+    /// <param name="data">the data to send to the gamepad.</param>
+    /// <param name="size">the size of the data to send to the gamepad.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendGamepadEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SendGamepadEffect(IntPtr gamepad, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size);
+    
+    
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_CloseGamepad(SDL_Gamepad *gamepad);</code>
     /// <summary>
     /// Close a gamepad previously opened with <see cref="OpenGamepad"/>.

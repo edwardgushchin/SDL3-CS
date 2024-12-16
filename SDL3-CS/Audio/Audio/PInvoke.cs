@@ -998,6 +998,34 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool PutAudioStreamData(IntPtr stream, IntPtr buf, int len);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);</code>
+    /// <summary>
+    /// <para>Add data to the stream.</para>
+    /// <para>This data must match the format/channels/samplerate specified in the latest
+    /// call to <see cref="SetAudioStreamFormat"/>, or the format specified when creating the
+    /// stream if it hasn't been changed.</para>
+    /// <para>Note that this call simply copies the unconverted data for later. This is
+    /// different than SDL2, where data was converted during the Put call and the
+    /// Get call would just dequeue the previously-converted data.</para>
+    /// </summary>
+    /// <param name="stream">the stream the audio data is being added to.</param>
+    /// <param name="buf">a pointer to the audio data to add.</param>
+    /// <param name="len">the number of bytes to write to the stream.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, but if the
+    /// stream has a callback set, the caller might need to manage
+    /// extra locking.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ClearAudioStream"/>
+    /// <seealso cref="FlushAudioStream"/>
+    /// <seealso cref="GetAudioStreamData"/>
+    /// <seealso cref="GetAudioStreamQueued"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool PutAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
 
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);</code>
@@ -1025,6 +1053,33 @@ public static partial class SDL
     /// <seealso cref="PutAudioStreamData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAudioStreamData(IntPtr stream, IntPtr buf, int len);
+    
+    
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);</code>
+    /// <summary>
+    /// <para>Get converted/resampled data from the stream.</para>
+    /// <para>The input/output data format/channels/samplerate is specified when creating
+    /// the stream, and can be changed after creation by calling
+    /// <see cref="SetAudioStreamFormat"/>.</para>
+    /// <para>Note that any conversion and resampling necessary is done during this call,
+    /// and SDL_PutAudioStreamData simply queues unconverted data for later. This
+    /// is different than SDL2, where that work was done while inputting new data
+    /// to the stream and requesting the output just copied the converted data.</para>
+    /// </summary>
+    /// <param name="stream">the stream the audio is being requested from.</param>
+    /// <param name="buf">a buffer to fill with audio data.</param>
+    /// <param name="len">the maximum number of bytes to fill.</param>
+    /// <returns>the number of bytes read from the stream or -1 on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, but if the
+    /// stream has a callback set, the caller might need to manage
+    /// extra locking.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="ClearAudioStream"/>
+    /// <seealso cref="GetAudioStreamAvailable"/>
+    /// <seealso cref="PutAudioStreamData"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
 
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamAvailable(SDL_AudioStream *stream);</code>
