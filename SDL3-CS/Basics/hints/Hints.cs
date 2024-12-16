@@ -1061,7 +1061,7 @@ public static partial class SDL
         /// <para>This variable is the default for all drivers, but can be overridden by the
         /// hints for specific drivers below.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPI = "SDL_JOYSTICK_HIDAPI";
         
@@ -1074,7 +1074,7 @@ public static partial class SDL
         /// <item><c>"1"</c>: Left and right Joy-Con controllers will be combined into a singlecontroller. (default)</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPICombineJoyCons = "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS";
         
@@ -1088,7 +1088,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIGameCube = "SDL_JOYSTICK_HIDAPI_GAMECUBE";
         
@@ -1120,7 +1120,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIJoyCons = "SDL_JOYSTICK_HIDAPI_JOY_CONS";
         
@@ -1150,7 +1150,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPILuna = "SDL_JOYSTICK_HIDAPI_LUNA";
         
@@ -1164,7 +1164,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPINintendoClassic = "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC";
         
@@ -1182,7 +1182,7 @@ public static partial class SDL
         /// <see cref="JoystickHIDAPIPS3SixAxisDriver"/>. See
         /// https://github.com/ViGEm/DsHidMini for an alternative driver on Windows.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIPS3 = "SDL_JOYSTICK_HIDAPI_PS3";
         
@@ -1196,7 +1196,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default value is 0.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIPS3SixAxisDriver = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         
@@ -1210,7 +1210,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIPS4 = "SDL_JOYSTICK_HIDAPI_PS4";
         
@@ -1257,7 +1257,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIPS5 = "SDL_JOYSTICK_HIDAPI_PS5";
         
@@ -1303,7 +1303,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIShield = "SDL_JOYSTICK_HIDAPI_SHIELD";
         
@@ -1331,7 +1331,7 @@ public static partial class SDL
         /// Android.</item>
         /// </list>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPISteam = "SDL_JOYSTICK_HIDAPI_STEAM";
         
@@ -1361,7 +1361,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPISteamdeck = "SDL_JOYSTICK_HIDAPI_STEAMDECK";
         
@@ -1385,7 +1385,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPISwitch = "SDL_JOYSTICK_HIDAPI_SWITCH";
         
@@ -1442,7 +1442,7 @@ public static partial class SDL
         /// <para>This driver doesn't work with the dolphinbar, so the default is false for
         /// now.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIWii = "SDL_JOYSTICK_HIDAPI_WII";
         
@@ -1470,7 +1470,7 @@ public static partial class SDL
         /// <para>The default is <c>"0"</c> on Windows, otherwise the value of
         /// <see cref="JoystickHIDAPI"/></para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIXbox = "SDL_JOYSTICK_HIDAPI_XBOX";
         
@@ -1484,7 +1484,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPIXbox"/></para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIXbox360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
         
@@ -1511,7 +1511,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPIXbox360"/></para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIXbox360Wireless = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS";
         
@@ -1525,7 +1525,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPIXbox"/>.</para>
         /// </summary>
-        /// <remarks>This hint should be set before enumerating controllers.</remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIXboxOne = "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
         
