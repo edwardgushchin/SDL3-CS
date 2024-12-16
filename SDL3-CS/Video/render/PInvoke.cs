@@ -933,7 +933,69 @@ public static partial class SDL
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateTexture(IntPtr texture, Rect rect, IntPtr pixels, int pitch);
+    public static partial bool UpdateTexture(IntPtr texture, IntPtr rect, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] pixels, int pitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
+    /// <summary>
+    /// <para>Update the given texture rectangle with new pixel data.</para>
+    /// <para>The pixel data must be in the pixel format of the texture, which can be
+    /// queried using the <see cref="Props.TextureFormatNumber"/> property.</para>
+    /// <para>This is a fairly slow function, intended for use with static textures that
+    /// do not change often.</para>
+    /// <para>If the texture is intended to be updated often, it is preferred to create
+    /// the texture as streaming and use the locking functions referenced below.
+    /// While this function will work with streaming textures, for optimization
+    /// reasons you may not get the pixels back if you lock the texture afterward.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the area to update, or <c>null</c>
+    /// to update the entire texture.</param>
+    /// <param name="pixels">the raw pixel data in the format of the texture.</param>
+    /// <param name="pitch">the number of bytes in a row of pixel data, including padding
+    /// between lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
+    /// <seealso cref="UnlockTexture"/>
+    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
+    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool UpdateTexture(IntPtr texture, in Rect rect, IntPtr pixels, int pitch);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
+    /// <summary>
+    /// <para>Update the given texture rectangle with new pixel data.</para>
+    /// <para>The pixel data must be in the pixel format of the texture, which can be
+    /// queried using the <see cref="Props.TextureFormatNumber"/> property.</para>
+    /// <para>This is a fairly slow function, intended for use with static textures that
+    /// do not change often.</para>
+    /// <para>If the texture is intended to be updated often, it is preferred to create
+    /// the texture as streaming and use the locking functions referenced below.
+    /// While this function will work with streaming textures, for optimization
+    /// reasons you may not get the pixels back if you lock the texture afterward.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the area to update, or <c>null</c>
+    /// to update the entire texture.</param>
+    /// <param name="pixels">the raw pixel data in the format of the texture.</param>
+    /// <param name="pitch">the number of bytes in a row of pixel data, including padding
+    /// between lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
+    /// <seealso cref="UnlockTexture"/>
+    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
+    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool UpdateTexture(IntPtr texture, in Rect rect, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] pixels, int pitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);</code>
@@ -995,7 +1057,7 @@ public static partial class SDL
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateYUVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateYUVTexture(IntPtr texture, Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
+    public static partial bool UpdateYUVTexture(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);</code>
@@ -1049,7 +1111,7 @@ public static partial class SDL
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateNVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool UpdateNVTexture(IntPtr texture, Rect rect, IntPtr yplane, int ypitch, IntPtr  uvplane, int uvpitch);
+    public static partial bool UpdateNVTexture(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr  uvplane, int uvpitch);
     
     
     //extern SDL_DECLSPEC bool SDLCALL SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
@@ -1109,7 +1171,7 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool LockTexture(IntPtr texture, Rect rect, out IntPtr pixels, out int pitch);
+    public static partial bool LockTexture(IntPtr texture, in Rect rect, out IntPtr pixels, out int pitch);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);</code>
@@ -1173,7 +1235,7 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTextureToSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool LockTextureToSurface(IntPtr texture, Rect rect, out IntPtr surface);
+    public static partial bool LockTextureToSurface(IntPtr texture, in Rect rect, out IntPtr surface);
     
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockTexture(SDL_Texture *texture);</code>

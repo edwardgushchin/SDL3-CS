@@ -109,52 +109,33 @@ internal static class Program
             {
                 var frame = SDL.PointerToStruct<SDL.Surface>(framePtr) ?? default;
                 
+                if (texture == IntPtr.Zero)
+                {
+                    SDL.SetWindowSize(_window, frame.Width, frame.Height);
+                    texture = SDL.CreateTexture(_renderer, frame.Format, SDL.TextureAccess.Streaming, frame.Width, frame.Height);
+                }
+                
                 if (vhs)
                 {
-                    /*
-                     * IMPORTANT INFORMATION!
-                     *
-                     * This code is written as an example. Do not use it in real software.
-                     * The point is that here visual effects are applied on the byte array,
-                     * which represents the current frame. The calculations are performed on the CPU side.
-                     * In a normal situation, such visual effects should be implemented on the
-                     * shader side and executed on the GPU side.
-                     *
-                     * Consider this code as a demonstration of the capabilities, and not a working version.
-                     */
-
-                    var frameBuffer = SDL.PointerToStructArray<byte>(frame.Pixels, frame.Pitch * frame.Height);
+                    var pixels = SDL.PointerToStructArray<byte>(frame.Pixels, frame.Pitch * frame.Height)!;
                     
-                    ApplyVHSEffectYUY22(frameBuffer!, frame.Width, frame.Height);
-    
-                    var bufferHandle = GCHandle.Alloc(frameBuffer, GCHandleType.Pinned);
-                    try
-                    {
-                        var unmanagedFrameBuffer = bufferHandle.AddrOfPinnedObject();
-                        UpdateTexture(ref frame, ref texture, ref unmanagedFrameBuffer);
-                    }
-                    finally
-                    {
-                        bufferHandle.Free();
-                    }
+                    ApplyVHSEffectYUY22(pixels, frame.Width, frame.Height);
+                    
+                    SDL.UpdateTexture(texture, IntPtr.Zero, pixels, frame.Pitch);
                 }
                 else
                 {
-                    UpdateTexture(ref frame, ref texture, ref frame.Pixels);
+                    SDL.UpdateTexture(texture, IntPtr.Zero, frame.Pixels, frame.Pitch);
                 }
-
+                
                 SDL.ReleaseCameraFrame(camera, framePtr);
-            }
-
-            SDL.SetRenderDrawColor(_renderer, 0x99, 0x99, 0x99, 255);
-            SDL.RenderClear(_renderer);
-            
-            if (texture != IntPtr.Zero) 
-            {
-                SDL.RenderTexture(_renderer, texture, IntPtr.Zero, IntPtr.Zero);
             }
             
             fpsCounter.Update();
+            
+            SDL.RenderClear(_renderer);
+            
+            SDL.RenderTexture(_renderer, texture, IntPtr.Zero, IntPtr.Zero);
             
             SDL.SetRenderDrawColor(_renderer, 0x00, 0xFF, 0x00, 255);
             SDL.RenderDebugText(_renderer, 10, 10, $"FPS: {fpsCounter.FPS:N0}");
@@ -167,19 +148,6 @@ internal static class Program
         SDL.DestroyRenderer(_renderer);
         SDL.DestroyWindow(_window);
         SDL.Quit();
-    }
-    
-    private static void UpdateTexture(ref SDL.Surface frame, ref IntPtr texture, ref IntPtr framePixels)
-    {
-        if (texture == IntPtr.Zero)
-        {
-            SDL.SetWindowSize(_window, frame.Width, frame.Height);
-            texture = SDL.CreateTexture(_renderer, frame.Format, SDL.TextureAccess.Streaming, frame.Width, frame.Height);
-        }
-        else
-        {
-            SDL.UpdateTexture(texture, IntPtr.Zero, framePixels, frame.Pitch);
-        }
     }
     
     public static void ApplyVHSEffectYUY22(byte[] buffer, int width, int height)
@@ -197,7 +165,7 @@ internal static class Program
             var localRng = threadRng.Value; // Local generator for each thread
 
             // Row shift
-            var rowOffset = localRng!.Next(-1, 1) * 4;
+            var rowOffset = rng!.Next(-1, 1) * 4;
 
             for (var x = 0; x < width * 2; x += 4)
             {
