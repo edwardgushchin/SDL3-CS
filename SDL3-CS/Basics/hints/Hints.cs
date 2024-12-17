@@ -177,14 +177,44 @@ public static partial class SDL
         
         /// <summary>
         /// <para>Specify the default ALSA audio device name.</para>
-        /// <para>This variable is a specific audio device to open when the <c>"default"</c> audio
-        /// device is used. By default if 4 channel audio is requested, the
-        /// <c>"plug:surround40"</c> device will be opened and if 6 channel audio is requested
-        /// the <c>"plug:surround51"</c> device will be opened.</para>
+        /// <para>This variable is a specific audio device to open when the "default" audio
+        /// device is used.</para>
+        /// <para>This hint will be ignored when opening the default playback device if
+        /// <see cref="AudioALSADefaultPlaybackDevice"/> is set, or when opening the
+        /// default recording device if <see cref="AudioALSADefaultRecordingDevice"/>
+        /// is set.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <seealso cref="AudioALSADefaultPlaybackDevice"/>
+        /// <seealso cref="AudioALSADefaultRecordingDevice"/>
         public const string AudioALSADefaultDevice = "SDL_AUDIO_ALSA_DEFAULT_DEVICE";
+
+        /// <summary>
+        /// <para>Specify the default ALSA audio playback device name.</para>
+        /// <para>This variable is a specific audio device to open for playback, when the
+        /// "default" audio device is used.</para>
+        /// <para>If this hint isn't set, SDL will check <see cref="AudioALSADefaultDevice"/>
+        /// before choosing a reasonable default.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before an audio device is opened.</remarks>
+        /// <since>This hint is available since SDL 3.1.7.</since>
+        /// <seealso cref="AudioALSADefaultRecordingDevice"/>
+        /// <seealso cref="AudioALSADefaultDevice"/>
+        public const string AudioALSADefaultPlaybackDevice = "SDL_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE";
+
+        /// <summary>
+        /// <para>Specify the default ALSA audio recording device name.</para>
+        /// <para>This variable is a specific audio device to open for recording, when the
+        /// "default" audio device is used.</para>
+        /// <para>If this hint isn't set, SDL will check <see cref="AudioALSADefaultDevice"/>
+        /// before choosing a reasonable default.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before an audio device is opened.</remarks>
+        /// <since>This hint is available since SDL 3.1.7.</since>
+        /// <seealso cref="AudioALSADefaultPlaybackDevice"/>
+        /// <seealso cref="AudioALSADefaultDevice"/>
+        public const string AudioALSADefaultRecordingDevice = "SDL_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE";
         
         /// <summary>
         /// <para>A variable controlling the audio category on iOS and macOS.</para>
