@@ -110,11 +110,6 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ## ✅ Readiness
 
-* **Not ready**: The component is not ready for use
-* **Skipped**: The component will not be developed
-* **In progress**: The component is under development
-* **Ready**: The component is completely ready for use
-
 ### Basics
 
 | **View information and functions related to...**   | **View the header**                                                                           | **Stage**                                            |
@@ -183,19 +178,19 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### Threads
 
-| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                |
-|-----------------------------------| --------------------------------------------------------------------------------------- |----------------------------------------------------------|
-| Thread Management                 | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)   | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)  |
-| Thread Synchronization Primitives | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)     | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)  |
-| Atomic Operations                 | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)   | ![Skipped](https://img.shields.io/badge/Skipped-FFA500)  |
+| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                          |
+|-----------------------------------| --------------------------------------------------------------------------------------- |--------------------------------------------------------------------|
+| Thread Management                 | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| Thread Synchronization Primitives | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| Atomic Operations                 | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
 
 
 ### Time
 
-| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                               |
-|----------------------------------------------| --------------------------------------------------------------------------------------- |---------------------------------------------------------|
-| [Timer Support](SDL3-CS/Time/timer)          | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)     |
-| Date and Time                                | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
+| **View information and functions related to...** | **View the header**                                                                     | **Stage**                                                          |
+|----------------------------------------------| --------------------------------------------------------------------------------------- |--------------------------------------------------------------------|
+| [Timer Support](SDL3-CS/Time/timer)          | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)                |
+| Date and Time                                | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
 
 
 ### File and I/O Abstractions
@@ -205,16 +200,17 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [Filesystem Access](SDL3-CS/File%20and%20IO%20Abstractions/filesystem) | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
 | [Storage Abstraction](SDL3-CS/File%20and%20IO%20Abstractions/storage) | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
 | [I/O Streams](SDL3-CS/File%20and%20IO%20Abstractions/iostream)    | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| [Async I/O](SDL3-CS/File%20and%20IO%20Abstractions/asyncio)    | [SDL_asyncio.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_asyncio.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
 
 
 ### Platform and CPU Information
 
-| **View information and functions related to...**                            | **View the header**                                                                       | **Stage**                                               |
-|-----------------------------------------------------------------------------| ----------------------------------------------------------------------------------------- |---------------------------------------------------------|
-| [Platform Detection](SDL3-CS/Platform%20and%20CPU%20Information/platform)   | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282)     |
-| [CPU Feature Detection](SDL3-CS/Platform%20and%20CPU%20Information/cpuinfo) | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282)     |
-| Byte Order and Byte Swapping                                                | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)     | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
-| Bit Manipulation                                                            | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)         | ![Skipped](https://img.shields.io/badge/Skipped-FFA500) |
+| **View information and functions related to...**                            | **View the header**                                                                       | **Stage**                                                          |
+|-----------------------------------------------------------------------------| ----------------------------------------------------------------------------------------- |--------------------------------------------------------------------|
+| [Platform Detection](SDL3-CS/Platform%20and%20CPU%20Information/platform)   | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h) | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| [CPU Feature Detection](SDL3-CS/Platform%20and%20CPU%20Information/cpuinfo) | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)   | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| Byte Order and Byte Swapping                                                | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)     | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| Bit Manipulation                                                            | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)         | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
 
 
 ### Additional Functionality
