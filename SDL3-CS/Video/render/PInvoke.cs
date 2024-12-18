@@ -3410,8 +3410,61 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.6.</since>
+    /// <seealso cref="RenderDebugTextF"/>
+    /// <seealso cref="RenderDebugTextV"/>
     /// <seealso cref="DebugTextFontCharacterSize"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderDebugText(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderDebugTextF(SDL_Renderer *renderer, float x, float y, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(4);</code>
+    /// <summary>
+    /// <para>Draw debug text to an SDL_Renderer.</para>
+    /// <para>This function will render a printf() style format string to a renderer. Note
+    /// that this is a convinence function for debugging, with severe limitations,
+    /// and is not intended to be used for production apps and games.</para>
+    /// <para>For the full list of limitations and other useful information,
+    /// see <see cref="RenderDebugText"/>.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw the text.</param>
+    /// <param name="x">the x coordinate where the top-left corner of the text will draw.</param>
+    /// <param name="y">the y coordinate where the top-left corner of the text will draw.</param>
+    /// <param name="fmt">the format string to draw.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.7.</since>
+    /// <seealso cref="RenderDebugText"/>
+    /// <seealso cref="RenderDebugTextV"/>
+    /// <seealso cref="DebugTextFontCharacterSize"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugTextF"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderDebugTextF(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderDebugTextV(SDL_Renderer *renderer, float x, float y, SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap) SDL_PRINTF_VARARG_FUNCV(4);</code>
+    /// <summary>
+    /// <para>Draw debug text to an SDL_Renderer.</para>
+    /// <para>This function will render a printf() style format string to a renderer. Note
+    /// that this is a convinence function for debugging, with severe limitations,
+    /// and is not intended to be used for production apps and games.</para>
+    /// <para>For the full list of limitations and other useful information,
+    /// see <see cref="RenderDebugText"/>.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw the text.</param>
+    /// <param name="x">the x coordinate where the top-left corner of the text will draw.</param>
+    /// <param name="y">the y coordinate where the top-left corner of the text will draw.</param>
+    /// <param name="fmt">the format string to draw.</param>
+    /// <param name="ap">a variable argument lists representing the format arguments</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.7.</since>
+    /// <seealso cref="RenderDebugText"/>
+    /// <seealso cref="RenderDebugTextF"/>
+    /// <seealso cref="DebugTextFontCharacterSize"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugTextV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderDebugTextV(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
 }

@@ -311,7 +311,7 @@ public static partial class SDL
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogMessageV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogMessageV(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, IntPtr ap);
+    public static partial void LogMessageV(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
     
     
     /// <code>extern SDL_DECLSPEC SDL_LogOutputFunction SDLCALL SDL_GetDefaultLogOutputFunction(void);</code>

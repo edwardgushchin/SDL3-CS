@@ -66,7 +66,7 @@ public static partial class SDL
     /// <seealso cref="SetError"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetErrorV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetErrorV([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, IntPtr ap);
+    public static partial bool SetErrorV([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
     
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_OutOfMemory(void);</code>
