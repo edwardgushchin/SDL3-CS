@@ -1094,8 +1094,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowPosition(SDL_Window *window, int x, int y);</code>
     /// <summary>
     /// <para>Request that the window's position be set.</para>
-    /// <para>If the window is in an exclusive fullscreen or maximized state, this request
-    /// has no effect.</para>
+    /// <para>If the window is in an exclusive fullscreen or maximized state, this
+    /// request has no effect.</para>
     /// <para>This can be used to reposition fullscreen-desktop windows onto a different
     /// display, however, as exclusive fullscreen windows are locked to a specific
     /// display, they can only be repositioned programmatically via
