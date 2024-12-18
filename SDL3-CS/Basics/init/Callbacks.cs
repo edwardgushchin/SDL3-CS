@@ -27,6 +27,26 @@ namespace SDL3;
 
 public partial class SDL
 {
+    /// <code>typedef SDL_AppResult (SDLCALL *SDL_AppInit_func)(void **appstate, int argc, char *argv[]);</code>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate AppResult AppInitFunc(IntPtr appstate, int argc, string[] argv);
+    
+    
+    /// <code>typedef SDL_AppResult (SDLCALL *SDL_AppIterate_func)(void *appstate);</code>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate AppResult AppIterateFunc(IntPtr appstate);
+    
+    
+    /// <code>typedef SDL_AppResult (SDLCALL *SDL_AppEvent_func)(void *appstate, SDL_Event *event);</code>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate AppResult AppEventFunc(IntPtr appstate, ref Event @event);
+    
+    
+    /// <code>typedef void (SDLCALL *SDL_AppQuit_func)(void *appstate, SDL_AppResult result);</code>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void AppQuitFunc(IntPtr appstate, AppResult result);
+    
+    
     /// <code>typedef void (SDLCALL *SDL_MainThreadCallback)(void *userdata);</code>
     /// <summary>
     /// Callback run on the main thread.

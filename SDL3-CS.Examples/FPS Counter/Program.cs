@@ -73,7 +73,7 @@ internal static class Program
             SDL.SetRenderDrawColor(renderer, r, g, b, 255);
             SDL.RenderClear(renderer);
             
-            SDL.SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 255);
+            SDL.SetRenderDrawColor(renderer, (byte) (255 - r), (byte) (255 - g), (byte) (255 - b), 255);
             SDL.RenderDebugText(renderer, 10, 10, $"FPS: {fpsCounter.FPS:N0}");
             
             SDL.RenderPresent(renderer);
