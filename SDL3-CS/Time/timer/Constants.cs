@@ -25,21 +25,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [Macro]
-    public static ulong SecondsToNs(ulong seconds) => seconds * NsPerSecond;
+    public const int MsPerSecond = 1000;
     
-    [Macro]
-    public static ulong NsToSeconds(ulong nanoseconds) => nanoseconds / NsPerSecond;
+    public const int UsPerSecond  = 1000000;
     
-    [Macro]
-    public static ulong MsToNs(ulong milliseconds) => milliseconds * NsPerMs;
+    public const long NsPerSecond = 1000000000L;
     
-    [Macro]
-    public static ulong NsToMs(ulong nanoseconds) => nanoseconds / NsPerMs;
+    public const int NsPerMs = 1000000;
     
-    [Macro]
-    public static ulong UsToNs(ulong microseconds) => microseconds * NsPerUs;
-    
-    [Macro]
-    public static ulong NsToUs(ulong nanoseconds) => nanoseconds / NsPerUs;
+    public const int NsPerUs = 1000;
 }
