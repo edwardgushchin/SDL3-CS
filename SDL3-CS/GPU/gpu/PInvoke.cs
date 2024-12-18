@@ -1630,7 +1630,7 @@ public partial class SDL
     /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.6.</since>
-    /// <seealso cref="WaitAndAcquireSwapchainTexture"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="AcquireGPUCommandBuffer"/>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CancelGPUCommandBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
