@@ -177,9 +177,9 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### GPU
 
-| **View information and functions related to...** | **View the header**                                                               | **Stage**                                                        |
-|--------------------------------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------------------|
-| [3D Rendering and GPU Compute](SDL3-CS/GPU/gpu)  | [SDL_gpu.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gpu.h) | ![Not ready](https://img.shields.io/badge/Not%20ready-D0312D)    |
+| **View information and functions related to...** | **View the header**                                                               | **Stage**                                            |
+|--------------------------------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------|
+| [3D Rendering and GPU Compute](SDL3-CS/GPU/gpu)  | [SDL_gpu.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_gpu.h) | ![Ready](https://img.shields.io/badge/Ready-008000)  |
 
 ### Threads
 
