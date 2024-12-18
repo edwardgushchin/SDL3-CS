@@ -1094,12 +1094,11 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowPosition(SDL_Window *window, int x, int y);</code>
     /// <summary>
     /// <para>Request that the window's position be set.</para>
-    /// <para>If, at the time of this request, the window is in a fixed-size state such
-    /// as maximized, this request may be deferred until the window returns to a
-    /// resizable state.</para>
+    /// <para>If the window is in an exclusive fullscreen or maximized state, this request
+    /// has no effect.</para>
     /// <para>This can be used to reposition fullscreen-desktop windows onto a different
-    /// display, however, exclusive fullscreen windows are locked to a specific
-    /// display and can only be repositioned programmatically via
+    /// display, however, as exclusive fullscreen windows are locked to a specific
+    /// display, they can only be repositioned programmatically via
     /// <see cref="SetWindowFullscreenMode(nint, nint)"/>.</para>
     /// <para>On some windowing systems this request is asynchronous and the new
     /// coordinates may not have have been applied immediately upon the return of
@@ -1155,10 +1154,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowSize(SDL_Window *window, int w, int h);</code>
     /// <summary>
     /// <para>Request that the size of a window's client area be set.</para>
-    /// <para>If, at the time of this request, the window in a fixed-size state, such as
-    /// maximized or fullscreen, the request will be deferred until the window
-    /// exits this state and becomes resizable again.</para>
-    /// <para>To change the fullscreen mode of a window, use
+    /// <para>If the window is in a fullscreen or maximized state, this request has no
+    /// effect.</para>
+    /// <para>To change the exclusive fullscreen mode of a window, use
     /// <see cref="SetWindowFullscreenMode(nint, nint)"/></para>
     /// <para>On some windowing systems, this request is asynchronous and the new window
     /// size may not have have been applied immediately upon the return of this
@@ -1559,6 +1557,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_MinimizeWindow(SDL_Window *window);</code>
     /// <summary>
     /// <para>Request that the window be minimized to an iconic representation.</para>
+    /// <para>If the window is in a fullscreen state, this request has no direct effect.
+    /// It may alter the state the window is returned to when leaving fullscreen.</para>
     /// <para>On some windowing systems this request is asynchronous and the new window
     /// state may not have been applied immediately upon the return of this
     /// function. If an immediate change is required, call <see cref="SyncWindow"/> to
@@ -1584,6 +1584,8 @@ public static partial class SDL
     /// <summary>
     /// <para>Request that the size and position of a minimized or maximized window be
     /// restored.</para>
+    /// <para>If the window is in a fullscreen state, this request has no direct effect.
+    /// It may alter the state the window is returned to when leaving fullscreen.</para>
     /// <para>On some windowing systems this request is asynchronous and the new window
     /// state may not have have been applied immediately upon the return of this
     /// function. If an immediate change is required, call SDL_SyncWindow() to
