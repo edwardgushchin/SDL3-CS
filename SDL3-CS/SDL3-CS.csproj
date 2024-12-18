@@ -160,6 +160,12 @@
 
     <ItemGroup>
       <Folder Include="File and IO Abstractions\asyncio\" />
+      <Folder Include="Platform and CPU Information\bits\" />
+      <Folder Include="Platform and CPU Information\endian\" />
+      <Folder Include="Threads\atomic\" />
+      <Folder Include="Threads\mutex\" />
+      <Folder Include="Threads\thread\" />
+      <Folder Include="Time\time\" />
     </ItemGroup>
 
     <!-- <ItemGroup>
