@@ -184,7 +184,7 @@ internal static class Program
                 var blurredY = (byte)(sumY / count);
 
                 // Apply noise and distortion
-                buffer[index] = (byte)Math.Clamp(blurredY + localRng.Next(-10, 10), 0, 255); // Y0
+                buffer[index] = (byte)Math.Clamp(blurredY + localRng!.Next(-10, 10), 0, 255); // Y0
                 buffer[index + 2] = (byte)Math.Clamp(buffer[index + 2] + localRng.Next(-10, 10), 0, 255); // Y1
                 buffer[index + 1] = (byte)Math.Clamp(buffer[index + 1] + localRng.Next(-10, 10), 0, 255); // Cb
                 buffer[index + 3] = (byte)Math.Clamp(buffer[index + 3] + localRng.Next(-10, 10), 0, 255); // Cr

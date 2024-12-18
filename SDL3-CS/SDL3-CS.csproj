@@ -150,12 +150,7 @@
     <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
       <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
-      <None Include="../icon.png" Pack="true" Visible="false" PackagePath="\"/>
-      <None Include="..\logo.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-        <Link>logo.png</Link>
-      </None>
+      <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
