@@ -3423,8 +3423,8 @@ public static partial class SDL
     /// <para>This function will render a printf()-style format string to a renderer.
     /// Note that this is a convinence function for debugging, with severe
     /// limitations, and is not intended to be used for production apps and games.</para>
-    /// <para>For the full list of limitations and other useful information,
-    /// see <see cref="RenderDebugText"/>.</para>
+    /// <para>For the full list of limitations and other useful information, see
+    /// <see cref="RenderDebugText"/>.</para>
     /// </summary>
     /// <param name="renderer">the renderer which should draw the text.</param>
     /// <param name="x">the x coordinate where the top-left corner of the text will draw.</param>
@@ -3433,7 +3433,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.7.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RenderDebugText"/>
     /// <seealso cref="DebugTextFontCharacterSize"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugTextFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
