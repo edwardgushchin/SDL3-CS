@@ -1486,8 +1486,11 @@ public partial class SDL
     /// buffer used to acquire it.</para>
     /// <para>This function will fill the swapchain texture handle with <c>null</c> if too many
     /// frames are in flight. This is not an error.</para>
-    /// <para>If you use this function, it is possible to create a situation where many command buffers are allocated while the rendering context waits for the GPU to catch up, which will cause memory usage to grow.
-    /// You should use <see cref="WaitAndAcquireGPUSwapchainTexture"/> unless you know what you are doing with timing.</para>
+    /// <para>If you use this function, it is possible to create a situation where many
+    /// command buffers are allocated while the rendering context waits for the GPU
+    /// to catch up, which will cause memory usage to grow. You should use
+    /// <see cref="WaitAndAcquireGPUSwapchainTexture"/> unless you know what you are doing
+    /// with timing.</para>
     /// <para>The swapchain texture is managed by the implementation and must not be
     /// freed by the user. You MUST NOT call this function from any thread other
     /// than the one that created the window.</para>
