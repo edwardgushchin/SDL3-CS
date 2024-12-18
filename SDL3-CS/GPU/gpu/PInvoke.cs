@@ -1394,7 +1394,7 @@ public partial class SDL
     /// <threadsafety>This function should only be called from the thread that
     /// created the window.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="AcquireGPUSwapchainTexture"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="ReleaseWindowFromGPUDevice"/>
     /// <seealso cref="WindowSupportsGPUPresentMode"/>
     /// <seealso cref="WindowSupportsGPUSwapchainComposition"/>
@@ -1485,9 +1485,9 @@ public partial class SDL
     /// submitted. The swapchain texture should only be referenced by the command
     /// buffer used to acquire it.</para>
     /// <para>This function will fill the swapchain texture handle with <c>null</c> if too many
-    /// frames are in flight. This is not an error. The best practice is to call
-    /// <see cref="CancelGPUCommandBuffer"/> if the swapchain texture handle is <c>null</c> to avoid
-    /// enqueuing needless work on the GPU.</para>
+    /// frames are in flight. This is not an error.</para>
+    /// <para>If you use this function, it is possible to create a situation where many command buffers are allocated while the rendering context waits for the GPU to catch up, which will cause memory usage to grow.
+    /// You should use <see cref="WaitAndAcquireGPUSwapchainTexture"/> unless you know what you are doing with timing.</para>
     /// <para>The swapchain texture is managed by the implementation and must not be
     /// freed by the user. You MUST NOT call this function from any thread other
     /// than the one that created the window.</para>
@@ -1511,6 +1511,7 @@ public partial class SDL
     /// <seealso cref="CancelGPUCommandBuffer"/>
     /// <seealso cref="GetWindowSizeInPixels"/>
     /// <seealso cref="WaitForGPUSwapchain"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="SetGPUAllowedFramesInFlight"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AcquireGPUSwapchainTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1529,6 +1530,7 @@ public partial class SDL
     /// created the window.</threadsafety>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="SetGPUAllowedFramesInFlight"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitForGPUSwapchain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1581,6 +1583,7 @@ public partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="AcquireGPUCommandBuffer"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SubmitGPUCommandBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1603,6 +1606,7 @@ public partial class SDL
     /// call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="AcquireGPUCommandBuffer"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
     /// <seealso cref="SubmitGPUCommandBuffer"/>
     /// <seealso cref="ReleaseGPUFence"/>
@@ -1614,15 +1618,16 @@ public partial class SDL
     /// <summary>
     /// <para>Cancels a command buffer.</para>
     /// <para>None of the enqueued commands are executed.</para>
-    /// <para>This must be called from the thread the command buffer was acquired on.</para>
-    /// <para>You must not reference the command buffer after calling this function. It
-    /// is an error to call this function after a swapchain texture has been
+    /// <para>It is an error to call this function after a swapchain texture has been
     /// acquired.</para>
+    /// <para>This must be called from the thread the command buffer was acquired on.</para>
+    /// <para>You must not reference the command buffer after calling this function.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.6.</since>
+    /// <seealso cref="WaitAndAcquireSwapchainTexture"/>
     /// <seealso cref="AcquireGPUCommandBuffer"/>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CancelGPUCommandBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

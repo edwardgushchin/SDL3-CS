@@ -46,7 +46,7 @@ public static partial class SDL
     /// <since>This enum is available since SDL 3.1.3</since>
     /// <seealso cref="SetGPUSwapchainParameters"/>
     /// <seealso cref="WindowSupportsGPUSwapchainComposition"/>
-    /// <seealso cref="AcquireGPUSwapchainTexture"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     public enum GPUSwapchainComposition
     {
         SDR,
