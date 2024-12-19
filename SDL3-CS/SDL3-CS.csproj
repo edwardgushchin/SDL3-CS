@@ -159,8 +159,6 @@
       <Folder Include="Platform and CPU Information\bits\" />
       <Folder Include="Platform and CPU Information\endian\" />
       <Folder Include="Platform and CPU Information\intrin\" />
-      <Folder Include="Threads\atomic\" />
-      <Folder Include="Threads\mutex\" />
       <Folder Include="Time\time\" />
     </ItemGroup>
 

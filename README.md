@@ -181,7 +181,7 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | **View information and functions related to...**           | **View the header**                                                                    | **Stage**                                                         |
 |------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 | [Thread Management](SDL3-CS/Threads/thread)                | [SDL_thread.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_thread.h)  | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Thread Synchronization Primitives](SDL3-CS/Threads/mutex) | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)    | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Thread Synchronization Primitives](SDL3-CS/Threads/mutex) | [SDL_mutex.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_mutex.h)    | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [Atomic Operations](SDL3-CS/Threads/atomic)                | [SDL_atomic.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_atomic.h)  | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
 
