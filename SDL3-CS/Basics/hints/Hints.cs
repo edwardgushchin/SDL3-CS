@@ -2120,20 +2120,6 @@ public static partial class SDL
         public const string MouseRelativeCursorVisible = "SDL_MOUSE_RELATIVE_CURSOR_VISIBLE";
         
         /// <summary>
-        /// <para>Controls how often SDL issues cursor confinement commands to the operating
-        /// system while relative mode is active, in case the desired confinement state
-        /// became out-of-sync due to interference from other running programs.</para>
-        /// <para>The variable can be integers representing milliseconds between each
-        /// refresh. A value of zero means SDL will not automatically refresh the
-        /// confinement. The default value varies depending on the operating system,
-        /// this variable might not have any effects on inapplicable platforms such as
-        /// those without a cursor.</para>
-        /// </summary>
-        /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
-        public const string MouseRelativeClipInterval = "SDL_MOUSE_RELATIVE_CLIP_INTERVAL";
-        
-        /// <summary>
         /// <para>A variable controlling whether mouse events should generate synthetic touch
         /// events.</para>
         /// <para>The variable can be set to the following values:</para>
