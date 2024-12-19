@@ -161,7 +161,6 @@
       <Folder Include="Platform and CPU Information\intrin\" />
       <Folder Include="Threads\atomic\" />
       <Folder Include="Threads\mutex\" />
-      <Folder Include="Threads\thread\" />
       <Folder Include="Time\time\" />
     </ItemGroup>
 
