@@ -339,6 +339,21 @@ public static partial class SDL
         /// A mouse has been removed
         /// </summary>
         MouseRemoved,
+        
+        /// <summary>
+        /// Mouse moved (raw motion deltas)
+        /// </summary>
+        MouseRawMotion,
+        
+        /// <summary>
+        /// Mouse click (raw button delta)
+        /// </summary>
+        MouseRawButton,
+        
+        /// <summary>
+        /// Mouse wheel (raw scroll deltas)
+        /// </summary>
+        MouseRawScroll,
         #endregion
 
         #region Joystick events

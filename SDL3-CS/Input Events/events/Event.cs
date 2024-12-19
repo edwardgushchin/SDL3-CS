@@ -102,6 +102,16 @@ public static partial class SDL
         [FieldOffset(0)] public MouseWheelEvent Wheel;
         
         /// <summary>
+        /// Mouse raw axis event data (motion or wheel deltas)
+        /// </summary>
+        [FieldOffset(0)] public MouseRawAxisEvent MAxis;
+        
+        /// <summary>
+        /// Mouse raw button event data
+        /// </summary>
+        [FieldOffset(0)] public MouseRawButtonEvent MButton;
+        
+        /// <summary>
         /// Joystick device change event data
         /// </summary>
         [FieldOffset(0)] public JoyDeviceEvent JDevice;
