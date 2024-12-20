@@ -28,11 +28,11 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>A type representing an atomic integer value.</para>
+    /// <para>A type representing an atomic unsigned 32-bit value.</para>
     /// <para>This can be used to manage a value that is synchronized across multiple
     /// CPUs without a race condition; when an app sets a value with
-    /// <see cref="SetAtomicInt"/> all other threads, regardless of the CPU it is running on,
-    /// will see that value when retrieved with <see cref="GetAtomicInt"/>, regardless of CPU
+    /// <see cref="SetAtomicU32"/> all other threads, regardless of the CPU it is running on,
+    /// will see that value when retrieved with SDL_GetAtomicU32, regardless of CPU
     /// caches, etc.</para>
     /// <para>This is also useful for atomic compare-and-swap operations: a thread can
     /// change the value as long as its current value matches expectations. When
@@ -45,13 +45,12 @@ public static partial class SDL
     /// directly. You have to use SDL atomic functions.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3.</since>
-    /// <seealso cref="CompareAndSwapAtomicInt"/>
-    /// <seealso cref="GetAtomicInt"/>
-    /// <seealso cref="SetAtomicInt"/>
-    /// <seealso cref="AddAtomicInt"/>
+    /// <seealso cref="CompareAndSwapAtomicU32"/>
+    /// <seealso cref="GetAtomicU32"/>
+    /// <seealso cref="SetAtomicU32"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct AtomicInt
+    public struct AtomicU32
     {
-        public int Value;
+        public uint Value;
     }
 }
