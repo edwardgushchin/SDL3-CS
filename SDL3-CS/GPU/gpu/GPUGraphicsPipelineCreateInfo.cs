@@ -32,6 +32,12 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3</since>
     /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="GPUVertexInputState"/>
+    /// <seealso cref="GPUPrimitiveType"/>
+    /// <seealso cref="GPURasterizerState"/>
+    /// <seealso cref="GPUMultisampleState"/>
+    /// <seealso cref="GPUDepthStencilState"/>
+    /// <seealso cref="GPUGraphicsPipelineTargetInfo"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUGraphicsPipelineCreateInfo
     {
