@@ -264,7 +264,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GlobDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GlobDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, [MarshalAs(UnmanagedType.LPUTF8Str)] string pattern, GlobFlags flags, out int count);
+    private static partial IntPtr SDL_GlobDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, [MarshalAs(UnmanagedType.LPUTF8Str)] string? pattern, GlobFlags flags, out int count);
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);</code>
     /// <summary>
     /// <para>Enumerate a directory tree, filtered by pattern, and return a list.</para>
@@ -291,7 +291,7 @@ public static partial class SDL
     /// that should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    public static string[]? GlobDirectory(string path, string pattern, GlobFlags flags, out int count)
+    public static string[]? GlobDirectory(string path, string? pattern, GlobFlags flags, out int count)
     {
         var ptr = SDL_GlobDirectory(path, pattern, flags, out count);
 

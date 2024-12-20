@@ -198,7 +198,7 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | **View information and functions related to...**                        | **View the header**                                                                            | **Stage**                                                         |
 |-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 | [Filesystem Access](SDL3-CS/File%20and%20IO%20Abstractions/filesystem)  | [SDL_filesystem.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_filesystem.h)  | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Storage Abstraction](SDL3-CS/File%20and%20IO%20Abstractions/storage)   | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)        | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Storage Abstraction](SDL3-CS/File%20and%20IO%20Abstractions/storage)   | [SDL_storage.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_storage.h)        | ![Ready](https://img.shields.io/badge/Ready-008000)               |
 | [I/O Streams](SDL3-CS/File%20and%20IO%20Abstractions/iostream)          | [SDL_iostream.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_iostream.h)      | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [Async I/O](SDL3-CS/File%20and%20IO%20Abstractions/asyncio)             | [SDL_asyncio.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_asyncio.h)        | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
