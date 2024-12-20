@@ -305,6 +305,13 @@ public partial class SDL
     /// [[stage_in]] attribute which will automatically use the vertex input
     /// information from the SDL_GPUGraphicsPipeline.</item>
     /// </list>
+    /// <para>Shader semantics do not matter in D3D12 and for ease of use the SDL
+    /// implementation assumes that they will all be TEXCOORD. If you are using
+    /// HLSL as the shader source language, your vertex semantics should start at
+    /// TEXCOORD0 and increment like so: TEXCOORD1, TEXCOORD2, etc. If you wish to
+    /// change the semantic prefix to something other than TEXCOORD you can use
+    /// <see cref="Props.GPUDeviceCreateD3D12SemanticNameString"/> with
+    /// <see cref="CreateGPUDeviceWithProperties"/>.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the shader to create.</param>
