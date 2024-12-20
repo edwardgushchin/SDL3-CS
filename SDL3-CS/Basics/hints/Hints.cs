@@ -2051,19 +2051,6 @@ public static partial class SDL
         public const string MouseRelativeModeCenter = "SDL_MOUSE_RELATIVE_MODE_CENTER";
         
         /// <summary>
-        /// <para>A variable controlling whether relative mouse mode is implemented using
-        /// mouse warping.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: Relative mouse mode uses raw input. (default)</item>
-        /// <item><c>"1"</c>: Relative mouse mode uses mouse warping.</item>
-        /// </list>
-        /// </summary>
-        /// <remarks>This hint can be set anytime relative mode is not currently enabled.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
-        public const string MouseRelativeModeWarp = "SDL_MOUSE_RELATIVE_MODE_WARP";
-        
-        /// <summary>
         /// <para>A variable setting the scale for mouse motion, in floating point, when the
         /// mouse is in relative mode.</para>
         /// </summary>
