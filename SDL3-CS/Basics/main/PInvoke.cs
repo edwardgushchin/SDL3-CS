@@ -285,7 +285,9 @@ public partial class SDL
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendComplete(void);</code>
     /// <summary>
-    /// Callback from the application to let the suspend continue.
+    /// <para>Callback from the application to let the suspend continue.</para>
+    /// <para>This function is only needed for Xbox GDK support; all other platforms will
+    /// do nothing and set an "unsupported" error message.</para>
     /// </summary>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendComplete"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
