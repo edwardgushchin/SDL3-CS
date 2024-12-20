@@ -25,13 +25,38 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Number of milliseconds in a second.</para>
+    /// <para>This is always 1000.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const int MsPerSecond = 1000;
     
+    /// <summary>
+    /// <para>Number of microseconds in a second.</para>
+    /// <para>This is always 1000000.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const int UsPerSecond  = 1000000;
     
+    /// <summary>
+    /// <para>Number of nanoseconds in a second.</para>
+    /// <para>This is always 1000000000.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const long NsPerSecond = 1000000000L;
     
+    /// <summary>
+    /// <para>Number of nanoseconds in a millisecond.</para>
+    /// <para>This is always 1000000.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const int NsPerMs = 1000000;
     
+    /// <summary>
+    /// <para>Number of nanoseconds in a microsecond.</para>
+    /// <para>This is always 1000.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const int NsPerUs = 1000;
 }

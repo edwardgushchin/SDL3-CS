@@ -25,21 +25,82 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <code>#define SDL_SECONDS_TO_NS(S)    (((Uint64)(S)) * SDL_NS_PER_SECOND)</code>
+    /// <summary>
+    /// <para>Convert seconds to nanoseconds.</para>
+    /// <para>This only converts whole numbers, not fractional seconds.</para>
+    /// </summary>
+    /// <param name="s">the number of seconds to convert.</param>
+    /// <returns>expressed in nanoseconds.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
     [Macro]
-    public static ulong SecondsToNs(ulong seconds) => seconds * NsPerSecond;
+    public static ulong SecondsToNs(ulong s) => s * NsPerSecond;
     
-    [Macro]
-    public static ulong NsToSeconds(ulong nanoseconds) => nanoseconds / NsPerSecond;
     
+    /// <code>#define SDL_NS_TO_SECONDS(NS)   ((NS) / SDL_NS_PER_SECOND)</code>
+    /// <summary>
+    /// <para>Convert nanoseconds to seconds.</para>
+    /// <para>This performs a division, so the results can be dramatically different
+    /// if <c>nanoseconds</c> is an integer or floating point value.</para>
+    /// </summary>
+    /// <param name="ns">the number of nanoseconds to convert.</param>
+    /// <returns>expressed in seconds.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     [Macro]
-    public static ulong MsToNs(ulong milliseconds) => milliseconds * NsPerMs;
+    public static ulong NsToSeconds(ulong ns) => ns / NsPerSecond;
     
-    [Macro]
-    public static ulong NsToMs(ulong nanoseconds) => nanoseconds / NsPerMs;
     
+    /// <code>#define SDL_MS_TO_NS(MS)        (((Uint64)(MS)) * SDL_NS_PER_MS)</code>
+    /// <summary>
+    /// <para>Convert milliseconds to nanoseconds.</para>
+    /// <para>This only converts whole numbers, not fractional milliseconds.</para>
+    /// </summary>
+    /// <param name="ms">the number of milliseconds to convert.</param>
+    /// <returns>expressed in nanoseconds.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     [Macro]
-    public static ulong UsToNs(ulong microseconds) => microseconds * NsPerUs;
+    public static ulong MsToNs(ulong ms) => ms * NsPerMs;
     
+    
+    /// <code>#define SDL_NS_TO_MS(NS)        ((NS) / SDL_NS_PER_MS)</code>
+    /// <summary>
+    /// <para>Convert nanoseconds to milliseconds.</para>
+    /// <para>This performs a division, so the results can be dramatically different
+    /// if <c>ns</c> is an integer or floating point value.</para>
+    /// </summary>
+    /// <param name="ns">the number of nanoseconds to convert.</param>
+    /// <returns>expressed in milliseconds.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     [Macro]
-    public static ulong NsToUs(ulong nanoseconds) => nanoseconds / NsPerUs;
+    public static ulong NsToMs(ulong ns) => ns / NsPerMs;
+    
+    
+    /// <code>#define SDL_US_TO_NS(US)        (((Uint64)(US)) * SDL_NS_PER_US)</code>
+    /// <summary>
+    /// <para>Convert microseconds to nanoseconds.</para>
+    /// <para>This only converts whole numbers, not fractional microseconds.</para>
+    /// </summary>
+    /// <param name="us">the number of microseconds to convert.</param>
+    /// <returns>expressed in nanoseconds.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    [Macro]
+    public static ulong UsToNs(ulong us) => us * NsPerUs;
+    
+    
+    /// <code>#define SDL_NS_TO_US(NS)        ((NS) / SDL_NS_PER_US)</code>
+    /// <summary>
+    /// <para>Convert nanoseconds to microseconds.</para>
+    /// <para>This performs a division, so the results can be dramatically different
+    /// if <c>NS</c> is an integer or floating point value.</para>
+    /// </summary>
+    /// <param name="ns">the number of nanoseconds to convert.</param>
+    /// <returns>expressed in microseconds.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    [Macro]
+    public static ulong NsToUs(ulong ns) => ns / NsPerUs;
 }
