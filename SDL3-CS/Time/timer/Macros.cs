@@ -40,8 +40,8 @@ public static partial class SDL
     /// <code>#define SDL_NS_TO_SECONDS(NS)   ((NS) / SDL_NS_PER_SECOND)</code>
     /// <summary>
     /// <para>Convert nanoseconds to seconds.</para>
-    /// <para>This performs a division, so the results can be dramatically different
-    /// if <c>nanoseconds</c> is an integer or floating point value.</para>
+    /// <para>This performs a division, so the results can be dramatically different if
+    /// <c>ns</c> is an integer or floating point value.</para>
     /// </summary>
     /// <param name="ns">the number of nanoseconds to convert.</param>
     /// <returns>expressed in seconds.</returns>
@@ -67,8 +67,8 @@ public static partial class SDL
     /// <code>#define SDL_NS_TO_MS(NS)        ((NS) / SDL_NS_PER_MS)</code>
     /// <summary>
     /// <para>Convert nanoseconds to milliseconds.</para>
-    /// <para>This performs a division, so the results can be dramatically different
-    /// if <c>ns</c> is an integer or floating point value.</para>
+    /// <para>This performs a division, so the results can be dramatically different if
+    /// <c>ns</c> is an integer or floating point value.</para>
     /// </summary>
     /// <param name="ns">the number of nanoseconds to convert.</param>
     /// <returns>expressed in milliseconds.</returns>
@@ -94,8 +94,8 @@ public static partial class SDL
     /// <code>#define SDL_NS_TO_US(NS)        ((NS) / SDL_NS_PER_US)</code>
     /// <summary>
     /// <para>Convert nanoseconds to microseconds.</para>
-    /// <para>This performs a division, so the results can be dramatically different
-    /// if <c>NS</c> is an integer or floating point value.</para>
+    /// <para>This performs a division, so the results can be dramatically different if
+    /// <c>ns</c> is an integer or floating point value.</para>
     /// </summary>
     /// <param name="ns">the number of nanoseconds to convert.</param>
     /// <returns>expressed in microseconds.</returns>
