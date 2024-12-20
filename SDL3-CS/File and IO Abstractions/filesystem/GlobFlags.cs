@@ -26,36 +26,13 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Information about a path on the filesystem.
+    /// Flags for path matching.
     /// </summary>
     /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetPathInfo"/>
-    /// <seealso cref="GetStoragePathInfo"/>
-    public struct PathInfo
+    /// <seealso cref="GlobDirectory"/>
+    /// <seealso cref="GlobStorageDirectory"/>
+    public enum GlobFlags : uint
     {
-        /// <summary>
-        /// the path type
-        /// </summary>
-        public PathType Type;
-        
-        /// <summary>
-        /// the file size in bytes
-        /// </summary>
-        public ulong Size;
-        
-        /// <summary>
-        /// the time when the path was created
-        /// </summary>
-        public long CreateTime;
-        
-        /// <summary>
-        /// the last time the path was modified
-        /// </summary>
-        public long ModifyTime;
-        
-        /// <summary>
-        /// the last time the path was read
-        /// </summary>
-        public long AccessTime;
+        CaseInsensitive = 1u << 0
     }
 }

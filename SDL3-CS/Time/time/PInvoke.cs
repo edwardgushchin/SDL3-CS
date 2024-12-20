@@ -77,7 +77,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToDateTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool TimeToDateTime(long ticks, out DateTime dt, bool localTime);
+    public static partial bool TimeToDateTime(long ticks, out DateTime dt, [MarshalAs(UnmanagedType.I1)] bool localTime);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);</code>

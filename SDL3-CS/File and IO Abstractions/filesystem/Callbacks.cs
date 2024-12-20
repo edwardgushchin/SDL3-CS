@@ -27,14 +27,24 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>typedef int (SDLCALL *SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);</code>
+    /// <code>typedef SDL_EnumerationResult (SDLCALL *SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);</code>
     /// <summary>
-    /// Callback for directory enumeration. Return 1 to keep enumerating,
-    /// 0 to stop enumerating (no error), -1 to stop enumerating an
-    /// report an error. <c>dirname</c> is the directory being enumerated,
-    /// <c>fname</c> is the enumerated entry.
+    /// <para>Callback for directory enumeration.</para>
+    /// <para>Enumeration of directory entries will continue until either all entries
+    /// have been provided to the callback, or the callback has requested a stop
+    /// through its return value.</para>
+    /// <para>Returning <see cref="EnumerationResult.Continue"/> will let enumeration proceed, calling the
+    /// callback with further entries. <see cref="EnumerationResult.Success"/> and <see cref="EnumerationResult.Failure"/> will
+    /// terminate the enumeration early, and dictate the return value of the
+    /// enumeration function itself.</para>
     /// </summary>
+    /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
+    /// <param name="dirname">the directory that is being enumerated.</param>
+    /// <param name="fname">the next entry in the enumeration.</param>
+    /// <returns>how the enumeration should proceed.</returns>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <seealso cref="EnumerateDirectory"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int EnumerateDirectoryCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string dirname, [MarshalAs(UnmanagedType.LPUTF8Str)] string fname);
+    public delegate EnumerationResult EnumerateDirectoryCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string dirname, [MarshalAs(UnmanagedType.LPUTF8Str)] string fname);
 
 }

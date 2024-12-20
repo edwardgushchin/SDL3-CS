@@ -26,36 +26,25 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Information about a path on the filesystem.
+    /// Possible results from an enumeration callback.
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetPathInfo"/>
-    /// <seealso cref="GetStoragePathInfo"/>
-    public struct PathInfo
+    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <seealso cref="EnumerateDirectoryCallback"/>
+    public enum EnumerationResult
     {
         /// <summary>
-        /// the path type
+        /// Value that requests that enumeration continue.
         /// </summary>
-        public PathType Type;
+        Continue,
         
         /// <summary>
-        /// the file size in bytes
+        /// Value that requests that enumeration stop, successfully.
         /// </summary>
-        public ulong Size;
+        Success,
         
         /// <summary>
-        /// the time when the path was created
+        /// Value that requests that enumeration stop, as a failure.
         /// </summary>
-        public long CreateTime;
-        
-        /// <summary>
-        /// the last time the path was modified
-        /// </summary>
-        public long ModifyTime;
-        
-        /// <summary>
-        /// the last time the path was read
-        /// </summary>
-        public long AccessTime;
+        Failure
     }
 }

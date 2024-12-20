@@ -28,14 +28,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetBasePath();
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetBasePath(void);</code>
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetBasePath(void);</code>
     /// <summary>
     /// <para>Get the directory where the application was run from.</para>
     /// <para>SDL caches the result of this call internally, but the first call to this
     /// function is not necessarily fast, so plan accordingly.</para>
-    /// <para>**macOS and iOS Specific Functionality**: If the application is in a ".app"
+    /// <para><b>macOS and iOS Specific Functionality</b>: If the application is in a ".app"
     /// bundle, this function returns the Resource directory (e.g.
     /// MyApp.app/Contents/Resources/). This behaviour can be overridden by adding
     /// a property to the Info.plist file. Adding a string key with the name
@@ -56,20 +54,19 @@ public static partial class SDL
     /// the executable. As such it is not a writable directory.</para>
     /// <para>The returned path is guaranteed to end with a path separator ('\\' on
     /// Windows, '/' on most other platforms).</para>
-    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>an absolute path in UTF-8 encoding to the application data
     /// directory. <c>null</c> will be returned on error or when the platform
     /// doesn't implement this functionality, call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPrefPath"/>
-    public static string? GetBasePath() => Marshal.PtrToStringUTF8(SDL_GetBasePath());
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBasePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetBasePath();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetPrefPath([MarshalAs(UnmanagedType.LPUTF8Str)] string org, [MarshalAs(UnmanagedType.LPUTF8Str)] string app);
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetPrefPath(const char *org, const char *app);</code>
+    /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetPrefPath(const char *org, const char *app);</code>
     /// <summary>
     /// <para>Get the user-and-app-specific path where files can be written.</para>
     /// <para>Get the "pref dir". This is meant to be where users can write personal
@@ -99,20 +96,23 @@ public static partial class SDL
     /// <item>...only use letters, numbers, and spaces. Avoid punctuation like "Game
     /// Name 2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.</item>
     /// </list>
+    /// <para>The returned path is guaranteed to end with a path separator ('\\' on
+    /// Windows, '/' on most other platforms).</para>
     /// </summary>
     /// <param name="org">the name of your organization.</param>
     /// <param name="app">the name of your application.</param>
     /// <returns>a UTF-8 string of the user directory in platform-dependent
     /// notation. <c>null</c> if there's a problem (creating directory failed,
-    /// etc.).</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// etc.). This should be freed with <see cref="Free"/> when it is no longer
+    /// needed.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetBasePath"/>
-    public static string? GetPrefPath(string org, string app) => Marshal.PtrToStringUTF8(SDL_GetPrefPath(org, app));
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrefPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetPrefPath([MarshalAs(UnmanagedType.LPUTF8Str)] string org, [MarshalAs(UnmanagedType.LPUTF8Str)] string app);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetUserFolder(Folder folder);
-    /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetUserFolder(SDL_Folder folder);</code>
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetUserFolder(SDL_Folder folder);</code>
     /// <summary>
     /// <para>Finds the most suitable user folder for a specific purpose.</para>
     /// <para>Many OSes provide certain standard folders for certain purposes, such as
@@ -124,148 +124,202 @@ public static partial class SDL
     /// <see cref="GetPrefPath"/>.</para>
     /// <para>The returned path is guaranteed to end with a path separator ('\\' on
     /// Windows, '/' on most other platforms).</para>
-    /// <para>The returned string follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// <para>If <c>null</c> is returned, the error may be obtained with <see cref="GetError"/>.</para>
     /// </summary>
     /// <param name="folder">the type of folder to find.</param>
     /// <returns>either a null-terminated C string containing the full path to the
     /// folder, or <c>null</c> if an error happened.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static string? GetUserFolder(Folder folder) => Marshal.PtrToStringUTF8(SDL_GetUserFolder(folder));
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetUserFolder(Folder folder);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_CreateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_CreateDirectory(const char *path);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CreateDirectory(const char *path);</code>
     /// <summary>
-    /// Create a directory.
+    /// <para>Create a directory, and any missing parent directories.</para>
+    /// <para>This reports success if <c>path</c> already exists as a directory.</para>
+    /// <para>If parent directories are missing, it will also create them. Note that if
+    /// this fails, it will not remove any parent directories it already made.</para>
     /// </summary>
     /// <param name="path">the path of the directory to create.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static int CreateDirectory(string path) => SDL_CreateDirectory(path);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call SDL_GetError() for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool CreateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_EnumerateDirectory(
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string path,
-        EnumerateDirectoryCallback callback,
-        IntPtr userdata);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);</code>
     /// <summary>
     /// <para>Enumerate a directory through a callback function.</para>
     /// <para>This function provides every directory entry through an app-provided
     /// callback, called once for each directory entry, until all results have been
-    /// provided or the callback returns &lt;= 0.</para>
+    /// provided or the callback returns either <see cref="EnumerationResult.Success"/> or
+    /// <see cref="EnumerationResult.Failure"/>.</para>
+    /// <para>This will return false if there was a system problem in general, or if a
+    /// callback returns <see cref="EnumerationResult.Failure"/>. A successful return means a callback
+    /// returned <see cref="EnumerationResult.Success"/> to halt enumeration, or all directory entries
+    /// were enumerated.</para>
     /// </summary>
     /// <param name="path">the path of the directory to enumerate.</param>
     /// <param name="callback">a function that is called for each entry in the directory.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static int EnumerateDirectory(string path, EnumerateDirectoryCallback callback, IntPtr userdata) =>
-        SDL_EnumerateDirectory(path, callback, userdata);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnumerateDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool EnumerateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, EnumerateDirectoryCallback callback, IntPtr userdata);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RemovePath([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RemovePath(const char *path);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RemovePath(const char *path);</code>
     /// <summary>
-    /// Remove a file or an empty directory.
+    /// <para>Remove a file or an empty directory.</para>
+    /// <para>Directories that are not empty will fail; this function will not recursely
+    /// delete directory trees.</para>
     /// </summary>
-    /// <param name="path">the path of the directory to enumerate.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static int RemovePath(string path) => SDL_RemovePath(path);
-
+    /// <param name="path">the path to remove from the filesystem.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemovePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RemovePath([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RenamePath(
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RenamePath(const char *oldpath, const char *newpath);</code>
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenamePath(const char *oldpath, const char *newpath);</code>
     /// <summary>
-    /// Rename a file or directory.
+    /// <para>Rename a file or directory.</para>
+    /// <para>If the file at <c>newpath</c> already exists, it will replaced.</para>
+    /// <para>Note that this will not copy files across filesystems/drives/volumes, as
+    /// that is a much more complicated (and possibly time-consuming) operation.</para>
+    /// <para>Which is to say, if this function fails, <see cref="CopyFile"/> to a temporary file
+    /// in the same directory as <c>newpath</c>, then <see cref="RenamePath"/> from the
+    /// temporary file to <c>newpath</c> and <see cref="RemovePath"/> on <c>oldpath</c> might work
+    /// for files. Renaming a non-empty directory across filesystems is
+    /// dramatically more complex, however.</para>
     /// </summary>
     /// <param name="oldpath">the old path.</param>
     /// <param name="newpath">the new path.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static int RenamePath(string oldpath, string newpath) => SDL_RenamePath(oldpath, newpath);
-
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenamePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenamePath([MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath, [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetPathInfo([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out PathInfo info);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetPathInfo(const char *path, SDL_PathInfo *info);</code>
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CopyFile(const char *oldpath, const char *newpath);</code>
+    /// <summary>
+    /// <para>Copy a file.</para>
+    /// <para>If the file at <c>newpath</c> already exists, it will be overwritten with the
+    /// contents of the file at <c>oldpath</c>.</para>
+    /// <para>This function will block until the copy is complete, which might be a
+    /// significant time for large files on slow disks. On some platforms, the copy
+    /// can be handed off to the OS itself, but on others SDL might just open both
+    /// paths, and read from one and write to the other.</para>
+    /// <para>Note that this is not an atomic operation! If something tries to read from
+    /// <c>newpath</c> while the copy is in progress, it will see an incomplete copy of
+    /// the data, and if the calling thread terminates (or the power goes out)
+    /// during the copy, <c>newpath</c>'s previous contents will be gone, replaced with
+    /// an incomplete copy of the data. To avoid this risk, it is recommended that
+    /// the app copy to a temporary file in the same directory as <c>newpath</c>, and if
+    /// the copy is successful, use <see cref="RenamePath"/> to replace <c>newpath</c> with the
+    /// temporary file. This will ensure that reads of <c>newpath</c> will either see a
+    /// complete copy of the data, or it will see the pre-copy state of <c>newpath</c>.</para>
+    /// <para>This function attempts to synchronize the newly-copied data to disk before
+    /// returning, if the platform allows it, so that the renaming trick will not
+    /// have a problem in a system crash or power failure, where the file could be
+    /// renamed but the contents never made it from the system file cache to the
+    /// physical disk.</para>
+    /// <para>If the copy fails for any reason, the state of <c>newpath</c> is undefined. It
+    /// might be half a copy, it might be the untouched data of what was already
+    /// there, or it might be a zero-byte file, etc.</para>
+    /// </summary>
+    /// <param name="oldpath">the old path.</param>
+    /// <param name="newpath">the new path.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool CopyFile([MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath, [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetPathInfo(const char *path, SDL_PathInfo *info);</code>
     /// <summary>
     /// Get information about a filesystem path.
     /// </summary>
     /// <param name="path">the path to query.</param>
-    /// <param name="info">a pointer filled in with information about the path, or NULL to
+    /// <param name="info">a pointer filled in with information about the path, or <c>null</c> to
     /// check for the existence of a file.</param>
-    /// <returns>0 on success or a negative error code if the file doesn't exist,
-    /// or another failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static int GetPathInfo(string path, out PathInfo info) => SDL_GetPathInfo(path, out info);
-
+    /// <returns><c>true</c> on success or <c>false</c> if the file doesn't exist, or another
+    /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPathInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetPathInfo([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out PathInfo info);
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GlobDirectory(
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string path,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? pattern,
-        UInt32 flags,
-        out int count);
-    /// <code>extern SDL_DECLSPEC const char * const *SDLCALL SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);</code>
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GlobDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GlobDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, [MarshalAs(UnmanagedType.LPUTF8Str)] string pattern, GlobFlags flags, out int count);
+    /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);</code>
     /// <summary>
     /// <para>Enumerate a directory tree, filtered by pattern, and return a list.</para>
-    /// <para>Files are filtered out if they don't match the string in <c>pattern</c>, which
-    /// may contain wildcard characters <c>*</c> (match everything) and <c>?</c> (match one
-    /// character). If pattern is <c>null</c>, no filtering is done and all results are
+    /// <para>Files are filtered out if they don't match the string in `pattern`, which
+    /// may contain wildcard characters '*' (match everything) and '?' (match one
+    /// character). If pattern is NULL, no filtering is done and all results are
     /// returned. Subdirectories are permitted, and are specified with a path
-    /// separator of <c>/</c>. Wildcard characters <c>*</c> and <c>?</c> never match a path
+    /// separator of '/'. Wildcard characters '*' and '?' never match a path
     /// separator.</para>
-    /// <para><c>flags</c> may be set to SDL_GLOB_CASEINSENSITIVE to make the pattern matching
+    /// <para><c>flags</c> may be set to <see cref="GlobFlags.CaseInsensitive"/> to make the pattern matching
     /// case-insensitive.</para>
-    /// <para>The returned pointer follows the <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
+    /// <para>The returned array is always NULL-terminated, for your iterating
+    /// convenience, but if `count` is non-NULL, on return it will contain the
+    /// number of items in the array, not counting the <c>null</c> terminator.</para>
     /// </summary>
     /// <param name="path">the path of the directory to enumerate.</param>
     /// <param name="pattern">the pattern that files in the directory must match. Can be
-    /// NULL.</param>
+    /// <c>null</c>.</param>
     /// <param name="flags"><c>SDL_GLOB_*</c> bitflags that affect this search.</param>
     /// <param name="count">on return, will be set to the number of items in the returned
-    /// array. Can be NULL.</param>
-    /// <returns>an array of strings on success or NULL on failure; call
-    /// <see cref="GetError"/> for more information. The caller should pass the
-    /// returned pointer to SDL_free when done with it.</returns>
+    /// array. Can be <c>null</c>.</param>
+    /// <returns>an array of strings on success or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information. This is a single allocation
+    /// that should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static string[]? GlobDirectory(string path, string? pattern, uint flags, out int count)
+    /// <since>This function is available since SDL 3.1.3.</since>
+    public static string[]? GlobDirectory(string path, string pattern, GlobFlags flags, out int count)
     {
-        var arrayPtr = SDL_GlobDirectory(path, pattern, flags, out count);
-        if (arrayPtr == IntPtr.Zero)
-            return null;
+        var ptr = SDL_GlobDirectory(path, pattern, flags, out count);
 
         try
         {
-            unsafe
-            {
-                var list = new List<string>();
-                var ptr = (IntPtr*)arrayPtr;
-                for (var i = 0; ptr[i] != IntPtr.Zero; i++)
-                {
-                    list.Add(Marshal.PtrToStringUTF8(ptr[i])!);
-                }
-                return list.ToArray();
-            }
+            return PointerToStringArray(ptr, count);
         }
         finally
         {
-            Free(arrayPtr);
+            if(ptr != IntPtr.Zero) Free(ptr);
         }
     }
-
+    
+    
+    /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetCurrentDirectory(void);</code>
+    /// <summary>
+    /// <para>Get what the system believes is the "current working directory."</para>
+    /// <para>For systems without a concept of a current working directory, this will
+    /// still attempt to provide something reasonable.</para>
+    /// <para>SDL does not provide a means to _change_ the current working directory; for
+    /// platforms without this concept, this would cause surprises with file access
+    /// outside of SDL.</para>
+    /// </summary>
+    /// <returns>a UTF-8 string of the current working directory in
+    /// platform-dependent notation. <c>null</c> if there's a problem. This
+    /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetCurrentDirectory();
 }

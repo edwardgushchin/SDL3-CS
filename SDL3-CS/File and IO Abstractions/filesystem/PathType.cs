@@ -26,8 +26,13 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Abstract filesystem interface
+    /// <para>Types of filesystem entries.</para>
+    /// <para>Note that there may be other sorts of items on a filesystem: devices,
+    /// symlinks, named pipes, etc. They are currently reported as
+    /// <see cref="Other"/>.</para>
     /// </summary>
+    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <seealso cref="PathInfo"/>
     public enum PathType
     {
         /// <summary>
