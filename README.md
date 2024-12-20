@@ -187,10 +187,10 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### Time
 
-| **View information and functions related to...**          | **View the header**                                                                     | **Stage**                                                          |
-|-----------------------------------------------------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| [Timer Support](SDL3-CS/Time/timer)                       | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)                |
-| [Date and Time](SDL3-CS/Time/time)                        | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| **View information and functions related to...**          | **View the header**                                                                     | **Stage**                                            |
+|-----------------------------------------------------------|-----------------------------------------------------------------------------------------|------------------------------------------------------|
+| [Timer Support](SDL3-CS/Time/timer)                       | [SDL_timer.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_timer.h)     | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Date and Time](SDL3-CS/Time/time)                        | [SDL_time.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_time.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)  |
 
 
 ### File and I/O Abstractions
