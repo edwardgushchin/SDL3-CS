@@ -90,11 +90,6 @@ public static partial class SDL
         /// </summary>
         [FieldOffset(0)] public MouseMotionEvent Motion;
         
-        /// <summary>
-        /// Raw mouse motion event data
-        /// </summary>
-        [FieldOffset(0)] public RawMouseMotionEvent RawMotion;
-        
         // ReSharper disable once MemberHidesStaticFromOuterClass
         /// <summary>
         /// Mouse button event data
@@ -102,29 +97,9 @@ public static partial class SDL
         [FieldOffset(0)] public MouseButtonEvent Button;
         
         /// <summary>
-        /// Raw mouse button event data
-        /// </summary>
-        [FieldOffset(0)] public RawMouseButtonEvent RawButton;
-        
-        /// <summary>
         /// Mouse wheel event data
         /// </summary>
         [FieldOffset(0)] public MouseWheelEvent Wheel;
-        
-        /// <summary>
-        /// Raw mouse wheel event data
-        /// </summary>
-        [FieldOffset(0)] public RawMouseWheelEvent RawWheel;
-        
-        /// <summary>
-        /// Mouse raw axis event data (motion or wheel deltas)
-        /// </summary>
-        [FieldOffset(0)] public RawMouseMotionEvent MAxis;
-        
-        /// <summary>
-        /// Mouse raw button event data
-        /// </summary>
-        [FieldOffset(0)] public RawMouseButtonEvent MButton;
         
         /// <summary>
         /// Joystick device change event data
