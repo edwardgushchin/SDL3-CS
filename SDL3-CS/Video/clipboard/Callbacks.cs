@@ -48,7 +48,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr ClipboardDataCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out uint size);
+    public delegate IntPtr ClipboardDataCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out ulong size);
     
     
     /// <code>typedef void (SDLCALL *SDL_ClipboardCleanupCallback)(void *userdata);</code>

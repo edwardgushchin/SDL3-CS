@@ -278,7 +278,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial nuint SDL_GetSIMDAlignment();
+    private static partial ulong SDL_GetSIMDAlignment();
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_GetSIMDAlignment(void);</code>
     /// <summary>
     /// <para>Report the alignment this system needs for SIMD allocations.</para>
@@ -292,5 +292,5 @@ public static partial class SDL
     /// Plan accordingly.</para>
     /// </summary>
     /// <returns></returns>
-    public static nuint GetSIMDAlignment() => SDL_GetSIMDAlignment();
+    public static ulong GetSIMDAlignment() => SDL_GetSIMDAlignment();
 }

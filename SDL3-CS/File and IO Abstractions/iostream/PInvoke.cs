@@ -111,7 +111,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_IOFromMem(IntPtr mem, nuint size);
+    private static partial IntPtr SDL_IOFromMem(IntPtr mem, ulong size);
     /// <code>extern SDL_DECLSPEC SDL_IOStream *SDLCALL SDL_IOFromMem(void *mem, size_t size);</code>
     /// <summary>
     /// <para>Use this function to prepare a read-write memory buffer for use with
@@ -136,7 +136,7 @@ public static partial class SDL
     /// <seealso cref="SeekIO"/>
     /// <seealso cref="TellIO"/>
     /// <seealso cref="WriteIO"/>
-    public static IOStream? IOFromMem(IntPtr mem, nuint size)
+    public static IOStream? IOFromMem(IntPtr mem, ulong size)
     {
         var ioFromMem = SDL_IOFromMem(mem, size);
         return ioFromMem == IntPtr.Zero ? null : new IOStream(ioFromMem);
@@ -144,7 +144,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_IOFromConstMem(IntPtr mem, nuint size);
+    private static partial IntPtr SDL_IOFromConstMem(IntPtr mem, ulong size);
     /// <code>extern SDL_DECLSPEC SDL_IOStream *SDLCALL SDL_IOFromConstMem(const void *mem, size_t size);</code>
     /// <summary>
     /// <para>Use this function to prepare a read-only memory buffer for use with
@@ -169,7 +169,7 @@ public static partial class SDL
     /// <seealso cref="ReadIO"/>
     /// <seealso cref="SeekIO"/>
     /// <seealso cref="TellIO"/>
-    public static IOStream? IOFromConstMem(IntPtr mem, nuint size)
+    public static IOStream? IOFromConstMem(IntPtr mem, ulong size)
     {
         var ioFromConstMem = SDL_IOFromConstMem(mem, size);
         return ioFromConstMem == IntPtr.Zero ? null : new IOStream(ioFromConstMem);
@@ -351,7 +351,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial nuint SDL_ReadIO(IntPtr context, IntPtr ptr, nuint size);
+    private static partial nuint SDL_ReadIO(IntPtr context, IntPtr ptr, ulong size);
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);</code>
     /// <summary>
     /// <para>Read from a data source.</para>
@@ -368,12 +368,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="WriteIO"/>
     /// <seealso cref="GetIOStatus"/>
-    public static nuint ReadIO(IOStream context, IntPtr ptr, nuint size) =>
+    public static nuint ReadIO(IOStream context, IntPtr ptr, ulong size) =>
         SDL_ReadIO(context.Handle, ptr, size);
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial nuint SDL_WriteIO(IntPtr context, IntPtr ptr, nuint size);
+    private static partial nuint SDL_WriteIO(IntPtr context, IntPtr ptr, ulong size);
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);</code>
     /// <summary>
     /// <para>Write to an <see cref="IOStream"/> data stream.</para>
@@ -395,12 +395,12 @@ public static partial class SDL
     /// <seealso cref="ReadIO"/>
     /// <seealso cref="SeekIO"/>
     /// <seealso cref="GetIOStatus"/>
-    public static nuint WriteIO(IOStream context, IntPtr ptr, nuint size) =>
+    public static nuint WriteIO(IOStream context, IntPtr ptr, ulong size) =>
         SDL_WriteIO(context.Handle, ptr, size);
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_LoadFile_IO(IntPtr src, out nuint datasize, [MarshalAs(UnmanagedType.I1)] bool closeio);
+    private static partial IntPtr SDL_LoadFile_IO(IntPtr src, out ulong datasize, [MarshalAs(UnmanagedType.I1)] bool closeio);
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, SDL_bool closeio);</code>
     /// <summary>
     /// <para>Load all the data from an SDL data stream.</para>
@@ -416,7 +416,7 @@ public static partial class SDL
     /// <returns>the data, or <c>NULL</c> if there was an error.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="LoadFile"/>
-    public static byte[]? LoadFileIO(IOStream src, out nuint datasize, bool closeio)
+    public static byte[]? LoadFileIO(IOStream src, out ulong datasize, bool closeio)
     {
         var ptr = SDL_LoadFile_IO(src.Handle, out datasize, closeio);
         if (ptr == IntPtr.Zero)
@@ -438,7 +438,7 @@ public static partial class SDL
 
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_LoadFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, out nuint datasize);
+    private static partial IntPtr SDL_LoadFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, out ulong datasize);
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_LoadFile(const char *file, size_t *datasize);</code>
     /// <summary>
     /// <para>Load all the data from a file path.</para>
@@ -452,7 +452,7 @@ public static partial class SDL
     /// <returns>the data, or <c>NULL</c> if there was an error.</returns>
     /// <since>This function is available since SDL 3.0.0.</since>
     /// <seealso cref="LoadFileIO"/>
-    public static byte[]? LoadFile(string file, out nuint datasize)
+    public static byte[]? LoadFile(string file, out ulong datasize)
     {
         var ptr =  SDL_LoadFile(file, out datasize);
         

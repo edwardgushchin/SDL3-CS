@@ -153,7 +153,7 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetClipboardData(ClipboardDataCallback callback, ClipboardCleanupCallback cleanup, 
-        IntPtr userdata, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str, SizeParamIndex = 4)] string[] mimeTypes, uint numMimeTypes);
+        IntPtr userdata, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str, SizeParamIndex = 4)] string[] mimeTypes, ulong numMimeTypes);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearClipboardData(void);</code>
@@ -186,7 +186,7 @@ public static partial class SDL
     /// <seealso cref="HasClipboardData"/>
     /// <seealso cref="SetClipboardData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out uint size);
+    public static partial IntPtr GetClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out ulong size);
 
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasClipboardData(const char *mime_type);</code>
@@ -206,7 +206,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetClipboardMimeTypes(out uint numMimeTypes);
+    private static partial IntPtr SDL_GetClipboardMimeTypes(out ulong numMimeTypes);
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GetClipboardMimeTypes(size_t *num_mime_types);</code>
     /// <summary>
     /// Retrieve the list of mime types available in the clipboard.
@@ -219,7 +219,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="SetClipboardData"/>
-    public static string[]? GetClipboardMimeTypes(out uint numMimeTypes)
+    public static string[]? GetClipboardMimeTypes(out ulong numMimeTypes)
     {
         var ptr = SDL_GetClipboardMimeTypes(out numMimeTypes);
 
