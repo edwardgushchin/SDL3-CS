@@ -28,37 +28,47 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Raw mouse button event structure (event.raw_button.*)
+    /// Raw mouse wheel event structure (event.raw_wheel.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.8.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct RawMouseButtonEvent
+    public class RawMouseWheelEvent
     {
         /// <summary>
-        /// <see cref="EventType.RawMouseButtonDown"/> or <see cref="EventType.RawMouseButtonUp"/>
+        /// <see cref="EventType.RawMouseWheel"/>
         /// </summary>
         public EventType Type;
-
-        public UInt32 Reserved;
-
+        
+        private UInt32 _reserved;
+        
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
         /// </summary>
-        public UInt64 Timestamp;
-
+        public UInt64 Timestamp; 
+        
         /// <summary>
         /// The mouse instance id
         /// </summary>
         public UInt32 Which;
-
-        /// <summary>
-        /// The mouse button index
-        /// </summary>
-        public Byte Button;
         
         /// <summary>
-        /// true if the button is pressed
+        /// X axis delta, positive to the right and negative to the left
         /// </summary>
-        public Byte Down;
+        public int Dx;
+        
+        /// <summary>
+        /// Y axis delta, positive away from the user and negative toward the user
+        /// </summary>
+        public int Dy;
+        
+        /// <summary>
+        /// X value scale to convert to logical scroll units
+        /// </summary>
+        public float ScaleX;
+        
+        /// <summary>
+        /// Y value scale to convert to logical scroll units
+        /// </summary>
+        public float ScaleY;
     }
 }

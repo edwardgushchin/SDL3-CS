@@ -28,18 +28,18 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Raw mouse button event structure (event.raw_button.*)
+    /// Raw keyboard button event structure (event.raw_key.*)
     /// </summary>
     /// <since>This struct is available since SDL 3.1.8.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct RawMouseButtonEvent
+    public struct RawKeyboardEvent
     {
         /// <summary>
-        /// <see cref="EventType.RawMouseButtonDown"/> or <see cref="EventType.RawMouseButtonUp"/>
+        /// <see cref="EventType.RawKeyDown"/> or <see cref="EventType.RawKeyUp"/>
         /// </summary>
         public EventType Type;
 
-        public UInt32 Reserved;
+        private UInt32 _reserved;
 
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -47,17 +47,22 @@ public static partial class SDL
         public UInt64 Timestamp;
 
         /// <summary>
-        /// The mouse instance id
+        /// The keyboard instance id
         /// </summary>
         public UInt32 Which;
 
         /// <summary>
-        /// The mouse button index
+        /// SDL physical key code
         /// </summary>
-        public Byte Button;
-        
+        public Scancode Scancode;
+
         /// <summary>
-        /// true if the button is pressed
+        /// The platform dependent scancode for this event
+        /// </summary>
+        public UInt16 Raw;
+
+        /// <summary>
+        /// true if the key is pressed
         /// </summary>
         public Byte Down;
     }

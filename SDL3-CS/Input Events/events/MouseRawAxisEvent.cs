@@ -28,14 +28,14 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Mouse raw motion and wheel event structure (event.maxis.*)
+    /// Raw mouse motion event structure (event.raw_motion.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.8.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MouseRawAxisEvent
+    public struct RawMouseMotionEvent
     {
         /// <summary>
-        /// <see cref="EventType.MouseRawMotion"/> or <see cref="EventType.MouseRawScroll"/>
+        /// <see cref="EventType.RawMouseMotion"/>
         /// </summary>
         public EventType Type;
 
@@ -47,28 +47,28 @@ public static partial class SDL
         public UInt64 Timestamp;
 
         /// <summary>
-        /// The mouse instance id, SDL_TOUCH_MOUSEID, or SDL_PEN_MOUSEID
+        /// The mouse instance id
         /// </summary>
         public UInt32 Which;
 
         /// <summary>
-        /// The axis delta value in the X direction
+        /// X axis delta
         /// </summary>
         public int Dx;
 
         /// <summary>
-        /// The axis delta value in the Y direction
+        /// Y axis delta
         /// </summary>
         public int Dy;
 
         /// <summary>
-        /// The denominator unit in the X direction
+        /// X value scale to approximate desktop acceleration
         /// </summary>
-        public float Ux;
+        public float scaleX;
 
         /// <summary>
-        /// The denominator unit in the Y direction
+        /// Y value scale to approximate desktop acceleration
         /// </summary>
-        public float Uy;
+        public float scaleY;
     }
 }

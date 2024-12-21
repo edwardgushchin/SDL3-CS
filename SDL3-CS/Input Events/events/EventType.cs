@@ -307,6 +307,16 @@ public static partial class SDL
         /// Keyboard text editing candidates
         /// </summary>
         TextEditingCandidates,
+        
+        /// <summary>
+        /// Key pressed (raw key press)
+        /// </summary>
+        RawKeyDown,
+        
+        /// <summary>
+        /// Key released (raw key release)
+        /// </summary>
+        RawKeyUp,
         #endregion
 
         #region Mouse events
@@ -343,17 +353,22 @@ public static partial class SDL
         /// <summary>
         /// Mouse moved (raw motion deltas)
         /// </summary>
-        MouseRawMotion,
+        RawMouseMotion,
         
         /// <summary>
-        /// Mouse click (raw button delta)
+        /// Mouse button pressed (raw button press)
         /// </summary>
-        MouseRawButton,
+        RawMouseButtonDown,
         
         /// <summary>
-        /// Mouse wheel (raw scroll deltas)
+        /// Mouse button released (raw button release)
         /// </summary>
-        MouseRawScroll,
+        RawMouseButtonUp,
+        
+        /// <summary>
+        /// Mouse wheel motion (raw wheel deltas)
+        /// </summary>
+        RawMouseWheel,
         #endregion
 
         #region Joystick events
