@@ -307,16 +307,6 @@ public static partial class SDL
         /// Keyboard text editing candidates
         /// </summary>
         TextEditingCandidates,
-        
-        /// <summary>
-        /// Key pressed (raw key press)
-        /// </summary>
-        RawKeyDown,
-        
-        /// <summary>
-        /// Key released (raw key release)
-        /// </summary>
-        RawKeyUp,
         #endregion
 
         #region Mouse events

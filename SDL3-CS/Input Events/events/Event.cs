@@ -66,11 +66,6 @@ public static partial class SDL
         [FieldOffset(0)] public KeyboardEvent Key;
         
         /// <summary>
-        /// Raw keyboard event data
-        /// </summary>
-        [FieldOffset(0)] public RawKeyboardEvent RawKey;
-        
-        /// <summary>
         /// Text editing event data
         /// </summary>
         [FieldOffset(0)] public TextEditingEvent Edit;
