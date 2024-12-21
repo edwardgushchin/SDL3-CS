@@ -44,7 +44,7 @@ public static partial class SDL
         /// <summary>
         /// End of file
         /// </summary>
-        Eof,
+        EOF,
         
         /// <summary>
         /// Non blocking I/O, not ready
@@ -54,11 +54,11 @@ public static partial class SDL
         /// <summary>
         /// Tried to write a read-only buffer
         /// </summary>
-        Readonly, 
+        ReadOnly, 
         
         /// <summary>
         /// Tried to read a write-only buffer
         /// </summary>
-        Writeonly
+        WriteOnly
     }
 }

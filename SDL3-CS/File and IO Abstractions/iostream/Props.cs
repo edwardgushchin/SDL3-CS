@@ -29,8 +29,13 @@ public static partial class SDL
     {
         public const string IOStreamWindowsHandlePointer = "SDL.iostream.windows.handle";
         public const string IOStreamSTDIOFilePointer = "SDL.iostream.stdio.file";
+        public const string IOStreamFileDescriptorNumber = "SDL.iostream.filede_scriptor";
         public const string IOStreamAndroidAAssetPointer = "SDL.iostream.android.aasset";
+
+        public const string IOStreamMemoryPointer = "SDL.iostream.memory.base";
+        public const string IOStreamMemorySizeNumber = "SDL.iostream.memory.size";
+
         public const string IOStreamDynamicMemoryPointer = "SDL.iostream.dynamic.memory";
-        public const string IOStreamDynamicChunkSizeNumber = "SDL.iostream.dynamic.chunksize";
+        public const string IOStreamDynamicChunksizeNumber = "SDL.iostream.dynamic.chunksize";
     }
 }
