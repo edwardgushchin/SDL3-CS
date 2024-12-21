@@ -69,7 +69,7 @@ public static partial class SDL
         /// <summary>
         /// true if the list is horizontal, false if it's vertical
         /// </summary>
-        public Byte Horizontal;
+        [MarshalAs(UnmanagedType.I1)] public bool Horizontal;
 
         private Byte _padding1;
 

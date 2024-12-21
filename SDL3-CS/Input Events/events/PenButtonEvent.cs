@@ -81,6 +81,6 @@ public static partial class SDL
         /// <summary>
         /// true if the button is pressed
         /// </summary>
-        public Byte Down;
+        [MarshalAs(UnmanagedType.I1)] public bool Down;
     }
 }

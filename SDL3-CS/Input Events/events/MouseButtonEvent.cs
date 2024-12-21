@@ -64,7 +64,7 @@ public static partial class SDL
         /// <summary>
         /// true if the button is pressed
         /// </summary>
-        public Byte Down;
+        [MarshalAs(UnmanagedType.I1)] public bool Down;
 
         /// <summary>
         /// 1 for single-click, 2 for double-click, etc.

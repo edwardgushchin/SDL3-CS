@@ -128,8 +128,8 @@ public static partial class SDL
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int PeepEvents(Event[] events, int numevents, EventAction action, uint minType, uint maxType);
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static extern int PeepEvents([Out] Event[] events, int numevents, EventAction action, uint minType, uint maxType);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasEvent(Uint32 type);</code>
@@ -246,9 +246,9 @@ public static partial class SDL
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool PollEvent(out Event @event);
+    public static extern bool PollEvent(out Event @event);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
@@ -268,9 +268,9 @@ public static partial class SDL
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool WaitEvent(out Event @event);
+    public static extern bool WaitEvent(out Event @event);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);</code>
@@ -295,9 +295,9 @@ public static partial class SDL
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitEventTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEventTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool WaitEventTimeout(out Event @event, int timeoutMs);
+    public static extern bool WaitEventTimeout(out Event @event, int timeoutMs);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PushEvent(SDL_Event *event);</code>
@@ -325,9 +325,9 @@ public static partial class SDL
     /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="RegisterEvents"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool PushEvent(ref Event @event);
+    public static extern bool PushEvent(ref Event @event);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);</code>
@@ -500,6 +500,6 @@ public static partial class SDL
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetWindowFromEvent(in Event @event);
+    [DllImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static extern IntPtr GetWindowFromEvent(in Event @event);
 }

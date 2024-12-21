@@ -1447,9 +1447,9 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="RenderCoordinatesFromWindow"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertEventToRenderCoordinates"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_ConvertEventToRenderCoordinates"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool ConvertEventToRenderCoordinates(IntPtr renderer, ref Event @event);
+    public static extern bool ConvertEventToRenderCoordinates(IntPtr renderer, ref Event @event);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);</code>

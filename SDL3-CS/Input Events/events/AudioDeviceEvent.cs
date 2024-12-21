@@ -54,7 +54,7 @@ public static partial class SDL
         /// <summary>
         /// false if a playback device, true if a recording device.
         /// </summary>
-        public Byte Recording;
+        [MarshalAs(UnmanagedType.I1)] public bool Recording;
         
         private Byte _padding1;
         

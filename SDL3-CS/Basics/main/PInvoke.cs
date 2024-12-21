@@ -111,8 +111,8 @@ public partial class SDL
     
     
     //extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppEvent(void *appstate, SDL_Event *event);
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial AppResult AppEvent(IntPtr appstate, ref Event @event);
+    [DllImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static extern AppResult AppEvent(IntPtr appstate, ref Event @event);
     
     
     /// <code>extern SDLMAIN_DECLSPEC void SDLCALL SDL_AppQuit(void *appstate, SDL_AppResult result);</code>

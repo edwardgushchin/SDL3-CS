@@ -86,11 +86,11 @@ public static partial class SDL
         /// <summary>
         /// true if the key is pressed
         /// </summary>
-        public Byte Down;
+        [MarshalAs(UnmanagedType.I1)] public bool Down;
         
         /// <summary>
         /// true if this is a key repeat
         /// </summary>
-        public Byte Repeat;
+        [MarshalAs(UnmanagedType.I1)] public bool Repeat;
     }
 }

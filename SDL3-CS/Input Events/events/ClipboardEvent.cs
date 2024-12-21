@@ -50,7 +50,7 @@ public static partial class SDL
         /// <summary>
         /// are we owning the clipboard (internal update)
         /// </summary>
-        public Byte Owner;
+        [MarshalAs(UnmanagedType.I1)] public bool Owner;
 
         /// <summary>
         /// number of mime types
