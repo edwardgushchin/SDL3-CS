@@ -28,7 +28,7 @@ namespace SDL3;
 public static partial class SDL
 {
     [Macro]
-	public static uint FourCC(byte a, byte b, byte c, byte d)
+	public static uint FourCC(char a, char b, char c, char d)
 	{
 		return (uint)(a | (b << 8) | (c << 16) | (d << 24));
 	}

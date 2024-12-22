@@ -25,7 +25,21 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>A magic value used with <see cref="WindowPosUndefined"/>.</para>
+    /// <para>Generally this macro isn't used directly, but rather through
+    /// <see cref="WindowPosUndefined"/> or <see cref="WindowPosUndefinedDisplay"/>.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint WindowposUndefinedMask = 0x1FFF0000u;
+    
+    
+    /// <summary>
+    /// <para>A magic value used with <see cref="WindowPosCentered"/>.</para>
+    /// <para>Generally this macro isn't used directly, but rather through
+    /// <see cref="WindowPosCentered"/> or <see cref="WindowPosCenteredDisplay"/>.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint WindowposCenteredMask = 0x2FFF0000u;
     
     public const int WindowSurfaceVSyncDisabled = 0;

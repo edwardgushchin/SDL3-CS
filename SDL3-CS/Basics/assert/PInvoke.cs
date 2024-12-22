@@ -31,7 +31,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_AssertState SDLCALL SDL_ReportAssertion(SDL_AssertData *data, const char *func, const char *file, int line) SDL_ANALYZER_NORETURN;</code>
     /// <summary>
     /// <para>Never call this directly.</para>
-    /// <para>Use the SDL_assert* macros instead.</para>
+    /// <para>Use the SDL_assert macros instead.</para>
     /// </summary>
     /// <param name="data">assert data structure.</param>
     /// <param name="func">function name.</param>

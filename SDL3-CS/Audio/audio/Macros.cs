@@ -25,8 +25,23 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// <para>Define an <see cref="AudioFormat"/> value.</para>
+    /// <para>SDL does not support custom audio formats, so this macro is not of much
+    /// use externally, but it can be illustrative as to what the various bits of
+    /// an <see cref="AudioFormat"/> mean.</para>
+    /// <para>For example, <see cref="AudioFormat.AudioS32LE"/> looks like this:</para>
+    /// <code>DefineAudioFormat(1, 0, 0, 32)</code>
+    /// </summary>
+    /// <param name="signed">1 for signed data, 0 for unsigned data.</param>
+    /// <param name="bigendian">1 for bigendian data, 0 for littleendian data.</param>
+    /// <param name="flt">1 for floating point data, 0 for integer data.</param>
+    /// <param name="size">number of bits per sample.</param>
+    /// <returns>a format value in the style of <see cref="AudioFormat"/>.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     [Macro]
-    public static ushort DefineAudioFormat(bool signed, bool bigendian, bool @float, int size)
+    public static ushort DefineAudioFormat(bool signed, bool bigendian, bool flt, int size)
     {
         ushort format = 0;
 
@@ -36,7 +51,7 @@ public static partial class SDL
         if (bigendian)
             format |= (1 << 12);
 
-        if (@float)
+        if (flt)
             format |= (1 << 8);
 
         format |= (ushort)(size & AudioMaskBitSize);

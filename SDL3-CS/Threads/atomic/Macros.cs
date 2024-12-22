@@ -51,4 +51,56 @@ public static partial class SDL
     /// <seealso cref="AtomicIncRef"/>
     [Macro]
     public static bool AtomicDecRef(ref AtomicInt a) => AddAtomicInt(ref a, -1) == 1;
+    
+    
+    /// <code>#define SDL_MemoryBarrierRelease() SDL_MemoryBarrierReleaseFunction()</code>
+    /// <summary>
+    /// <para>Insert a memory release barrier (macro version).</para>
+    /// <para>Memory barriers are designed to prevent reads and writes from being
+    /// reordered by the compiler and being seen out of order on multi-core CPUs.</para>
+    /// <para>A typical pattern would be for thread A to write some data and a flag, and
+    /// for thread B to read the flag and get the data. In this case you would
+    /// insert a release barrier between writing the data and the flag,
+    /// guaranteeing that the data write completes no later than the flag is
+    /// written, and you would insert an acquire barrier between reading the flag
+    /// and reading the data, to ensure that all the reads associated with the flag
+    /// have completed.</para>
+    /// <para>In this pattern you should always see a release barrier paired with an
+    /// acquire barrier and you should gate the data reads/writes with a single
+    /// flag variable.</para>
+    /// <para>For more information on these semantics, take a look at the blog post:
+    /// * http://preshing.com/20120913/acquire-and-release-semantics</para>
+    /// <para>This is the macro version of this functionality; if possible, SDL will
+    /// use compiler intrinsics or inline assembly, but some platforms might
+    /// need to call the function version of this, <see cref="MemoryBarrierReleaseFunction"/>
+    /// to do the heavy lifting. Apps that can use the macro should favor it over
+    /// the function.</para>
+    /// </summary>
+    /// <threadsafety>Obviously this macro is safe to use from any thread at any
+    /// time, but if you find yourself needing this, you are probably
+    /// dealing with some very sensitive code; be careful!</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <seealso cref="MemoryBarrierAcquire"/>
+    /// <seealso cref="MemoryBarrierReleaseFunction"/>
+    public static void MemoryBarrierRelease() => MemoryBarrierReleaseFunction();
+    
+    
+    /// <code>#define SDL_MemoryBarrierAcquire() SDL_MemoryBarrierAcquireFunction()</code>
+    /// <summary>
+    /// <para>Insert a memory acquire barrier (macro version).</para>
+    /// <para>Please see <see cref="MemoryBarrierRelease"/> for the details on what memory barriers
+    /// are and when to use them.</para>
+    /// <para>This is the macro version of this functionality; if possible, SDL will
+    /// use compiler intrinsics or inline assembly, but some platforms might
+    /// need to call the function version of this,
+    /// <see cref="MemoryBarrierAcquireFunction"/>, to do the heavy lifting. Apps that can
+    /// use the macro should favor it over the function.</para>
+    /// </summary>
+    /// <threadsafety>Obviously this macro is safe to use from any thread at any
+    /// time, but if you find yourself needing this, you are probably
+    /// dealing with some very sensitive code; be careful!</threadsafety>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <seealso cref="MemoryBarrierRelease"/>
+    /// <seealso cref="MemoryBarrierAcquireFunction"/>
+    public static void MemoryBarrierAcquire() => MemoryBarrierAcquireFunction();
 }

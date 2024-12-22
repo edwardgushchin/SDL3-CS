@@ -25,12 +25,36 @@ namespace SDL3;
 
 public static partial class SDL
 { 
+    /// <summary>
+    /// <para>Mask of bits in an <see cref="AudioFormat"/> that contains the format bit size.</para>
+    /// <para>Generally one should use <see cref="AudioBitSize"/> instead of this macro directly.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint AudioMaskBitSize = 0xFFu;
     
+    
+    /// <summary>
+    /// <para>Mask of bits in an <see cref="AudioFormat"/> that contain the floating point flag.</para>
+    /// <para>Generally one should use <see cref="AudioIsFloat"/> instead of this macro directly.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint AudioMaskFloat = 1u << 8;
     
+    
+    /// <summary>
+    /// <para>Mask of bits in an <see cref="AudioFormat"/> that contain the bigendian flag.</para>
+    /// <para>Generally one should use <see cref="AudioIsBigEndian"/> or <see cref="AudioIsLittleEndian"/>
+    /// instead of this macro directly.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint AudioMaskBigEndian = 1u << 12;
     
+    
+    /// <summary>
+    /// <para>Mask of bits in an <see cref="AudioFormat"/> that contain the signed data flag.</para>
+    /// <para>Generally one should use <see cref="AudioIsSigned"/> instead of this macro directly.</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint AudioMaskSigned = 1u << 15;
     
     

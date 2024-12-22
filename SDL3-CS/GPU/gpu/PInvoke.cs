@@ -335,6 +335,31 @@ public partial class SDL
     /// <para>If you request a sample count higher than the hardware supports, the
     /// implementation will automatically fall back to the highest available sample
     /// count.</para>
+    /// <para>There are optional properties that can be provided through
+    /// <see cref="GPUTextureCreateInfo"/>'s <c>props</c>. These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.ProcessCreateArgsPointer"/>: an array of strings containing
+    /// the program to run, any arguments, and a NULL pointer, e.g. const char
+    /// *args[] = { "myprogram", "argument", NULL }. This is a required property.</item>
+    /// <item><see cref="Props.GPUCreateTextureD3D12ClearRFloat"/>: (Direct3D 12 only)
+    /// if the texture usage is <see cref="GPUTextureUsageFlags.ColorTarget"/>, clear the
+    /// texture to a color with this red intensity. Defaults to zero.</item>
+    /// <item><see cref="Props.GPUCreateTextureD3D12ClearGFloat"/>: (Direct3D 12 only)
+    /// if the texture usage is <see cref="GPUTextureUsageFlags.ColorTarget"/>, clear the
+    /// texture to a color with this green intensity.  Defaults to zero.</item>
+    /// <item><see cref="Props.GPUCreateTextureD3D12ClearBFloat"/>: (Direct3D 12 only)
+    /// if the texture usage is <see cref="GPUTextureUsageFlags.ColorTarget"/>, clear the
+    /// texture to a color with this blue intensity. Defaults to zero.</item>
+    /// <item><see cref="Props.GPUCreateTextureD3D12ClearAFloat"/>: (Direct3D 12 only)
+    /// if the texture usage is <see cref="GPUTextureUsageFlags.ColorTarget"/>, clear the
+    /// texture to a color with this alpha intensity. Defaults to zero.</item>
+    /// <item><see cref="Props.GPUCreateTextureD3D12ClearDepthFloat"/>: (Direct3D 12 only)
+    /// if the texture usage is <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>, clear
+    /// the texture to a depth of this value. Defaults to zero.</item>
+    /// <item><see cref="Props.GPUCreateTextureD3D12ClearStencilUint8"/>: (Direct3D 12 only)
+    /// if the texture usage is <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>, clear
+    /// the texture to a stencil of this value. Defaults to zero.</item>
+    /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the texture to create.</param>

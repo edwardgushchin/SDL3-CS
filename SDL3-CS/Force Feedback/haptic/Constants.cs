@@ -126,19 +126,19 @@ public static partial class SDL
     public const uint HAPTIC_LEFTRIGHT = 1u << 11;
     
     /// <summary>
-    /// Reserved for future use
+    /// Reserved for future use.
     /// </summary>
     /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint HAPTIC_RESERVED1 = 1u << 12;
     
     /// <summary>
-    /// Reserved for future use
+    /// Reserved for future use.
     /// </summary>
     /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint HAPTIC_RESERVED2 = 1u << 13;
     
     /// <summary>
-    /// Reserved for future use
+    /// Reserved for future use.
     /// </summary>
     /// <since>This macro is available since SDL 3.1.3.</since>
     public const uint HAPTIC_RESERVED3 = 1u << 14;
