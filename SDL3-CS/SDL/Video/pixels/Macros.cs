@@ -359,7 +359,7 @@ public static partial class SDL
 	/// coefficients.</para>
 	/// </summary>
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
-	/// <returns><c>true</c> if BT709, <c>false</c> otherwise.</returns>
+	/// <returns><c>true</c> if BT2020_NCL, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
 	/// <since>This macro is available since SDL 3.1.3.</since>
 	[Macro]
