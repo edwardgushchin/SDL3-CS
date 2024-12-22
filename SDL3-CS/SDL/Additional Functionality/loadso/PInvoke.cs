@@ -28,25 +28,22 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_LoadObject([MarshalAs(UnmanagedType.LPUTF8Str)] string sofile);
-    /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_LoadObject(const char *sofile);</code>
+    /// <code>extern SDL_DECLSPEC SDL_SharedObject * SDLCALL SDL_LoadObject(const char *sofile);</code>
     /// <summary>
     /// Dynamically load a shared object.
     /// </summary>
     /// <param name="sofile">a system-dependent name of the object file.</param>
-    /// <returns>an opaque pointer to the object handle or <see cref="IntPtr.Zero"/> if there was an
-    /// error; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <returns>an opaque pointer to the object handle or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LoadFunction"/>
     /// <seealso cref="UnloadObject"/>
-    public static IntPtr LoadObject(string sofile) => SDL_LoadObject(sofile);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadObject"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadObject([MarshalAs(UnmanagedType.LPUTF8Str)] string sofile);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial FunctionPointer? SDL_LoadFunction(IntPtr handle,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_LoadFunction(void *handle, const char *name);</code>
+    /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_LoadFunction(SDL_SharedObject *handle, const char *name);</code>
     /// <summary>
     /// <para>Look up the address of the named function in a shared object.</para>
     /// <para>This function pointer is no longer valid after calling <see cref="UnloadObject"/>.</para>
@@ -56,23 +53,29 @@ public static partial class SDL
     /// <para>Make sure you declare your function pointers with the same calling
     /// convention as the actual library function. Your code will crash
     /// mysteriously if you do not do this.</para>
-    /// <para>If the requested function doesn't exist, <c>NULL</c> is returned.</para>
+    /// <para>If the requested function doesn't exist, <c>null</c> is returned.</para>
     /// </summary>
     /// <param name="handle">a valid shared object handle returned by <see cref="LoadObject"/>.</param>
     /// <param name="name">the name of the function to look up.</param>
-    /// <returns>a pointer to the function or <c>NULL</c> if there was an error; call
-    /// <see cref="GetError"/> for more information.</returns>
-    public static FunctionPointer? LoadFunction(IntPtr handle, string name) => SDL_LoadFunction(handle, name);
+    /// <returns>a pointer to the function or <c>null</c> on failure; call <see cref="GetError"/>
+    /// for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="LoadObject"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial FunctionPointer? LoadFunction(IntPtr handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+
     
-    
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnloadObject(IntPtr handle);
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnloadObject(void *handle);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnloadObject(SDL_SharedObject *handle);</code>
     /// <summary>
-    /// Unload a shared object from memory.
+    /// <para>Unload a shared object from memory.</para>
+    /// <para>Note that any pointers from this object looked up through
+    /// <see cref="LoadFunction"/> will no longer be valid.</para>
     /// </summary>
     /// <param name="handle">a valid shared object handle returned by <see cref="LoadObject"/>.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="LoadObject"/>
-    public static void UnloadObject(IntPtr handle) => SDL_UnloadObject(handle);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnloadObject"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void UnloadObject(IntPtr handle);
 }
