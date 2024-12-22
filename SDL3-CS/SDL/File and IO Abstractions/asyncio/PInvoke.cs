@@ -250,7 +250,7 @@ public static partial class SDL
     /// <param name="queue">the async I/O task queue to query.</param>
     /// <param name="outcome">details of a finished task will be written here. May not be
     /// <c>null</c>.</param>
-    /// <returns><c>true</c> if task has completed, <c>false</c> otherwise.</returns>
+    /// <returns><c>true</c> if a task has completed, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="WaitAsyncIOResult"/>
