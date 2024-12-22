@@ -155,7 +155,6 @@
 
     <ItemGroup>
       <Folder Include="Additional Functionality\process\" />
-      <Folder Include="File and IO Abstractions\asyncio\" />
       <Folder Include="Platform and CPU Information\bits\" />
       <Folder Include="Platform and CPU Information\endian\" />
       <Folder Include="Platform and CPU Information\intrin\" />
