@@ -156,7 +156,6 @@
     <ItemGroup>
       <Folder Include="Image\" />
       <Folder Include="Mixer\" />
-      <Folder Include="SDL\" />
       <Folder Include="TTF\" />
     </ItemGroup>
 
