@@ -205,13 +205,13 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### Platform and CPU Information
 
-| **View information and functions related to...**                                                  | **View the header**                                                                          | **Stage**                                                          |
-|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| [Platform Detection](SDL3-CS/Platform%20and%20CPU%20Information/platform)                         | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h)    | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [CPU Feature Detection](SDL3-CS/Platform%20and%20CPU%20Information/cpuinfo)                       | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)      | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Compiler Intrinsics Detection](SDL3-CS/Platform%20and%20CPU%20Information/intrin)                | [SDL_intrin.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_intrin.h)        | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Byte Order and Byte Swapping](SDL3-CS/Platform%20and%20CPU%20Information/endian)                 | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)        | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
-| [Bit Manipulation](SDL3-CS/Platform%20and%20CPU%20Information/bits)                               | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)            | ![In progress](https://img.shields.io/badge/In%20progress-828282)  |
+| **View information and functions related to...**                                                  | **View the header**                                                                          | **Stage**                                                         |
+|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| [Platform Detection](SDL3-CS/Platform%20and%20CPU%20Information/platform)                         | [SDL_platform.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_platform.h)    | ![Ready](https://img.shields.io/badge/Ready-008000)               |
+| [CPU Feature Detection](SDL3-CS/Platform%20and%20CPU%20Information/cpuinfo)                       | [SDL_cpuinfo.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_cpuinfo.h)      | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Compiler Intrinsics Detection](SDL3-CS/Platform%20and%20CPU%20Information/intrin)                | [SDL_intrin.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_intrin.h)        | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Byte Order and Byte Swapping](SDL3-CS/Platform%20and%20CPU%20Information/endian)                 | [SDL_endian.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_endian.h)        | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| [Bit Manipulation](SDL3-CS/Platform%20and%20CPU%20Information/bits)                               | [SDL_bits.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_bits.h)            | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
 
 ### Additional Functionality

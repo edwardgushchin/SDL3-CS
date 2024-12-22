@@ -28,8 +28,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetPlatform();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetPlatform(void);</code>
     /// <summary>
     /// <para>Get the name of the platform.</para>
@@ -41,11 +39,11 @@ public static partial class SDL
     /// <item>"iOS"</item>
     /// <item>"Android"</item>
     /// </list>
-    /// <para>The returned string follows the
-    /// <a href="https://github.com/libsdl-org/SDL/blob/main/docs/README-strings.md">SDL_GetStringRule</a>.</para>
     /// </summary>
     /// <returns>the name of the platform. If the correct platform name is not
-    /// available, returns a string beginning with the text <c>"Unknown"</c></returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static string GetPlatform() => Marshal.PtrToStringUTF8(SDL_GetPlatform())!;
+    /// available, returns a string beginning with the text "Unknown".</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPlatform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetPlatform();
 }
