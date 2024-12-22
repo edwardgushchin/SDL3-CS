@@ -1557,6 +1557,10 @@ public partial class SDL
     /// submitted. The swapchain texture should only be referenced by the command
     /// buffer used to acquire it. It is an error to call
     /// <see cref="CancelGPUCommandBuffer"/> after a swapchain texture is acquired.</para>
+    /// <para>This function can fill the swapchain texture handle with <c>null</c> in certain
+    /// cases, for example if the window is minimized. This is not an error. You
+    /// should always make sure to check whether the pointer is <c>null</c> before
+    /// actually using it.</para>
     /// <para>The swapchain texture is managed by the implementation and must not be
     /// freed by the user. You MUST NOT call this function from any thread other
     /// than the one that created the window.</para>
