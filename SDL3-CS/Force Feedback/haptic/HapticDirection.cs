@@ -33,9 +33,9 @@ public static partial class SDL
     /// in which the force is exerted.</para>
     /// <para>Directions can be specified by:</para>
     /// <list type="bullet">
-    /// <item><see cref="HapticPolar"/> : Specified by polar coordinates.</item>
-    /// <item><see cref="HapticCartesian"/> : Specified by cartesian coordinates.</item>
-    /// <item><see cref="HapticSpherical"/> : Specified by spherical coordinates.</item>
+    /// <item><see cref="HAPTIC_POLAR"/> : Specified by polar coordinates.</item>
+    /// <item><see cref="HAPTIC_CARTESIAN"/> : Specified by cartesian coordinates.</item>
+    /// <item><see cref="HAPTIC_SPHERICAL"/> : Specified by spherical coordinates.</item>
     /// </list>
     /// <para>Cardinal directions of the haptic device are relative to the positioning of
     /// the device. North is considered to be away from the user.</para>
@@ -66,8 +66,8 @@ public static partial class SDL
     ///                       (o o)
     ///                 ---ooO-(_)-Ooo---
     /// </code>
-    /// <para>If type is <see cref="HapticPolar"/>, direction is encoded by hundredths of a degree
-    /// starting north and turning clockwise. <see cref="HapticPolar"/> only uses the first
+    /// <para>If type is <see cref="HAPTIC_POLAR"/>, direction is encoded by hundredths of a degree
+    /// starting north and turning clockwise. <see cref="HAPTIC_POLAR"/> only uses the first
     /// <c>dir</c> parameter. The cardinal directions would be:</para>
     /// <list type="bullet">
     /// <item>North: 0 (0 degrees)</item>
@@ -75,8 +75,8 @@ public static partial class SDL
     /// <item>South: 18000 (180 degrees)</item>
     /// <item>West: 27000 (270 degrees)</item>
     /// </list>
-    /// <para>If type is <see cref="HapticCartesian"/>, direction is encoded by three positions (X
-    /// axis, Y axis and Z axis (with 3 axes)). <see cref="HapticCartesian"/> uses the first
+    /// <para>If type is <see cref="HAPTIC_CARTESIAN"/>, direction is encoded by three positions (X
+    /// axis, Y axis and Z axis (with 3 axes)). <see cref="HAPTIC_CARTESIAN"/> uses the first
     /// three <c>dir`</c> parameters. The cardinal directions would be:</para>
     /// <list type="bullet">
     /// <item>North: 0,-1, 0</item>
@@ -87,7 +87,7 @@ public static partial class SDL
     /// <para>The Z axis represents the height of the effect if supported, otherwise it's
     /// unused. In cartesian encoding (1, 2) would be the same as (2, 4), you can
     /// use any multiple you want, only the direction matters.</para>
-    /// <para>If type is <see cref="HapticSpherical"/>, direction is encoded by two rotations. The
+    /// <para>If type is <see cref="HAPTIC_SPHERICAL"/>, direction is encoded by two rotations. The
     /// first two <c>dir</c> parameters are used. The `dir` parameters are as follows
     /// (all values are in hundredths of degrees):</para>
     /// <list type="bullet">

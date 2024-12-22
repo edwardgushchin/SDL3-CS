@@ -32,7 +32,7 @@ public static partial class SDL
     /// a format is supported before using it. However, there are a few guaranteed
     /// formats.</para>
     /// <para>FIXME: Check universal support for 32-bit component formats FIXME: Check
-    /// universal support for <see cref="GPUTextureUsageFlags.ComputeStrorageSimultaneousReadWrite"/></para>
+    /// universal support for <see cref="GPUTextureUsageFlags.ComputeStorageSimultaneousReadWrite"/></para>
     /// <para>For <see cref="GPUTextureUsageFlags.Sampler"/> usage, the following formats are universally supported:</para>
     /// <list type="bullet">
     /// <item><see cref="R8G8B8A8Unorm"/></item>
@@ -79,7 +79,7 @@ public static partial class SDL
     /// <item><see cref="R8G8B8A8UnormSRGB"/></item>
     /// <item><see cref="B8G8R8A8UnormSRGB"/></item>
     /// </list>
-    /// <para>For <see cref="GPUTextureUsageFlags.Storage"/> usages, the following formats are universally supported:</para>
+    /// <para>For <see cref="GPUTextureUsageFlags.Sampler"/> usages, the following formats are universally supported:</para>
     /// <list type="bullet">
     /// <item><see cref="R8G8B8A8Unorm"/></item>
     /// <item><see cref="R8G8B8A8Snorm"/></item>

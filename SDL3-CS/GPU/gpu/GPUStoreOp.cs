@@ -30,7 +30,7 @@ public static partial class SDL
     /// treated at the end of the render pass.
     /// </summary>
     /// <since>This enum is available since SDL 3.1.3</since>
-    /// <seealso cref="BeginGPURenderPass"/>
+    /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
     public enum GPUStoreOp
     {
         /// <summary>
