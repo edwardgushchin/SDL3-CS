@@ -169,10 +169,10 @@ public static partial class SDL
     /// tasks to <c>asyncio</c>, so it's safe to open a file, start several operations,
     /// close the file immediately, then check for all results later. This function
     /// will not block until the tasks have completed.</para>
-    /// <para>Once this function returns non-NULL, <c>asyncio</c> is no longer valid,
-    /// regardless of any future outcomes. Any completed tasks might still contain
-    /// this pointer in their SDL_AsyncIOOutcome data, in case the app was using
-    /// this value to track information, but it should not be used again.</para>
+    /// <para>Once this function returns true, <c>asyncio</c> is no longer valid, regardless
+    /// of any future outcomes. Any completed tasks might still contain this
+    /// pointer in their SDL_AsyncIOOutcome data, in case the app was using this
+    /// value to track information, but it should not be used again.</para>
     /// <para>If this function returns false, the close wasn't started at all, and it's
     /// safe to attempt to close again later.</para>
     /// <para>An SDL_AsyncIOQueue must be specified. The newly-created task will be added
