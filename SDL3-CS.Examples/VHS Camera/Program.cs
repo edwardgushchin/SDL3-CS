@@ -21,7 +21,6 @@
  */
 #endregion
 
-using System.Runtime.InteropServices;
 using SDL3;
 
 namespace VHS_Camera;
