@@ -154,10 +154,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Additional Functionality\process\" />
-      <Folder Include="Platform and CPU Information\bits\" />
-      <Folder Include="Platform and CPU Information\endian\" />
-      <Folder Include="Platform and CPU Information\intrin\" />
+      <Folder Include="Image\" />
+      <Folder Include="Mixer\" />
+      <Folder Include="SDL\" />
+      <Folder Include="TTF\" />
     </ItemGroup>
 
     <!-- <ItemGroup>
