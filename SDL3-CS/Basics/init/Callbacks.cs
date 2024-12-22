@@ -31,8 +31,8 @@ public partial class SDL
     /// <summary>
     /// <para>Function pointer typedef for <see cref="AppInit"/>.</para>
     /// <para>These are used by <see cref="EnterAppMainCallbacks"/>. This mechanism operates behind
-    /// the scenes for apps using the optional main callbacks. Apps that want to use
-    /// this should just implement <see cref="AppInit"/> directly.</para>
+    /// the scenes for apps using the optional main callbacks. Apps that want to
+    /// use this should just implement <see cref="AppInit"/> directly.</para>
     /// </summary>
     /// <param name="appstate">a place where the app can optionally store a pointer for
     /// future use.</param>
@@ -49,9 +49,9 @@ public partial class SDL
     /// <code>typedef SDL_AppResult (SDLCALL *SDL_AppIterate_func)(void *appstate);</code>
     /// <summary>
     /// <para>Function pointer typedef for <see cref="AppIterate"/>.</para>
-    /// <para>These are used by <see cref="EnterAppMainCallbacks"/>. This mechanism operates behind
-    /// the scenes for apps using the optional main callbacks. Apps that want to use
-    /// this should just implement <see cref="AppIterate"/> directly.</para>
+    /// <para>TThese are used by <see cref="EnterAppMainCallbacks"/>. This mechanism operates behind
+    /// the scenes for apps using the optional main callbacks. Apps that want to
+    /// use this should just implement <see cref="AppIterate"/> directly.</para>
     /// </summary>
     /// <param name="appstate">an optional pointer, provided by the app in <see cref="AppInit"/>.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
@@ -65,8 +65,8 @@ public partial class SDL
     /// <summary>
     /// <para>Function pointer typedef for <see cref="AppEvent"/>.</para>
     /// <para>These are used by <see cref="EnterAppMainCallbacks"/>. This mechanism operates behind
-    /// the scenes for apps using the optional main callbacks. Apps that want to use
-    /// this should just implement <see cref="AppEvent"/> directly.</para>
+    /// the scenes for apps using the optional main callbacks. Apps that want to
+    /// use this should just implement <see cref="AppEvent"/> directly.</para>
     /// </summary>
     /// <param name="appstate">an optional pointer, provided by the app in SDL_AppInit.</param>
     /// <param name="event">the new event for the app to examine.</param>
@@ -81,8 +81,8 @@ public partial class SDL
     /// <summary>
     /// <para>Function pointer typedef for <see cref="AppQuit"/>.</para>
     /// <para>These are used by <see cref="EnterAppMainCallbacks"/>. This mechanism operates behind
-    /// the scenes for apps using the optional main callbacks. Apps that want to use
-    /// this should just implement <see cref="AppEvent"/> directly.</para>
+    /// the scenes for apps using the optional main callbacks. Apps that want to
+    /// use this should just implement <see cref="AppEvent"/> directly.</para>
     /// </summary>
     /// <param name="appstate">an optional pointer, provided by the app in <see cref="AppInit"/>.</param>
     /// <param name="result">the result code that terminated the app (success or failure).</param>

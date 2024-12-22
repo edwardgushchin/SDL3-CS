@@ -47,8 +47,10 @@ public static partial class SDL
 	/// <code>DefinePixelFormat(PixelType.Packed32, PackedOrder.RGBA, PackedLayout.Layout8888, 32, 4)</code>
 	/// </summary>
 	/// <param name="type">the type of the new format, probably a <see cref="PixelType"/> value.</param>
-	/// <param name="order">the order of the new format, probably a <see cref="BitmapOrder"/>, <see cref="PackedOrder"/>, or <see cref="ArrayOrder"/> value.</param>
-	/// <param name="layout">the layout of the new format, probably an <see cref="PackedLayout"/> value or zero.</param>
+	/// <param name="order">the order of the new format, probably a <see cref="BitmapOrder"/>,
+	/// <see cref="PackedOrder"/>, or <see cref="ArrayOrder"/> value.</param>
+	/// <param name="layout">the layout of the new format, probably an <see cref="PackedLayout"/>
+	/// value or zero.</param>
 	/// <param name="bits">the number of bits per pixel of the new format.</param>
 	/// <param name="bytes">the number of bytes per pixel of the new format.</param>
 	/// <returns>a format value in the style of <see cref="PixelFormat"/></returns>
@@ -98,8 +100,8 @@ public static partial class SDL
 	
 	/// <summary>
 	/// <para> A macro to retrieve the layout of an <see cref="PixelFormat"/>.</para>
-	/// <para>This is usually a value from the <see cref="PackedLayout"/> enumeration, or zero if
-	/// a layout doesn't make sense for the format type.</para>
+	/// <para>This is usually a value from the <see cref="PackedLayout"/> enumeration, or zero if a
+	/// layout doesn't make sense for the format type.</para>
 	/// </summary>
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the layout of <c>format</c>.</returns>
@@ -246,10 +248,14 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="type">the type of the new format, probably an <see cref="ColorType"/> value.</param>
 	/// <param name="range">the range of the new format, probably a <see cref="ColorRange"/> value.</param>
-	/// <param name="primaries">the primaries of the new format, probably an <see cref="ColorPrimaries"/> value.</param>
-	/// <param name="transfer">the transfer characteristics of the new format, probably an <see cref="TransferCharacteristics"/> value.</param>
-	/// <param name="matrix">the matrix coefficients of the new format, probably an <see cref="MatrixCoefficients"/> value.</param>
-	/// <param name="chroma">the chroma sample location of the new format, probably an <see cref="ChromaLocation"/> value.</param>
+	/// <param name="primaries">the primaries of the new format, probably an
+	/// <see cref="ColorPrimaries"/> value.</param>
+	/// <param name="transfer">the transfer characteristics of the new format, probably an
+	/// <see cref="TransferCharacteristics"/> value.</param>
+	/// <param name="matrix">the matrix coefficients of the new format, probably an
+	/// <see cref="MatrixCoefficients"/> value.</param>
+	/// <param name="chroma">the chroma sample location of the new format, probably an
+	/// <see cref="ChromaLocation"/> value.</param>
 	/// <returns>a format value in the style of <see cref="ColorRange"/>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
 	/// <since>This macro is available since SDL 3.1.3.</since>
@@ -324,7 +330,8 @@ public static partial class SDL
 
 	
 	/// <summary>
-	/// <para>A macro to determine if an <see cref="Colorspace"/> uses BT601 (or BT470BG) matrix coefficients.</para>
+	/// <para>A macro to determine if an <see cref="Colorspace"/> uses BT601 (or BT470BG) matrix
+	/// coefficients.</para>
 	/// <para>Note that this macro double-evaluates its parameter, so do not use
 	/// expressions with side-effects here.</para>
 	/// </summary>
@@ -348,7 +355,8 @@ public static partial class SDL
 
 	
 	/// <summary>
-	/// <para>A macro to determine if an <see cref="Colorspace"/> uses BT2020_NCL matrix coefficients.</para>
+	/// <para>A macro to determine if an <c>Colorspace</c> uses BT2020_NCL matrix
+	/// coefficients.</para>
 	/// </summary>
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns><c>true</c> if BT709, <c>false</c> otherwise.</returns>

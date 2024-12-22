@@ -80,10 +80,10 @@ public static partial class SDL
     /// <summary>
     /// <para>Insert a memory release barrier (function version).</para>
     /// <para>Please refer to SDL_MemoryBarrierRelease for details. This is a function
-    /// version, which might be useful if you need to use this functionality from
-    /// a scripting language, etc. Also, some of the macro versions call this
-    /// function behind the scenes, where more heavy lifting can happen inside
-    /// of SDL. Generally, though, an app written in C/C++/etc should use the macro
+    /// version, which might be useful if you need to use this functionality from a
+    /// scripting language, etc. Also, some of the macro versions call this
+    /// function behind the scenes, where more heavy lifting can happen inside of
+    /// SDL. Generally, though, an app written in C/C++/etc should use the macro
     /// version, as it will be more efficient.</para>
     /// </summary>
     /// <threadsafety>Obviously this function is safe to use from any thread at any
@@ -97,14 +97,19 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_MemoryBarrierAcquireFunction(void);</code>
     /// <summary>
-    /// <para>Insert a memory acquire barrier.</para>
-    /// <para>Please refer to <see cref="MemoryBarrierReleaseFunction"/> for the details!</para>
+    /// <para>Insert a memory acquire barrier (function version).</para>
+    /// <para>Please refer to SDL_MemoryBarrierRelease for details. This is a function
+    /// version, which might be useful if you need to use this functionality from a
+    /// scripting language, etc. Also, some of the macro versions call this
+    /// function behind the scenes, where more heavy lifting can happen inside of
+    /// SDL. Generally, though, an app written in C/C++/etc should use the macro
+    /// version, as it will be more efficient.</para>
     /// </summary>
     /// <threadsafety>Obviously this function is safe to use from any thread at any
     /// time, but if you find yourself needing this, you are probably
     /// dealing with some very sensitive code; be careful!</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="MemoryBarrierReleaseFunction"/>
+    /// <seealso cref="MemoryBarrierAcquire"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierAcquireFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MemoryBarrierAcquireFunction();
     
