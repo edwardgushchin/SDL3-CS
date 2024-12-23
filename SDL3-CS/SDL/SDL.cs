@@ -110,20 +110,21 @@ public static partial class SDL
 
     
     // struct[] to IntPtr
+    // After calling Marshal.FreeHGlobal()
     public static IntPtr StructArrayToPointer<T>(T[] array) where T : struct
     {
         if (array == null || array.Length == 0) return IntPtr.Zero;
-        
-        var bufferHandle = GCHandle.Alloc(array, GCHandleType.Pinned);
 
-        try
+        var sizeOfT = Marshal.SizeOf<T>();
+        var unmanagedPointer = Marshal.AllocHGlobal(sizeOfT * array.Length);
+
+        for (var i = 0; i < array.Length; i++)
         {
-            return bufferHandle.AddrOfPinnedObject();
+            var offset = IntPtr.Add(unmanagedPointer, i * sizeOfT);
+            Marshal.StructureToPtr(array[i], offset, false);
         }
-        finally
-        {
-            bufferHandle.Free();
-        }
+
+        return unmanagedPointer;
     }
 
     
