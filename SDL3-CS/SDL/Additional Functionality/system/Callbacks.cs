@@ -27,12 +27,11 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>typedef SDL_bool (SDLCALL *SDL_WindowsMessageHook)(void *userdata, MSG *msg);</code>
+    /// <code>typedef bool (SDLCALL *SDL_WindowsMessageHook)(void *userdata, MSG *msg);</code>
     /// <summary>
-    /// <para>A callback to be used with SDL_SetWindowsMessageHook.</para>
-    /// <para>This callback may modify the message, and should return <c>true</c> if the
-    /// message should continue to be processed, or <c>false</c> to prevent further
-    /// processing.</para>
+    /// <para>A callback to be used with <see cref="SetWindowsMessageHook"/>.</para>
+    /// <para>This callback may modify the message, and should return true if the message
+    /// should continue to be processed, or false to prevent further processing.</para>
     /// <para>As this is processing a message directly from the Windows event loop, this
     /// callback should do the minimum required work and return quickly.</para>
     /// </summary>
@@ -42,7 +41,7 @@ public static partial class SDL
     /// <returns><c>true</c> to let event continue on, <c>false</c> to drop it.</returns>
     /// <threadsafety>This may only be called (by SDL) from the thread handling the
     /// Windows event loop.</threadsafety>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -50,16 +49,26 @@ public static partial class SDL
     public delegate bool WindowsMessageHook(IntPtr userdata, IntPtr msg);
     
     
-    /// <code>typedef SDL_bool (SDLCALL *SDL_X11EventHook)(void *userdata, XEvent *xevent);</code>
+    /// <code>typedef bool (SDLCALL *SDL_X11EventHook)(void *userdata, XEvent *xevent);</code>
     /// <summary>
-    /// Platform specific functions for UNIX
+    /// A callback to be used with <see cref="SetX11EventHook"/>.
+    /// <para>This callback may modify the event, and should return true if the event
+    /// should continue to be processed, or false to prevent further processing.</para>
+    /// <para>As this is processing an event directly from the X11 event loop, this
+    /// callback should do the minimum required work and return quickly.</para>
     /// </summary>
+    /// <param name="userdata">the app-defined pointer provided to <see cref="SetX11EventHook"/>.</param>
+    /// <param name="xevent">a pointer to an Xlib XEvent union to process.</param>
+    /// <returns><c>true</c> to let event continue on, <c>false</c> to drop it.</returns>
+    /// <threadsafety>This may only be called (by SDL) from the thread handling the
+    /// X11 event loop.</threadsafety>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <see cref="SetX11EventHook"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [return: MarshalAs(UnmanagedType.I1)]
     public delegate bool X11EventHook(IntPtr userdata, IntPtr xevent);
     
     
-    // ReSharper disable once InconsistentNaming
     /// <code>typedef void (SDLCALL *SDL_iOSAnimationCallback)(void *userdata);</code>
     /// <summary>
     /// <para>The prototype for an Apple iOS animation callback.</para>
@@ -70,13 +79,21 @@ public static partial class SDL
     /// <param name="userdata">what was passed as <c>callbackParam</c> to
     /// <see cref="SetiOSAnimationCallback"/> as <c>callbackParam</c>.</param>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     /// <seealso cref="SetiOSAnimationCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IOSAnimationCallback(IntPtr userdata);
     
     
-    /// <code>typedef void (SDLCALL *SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, SDL_bool granted);</code>
+    /// <code>typedef void (SDLCALL *SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, bool granted);</code>
+    /// <summary>
+    /// Callback that presents a response from a <see cref="RequestAndroidPermission"/> call.
+    /// </summary>
+    /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
+    /// <param name="permission">the Android-specific permission name that was requested.</param>
+    /// <param name="granted">true if permission is granted, false if denied.</param>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <seealso cref="RequestAndroidPermission"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void RequestAndroidPermissionCallback(IntPtr userdata,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string permission, [MarshalAs(UnmanagedType.I1)] bool granted);

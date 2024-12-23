@@ -26,14 +26,15 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// See the official Android developer guide for more information:
-    /// http://developer.android.com/guide/topics/data/data-storage.html
+    /// Application sandbox environment.
     /// </summary>
-    /// <since>This macro is available since SDL 3.0.0.</since>
-    public enum AndroidExternalStorageState : uint
+    /// <since>This enum is available since SDL 3.2.0.</since>
+    public enum Sandbox
     {
-        Unavailable = 0,
-        Read = 0x01,
-        Write = 0x02
+        None = 0,
+        UnknownContainer,
+        Flatpak,
+        Snap,
+        MacOS
     }
 }

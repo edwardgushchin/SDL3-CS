@@ -23,37 +23,20 @@
 
 namespace SDL3;
 
-
 public static partial class SDL
 {
     /// <summary>
-    /// WinRT / Windows Phone path types
+    /// See the official Android developer guide for more information:
+    /// http://developer.android.com/guide/topics/data/data-storage.html
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
-    public enum  WinRTPath
-    {
-        /// <summary>
-        /// The installed app's root directory.
-        /// Files here are likely to be read-only. 
-        /// </summary>
-        InstalledLocation,
-        
-        /// <summary>
-        /// The app's local data store.  Files may be written here
-        /// </summary>
-        LocalFolder,
-        
-        /// <summary>
-        /// The app's roaming data store.  Unsupported on Windows Phone.
-        /// Files written here may be copied to other machines via a network
-        /// connection.
-        /// </summary>
-        RoamingFolder,
-        
-        /// <summary>
-        /// The app's temporary data store.  Unsupported on Windows Phone.
-        ///  Files written here may be deleted at any time.
-        /// </summary>
-        TempFolder
-    }
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    public const uint AndroidExternalStorageRead = 0x01;
+    
+    
+    /// <summary>
+    /// <para>See the official Android developer guide for more information:
+    /// http://developer.android.com/guide/topics/data/data-storage.html</para>
+    /// </summary>
+    /// <since>This macro is available since SDL 3.1.3.</since>
+    public const uint AndroidExternalStorageWrite = 0x02;
 }
