@@ -34,6 +34,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3</since>
     /// <seealso cref="CreateGPUBuffer"/>
+    /// <seealso cref="GPUBufferUsageFlags"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUBufferCreateInfo
     {
