@@ -25,6 +25,10 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <summary>
+    /// An enumeration of indices inside the colors array of
+    /// <see cref="MessageBoxColorScheme"/>.
+    /// </summary>
     public enum MessageBoxColorType
     {
         Background,
@@ -34,8 +38,8 @@ public static partial class SDL
         ButtonSelected,
         
         /// <summary>
-        /// Size of the colors array of SDL_MessageBoxColorScheme.
+        /// Size of the colors array of <see cref="MessageBoxColorScheme"/>.
         /// </summary>
-        Max
+        Count
     }
 }

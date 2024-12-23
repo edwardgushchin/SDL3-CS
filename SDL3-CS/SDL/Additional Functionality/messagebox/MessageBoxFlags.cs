@@ -26,10 +26,10 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>MessageBox flags.</para>
+    /// <para>Message box flags.</para>
     /// <para>If supported will display warning icon, etc.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.0.0.</since>
+    /// <since>This datatype is available since SDL 3.1.3.</since>
     [Flags]
     public enum MessageBoxFlags : uint
     {

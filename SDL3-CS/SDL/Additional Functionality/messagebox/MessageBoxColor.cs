@@ -30,13 +30,14 @@ public static partial class SDL
     /// <summary>
     /// RGB value used in a message box color scheme
     /// </summary>
-    /// <param name="r">red</param>
-    /// <param name="g">green</param>
-    /// <param name="b">blue</param>
-    /// <since>This struct is available since SDL 3.0.0.</since>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MessageBoxColor(byte r, byte g, byte b)
+    public struct MessageBoxColor
     {
-        private byte _r = r, _g = g, _b = b;
+        public byte R;
+
+        public byte G;
+
+        public byte B;
     }
 }

@@ -28,9 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_ShowMessageBox(ref MessageBoxData messageboxdata, out int buttonid);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);</code>
     /// <summary>
     /// <para>Create a modal message box.</para>
     /// <para>If your needs aren't complex, it might be easier to use
@@ -49,19 +47,19 @@ public static partial class SDL
     /// concern, check the return value from this function and fall back to writing
     /// to stderr if you can.</para>
     /// </summary>
-    /// <param name="messageboxData">the <see cref="MessageBoxData"/> structure with title, text and
+    /// <param name="messageboxdata">the <see cref="MessageBoxData"/> structure with title, text and
     /// other options.</param>
-    /// <param name="buttonId">the pointer to which user id of hit button should be
+    /// <param name="buttonid">the pointer to which user id of hit button should be
     /// copied.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    /// <seealso cref="ShowSimpleMessageBox"/>
-    public static int ShowMessageBox(MessageBoxData messageboxData, out int buttonId) => 
-        SDL_ShowMessageBox(ref messageboxData, out buttonId);
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [DllImport(SDLLibrary, EntryPoint = "SDL_ShowMessageBox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static extern bool ShowMessageBox(in MessageBoxData messageboxdata, out int buttonid);
     
     
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);</code>
     /// <summary>
     /// <para>Display a simple modal message box.</para>
     /// <para>If your needs aren't complex, this function is preferred over
@@ -87,15 +85,14 @@ public static partial class SDL
     /// to stderr if you can.</para>
     /// </summary>
     /// <param name="flags">an <see cref="MessageBoxFlags"/> value.</param>
-    /// <param name="title">uTF-8 title text.</param>
-    /// <param name="message">uTF-8 message text.</param>
-    /// <param name="window">the parent window, or <c>NULL</c> for no parent.</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="title">UTF-8 title text.</param>
+    /// <param name="message">UTF-8 message text.</param>
+    /// <param name="window">the parent window, or <c>null</c> for no parent.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ShowMessageBox"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowSimpleMessageBox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int ShowSimpleMessageBox(MessageBoxFlags flags,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string title, [MarshalAs(UnmanagedType.LPUTF8Str)] string message,
-        IntPtr window);
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool ShowSimpleMessageBox(MessageBoxFlags flags, [MarshalAs(UnmanagedType.LPUTF8Str)] string title, [MarshalAs(UnmanagedType.LPUTF8Str)] string message, IntPtr window);
 }

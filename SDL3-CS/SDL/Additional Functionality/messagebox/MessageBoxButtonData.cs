@@ -30,20 +30,20 @@ public static partial class SDL
     /// <summary>
     /// Individual button data.
     /// </summary>
-    /// <since>This struct is available since SDL 3.0.0.</since>
-    /// <param name="flags"><see cref="MessageBoxButtonFlags"/></param>
-    /// <param name="buttonId">User defined button id (value returned via <see cref="ShowMessageBox"/>)</param>
-    /// <param name="text">The UTF-8 button text</param>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MessageBoxButtonData(MessageBoxButtonFlags flags, int buttonId, string text) : IDisposable
+    public struct MessageBoxButtonData
     {
-        private MessageBoxButtonFlags _flags = flags;
-        private int _buttonID = buttonId;
-        private IntPtr _text = Marshal.StringToCoTaskMemUTF8(text);
-        
-        public void Dispose()
-        {
-            Marshal.FreeCoTaskMem(_text);
-        }
+        public MessageBoxButtonFlags Flags;
+
+        /// <summary>
+        /// User defined button id (value returned via <see cref="ShowMessageBox"/>)
+        /// </summary>
+        public int ButtonID;
+
+        /// <summary>
+        /// The UTF-8 button text
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string Text;
     }
 }

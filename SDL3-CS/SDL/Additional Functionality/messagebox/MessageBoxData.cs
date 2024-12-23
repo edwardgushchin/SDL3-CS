@@ -34,11 +34,26 @@ public static partial class SDL
     public struct MessageBoxData
     {
         public MessageBoxFlags Flags;
+        
+        /// <summary>
+        /// Parent window, can be <c>null</c>
+        /// </summary>
         public IntPtr Window;
-        public IntPtr Title;
-        public IntPtr Message;
+        
+        /// <summary>
+        /// UTF-8 title
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string Title;
+        
+        /// <summary>
+        /// UTF-8 message text
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string Message;
+        
         public int NumButtons;
+        
         public IntPtr Buttons;
+        
         public IntPtr ColorScheme;
     }
 }
