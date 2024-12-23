@@ -34,22 +34,19 @@ public static partial class SDL
     /// would be "en"), and the country, if not NULL, will be an ISO-3166 country
     /// code (so Canada would be "CA").</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetPreferredLocales"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Locale
     {
-        private IntPtr _language;
-        private IntPtr _country;
-
         /// <summary>
         /// A language name, like "en" for English.
         /// </summary>
-        public string Language => Marshal.PtrToStringAnsi(_language)!;
-
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string Language;
+        
         /// <summary>
-        /// A country, like "US" for America. Can be <c>NULL</c>.
+        /// A country, like "US" for America. Can be <c>null</c>.
         /// </summary>
-        public string? Country => Marshal.PtrToStringAnsi(_country);
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string? Country;
     }
 }

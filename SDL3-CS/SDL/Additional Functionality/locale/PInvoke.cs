@@ -29,21 +29,17 @@ namespace SDL3;
 public static partial class SDL
 {
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetPreferredLocales();
-    /// <code>extern SDL_DECLSPEC SDL_Locale * SDLCALL SDL_GetPreferredLocales(void);</code>
+    private static partial IntPtr SDL_GetPreferredLocales(out int count);
+    /// <code>extern SDL_DECLSPEC SDL_Locale ** SDLCALL SDL_GetPreferredLocales(int *count);</code>
     /// <summary>
     /// <para>Report the user's preferred locale.</para>
-    /// <para>This returns an array of SDL_Locale structs, the final item zeroed out.
-    /// When the caller is done with this array, it should call <see cref="Free"/> on the
-    /// returned value; all the memory involved is allocated in a single block, so
-    /// a single <see cref="Free"/> will suffice.</para>
     /// <para>Returned language strings are in the format xx, where 'xx' is an ISO-639
     /// language specifier (such as "en" for English, "de" for German, etc).
     /// Country strings are in the format YY, where "YY" is an ISO-3166 country
     /// code (such as "US" for the United States, "CA" for Canada, etc). Country
-    /// might be NULL if there's no specific guidance on them (so you might get {
+    /// might be <c>null</c> if there's no specific guidance on them (so you might get {
     /// "en", "US" } for American English, but { "en", NULL } means "English
-    /// language, generically"). Language strings are never NULL, except to
+    /// language, generically"). Language strings are never <c>null</c>, except to
     /// terminate the array.</para>
     /// <para>Please note that not all of these strings are 2 characters; some are three
     /// or more.</para>
@@ -53,7 +49,7 @@ public static partial class SDL
     /// "jp", NULL }. Someone from England might prefer British English (where
     /// "color" is spelled "colour", etc), but will settle for anything like it: {
     /// "en_GB", "en", NULL }.</para>
-    /// <para>This function returns NULL on error, including when the platform does not
+    /// <para>This function returns <c>null</c> on error, including when the platform does not
     /// supply this information at all.</para>
     /// <para>This might be a "slow" call that has to query the operating system. It's
     /// best to ask for this once and save the results. However, this list can
@@ -62,40 +58,24 @@ public static partial class SDL
     /// if possible, and you can call this function again to get an updated copy of
     /// preferred locales.</para>
     /// </summary>
-    /// <returns>array of locales, terminated with a locale with a NULL language
-    /// field. Will return NULL on error; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static Locale[]? GetPreferredLocales()
+    /// <param name="count">a pointer filled in with the number of locales returned, may
+    /// be <c>null</c>.</param>
+    /// <returns>a <c>null</c> terminated array of locale pointers, or <c>null</c> on failure;
+    /// call <see cref="GetError"/> for more information. This is a single
+    /// allocation that should be freed with <see cref="Free"/> when it is no
+    /// longer needed.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    public static Locale[]? GetPreferredLocales(out int count)
     {
-        var ptr = SDL_GetPreferredLocales();
-        
-        if (ptr == IntPtr.Zero) return null;
-        
-        var size = Marshal.SizeOf<Locale>();
-        
-        var count = 0;
-        
-        while (true)
-        {
-            var current = IntPtr.Add(ptr, count * size);
-            var locale = Marshal.PtrToStructure<Locale>(current);
-            if (locale.Language == null)
-            {
-                break;
-            }
-            count++;
-        }
-        
-        var locales = new Locale[count];
-        for (var i = 0; i < count; i++)
-        {
-            var current = IntPtr.Add(ptr, i * size);
-            locales[i] = Marshal.PtrToStructure<Locale>(current);
-        }
-        
-        Free(ptr);
+        var ptr = SDL_GetPreferredLocales(out count);
 
-        return locales;
+        try
+        {
+            return PointerToStructArray<Locale>(ptr, count);
+        }
+        finally
+        {
+            Free(ptr);
+        }
     }
 }
