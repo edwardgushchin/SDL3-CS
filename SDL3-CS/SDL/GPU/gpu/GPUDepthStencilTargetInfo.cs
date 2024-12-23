@@ -67,7 +67,7 @@ public static partial class SDL
     /// <para>Note that depth/stencil targets do not support multisample resolves.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3</since>
-    /// <seealso cref="BeginGPURenderPass"/>
+    /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUDepthStencilTargetInfo
     {

@@ -664,8 +664,8 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="PutAudioStreamData"/>
-    /// <seealso cref="GetAudioStreamData"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="ClearAudioStream"/>
@@ -709,8 +709,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
     /// <para>Change the input and output formats of an audio stream.</para>
-    /// <para>Future calls to and <see cref="GetAudioStreamAvailable"/> and <see cref="GetAudioStreamData"/>
-    /// will reflect the new format, and future calls to <see cref="PutAudioStreamData"/>
+    /// <para>Future calls to and <see cref="GetAudioStreamAvailable"/> and <see cref="GetAudioStreamData(nint, byte[], int)"/>
+    /// will reflect the new format, and future calls to <see cref="PutAudioStreamData(nint, byte[], int)"/>
     /// must provide data in the new input formats.</para>
     /// <para>Data that was previously queued in the stream will still be operated on i
     /// the format that was current when it was added, which is to say you can put
@@ -758,7 +758,7 @@ public static partial class SDL
     /// audio. A value greater than 1.0 will play the audio faster, and at a higher
     /// pitch. A value less than 1.0 will play the audio slower, and at a lower
     /// pitch.</para>
-    /// <para>This is applied during <see cref="GetAudioStreamData"/>, and can be continuously
+    /// <para>This is applied during <see cref="GetAudioStreamData(nint, byte[], int)"/>, and can be continuously
     /// changed to create various effects.</para>
     /// </summary>
     /// <param name="stream">the stream the frequency ratio is being changed.</param>
@@ -800,7 +800,7 @@ public static partial class SDL
     /// <para>The gain of a stream is its volume; a larger gain means a louder output,
     /// with a gain of zero being silence.</para>
     /// <para>Audio streams default to a gain of 1.0f (no change in output).</para>
-    /// <para>This is applied during <see cref="GetAudioStreamData"/>, and can be continuously
+    /// <para>This is applied during <see cref="GetAudioStreamData(nint, byte[], int)"/>, and can be continuously
     /// changed to create various effects.</para>
     /// </summary>
     /// <param name="stream">the stream on which the gain is being changed.</param>
@@ -890,7 +890,7 @@ public static partial class SDL
     /// <para>Channel maps are optional; most things do not need them, instead passing
     /// data in the [order that SDL expects](CategoryAudio#channel-layouts).</para>
     /// <para>The input channel map reorders data that is added to a stream via
-    /// <see cref="PutAudioStreamData"/>. Future calls to <see cref="PutAudioStreamData"/> must provide
+    /// <see cref="PutAudioStreamData(nint, byte[], int)"/>. Future calls to <see cref="PutAudioStreamData(nint, byte[], int)"/> must provide
     /// data in the new channel order.</para>
     /// <para>Each item in the array represents an input channel, and its value is the
     /// channel that it should be remapped to. To reverse a stereo signal's left
@@ -936,7 +936,7 @@ public static partial class SDL
     /// <para>Channel maps are optional; most things do not need them, instead passing
     /// data in the [order that SDL expects](CategoryAudio#channel-layouts).</para>
     /// <para>The output channel map reorders data that leaving a stream via
-    /// <see cref="GetAudioStreamData"/>.</para>
+    /// <see cref="GetAudioStreamData(nint, byte[], int)"/>.</para>
     /// <para>Each item in the array represents an input channel, and its value is th
     /// channel that it should be remapped to. To reverse a stereo signal's left
     /// and right values, you'd have an array of <c>{ 1, 0 }</c>. It is legal to remap
@@ -947,7 +947,7 @@ public static partial class SDL
     /// <para>You cannot change the number of channels through a channel map, just
     /// reorder/mute them.</para>
     /// <para>The output channel map can be changed at any time, as output remapping is
-    /// applied during <see cref="GetAudioStreamData"/>.</para>
+    /// applied during <see cref="GetAudioStreamData(nint, byte[], int)"/>.</para>
     /// <para>Audio streams default to no remapping applied. Passing a <c>null</c> channel map
     /// is legal, and turns off remapping.</para>
     /// <para>SDL will copy the channel map; the caller does not have to save this array
@@ -993,7 +993,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="FlushAudioStream"/>
-    /// <seealso cref="GetAudioStreamData"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1021,7 +1021,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="FlushAudioStream"/>
-    /// <seealso cref="GetAudioStreamData"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1050,7 +1050,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
-    /// <seealso cref="PutAudioStreamData"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAudioStreamData(IntPtr stream, IntPtr buf, int len);
     
@@ -1077,7 +1077,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
-    /// <seealso cref="PutAudioStreamData"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
 
@@ -1091,7 +1091,7 @@ public static partial class SDL
     /// <para>If the stream has so much data that it would overflow an int, the return
     /// value is clamped to a maximum value, but no queued data is lost; if there
     /// are gigabytes of data queued, the app might need to read some of it with
-    /// <see cref="GetAudioStreamData"/> before this function's return value is no longer
+    /// <see cref="GetAudioStreamData(nint, byte[], int)"/> before this function's return value is no longer
     /// clamped.</para>
     /// </summary>
     /// <param name="stream">the audio stream to query.</param>
@@ -1099,8 +1099,8 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="GetAudioStreamData"/>
-    /// <seealso cref="PutAudioStreamData"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamAvailable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAudioStreamAvailable(IntPtr stream);
 
@@ -1119,12 +1119,12 @@ public static partial class SDL
     /// Users of this API should be aware of format changes they make when feeding
     /// a stream and plan accordingly.</para>
     /// <para>Queued data is not converted until it is consumed by
-    /// <see cref="GetAudioStreamData"/>, so this value should be representative of the exact
+    /// <see cref="GetAudioStreamData(nint, byte[], int)"/>, so this value should be representative of the exact
     /// data that was put into the stream.</para>
     /// <para>If the stream has so much data that it would overflow an int, the return
     /// value is clamped to a maximum value, but no queued data is lost; if there
     /// are gigabytes of data queued, the app might need to read some of it with
-    /// <see cref="GetAudioStreamData"/> before this function's return value is no longer
+    /// <see cref="GetAudioStreamData(nint, byte[], int)"/> before this function's return value is no longer
     /// clamped.</para>
     /// </summary>
     /// <param name="stream">the audio stream to query.</param>
@@ -1132,7 +1132,7 @@ public static partial class SDL
     /// for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="PutAudioStreamData"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="ClearAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamQueued"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAudioStreamQueued(IntPtr stream);
@@ -1151,7 +1151,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="PutAudioStreamData"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FlushAudioStream(IntPtr stream);
@@ -1169,9 +1169,9 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GetAudioStreamAvailable"/>
-    /// <seealso cref="GetAudioStreamData"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
-    /// <seealso cref="PutAudioStreamData"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ClearAudioStream(IntPtr stream);
@@ -1265,7 +1265,7 @@ public static partial class SDL
     /// <para>Set a callback that runs when data is requested from an audio stream.</para>
     /// <para>This callback is called _before_ data is obtained from the stream, giving
     /// the callback the chance to add more on-demand.</para>
-    /// <para>The callback can (optionally) call <see cref="PutAudioStreamData"/> to add more
+    /// <para>The callback can (optionally) call <see cref="PutAudioStreamData(nint, byte[], int)"/> to add more
     /// audio to the stream during this call; if needed, the request that triggered
     /// this callback will obtain the new data immediately.</para>
     /// <para>The callback's <c>approx_request</c> argument is roughly how many bytes of
@@ -1304,7 +1304,7 @@ public static partial class SDL
     /// <para>Set a callback that runs when data is added to an audio stream.</para>
     /// <para>This callback is called _after_ the data is added to the stream, giving the
     /// callback the chance to obtain it immediately.</para>
-    /// <para>The callback can (optionally) call <see cref="GetAudioStreamData"/> to obtain audio
+    /// <para>The callback can (optionally) call <see cref="GetAudioStreamData(nint, byte[], int)"/> to obtain audio
     /// from the stream during this call.</para>
     /// <para>The callback's <c>approx_request</c> argument is how many bytes of _converted_
     /// data (in the stream's output format) was provided by the caller, although
@@ -1391,7 +1391,7 @@ public static partial class SDL
     /// <param name="callback">a callback where the app will provide new data for
     /// playback, or receive new data for recording. Can be <c>null</c>,
     /// in which case the app will need to call
-    /// <see cref="PutAudioStreamData"/> or <see cref="GetAudioStreamData"/> as
+    /// <see cref="PutAudioStreamData(nint, byte[], int)"/> or <see cref="GetAudioStreamData(nint, byte[], int)"/> as
     /// necessary.</param>
     /// <param name="userdata">app-controlled pointer passed to callback. Can be <c>null</c>.
     /// Ignored if callback is <c>null</c>.</param>
@@ -1443,7 +1443,7 @@ public static partial class SDL
     /// <param name="callback">a callback where the app will provide new data for
     /// playback, or receive new data for recording. Can be <c>null</c>,
     /// in which case the app will need to call
-    /// <see cref="PutAudioStreamData"/> or <see cref="GetAudioStreamData"/> as
+    /// <see cref="PutAudioStreamData(nint, byte[], int)"/> or <see cref="GetAudioStreamData(nint, byte[], int)"/> as
     /// necessary.</param>
     /// <param name="userdata">app-controlled pointer passed to callback. Can be <c>null</c>.
     /// Ignored if callback is <c>null</c>.</param>

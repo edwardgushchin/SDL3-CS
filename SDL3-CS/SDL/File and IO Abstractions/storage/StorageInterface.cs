@@ -26,12 +26,12 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>Function interface for <see cref="Storage"/>.</para>
-    /// <para>Apps that want to supply a custom implementation of <see cref="Storage"/> will fill
+    /// <para>Function interface for SDL_Storage.</para>
+    /// <para>Apps that want to supply a custom implementation of SDL_Storage will fill
     /// in all the functions in this struct, and then pass it to <see cref="OpenStorage"/> to
-    /// create a custom <see cref="Storage"/> object.</para>
+    /// create a custom SDL_Storage object.</para>
     /// <para>It is not usually necessary to do this; SDL provides standard
-    /// implementations for many things you might expect to do with an <see cref="Storage"/>.</para>
+    /// implementations for many things you might expect to do with an SDL_Storage.</para>
     /// <para>This structure should be initialized using <see cref="InitInterface(ref StorageInterface)"/></para>
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3.</since>

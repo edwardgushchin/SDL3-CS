@@ -31,8 +31,8 @@ public static partial class SDL
     /// <summary>
     /// <para>A callback that fires when data passes through an SDL_AudioStream.</para>
     /// <para>Apps can (optionally) register a callback with an audio stream that is
-    /// called when data is added with <see cref="PutAudioStreamData"/>, or requested with
-    /// <see cref="GetAudioStreamData"/>.</para>
+    /// called when data is added with <see cref="PutAudioStreamData(nint, byte[], int)"/>, or requested with
+    /// <see cref="GetAudioStreamData(nint, byte[], int)"/>.</para>
     /// <para>Two values are offered here: one is the amount of additional data needed to
     /// satisfy the immediate request (which might be zero if the stream already
     /// has enough data queued) and the other is the total amount being requested.

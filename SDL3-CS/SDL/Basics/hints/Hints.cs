@@ -2229,7 +2229,7 @@ public static partial class SDL
         public const string PollSentinel = "SDL_POLL_SENTINEL";
         
         /// <summary>
-        /// <para>Override for <see cref="SDL.GetPreferredLocales()"/>.</para>
+        /// <para>Override for <see cref="GetPreferredLocales"/>.</para>
         /// <para>If set, this will be favored over anything the OS might report for the
         /// user's preferred locales. Changing this hint at runtime will not generate a
         /// <see cref="EventType.LocaleChanged"/> event (but if you can change the hint, you can

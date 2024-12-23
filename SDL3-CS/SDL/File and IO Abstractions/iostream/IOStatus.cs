@@ -26,7 +26,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <see cref="IOStream"/> status, set by a read or write operation.
+    /// SDL_IOStream status, set by a read or write operation.
     /// </summary>
     /// <since>This enum is available since SDL 3.0.0.</since>
     public enum IOStatus
