@@ -28,9 +28,6 @@ namespace SDL3;
 
 public static partial class SDL
 {
-	[LibraryImport(SDLLibrary)]
-	[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial PowerState SDL_GetPowerInfo(out int seconds, out int percent);
 	/// <code>extern SDL_DECLSPEC SDL_PowerState SDLCALL SDL_GetPowerInfo(int *seconds, int *percent);</code>
 	/// <summary>
 	/// <para>Get the current power supply details.</para>
@@ -46,14 +43,15 @@ public static partial class SDL
 	/// but not both.</para>
 	/// </summary>
 	/// <param name="seconds">a pointer filled in with the seconds of battery life left,
-	/// or NULL to ignore. This will be filled in with -1 if we
+	/// or <c>null</c> to ignore. This will be filled in with -1 if we
 	/// can't determine a value or there is no battery.</param>
 	/// <param name="percent">a pointer filled in with the percentage of battery life
-	/// left, between 0 and 100, or NULL to ignore. This will be
+	/// left, between 0 and 100, or <c>null</c> to ignore. This will be
 	/// filled in with -1 we can't determine a value or there is no
 	/// battery.</param>
 	/// <returns>the current battery state or <see cref="PowerState.Error"/> on failure;
 	/// call <see cref="GetError"/> for more information.</returns>
-	public static PowerState GetPowerInfo(out int seconds, out int percent) => 
-		SDL_GetPowerInfo(out seconds, out percent);
+	/// <since>This function is available since SDL 3.1.3.</since>
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPowerInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	public static partial PowerState GetPowerInfo(out int seconds, out int percent);
 }
