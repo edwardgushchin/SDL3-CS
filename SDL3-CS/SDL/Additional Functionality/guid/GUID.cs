@@ -34,7 +34,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>An SDL_GUID is a 128-bit identifier for an input device that identifies
+    /// <para>An <see cref="GUID"/> is a 128-bit identifier for an input device that identifies
     /// that device across runs of SDL programs on the same platform.</para>
     /// <para>If the device is detached and then re-attached to a different port, or if
     /// the base system is rebooted, the device should still report the same GUID.</para>
@@ -45,51 +45,10 @@ public static partial class SDL
     /// <para>GUIDs may be platform-dependent (i.e., the same device may report different
     /// GUIDs on different operating systems).</para>
     /// </summary>
+    /// <since>This struct is available since SDL 3.1.3.</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GUID 
     {
-        private unsafe fixed byte data[16];
-        
-        // ReSharper disable once MemberCanBePrivate.Global
-        public unsafe byte[] Data
-        {
-            get
-            {
-                fixed (byte* ptr = data)
-                {
-                    var array = new byte[16];
-                    var intPtr = (IntPtr) ptr;
-                    try
-                    {
-                        Marshal.Copy(intPtr, array, 0, 16);
-                        return array;
-                    }
-                    finally
-                    {
-                        Free(intPtr);
-                    }
-                }
-            }
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is GUID other && StructuralComparisons.StructuralEqualityComparer.Equals(Data, other.Data);
-        }
-
-        public override int GetHashCode()
-        {
-            return Data.GetHashCode();
-        }
-        
-        public static bool operator ==(GUID left, GUID right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(GUID left, GUID right)
-        {
-            return !(left == right);
-        }
+        public unsafe fixed byte Data[16];
     }
 }

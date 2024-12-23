@@ -28,47 +28,32 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GUIDToString(GUID guid, IntPtr pszGUID, int cbGUID);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GUIDToString(SDL_GUID guid, char *pszGUID, int cbGUID);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GUIDToString(SDL_GUID guid, char *pszGUID, int cbGUID);</code>
     /// <summary>
-    /// <para>Get an ASCII string representation for a given SDL_GUID.</para>
-    /// <para>You should supply at least 33 bytes for pszGUID.</para>
+    /// Get an ASCII string representation for a given <see cref="GUID"/>.
     /// </summary>
     /// <param name="guid">the <see cref="GUID"/> you wish to convert to string.</param>
-    /// <param name="result">buffer in which to write the ASCII string</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    ///          <see cref="GetError"/> for more information.</returns>
-    /// <seealso cref="GUIDFromString"/>
-    public static int GUIDToString(GUID guid, out string? result)
-    {
-        const int bufferSize = 33;
-        var buffer = Marshal.AllocHGlobal(bufferSize);
-        try
-        {
-            var returnValue = SDL_GUIDToString(guid, buffer, bufferSize);
-            result = returnValue == 0 ? Marshal.PtrToStringAnsi(buffer) : string.Empty;
-            return returnValue;
-        }
-        finally
-        {
-            Marshal.FreeHGlobal(buffer);
-        }
-    }
+    /// <param name="pszGUID">buffer in which to write the ASCII string.</param>
+    /// <param name="cbGUID">the size of pszGUID, should be at least 33 bytes.</param>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="StringToGUID"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GUIDToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial void GUIDToString(GUID guid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ref byte[] pszGUID, int cbGUID);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial GUID SDL_GUIDFromString([MarshalAs(UnmanagedType.LPUTF8Str)] string pchGUID);
-    /// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_GUIDFromString(const char *pchGUID);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_StringToGUID(const char *pchGUID);</code>
     /// <summary>
     /// <para>Convert a GUID string into a <see cref="GUID"/> structure.</para>
     /// <para>Performs no error checking. If this function is given a string containing
     /// an invalid GUID, the function will silently succeed, but the GUID generated
     /// will not be useful.</para>
     /// </summary>
-    /// <param name="guidString">string containing an ASCII representation of a GUID.</param>
+    /// <param name="pchGUID">string containing an ASCII representation of a GUID.</param>
     /// <returns>a <see cref="GUID"/> structure.</returns>
+    /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="GUIDToString"/>
-    public static GUID GUIDFromString(string guidString) => SDL_GUIDFromString(guidString);
-    
+    [DllImport(SDLLibrary, EntryPoint = "SDL_StringToGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static extern GUID StringToGUID([MarshalAs(UnmanagedType.LPUTF8Str)] string pchGUID);
 }
