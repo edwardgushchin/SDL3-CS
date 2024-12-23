@@ -67,7 +67,7 @@ public static partial class SDL
 	[Macro]
 	public static void InitInterface(ref IOStreamInterface iface)
 	{
-		var ptr = StructToPointer<IOStreamInterface>(iface);
+		var ptr = StructureToPointer<IOStreamInterface>(iface);
 
 		try
 		{
@@ -116,7 +116,7 @@ public static partial class SDL
 	[Macro]
 	public static void InitInterface(ref StorageInterface iface)
 	{
-		var ptr = StructToPointer<StorageInterface>(iface);
+		var ptr = StructureToPointer<StorageInterface>(iface);
 
 		try
 		{
@@ -165,7 +165,7 @@ public static partial class SDL
 	[Macro]
 	public static void InitInterface(ref VirtualJoystickDesc iface)
 	{
-		var ptr = StructToPointer<VirtualJoystickDesc>(iface);
+		var ptr = StructureToPointer<VirtualJoystickDesc>(iface);
 
 		try
 		{

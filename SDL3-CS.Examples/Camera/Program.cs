@@ -95,7 +95,7 @@ internal static class Program
 
             if (framePtr != IntPtr.Zero)
             {
-                var frame = SDL.PointerToStruct<SDL.Surface>(framePtr) ?? default;
+                var frame = SDL.PointerToStructure<SDL.Surface>(framePtr) ?? default;
                 
                 if (texture == IntPtr.Zero)
                 {

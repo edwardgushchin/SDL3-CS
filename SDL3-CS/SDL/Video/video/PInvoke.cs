@@ -107,7 +107,7 @@ public static partial class SDL
         
         try
         {
-            return PointerToStructArray<uint>(ptr, count);
+            return PointerToStructureArray<uint>(ptr, count);
         }
         finally
         {
@@ -291,7 +291,7 @@ public static partial class SDL
 
         try
         {
-            return PointerToStructArray<DisplayMode>(ptr, count);
+            return PointerToStructureArray<DisplayMode>(ptr, count);
         }
         finally
         {
@@ -349,7 +349,7 @@ public static partial class SDL
     /// <seealso cref="GetCurrentDisplayMode"/>
     /// <seealso cref="GetDisplays"/>
     public static DisplayMode? GetDesktopDisplayMode(uint displayID) =>
-        PointerToStruct<DisplayMode>(SDL_GetDesktopDisplayMode(displayID));
+        PointerToStructure<DisplayMode>(SDL_GetDesktopDisplayMode(displayID));
 
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDisplayMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -370,7 +370,7 @@ public static partial class SDL
     /// <seealso cref="GetDesktopDisplayMode"/>
     /// <seealso cref="GetDisplays"/>
     public static DisplayMode? GetCurrentDisplayMode(uint displayID) =>
-        PointerToStruct<DisplayMode>(SDL_GetCurrentDisplayMode(displayID));
+        PointerToStructure<DisplayMode>(SDL_GetCurrentDisplayMode(displayID));
 
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForPoint(const SDL_Point *point);</code>
@@ -537,7 +537,7 @@ public static partial class SDL
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SetWindowFullscreen"/>
     public static DisplayMode? GetWindowFullscreenMode(IntPtr window) =>
-        PointerToStruct<DisplayMode>(SDL_GetWindowFullscreenMode(window));
+        PointerToStructure<DisplayMode>(SDL_GetWindowFullscreenMode(window));
     
     
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetWindowICCProfile(SDL_Window *window, size_t *size);</code>

@@ -71,7 +71,7 @@ public static partial class SDL
 
         try
         {
-            return PointerToStructArray<Locale>(ptr, count);
+            return PointerToStructureArray<Locale>(ptr, count);
         }
         finally
         {

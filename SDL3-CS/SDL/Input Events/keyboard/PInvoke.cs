@@ -66,7 +66,7 @@ public static partial class SDL
 
         try
         {
-            return PointerToStructArray<uint>(ptr, count);
+            return PointerToStructureArray<uint>(ptr, count);
         }
         finally
         {

@@ -49,7 +49,7 @@ internal static class Program
                         new() {ButtonID = 2, Flags = SDL.MessageBoxButtonFlags.ReturnkeyDefault, Text = "Retry"}
                     };
 
-                    var buttonsPtr = SDL.StructArrayToPointer(buttons);
+                    var buttonsPtr = SDL.StructureArrayToPointer(buttons);
 
                     try
                     {

@@ -3160,7 +3160,7 @@ public static partial class SDL
         
         try
         {
-            rectPtr = StructToPointer(rect);
+            rectPtr = StructureToPointer(rect);
             return SDL_RenderReadPixels(renderer, rectPtr);
         }
         finally

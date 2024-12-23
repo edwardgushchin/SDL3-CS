@@ -106,7 +106,7 @@ public static partial class SDL
 
         try
         {
-            return PointerToStructArray<uint>(ptr, count);
+            return PointerToStructureArray<uint>(ptr, count);
         }
         finally
         {
@@ -153,7 +153,7 @@ public static partial class SDL
         
         try
         {
-            return PointerToStructArray<CameraSpec>(ptr, count);
+            return PointerToStructureArray<CameraSpec>(ptr, count);
         }
         finally
         {

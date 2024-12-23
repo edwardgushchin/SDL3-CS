@@ -49,7 +49,7 @@ public static partial class SDL
         
         try
         {
-            return PointerToStructArray<ulong>(ptr, count);
+            return PointerToStructureArray<ulong>(ptr, count);
         }
         finally
         {
@@ -102,7 +102,7 @@ public static partial class SDL
         
         try
         {
-            return PointerToStructArray<Finger>(ptr, count);
+            return PointerToStructureArray<Finger>(ptr, count);
         }
         finally
         {

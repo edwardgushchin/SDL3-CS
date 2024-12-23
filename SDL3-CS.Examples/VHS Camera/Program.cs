@@ -106,7 +106,7 @@ internal static class Program
 
             if (framePtr != IntPtr.Zero)
             {
-                var frame = SDL.PointerToStruct<SDL.Surface>(framePtr) ?? default;
+                var frame = SDL.PointerToStructure<SDL.Surface>(framePtr) ?? default;
                 
                 if (texture == IntPtr.Zero)
                 {
@@ -116,7 +116,7 @@ internal static class Program
                 
                 if (vhs)
                 {
-                    var pixels = SDL.PointerToStructArray<byte>(frame.Pixels, frame.Pitch * frame.Height)!;
+                    var pixels = SDL.PointerToStructureArray<byte>(frame.Pixels, frame.Pitch * frame.Height)!;
                     
                     ApplyVHSEffectYUY22(pixels, frame.Width, frame.Height);
                     
