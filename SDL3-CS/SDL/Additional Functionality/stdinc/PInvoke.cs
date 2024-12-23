@@ -205,6 +205,334 @@ public partial class SDL
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AlignedFree(IntPtr mem);
+    
+    
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumAllocations(void);</code>
+    /// <summary>
+    /// Get the number of outstanding (unfreed) allocations.
+    /// </summary>
+    /// <returns>the number of allocations or -1 if allocation counting is
+    /// disabled.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumAllocations"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetNumAllocations();
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Environment * SDLCALL SDL_GetEnvironment(void);</code>
+    /// <summary>
+    /// <para>Get the process environment.</para>
+    /// <para>This is initialized at application start and is not affected by setenv()
+    /// and unsetenv() calls after that point. Use <see cref="SetEnvironmentVariable"/> and
+    /// <see cref="UnsetEnvironmentVariable"/> if you want to modify this environment, or
+    /// SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
+    /// in the C runtime environment after <see cref="Quit"/>.</para>
+    /// </summary>
+    /// <returns>a pointer to the environment for the process or <c>null</c> on failure;
+    /// call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEnvironmentVariable"/>
+    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="SetEnvironmentVariable"/>
+    /// <seealso cref="UnsetEnvironmentVariable"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetEnvironment();
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Environment * SDLCALL SDL_CreateEnvironment(bool populated);</code>
+    /// <summary>
+    /// Create a set of environment variables
+    /// </summary>
+    /// <param name="populated">true to initialize it from the C runtime environment,
+    /// false to create an empty environment.</param>
+    /// <returns>a pointer to the new environment or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>If <c>populated</c> is false, it is safe to call this function
+    /// from any thread, otherwise it is safe if no other threads are
+    /// calling setenv() or unsetenv()</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEnvironmentVariable"/>
+    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="SetEnvironmentVariable"/>
+    /// <seealso cref="UnsetEnvironmentVariable"/>
+    /// <seealso cref="DestroyEnvironment"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateEnvironment([MarshalAs(UnmanagedType.I1)] bool populated);
+    
+    
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);</code>
+    /// <summary>
+    /// <para>Get the value of a variable in the environment.</para>
+    /// </summary>
+    /// <param name="env">the environment to query.</param>
+    /// <param name="name">the name of the variable to get.</param>
+    /// <returns>a pointer to the value of the variable or <c>null</c> if it can't be
+    /// found.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEnvironment"/>
+    /// <seealso cref="CreateEnvironment"/>
+    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="SetEnvironmentVariable"/>
+    /// <seealso cref="UnsetEnvironmentVariable"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironmentVariable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    public static partial string GetEnvironmentVariable(IntPtr env, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironmentVariables"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetEnvironmentVariables(IntPtr env); 
+    /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GetEnvironmentVariables(SDL_Environment *env);</code>
+    /// <summary>
+    /// Get all variables in the environment.
+    /// </summary>
+    /// <param name="env">the environment to query.</param>
+    /// <returns>a <c>null</c> terminated array of pointers to environment variables in
+    /// the form "variable=value" or <c>null</c> on failure; call <see cref="GetError"/>
+    /// for more information. This is a single allocation that should be
+    /// freed with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEnvironment"/>
+    /// <seealso cref="CreateEnvironment"/>
+    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="SetEnvironmentVariable"/>
+    /// <seealso cref="UnsetEnvironmentVariable"/>
+    public static string[]? GetEnvironmentVariables(IntPtr env)
+    {
+        var ptr = SDL_GetEnvironmentVariables(env);
+
+        try
+        {
+            return PointerToStringArray(ptr);
+        }
+        finally
+        {
+            Free(ptr);
+        }
+    }
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetEnvironmentVariable(SDL_Environment *env, const char *name, const char *value, bool overwrite);</code>
+    /// <summary>
+    /// Set the value of a variable in the environment.
+    /// </summary>
+    /// <param name="env">the environment to modify.</param>
+    /// <param name="name">the name of the variable to set.</param>
+    /// <param name="value">the value of the variable to set.</param>
+    /// <param name="overwrite"><c>true</c> to overwrite the variable if it exists, <c>false</c> to
+    /// return success without setting the variable if it already
+    /// exists.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEnvironment"/>
+    /// <seealso cref="CreateEnvironment"/>
+    /// <seealso cref="GetEnvironmentVariable"/>
+    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="UnsetEnvironmentVariable"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEnvironmentVariable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetEnvironmentVariable(IntPtr env, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value, [MarshalAs(UnmanagedType.I1)] bool overwrite);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UnsetEnvironmentVariable(SDL_Environment *env, const char *name);</code>
+    /// <summary>
+    /// Clear a variable from the environment.
+    /// </summary>
+    /// <param name="env">the environment to modify.</param>
+    /// <param name="name">the name of the variable to unset.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetEnvironment"/>
+    /// <seealso cref="CreateEnvironment"/>
+    /// <seealso cref="GetEnvironmentVariable"/>
+    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="SetEnvironmentVariable"/>
+    /// <seealso cref="UnsetEnvironmentVariable"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnsetEnvironmentVariable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool UnsetEnvironmentVariable(IntPtr env, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyEnvironment(SDL_Environment *env);</code>
+    /// <summary>
+    /// Destroy a set of environment variables.
+    /// </summary>
+    /// <param name="env">the environment to destroy.</param>
+    /// <threadsafety>It is safe to call this function from any thread, as long as
+    /// the environment is no longer in use.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="CreateEnvironment"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyEnvironment(IntPtr env);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_srand(Uint64 seed);</code>
+    /// <summary>
+    /// Seeds the pseudo-random number generator.
+    /// <para>Reusing the seed number will cause Rand*() to repeat the same stream
+    /// of <c>random</c> numbers.</para>
+    /// </summary>
+    /// <param name="seed">the value to use as a random number seed, or 0 to use
+    /// <see cref="GetPerformanceCounter"/>.</param>
+    /// <threadsafety>This should be called on the same thread that calls
+    /// Rand*()</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="Rand"/>
+    /// <seealso cref="RandBits"/>
+    /// <seealso cref="RandF"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_srand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SRand(ulong seed);
+    
+    
+    /// <code>extern SDL_DECLSPEC Sint32 SDLCALL SDL_rand(Sint32 n);</code>
+    /// <summary>
+    /// <para>Generate a pseudo-random number less than n for positive n</para>
+    /// <para>The method used is faster and of better quality than <c>rand() % n</c>. Odds are
+    /// roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+    /// much worse as n gets bigger.</para>
+    /// <para>Example: to simulate a d6 use <c>Rand(6) + 1</c> The +1 converts 0..5 to
+    /// 1..6</para>
+    /// <para>If you want to generate a pseudo-random number in the full range of Sint32,
+    /// you should use: (int)RandBits()</para>
+    /// <para>If you want reproducible output, be sure to initialize with SDL_srand()
+    /// first.</para>
+    /// <para>There are no guarantees as to the quality of the random sequence produced,
+    /// and this should not be used for security (cryptography, passwords) or where
+    /// money is on the line (loot-boxes, casinos). There are many random number
+    /// libraries available with different characteristics and you should pick one
+    /// of those to meet any serious needs.</para>
+    /// </summary>
+    /// <param name="n">the number of possible outcomes. n must be positive.</param>
+    /// <returns>a random value in the range of [0 .. n-1].</returns>
+    /// <threadsafety>All calls should be made from a single thread</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <see cref="SRand"/>
+    /// <seealso cref="RandF"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int Rand(int n);
+    
+    
+    /// <code>extern SDL_DECLSPEC float SDLCALL SDL_randf(void);</code>
+    /// <summary>
+    /// <para>Generate a uniform pseudo-random floating point number less than 1.0</para>
+    /// <para>If you want reproducible output, be sure to initialize with <see cref="SRand"/>
+    /// first.</para>
+    /// <para>There are no guarantees as to the quality of the random sequence produced,
+    /// and this should not be used for security (cryptography, passwords) or where
+    /// money is on the line (loot-boxes, casinos). There are many random number
+    /// libraries available with different characteristics and you should pick one
+    /// of those to meet any serious needs.</para>
+    /// </summary>
+    /// <returns>a random value in the range of [0.0, 1.0).</returns>
+    /// <threadsafety>All calls should be made from a single thread</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="SRand"/>
+    /// <seealso cref="Rand"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float RandF();
+    
+    
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_rand_bits(void);</code>
+    /// <summary>
+    /// <para>Generate 32 pseudo-random bits.</para>
+    /// <para>You likely want to use <see cref="Rand"/> to get a psuedo-random number instead.</para>
+    /// <para>There are no guarantees as to the quality of the random sequence produced,
+    /// and this should not be used for security (cryptography, passwords) or where
+    /// money is on the line (loot-boxes, casinos). There are many random number
+    /// libraries available with different characteristics and you should pick one
+    /// of those to meet any serious needs.</para>
+    /// </summary>
+    /// <returns>a random value in the range of [0-SDL_MAX_UINT32].</returns>
+    /// <threadsafety>All calls should be made from a single thread</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="Rand"/>
+    /// <seealso cref="RandF"/>
+    /// <seealso cref="SRand"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint RandBits();
+    
+    
+    /// <code>extern SDL_DECLSPEC Sint32 SDLCALL SDL_rand_r(Uint64 *state, Sint32 n);</code>
+    /// <summary>
+    /// <para>Generate a pseudo-random number less than n for positive n</para>
+    /// <para>The method used is faster and of better quality than <c>rand() % n</c>. Odds are
+    /// roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+    /// much worse as n gets bigger.</para>
+    /// <para>Example: to simulate a d6 use <c>RandR(state, 6) + 1</c> The +1 converts
+    /// 0..5 to 1..6</para>
+    /// <para>If you want to generate a pseudo-random number in the full range of Sint32,
+    /// you should use: (int)RandBitsR(state)</para>
+    /// <para>There are no guarantees as to the quality of the random sequence produced,
+    /// and this should not be used for security (cryptography, passwords) or where
+    /// money is on the line (loot-boxes, casinos). There are many random number
+    /// libraries available with different characteristics and you should pick one
+    /// of those to meet any serious needs.</para>
+    /// </summary>
+    /// <param name="state">a pointer to the current random number state, this may not be
+    /// <c>null</c>.</param>
+    /// <param name="n">the number of possible outcomes. n must be positive.</param>
+    /// <returns>a random value in the range of [0 .. n-1].</returns>
+    /// <threadsafety>This function is thread-safe, as long as the state pointer
+    /// isn't shared between threads.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="Rand"/>
+    /// <seealso cref="RandBitsR"/>
+    /// <seealso cref="RandFR"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RandR(ref ulong state, int n);
+    
+    
+    /// <code>extern SDL_DECLSPEC float SDLCALL SDL_randf_r(Uint64 *state);</code>
+    /// <summary>
+    /// <para>Generate a uniform pseudo-random floating point number less than 1.0</para>
+    /// <para>If you want reproducible output, be sure to initialize with <see cref="SRand"/>
+    /// first.</para>
+    /// <para>There are no guarantees as to the quality of the random sequence produced,
+    /// and this should not be used for security (cryptography, passwords) or where
+    /// money is on the line (loot-boxes, casinos). There are many random number
+    /// libraries available with different characteristics and you should pick one
+    /// of those to meet any serious needs.</para>
+    /// </summary>
+    /// <param name="state">a pointer to the current random number state, this may not be
+    /// <c>null</c>.</param>
+    /// <returns>a random value in the range of [0.0, 1.0).</returns>
+    /// <threadsafety>This function is thread-safe, as long as the state pointer
+    /// isn't shared between threads.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="RandBitsR"/>
+    /// <seealso cref="RandR"/>
+    /// <seealso cref="RandF"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_randf_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float RandFR(ref ulong state);
+    
+    
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_rand_bits_r(Uint64 *state);</code>
+    /// <summary>
+    /// <para>Generate 32 pseudo-random bits.</para>
+    /// <para>You likely want to use <see cref="RandR"/> to get a psuedo-random number instead.</para>
+    /// <para>There are no guarantees as to the quality of the random sequence produced,
+    /// and this should not be used for security (cryptography, passwords) or where
+    /// money is on the line (loot-boxes, casinos). There are many random number
+    /// libraries available with different characteristics and you should pick one
+    /// of those to meet any serious needs.</para>
+    /// </summary>
+    /// <param name="state">a pointer to the current random number state, this may not be
+    /// <c>null</c>.</param>
+    /// <returns>a random value in the range of [0-SDL_MAX_UINT32].</returns>
+    /// <threadsafety>This function is thread-safe, as long as the state pointer
+    /// isn't shared between threads.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="RandR"/>
+    /// <seealso cref="RandFR"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_bits_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint RandBitsR(ref ulong state);
 
 
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_memset(SDL_OUT_BYTECAP(len) void *dst, int c, size_t len);</code>
