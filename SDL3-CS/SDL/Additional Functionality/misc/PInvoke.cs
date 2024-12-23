@@ -28,14 +28,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_OpenURL(const char *url);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_OpenURL(const char *url);</code>
     /// <summary>
     /// <para>Open a URL/URI in the browser or other appropriate external application.</para>
     /// <para>Open a URL in a separate, system-provided application. How this works will
     /// vary wildly depending on the platform. This will likely launch what makes
-    /// sense to handle a specific URL's protocol (a web browser for `http://`,
+    /// sense to handle a specific URL's protocol (a web browser for <c>http://</c>,
     /// etc), but it might also be able to launch file managers for directories and
     /// other things.</para>
     /// <para>What happens when you open a URL varies wildly as well: your game window
@@ -50,9 +48,11 @@ public static partial class SDL
     /// test it on every platform you target.</para>
     /// </summary>
     /// <param name="url">a valid URL/URI to open. Use <c>file:///full/path/to/file</c> for
-    /// local files, if supported</param>
-    /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
-    public static int OpenURL(string url) => SDL_OpenURL(url);
+    /// local files, if supported.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// ,since>This function is available since SDL 3.1.3.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenURL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
 }

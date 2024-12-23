@@ -216,18 +216,18 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ### Additional Functionality
 
-| **View information and functions related to...**                                  | **View the header**                                                                           | **Stage**                                                         |
-|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| [Shared Object/DLL Management](SDL3-CS/SDL/Additional%20Functionality/loadso)     | [SDL_loadso.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_loadso.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Process Control](SDL3-CS/SDL/Additional%20Functionality/process)                 | [SDL_process.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_process.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Power Management Status](SDL3-CS/SDL/Additional%20Functionality/power)           | [SDL_power.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_power.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Message Boxes](SDL3-CS/SDL/Additional%20Functionality/messagebox)                | [SDL_messagebox.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_messagebox.h) | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [File Dialogs](SDL3-CS/SDL/Additional%20Functionality/dialog)                     | [SDL_dialog.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_dialog.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Locale Info](SDL3-CS/SDL/Additional%20Functionality/locale)                      | [SDL_locale.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_locale.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Platform-specific Functionality](SDL3-CS/SDL/Additional%20Functionality/system)  | [SDL_system.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_system.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [Standard Library Functionality](SDL3-CS/SDL/Additional%20Functionality/stdinc)   | [SDL_stdinc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_stdinc.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [GUIDs](SDL3-CS/SDL/Additional%20Functionality/guid)                              | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | [Ready](https://img.shields.io/badge/Ready-008000)                |
-| [Miscellaneous](SDL3-CS/SDL/Additional%20Functionality/misc)                      | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_misc.h)             | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| **View information and functions related to...**                                  | **View the header**                                                                           | **Stage**                                            |
+|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|------------------------------------------------------|
+| [Shared Object/DLL Management](SDL3-CS/SDL/Additional%20Functionality/loadso)     | [SDL_loadso.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_loadso.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Process Control](SDL3-CS/SDL/Additional%20Functionality/process)                 | [SDL_process.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_process.h)       | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Power Management Status](SDL3-CS/SDL/Additional%20Functionality/power)           | [SDL_power.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_power.h)           | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Message Boxes](SDL3-CS/SDL/Additional%20Functionality/messagebox)                | [SDL_messagebox.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_messagebox.h) | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [File Dialogs](SDL3-CS/SDL/Additional%20Functionality/dialog)                     | [SDL_dialog.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_dialog.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Locale Info](SDL3-CS/SDL/Additional%20Functionality/locale)                      | [SDL_locale.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_locale.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Platform-specific Functionality](SDL3-CS/SDL/Additional%20Functionality/system)  | [SDL_system.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_system.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [Standard Library Functionality](SDL3-CS/SDL/Additional%20Functionality/stdinc)   | [SDL_stdinc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_stdinc.h)         | ![Ready](https://img.shields.io/badge/Ready-008000)  |
+| [GUIDs](SDL3-CS/SDL/Additional%20Functionality/guid)                              | [SDL_guid.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_guid.h)             | [Ready](https://img.shields.io/badge/Ready-008000)   |
+| [Miscellaneous](SDL3-CS/SDL/Additional%20Functionality/misc)                      | [SDL_misc.h](https://github.com/libsdl-org/SDL/blob/main/include/SDL3/SDL_misc.h)             | ![Ready](https://img.shields.io/badge/Ready-008000)  |
 
 
 ## 📱 Mobile platform support
