@@ -37,10 +37,10 @@ public partial class SDL
     /// <para>Using tray icons require the video subsystem.</para>
     /// </summary>
     /// <param name="icon">a surface to be used as icon. May be <c>null</c>.</param>
-    /// <param name="tooltip">a tooltip to be displayed when the mouse hovers the icon. Not
-    /// supported on all platforms. May be <c>null</c>.</param>
+    /// <param name="tooltip">a tooltip to be displayed when the mouse hovers the ic
+    /// Not supported on all platforms. May be <c>null</c>.</param>
     /// <returns>The newly created system tray icon.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTrayMenu"/>
     /// <seealso cref="GetTrayMenu"/>
     /// <seealso cref="DestroyTray"/>
@@ -54,7 +54,7 @@ public partial class SDL
     /// </summary>
     /// <param name="tray">the tray icon to be updated.</param>
     /// <param name="icon">the new icon. May be <c>null</c>.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTray"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetTrayIcon(IntPtr tray, IntPtr icon);
@@ -66,7 +66,7 @@ public partial class SDL
     /// </summary>
     /// <param name="tray">the tray icon to be updated.</param>
     /// <param name="tooltip">the new tooltip. May be <c>null</c>.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTray"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayTooltip"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetTrayTooltip(IntPtr tray, [MarshalAs(UnmanagedType.LPUTF8Str)] string? tooltip);
@@ -76,13 +76,13 @@ public partial class SDL
     /// <summary>
     /// <para>Create a menu for a system tray.</para>
     /// <para>This should be called at most once per tray icon.</para>
-    /// <para>This function does the same thing as <see cref="CreateTraySubmenu"/>, except that it
-    /// takes a SDL_Tray instead of a SDL_TrayEntry.</para>
+    /// <para>This function does the same thing as <see cref="CreateTraySubmenu"/>, except that
+    /// it takes a SDL_Tray instead of a SDL_TrayEntry.</para>
     /// <para>A menu does not need to be destroyed; it will be destroyed with the tray.</para>
     /// </summary>
     /// <param name="tray">the tray to bind the menu to.</param>
     /// <returns>the newly created menu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTray"/>
     /// <seealso cref="GetTrayMenu"/>
     /// <seealso cref="GetTrayMenuParentTray"/>
@@ -100,7 +100,7 @@ public partial class SDL
     /// </summary>
     /// <param name="entry">the tray entry to bind the menu to.</param>
     /// <returns>the newly created menu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTraySubmenu"/>
     /// <seealso cref="GetTrayMenuParentEntry"/>
@@ -119,7 +119,7 @@ public partial class SDL
     /// </summary>
     /// <param name="tray">the tray entry to bind the menu to.</param>
     /// <returns>the newly created menu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTray"/>
     /// <seealso cref="CreateTrayMenu"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -137,7 +137,7 @@ public partial class SDL
     /// </summary>
     /// <param name="entry">the tray entry to bind the menu to.</param>
     /// <returns>the newly created menu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="CreateTraySubmenu"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTraySubmenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -151,10 +151,12 @@ public partial class SDL
     /// Returns a list of entries in the menu, in order.
     /// </summary>
     /// <param name="menu">The menu to get entries from.</param>
-    /// <param name="size">An optional pointer to obtain the number of entries in the menu.</param>
-    /// <returns>the entries within the given menu. The pointer becomes invalid when
-    /// any function that inserts or deletes entries in the menu is called.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="size">An optional pointer to obtain the number of entries in the
+    /// menu.</param>
+    /// <returns>the entries within the given menu. The pointer becomes invalid
+    /// when any function that inserts or deletes entries in the menu is
+    /// called.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RemoveTrayEntry"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     public static IntPtr[]? GetTrayEntries(IntPtr menu, out int size) 
@@ -177,7 +179,7 @@ public partial class SDL
     /// Removes a tray entry.
     /// </summary>
     /// <param name="entry">The entry to be deleted.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -194,10 +196,11 @@ public partial class SDL
     /// <param name="menu">the menu to append the entry to.</param>
     /// <param name="pos">the desired position for the new entry. Entries at or following
     /// this place will be moved. If pos is -1, the entry is appended.</param>
-    /// <param name="label">the text to be displayed on the entry, or <c>null</c> for a separator.</param>
+    /// <param name="label">the text to be displayed on the entry, or <c>null</c> for a
+    /// separator.</param>
     /// <param name="flags">a combination of flags, some of which are mandatory.</param>
     /// <returns>the newly created entry, or <c>null</c> if pos is out of bounds.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="TrayEntryFlags"/>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="RemoveTrayEntry"/>
@@ -210,13 +213,13 @@ public partial class SDL
     /// <summary>
     /// <para>Sets the label of an entry.</para>
     /// <para>An entry cannot change between a separator and an ordinary entry; that is,
-    /// it is not possible to set a non-NULL label on an entry that has a <c>null</c> label
-    /// (separators), or to set a <c>null</c> label to an entry that has a non-NULL label.
-    /// The function will silently fail if that happens.</para>
+    /// it is not possible to set a non-NULL label on an entry that has a <c>null</c>
+    /// label (separators), or to set a <c>null</c> label to an entry that has a non-NULL
+    /// label. The function will silently fail if that happens.</para>
     /// </summary>
     /// <param name="entry">the entry to be updated.</param>
     /// <param name="label">the new label for the entry.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryLabel"/>
@@ -231,7 +234,7 @@ public partial class SDL
     /// </summary>
     /// <param name="entry">the entry to be read.</param>
     /// <returns>the label of the entry.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryLabel"/>
@@ -246,8 +249,9 @@ public partial class SDL
     /// <para>The entry must have been created with the <see cref="TrayEntryFlags.CheckBox"/> flag.</para>
     /// </summary>
     /// <param name="entry">the entry to be updated.</param>
-    /// <param name="checked"><c>true</c> if the entry should be checked; <c>false</c> otherwise.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="checked"><c>true</c> if the entry should be checked; <c>false</c>
+    /// otherwise.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryChecked"/>
@@ -262,7 +266,7 @@ public partial class SDL
     /// </summary>
     /// <param name="entry">the entry to be read.</param>
     /// <returns><c>true</c> if the entry is checked; <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryChecked"/>
@@ -276,8 +280,9 @@ public partial class SDL
     /// Sets whether or not an entry is enabled.
     /// </summary>
     /// <param name="entry">the entry to be updated.</param>
-    /// <param name="enabled"><c>true</c> if the entry should be enabled; <c>false</c> otherwise.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <param name="enabled"><c>true</c> if the entry should be enabled; <c>false</c>
+    /// otherwise.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryEnabled"/>
@@ -291,7 +296,7 @@ public partial class SDL
     /// </summary>
     /// <param name="entry">the entry to be read.</param>
     /// <returns><c>true</c> if the entry is enabled; <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryEnabled"/>
@@ -308,7 +313,7 @@ public partial class SDL
     /// <param name="callback">a callback to be invoked when the entry is selected.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -321,7 +326,7 @@ public partial class SDL
     /// <para>This also destroys all associated menus and entries.</para>
     /// </summary>
     /// <param name="tray">the tray icon to be destroyed.</param>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTray"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyTray(IntPtr tray);
@@ -333,7 +338,7 @@ public partial class SDL
     /// </summary>
     /// <param name="entry">the entry for which to get the parent menu.</param>
     /// <returns>the parent menu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetTrayEntryParent(IntPtr entry);
@@ -343,12 +348,12 @@ public partial class SDL
     /// <summary>
     /// <para>Gets the entry for which the menu is a submenu, if the current menu is a
     /// submenu.</para>
-    /// <para>Either this function or <see cref="GetTrayMenuParentTray"/> will return non-NULL for
-    /// any given menu.</para>
+    /// <para>Either this function or <see cref="GetTrayMenuParentTray"/> will return non-NULL
+    /// for any given menu.</para>
     /// </summary>
     /// <param name="menu">the menu for which to get the parent entry.</param>
     /// <returns>the parent entry, or <c>null</c> if this menu is not a submenu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTraySubmenu"/>
     /// <seealso cref="GetTrayMenuParentTray"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenuParentEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -359,12 +364,12 @@ public partial class SDL
     /// <summary>
     /// <para>Gets the tray for which this menu is the first-level menu, if the current
     /// menu isn't a submenu.</para>
-    /// <para>Either this function or <see cref="GetTrayMenuParentEntry"/> will return non-NULL for
-    /// any given menu.</para>
+    /// <para>Either this function or <see cref="GetTrayMenuParentEntry"/> will return non-NULL
+    /// for any given menu.</para>
     /// </summary>
     /// <param name="menu">the menu for which to get the parent enttrayry.</param>
     /// <returns>the parent tray, or <c>null</c> if this menu is a submenu.</returns>
-    /// <since>This function is available since SDL 3.0.0.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTrayMenu"/>
     /// <seealso cref="GetTrayMenuParentEntry"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenuParentTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
