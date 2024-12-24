@@ -23,7 +23,6 @@
   <a href="#-readiness">Readiness</a>
 </p>
 <p align="center">
-  <a href="#-mobile-platform-support">Mobile platform support</a> •
   <a href="#-feedback-and-contributions">Feedback and Contributions</a> •
   <a href="#-authors">Authors</a> •
   <a href="#-license">License</a>
