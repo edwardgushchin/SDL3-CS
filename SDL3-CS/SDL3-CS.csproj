@@ -25,18 +25,161 @@
         <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 
+    <!-- SDL_image Windows x64 -->
     <ItemGroup>
-        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\SDL3.dll">
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\SDL3_image.dll">
             <PackagePath>runtimes/win-x64/native</PackagePath>
-            <TargetPath>runtimes/win-x64/native/SDL3.dll</TargetPath>
+            <TargetPath>runtimes/win-x64/native/SDL3_image.dll</TargetPath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Pack>true</Pack>
             <Visible>false</Visible>
         </Content>
 
-        <Content Include="$(MSBuildThisFileDirectory)..\native\win-arm64\SDL3.dll">
-            <PackagePath>runtimes/win-arm64/native</PackagePath>
-            <TargetPath>runtimes/win-arm64/native/SDL3.dll</TargetPath>
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\libavif-16.dll">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/libavif-16.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\libtiff-6.dll">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/libtiff-6.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\libwebp-7.dll">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/libwebp-7.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\libwebpdemux-2.dll">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/libwebpdemux-2.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+        
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\LICENSE.avif.txt">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/LICENSE.avif.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+        
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\LICENSE.dav1d.txt">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/LICENSE.dav1d.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\LICENSE.tiff.txt">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/LICENSE.tiff.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\LICENSE.webp.txt">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/LICENSE.webp.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+    </ItemGroup>
+
+    <!-- SDL_image Windows x86 -->
+    <ItemGroup>
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\SDL3_image.dll">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/SDL3_image.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\libavif-16.dll">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/libavif-16.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\libtiff-6.dll">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/libtiff-6.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\libwebp-7.dll">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/libwebp-7.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\libwebpdemux-2.dll">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/libwebpdemux-2.dll</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\LICENSE.avif.txt">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/LICENSE.avif.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\LICENSE.dav1d.txt">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/LICENSE.dav1d.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\LICENSE.tiff.txt">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/LICENSE.tiff.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x86\LICENSE.webp.txt">
+            <PackagePath>runtimes/win-x86/native</PackagePath>
+            <TargetPath>runtimes/win-x86/native/LICENSE.webp.txt</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+        </Content>
+    </ItemGroup>
+
+    <!-- SDL_image Windows x86 and x64 -->
+    <ItemGroup>
+        <Content Include="$(MSBuildThisFileDirectory)..\native\win-x64\SDL3.dll">
+            <PackagePath>runtimes/win-x64/native</PackagePath>
+            <TargetPath>runtimes/win-x64/native/SDL3.dll</TargetPath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Pack>true</Pack>
             <Visible>false</Visible>
@@ -49,103 +192,8 @@
             <Pack>true</Pack>
             <Visible>false</Visible>
         </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\osx-x64\libSDL3.dylib">
-            <PackagePath>runtimes/osx-x64/native</PackagePath>
-            <TargetPath>runtimes/osx-x64/native/libSDL3.dylib</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\osx-arm64\libSDL3.dylib">
-            <PackagePath>runtimes/osx-arm64/native</PackagePath>
-            <TargetPath>runtimes/osx-arm64/native/libSDL3.dylib</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-x64\libSDL3.so">
-            <PackagePath>runtimes/linux-x64/native</PackagePath>
-            <TargetPath>runtimes/linux-x64/native/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-x86\libSDL3.so">
-            <PackagePath>runtimes/linux-x86/native</PackagePath>
-            <TargetPath>runtimes/linux-x86/native/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-arm64\libSDL3.so">
-            <PackagePath>runtimes/linux-arm64/native</PackagePath>
-            <TargetPath>runtimes/linux-arm64/native/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\linux-arm\libSDL3.so">
-            <PackagePath>runtimes/linux-arm/native</PackagePath>
-            <TargetPath>runtimes/linux-arm/native/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <!-- <Content Include="$(MSBuildThisFileDirectory)..\native\android\arm64-v8a\libSDL3.so">
-            <PackagePath>runtimes/android/arm64-v8a</PackagePath>
-            <TargetPath>runtimes/android/arm64-v8a/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\android\armeabi-v7a\libSDL3.so">
-            <PackagePath>runtimes/android/armeabi-v7a</PackagePath>
-            <TargetPath>runtimes/android/armeabi-v7a/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\android\x86\libSDL3.so">
-            <PackagePath>runtimes/android/x86</PackagePath>
-            <TargetPath>runtimes/android/x86/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\android\x86_64\libSDL3.so">
-            <PackagePath>runtimes/android/x86_64</PackagePath>
-            <TargetPath>runtimes/android/x86_64/libSDL3.so</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\ios\SDL3.xcframework\ios-arm64\SDL3.framework\SDL3">
-            <PackagePath>runtimes/ios/SDL3.xcframework/ios-arm64/SDL3.framework</PackagePath>
-            <TargetPath>runtimes/ios/SDL3.xcframework/ios-arm64/SDL3.framework/SDL3</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content>
-
-        <Content Include="$(MSBuildThisFileDirectory)..\native\ios\SDL3.xcframework\ios-arm64_x86_64-simulator\SDL3.framework\SDL3">
-            <PackagePath>runtimes/ios/SDL3.xcframework/ios-arm64_x86_64-simulator/SDL3.framework</PackagePath>
-            <TargetPath>runtimes/ios/SDL3.xcframework/ios-arm64_x86_64-simulator/SDL3.framework/SDL3</TargetPath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-        </Content> -->
     </ItemGroup>
+    
 
     <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
@@ -154,14 +202,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Image\" />
       <Folder Include="Mixer\" />
       <Folder Include="TTF\" />
     </ItemGroup>
-
-    <!-- <ItemGroup>
-        <None Include="./native/win-x64/SDL3.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
-        <None Include="./native/win-x86/SDL3.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
-    </ItemGroup> -->
 
 </Project>

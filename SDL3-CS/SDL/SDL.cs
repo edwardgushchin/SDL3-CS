@@ -30,61 +30,40 @@ namespace SDL3;
 public static partial class SDL
 {
     private const string SDLLibrary = "SDL3";
+    
+    private static readonly string LibraryPath;
+    private static readonly string LibraryExtension;
 
     static SDL()
     {
+        (LibraryPath, LibraryExtension) = GetLibraryPath();
+        
         NativeLibrary.SetDllImportResolver(typeof(SDL).Assembly, ImportResolver);
     }
-    
-    private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+
+    private static (string, string) GetLibraryPath()
     {
-        var libHandle = IntPtr.Zero;
         const string runtimes = "runtimes";
         const string native = "native";
-        const string winLib = "SDL3.dll";
-        const string linLib = "libSDL3.so";
-        const string osxLib = "libSDL3.dylib";
-            
+                    
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             var arch = RuntimeInformation.OSArchitecture switch
             {
                 Architecture.X64 => "win-x64",
                 Architecture.X86 => "win-x86",
-                Architecture.Arm64 => "win-arm64",
-                _ => ""
+                _ => throw new PlatformNotSupportedException("Unsupported platform")
             };
-
-            var handlePath = Path.Combine(runtimes, arch, native, winLib);
-            libHandle = NativeLibrary.Load(handlePath);
+            
+            return (Path.Combine(runtimes, arch, native), "dll");
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            var arch = RuntimeInformation.OSArchitecture switch
-            {
-                Architecture.X64 => "linux-x64",
-                Architecture.X86 => "linux-x86",
-                Architecture.Arm64 => "linux-arm64",
-                Architecture.Arm => "linux-arm",
-                _ => ""
-            };
 
-            var handlePath = Path.Combine(runtimes, arch, native, linLib);
-            libHandle = NativeLibrary.Load(handlePath);
-        }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            var arch = RuntimeInformation.OSArchitecture switch
-            {
-                Architecture.X64 => "osx-x64",
-                Architecture.Arm64 => "osx-arm64",
-                _ => ""
-            };
-
-            var handlePath = Path.Combine(runtimes, arch, native, osxLib);
-            libHandle = NativeLibrary.Load(handlePath);
-        }
-        return libHandle;
+        throw new PlatformNotSupportedException("Unsupported platform");
+    }
+    
+    private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+    {
+        return NativeLibrary.Load(Path.Combine(LibraryPath, $"{libraryName}.{LibraryExtension}"));
     }
 
     
