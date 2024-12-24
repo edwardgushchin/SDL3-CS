@@ -304,8 +304,8 @@ public static partial class SDL
     /// renderer</item>
     /// <para>With the gpu renderer:</para>
     /// <list type="bullet">
-    /// <item>`SDL_PROP_RENDERER_GPU_DEVICE_POINTER`<see cref="Props.RendererGPUDevicePointer"/>: the SDL_GPUDevice associated
-    /// with the renderer</item>
+    /// <item><see cref="Props.RendererGPUDevicePointer"/>: the SDL_GPUDevice associated with
+    /// the renderer</item>
     /// </list>
     /// </list>
     /// </summary>
