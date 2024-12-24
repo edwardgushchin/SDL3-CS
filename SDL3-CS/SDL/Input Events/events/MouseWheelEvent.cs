@@ -52,7 +52,7 @@ public static partial class SDL
         public UInt32 WindowID;
         
         /// <summary>
-        /// The mouse instance id
+        /// The mouse instance id in relative mode or 0
         /// </summary>
         public UInt32 Which;
         

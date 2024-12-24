@@ -52,7 +52,7 @@ public static partial class SDL
         public UInt32 WindowID;
         
         /// <summary>
-        /// The mouse instance id or <see cref="TouchMouseID"/>
+        /// The mouse instance id in relative mode, <see cref="TouchMouseID"/> for touch events, or 0
         /// </summary>
         public UInt32 Which;
         
