@@ -195,23 +195,23 @@ public partial class SDL
     /// <list type="bullet">
     /// <item>0: Sampled textures, followed by read-only storage textures, followed by
     /// read-only storage buffers</item>
-    /// <item>1: Write-only storage textures, followed by write-only storage buffers</item>
+    /// <item>1: Read-write storage textures, followed by read-write storage buffers</item>
     /// <item>2: Uniform buffers</item>
     /// </list>
     /// <para>For DXBC and DXIL shaders, use the following register order:</para>
     /// <list type="bullet">
     /// <item>(t[n], space0): Sampled textures, followed by read-only storage textures,
     /// followed by read-only storage buffers</item>
-    /// <item>(u[n], space1): Write-only storage textures, followed by write-only
+    /// <item>(u[n], space1): Read-write storage textures, followed by read-write
     /// storage buffers</item>
     /// <item>(b[n], space2): Uniform buffers</item>
     /// </list>
     /// <para>For MSL/metallib, use the following order:</para>
     /// <list type="bullet">
-    /// <item>[[buffer]]: Uniform buffers, followed by write-only storage buffers,
-    /// followed by write-only storage buffers</item>
+    /// <item>[[buffer]]: Uniform buffers, followed by read-only storage buffers,
+    /// followed by read-write storage buffers</item>
     /// <item>[[texture]]: Sampled textures, followed by read-only storage textures,
-    /// followed by write-only storage textures</item>
+    /// followed by read-write storage textures</item>
     /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
