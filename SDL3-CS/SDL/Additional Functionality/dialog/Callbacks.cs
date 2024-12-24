@@ -56,8 +56,5 @@ public static partial class SDL
     /// <seealso cref="ShowOpenFolderDialog"/>
     /// <seealso cref="ShowFileDialogWithProperties"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void DialogFileCallback(
-        IntPtr userdata, 
-        IntPtr filelist, 
-        int filter);
+    public delegate void DialogFileCallback(IntPtr userdata, IntPtr filelist, int filter);
 }

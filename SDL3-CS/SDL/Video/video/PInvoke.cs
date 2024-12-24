@@ -596,7 +596,6 @@ public static partial class SDL
         {
             if (ptr != IntPtr.Zero) Free(ptr);
         }
-        
     }
     
     
