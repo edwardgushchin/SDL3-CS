@@ -22,7 +22,6 @@
 #endregion
 
 using System.ComponentModel;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
@@ -31,41 +30,6 @@ public static partial class SDL
 {
     private const string SDLLibrary = "SDL3";
     
-    private static readonly string LibraryPath;
-    private static readonly string LibraryExtension;
-
-    static SDL()
-    {
-        (LibraryPath, LibraryExtension) = GetLibraryPath();
-        
-        NativeLibrary.SetDllImportResolver(typeof(SDL).Assembly, ImportResolver);
-    }
-
-    private static (string, string) GetLibraryPath()
-    {
-        const string runtimes = "runtimes";
-        const string native = "native";
-                    
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            var arch = RuntimeInformation.OSArchitecture switch
-            {
-                Architecture.X64 => "win-x64",
-                Architecture.X86 => "win-x86",
-                _ => throw new PlatformNotSupportedException("Unsupported platform")
-            };
-            
-            return (Path.Combine(runtimes, arch, native), "dll");
-        }
-
-        throw new PlatformNotSupportedException("Unsupported platform");
-    }
-    
-    private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
-    {
-        return NativeLibrary.Load(Path.Combine(LibraryPath, $"{libraryName}.{LibraryExtension}"));
-    }
-
     
     /// <summary>
     /// Converts a pointer to a structure of type <typeparamref name="T"/>.

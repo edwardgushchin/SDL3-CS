@@ -13,8 +13,6 @@
 <p align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0,_9.0-512BD4">
     <img alt="Static Badge" src="https://img.shields.io/badge/Language-C%23_12-239120">
-    <img alt="Static Badge" src="https://img.shields.io/badge/OS-Windows-blue">
-    <img alt="Static Badge" src="https://img.shields.io/badge/CPU-x86%2C%20x64-FF8C00">
 </p>
 
 <p align="center">
@@ -113,10 +111,6 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [SDL_mixer](SDL3-CS/Mixer)             | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 | [SDL_tff](SDL3-CS/TTF)                 | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
 
-
-## 📱 Mobile platform support
-
-In theory, there is no reason why this shell cannot run on Android and iOS, but I have never worked with these platforms and cannot guarantee 100% work. If you can add support for mobile platforms, I look forward to your [Pull requests](https://github.com/edwardgushchin/SDL3-CS/pulls)!
 
 ## 🤝 Feedback and Contributions
 
