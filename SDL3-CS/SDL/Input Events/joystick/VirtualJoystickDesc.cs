@@ -157,7 +157,7 @@ public static partial class SDL
         public VirtualJoystickSetLEDCallback SetLED;
 
         /// <summary>
-        /// Implements <see cref="SendJoystickEffect"/>
+        /// Implements <see cref="SendJoystickEffect(nint, byte[], int)"/>
         /// </summary>
         public VirtualJoystickSendEffectCallback SendEffect;
 

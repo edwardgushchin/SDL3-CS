@@ -181,7 +181,7 @@ public static partial class SDL
     /// <seealso cref="AddTimer"/>
     /// <seealso cref="RemoveTimer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimerNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint AddTimerNS(ulong interval, NSTimerCallback callback, IntPtr userdata);
+    public static partial uint AddTimerNS(ulong interval, NSTimerCallback callback, IntPtr userdata);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RemoveTimer(SDL_TimerID id);</code>
@@ -196,5 +196,5 @@ public static partial class SDL
     /// <seealso cref="AddTimer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool RemoveTimer(uint id);
+    public static partial bool RemoveTimer(uint id);
 }

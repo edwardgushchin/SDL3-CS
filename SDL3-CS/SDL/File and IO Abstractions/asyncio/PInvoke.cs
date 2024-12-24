@@ -109,7 +109,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="WriteAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
-    /// <seealso cref="GetAsyncIOTaskResult"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
@@ -143,7 +142,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="ReadAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
-    /// <seealso cref="GetAsyncIOTaskResult"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);

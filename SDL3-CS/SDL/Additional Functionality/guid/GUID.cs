@@ -26,7 +26,6 @@
  */
 #endregion
 
-using System.Collections;
 using System.Runtime.InteropServices;
 
 namespace SDL3;

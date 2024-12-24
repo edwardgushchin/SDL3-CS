@@ -51,8 +51,8 @@ public static partial class SDL
     /// local files, if supported.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// ,since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenURL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
+    public static partial bool OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
 }

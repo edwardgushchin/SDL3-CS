@@ -752,7 +752,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    /// <seealso cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, byte[], int, PixelFormat, Colorspace, uint, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, out IntPtr dst, int dstPitch);
@@ -773,7 +773,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    /// <seealso cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, byte[], int, PixelFormat, Colorspace, uint, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] src, int srcPitch, PixelFormat dstFormat, out IntPtr dst, int dstPitch);
@@ -794,7 +794,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    /// <seealso cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, byte[], int, PixelFormat, Colorspace, uint, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out byte[] dst, int dstPitch);
@@ -815,7 +815,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixelsAndColorspace"/>
+    /// <seealso cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, byte[], int, PixelFormat, Colorspace, uint, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixels(int width, int height, PixelFormat srcFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] src, int srcPitch, PixelFormat dstFormat, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out byte[] dst, int dstPitch);
@@ -845,7 +845,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixels"/>
+    /// <seealso cref="ConvertPixels(int, int, PixelFormat, byte[], int, PixelFormat, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, out IntPtr dst, int dstPitch);
@@ -875,7 +875,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixels"/>
+    /// <seealso cref="ConvertPixels(int, int, PixelFormat, byte[], int, PixelFormat, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] byte[] src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, out IntPtr dst, int dstPitch);
@@ -905,7 +905,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixels"/>
+    /// <seealso cref="ConvertPixels(int, int, PixelFormat, byte[], int, PixelFormat, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] out byte[] dst, int dstPitch);
@@ -935,7 +935,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.1.3.</since>
-    /// <seealso cref="ConvertPixels"/>
+    /// <seealso cref="ConvertPixels(int, int, PixelFormat, byte[], int, PixelFormat, out byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] byte[] src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] out byte[] dst, int dstPitch);
@@ -1988,7 +1988,7 @@ public static partial class SDL
     /// <para>Retrieves a single pixel from a surface.</para>
     /// <para>This function prioritizes correctness over speed: it is suitable for unit
     /// tests, but is not intended for use in a game engine.</para>
-    /// <para>Like <see cref="GetRGBA"/>, this uses the entire 0..255 range when converting color
+    /// <para>Like <see cref="GetRGBA(uint, in PixelFormatDetails, IntPtr, out byte, out byte, out byte, out byte)"/>, this uses the entire 0..255 range when converting color
     /// components from pixel formats with less than 8 bits per RGB component.</para>
     /// </summary>
     /// <param name="surface">the surface to read.</param>
@@ -2032,7 +2032,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadSurfacePixelFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float r, out float g, out float b, out float a);
+    public static partial bool ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float r, out float g, out float b, out float a);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);</code>
