@@ -302,6 +302,11 @@ public static partial class SDL
     /// <item><see cref="Props.RendererVulkanSwapchainImageCountNumber"/>: the number of
     /// swapchain images, or potential frames in flight, used by the Vulkan
     /// renderer</item>
+    /// <para>With the gpu renderer:</para>
+    /// <list type="bullet">
+    /// <item>`SDL_PROP_RENDERER_GPU_DEVICE_POINTER`<see cref="Props.RendererGPUDevicePointer"/>: the SDL_GPUDevice associated
+    /// with the renderer</item>
+    /// </list>
     /// </list>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>

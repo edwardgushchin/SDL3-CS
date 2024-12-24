@@ -62,6 +62,7 @@ public static partial class SDL
 		public const string RendererVulkanGraphicsQueueFamilyIndexNumber = "SDL.renderer.vulkan.graphics_queue_family_index";
 		public const string RendererVulkanPresentQueueFamilyIndexNumber = "SDL.renderer.vulkan.present_queue_family_index";
 		public const string RendererVulkanSwapchainImageCountNumber = "SDL.renderer.vulkan.swapchain_image_count";
+		public const string RendererGPUDevicePointer = "SDL.renderer.gpu.device";
 
 		public const string TextureCreateColorspaceNumber = "SDL.texture.create.colorspace";
 		public const string TextureCreateFormatNumber = "SDL.texture.create.format";
