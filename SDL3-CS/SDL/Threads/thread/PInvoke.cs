@@ -244,8 +244,9 @@ public static partial class SDL
 	/// Get the current state of a thread.
 	/// </summary>
 	/// <param name="thread">the thread whose status you want to check.</param>
-	/// <returns>the current state of a thread as defined in the <see cref="ThreadState"/> enum.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <returns>the current state of a thread as defined in the <see cref="ThreadState"/>
+	/// enum.</returns>
+	/// <since>This function is available since SDL 3.2.0.</since>
 	/// <seealso cref="ThreadState"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ThreadState GetThreadState(IntPtr thread);

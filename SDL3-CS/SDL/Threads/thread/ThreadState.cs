@@ -27,9 +27,8 @@ public partial class SDL
 {
     /// <summary>
     /// <para>The SDL thread state.</para>
-    /// <para>SDL stores the current state of a thread in an atomic int.
-    /// The current state of a thread can be checked by calling
-    /// <see cref="GetThreadState"/>.</para>
+    /// <para>SDL stores the current state of a thread in an atomic int. The current
+    /// state of a thread can be checked by calling <see cref="GetThreadState"/>.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.1.3.</since>
     /// <seealso cref="GetThreadState"/>
