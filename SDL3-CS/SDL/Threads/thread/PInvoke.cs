@@ -239,6 +239,18 @@ public static partial class SDL
 	public static partial void WaitThread(IntPtr thread, out int status);
 	
 	
+	/// <code>extern SDL_DECLSPEC SDL_ThreadState SDLCALL SDL_GetThreadState(SDL_Thread *thread);</code>
+	/// <summary>
+	/// Get the current state of a thread.
+	/// </summary>
+	/// <param name="thread">the thread whose status you want to check.</param>
+	/// <returns>the current state of a thread as defined in the <see cref="ThreadState"/> enum.</returns>
+	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <seealso cref="ThreadState"/>
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	public static partial ThreadState GetThreadState(IntPtr thread);
+	
+	
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_DetachThread(SDL_Thread *thread);</code>
 	/// <summary>
 	/// <para>Let a thread clean up on exit without intervention.</para>
