@@ -40,5 +40,6 @@ public static partial class SDL
     /// <seealso cref="JoystickAxisMax"/>
     public const short JoystickAxisMin = short.MinValue;
     
+    // ReSharper disable once InconsistentNaming
     public const float IPhoneMaxGForce = 5.0f;
 }
