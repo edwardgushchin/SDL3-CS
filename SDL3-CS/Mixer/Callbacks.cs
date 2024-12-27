@@ -55,7 +55,6 @@ public partial class Mixer
     /// like to the buffer, though, and it will continue in its changed state down
     /// the mixing pipeline, through any other effect functions, then finally to be
     /// mixed with the rest of the channels and music for the final output stream.</para>
-    /// <para>DO NOT EVER call <see cref="LockAudio"/> from your callback function!</para>
     /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void EffectFuncT(int chan, IntPtr stream, int len, IntPtr udata);
@@ -68,7 +67,6 @@ public partial class Mixer
     /// <para>This gets called if the buffer plays out normally, or if you call
     /// <see cref="HaltChannel"/>, implicitly stop a channel via <see cref="AllocateChannels"/>, or
     /// unregister a callback while it's still playing.</para>
-    /// <para>DO NOT EVER call <see cref="LockAudio"/> from your callback function!</para>
     /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void EffectDoneT(int chan, IntPtr udata);
