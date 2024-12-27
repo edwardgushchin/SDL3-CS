@@ -40,7 +40,7 @@ public static partial class SDL
     /// <item><see cref="HDRExtendedLinear"/>: R16G16B16A16_SFLOAT swapchain. Pixel values are in
     /// extended linear sRGB encoding and permits values outside of the [0, 1]
     /// range.</item>
-    /// <item><see cref="HDR10ST2048"/>: A2R10G10B10 or A2B10G10R10 swapchain. Pixel values are in
+    /// <item><see cref="HDR10ST2084"/>: A2R10G10B10 or A2B10G10R10 swapchain. Pixel values are in
     /// BT.2020 ST2084 (PQ) encoding.</item>
     /// </list>
     /// </summary>
@@ -53,6 +53,6 @@ public static partial class SDL
         SDR,
         SDRLinear,
         HDRExtendedLinear,
-        HDR10ST2048
+        HDR10ST2084
     }
 }
