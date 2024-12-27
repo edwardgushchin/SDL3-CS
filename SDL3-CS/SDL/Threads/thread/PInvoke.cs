@@ -213,12 +213,13 @@ public static partial class SDL
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_WaitThread(SDL_Thread *thread, int *status);</code>
 	/// <summary>
 	/// <para>Wait for a thread to finish.</para>
-	/// <para>Threads that haven't been detached will remain until this</para>
+	/// <para>Threads that haven't been detached will remain until this function cleans
+	/// them up. Not doing so is a resource leak.</para>
 	/// <para>Once a thread has been cleaned up through this function, the SDL_Thread
 	/// that references it becomes invalid and should not be referenced again. As
 	/// such, only one thread may call <see cref="WaitThread"/> on another.</para>
-	/// <para>The return code from the thread function is placed in the area pointed to by
-	/// <c>status</c>, if <c>status</c> is not <c>null</c>.</para>
+	/// <para>The return code from the thread function is placed in the area pointed to
+	/// by <c>status</c>, if <c>status</c> is not <c>null</c>.</para>
 	/// <para>You may not wait on a thread that has been used in a call to
 	/// <see cref="DetachThread"/>. Use either that function or this one, but not both, or
 	/// behavior is undefined.</para>
@@ -228,8 +229,9 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="thread">the SDL_Thread pointer that was returned from the
 	/// <see cref="CreateThread"/> call that started this thread.</param>
-	/// <param name="status">a pointer filled in with the value returned
-	/// from the thread function by its <c>return</c>, or -1 if the thread has been detached or isn't valid, may be <c>null</c>.</param>
+	/// <param name="status">a pointer filled in with the value returned from the thread
+	/// function by its <c>return</c>, or -1 if the thread has been
+	/// detached or isn't valid, may be <c>null</c>.</param>
 	/// <since>This function is available since SDL 3.1.3.</since>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="DetachThread"/>
@@ -242,7 +244,8 @@ public static partial class SDL
 	/// Get the current state of a thread.
 	/// </summary>
 	/// <param name="thread">the thread to query.</param>
-	/// <returns>the current state of a thread, or <see cref="ThreadState.Unknown"/> if the thread isn't valid.</returns>
+	/// <returns>the current state of a thread, or <see cref="ThreadState.Unknown"/> if the thread
+	/// isn't valid.</returns>
 	/// <since>This function is available since SDL 3.2.0.</since>
 	/// <seealso cref="ThreadState"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
