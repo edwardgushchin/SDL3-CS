@@ -33,14 +33,15 @@ public static partial class SDL
     /// claiming the window if you wish to change the swapchain composition from
     /// SDR.</para>
     /// <list type="bullet">
-    /// <item><see cref="SDR"/>: B8G8R8A8 or R8G8B8A8 swapchain. Pixel values are in nonlinear sRGB
-    /// encoding.</item>
-    /// <item><see cref="SDRLinear"/>: B8G8R8A8_SRGB or R8G8B8A8_SRGB swapchain. Pixel values are in
-    /// nonlinear sRGB encoding.</item>
+    /// <item><see cref="SDR"/>: B8G8R8A8 or R8G8B8A8 swapchain. Pixel values are in sRGB encoding.</item>
+    /// <item><see cref="SDRLinear"/>: B8G8R8A8_SRGB or R8G8B8A8_SRGB swapchain. Pixel values are
+    /// stored in memory in sRGB encoding but accessed in shaders in "linear sRGB"
+    /// encoding which is sRGB but with a linear transfer function.</item>
     /// <item><see cref="HDRExtendedLinear"/>: R16G16B16A16_SFLOAT swapchain. Pixel values are in
-    /// extended linear encoding.</item>
+    /// extended linear sRGB encoding and permits values outside of the [0, 1]
+    /// range.</item>
     /// <item><see cref="HDR10ST2048"/>: A2R10G10B10 or A2B10G10R10 swapchain. Pixel values are in
-    /// PQ ST2048 encoding.</item>
+    /// BT.2020 ST2084 (PQ) encoding.</item>
     /// </list>
     /// </summary>
     /// <since>This enum is available since SDL 3.1.3</since>

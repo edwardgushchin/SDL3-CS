@@ -592,6 +592,12 @@ public partial class SDL
     /// freed by the user. The command buffer may only be used on the thread it was
     /// acquired on. The command buffer should be submitted on the thread it was
     /// acquired on.</para>
+    /// <para>It is valid to acquire multiple command buffers on the same thread at once.
+    /// In fact a common design pattern is to acquire two command buffers per frame
+    /// where one is dedicated to render and compute passes and the other is
+    /// dedicated to copy passes and other preparatory work such as generating
+    /// mipmaps. Interleaving commands between the two command buffers reduces the
+    /// total amount of passes overall which improves rendering performance.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <returns>a command buffer, or <c>null</c> on failure; call <see cref="GetError"/> for more
