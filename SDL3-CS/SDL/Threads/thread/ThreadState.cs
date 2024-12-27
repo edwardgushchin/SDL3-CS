@@ -27,16 +27,30 @@ public partial class SDL
 {
     /// <summary>
     /// <para>The SDL thread state.</para>
-    /// <para>SDL stores the current state of a thread in an atomic int. The current
-    /// state of a thread can be checked by calling <see cref="GetThreadState"/>.</para>
+    /// <para>The current state of a thread can be checked by calling <see cref="GetThreadState"/>.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.1.3.</since>
     /// <seealso cref="GetThreadState"/>
     public enum ThreadState
     {
+        /// <summary>
+        /// The thread is not valid
+        /// </summary>
+        Unknown,
+        
+        /// <summary>
+        /// The thread is currently running
+        /// </summary>
         Alive,
+        
+        /// <summary>
+        /// The thread is detached and can't be waited on
+        /// </summary>
         Detached,
-        Zombie,
-        Cleaned
+        
+        /// <summary>
+        /// The thread has finished and should be cleaned up with <see cref="WaitThread"/>
+        /// </summary>
+        Complete
     }
 }
