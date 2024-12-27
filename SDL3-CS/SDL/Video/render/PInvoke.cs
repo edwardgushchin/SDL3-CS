@@ -368,9 +368,8 @@ public static partial class SDL
     /// <param name="access">one of the enumerated values in <see cref="TextureAccess"/></param>
     /// <param name="w">the width of the texture in pixels.</param>
     /// <param name="h">the height of the texture in pixels.</param>
-    /// <returns>a pointer to the created texture or <c>null</c> if no rendering context
-    /// was active, the format was unsupported, or the width or height
-    /// were out of range; call <see cref="GetError"/> for more information.</returns>
+    /// <returns>the created texture or <c>null</c> on failure; call <see cref="GetError"/> for
+    /// more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateTextureFromSurface"/>
@@ -503,9 +502,8 @@ public static partial class SDL
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="props">the properties to use.</param>
-    /// <returns>a pointer to the created texture or <c>null</c> if no rendering context
-    /// was active, the format was unsupported, or the width or heigh
-    /// were out of range; call <see cref="GetError"/> for more information.</returns>
+    /// <returns>the created texture or <c>null</c> on failure; call <see cref="GetError"/> for
+    /// more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CreateProperties"/>
