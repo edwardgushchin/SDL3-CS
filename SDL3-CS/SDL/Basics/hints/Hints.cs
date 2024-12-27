@@ -2254,9 +2254,9 @@ public static partial class SDL
         /// <item><c>"1"</c>: SDL will send a quit event when the last window is requesting to
         /// close. (default)</item>
         /// </list>
-        /// <para>If there is at least one active system tray icon, <see cref="EventType.Quit"/> will instead
-        /// be sent when both the last window will be closed and the last tray icon will
-        /// be destroyed.</para>
+        /// <para>If there is at least one active system tray icon, <see cref="EventType.Quit"/> will
+        /// instead be sent when both the last window will be closed and the last tray
+        /// icon will be destroyed.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
