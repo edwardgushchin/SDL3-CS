@@ -551,7 +551,7 @@ public static partial class SDL
     public static partial void CloseAudioDevice(uint devid);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream **streams, int num_streams);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams);</code>
     /// <summary>
     /// <para>Bind a list of audio streams to an audio device.</para>
     /// <para>Audio data will flow through any bound streams. For a playback device, data
@@ -604,7 +604,7 @@ public static partial class SDL
     public static partial bool BindAudioStream(uint devid, IntPtr stream);
 
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnbindAudioStreams(SDL_AudioStream **streams, int num_streams);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnbindAudioStreams(SDL_AudioStream * const *streams, int num_streams);</code>
     /// <summary>
     /// <para>Unbind a list of audio streams from their audio devices.</para>
     /// <para>The streams being unbound do not all have to be on the same device. All
