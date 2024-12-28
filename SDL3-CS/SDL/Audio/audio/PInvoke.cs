@@ -612,14 +612,14 @@ public static partial class SDL
     /// flowing through all unbound streams on the same device at the same time).</para>
     /// <para>Unbinding a stream that isn't bound to a device is a legal no-op.</para>
     /// </summary>
-    /// <param name="streams">an array of audio streams to unbind.</param>
+    /// <param name="streams">an array of audio streams to unbind. Can be <c>null</c> or contain <c>null</c>.</param>
     /// <param name="numStreams">number streams listed in the <c>streams</c> array.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="BindAudioStreams"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial void UnbindAudioStreams([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] streams, int numStreams);
+    public static partial void UnbindAudioStreams([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? streams, int numStreams);
 
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnbindAudioStream(SDL_AudioStream *stream);</code>
