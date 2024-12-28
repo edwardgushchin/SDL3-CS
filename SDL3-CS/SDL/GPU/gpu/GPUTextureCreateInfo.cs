@@ -35,6 +35,10 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3</since>
     /// <seealso cref="CreateGPUTexture"/>
+    /// <seealso cref="GPUTextureType"/>
+    /// <seealso cref="GPUTextureFormat"/>
+    /// <seealso cref="GPUTextureUsageFlags"/>
+    /// <seealso cref="GPUSampleCount"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUTextureCreateInfo
     {
