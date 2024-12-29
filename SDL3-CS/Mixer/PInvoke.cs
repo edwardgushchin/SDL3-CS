@@ -1085,9 +1085,6 @@ public partial class Mixer
     /// the positioning will be done to the final mixed stream before passing it on
     /// to the audio device.</para>
     /// <para>This is a convenience wrapper over <see cref="SetDistance"/> and <see cref="SetPanning"/>.</para>
-    /// <para>Note that unlike most SDL and SDL_mixer functions, this function returns
-    /// zero if there's an error, not on success. We apologize for the API design
-    /// inconsistency here.</para>
     /// </summary>
     /// <param name="channel">The mixer channel to position, or <see cref="ChannelPost"/>.</param>
     /// <param name="angle">angle, in degrees. North is 0, and goes clockwise.</param>
