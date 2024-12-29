@@ -978,9 +978,6 @@ public partial class Mixer
     /// the output stream does not have an end), but they may be explicitly
     /// unregistered through this function by specifying <see cref="ChannelPost"/> for a
     /// channel.</para>
-    /// <para>Note that unlike most SDL and SDL_mixer functions, this function returns
-    /// zero if there's an error, not on success. We apologize for the API design
-    /// inconsistency here.</para>
     /// </summary>
     /// <param name="channel">the channel to unregister an effect on, or <see cref="ChannelPost"/>.</param>
     /// <param name="f">effect the callback stop calling in future mixing iterations.</param>
@@ -1003,9 +1000,6 @@ public partial class Mixer
     /// implicitly unregistered as they are for channels, but they may be
     /// explicitly unregistered through this function by specifying
     /// <see cref="ChannelPost"/> for a channel.</para>
-    /// <para>Note that unlike most SDL and SDL_mixer functions, this function returns
-    /// zero if there's an error, not on success. We apologize for the API design
-    /// inconsistency here.</para>
     /// </summary>
     /// <param name="channel">the channel to unregister all effects on, or
     /// <see cref="ChannelPost"/>.</param>
@@ -1036,9 +1030,6 @@ public partial class Mixer
     /// <para>Note that an audio device in mono mode is a no-op, but this call will
     /// return successful in that case. Error messages can be retrieved from
     /// <see cref="SDL.GetError"/>.</para>
-    /// <para>Note that unlike most SDL and SDL_mixer functions, this function returns
-    /// zero if there's an error, not on success. We apologize for the API design
-    /// inconsistency here.</para>
     /// </summary>
     /// <param name="channel">The mixer channel to pan or <see cref="ChannelPost"/>.</param>
     /// <param name="left">Volume of stereo left channel, 0 is silence, 255 is full
@@ -1117,9 +1108,6 @@ public partial class Mixer
     /// the distance attenuation will be done to the final mixed stream before
     /// passing it on to the audio device.</para>
     /// <para>This uses the <see cref="RegisterEffect"/> API internally.</para>
-    /// <para>Note that unlike most SDL and SDL_mixer functions, this function returns
-    /// zero if there's an error, not on success. We apologize for the API design
-    /// inconsistency here.</para>
     /// </summary>
     /// <param name="channel">The mixer channel to attenuate, or <see cref="RegisterEffect"/>.</param>
     /// <param name="distance">distance; 0 is the listener, 255 is maxiumum distance away.</param>
@@ -1145,9 +1133,6 @@ public partial class Mixer
     /// <para>If you specify <see cref="ChannelPost"/> for <c>channel</c>, then this effect is used on
     /// the final mixed stream before sending it on to the audio device (a
     /// posteffect).</para>
-    /// <para>Note that unlike most SDL and SDL_mixer functions, this function returns
-    /// zero if there's an error, not on success. We apologize for the API design
-    /// inconsistency here.</para>
     /// </summary>
     /// <param name="channel">The mixer channel to reverse, or <see cref="ChannelPost"/>.</param>
     /// <param name="flip">non-zero to reverse stereo, zero to disable this effect.</param>
