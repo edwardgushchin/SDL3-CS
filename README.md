@@ -103,12 +103,12 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 
 ## ✅ Readiness
 
-| **Library**                            | **Stage**                                                         |
-|----------------------------------------|-------------------------------------------------------------------|
-| [SDL3](SDL3-CS/SDL)                    | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [SDL_image](SDL3-CS/Image)             | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [SDL_mixer](SDL3-CS/Mixer)             | ![Ready](https://img.shields.io/badge/Ready-008000)               |
-| [SDL_tff](SDL3-CS/TTF)                 | ![In progress](https://img.shields.io/badge/In%20progress-828282) |
+| **Library**                            | **Stage**                                             |
+|----------------------------------------|-------------------------------------------------------|
+| [SDL3](SDL3-CS/SDL)                    | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [SDL_image](SDL3-CS/Image)             | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [SDL_mixer](SDL3-CS/Mixer)             | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [SDL_tff](SDL3-CS/TTF)                 | ![Ready](https://img.shields.io/badge/Ready-008000)   |
 
 
 ## 🤝 Feedback and Contributions
