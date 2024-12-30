@@ -45,6 +45,9 @@ public static partial class SDL
     /// <para>The filter argument is the index of the filter that was selected, or <c>-1</c> if
     /// no filter was selected or if the platform or method doesn't support
     /// fetching the selected filter.</para>
+    /// <para>In Android, the <c>filelist</c> are <c>content://</c> URIs. They should be opened
+    /// using <see cref="IOFromFile"/> with appropriate modes. This applies both to open
+    /// and save file dialog.</para>
     /// </summary>
     /// <param name="userdata">an app-provided pointer, for the callback's use.</param>
     /// <param name="filelist">the file(s) chosen by the user.</param>
