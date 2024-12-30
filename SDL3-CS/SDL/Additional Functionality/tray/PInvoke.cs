@@ -37,8 +37,8 @@ public partial class SDL
     /// <para>Using tray icons require the video subsystem.</para>
     /// </summary>
     /// <param name="icon">a surface to be used as icon. May be <c>null</c>.</param>
-    /// <param name="tooltip">a tooltip to be displayed when the mouse hovers the ic
-    /// Not supported on all platforms. May be <c>null</c>.</param>
+    /// <param name="tooltip">a tooltip to be displayed when the mouse hovers the icon in
+    /// UTF-8 encoding. Not supported on all platforms. May be <c>null</c>.</param>
     /// <returns>The newly created system tray icon.</returns>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTrayMenu"/>
@@ -65,7 +65,7 @@ public partial class SDL
     /// Updates the system tray icon's tooltip.
     /// </summary>
     /// <param name="tray">the tray icon to be updated.</param>
-    /// <param name="tooltip">the new tooltip. May be <c>null</c>.</param>
+    /// <param name="tooltip">the new tooltip in UTF-8 encoding. May be <c>null</c>.</param>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="CreateTray"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayTooltip"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -196,8 +196,8 @@ public partial class SDL
     /// <param name="menu">the menu to append the entry to.</param>
     /// <param name="pos">the desired position for the new entry. Entries at or following
     /// this place will be moved. If pos is -1, the entry is appended.</param>
-    /// <param name="label">the text to be displayed on the entry, or <c>null</c> for a
-    /// separator.</param>
+    /// <param name="label">the text to be displayed on the entry, in UTF-8 encoding, or
+    /// <c>null</c> for a separator.</param>
     /// <param name="flags">a combination of flags, some of which are mandatory.</param>
     /// <returns>the newly created entry, or <c>null</c> if pos is out of bounds.</returns>
     /// <since>This function is available since SDL 3.2.0.</since>
@@ -218,7 +218,7 @@ public partial class SDL
     /// label. The function will silently fail if that happens.</para>
     /// </summary>
     /// <param name="entry">the entry to be updated.</param>
-    /// <param name="label">the new label for the entry.</param>
+    /// <param name="label">the new label for the entry in UTF-8 encoding.</param>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
@@ -233,7 +233,7 @@ public partial class SDL
     /// <para>If the returned value is <c>null</c>, the entry is a separator.</para>
     /// </summary>
     /// <param name="entry">the entry to be read.</param>
-    /// <returns>the label of the entry.</returns>
+    /// <returns>the label of the entry in UTF-8 encoding.</returns>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
