@@ -454,6 +454,7 @@ public static partial class SDL
         FingerDown      = 0x700,
         FingerUp,
         FingerMotion,
+        FingerCanceled,
         #endregion
 
         #region Clipboard events

@@ -47,7 +47,7 @@ public static partial class SDL
     public struct TouchFingerEvent
     {
         /// <summary>
-        /// <see cref="EventType.FingerMotion"/> or <see cref="EventType.FingerDown"/> or <see cref="EventType.FingerUp"/>
+        /// <see cref="EventType.FingerDown"/>, <see cref="EventType.FingerUp"/>, <see cref="EventType.FingerMotion"/>, or <see cref="EventType.FingerCanceled"/>
         /// </summary>
         public EventType Type;
         
