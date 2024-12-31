@@ -42,8 +42,8 @@ public static partial class SDL
         Failure,
         
         /// <summary>
-        /// request was cancelled before completing.
+        /// request was canceled before completing.
         /// </summary>
-        Cancelled
+        Canceled
     }
 }
