@@ -32,9 +32,9 @@ public static partial class SDL
     /// <para>Note that the <c>FirstIndex</c> and <c>FirstInstance</c> parameters are NOT
     /// compatible with built-in vertex/instance ID variables in shaders (for
     /// example, SV_VertexID); GPU APIs and shader languages do not define these
-    /// built-in variables consistently, so if your shader depends on them, the only
-    /// way to keep behavior consistent and portable is to always pass 0 for the
-    /// correlating parameter in the draw calls.</para>
+    /// built-in variables consistently, so if your shader depends on them, the
+    /// only way to keep behavior consistent and portable is to always pass 0 for
+    /// the correlating parameter in the draw calls.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.1.3</since>
     /// <seealso cref="DrawGPUIndexedPrimitivesIndirect"/>
