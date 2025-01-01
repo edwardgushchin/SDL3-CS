@@ -982,8 +982,10 @@ public partial class SDL
     /// <para>You must not call this function before binding a graphics pipeline.</para>
     /// <para>Note that the <c>firstIndex</c> and <c>firstInstance</c> parameters are NOT
     /// compatible with built-in vertex/instance ID variables in shaders (for
-    /// example, SV_VertexID). If your shader depends on these variables, the
-    /// correlating draw call parameter MUST be 0.</para>
+    /// example, SV_VertexID); GPU APIs and shader languages do not define these
+    /// built-in variables consistently, so if your shader depends on them, the only
+    /// way to keep behavior consistent and portable is to always pass 0 for the
+    /// correlating parameter in the draw calls.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="numIndices">the number of indices to draw per instance.</param>
@@ -1003,8 +1005,10 @@ public partial class SDL
     /// <para>You must not call this function before binding a graphics pipeline.</para>
     /// <para>Note that the <c>firstVertex</c> and <c>firstInstance</c> parameters are NOT
     /// compatible with built-in vertex/instance ID variables in shaders (for
-    /// example, SV_VertexID). If your shader depends on these variables, the
-    /// correlating draw call parameter MUST be 0.</para>
+    /// example, SV_VertexID); GPU APIs and shader languages do not define these
+    /// built-in variables consistently, so if your shader depends on them, the only
+    /// way to keep behavior consistent and portable is to always pass 0 for the
+    /// correlating parameter in the draw calls.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="numVertices">the number of vertices to draw.</param>
