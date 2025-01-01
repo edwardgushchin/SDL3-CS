@@ -55,7 +55,7 @@ public static partial class SDL
         /// <summary>
         /// number of mime types
         /// </summary>
-        public Int32 NMimeTypes;
+        public Int32 NumMimeTypes;
 
         /// <summary>
         /// current mime types
