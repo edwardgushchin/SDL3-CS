@@ -175,6 +175,9 @@ public static partial class SDL
     /// <summary>
     /// <para>Synchronously read a file from a storage container into a client-provided
     /// buffer.</para>
+    /// <para>The value of <c>length</c> must match the length of the file exactly; call
+    /// <see cref="GetStorageFileSize"/> to get this value. This behavior may be relaxed in
+    /// a future release.</para>
     /// </summary>
     /// <param name="storage">a storage container to read from.</param>
     /// <param name="path">the relative path of the file to read.</param>
