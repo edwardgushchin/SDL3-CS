@@ -1933,12 +1933,19 @@ public static partial class SDL
         public const string MacScrollMomentum = "SDL_MAC_SCROLL_MOMENTUM";
         
         /// <summary>
-        /// <para>Request SDL_AppIterate() be called at a specific rate.</para>
-        /// <para>This number is in Hz, so <c>"60"</c> means try to iterate 60 times per second.</para>
-        /// <para>On some platforms, or if you are using SDL_main instead of SDL_AppIterate,
+        /// <para>Request <see cref="AppIterate"/> be called at a specific rate.</para>
+        /// <para>If this is set to a number, it represents Hz, so "60" means try to iterate
+        /// 60 times per second. "0" means to iterate as fast as possible. Negative
+        /// values are illegal, but reserved, in case they are useful in a future
+        /// revision of SDL.</para>
+        /// <para>There are other strings that have special meaning. If set to "waitevent",
+        /// <see cref="AppIterate"/> will not be called until new event(s) have arrived (and been
+        /// processed by <see cref="AppEvent"/>). This can be useful for apps that are completely
+        /// idle except in response to input.</para>
+        /// <para>On some platforms, or if you are using SDL_main instead of <see cref="AppIterate"/>,
         /// this hint is ignored. When the hint can be used, it is allowed to be
         /// changed at any time.</para>
-        /// <para>This defaults to 60, and specifying NULL for the hint's value will restore
+        /// <para>This defaults to 0, and specifying <c>null</c> for the hint's value will restore
         /// the default.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
