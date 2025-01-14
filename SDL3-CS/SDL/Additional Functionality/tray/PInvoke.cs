@@ -153,9 +153,9 @@ public partial class SDL
     /// <param name="menu">The menu to get entries from.</param>
     /// <param name="size">An optional pointer to obtain the number of entries in the
     /// menu.</param>
-    /// <returns>a NULL-terminated list of entries within the given menu. The pointer
-    /// becomes invalid when any function that inserts or deletes entries in
-    /// the menu is called.</returns>
+    /// <returns>a NULL-terminated list of entries within the given menu. The
+    /// pointer becomes invalid when any function that inserts or deletes
+    /// entries in the menu is called.</returns>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RemoveTrayEntry"/>
     /// <seealso cref="InsertTrayEntryAt"/>
