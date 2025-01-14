@@ -783,10 +783,10 @@ public static partial class SDL
     /// <item><see cref="Props.WindowCreateWidthNumber"/>: the width of the window</item>
     /// <item><see cref="Props.WindowCreateXNumber"/>: the x position of the window, or
     /// <see cref="WindowPosCentered"/>, defaults to <see cref="WindowPosUndefined"/>. This is
-    /// relative to the parent for windows with the <c>"parent"</c> property set.</item>
+    /// relative to the parent for windows with the <c>"tooltip"</c> or <c>"menu"</c> property set.</item>
     /// <item><see cref="Props.WindowCreateYNumber"/>: the y position of the window, or
     /// <see cref="WindowPosCentered"/>, defaults to <see cref="WindowPosUndefined"/>. This is
-    /// relative to the parent for windows with the <c>"parent"</c> property set.</item>
+    /// relative to the parent for windows with the <c>"tooltip"</c> or <c>"menu"</c> property set.</item>
     /// </list>
     /// <para>These are additional supported properties on macOS:</para>
     /// <list type="bullet">
