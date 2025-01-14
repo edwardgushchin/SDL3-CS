@@ -2144,9 +2144,20 @@ public static partial class SDL
         /// <para>Specify the OpenGL library to load.</para>
         /// </summary>
         /// <remarks>This hint should be set before creating an OpenGL window or creating an
-        /// OpenGL context.</remarks>
+        /// OpenGL context. If this hint isn't set, SDL will choose a reasonable
+        /// default.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string OpenGLLibrary = "SDL_OPENGL_LIBRARY";
+        
+        /// <summary>
+        /// <para>Specify the EGL library to load.</para>
+        /// <para>This hint should be set before creating an OpenGL window or creating an
+        /// OpenGL context. This hint is only considered if SDL is using EGL to
+        /// manage OpenGL contexts. If this hint isn't set, SDL will choose a
+        /// reasonable default.</para>
+        /// </summary>
+        /// <since>This hint is available since SDL 3.2.0.</since>
+        public const string EGLLibrary = "SDL_EGL_LIBRARY";
         
         /// <summary>
         /// <para>A variable controlling what driver to use for OpenGL ES contexts.</para>
