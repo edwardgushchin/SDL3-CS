@@ -2058,7 +2058,7 @@ public static partial class SDL
         /// <item><c>"1"</c>: Relative mouse motion will be scaled using the system mouse
         /// acceleration curve.</item>
         /// </list>
-        /// <para>If <see cref="MouseRelativeSpeedScale"/> is set, that will override the
+        /// <para>If <see cref="MouseRelativeSpeedScale"/> is set, that will apply before the
         /// system speed scale.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
