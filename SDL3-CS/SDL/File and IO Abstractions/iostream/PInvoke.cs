@@ -510,7 +510,7 @@ public static partial class SDL
     /// <summary>
     /// Save all the data into a file path.
     /// </summary>
-    /// <param name="file">the path to read all available data from.</param>
+    /// <param name="file">the path to write all available data into.</param>
     /// <param name="data">the data to be written. If datasize is 0, may be <c>null</c> or a
     /// invalid pointer.</param>
     /// <param name="datasize">the number of bytes to be written.</param>
