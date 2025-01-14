@@ -243,6 +243,10 @@ public static partial class SDL
     /// is hidden, the mouse position is constrained to the window, and SDL will
     /// report continuous relative mouse motion even if the mouse is at the edge of
     /// the window.</para>
+    /// <para>If you'd like to keep the mouse position fixed while in relative mode you
+    /// can use <see cref="SetWindowMouseRect"/>. If you'd like the cursor to be at a
+    /// specific location when relative mode ends, you should use
+    /// <see cref="WarpMouseInWindow"/> before disabling relative mode.</para>
     /// <para>This function will flush any pending mouse motion for this window.</para>
     /// </summary>
     /// <param name="window">the window to change.</param>
