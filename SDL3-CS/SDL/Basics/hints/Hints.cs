@@ -1014,14 +1014,20 @@ public static partial class SDL
         
         
         /// <summary>
-        /// <para>A variable controlling whether enhanced reports should be used for controllers when using the HIDAPI driver.</para>
-        /// <para>Enhanced reports allow rumble and effects on Bluetooth PlayStation controllers and gyro on Nintendo Switch controllers, but break Windows DirectInput for other applications that don't use SDL.</para>
-        /// <para>Once enhanced reports are enabled, they can't be disabled on PlayStation controllers without power cycling the controller.</para>
+        /// <para>A variable controlling whether enhanced reports should be used for
+        /// controllers when using the HIDAPI driver.</para>
+        /// <para>Enhanced reports allow rumble and effects on Bluetooth PlayStation
+        /// controllers and gyro on Nintendo Switch controllers, but break Windows
+        /// DirectInput for other applications that don't use SDL.</para>
+        /// <para>Once enhanced reports are enabled, they can't be disabled on PlayStation
+        /// controllers without power cycling the controller.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c>: enhanced reports are not enabled.</item>
         /// <item><c>"1"</c>: enhanced reports are enabled. (default)</item>
-        /// <item><c>"auto"</c>: enhanced features are advertised to the application, but SDL doesn't change the controller report mode unless the application uses them.</item>
+        /// <item><c>"auto"</c>: enhanced features are advertised to the application, but SDL
+        /// doesn't change the controller report mode unless the application uses
+        /// them.</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint can be enabled anytime.</remarks>
