@@ -53,6 +53,11 @@ public static partial class SDL
         RShift = 0x0002,
         
         /// <summary>
+        /// the Level 5 Shift key is down.
+        /// </summary>
+        Level5 = 0x0004, 
+        
+        /// <summary>
         /// the left Ctrl (Control) key is down.
         /// </summary>
         LCtrl = 0x0040,
