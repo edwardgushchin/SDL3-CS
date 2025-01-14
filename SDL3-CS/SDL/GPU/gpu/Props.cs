@@ -27,12 +27,13 @@ public static partial class SDL
 {
     public static partial class Props
     {
-        public const string GPUCreateTextureD3D12ClearRFloat = "SDL.gpu.createtexture.d3d12.clear.r";
-        public const string GPUCreateTextureD3D12ClearGFloat = "SDL.gpu.createtexture.d3d12.clear.g";
-        public const string GPUCreateTextureD3D12ClearBFloat = "SDL.gpu.createtexture.d3d12.clear.b";
-        public const string GPUCreateTextureD3D12ClearAFloat = "SDL.gpu.createtexture.d3d12.clear.a";
-        public const string GPUCreateTextureD3D12ClearDepthFloat = "SDL.gpu.createtexture.d3d12.clear.depth";
-        public const string GPUCreateTextureD3D12ClearStencilUint8 = "SDL.gpu.createtexture.d3d12.clear.stencil";
+        public const string GPUTextureCreateD3D12ClearRFloat = "SDL.gpu.texture.create.d3d12.clear.r";
+        public const string GPUTextureCreateD3D12ClearGFloat = "SDL.gpu.texture.create.d3d12.clear.g";
+        public const string GPUTextureCreateD3D12ClearBFloat = "SDL.gpu.texture.create.d3d12.clear.b";
+        public const string GPUTextureCreateD3D12ClearAFloat = "SDL.gpu.texture.create.d3d12.clear.a";
+        public const string GPUTextureCreateD3D12ClearDepthFloat = "SDL.gpu.texture.create.d3d12.clear.depth";
+        public const string GPUTextureCreateD3D12ClearStencilUint8 = "SDL.gpu.texture.create.d3d12.clear.stencil";
+        public const string GPUTextureCreateNameString = "SDL.gpu.texture.create.name";
 
         public const string GPUDeviceCreateDebugModeBoolean = "SDL.gpu.device.create.debugmode";
         public const string GPUDeviceCreatePreferLowPowerBoolean = "SDL.gpu.device.create.preferlowpower";
@@ -47,7 +48,6 @@ public static partial class SDL
         public const string GPUGraphicsPipelineCreateNameString = "SDL.gpu.graphicspipeline.create.name";
         public const string GPUSamplerCreateNameString = "SDL.gpu.sampler.create.name";
         public const string GPUShaderCreateNameString = "SDL.gpu.shader.create.name";
-        public const string GPUTextureCreateNameString = "SDL.gpu.texture.create.name";
         public const string GPUBufferCreateNameString = "SDL.gpu.buffer.create.name";
         public const string GPUTransferBufferCreateNameString = "SDL.gpu.transferbuffer.create.name";
     }
