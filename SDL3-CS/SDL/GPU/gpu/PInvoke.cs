@@ -249,7 +249,7 @@ public partial class SDL
     /// workflow.
     /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="GPUGraphicsPipelineCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// <item><see cref="Props.GPUGraphicsPipelineCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
@@ -319,7 +319,7 @@ public partial class SDL
     /// <see cref="CreateGPUDeviceWithProperties"/>.</para>
     /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="GPUSamplerCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// <item><see cref="Props.GPUSamplerCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
@@ -364,7 +364,7 @@ public partial class SDL
     /// <item><see cref="Props.GPUTextureCreateD3D12ClearStencilUint8"/>: (Direct3D 12 only)
     /// if the texture usage is <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>, clear
     /// the texture to a stencil of this value. Defaults to zero.</item>
-    /// <item><see cref="GPUShaderCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// <item><see cref="Props.GPUShaderCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
@@ -398,7 +398,7 @@ public partial class SDL
     /// [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).</para>
     /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="GPUBufferCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// <item><see cref="Props.GPUBufferCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
@@ -448,7 +448,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetGPUBufferName(SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text);</code>
     /// <summary>
     /// <para>Sets an arbitrary string constant to label a buffer.</para>
-    /// <para>You should use <see cref="GPUBufferCreateNameString"/> with <see cref="CreateGPUBuffer"/> instead of this function to avoid thread safety issues.</para>
+    /// <para>You should use <see cref="Props.GPUBufferCreateNameString"/> with <see cref="CreateGPUBuffer"/> instead of this function to avoid thread safety issues.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="buffer">a buffer to attach the name to.</param>
@@ -463,7 +463,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetGPUTextureName(SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text);</code>
     /// <summary>
     /// <para>Sets an arbitrary string constant to label a texture.</para>
-    /// <para>You should use <see cref="GPUTextureCreateNameString"/> with <see cref="CreateGPUTexture"/> instead of this function to avoid thread safety issues.</para>
+    /// <para>You should use <see cref="Props.GPUTextureCreateNameString"/> with <see cref="CreateGPUTexture"/> instead of this function to avoid thread safety issues.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="texture">a texture to attach the name to.</param>
