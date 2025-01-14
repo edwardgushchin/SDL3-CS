@@ -94,6 +94,7 @@ public static partial class SDL
     /// the file.</param>
     /// <returns>a pointer to the SDL_IOStream structure that is created or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="FlushIO"/>
