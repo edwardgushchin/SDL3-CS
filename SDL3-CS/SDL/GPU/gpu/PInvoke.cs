@@ -440,6 +440,8 @@ public partial class SDL
     /// <param name="device">a GPU Context.</param>
     /// <param name="buffer">a buffer to attach the name to.</param>
     /// <param name="text">a UTF-8 string constant to mark as the name of the buffer.</param>
+    /// <threadsafety>This function is not thread safe, you must synchronize calls
+    /// to this function.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBufferName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUBufferName(IntPtr device, IntPtr buffer, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
