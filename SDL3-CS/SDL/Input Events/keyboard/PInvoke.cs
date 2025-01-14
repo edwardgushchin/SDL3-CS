@@ -278,6 +278,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Get a human-readable name for a key.</para>
     /// <para>If the key doesn't have a name, this function returns an empty string ("").</para>
+    /// <para>Letters will be presented in their uppercase form, if applicable.</para>
     /// </summary>
     /// <param name="key">the desired <see cref="Keycode"/> to query.</param>
     /// <returns>a UTF-8 encoded string of the key name.</returns>
