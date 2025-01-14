@@ -30,5 +30,7 @@ namespace SDL3;
 
 public partial class SDL
 {
+    public const uint ExtendedMask = 1u << 29;
+    
     public const uint ScanCodeMask = 1u << 30;
 }

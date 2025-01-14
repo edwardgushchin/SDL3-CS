@@ -38,6 +38,8 @@ public static partial class SDL
     /// <c>SDLK_*</c> constant for those keys that do not generate characters.</para>
     /// <para>A special exception is the number keys at the top of the keyboard which map
     /// to SDLK_0...SDLK_9 on AZERTY layouts.</para>
+    /// <para>Keys with the <see cref="ExtendedMask"/> bit set do not map to a scancode or
+    /// unicode code point.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.1.3.</since>
     public enum Keycode : uint
@@ -1285,6 +1287,41 @@ public static partial class SDL
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.EndCall)
         /// </summary>
-        EndCall = 0x40000122u
+        EndCall = 0x40000122u,
+        
+        /// <summary>
+        /// Extended key Left Tab
+        /// </summary>
+        LeftTab = 0x20000001u,
+        
+        /// <summary>
+        /// Extended key Level 5 Shift
+        /// </summary>
+        Level5Shift = 0x20000002u,
+        
+        /// <summary>
+        /// Extended key Multi-key Compose
+        /// </summary>
+        MultiKeyCompose = 0x20000003u,
+        
+        /// <summary>
+        /// Extended key Left Meta
+        /// </summary>
+        LMeta = 0x20000004u,
+        
+        /// <summary>
+        /// Extended key Right Meta
+        /// </summary>
+        RMeta = 0x20000005u,
+        
+        /// <summary>
+        /// Extended key Left Hyper
+        /// </summary>
+        LHyper = 0x20000006u,
+        
+        /// <summary>
+        /// Extended key Right Hyper
+        /// </summary>
+        RHyper = 0x20000007u
     }
 }
