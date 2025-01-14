@@ -1439,9 +1439,15 @@ public static partial class SDL
     /// <item>The scale (<see cref="SetRenderScale"/>)</item>
     /// <item>The viewport (<see cref="SetRenderViewport(nint, nint)"/>)</item>
     /// </list>
+    /// <para>Various event types are converted with this function: mouse, touch, pen,
+    /// etc.</para>
     /// <para>Touch coordinates are converted from normalized coordinates in the window
     /// to non-normalized rendering coordinates.</para>
-    /// <para>Once converted, the coordinates may be outside the rendering area.</para>
+    /// <para>Relative mouse coordinates (xrel and yrel event fields) are _also_
+    /// converted. Applications that do not want these fields converted should
+    /// use <see cref="RenderCoordinatesFromWindow"/> on the specific event fields instead
+    /// of converting the entire event structure.</para>
+    /// <para>Once converted, coordinates may be outside the rendering area.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="event">the event to modify.</param>
