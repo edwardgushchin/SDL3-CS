@@ -28,7 +28,8 @@ namespace SDL3;
 public partial class Image
 {
     /// <summary>
-    /// Animated image support Currently only animated GIFs are supported.
+    /// Animated image support
+    /// Currently only animated GIFs are supported.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Animation
