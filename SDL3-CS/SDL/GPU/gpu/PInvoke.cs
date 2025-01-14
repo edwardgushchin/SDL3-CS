@@ -247,6 +247,10 @@ public partial class SDL
     /// <summary>
     /// Creates a sampler object to be used when binding textures in a graphics
     /// workflow.
+    /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="GPUGraphicsPipelineCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the sampler to create.</param>
@@ -313,6 +317,10 @@ public partial class SDL
     /// prefix to something other than TEXCOORD you can use
     /// <see cref="Props.GPUDeviceCreateD3D12SemanticNameString"/> with
     /// <see cref="CreateGPUDeviceWithProperties"/>.</para>
+    /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="GPUSamplerCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the shader to create.</param>
@@ -359,6 +367,7 @@ public partial class SDL
     /// <item><see cref="Props.GPUCreateTextureD3D12ClearStencilUint8"/>: (Direct3D 12 only)
     /// if the texture usage is <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>, clear
     /// the texture to a stencil of this value. Defaults to zero.</item>
+    /// <item><see cref="GPUShaderCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
@@ -387,6 +396,13 @@ public partial class SDL
     /// buffer.</para>
     /// <para>Note that certain combinations of usage flags are invalid. For example, a
     /// buffer cannot have both the <see cref="GPUBufferUsageFlags.Vertex"/> and <see cref="GPUBufferUsageFlags.Index"/> flags.</para>
+    /// <para>For better understanding of underlying concepts and memory management with
+    /// SDL GPU API, you may refer
+    /// [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).</para>
+    /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="GPUBufferCreateNameString"/>: a name that can be displayed in debugging tools.</item>
+    /// </list>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the buffer to create.</param>
@@ -435,14 +451,14 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetGPUBufferName(SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text);</code>
     /// <summary>
     /// <para>Sets an arbitrary string constant to label a buffer.</para>
-    /// <para>Useful for debugging.</para>
+    /// <para>You should use <see cref="GPUBufferCreateNameString"/> with <see cref="CreateGPUBuffer"/> instead of this function to avoid thread safety issues.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="buffer">a buffer to attach the name to.</param>
     /// <param name="text">a UTF-8 string constant to mark as the name of the buffer.</param>
-    /// <threadsafety>This function is not thread safe, you must synchronize calls
-    /// to this function.</threadsafety>
+    /// <threadsafety>This function is not thread safe, you must make sure the buffer is not simultaneously used by any other thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="CreateGPUBuffer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBufferName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUBufferName(IntPtr device, IntPtr buffer, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     
@@ -450,12 +466,14 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetGPUTextureName(SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text);</code>
     /// <summary>
     /// <para>Sets an arbitrary string constant to label a texture.</para>
-    /// <para>Useful for debugging.</para>
+    /// <para>You should use <see cref="GPUTextureCreateNameString"/> with <see cref="CreateGPUTexture"/> instead of this function to avoid thread safety issues.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="texture">a texture to attach the name to.</param>
     /// <param name="text">a UTF-8 string constant to mark as the name of the texture.</param>
+    /// <threadsafety>This function is not thread safe, you must make sure the texture is not simultaneously used by any other thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="CreateGPUTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUTextureName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUTextureName(IntPtr device, IntPtr texture, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     

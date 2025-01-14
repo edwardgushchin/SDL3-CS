@@ -44,5 +44,11 @@ public static partial class SDL
         public const string GPUDeviceCreateShadersMSLBoolean = "SDL.gpu.device.create.shaders.msl";
         public const string GPUDeviceCreateShadersMetalLibBoolean = "SDL.gpu.device.create.shaders.metallib";
         public const string GPUDeviceCreateD3D12SemanticNameString = "SDL.gpu.device.create.d3d12.semantic";
+        public const string GPUGraphicsPipelineCreateNameString = "SDL.gpu.graphicspipeline.create.name";
+        public const string GPUSamplerCreateNameString = "SDL.gpu.sampler.create.name";
+        public const string GPUShaderCreateNameString = "SDL.gpu.shader.create.name";
+        public const string GPUTextureCreateNameString = "SDL.gpu.texture.create.name";
+        public const string GPUBufferCreateNameString = "SDL.gpu.buffer.create.name";
+        public const string GPUTransferBufferCreateNameString = "SDL.gpu.transferbuffer.create.name";
     }
 }
