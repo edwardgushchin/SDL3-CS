@@ -1217,6 +1217,23 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ResumeAudioStreamDevice(IntPtr stream);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AudioStreamDevicePaused(SDL_AudioStream *stream);</code>
+    /// <summary>
+    /// <para>Use this function to query if an audio device associated with a stream is paused.</para>
+    /// <para>Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
+    /// has to bind a stream before any audio will flow.</para>
+    /// </summary>
+    /// <param name="stream">the audio stream associated with the audio device to query.</param>
+    /// <returns><c>true</c> if device is valid and paused, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="PauseAudioStreamDevice"/>
+    /// <seealso cref="ResumeAudioStreamDevice"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AudioStreamDevicePaused"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool AudioStreamDevicePaused(IntPtr stream);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockAudioStream(SDL_AudioStream *stream);</code>
