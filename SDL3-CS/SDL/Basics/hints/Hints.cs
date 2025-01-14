@@ -2720,6 +2720,25 @@ public static partial class SDL
         public const string VideoMacFullscreenSpaces = "SDL_VIDEO_MAC_FULLSCREEN_SPACES";
         
         /// <summary>
+        /// <para>A variable that specifies the menu visibility when a window is fullscreen
+        /// in Spaces on macOS.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: The menu will be hidden when the window is in a fullscreen space,
+        /// and not accessible by moving the mouse to the top of the screen.</item>
+        /// <item><c>"1"</c>: The menu will be accessible when the window is in a fullscreen
+        /// space.</item>
+        /// <item>auto": The menu will be hidden if fullscreen mode was toggled on
+        /// programmatically via <see cref="SetWindowFullscreen"/>, and accessible if
+        /// fullscreen was entered via the "fullscreen" button on the window title
+        /// bar. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.1.9.</since>
+        public const string VideoMacFullScreenMenuVisibility = "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY";
+        
+        /// <summary>
         /// <para>A variable controlling whether fullscreen windows are minimized when they
         /// lose focus.</para>
         /// <para>The variable can be set to the following values:</para>
