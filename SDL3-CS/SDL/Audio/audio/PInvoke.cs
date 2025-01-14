@@ -391,7 +391,7 @@ public static partial class SDL
     /// <param name="devid">the device ID to query.</param>
     /// <returns><c>true</c> if devid is a physical device, <c>false</c> if it is logical.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsAudioDevicePhysical"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsAudioDevicePhysical(uint devid);

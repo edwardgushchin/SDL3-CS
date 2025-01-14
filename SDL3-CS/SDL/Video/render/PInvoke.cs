@@ -2373,7 +2373,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

@@ -56,7 +56,7 @@ public static partial class SDL
     /// the file.</param>
     /// <returns>a pointer to the SDL_AsyncIO structure that is created or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CloseAsyncIO"/>
     /// <seealso cref="ReadAsyncIO"/>
     /// <seealso cref="WriteAsyncIO"/>
@@ -75,7 +75,7 @@ public static partial class SDL
     /// negative error code on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAsyncIOSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial long GetAsyncIOSize(IntPtr asyncio);
     
@@ -106,7 +106,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WriteAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -139,7 +139,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="ReadAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -185,7 +185,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, but two
     /// threads should not attempt to close the same object.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool CloseAsyncIO(IntPtr asyncio, [MarshalAs(UnmanagedType.I1)] bool flush, IntPtr queue, IntPtr userdata);
@@ -200,7 +200,7 @@ public static partial class SDL
     /// <returns>a new task queue object or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="DestroyAsyncIOQueue"/>
     /// <seealso cref="GetAsyncIOResult"/>
     /// <seealso cref="WaitAsyncIOResult"/>
@@ -229,7 +229,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, so long as
     /// no other thread is waiting on the queue with
     /// <see cref="WaitAsyncIOResult"/>.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyAsyncIOQueue(IntPtr queue);
     
@@ -250,7 +250,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <returns><c>true</c> if a task has completed, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WaitAsyncIOResult"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAsyncIOResult"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -287,7 +287,7 @@ public static partial class SDL
     /// indefinitely.</param>
     /// <returns><c>true</c> if task has completed, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SignalAsyncIOQueue"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitAsyncIOResult"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -309,7 +309,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="queue">the async I/O task queue to signal.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WaitAsyncIOResult"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SignalAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SignalAsyncIOQueue(IntPtr queue);
@@ -337,7 +337,7 @@ public static partial class SDL
     /// results.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <see cref="LoadFileIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFileAsync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

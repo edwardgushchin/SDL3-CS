@@ -281,7 +281,7 @@ public static partial class SDL
     /// <threadsafety>This function should be called only from the main thread. The
     /// callback may be invoked from the same thread or from a
     /// different one, depending on the OS's constraints.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="FileDialogType"/>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>

@@ -1501,7 +1501,7 @@ public partial class SDL
     /// pending on the GPU.</param>
     /// <returns><c>true</c> if successful, <c>false</c> on error; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUAllowedFramesInFlight"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetGPUAllowedFramesInFlight(IntPtr device, uint allowedFramesInFlight);

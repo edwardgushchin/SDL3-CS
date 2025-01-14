@@ -498,7 +498,7 @@ public static partial class SDL
     /// in the case of an error.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SaveFile"/>
     /// <seealso cref="LoadFileIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveFile_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -516,7 +516,7 @@ public static partial class SDL
     /// <param name="datasize">the number of bytes to be written.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SaveFileIO"/>
     /// <seealso cref="LoadFile"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

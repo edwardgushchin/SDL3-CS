@@ -317,7 +317,7 @@ public static partial class SDL
     /// <returns>a UTF-8 string of the current working directory in
     /// platform-dependent notation. <c>null</c> if there's a problem. This
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetCurrentDirectory();
