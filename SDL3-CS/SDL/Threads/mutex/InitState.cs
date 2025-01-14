@@ -64,7 +64,7 @@ public static partial class SDL
     ///    {
     ///        if (!SDL_ShouldQuit(ref init)) {
     ///            // The system is not initialized
-    ///            return true;
+    ///            return;
     ///        }
     ///
     ///        // At this point, you should not leave this function without calling SDL_SetInitialized()
