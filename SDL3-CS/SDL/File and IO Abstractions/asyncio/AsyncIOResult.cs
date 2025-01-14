@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Possible outcomes of an asynchronous I/O task.
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.2.0.</since>
     public enum AsyncIOResult
     {
         /// <summary>

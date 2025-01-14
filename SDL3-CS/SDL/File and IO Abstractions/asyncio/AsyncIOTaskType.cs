@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Types of asynchronous I/O tasks.
     /// </summary>
-    /// <since>This enum is available since SDL 3.0.0.</since>
+    /// <since>This enum is available since SDL 3.2.0.</since>
     public enum AsyncIOTaskType
     {
         /// <summary>
