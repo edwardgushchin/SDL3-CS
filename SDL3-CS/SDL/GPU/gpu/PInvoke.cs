@@ -346,9 +346,6 @@ public partial class SDL
     /// <para>There are optional properties that can be provided through
     /// <see cref="GPUTextureCreateInfo"/>'s <c>props</c>. These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.ProcessCreateArgsPointer"/>: an array of strings containing
-    /// the program to run, any arguments, and a NULL pointer, e.g. const char
-    /// *args[] = { "myprogram", "argument", NULL }. This is a required property.</item>
     /// <item><see cref="Props.GPUTextureCreateD3D12ClearRFloat"/>: (Direct3D 12 only)
     /// if the texture usage is <see cref="GPUTextureUsageFlags.ColorTarget"/>, clear the
     /// texture to a color with this red intensity. Defaults to zero.</item>
