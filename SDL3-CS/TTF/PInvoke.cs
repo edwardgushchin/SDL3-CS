@@ -1405,7 +1405,6 @@ public static partial class TTF
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="CreateGPUTextEngine"/>
     /// <seealso cref="CreateText"/>
-    /// <seealso cref="CreateTextWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGPUTextDrawData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetGPUTextDrawData(IntPtr text);
     
