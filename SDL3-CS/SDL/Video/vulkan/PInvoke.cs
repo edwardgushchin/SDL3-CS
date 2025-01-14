@@ -34,6 +34,12 @@ public static partial class SDL
     /// <para>This should be called after initializing the video driver, but before
     /// creating any Vulkan windows. If no Vulkan loader library is loaded, the
     /// default library will be loaded upon creation of the first Vulkan window.</para>
+    /// <para>SDL keeps a counter of how many times this function has been successfully
+    /// called, so it is safe to call this function multiple times, so long as it
+    /// is eventually paired with an equivalent number of calls to
+    /// <see cref="VulkanUnloadLibrary"/>. The <c>path</c> argument is ignored unless there is no
+    /// library currently loaded, and and the library isn't actually unloaded until
+    /// there have been an equivalent number of calls to <see cref="VulkanUnloadLibrary"/>.</para>
     /// <para>It is fairly common for Vulkan applications to link with libvulkan instead
     /// of explicitly loading it at run time. This will work with SDL provided the
     /// application links to a dynamic library and both it and SDL use the same
