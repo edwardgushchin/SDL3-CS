@@ -320,6 +320,16 @@ public partial class SDL
     public static partial void SetTrayEntryCallback(IntPtr entry, TrayCallback callback, IntPtr userdata);
     
     
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ClickTrayEntry(SDL_TrayEntry *entry);</code>
+    /// <summary>
+    /// Simulate a click on a tray entry.
+    /// </summary>
+    /// <param name="entry">The entry to activate.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClickTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void ClickTrayEntry(IntPtr entry);
+    
+    
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyTray(SDL_Tray *tray);</code>
     /// <summary>
     /// <para>Destroys a tray object.</para>
