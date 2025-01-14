@@ -1701,8 +1701,8 @@ public static partial class SDL
         /// handling joystick detection and raw input messages on Windows.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: A separate thread is not used. (default)</item>
-        /// <item><c>"1"</c>: A separate thread is used for handling raw input messages.</item>
+        /// <item><c>"0"</c>: A separate thread is not used.</item>
+        /// <item><c>"1"</c>: A separate thread is used for handling raw input messages. (default)</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
