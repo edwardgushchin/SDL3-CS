@@ -1031,7 +1031,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be enabled anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.1.8.</since>
         public const string JoystickEnhancedReports = "SDL_JOYSTICK_ENHANCED_REPORTS";
         
         
