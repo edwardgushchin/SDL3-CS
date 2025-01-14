@@ -1012,6 +1012,23 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickDevice = "SDL_JOYSTICK_DEVICE";
         
+        
+        /// <summary>
+        /// <para>A variable controlling whether enhanced reports should be used for controllers when using the HIDAPI driver.</para>
+        /// <para>Enhanced reports allow rumble and effects on Bluetooth PlayStation controllers and gyro on Nintendo Switch controllers, but break Windows DirectInput for other applications that don't use SDL.</para>
+        /// <para>Once enhanced reports are enabled, they can't be disabled on PlayStation controllers without power cycling the controller.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: enhanced reports are not enabled.</item>
+        /// <item><c>"1"</c>: enhanced reports are enabled. (default)</item>
+        /// <item><c>"auto"</c>: enhanced features are advertised to the application, but SDL doesn't change the controller report mode unless the application uses them.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be enabled anytime.</remarks>
+        /// <since>This hint is available since SDL 3.1.3.</since>
+        public const string JoystickEnhancedReports = "SDL_JOYSTICK_ENHANCED_REPORTS";
+        
+        
         /// <summary>
         /// <para>A variable containing a list of flightstick style controllers.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
@@ -1256,26 +1273,6 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIPS4ReportInterval = "SDL_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL";
         
-        /// <summary>
-        /// <para>A variable controlling whether extended input reports should be used for
-        /// PS4 controllers when using the HIDAPI driver.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: extended reports are not enabled. (default)</item>
-        /// <item><c>"1"</c>: extended reports are enabled.</item>
-        /// </list>
-        /// <para>Extended input reports allow rumble on Bluetooth PS4 controllers, but break
-        /// DirectInput handling for applications that don't use SDL.</para>
-        /// <para>Once extended reports are enabled, they can not be disabled without power
-        /// cycling the controller.</para>
-        /// <para>For compatibility with applications written for versions of SDL prior to
-        /// the introduction of PS5 controller support, this value will also control
-        /// the state of extended reports on PS5 controllers when the
-        /// <see cref="JoystickHIDAPIPS5Rumble"/> hint is not explicitly set.</para>
-        /// </summary>
-        /// <remarks>This hint can be enabled anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
-        public const string JoystickHIDAPIPS4Rumble = "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE";
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for PS5 controllers should
@@ -1303,25 +1300,6 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string JoystickHIDAPIPS5PlayerLED = "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED";
         
-        /// <summary>
-        /// <para>A variable controlling whether extended input reports should be used for
-        /// PS5 controllers when using the HIDAPI driver.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: extended reports are not enabled. (default)</item>
-        /// <item><c>"1"</c>: extended reports.</item>
-        /// </list>
-        /// <para>Extended input reports allow rumble on Bluetooth PS5 controllers, but break
-        /// DirectInput handling for applications that don't use SDL.</para>
-        /// <para>Once extended reports are enabled, they can not be disabled without power
-        /// cycling the controller.</para>
-        /// <para>For compatibility with applications written for versions of SDL prior to
-        /// the introduction of PS5 controller support, this value defaults to the
-        /// value of <see cref="JoystickHIDAPIPS4Rumble"/>.</para>
-        /// </summary>
-        /// <remarks>This hint can be enabled anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
-        public const string JoystickHIDAPIPS5Rumble = "SDL_JOYSTICK_HIDAPI_PS5_RUMBLE";
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for NVIDIA SHIELD
