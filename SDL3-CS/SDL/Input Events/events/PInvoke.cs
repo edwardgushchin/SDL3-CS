@@ -332,8 +332,10 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
-    /// <para>Set up a filter to process all events before they change internal state and
-    /// are posted to the internal event queue.</para>
+    /// <para>Set up a filter to process all events before they are added to the internal
+    /// event queue.</para>
+    /// <para>If you just want to see events without modifying them or preventing them
+    /// from being queued, you should use <see cref="AddEventWatch"/> instead.</para>
     /// <para>If the filter function returns true when called, then the event will be
     /// added to the internal queue. If it returns false, then the event will be
     /// dropped from the queue, but the internal state will still be updated. This

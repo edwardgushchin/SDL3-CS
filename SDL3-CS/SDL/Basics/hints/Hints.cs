@@ -3446,5 +3446,34 @@ public static partial class SDL
         /// changed at any time.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>
         public const string Assert = "SDL_ASSERT";
+        
+        
+        /// <summary>
+        /// <para>A variable controlling whether pen events should generate synthetic mouse
+        /// events.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Pen events will not generate mouse events.</item>
+        /// <item><c>"1"</c>: Pen events will generate mouse events. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.2.0.</since>
+        public const string PenMouseEevents = "SDL_PEN_MOUSE_EVENTS";
+        
+        
+        
+        /// <summary>
+        /// <para>A variable controlling whether pen events should generate synthetic touch
+        /// events.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Pen events will not generate touch events.</item>
+        /// <item><c>"1"</c>: Pen events will generate touch events. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.2.0.</since>
+        public const string PenTouchEevents = "SDL_PEN_TOUCH_EVENTS";
     }
 }
