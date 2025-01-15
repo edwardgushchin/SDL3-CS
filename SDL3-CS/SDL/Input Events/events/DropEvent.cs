@@ -72,6 +72,6 @@ public static partial class SDL
         /// <summary>
         /// The text for <see cref="EventType.DropText"/> and the file name for <see cref="EventType.DropFile"/>, <c>null</c> for other events
         /// </summary>
-        private IntPtr data;
+        public IntPtr Data;
     }
 }
