@@ -1196,8 +1196,8 @@ public static partial class SDL
     /// <see cref="TextureAccess.Streaming"/>.</param>
     /// <param name="rect">a pointer to the rectangle to lock for access. If the rect is
     /// <c>null</c>, the entire texture will be locked.</param>
-    /// <param name="surface">this is filled in with an SDL surface representing the
-    /// locked area.</param>
+    /// <param name="surface">a pointer to an SDL surface of size <b>rect</b>. Don't assume
+    /// any specific pixel content.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
@@ -1228,8 +1228,8 @@ public static partial class SDL
     /// <see cref="TextureAccess.Streaming"/>.</param>
     /// <param name="rect">a pointer to the rectangle to lock for access. If the rect is
     /// <c>null</c>, the entire texture will be locked.</param>
-    /// <param name="surface">this is filled in with an SDL surface representing the
-    /// locked area.</param>
+    /// <param name="surface">a pointer to an SDL surface of size <b>rect</b>. Don't assume
+    /// any specific pixel content.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
