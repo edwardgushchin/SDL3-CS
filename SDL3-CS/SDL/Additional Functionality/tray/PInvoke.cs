@@ -325,7 +325,7 @@ public partial class SDL
     /// Simulate a click on a tray entry.
     /// </summary>
     /// <param name="entry">The entry to activate.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.1.10.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClickTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ClickTrayEntry(IntPtr entry);
     
