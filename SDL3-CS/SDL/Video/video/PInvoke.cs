@@ -175,7 +175,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDisplayBounds(SDL_DisplayID displayID, SDL_Rect *rect);</code>
     /// <summary>
     /// <para>Get the desktop area represented by a display.</para>
-    /// <para>The primary display is always located at (0,0).</para>
+    /// <para>The primary display is often located at (0,0), but may be placed at a
+    /// different location depending on monitor layout.</para>
     /// </summary>
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <param name="rect">the <see cref="Rect"/> structure filled in with the display bounds.</param>
