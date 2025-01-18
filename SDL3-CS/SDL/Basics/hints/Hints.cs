@@ -591,7 +591,7 @@ public static partial class SDL
         /// <item><c>"#document"</c>: the javascript document object</item>
         /// <item><c>"#screen"</c>: the javascript window.screen object</item>
         /// <item><c>"#canvas"</c>: the WebGL canvas element</item>
-        /// <item><c>""</c>: Don't bind anything at all</item>
+        /// <item><c>"none"</c>: Don't bind anything at all</item>
         /// <item>any other string without a leading <c>#</c> sign applies to the element on the
         /// page with that ID.</item>
         /// </list>
