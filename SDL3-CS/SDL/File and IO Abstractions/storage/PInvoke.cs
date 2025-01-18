@@ -239,9 +239,11 @@ public static partial class SDL
     /// callback returns <see cref="EnumerationResult.Failure"/>. A successful return means a callback
     /// returned <see cref="EnumerationResult.Success"/> to halt enumeration, or all directory entries
     /// were enumerated.</para>
+    /// <para>If <c>path</c> is <c>null</c>, this is treated as a request to enumerate the root of
+    /// the storage container's tree. An empty string also works for this.</para>
     /// </summary>
     /// <param name="storage">a storage container.</param>
-    /// <param name="path">the path of the directory to enumerate.</param>
+    /// <param name="path">the path of the directory to enumerate, or <c>null</c> for the root</param>
     /// <param name="callback">a function that is called for each entry in the directory.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
@@ -346,9 +348,11 @@ public static partial class SDL
     /// <para>The returned array is always NULL-terminated, for your iterating
     /// convenience, but if <c>count</c> is non-NULL, on return it will contain the
     /// number of items in the array, not counting the <c>null</c> terminator.</para>
+    /// <para>If <c>path</c> is <c>null</c>, this is treated as a request to enumerate the root of
+    /// the storage container's tree. An empty string also works for this.</para>
     /// </summary>
     /// <param name="storage">a storage container.</param>
-    /// <param name="path">the path of the directory to enumerate.</param>
+    /// <param name="path">the path of the directory to enumerate, or <c>null</c> for the root.</param>
     /// <param name="pattern">the pattern that files in the directory must match. Can be
     /// <c>null</c>.</param>
     /// <param name="flags"><c>SDL_GLOB_*</c> bitflags that affect this search.</param>
