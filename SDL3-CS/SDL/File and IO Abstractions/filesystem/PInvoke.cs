@@ -313,6 +313,8 @@ public static partial class SDL
     /// <para>SDL does not provide a means to _change_ the current working directory; for
     /// platforms without this concept, this would cause surprises with file access
     /// outside of SDL.</para>
+    /// <para>The returned path is guaranteed to end with a path separator (<c>\\</c> on
+    /// Windows, <c>/</c> on most other platforms).</para>
     /// </summary>
     /// <returns>a UTF-8 string of the current working directory in
     /// platform-dependent notation. <c>null</c> if there's a problem. This
