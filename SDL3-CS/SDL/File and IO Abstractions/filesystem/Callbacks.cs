@@ -37,6 +37,8 @@ public static partial class SDL
     /// callback with further entries. <see cref="EnumerationResult.Success"/> and <see cref="EnumerationResult.Failure"/> will
     /// terminate the enumeration early, and dictate the return value of the
     /// enumeration function itself.</para>
+    /// <para><c>dirname</c> is guaranteed to end with a path separator (<c>\\</c> on
+    /// Windows, <c>/</c> on most other platforms).</para>
     /// </summary>
     /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
     /// <param name="dirname">the directory that is being enumerated.</param>
