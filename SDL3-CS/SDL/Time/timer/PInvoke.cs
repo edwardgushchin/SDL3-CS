@@ -90,6 +90,8 @@ public static partial class SDL
     /// <param name="ms">the number of milliseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="DelayNS"/>
+    /// <seealso cref="DelayPrecise"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Delay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Delay(uint ms);
     
@@ -104,6 +106,8 @@ public static partial class SDL
     /// <param name="ns">the number of nanoseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="Delay"/>
+    /// <seealso cref="DelayPrecise"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DelayNS(ulong ns);
     
@@ -118,6 +122,8 @@ public static partial class SDL
     /// <param name="ns">the number of nanoseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.6.</since>
+    /// <seealso cref="Delay"/>
+    /// <seealso cref="DelayNS"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayPrecise"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DelayPrecise(ulong ns);
 
