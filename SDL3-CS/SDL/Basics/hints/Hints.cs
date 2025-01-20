@@ -1905,6 +1905,28 @@ public static partial class SDL
         public const string MacOpenGLAsyncDispatch = "SDL_MAC_OPENGL_ASYNC_DISPATCH";
         
         /// <summary>
+        /// <para>A variable controlling whether the Option (⌥) key on macOS should be
+        /// remapped to act as the Alt key.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"none</c>: The Option key is not remapped to Alt. (default)</item>
+        /// <item><c>"only_left"</c>: Only the left Option key is remapped to Alt.</item>
+        /// <item><c>"only_right"</c>: Only the right Option key is remapped to Alt.</item>
+        /// <item><c>"both"</c>: Both Option keys are remapped to Alt.</item>
+        /// </list>
+        /// <para>This will prevent the triggering of key compositions that rely on the
+        /// Option key, but will still send the Alt modifier for keyboard events. In
+        /// the case that both Alt and Option are pressed, the Option key will be
+        /// ignored. This is particularly useful for applications like terminal
+        /// emulators and graphical user interfaces (GUIs) that rely on Alt key
+        /// functionality for shortcuts or navigation. This does not apply to
+        /// <see cref="GetKeyFromScancode"/> and only has an effect if IME is enabled.</para>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since 3.2.0</since>
+        public const string MacOptionAsAlt = "SDL_MAC_OPTION_AS_ALT";
+        
+        /// <summary>
         /// <para>A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have
         /// momentum on macOS.</para>
         /// <para>The variable can be set to the following values:</para>
