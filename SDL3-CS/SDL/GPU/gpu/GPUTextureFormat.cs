@@ -96,9 +96,8 @@ public static partial class SDL
     /// supported:</para>
     /// <list type="bullet">
     /// <item><see cref="D16Unorm"/></item>
-    /// <item>Either (but not necessarily both!) <see cref="D24Unorm"/> or D32SFloat</item>
-    /// <item>Either (but not necessarily both!) <see cref="D24UnormS8Uint"/> or
-    /// D32SFloatS8Uint</item>
+    /// <item>Either (but not necessarily both!) <see cref="D24Unorm"/> or <see cref="GPUTextureFormat.D32Float"/></item>
+    /// <item>Either (but not necessarily both!) <see cref="D24UnormS8Uint"/> or <see cref="GPUTextureFormat.D32FloatS8Uint"/></item>
     /// </list>
     /// <para>Unless D16Unorm is sufficient for your purposes, always check which of
     /// D24/D32 is supported before creating a depth-stencil texture!</para>

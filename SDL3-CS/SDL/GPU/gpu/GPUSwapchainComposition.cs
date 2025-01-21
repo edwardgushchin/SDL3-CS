@@ -37,7 +37,7 @@ public static partial class SDL
     /// <item><see cref="SDRLinear"/>: B8G8R8A8_SRGB or R8G8B8A8_SRGB swapchain. Pixel values are
     /// stored in memory in sRGB encoding but accessed in shaders in "linear
     /// sRGB" encoding which is sRGB but with a linear transfer function.</item>
-    /// <item><see cref="HDRExtendedLinear"/>: R16G16B16A16_SFLOAT swapchain. Pixel values are in
+    /// <item><see cref="HDRExtendedLinear"/>: <see cref="GPUTextureFormat.R16G16B16A16Float"/> swapchain. Pixel values are in
     /// extended linear sRGB encoding and permits values outside of the [0, 1]
     /// range.</item>
     /// <item><see cref="HDR10ST2084"/>: A2R10G10B10 or A2B10G10R10 swapchain. Pixel values are in

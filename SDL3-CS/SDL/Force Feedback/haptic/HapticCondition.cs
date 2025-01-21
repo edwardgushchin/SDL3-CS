@@ -61,7 +61,7 @@ public static partial class SDL
         public UInt16 Type;
 
         /// <summary>
-        /// Direction of the effect - Not used ATM.
+        /// Direction of the effect.
         /// </summary>
         public HapticDirection Direction;
 
