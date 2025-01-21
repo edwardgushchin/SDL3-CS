@@ -98,6 +98,8 @@ public static partial class SDL
     /// multiple times, with indices from 0 to <see cref="GetNumRenderDrivers"/>-1. If you
     /// don't need a specific renderer, specify <c>null</c> and SDL will attempt to choose
     /// the best option for you, based on what is available on the user's system.</para>
+    /// <para>If <c>name</c> is a comma-separated list, SDL will try each name, in the order
+    /// listed, until one succeeds or all of them fail.</para>
     /// <para>By default the rendering size matches the window size in pixels, but you
     /// can call <see cref="SetRenderLogicalPresentation"/> to change the content size and
     /// scaling options.</para>

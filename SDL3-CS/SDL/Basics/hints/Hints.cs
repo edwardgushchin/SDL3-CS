@@ -2367,6 +2367,9 @@ public static partial class SDL
         /// <item><c>"vulkan"</c>;</item>
         /// <item><c>"software"</c>;</item>
         /// </list>
+        /// <para>This hint accepts a comma-separated list of driver names, and each will be
+        /// tried in the order listed when creating a renderer until one succeeds or
+        /// all of them fail.</para>
         /// <para>The default varies by platform, but it's the first one in the list that is
         /// available on the current platform.</para>
         /// </summary>
@@ -2683,6 +2686,9 @@ public static partial class SDL
         /// until it finds one that can work, but this hint allows the app or user to
         /// force a specific target, such as <c>"x11"</c> if, say, you are on Wayland but want
         /// to try talking to the X server instead.</para>
+        /// <para>This hint accepts a comma-separated list of driver names, and each will be
+        /// tried in the order listed during init, until one succeeds or all of them
+        /// fail.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.1.3.</since>

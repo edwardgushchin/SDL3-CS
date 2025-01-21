@@ -250,12 +250,18 @@ public static partial class SDL
     /// settings of the display. For example, a 4K display might have a 2.0 (200%)
     /// display scale, which means that the user expects UI elements to be twice as
     /// big on this display, to aid in readability.</para>
+    /// <para>After window creation, <see cref="GetWindowDisplayScale"/> should be used to query
+    /// the content scale factor for individual windows instead of querying the
+    /// display for a window and calling this function, as the per-window content
+    /// scale factor may differ from the base value of the display it is on,
+    /// particularly on high-DPI and/or multi-monitor desktop configurations.</para>
     /// </summary>
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <returns>the content scale of the display, or <c>0.0f</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.3.</since>
+    /// <seealso cref="GetWindowDisplayScale"/>
     /// <seealso cref="GetDisplays"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayContentScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetDisplayContentScale(uint displayID);
