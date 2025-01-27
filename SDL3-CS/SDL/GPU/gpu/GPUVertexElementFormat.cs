@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Specifies the format of a vertex attribute.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUGraphicsPipeline"/>
     public enum GPUVertexElementFormat
     {

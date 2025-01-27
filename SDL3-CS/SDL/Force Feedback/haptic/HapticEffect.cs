@@ -80,7 +80,7 @@ public static partial class SDL
     /// <para>Note either the attack_level or the fade_level may be above the actual
     /// effect level.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HapticConstant"/>
     /// <seealso cref="HapticPeriodic"/>
     /// <seealso cref="HapticCondition"/>

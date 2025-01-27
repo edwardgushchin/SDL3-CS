@@ -60,7 +60,7 @@ public partial class SDL
     /// arguments.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AppIterate"/>
     /// <seealso cref="AppEvent"/>
     /// <seealso cref="AppQuit"/>
@@ -103,7 +103,7 @@ public partial class SDL
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
     /// <threadsafety>This function may get called concurrently with <see cref="AppEvent"/>
     /// for events not pushed on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AppInit"/>
     /// <seealso cref="AppEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppIterate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -139,7 +139,7 @@ public partial class SDL
     /// <param name="result">the result code that terminated the app (success or failure).</param>
     /// <threadsafety><see cref="AppEvent"/> may get called concurrently with this function
     /// if other threads that push events are still active.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AppInit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppQuit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AppQuit(IntPtr appstate, AppResult result);
@@ -167,7 +167,7 @@ public partial class SDL
     /// program completion, and small non-zero values are considered
     /// errors.</returns>
     /// <threadsafety>This is the program entry point.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_main"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int Main(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
     
@@ -181,7 +181,7 @@ public partial class SDL
     /// will not be changed it is necessary to define SDL_MAIN_HANDLED before
     /// including SDL.h.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMainReady"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetMainReady();
@@ -211,7 +211,7 @@ public partial class SDL
     /// failure.</returns>
     /// <threadsafety>Generally this is called once, near startup, from the
     /// process's initial thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, MainFunc mainFunction, IntPtr reserved);
     
@@ -236,7 +236,7 @@ public partial class SDL
     /// <returns>standard Unix main return value.</returns>
     /// <threadsafety>It is not safe to call this anywhere except as the only
     /// function call in SDL_main.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnterAppMainCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
     
@@ -261,7 +261,7 @@ public partial class SDL
     /// will use <c>GetModuleHandle(NULL)</c> instead.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "RegisterApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RegisterApp([MarshalAs(UnmanagedType.LPUTF8Str)] string? name, uint style, IntPtr hInst);
@@ -278,7 +278,7 @@ public partial class SDL
     /// deregistered when the registration counter in <see cref="RegisterApp"/> decrements to
     /// zero through calls to this function.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnregisterApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UnregisterApp();
     
@@ -289,7 +289,7 @@ public partial class SDL
     /// <para>This function is only needed for Xbox GDK support; all other platforms will
     /// do nothing and set an "unsupported" error message.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendComplete"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GDKSuspendComplete();
 }

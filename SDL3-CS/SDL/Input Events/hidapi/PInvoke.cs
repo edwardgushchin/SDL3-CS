@@ -40,7 +40,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HIDExit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDInit();
@@ -54,7 +54,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <see cref="HIDInit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_exit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDExit();
@@ -73,7 +73,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>a change counter that is incremented with each potential device
     /// change, or 0 if device change detection isn't available.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HIDEnumerate"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_device_change_count"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint HIDDeviceChangeCount();
@@ -127,7 +127,7 @@ public static partial class SDL
     /// <c>null</c>).</param>
     /// <returns>a pointer to a SDL_hid_device object on success or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_open"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr HIDOpen(ushort vendorId, ushort productId, [MarshalAs(UnmanagedType.LPUTF8Str)] string? serialNumber);
     
@@ -141,7 +141,7 @@ public static partial class SDL
     /// <param name="path">the path name of the device to open.</param>
     /// <returns>a pointer to a SDL_hid_device object on success or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_open_path"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr HIDOpenPath([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
 
@@ -167,7 +167,7 @@ public static partial class SDL
     /// <param name="length">the length in bytes of the data to send.</param>
     /// <returns>the actual number of bytes written and -1 on on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_write"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDWrite(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, ulong length);
     
@@ -188,7 +188,7 @@ public static partial class SDL
     /// <returns>the actual number of bytes read and -1 on on failure; call
     /// <see cref="GetError"/> for more information. If no packet was available to
     /// be read within the timeout period, this function returns 0.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_read_timeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDReadTimeout(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, ulong length, int milliseconds);
     
@@ -209,7 +209,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information. If no packet was available to
     /// be read and the handle is in non-blocking mode, this function
     /// returns 0.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_read"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDRead(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, ulong length);
     
@@ -251,7 +251,7 @@ public static partial class SDL
     /// number.</param>
     /// <returns>the actual number of bytes written and -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_send_feature_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDSendFeatureReport(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, ulong length);
     
@@ -274,7 +274,7 @@ public static partial class SDL
     /// <returns>the number of bytes read plus one for the report ID (which is
     /// still in the first byte), or -1 on on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_feature_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDGetFeatureReport(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, ulong length);
     
@@ -297,7 +297,7 @@ public static partial class SDL
     /// <returns>the number of bytes read plus one for the report ID (which is
     /// still in the first byte), or -1 on on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_input_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HidGetInputReport(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, ulong length);
     
@@ -309,7 +309,7 @@ public static partial class SDL
     /// <param name="dev">a device handle returned from <see cref="HIDOpen"/>.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_close"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDClose(IntPtr dev);
     
@@ -323,7 +323,7 @@ public static partial class SDL
     /// <param name="maxlen">the length of the buffer in multiples of wchar_t.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_manufacturer_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDGetManufacturerString(IntPtr dev, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, ulong maxlen);
     
@@ -350,7 +350,7 @@ public static partial class SDL
     /// <param name="maxlen">the length of the buffer in multiples of wchar_t.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_serial_number_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDGetSerialNumberString(IntPtr dev, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, ulong maxlen);
     
@@ -365,7 +365,7 @@ public static partial class SDL
     /// <param name="maxlen">the length of the buffer in multiples of wchar_t.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_indexed_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDGetIndexedString(IntPtr dev, int stringIndex, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, ulong maxlen);
     
@@ -378,7 +378,7 @@ public static partial class SDL
     /// <returns>a pointer to the SDL_hid_device_info for this hid_device or <c>null</c>
     /// on failure; call <see cref="GetError"/> for more information. This struct
     /// is valid until the device is closed with <see cref="HIDClose"/>.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_device_info"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr HIDGetDeviceInfo(IntPtr dev);
     
@@ -393,7 +393,7 @@ public static partial class SDL
     /// <param name="bufSize">the buffer to copy descriptor into.</param>
     /// <returns>the number of bytes actually copied or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDGetReportDescriptor(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, ulong bufSize);
 
@@ -403,7 +403,7 @@ public static partial class SDL
     /// Start or stop a BLE scan on iOS and tvOS to pair Steam Controllers.
     /// </summary>
     /// <param name="active"><c>true</c> to start the scan, <c>false</c> to stop the scan.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void HIDBLEScan([MarshalAs(UnmanagedType.I1)] bool active);
 }

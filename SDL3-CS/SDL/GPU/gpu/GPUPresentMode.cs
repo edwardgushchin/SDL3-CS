@@ -43,7 +43,7 @@ public static partial class SDL
     /// new image. Similar to VSYNC, but with reduced visual latency.</item>
     /// </list>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="SetGPUSwapchainParameters"/>
     /// <seealso cref="WindowSupportsGPUPresentMode"/>
     /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>

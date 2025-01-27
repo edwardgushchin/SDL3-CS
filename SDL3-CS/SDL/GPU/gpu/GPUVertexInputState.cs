@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure specifying the parameters of a graphics pipeline vertex input
     /// state.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUGraphicsPipelineCreateInfo"/>
     /// <seealso cref="GPUVertexBufferDescription"/>
     /// <seealso cref="GPUVertexAttribute"/>

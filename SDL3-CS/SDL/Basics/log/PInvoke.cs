@@ -34,7 +34,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="priority">the <see cref="LogPriority"/> to assign.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResetLogPriorities"/>
     /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriorities"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -48,7 +48,7 @@ public static partial class SDL
     /// <param name="category">the category to assign a priority to.</param>
     /// <param name="priority">the <see cref="LogPriority"/> to assign.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetLogPriority"/>
     /// <seealso cref="ResetLogPriorities"/>
     /// <seealso cref="SetLogPriorities"/>
@@ -63,7 +63,7 @@ public static partial class SDL
     /// <param name="category">the category to query.</param>
     /// <returns>the <see cref="LogPriority"/> for the requested category.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial LogPriority GetLogPriority(LogCategory category);
@@ -75,7 +75,7 @@ public static partial class SDL
     /// </summary>
     /// <remarks>This is called by <see cref="Quit"/>.</remarks>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetLogPriorities"/>
     /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetLogPriorities"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -95,7 +95,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetLogPriorities"/>
     /// <seealso cref="SetLogPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriorityPrefix"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -109,7 +109,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
     /// <seealso cref="LogError"/>
@@ -130,7 +130,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -152,7 +152,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -172,7 +172,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="message">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogError"/>
@@ -193,7 +193,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -214,7 +214,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -235,7 +235,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -256,7 +256,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="fmt">a printf() style message format string.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogDebug"/>
     /// <seealso cref="LogError"/>
@@ -277,7 +277,7 @@ public static partial class SDL
     /// <param name="priority">the priority of the message.</param>
     /// <param name="fmt">the priority of the message.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -300,7 +300,7 @@ public static partial class SDL
     /// <param name="fmt">a printf() style message format string.</param>
     /// <param name="ap">a variable argument list.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Log"/>
     /// <seealso cref="LogCritical"/>
     /// <seealso cref="LogDebug"/>
@@ -336,7 +336,7 @@ public static partial class SDL
     /// <param name="userdata">a pointer filled in with the pointer that is passed to
     /// <c>callback</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDefaultLogOutputFunction"/>
     /// <seealso cref="SetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -350,7 +350,7 @@ public static partial class SDL
     /// <param name="callback">an <see cref="LogOutputFunction"/> to call instead of the default.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDefaultLogOutputFunction"/>
     /// <seealso cref="GetLogOutputFunction"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

@@ -59,7 +59,7 @@ public static partial class SDL
     /// an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
     /// RGBA8888 on big-endian CPUs.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum PixelFormat : uint
     {
         Unknown = 0,

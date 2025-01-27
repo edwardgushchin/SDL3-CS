@@ -35,7 +35,7 @@ public static partial class SDL
     /// consider enabling depth clip and then manually clamping depth in your
     /// fragment shaders on Metal and Vulkan.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUGraphicsPipelineCreateInfo"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPURasterizerState

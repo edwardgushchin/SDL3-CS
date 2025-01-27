@@ -29,7 +29,7 @@ public partial class SDL
     /// <para>The SDL thread state.</para>
     /// <para>The current state of a thread can be checked by calling <see cref="GetThreadState"/>.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="GetThreadState"/>
     public enum ThreadState
     {

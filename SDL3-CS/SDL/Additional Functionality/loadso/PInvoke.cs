@@ -36,7 +36,7 @@ public static partial class SDL
     /// <returns>an opaque pointer to the object handle or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadFunction"/>
     /// <seealso cref="UnloadObject"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadObject"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -60,7 +60,7 @@ public static partial class SDL
     /// <returns>a pointer to the function or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadObject"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial FunctionPointer? LoadFunction(IntPtr handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
@@ -74,7 +74,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="handle">a valid shared object handle returned by <see cref="LoadObject"/>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadObject"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnloadObject"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UnloadObject(IntPtr handle);

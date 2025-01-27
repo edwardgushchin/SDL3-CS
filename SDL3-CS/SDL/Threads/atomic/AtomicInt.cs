@@ -44,7 +44,7 @@ public static partial class SDL
     /// <para>This is a struct so people don't accidentally use numeric operations on it
     /// directly. You have to use SDL atomic functions.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CompareAndSwapAtomicInt"/>
     /// <seealso cref="GetAtomicInt"/>
     /// <seealso cref="SetAtomicInt"/>

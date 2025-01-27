@@ -34,7 +34,7 @@ public static partial class SDL
     /// (<see cref="PixelFormat.ABGR8888"/> on little-endian systems and
     /// <see cref="PixelFormat.RGBA8888"/> on big-endian systems).</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct Color
     {

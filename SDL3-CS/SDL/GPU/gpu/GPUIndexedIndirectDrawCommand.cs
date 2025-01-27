@@ -36,7 +36,7 @@ public static partial class SDL
     /// only way to keep behavior consistent and portable is to always pass 0 for
     /// the correlating parameter in the draw calls.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="DrawGPUIndexedPrimitivesIndirect"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUIndexedIndirectDrawCommand

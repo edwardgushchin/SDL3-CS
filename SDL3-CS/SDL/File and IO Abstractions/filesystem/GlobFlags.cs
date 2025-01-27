@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Flags for path matching.
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="GlobDirectory"/>
     /// <seealso cref="GlobStorageDirectory"/>
     public enum GlobFlags : uint

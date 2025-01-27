@@ -50,7 +50,7 @@ public static partial class SDL
     /// <returns>the newly created and running process, or <c>null</c> if the process
     /// couldn't be created.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="GetProcessProperties"/>
     /// <seealso cref="ReadProcess"/>
@@ -81,13 +81,13 @@ public static partial class SDL
     /// standard input when <see cref="Props.ProcessCreateSTDInNumber"/> is set to
     /// <see cref="ProcessIO.Redirect"/>.</item>
     /// <item><see cref="Props.ProcessCreateSTDOutNumber"/>: an SDL_ProcessIO value
-    /// describing where standard output for the process goes go, defaults to
+    /// describing where standard output for the process goes to, defaults to
     /// <see cref="ProcessIO.Inherited"/>.</item>
     /// <item><see cref="Props.ProcessCreateSTDOutPointer"/>: an SDL_IOStream pointer used
     /// for standard output when <see cref="Props.ProcessCreateSTDOutNumber"/> is set
     /// to <see cref="ProcessIO.Redirect"/>..</item>
     /// <item><see cref="Props.ProcessCreateSTDErrNumber"/>: an SDL_ProcessIO value
-    /// describing where standard error for the process goes go, defaults to
+    /// describing where standard error for the process goes to, defaults to
     /// <see cref="ProcessIO.Inherited"/>.</item>
     /// <item><see cref="Props.ProcessCreateSTDErrPointer"/>: an SDL_IOStream pointer used
     /// for standard error when <see cref="Props.ProcessCreateSTDErrNumber"/> is set to
@@ -110,7 +110,7 @@ public static partial class SDL
     /// <returns>the newly created and running process, or <c>null</c> if the process
     /// couldn't be created.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="GetProcessProperties"/>
     /// <seealso cref="ReadProcess"/>
@@ -146,7 +146,7 @@ public static partial class SDL
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetProcessProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -172,7 +172,7 @@ public static partial class SDL
     /// <returns>the data or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="DestroyProcess"/>
@@ -195,7 +195,7 @@ public static partial class SDL
     /// <returns>the input stream or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="GetProcessOutput"/>
@@ -216,7 +216,7 @@ public static partial class SDL
     /// <returns>the output stream or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="GetProcessInput"/>
@@ -237,7 +237,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="WaitProcess"/>
@@ -267,7 +267,7 @@ public static partial class SDL
     /// process has exited, may be <c>null</c>.</param>
     /// <returns><c>true</c> if the process exited, <c>false</c> otherwise.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="KillProcess"/>
@@ -286,7 +286,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="process">The process object to destroy.</param>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcess"/>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="KillProcess"/>

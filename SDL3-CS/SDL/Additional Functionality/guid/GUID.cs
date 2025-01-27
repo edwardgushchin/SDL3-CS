@@ -44,7 +44,7 @@ public static partial class SDL
     /// <para>GUIDs may be platform-dependent (i.e., the same device may report different
     /// GUIDs on different operating systems).</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GUID 
     {

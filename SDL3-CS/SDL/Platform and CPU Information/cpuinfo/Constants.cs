@@ -32,6 +32,6 @@ public static partial class SDL
     /// processors have a 128 byte cache line. We use the larger value to be
     /// generally safe.</para>
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     public const int CacheLineSize = 128;
 }

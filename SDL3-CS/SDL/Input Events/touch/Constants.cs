@@ -34,7 +34,7 @@ public static partial class SDL
     /// <summary>
     /// The SDL_MouseID for mouse events simulated with touch input.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     public const uint TouchMouseID = unchecked((uint)-1);
     
     
@@ -42,6 +42,6 @@ public static partial class SDL
     /// <summary>
     /// The SDL_TouchID for touch events simulated with mouse input.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     public const ulong MouseTouchID = unchecked((ulong)-1);
 }

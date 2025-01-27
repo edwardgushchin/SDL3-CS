@@ -30,6 +30,6 @@ public static partial class SDL
     /// <para>Equals by default to platform-defined <c>FLT_EPSILON</c>, or
     /// <c>1.1920928955078125e-07F</c> if that's not available.</para>
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     public const float FloatEpsilon = 1.1920928955078125e-07f;
 }

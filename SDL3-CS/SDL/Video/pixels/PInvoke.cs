@@ -36,7 +36,7 @@ public static partial class SDL
     /// <returns>the human readable name of the specified pixel format or
     /// <see cref="PixelFormat.Unknown"/> if the format isn't recognized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetPixelFormatName(PixelFormat format); 
@@ -55,7 +55,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatForMasks"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMasksForPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -76,7 +76,7 @@ public static partial class SDL
     /// <returns>the <see cref="PixelFormat"/> value corresponding to the format masks, or
     /// <see cref="PixelFormat.Unknown"/> if there isn't a match.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMasksForPixelFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatForMasks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial PixelFormat GetPixelFormatForMasks(int bpp, uint rmask, uint gmask, uint bmask, uint amask);
@@ -93,7 +93,7 @@ public static partial class SDL
     /// <returns>a pointer to a <see cref="PixelFormatDetails"/> structure or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatDetails"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetPixelFormatDetails(PixelFormat format);
 
@@ -108,7 +108,7 @@ public static partial class SDL
     /// there wasn't enough memory); call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyPalette"/>
     /// <seealso cref="SetPaletteColors"/>
     /// <seealso cref="SetSurfacePalette"/>
@@ -128,7 +128,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified or destroyed in another thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPaletteColors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetPaletteColors(IntPtr palette, [MarshalAs(UnmanagedType.LPArray)] Color[] colors, int firstcolor, int ncolors);
@@ -141,7 +141,7 @@ public static partial class SDL
     /// <param name="palette">the <see cref="Palette"/> structure to be freed.</param>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified or destroyed in another thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreatePalette"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyPalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyPalette(IntPtr palette);
@@ -200,7 +200,7 @@ public static partial class SDL
     /// <returns>a pixel value.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatDetails"/>
     /// ReSharper disable once InvalidXmlDocComment
     /// <seealso cref="GetRGBA"/>
@@ -227,7 +227,7 @@ public static partial class SDL
     /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetRGB(uint pixel, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b);
     
@@ -249,7 +249,7 @@ public static partial class SDL
     /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [DllImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static extern void GetRGB(uint pixel, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
 
@@ -274,7 +274,7 @@ public static partial class SDL
     /// <param name="a">a pointer filled in with the alpha component, may be <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatDetails"/>
     /// ReSharper disable once InvalidXmlDocComment
     /// <seealso cref="GetRGB"/>
@@ -304,7 +304,7 @@ public static partial class SDL
     /// <param name="a">a pointer filled in with the alpha component, may be <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatDetails"/>
     /// ReSharper disable once InvalidXmlDocComment
     /// <seealso cref="GetRGB"/>

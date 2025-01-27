@@ -52,7 +52,7 @@ public static partial class SDL
     /// <param name="userdata">an app-provided pointer, for the callback's use.</param>
     /// <param name="filelist">the file(s) chosen by the user.</param>
     /// <param name="filter">index of the selected filter.</param>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>

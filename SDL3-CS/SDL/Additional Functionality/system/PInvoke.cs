@@ -36,7 +36,7 @@ public partial class SDL
     /// </summary>
     /// <param name="callback">the <see cref="WindowsMessageHook"/> function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowsMessageHook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -52,7 +52,7 @@ public partial class SDL
     /// <param name="displayID">the instance of the display to query.</param>
     /// <returns>the D3D9 adapter index on success or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDirect3D9AdapterIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDirect3D9AdapterIndex(uint displayID);
     
@@ -69,7 +69,7 @@ public partial class SDL
     /// <param name="outputIndex">a pointer to be filled in with the output index.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDXGIOutputInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetDXGIOutputInfo(uint displayID, out int adapterIndex, out int outputIndex);
@@ -83,7 +83,7 @@ public partial class SDL
     /// </summary>
     /// <param name="callback">the <see cref="X11EventHook"/> function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetX11EventHook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetX11EventHook(X11EventHook callback, IntPtr userdata);
     
@@ -97,7 +97,7 @@ public partial class SDL
     /// <param name="priority">the new, Unix-specific, priority value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLinuxThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetLinuxThreadPriority(long threadID, int priority);
@@ -114,7 +114,7 @@ public partial class SDL
     /// SCHED_OTHER, etc...).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLinuxThreadPriorityAndPolicy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetLinuxThreadPriorityAndPolicy(long threadID, int priority, int schedPolicy);
@@ -142,7 +142,7 @@ public partial class SDL
     /// <param name="callbackParam">a pointer that is passed to <c>callback</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetiOSEventPump"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSAnimationCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -172,7 +172,7 @@ public partial class SDL
     /// current thread is attached, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidActivity"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidJNIEnv"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetAndroidJNIEnv();
@@ -193,7 +193,7 @@ public partial class SDL
     /// Android application, or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidJNIEnv"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidActivity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetAndroidActivity();
@@ -232,7 +232,7 @@ public partial class SDL
     /// </list>
     /// </summary>
     /// <returns>the Android API level.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidSDKVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAndroidSDKVersion();
     
@@ -242,7 +242,7 @@ public partial class SDL
     /// Query if the application is running on a Chromebook.
     /// </summary>
     /// <returns><c>true</c> if this is a Chromebook, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsChromebook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsChromebook();
@@ -253,7 +253,7 @@ public partial class SDL
     /// Query if the application is running on a Samsung DeX docking station.
     /// </summary>
     /// <returns><c>true</c> if this is a DeX docking station, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsDeXMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsDeXMode();
@@ -264,7 +264,7 @@ public partial class SDL
     /// Trigger the Android system back button behavior.
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendAndroidBackButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SendAndroidBackButton();
     
@@ -281,7 +281,7 @@ public partial class SDL
     /// </summary>
     /// <returns>the path used for internal storage or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidExternalStoragePath"/>
     /// <seealso cref="GetAndroidCachePath"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidInternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -298,7 +298,7 @@ public partial class SDL
     /// </summary>
     /// <returns>the current state of external storage, or 0 if external storage is
     /// currently unavailable.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidExternalStoragePath"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidExternalStorageState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetAndroidExternalStorageState();
@@ -316,7 +316,7 @@ public partial class SDL
     /// </summary>
     /// <returns>the path used for external storage for this application on success
     /// or <c>null</c> on failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidExternalStorageState"/>
     /// <seealso cref="GetAndroidInternalStoragePath"/>
     /// <seealso cref="GetAndroidCachePath"/>
@@ -336,7 +336,7 @@ public partial class SDL
     /// </summary>
     /// <returns>the path used for caches for this application on success or <c>null</c>
     /// on failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidInternalStoragePath"/>
     /// <seealso cref="GetAndroidExternalStoragePath"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidCachePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -370,7 +370,7 @@ public partial class SDL
     /// submitting. The result of the request is only ever reported
     /// through the callback, not this return value.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RequestAndroidPermission"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RequestAndroidPermission([MarshalAs(UnmanagedType.LPUTF8Str)] string permission, RequestAndroidPermissionCallback cb, IntPtr userdata);
@@ -394,7 +394,7 @@ public partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowAndroidToast"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ShowAndroidToast([MarshalAs(UnmanagedType.LPUTF8Str)] string message, int duration, int gravity, int xoffset, int yoffset);
@@ -410,7 +410,7 @@ public partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendAndroidMessage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SendAndroidMessage(uint command, int param);
@@ -421,7 +421,7 @@ public partial class SDL
     /// <para>If SDL can't determine this, it will return false.</para>
     /// </summary>
     /// <returns><c>true</c> if the device is a tablet, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTablet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsTablet();
@@ -433,7 +433,7 @@ public partial class SDL
     /// <para>If SDL can't determine this, it will return false.</para>
     /// </summary>
     /// <returns><c>true</c> if the <c>device</c> is a TV, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsTV();
@@ -461,7 +461,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationWillTerminate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationWillTerminate();
     
@@ -478,7 +478,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidReceiveMemoryWarning"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationDidReceiveMemoryWarning();
     
@@ -495,7 +495,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationWillEnterBackground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationWillEnterBackground();
     
@@ -512,7 +512,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidEnterBackground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationDidEnterBackground();
     
@@ -529,7 +529,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationWillEnterForeground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationWillEnterForeground();
     
@@ -546,7 +546,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidEnterForeground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationDidEnterForeground();
     
@@ -563,7 +563,7 @@ public partial class SDL
     /// code will handle all this for windows created by <see cref="CreateWindow"/>!</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidChangeStatusBarOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void OnApplicationDidChangeStatusBarOrientation();
     
@@ -594,7 +594,7 @@ public partial class SDL
     /// handle.</param>
     /// <returns><c>true</c> if success or <c>false</c> on failure; call SDL_GetError() for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGDKDefaultUser"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetGDKDefaultUser(out IntPtr outUserHandle);

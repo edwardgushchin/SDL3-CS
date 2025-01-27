@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Keyboard IME candidates event structure (event.edit_candidates.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextEditingCandidatesEvent
     {

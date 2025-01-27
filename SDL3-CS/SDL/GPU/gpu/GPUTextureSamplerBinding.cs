@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A structure specifying parameters in a sampler binding call.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BindGPUVertexSamplers"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     [StructLayout(LayoutKind.Sequential)]

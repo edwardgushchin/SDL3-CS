@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Possible results from an enumeration callback.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="EnumerateDirectoryCallback"/>
     public enum EnumerationResult
     {

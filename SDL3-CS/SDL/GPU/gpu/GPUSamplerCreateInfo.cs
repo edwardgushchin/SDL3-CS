@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A structure specifying the parameters of a sampler.
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUSampler"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUSamplerCreateInfo

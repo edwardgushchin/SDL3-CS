@@ -41,7 +41,7 @@ public partial class SDL
     /// arguments.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate AppResult AppInitFunc(IntPtr appstate, int argc, string[] argv);
     
@@ -56,7 +56,7 @@ public partial class SDL
     /// <param name="appstate">an optional pointer, provided by the app in <see cref="AppInit"/>.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate AppResult AppIterateFunc(IntPtr appstate);
     
@@ -72,7 +72,7 @@ public partial class SDL
     /// <param name="event">the new event for the app to examine.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate AppResult AppEventFunc(IntPtr appstate, ref Event @event);
     
@@ -86,7 +86,7 @@ public partial class SDL
     /// </summary>
     /// <param name="appstate">an optional pointer, provided by the app in <see cref="AppInit"/>.</param>
     /// <param name="result">the result code that terminated the app (success or failure).</param>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void AppQuitFunc(IntPtr appstate, AppResult result);
     

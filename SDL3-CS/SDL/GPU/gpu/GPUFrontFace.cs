@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Specifies the vertex winding that will cause a triangle to be determined to
     /// be front-facing.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUGraphicsPipeline"/>
     public enum GPUFrontFace
     {

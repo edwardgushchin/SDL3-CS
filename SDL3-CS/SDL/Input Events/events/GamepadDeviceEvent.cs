@@ -35,7 +35,7 @@ public static partial class SDL
     /// in during <see cref="Init"/> and are recognized as gamepads. It will also send
     /// events for joysticks that get gamepad mappings at runtime.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="JoyDeviceEvent"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadDeviceEvent

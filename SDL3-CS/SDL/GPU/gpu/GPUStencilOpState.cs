@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A structure specifying the stencil operation state of a graphics pipeline.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUDepthStencilState"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUStencilOpState

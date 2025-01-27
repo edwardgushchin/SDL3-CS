@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure specifying the descriptions of render targets used in a
     /// graphics pipeline.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUGraphicsPipelineCreateInfo"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUGraphicsPipelineTargetInfo

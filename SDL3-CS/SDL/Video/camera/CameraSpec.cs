@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>Cameras often support multiple formats; each one will be encapsulated in
     /// this struct.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameraSupportedFormats"/>
     /// <seealso cref="GetCameraFormat"/>
     [StructLayout(LayoutKind.Sequential)]

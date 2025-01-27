@@ -42,7 +42,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
     /// <returns>a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="EGLSetAttributeCallbacks"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr EGLAttribArrayCallback(IntPtr userdata);
@@ -68,7 +68,7 @@ public static partial class SDL
     /// <param name="display">the EGL display to be used.</param>
     /// <param name="config">the EGL config to be used.</param>
     /// <returns>a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="EGLSetAttributeCallbacks"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr EGLIntArrayCallback(IntPtr userdata, IntPtr display, IntPtr config);

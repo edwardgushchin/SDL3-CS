@@ -35,7 +35,7 @@ public static partial class SDL
     /// <returns>an unsigned 64-bit value representing the number of milliseconds
     /// since the SDL library initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ulong GetTicks();
     
@@ -47,7 +47,7 @@ public static partial class SDL
     /// <returns>an unsigned 64-bit value representing the number of nanoseconds
     /// since the SDL library initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicksNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ulong GetTicksNS();
     
@@ -62,7 +62,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the current counter value.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPerformanceFrequency"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPerformanceCounter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ulong GetPerformanceCounter();
@@ -74,7 +74,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>a platform-specific count per second.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPerformanceCounter"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPerformanceFrequency"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ulong GetPerformanceFrequency();
@@ -89,7 +89,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="ms">the number of milliseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DelayNS"/>
     /// <seealso cref="DelayPrecise"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Delay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -105,7 +105,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="ns">the number of nanoseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Delay"/>
     /// <seealso cref="DelayPrecise"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -152,7 +152,7 @@ public static partial class SDL
     /// <returns>a timer ID or 0 on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimerNS"/>
     /// <seealso cref="RemoveTimer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -183,7 +183,7 @@ public static partial class SDL
     /// <returns>a timer ID or 0 on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimer"/>
     /// <seealso cref="RemoveTimer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimerNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -198,7 +198,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

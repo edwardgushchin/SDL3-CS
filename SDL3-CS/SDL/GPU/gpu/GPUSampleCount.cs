@@ -30,7 +30,7 @@ public static partial class SDL
     /// <para>Used in multisampling. Note that this value only applies when the texture
     /// is used as a render target.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUTexture"/>
     /// <seealso cref="GPUTextureSupportsSampleCount"/>
     public enum GPUSampleCount

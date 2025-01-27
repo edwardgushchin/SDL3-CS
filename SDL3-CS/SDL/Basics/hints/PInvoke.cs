@@ -41,7 +41,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHint"/>
     /// <seealso cref="ResetHint"/>
     /// <seealso cref="SetHint"/>
@@ -63,7 +63,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHint"/>
     /// <seealso cref="ResetHint"/>
     /// <seealso cref="SetHintWithPriority"/>
@@ -84,7 +84,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetHint"/>
     /// <seealso cref="ResetHints"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetHint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -100,7 +100,7 @@ public static partial class SDL
     /// normally with this change.</para>
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResetHint"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetHints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -119,7 +119,7 @@ public static partial class SDL
     /// and/or make a copy of the string. Note that using a hint
     /// callback instead is always thread-safe, as SDL holds a lock
     /// on the thread subsystem during the callback.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetHint"/>
     /// <seealso cref="SetHintWithPriority"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHint", StringMarshalling = StringMarshalling.Utf8), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -136,7 +136,7 @@ public static partial class SDL
     /// <returns>the boolean value of a hint or the provided default value if the
     /// hint does not exist.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHint"/>
     /// <seealso cref="SetHint"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHintBoolean"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -158,7 +158,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RemoveHintCallback"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddHintCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 
@@ -174,7 +174,7 @@ public static partial class SDL
     /// hint value changes.</param>
     /// <param name="userdata">a pointer being passed to the callback function.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddHintCallback"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveHintCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void RemoveHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name, 

@@ -42,7 +42,7 @@ public static partial class SDL
     /// <param name="message">a printf()-style message format string.</param>
     /// <returns>false</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearError"/>
     /// <seealso cref="GetError"/>
     /// <seealso cref="SetErrorV"/>
@@ -76,7 +76,7 @@ public static partial class SDL
     /// <remarks>This function does not do any memory allocation.</remarks>
     /// <returns>false</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OutOfMemory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
     public static partial bool OutOfMemory();
@@ -107,7 +107,7 @@ public static partial class SDL
     /// or an empty string if there hasn't been an error message set since
     /// the last call to <see cref="ClearError"/>.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearError"/>
     /// <seealso cref="SetError"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -121,7 +121,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>true.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetError"/>
     /// <seealso cref="SetError"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

@@ -37,7 +37,7 @@ public static partial class SDL
     /// <param name="lock">a pointer to a lock variable.</param>
     /// <returns><c>true</c> if the lock succeeded, <c>false</c> if the lock is already held.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockSpinlock"/>
     /// <seealso cref="UnlockSpinlock"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockSpinlock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -53,7 +53,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="lock">a pointer to a lock variable.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="TryLockSpinlock"/>
     /// <seealso cref="UnlockSpinlock"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockSpinlock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -69,7 +69,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="lock">a pointer to a lock variable.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockSpinlock"/>
     /// <seealso cref="TryLockSpinlock"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockSpinlock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -89,7 +89,7 @@ public static partial class SDL
     /// <threadsafety>Obviously this function is safe to use from any thread at any
     /// time, but if you find yourself needing this, you are probably
     /// dealing with some very sensitive code; be careful!</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MemoryBarrierRelease"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierReleaseFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MemoryBarrierReleaseFunction();
@@ -108,7 +108,7 @@ public static partial class SDL
     /// <threadsafety>Obviously this function is safe to use from any thread at any
     /// time, but if you find yourself needing this, you are probably
     /// dealing with some very sensitive code; be careful!</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MemoryBarrierAcquire"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierAcquireFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MemoryBarrierAcquireFunction();
@@ -125,7 +125,7 @@ public static partial class SDL
     /// <param name="newval">the new value.</param>
     /// <returns><c>true</c> if the atomic variable was set, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAtomicInt"/>
     /// <seealso cref="SetAtomicInt"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CompareAndSwapAtomicInt"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -143,7 +143,7 @@ public static partial class SDL
     /// <param name="v">the current value of an atomic variable.</param>
     /// <returns></returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAtomicInt"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAtomicInt"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetAtomicInt(ref AtomicInt a, int v);
@@ -158,7 +158,7 @@ public static partial class SDL
     /// <param name="a">a pointer to an <see cref="AtomicInt"/> variable.</param>
     /// <returns>the current value of an atomic variable.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAtomicInt"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAtomicInt"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAtomicInt(ref AtomicInt a);
@@ -175,7 +175,7 @@ public static partial class SDL
     /// <param name="v">the desired value to add.</param>
     /// <returns>the previous value of the atomic variable.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AtomicDecRef"/>
     /// <seealso cref="AtomicIncRef"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddAtomicInt"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -193,7 +193,7 @@ public static partial class SDL
     /// <param name="newval">the new value.</param>
     /// <returns><c>true</c> if the atomic variable was set, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAtomicU32"/>
     /// <seealso cref="SetAtomicU32"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CompareAndSwapAtomicU32"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -212,7 +212,7 @@ public static partial class SDL
     /// <param name="v">the desired value.</param>
     /// <returns>the previous value of the atomic variable.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAtomicU32"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAtomicU32"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint SetAtomicU32(ref AtomicU32 a, uint v);
@@ -227,7 +227,7 @@ public static partial class SDL
     /// <param name="a">a pointer to an <see cref="AtomicU32"/> variable.</param>
     /// <returns>the current value of an atomic variable.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAtomicU32"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAtomicU32"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetAtomicU32(ref AtomicU32 a);
@@ -244,7 +244,7 @@ public static partial class SDL
     /// <param name="newval">the new pointer value.</param>
     /// <returns><c>true</c> if the pointer was set, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CompareAndSwapAtomicInt"/>
     /// <seealso cref="GetAtomicPointer"/>
     /// <seealso cref="SetAtomicPointer"/>
@@ -263,7 +263,7 @@ public static partial class SDL
     /// <param name="v">the desired pointer value.</param>
     /// <returns>the previous value of the pointer.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CompareAndSwapAtomicPointer"/>
     /// <seealso cref="GetAtomicPointer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAtomicPointer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -279,7 +279,7 @@ public static partial class SDL
     /// <param name="a">a pointer to a pointer.</param>
     /// <returns>the current value of a pointer.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CompareAndSwapAtomicPointer"/>
     /// <seealso cref="SetAtomicPointer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "GetAtomicPointer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

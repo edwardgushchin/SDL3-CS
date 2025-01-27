@@ -42,7 +42,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the number of built-in audio drivers.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioDriver"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumAudioDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumAudioDrivers();
@@ -63,7 +63,7 @@ public static partial class SDL
     /// <returns>the name of the audio driver at the requested index, or <c>null</c> if an
     /// invalid index was specified.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumAudioDrivers"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -80,7 +80,7 @@ public static partial class SDL
     /// <returns>the name of the current audio driver or <c>null</c> if no driver has been
     /// initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentAudioDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string? GetCurrentAudioDriver();
@@ -106,7 +106,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenAudioDevice(uint, nint)"/>
     /// <seealso cref="GetAudioRecordingDevices"/>
     public static uint[]? GetAudioPlaybackDevices(out int count)
@@ -144,7 +144,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenAudioDevice(uint, nint)"/>
     /// <seealso cref="GetAudioPlaybackDevices"/>
     public static uint[]? GetAudioRecordingDevices(out int count)
@@ -170,7 +170,7 @@ public static partial class SDL
     /// <returns>the name of the audio device, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioPlaybackDevices"/>
     /// <seealso cref="GetAudioRecordingDevices"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -203,7 +203,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetAudioDeviceFormat(uint devid, out AudioSpec spec, out int sampleFrames);
@@ -225,7 +225,7 @@ public static partial class SDL
     /// the current output spec's channels, or <c>null</c> if default. This
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
     public static int[]? GetAudioDeviceChannelMap(uint devid, out int count)
     {
@@ -301,7 +301,7 @@ public static partial class SDL
     /// <returns>the device ID on success or 0 on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseAudioDevice"/>
     /// <seealso cref="GetAudioDeviceFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -367,7 +367,7 @@ public static partial class SDL
     /// <returns>the device ID on success or 0 on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseAudioDevice"/>
     /// <seealso cref="GetAudioDeviceFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -405,7 +405,7 @@ public static partial class SDL
     /// <param name="devid">the device ID to query.</param>
     /// <returns><c>true</c> if devid is a playback device, <c>false</c> if it is recording.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsAudioDevicePlayback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsAudioDevicePlayback(uint devid);
@@ -430,7 +430,7 @@ public static partial class SDL
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResumeAudioDevice"/>
     /// <seealso cref="AudioDevicePaused"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -455,7 +455,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AudioDevicePaused"/>
     /// <seealso cref="PauseAudioDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -475,7 +475,7 @@ public static partial class SDL
     /// <param name="devid">a device opened by <see cref="OpenAudioDevice(uint, nint)"/>.</param>
     /// <returns><c>true</c> if device is valid and paused, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PauseAudioDevice"/>
     /// <seealso cref="ResumeAudioDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AudioDevicePaused"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -496,7 +496,7 @@ public static partial class SDL
     /// <returns>the gain of the device or -1.0f on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioDeviceGain"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetAudioDeviceGain(uint devid);
@@ -526,7 +526,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioDeviceGain"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioDeviceGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -545,7 +545,7 @@ public static partial class SDL
     /// <param name="devid">an audio device id previously returned by
     /// <see cref="OpenAudioDevice(uint, nint)"/>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenAudioDevice(uint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseAudioDevice(uint devid);
@@ -575,7 +575,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStreams"/>
     /// <seealso cref="UnbindAudioStream"/>
     /// <seealso cref="GetAudioStreamDevice"/>
@@ -595,7 +595,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStreams"/>
     /// <seealso cref="UnbindAudioStream"/>
     /// <seealso cref="GetAudioStreamDevice"/>
@@ -616,7 +616,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <param name="numStreams">number streams listed in the <c>streams</c> array.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStreams"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -631,7 +631,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="stream">an audio stream to unbind from a device.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -648,7 +648,7 @@ public static partial class SDL
     /// <param name="stream">the audio stream to query.</param>
     /// <returns>the bound audio device, or 0 if not bound or invalid.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStream"/>
     /// <seealso cref="BindAudioStreams"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -664,7 +664,7 @@ public static partial class SDL
     /// <returns>a new audio stream on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
@@ -684,7 +684,7 @@ public static partial class SDL
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetAudioStreamProperties(IntPtr stream);
 
@@ -700,7 +700,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -733,7 +733,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamFormat"/>
     /// <seealso cref="SetAudioStreamFrequencyRatio"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -750,7 +750,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamFrequencyRatio"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetAudioStreamFrequencyRatio(IntPtr stream);
@@ -774,7 +774,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamFrequencyRatio"/>
     /// <seealso cref="SetAudioStreamFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -794,7 +794,7 @@ public static partial class SDL
     /// for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamGain"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetAudioStreamGain(IntPtr stream);
@@ -815,7 +815,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamGain"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -839,7 +839,7 @@ public static partial class SDL
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
     public static int[]? GetAudioStreamInputChannelMap(IntPtr stream, out int count)
     {
@@ -873,7 +873,7 @@ public static partial class SDL
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
     public static int[]? GetAudioStreamOutputChannelMap(IntPtr stream, out int count)
     {
@@ -934,7 +934,7 @@ public static partial class SDL
     /// a stream-specific mutex while running. Don't change the
     /// stream's format to have a different number of channels from a
     /// a different thread at the same time, though!</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamInputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr SetAudioStreamInputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
@@ -982,7 +982,7 @@ public static partial class SDL
     /// a stream-specific mutex while running. Don't change the
     /// stream's format to have a different number of channels from a
     /// a different thread at the same time, though!</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamOutputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr SetAudioStreamOutputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
@@ -1006,7 +1006,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but if the
     /// stream has a callback set, the caller might need to manage
     /// extra locking.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
@@ -1034,7 +1034,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but if the
     /// stream has a callback set, the caller might need to manage
     /// extra locking.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
@@ -1063,7 +1063,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but if the
     /// stream has a callback set, the caller might need to manage
     /// extra locking.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
@@ -1090,7 +1090,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but if the
     /// stream has a callback set, the caller might need to manage
     /// extra locking.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
@@ -1114,7 +1114,7 @@ public static partial class SDL
     /// <returns>the number of converted/resampled bytes available or -1 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamAvailable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1147,7 +1147,7 @@ public static partial class SDL
     /// <returns>the number of bytes queued or -1 on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="ClearAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamQueued"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1166,7 +1166,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1183,7 +1183,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
@@ -1208,7 +1208,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResumeAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1227,7 +1227,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PauseAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1270,7 +1270,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UnlockAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1287,7 +1287,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>You should only call this from the same thread that
     /// previously called <see cref="LockAudioStream"/>.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1326,7 +1326,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information. This only fails if <c>stream</c> is <c>null</c>.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamPutCallback"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamGetCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1383,7 +1383,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="stream">the audio stream to destroy.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyAudioStream(IntPtr stream);
@@ -1434,7 +1434,7 @@ public static partial class SDL
     /// call <see cref="DestroyAudioStream"/> to free resources and close the
     /// device.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1486,7 +1486,7 @@ public static partial class SDL
     /// call <see cref="DestroyAudioStream"/> to free resources and close the
     /// device.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1533,7 +1533,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioPostmixCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetAudioPostmixCallback(uint devid, AudioPostmixCallback? callback, IntPtr userdata);
@@ -1600,7 +1600,7 @@ public static partial class SDL
     /// <c>audioBuf</c>, it should call <see cref="Free"/> to dispose of it.</para>
     /// </returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="LoadWAV"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadWAV_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1632,7 +1632,7 @@ public static partial class SDL
     /// <c>audioBuf</c>, it should call <see cref="Free"/> to dispose of it.</para>
     /// </returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="LoadWAVIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadWAV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1667,7 +1667,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MixAudio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool MixAudio(IntPtr dst, IntPtr src, AudioFormat format, uint len, float volume);
@@ -1696,7 +1696,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertAudioSamples"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertAudioSamples(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen);
@@ -1710,7 +1710,7 @@ public static partial class SDL
     /// <returns>the human readable name of the specified audio format or
     /// "SDL_AUDIO_UNKNOWN" if the format isn't recognized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioFormatName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetAudioFormatName(AudioFormat format);
@@ -1726,7 +1726,7 @@ public static partial class SDL
     /// <param name="format">the audio data format to query.</param>
     /// <returns>a byte value that can be passed to memset.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSilenceValueForFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetSilenceValueForFormat(AudioFormat format);
 }

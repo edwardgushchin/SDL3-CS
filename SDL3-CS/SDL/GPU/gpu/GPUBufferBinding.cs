@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A structure specifying parameters in a buffer binding call.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BindGPUVertexBuffers"/>
     /// <seealso cref="BindGPUIndexBuffer"/>
     [StructLayout(LayoutKind.Sequential)]

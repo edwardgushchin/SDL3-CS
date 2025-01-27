@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure holding a calendar date and time broken down public into its
     /// components.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct DateTime
     {

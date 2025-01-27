@@ -78,7 +78,7 @@ public static partial class SDL
     /// should use other mechanisms to protect those, if that's a concern for your
     /// code.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct InitState
     {

@@ -34,7 +34,7 @@ public partial class SDL
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
     /// it will be invoked.</param>
     /// <param name="entry">the tray entry that was selected.</param>
-    /// <since>This datatype is available since SDL 3.2.0.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetTrayEntryCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void TrayCallback(IntPtr userdata, IntPtr entry);

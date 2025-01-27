@@ -60,7 +60,7 @@ public static partial class SDL
 	/// </code>
 	/// </summary>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	/// <seealso cref="IOStreamInterface"/>
 	/// <seealso cref="StorageInterface"/>
 	/// <seealso cref="VirtualJoystickDesc"/>
@@ -109,7 +109,7 @@ public static partial class SDL
 	/// </code>
 	/// </summary>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	/// <seealso cref="IOStreamInterface"/>
 	/// <seealso cref="StorageInterface"/>
 	/// <seealso cref="VirtualJoystickDesc"/>
@@ -158,7 +158,7 @@ public static partial class SDL
 	/// </code>
 	/// </summary>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	/// <seealso cref="IOStreamInterface"/>
 	/// <seealso cref="StorageInterface"/>
 	/// <seealso cref="VirtualJoystickDesc"/>

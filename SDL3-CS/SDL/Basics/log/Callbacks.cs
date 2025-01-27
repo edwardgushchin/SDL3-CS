@@ -39,7 +39,7 @@ public static partial class SDL
     /// <param name="category">the category of the message.</param>
     /// <param name="priority">the priority of the message.</param>
     /// <param name="message">the message being output.</param>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LogOutputFunction(IntPtr userdata, LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
 }

@@ -33,7 +33,7 @@ public static partial class SDL
     /// <param name="a">a pointer to an SDL_AtomicInt to increment.</param>
     /// <returns>the previous value of the atomic variable.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="AtomicDecRef"/>
     [Macro]
     public static int AtomicIncRef(ref AtomicInt a) => AddAtomicInt(ref a, 1);
@@ -48,7 +48,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the variable reached zero after decrementing, <c>false</c>
     /// otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="AtomicIncRef"/>
     [Macro]
     public static bool AtomicDecRef(ref AtomicInt a) => AddAtomicInt(ref a, -1) == 1;
@@ -80,7 +80,7 @@ public static partial class SDL
     /// <threadsafety>Obviously this macro is safe to use from any thread at any
     /// time, but if you find yourself needing this, you are probably
     /// dealing with some very sensitive code; be careful!</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="MemoryBarrierAcquire"/>
     /// <seealso cref="MemoryBarrierReleaseFunction"/>
     [Macro]
@@ -101,7 +101,7 @@ public static partial class SDL
     /// <threadsafety>Obviously this macro is safe to use from any thread at any
     /// time, but if you find yourself needing this, you are probably
     /// dealing with some very sensitive code; be careful!</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="MemoryBarrierRelease"/>
     /// <seealso cref="MemoryBarrierAcquireFunction"/>
     [Macro]

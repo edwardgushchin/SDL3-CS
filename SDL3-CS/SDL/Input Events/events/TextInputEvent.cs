@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>This event will never be delivered unless text input is enabled by calling
     /// <see cref="StartTextInput"/>. Text input is disabled by default!</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="StopTextInput"/>
     [StructLayout(LayoutKind.Sequential)]

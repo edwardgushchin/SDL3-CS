@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A structure specifying the parameters of an indexed dispatch command.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="DispatchGPUComputeIndirect"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUIndirectDispatchCommand

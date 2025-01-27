@@ -35,7 +35,7 @@ public static partial class SDL
     /// <param name="size">the size to allocate.</param>
     /// <returns>a pointer to the allocated memory, or <c>null</c> if allocation failed.</returns>
     /// <threadsafety>It should be safe to call this callback from any thread.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="Malloc"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
     /// <seealso cref="GetMemoryFunctions"/>
@@ -54,7 +54,7 @@ public static partial class SDL
     /// <param name="size">the size of each element of the array.</param>
     /// <returns>a pointer to the allocated array, or <c>null</c> if allocation failed.</returns>
     /// <threadsafety>It should be safe to call this callback from any thread.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="Calloc"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
     /// <seealso cref="GetMemoryFunctions"/>
@@ -73,7 +73,7 @@ public static partial class SDL
     /// <para>a pointer to the newly allocated memory, or <c>null</c> if allocation
     /// failed.</para>
     /// <threadsafety>It should be safe to call this callback from any thread.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="Realloc"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
     /// <seealso cref="GetMemoryFunctions"/>
@@ -89,7 +89,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="mem">a pointer to allocated memory.</param>
     /// <threadsafety>It should be safe to call this callback from any thread.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
     /// <seealso cref="GetMemoryFunctions"/>
@@ -109,7 +109,7 @@ public static partial class SDL
     /// perhaps to work around a compiler or existing code, you can define
     /// <c>SDL_FUNCTION_POINTER_IS_VOID_POINTER</c> before including any SDL headers.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void FunctionPointer();
 }

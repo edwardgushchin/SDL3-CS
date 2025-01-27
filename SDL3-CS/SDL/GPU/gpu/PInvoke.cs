@@ -37,7 +37,7 @@ public partial class SDL
     /// <param name="name">the preferred GPU driver, or <c>null</c> to let SDL pick the optimal
     /// driver.</param>
     /// <returns><c>true</c> if supported, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUSupportsShaderFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -50,7 +50,7 @@ public partial class SDL
     /// </summary>
     /// <param name="props">the properties to use.</param>
     /// <returns><c>true</c> if supported, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUDeviceWithProperties"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUSupportsProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -68,7 +68,7 @@ public partial class SDL
     /// driver.</param>
     /// <returns>a GPU context on success or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGPUShaderFormats"/>
     /// <seealso cref="GetGPUDeviceDriver"/>
     /// <seealso cref="DestroyGPUDevice"/>
@@ -113,7 +113,7 @@ public partial class SDL
     /// <param name="props">the properties to use.</param>
     /// <returns>a GPU context on success or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGPUShaderFormats"/>
     /// <seealso cref="GetGPUDeviceDriver"/>
     /// <seealso cref="DestroyGPUDevice"/>
@@ -127,7 +127,7 @@ public partial class SDL
     /// Destroys a GPU context previously returned by SDL_CreateGPUDevice.
     /// </summary>
     /// <param name="device">a GPU Context to destroy.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPUDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyGPUDevice(IntPtr device);
@@ -138,7 +138,7 @@ public partial class SDL
     /// Get the number of GPU drivers compiled into SDL.
     /// </summary>
     /// <returns>the number of built in GPU drivers.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGPUDriver"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumGPUDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumGPUDrivers();
@@ -155,7 +155,7 @@ public partial class SDL
     /// </summary>
     /// <param name="index">the index of a GPU driver.</param>
     /// <returns>the name of the GPU driver with the given <b>index</b>.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumGPUDrivers"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -168,7 +168,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context to query.</param>
     /// <returns>the name of the device's driver, or <c>null</c> on error.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDeviceDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetGPUDeviceDriver(IntPtr device);
@@ -181,7 +181,7 @@ public partial class SDL
     /// <param name="device">a GPU context to query.</param>
     /// <returns>a bitflag indicating which shader formats the driver is able to
     /// consume.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUShaderFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial GPUShaderFormat GetGPUShaderFormats(IntPtr device);
     
@@ -219,7 +219,7 @@ public partial class SDL
     /// create.</param>
     /// <returns>a compute pipeline object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindGPUComputePipeline"/>
     /// <seealso cref="ReleaseGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUComputePipeline"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -235,7 +235,7 @@ public partial class SDL
     /// create.</param>
     /// <returns>a graphics pipeline object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUShader"/>
     /// <seealso cref="BindGPUGraphicsPipeline"/>
     /// <seealso cref="ReleaseGPUGraphicsPipeline"/>
@@ -256,7 +256,7 @@ public partial class SDL
     /// <param name="createinfo">a struct describing the state of the sampler to create.</param>
     /// <returns>a sampler object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindGPUVertexSamplers"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     /// <seealso cref="ReleaseGPUSampler"/>
@@ -326,7 +326,7 @@ public partial class SDL
     /// <param name="createinfo">a struct describing the state of the shader to create.</param>
     /// <returns>a shader object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUGraphicsPipeline"/>
     /// <seealso cref="ReleaseGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUShader"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -371,7 +371,7 @@ public partial class SDL
     /// <param name="createinfo">a struct describing the state of the texture to create.</param>
     /// <returns>a texture object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>
     /// <seealso cref="DownloadFromGPUTexture"/>
     /// <seealso cref="BindGPUVertexSamplers"/>
@@ -393,6 +393,9 @@ public partial class SDL
     /// buffer.</para>
     /// <para>Note that certain combinations of usage flags are invalid. For example, a
     /// buffer cannot have both the <see cref="GPUBufferUsageFlags.Vertex"/> and <see cref="GPUBufferUsageFlags.Index"/> flags.</para>
+    /// <para>If you use a STORAGE flag, the data in the buffer must respect std140
+    /// layout conventions. In practical terms this means you must ensure that vec3
+    /// and vec4 fields are 16-byte aligned.</para>
     /// <para>For better understanding of underlying concepts and memory management with
     /// SDL GPU API, you may refer
     /// [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).</para>
@@ -405,7 +408,7 @@ public partial class SDL
     /// <param name="createinfo">a struct describing the state of the buffer to create.</param>
     /// <returns>a buffer object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetGPUBufferName"/>
     /// <seealso cref="UploadToGPUBuffer"/>
     /// <seealso cref="DownloadFromGPUBuffer"/>
@@ -435,7 +438,7 @@ public partial class SDL
     /// create.</param>
     /// <returns>a transfer buffer on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUBuffer"/>
     /// <seealso cref="DownloadFromGPUBuffer"/>
     /// <seealso cref="UploadToGPUTexture"/>
@@ -454,7 +457,7 @@ public partial class SDL
     /// <param name="buffer">a buffer to attach the name to.</param>
     /// <param name="text">a UTF-8 string constant to mark as the name of the buffer.</param>
     /// <threadsafety>This function is not thread safe, you must make sure the buffer is not simultaneously used by any other thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUBuffer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBufferName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUBufferName(IntPtr device, IntPtr buffer, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
@@ -469,7 +472,7 @@ public partial class SDL
     /// <param name="texture">a texture to attach the name to.</param>
     /// <param name="text">a UTF-8 string constant to mark as the name of the texture.</param>
     /// <threadsafety>This function is not thread safe, you must make sure the texture is not simultaneously used by any other thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUTextureName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUTextureName(IntPtr device, IntPtr texture, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
@@ -482,7 +485,7 @@ public partial class SDL
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="text">a UTF-8 string constant to insert as the label.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_InsertGPUDebugLabel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void InsertGPUDebugLabel(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     
@@ -501,7 +504,7 @@ public partial class SDL
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="text">a UTF-8 string constant that names the group.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PopGPUDebugGroup"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUDebugGroup"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUDebugGroup(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
@@ -512,7 +515,7 @@ public partial class SDL
     /// Ends the most-recently pushed debug group.
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PushGPUDebugGroup"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PopGPUDebugGroup"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PopGPUDebugGroup(IntPtr commandBuffer);
@@ -525,7 +528,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="texture">a texture to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUTexture(IntPtr device, IntPtr texture);
     
@@ -537,7 +540,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="sampler">a sampler to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUSampler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUSampler(IntPtr device, IntPtr sampler);
     
@@ -549,7 +552,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="buffer">a buffer to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUBuffer(IntPtr device, IntPtr buffer);
     
@@ -561,7 +564,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="transferBuffer">a transfer buffer to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUTransferBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUTransferBuffer(IntPtr device, IntPtr transferBuffer);
     
@@ -573,7 +576,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="computePipeline">a compute pipeline to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUComputePipeline"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUComputePipeline(IntPtr device, IntPtr computePipeline);
     
@@ -585,7 +588,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="shader">a shader to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUShader"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUShader(IntPtr device, IntPtr shader);
     
@@ -597,7 +600,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="graphicsPipeline">a graphics pipeline to be destroyed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUGraphicsPipeline"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUGraphicsPipeline(IntPtr device, IntPtr graphicsPipeline);
     
@@ -619,7 +622,7 @@ public partial class SDL
     /// <param name="device">a GPU context.</param>
     /// <returns>a command buffer, or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SubmitGPUCommandBuffer"/>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AcquireGPUCommandBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -630,12 +633,15 @@ public partial class SDL
     /// <summary>
     /// <para>Pushes data to a vertex uniform slot on the command buffer.</para>
     /// <para>Subsequent draw calls will use this uniform data.</para>
+    /// <para>The data being pushed must respect std140 layout conventions. In practical
+    /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
+    /// aligned.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="slotIndex">the vertex uniform slot to push data to.</param>
     /// <param name="data">client data to write.</param>
     /// <param name="length">the length of the data to write.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUVertexUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUVertexUniformData(IntPtr commandBuffer, uint slotIndex, IntPtr data, uint length);
     
@@ -649,7 +655,7 @@ public partial class SDL
     /// <param name="slotIndex">the vertex uniform slot to push data to.</param>
     /// <param name="data">client data to write.</param>
     /// <param name="length">the length of the data to write.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUVertexUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUVertexUniformData(IntPtr commandBuffer, uint slotIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint length);
     
@@ -658,12 +664,15 @@ public partial class SDL
     /// <summary>
     /// <para>Pushes data to a fragment uniform slot on the command buffer.</para>
     /// <para>Subsequent draw calls will use this uniform data.</para>
+    /// <para>The data being pushed must respect std140 layout conventions. In practical
+    /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
+    /// aligned.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="slotIndex">the fragment uniform slot to push data to.</param>
     /// <param name="data">client data to write.</param>
     /// <param name="length">the length of the data to write.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUFragmentUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUFragmentUniformData(IntPtr commandBuffer, uint slotIndex, IntPtr data, uint length);
     
@@ -677,7 +686,7 @@ public partial class SDL
     /// <param name="slotIndex">the fragment uniform slot to push data to.</param>
     /// <param name="data">client data to write.</param>
     /// <param name="length">the length of the data to write.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUFragmentUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUFragmentUniformData(IntPtr commandBuffer, uint slotIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint length);
     
@@ -686,12 +695,15 @@ public partial class SDL
     /// <summary>
     /// <para>Pushes data to a uniform slot on the command buffer.</para>
     /// <para>Subsequent draw calls will use this uniform data.</para>
+    /// <para>The data being pushed must respect std140 layout conventions. In practical
+    /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
+    /// aligned.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="slotIndex">the uniform slot to push data to.</param>
     /// <param name="data">client data to write.</param>
     /// <param name="length">the length of the data to write.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUComputeUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUComputeUniformData(IntPtr commandBuffer, uint slotIndex, IntPtr data, uint length);
     
@@ -705,7 +717,7 @@ public partial class SDL
     /// <param name="slotIndex">the uniform slot to push data to.</param>
     /// <param name="data">client data to write.</param>
     /// <param name="length">the length of the data to write.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUComputeUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PushGPUComputeUniformData(IntPtr commandBuffer, uint slotIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint length);
     
@@ -730,7 +742,7 @@ public partial class SDL
     /// clear value and load/store ops, may be
     /// <c>null</c>.</param>
     /// <returns>a render pass handle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr BeginGPURenderPass(IntPtr commandBuffer, IntPtr colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo);
@@ -756,7 +768,7 @@ public partial class SDL
     /// clear value and load/store ops, may be
     /// <c>null</c>.</param>
     /// <returns>a render pass handle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 3)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo);
@@ -782,7 +794,7 @@ public partial class SDL
     /// clear value and load/store ops, may be
     /// <c>null</c>.</param>
     /// <returns>a render pass handle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr BeginGPURenderPass(IntPtr commandBuffer, IntPtr colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo);
@@ -808,7 +820,7 @@ public partial class SDL
     /// clear value and load/store ops, may be
     /// <c>null</c>.</param>
     /// <returns>a render pass handle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 3)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo);
@@ -821,7 +833,7 @@ public partial class SDL
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="graphicsPipeline">the graphics pipeline to bind.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUGraphicsPipeline"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUGraphicsPipeline(IntPtr renderPass, IntPtr graphicsPipeline);
     
@@ -832,7 +844,7 @@ public partial class SDL
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="viewport">the viewport to set.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUViewport(IntPtr renderPass, in GPUViewport viewport);
     
@@ -843,7 +855,7 @@ public partial class SDL
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="scissor">the scissor area to set.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUScissor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUScissor(IntPtr renderPass, in Rect scissor);
     
@@ -854,7 +866,7 @@ public partial class SDL
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="blendConstants">the blend constant color.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GPUBlendFactor.ConstantColor"/>
     /// <seealso cref="GPUBlendFactor.OneMinusConstantColor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBlendConstants"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -867,7 +879,7 @@ public partial class SDL
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="reference">the stencil reference value to set.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBlendConstants"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUBlendConstants(IntPtr renderPass, byte reference);
     
@@ -882,7 +894,7 @@ public partial class SDL
     /// <param name="bindings">an array of <see cref="GPUBufferBinding"/> structs containing vertex
     /// buffers and offset values.</param>
     /// <param name="numBindings">the number of bindings in the bindings array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, in GPUBufferBinding[] bindings, uint numBindings);
     
@@ -896,7 +908,7 @@ public partial class SDL
     /// <param name="binding">a pointer to a struct containing an index buffer and offset.</param>
     /// <param name="indexElementSize">whether the index values in the buffer are 16- or
     /// 32-bit.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUIndexBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUIndexBuffer(IntPtr renderPass, in GPUBufferBinding binding, GPUIndexElementSize indexElementSize);
     
@@ -905,6 +917,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex sampler slot to begin binding from.</param>
@@ -912,7 +925,8 @@ public partial class SDL
     /// structs.</param>
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
     /// array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, in GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
     
@@ -922,12 +936,14 @@ public partial class SDL
     /// <para>Binds storage textures for use on the vertex shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage texture to bind from the array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUVertexStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     
@@ -937,12 +953,14 @@ public partial class SDL
     /// <para>Binds storage buffers for use on the vertex shader.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of buffers.</param>
     /// <param name="numBindings">the number of buffers to bind from the array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUVertexStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings);
     
@@ -951,6 +969,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment sampler slot to begin binding from.</param>
@@ -958,7 +977,8 @@ public partial class SDL
     /// structs.</param>
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
     /// array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUFragmentSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUFragmentSamplers(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
     
@@ -968,12 +988,14 @@ public partial class SDL
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUFragmentStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUFragmentStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     
@@ -983,11 +1005,14 @@ public partial class SDL
     /// <para>Binds storage buffers for use on the fragment shader.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of storage buffers.</param>
     /// <param name="numBindings">the number of storage buffers to bind from the array.</param>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUFragmentStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUFragmentStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings);
     
@@ -1011,7 +1036,7 @@ public partial class SDL
     /// <param name="vertexOffset">value added to vertex index before indexing into the
     /// vertex buffer.</param>
     /// <param name="firstInstance">the ID of the first instance to draw.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DrawGPUIndexedPrimitives"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DrawGPUIndexedPrimitives(IntPtr renderPass, uint numIndices, uint numInstances, uint firstIndex, short vertexOffset, uint firstInstance);
     
@@ -1032,7 +1057,7 @@ public partial class SDL
     /// <param name="numInstances">the number of instances that will be drawn.</param>
     /// <param name="firstVertex">the index of the first vertex to draw.</param>
     /// <param name="firstInstance">the ID of the first instance to draw.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DrawGPUPrimitives"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DrawGPUPrimitives(IntPtr renderPass, uint numVertices, uint numInstances, uint firstVertex, uint firstInstance);
     
@@ -1050,7 +1075,7 @@ public partial class SDL
     /// <param name="offset">the offset to start reading from the draw buffer.</param>
     /// <param name="drawCount">the number of draw parameter sets that should be read
     /// from the draw buffer.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DrawGPUPrimitivesIndirect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DrawGPUPrimitivesIndirect(IntPtr renderPass, IntPtr buffer, uint offset, uint drawCount);
     
@@ -1068,7 +1093,7 @@ public partial class SDL
     /// <param name="offset">the offset to start reading from the draw buffer.</param>
     /// <param name="drawCount">the number of draw parameter sets that should be read
     /// from the draw buffer.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DrawGPUIndexedPrimitivesIndirect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DrawGPUIndexedPrimitivesIndirect(IntPtr renderPass, IntPtr buffer, uint offset, uint drawCount);
     
@@ -1080,7 +1105,7 @@ public partial class SDL
     /// render pass handle is now invalid.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EndGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void EndGPURenderPass(IntPtr renderPass);
     
@@ -1116,7 +1141,7 @@ public partial class SDL
     /// <param name="numStorageBufferBindings">the number of storage buffers to bind
     /// from the array.</param>
     /// <returns>a compute pass handle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPUComputePass"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPUComputePass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr BeginGPUComputePass(IntPtr commandBuffer, GPUStorageTextureReadWriteBinding[] storageTextureBindings, uint numStorageTextureBindings, GPUStorageBufferReadWriteBinding[] storageBufferBindings, uint numStorageBufferBindings);
@@ -1128,7 +1153,7 @@ public partial class SDL
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="computePipeline">a compute pipeline to bind.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputePipeline"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputePipeline(IntPtr computePass, IntPtr computePipeline);
     
@@ -1137,6 +1162,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute sampler slot to begin binding from.</param>
@@ -1144,7 +1170,8 @@ public partial class SDL
     /// structs.</param>
     /// <param name="numBindings">the number of texture-sampler bindings to bind from the
     /// array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeSamplers(IntPtr computePass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
 
@@ -1154,12 +1181,14 @@ public partial class SDL
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeStorageTextures(IntPtr computePass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     
@@ -1169,12 +1198,14 @@ public partial class SDL
     /// <para>Binds storage buffers as readonly for use on the compute pipeline.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.ComputeStorageRead"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of storage buffer binding structs.</param>
     /// <param name="numBindings">the number of storage buffers to bind from the array.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeStorageBuffers(IntPtr computePass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings);
     
@@ -1195,7 +1226,7 @@ public partial class SDL
     /// dimension.</param>
     /// <param name="groupcountZ">number of local workgroups to dispatch in the Z
     /// dimension.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DispatchGPUCompute"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DispatchGPUCompute(IntPtr computePass, uint groupcountX, uint groupcountY, uint groupcountZ);
     
@@ -1214,7 +1245,7 @@ public partial class SDL
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="buffer">a buffer containing dispatch parameters.</param>
     /// <param name="offset">the offset to start reading from the dispatch buffer.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DispatchGPUComputeIndirect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DispatchGPUComputeIndirect(IntPtr computePass, IntPtr buffer, uint offset);
     
@@ -1226,7 +1257,7 @@ public partial class SDL
     /// handle is now invalid.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EndGPUComputePass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void EndGPUComputePass(IntPtr computePass);
     
@@ -1234,14 +1265,16 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_MapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);</code>
     /// <summary>
     /// <para>Maps a transfer buffer into application address space.</para>
-    /// <para>You must unmap the transfer buffer before encoding upload commands.</para>
+    /// <para>You must unmap the transfer buffer before encoding upload commands. The
+    /// memory is owned by the graphics driver - do NOT call <see cref="Free"/> on the
+    /// returned pointer.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="transferBuffer">a transfer buffer.</param>
     /// <param name="cycle">if <c>true</c>, cycles the transfer buffer if it is already bound.</param>
     /// <returns>the address of the mapped transfer buffer memory, or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapGPUTransferBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr MapGPUTransferBuffer(IntPtr device, IntPtr transferBuffer, [MarshalAs(UnmanagedType.I1)] bool cycle);
     
@@ -1252,7 +1285,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="transferBuffer">a previously mapped transfer buffer.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnmapGPUTransferBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UnmapGPUTransferBuffer(IntPtr device, IntPtr transferBuffer);
     
@@ -1266,7 +1299,7 @@ public partial class SDL
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <returns>a copy pass handle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPUCopyPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr BeginGPUCopyPass(IntPtr commandBuffer);
     
@@ -1284,7 +1317,7 @@ public partial class SDL
     /// <param name="destination">the destination texture region.</param>
     /// <param name="cycle">if <c>true</c>, cycles the texture if the texture is bound, otherwise
     /// overwrites the data.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UploadToGPUTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UploadToGPUTexture(IntPtr copyPass, in GPUTextureTransferInfo source, in GPUTextureRegion destination, [MarshalAs(UnmanagedType.I1)] bool cycle);
     
@@ -1300,7 +1333,7 @@ public partial class SDL
     /// <param name="destination">the destination buffer with offset and size.</param>
     /// <param name="cycle">if <c>true</c>, cycles the buffer if it is already bound, otherwise
     /// overwrites the data.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UploadToGPUBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UploadToGPUBuffer(IntPtr copyPass, in GPUTransferBufferLocation source, in GPUBufferRegion destination, [MarshalAs(UnmanagedType.I1)] bool cycle);
     
@@ -1319,7 +1352,7 @@ public partial class SDL
     /// <param name="d">the depth of the region to copy.</param>
     /// <param name="cycle">if <c>true</c>, cycles the destination texture if the destination
     /// texture is bound, otherwise overwrites the data.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyGPUTextureToTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CopyGPUTextureToTexture(IntPtr copyPass, in GPUTextureLocation source, in GPUTextureLocation destination, uint w, uint h, uint d, [MarshalAs(UnmanagedType.I1)] bool cycle);
     
@@ -1336,7 +1369,7 @@ public partial class SDL
     /// <param name="size">the length of the buffer to copy.</param>
     /// <param name="cycle">if <c>true</c>, cycles the destination buffer if it is already bound,
     /// otherwise overwrites the data.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyGPUBufferToBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CopyGPUBufferToBuffer(IntPtr copyPass, in GPUBufferLocation source, in GPUBufferLocation destination, uint size, [MarshalAs(UnmanagedType.I1)] bool cycle);
     
@@ -1351,7 +1384,7 @@ public partial class SDL
     /// <param name="source">the source texture region.</param>
     /// <param name="destination">the destination transfer buffer with image layout
     /// information.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DownloadFromGPUTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DownloadFromGPUTexture(IntPtr copyPass, in GPUTextureRegion source, in GPUTextureTransferInfo destination);
     
@@ -1365,7 +1398,7 @@ public partial class SDL
     /// <param name="copyPass">a copy pass handle.</param>
     /// <param name="source">the source buffer with offset and size.</param>
     /// <param name="destination">the destination transfer buffer with offset.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DownloadFromGPUBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DownloadFromGPUBuffer(IntPtr copyPass, in GPUTextureRegion source, in GPUTransferBufferLocation destination);
     
@@ -1375,7 +1408,7 @@ public partial class SDL
     /// Ends the current copy pass.
     /// </summary>
     /// <param name="copyPass">a copy pass handle.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EndGPUCopyPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void EndGPUCopyPass(IntPtr copyPass);
 
@@ -1387,7 +1420,7 @@ public partial class SDL
     /// </summary>
     /// <param name="commandBuffer">a command_buffer.</param>
     /// <param name="texture">a texture with more than 1 mip level.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GenerateMipmapsForGPUTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GenerateMipmapsForGPUTexture(IntPtr commandBuffer, IntPtr texture);
     
@@ -1399,7 +1432,7 @@ public partial class SDL
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="info">the blit info struct containing the blit parameters.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BlitGPUTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BlitGPUTexture(IntPtr commandBuffer, in GPUBlitInfo info);
     
@@ -1413,7 +1446,7 @@ public partial class SDL
     /// <param name="window">an SDL_Window.</param>
     /// <param name="swapchainComposition">the swapchain composition to check.</param>
     /// <returns><c>true</c> if supported, <c>false</c> if unsupported.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClaimWindowForGPUDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowSupportsGPUSwapchainComposition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1429,7 +1462,7 @@ public partial class SDL
     /// <param name="window">an SDL_Window.</param>
     /// <param name="presentMode">the presentation mode to check.</param>
     /// <returns><c>true</c> if supported, <c>false</c> if unsupported.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClaimWindowForGPUDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowSupportsGPUPresentMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1453,7 +1486,7 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called from the thread that
     /// created the window.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="ReleaseWindowFromGPUDevice"/>
     /// <seealso cref="WindowSupportsGPUPresentMode"/>
@@ -1469,7 +1502,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="window">an SDL_Window that has been claimed.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClaimWindowForGPUDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseWindowFromGPUDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseWindowFromGPUDevice(IntPtr device, IntPtr window);
@@ -1491,7 +1524,7 @@ public partial class SDL
     /// <param name="presentMode">the desired present mode for the swapchain.</param>
     /// <returns><c>true</c> if successful, <c>false</c> on error; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WindowSupportsGPUPresentMode"/>
     /// <seealso cref="WindowSupportsGPUSwapchainComposition"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUSwapchainParameters"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1532,7 +1565,7 @@ public partial class SDL
     /// <param name="device">a GPU context.</param>
     /// <param name="window">an SDL_Window that has been claimed.</param>
     /// <returns>the texture format of the swapchain.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUSwapchainTextureFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial GPUTextureFormat GetGPUSwapchainTextureFormat(IntPtr device, IntPtr window);
     
@@ -1567,7 +1600,7 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called from the thread that
     /// created the window.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClaimWindowForGPUDevice"/>
     /// <seealso cref="SubmitGPUCommandBuffer"/>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
@@ -1591,7 +1624,7 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called from the thread that
     /// created the window.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
     /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="SetGPUAllowedFramesInFlight"/>
@@ -1629,7 +1662,7 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called from the thread that
     /// created the window.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SubmitGPUCommandBuffer"/>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitAndAcquireGPUSwapchainTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1648,7 +1681,7 @@ public partial class SDL
     /// <param name="commandBuffer">a command buffer.</param>
     /// <returns><c>true</c> on success, <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AcquireGPUCommandBuffer"/>
     /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
@@ -1671,7 +1704,7 @@ public partial class SDL
     /// <param name="commandBuffer">a command buffer.</param>
     /// <returns>a fence associated with the command buffer, or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AcquireGPUCommandBuffer"/>
     /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
     /// <seealso cref="AcquireGPUSwapchainTexture"/>
@@ -1709,7 +1742,7 @@ public partial class SDL
     /// <param name="device">a GPU context.</param>
     /// <returns><c>true</c> on success, <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WaitForGPUFences"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitForGPUIdle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1727,7 +1760,7 @@ public partial class SDL
     /// <param name="numFences">the number of fences in the fences array.</param>
     /// <returns><c>true</c> on success, <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
     /// <seealso cref="WaitForGPUIdle"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitForGPUFences"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1742,7 +1775,7 @@ public partial class SDL
     /// <param name="device">a GPU context.</param>
     /// <param name="fence">a fence.</param>
     /// <returns><c>true</c> if the fence is signaled, <c>false</c> if it is not.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_QueryGPUFence"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1755,7 +1788,7 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="fence">a fence.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseGPUFence"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseGPUFence(IntPtr device, IntPtr fence);
@@ -1767,7 +1800,7 @@ public partial class SDL
     /// </summary>
     /// <param name="format">the texture format you want to know the texel size of.</param>
     /// <returns>the texel block size of the texture format.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUTextureFormatTexelBlockSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GPUTextureFormatTexelBlockSize(GPUTextureFormat format);
     
@@ -1782,7 +1815,7 @@ public partial class SDL
     /// <param name="type">the type of texture (2D, 3D, Cube).</param>
     /// <param name="usage">a bitmask of all usage scenarios to check.</param>
     /// <returns>whether the texture format is supported for this type and usage.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUTextureSupportsFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GPUTextureSupportsFormat(IntPtr device, GPUTextureFormat format, GPUTextureType type, GPUTextureUsageFlags usage);
@@ -1796,7 +1829,7 @@ public partial class SDL
     /// <param name="format">the texture format to check.</param>
     /// <param name="sampleСount">the sample count to check.</param>
     /// <returns>a hardware-specific version of min(preferred, possible).</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUTextureSupportsSampleCount"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GPUTextureSupportsSampleCount(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleСount);
@@ -1824,7 +1857,7 @@ public partial class SDL
     /// also be called before calling <see cref="GDKSuspendComplete"/>.</para>
     /// </summary>
     /// <param name="device">device a GPU context.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddEventWatch"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendGPU"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GDKSuspendGPU(IntPtr device);
@@ -1838,7 +1871,7 @@ public partial class SDL
     /// SDL_GPU functions.</para>
     /// </summary>
     /// <param name="device">device a GPU context.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddEventWatch"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKResumeGPU"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GDKResumeGPU(IntPtr device);

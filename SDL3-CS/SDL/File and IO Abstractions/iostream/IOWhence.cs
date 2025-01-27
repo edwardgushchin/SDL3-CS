@@ -30,7 +30,7 @@ public static partial class SDL
     /// <para>These map to the same "whence" concept that <c>fseek</c> or <c>lseek</c> use in the
     /// standard C runtime.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum IOWhence
     {
         /// <summary>

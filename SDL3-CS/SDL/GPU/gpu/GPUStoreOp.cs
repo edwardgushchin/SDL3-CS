@@ -29,7 +29,7 @@ public static partial class SDL
     /// Specifies how the contents of a texture attached to a render pass are
     /// treated at the end of the render pass.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
     public enum GPUStoreOp
     {

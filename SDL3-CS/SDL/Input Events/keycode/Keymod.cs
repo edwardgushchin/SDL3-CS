@@ -33,7 +33,7 @@ public static partial class SDL
     /// <summary>
     /// Valid key modifiers (possibly OR'd together).
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [Flags]
     public enum Keymod : ushort
     { 

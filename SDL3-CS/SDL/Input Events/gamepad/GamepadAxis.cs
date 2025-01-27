@@ -35,7 +35,7 @@ public static partial class SDL
     /// pressed) when reported by <see cref="GetGamepadAxis"/>. Note that this is not the
     /// same range that will be reported by the lower-level <see cref="GetJoystickAxis"/>.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum GamepadAxis
     {
         Invalid = -1,

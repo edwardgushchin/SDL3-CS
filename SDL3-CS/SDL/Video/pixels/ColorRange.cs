@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Colorspace color range, as described by</para>
     /// <para>https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum ColorRange
     {
         Unknown = 0,

@@ -41,7 +41,7 @@ public static partial class SDL
     /// <para>Keys with the <see cref="ExtendedMask"/> bit set do not map to a scancode or
     /// unicode code point.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     public enum Keycode : uint
     {
         /// <summary>

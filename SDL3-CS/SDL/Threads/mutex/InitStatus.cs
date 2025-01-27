@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// The current status of an <see cref="InitState"/> structure.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum InitStatus
     {
         UnInitialized,

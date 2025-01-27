@@ -41,7 +41,7 @@ public static partial class SDL
     /// call <see cref="PumpEvents"/> to force an event queue update.</para>
     /// </summary>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="WaitEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PumpEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -82,7 +82,7 @@ public static partial class SDL
     /// <returns>the number of events actually stored or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
@@ -124,7 +124,7 @@ public static partial class SDL
     /// <returns>the number of events actually stored or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
@@ -142,7 +142,7 @@ public static partial class SDL
     /// <returns><c>true</c> if events matching <c>type</c> are present, or <c>false</c> if events
     /// matching <c>type</c> are not present.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasEvents"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -161,7 +161,7 @@ public static partial class SDL
     /// <returns><c>true</c> if events with type >= <c>minType</c> and &lt;= <c>maxType</c> are
     /// present, or false if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -185,7 +185,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="type">the type of event to be cleared; see <see cref="EventType"/> for details.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="FlushEvents"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void FlushEvent(uint type);
@@ -208,7 +208,7 @@ public static partial class SDL
     /// <param name="maxType">the high end of event type to be cleared, inclusive; see
     /// <see cref="EventType"/> for details.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="FlushEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void FlushEvents(uint minType, uint maxType);
@@ -242,7 +242,7 @@ public static partial class SDL
     /// the queue, or <c>null</c>.</param>
     /// <returns><c>true</c> if this got an event or <c>false</c> if there are none available.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
@@ -264,7 +264,7 @@ public static partial class SDL
     /// <returns>true on success or false if there was an error while waiting for
     /// events; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
@@ -291,7 +291,7 @@ public static partial class SDL
     /// <returns><c>true</c> if this got an event or <c>false</c> if the timeout elapsed without
     /// any events available.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
@@ -321,7 +321,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. A common reason for
     /// error is the event queue being full.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="RegisterEvents"/>
@@ -360,7 +360,7 @@ public static partial class SDL
     /// <param name="filter">an <see cref="EventFilter"/> function to call when an event happens.</param>
     /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddEventWatch"/>
     /// <seealso cref="SetEventEnabled"/>
     /// <seealso cref="GetEventFilter"/>
@@ -381,7 +381,7 @@ public static partial class SDL
     /// be stored here.</param>
     /// <returns><c>true</c> on success or <c>false</c> if there is no event filter set.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetEventFilter"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -408,7 +408,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RemoveEventWatch"/>
     /// <seealso cref="SetEventFilter"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -425,7 +425,7 @@ public static partial class SDL
     /// <param name="filter">the function originally passed to <see cref="AddEventWatch"/>.</param>
     /// <param name="userdata">the pointer originally passed to <see cref="AddEventWatch"/>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddEventWatch"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void RemoveEventWatch(EventFilter filter, IntPtr userdata);
@@ -442,7 +442,7 @@ public static partial class SDL
     /// <param name="filter">the <see cref="EventFilter"/> function to call when an event happens.</param>
     /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEventFilter"/>
     /// <seealso cref="SetEventFilter"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FilterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -456,7 +456,7 @@ public static partial class SDL
     /// <param name="type">the type of event; see <see cref="EventType"/> for details.</param>
     /// <param name="enabled">whether to process the event or not.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EventEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
@@ -469,7 +469,7 @@ public static partial class SDL
     /// <param name="type">the type of event; see <see cref="EventType"/> for details.</param>
     /// <returns><c>true</c> if the event is being processed, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetEventEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -485,7 +485,7 @@ public static partial class SDL
     /// <returns>the beginning event number, or 0 if numevents is invalid or if
     /// there are not enough user-defined events left.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PushEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RegisterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint RegisterEvents(int numevents);
@@ -498,7 +498,7 @@ public static partial class SDL
     /// <param name="event">an event containing a <c>windowID</c>.</param>
     /// <returns>the associated window on success or <c>null</c> if there is none.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>

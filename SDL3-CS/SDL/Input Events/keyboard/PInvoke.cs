@@ -34,7 +34,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if a keyboard is connected, <c>false</c> otherwise.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboards"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasKeyboard"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -57,7 +57,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboardNameForID"/>
     /// <seealso cref="HasKeyboard"/>
     public static uint[]? GetKeyboards(out int count)
@@ -84,7 +84,7 @@ public static partial class SDL
     /// <returns>the name of the selected keyboard or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboards"/>
     [LibraryImport(SDLLibrary, EntryPoint = "GetKeyboardNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -97,7 +97,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the window with keyboard focus.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetKeyboardFocus();
     
@@ -122,7 +122,7 @@ public static partial class SDL
     /// <param name="numkeys">if non-NULL, receives the length of the returned array.</param>
     /// <returns>a pointer to an array of key states.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="ResetKeyboard"/> 
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -136,7 +136,7 @@ public static partial class SDL
     /// <para>This function will generate key up events for all pressed keys.</para>
     /// </summary>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboardState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetKeyboard"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ResetKeyboard();
@@ -149,7 +149,7 @@ public static partial class SDL
     /// <returns>an OR'd combination of the modifier keys for the keyboard. See
     /// <see cref="Keymod"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboardState"/>
     /// <seealso cref="SetModState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetModState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -168,7 +168,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="modstate">the desired <see cref="Keymod"/> for the keyboard.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetModState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetModState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetModState(Keymod modstate);
@@ -189,7 +189,7 @@ public static partial class SDL
     /// <param name="keyEvent"><c>true</c> if the keycode will be used in key events.</param>
     /// <returns>the <see cref="Keycode"/> that corresponds to the given <see cref="Scancode"/>.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyName"/>
     /// <seealso cref="GetScancodeFromKey"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyFromScancode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -208,7 +208,7 @@ public static partial class SDL
     /// scancode generates this key, may be <c>null</c>.</param>
     /// <returns>the <see cref="Scancode"/> that corresponds to the given <see cref="Keycode"/>.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetScancodeName"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeFromKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -226,7 +226,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetScancodeName"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetScancodeName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -249,7 +249,7 @@ public static partial class SDL
     /// <returns>a pointer to the name for the scancode. If the scancode doesn't
     /// have a name this function returns an empty string ("").</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetScancodeFromKey"/>
     /// <seealso cref="GetScancodeFromName"/>
     /// <seealso cref="SetScancodeName"/>
@@ -266,7 +266,7 @@ public static partial class SDL
     /// <returns>the <see cref="Scancode"/>, or <see cref="Scancode.Unknown"/> if the name wasn't
     /// recognized; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyFromName"/>
     /// <seealso cref="GetScancodeFromKey"/>
     /// <seealso cref="GetScancodeName"/>
@@ -283,7 +283,7 @@ public static partial class SDL
     /// <param name="key">the desired <see cref="Keycode"/> to query.</param>
     /// <returns>a UTF-8 encoded string of the key name.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyFromName"/>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetScancodeFromKey"/>
@@ -300,7 +300,7 @@ public static partial class SDL
     /// <returns>key code, or <see cref="Keycode.Unknown"/> if the name wasn't recognized; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetKeyName"/>
     /// <seealso cref="GetScancodeFromName"/>
@@ -323,7 +323,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetTextInputArea(nint, nint, int)"/>
     /// <seealso cref="StartTextInputWithProperties"/>
     /// <seealso cref="StopTextInput"/>
@@ -372,7 +372,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetTextInputArea(nint, nint, int)"/>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="StopTextInput"/>
@@ -389,7 +389,7 @@ public static partial class SDL
     /// <param name="window">the window to check.</param>
     /// <returns><c>true</c> if text input events are enabled else <c>false</c>.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TextInputActive"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -406,7 +406,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -421,7 +421,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="StopTextInput"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearComposition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -443,7 +443,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTextInputArea"/>
     /// <seealso cref="StartTextInput"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -465,7 +465,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTextInputArea"/>
     /// <seealso cref="StartTextInput"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -486,7 +486,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetTextInputArea(nint, nint, int)"/>
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -500,7 +500,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the platform has some screen keyboard support or <c>false</c> if
     /// not.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="ScreenKeyboardShown"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasScreenKeyboardSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -515,7 +515,7 @@ public static partial class SDL
     /// <param name="window">the window for which screen keyboard should be queried.</param>
     /// <returns><c>true</c> if screen keyboard is shown or <c>false</c> if not.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasScreenKeyboardSupport"/>
     [LibraryImport(SDLLibrary, EntryPoint = "ScreenKeyboardShown"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

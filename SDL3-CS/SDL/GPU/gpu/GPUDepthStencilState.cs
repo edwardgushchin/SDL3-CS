@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure specifying the parameters of the graphics pipeline depth
     /// stencil state.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUGraphicsPipelineCreateInfo"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUDepthStencilState

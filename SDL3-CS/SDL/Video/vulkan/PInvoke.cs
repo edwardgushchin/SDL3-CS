@@ -65,7 +65,7 @@ public static partial class SDL
     /// <param name="path">the platform dependent Vulkan loader library name or <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetVkGetInstanceProcAddr"/>
     /// <seealso cref="VulkanUnloadLibrary"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_LoadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -87,7 +87,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the function pointer for <c>vkGetInstanceProcAddr</c> or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetVkGetInstanceProcAddr"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial FunctionPointer? VulkanGetVkGetInstanceProcAddr();
     
@@ -96,7 +96,7 @@ public static partial class SDL
     /// <summary>
     /// Unload the Vulkan library previously loaded by <see cref="VulkanLoadLibrary"/>.
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanLoadLibrary"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void VulkanUnloadLibrary();
@@ -119,7 +119,7 @@ public static partial class SDL
     /// <param name="count">a pointer filled in with the number of extensions returned.</param>
     /// <returns>an array of extension name strings on success, <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanCreateSurface"/>
     public static string[]? VulkanGetInstanceExtensions(out uint count)
     {
@@ -145,7 +145,7 @@ public static partial class SDL
     /// created surface.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     /// <seealso cref="VulkanDestroySurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_CreateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -168,7 +168,7 @@ public static partial class SDL
     /// <param name="surface">vkSurfaceKHR handle to destroy.</param>
     /// <param name="allocator">a VkAllocationCallbacks struct, which lets the app set the
     /// allocator that destroys the surface. Can be <c>null</c>.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     /// <seealso cref="VulkanCreateSurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_DestroySurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -187,7 +187,7 @@ public static partial class SDL
     /// <param name="queueFamilyIndex">a valid queue family index for the given physical
     /// device.</param>
     /// <returns><c>true</c> if supported, <c>false</c> if unsupported or an error occurred.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetPresentationSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

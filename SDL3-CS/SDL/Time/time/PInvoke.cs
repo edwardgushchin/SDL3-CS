@@ -42,7 +42,7 @@ public static partial class SDL
     /// format, may be <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDateTimeLocalePreferences"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool GetDateTimeLocalePreferences(out DateFormat dateFormat, out TimeFormat timeFormat);
@@ -56,7 +56,7 @@ public static partial class SDL
     /// <param name="ticks">the SDL_Time to hold the returned tick count.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetCurrentTime(out long ticks);
@@ -74,7 +74,7 @@ public static partial class SDL
     /// Time (UTC).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToDateTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool TimeToDateTime(long ticks, out DateTime dt, [MarshalAs(UnmanagedType.I1)] bool localTime);
@@ -90,7 +90,7 @@ public static partial class SDL
     /// <param name="ticks">the resulting SDL_Time.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DateTimeToTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool DateTimeToTime(in DateTime dt, out long ticks);
@@ -107,7 +107,7 @@ public static partial class SDL
     /// Windows FILETIME value.</param>
     /// <param name="dwHighDateTime">a pointer filled in with the high portion of the
     /// Windows FILETIME value.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void TimeToWindows(long ticks, out uint dwLowDateTime, out uint dwHighDateTime);
     
@@ -122,7 +122,7 @@ public static partial class SDL
     /// <param name="dwLowDateTime">the low portion of the Windows FILETIME value.</param>
     /// <param name="dwHighDateTime">the high portion of the Windows FILETIME value.</param>
     /// <returns>the converted SDL time.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeFromWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial long TimeFromWindows(uint dwLowDateTime, uint dwHighDateTime);
     
@@ -135,7 +135,7 @@ public static partial class SDL
     /// <param name="month">the month [1-12].</param>
     /// <returns>the number of days in the requested month or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDaysInMonth"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDaysInMonth(int year, int month);
     
@@ -149,7 +149,7 @@ public static partial class SDL
     /// <param name="day">the day component of the date.</param>
     /// <returns>the day of year [0-365] if the date is valid or -1 on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDayOfYear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDayOfYear(int year, int month, int day);
     
@@ -163,7 +163,7 @@ public static partial class SDL
     /// <param name="day">the day component of the date.</param>
     /// <returns>a value between 0 and 6 (0 being Sunday) if the date is valid or
     /// -1 on failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDayOfWeek"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDayOfWeek(int year, int month, int day);
 }

@@ -36,7 +36,7 @@ public static partial class SDL
     /// <param name="frect">a pointer filled in with the floating point representation of
     /// <c>rect</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static void RectToFRect(in Rect rect, out FRect frect)
     {
         frect = new FRect
@@ -65,7 +65,7 @@ public static partial class SDL
     /// <param name="r">the rectangle to test.</param>
     /// <returns><c>true</c> if <c>p</c> is contained by <c>r</c>, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static bool PointInRect(in Point? p, in Rect? r)
     {
         if (p == null || r == null)  return false;
@@ -111,7 +111,7 @@ public static partial class SDL
     /// <param name="b">the second rectangle to test.</param>
     /// <returns><c>true</c> if the rectangles are equal, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static bool RectsEqual(in Rect? a, in Rect? b)
     {
         return (a.HasValue && b.HasValue && (a.Value.X == b.Value.X) && (a.Value.Y == b.Value.Y) 
@@ -128,7 +128,7 @@ public static partial class SDL
     /// <param name="b">an <see cref="Rect"/> structure representing the second rectangle.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -145,7 +145,7 @@ public static partial class SDL
     /// <param name="result">an <see cref="Rect"/> structure filled in with the intersection of
     /// rectangles <c>a</c> and <c>b</c>.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -162,7 +162,7 @@ public static partial class SDL
     /// <c>A</c> and <c>B</c>.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectUnion(in Rect a, in Rect b, out Rect result);
@@ -182,7 +182,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, IntPtr clip, out Rect result);
@@ -202,7 +202,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPoints([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, in Rect clip, out Rect result);
@@ -223,7 +223,7 @@ public static partial class SDL
     /// <param name="x2">a pointer to the ending X-coordinate of the line.</param>
     /// <param name="y2">a pointer to the ending Y-coordinate of the line.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectAndLineIntersection(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
@@ -245,7 +245,7 @@ public static partial class SDL
     /// <param name="r">the rectangle to test.</param>
     /// <returns>true if <c>p</c> is contained by <c>r</c>, false otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static bool PointInRectFloat(in FPoint? p, in FRect? r)
     {
         return (p.HasValue && r.HasValue &&
@@ -267,7 +267,7 @@ public static partial class SDL
     /// <param name="r">the rectangle to test.</param>
     /// <returns><c>true</c> if the rectangle is "empty", <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static bool RectEmptyFloat(in FRect? r)
     {
         return (!r.HasValue || r.Value.W <= 0.0f || r.Value.H <= 0.0f);
@@ -292,7 +292,7 @@ public static partial class SDL
     /// <param name="epsilon">the epsilon value for comparison.</param>
     /// <returns><c>true</c> if the rectangles are equal, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RectsEqualFloat"/>
     public static bool RectsEqualEpsilon(in FRect? a, in FRect? b, in float epsilon)
     {
@@ -326,7 +326,7 @@ public static partial class SDL
     /// <param name="b">the second rectangle to test.</param>
     /// <returns><c>true</c> if the rectangles are equal, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RectsEqualEpsilon"/>
     public static bool RectsEqualFloat(in FRect? a, in FRect? b) => RectsEqualEpsilon(a, b, FloatEpsilon);
     
@@ -339,7 +339,7 @@ public static partial class SDL
     /// <param name="a">an <see cref="FRect"/> structure representing the first rectangle.</param>
     /// <param name="b">an <see cref="FRect"/> structure representing the second rectangle.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -356,7 +356,7 @@ public static partial class SDL
     /// <param name="result">an <see cref="FRect"/> structure filled in with the intersection of
     /// rectangles <c>a</c> and <c>b</c>.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasRectIntersectionFloat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -373,7 +373,7 @@ public static partial class SDL
     /// <c>A</c> and <c>B</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectUnionFloat(in FRect a, in FRect b, out FRect result);
@@ -394,7 +394,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, IntPtr clip, out FRect result);
@@ -415,7 +415,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectEnclosingPointsFloat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, in FRect clip, out FRect result);

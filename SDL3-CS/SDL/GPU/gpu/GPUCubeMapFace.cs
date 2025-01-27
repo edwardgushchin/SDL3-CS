@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Specifies the face of a cube map.</para>
     /// <para>Can be passed in as the layer field in texture-related structs.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum GPUCubeMapFace
     {
         PositiveX,

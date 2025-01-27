@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure specifying parameters related to transferring data to or from a
     /// texture.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>
     /// <seealso cref="DownloadFromGPUTexture"/>
     [StructLayout(LayoutKind.Sequential)]

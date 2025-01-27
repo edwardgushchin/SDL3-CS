@@ -35,7 +35,7 @@ public static partial class SDL
     /// <c>pen_state & PenInputFlags.Down</c> to decide if a pen is "drawing" when
     /// dealing with pen motion.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenMotionEvent
     {

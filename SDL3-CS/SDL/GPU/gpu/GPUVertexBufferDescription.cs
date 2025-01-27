@@ -38,7 +38,7 @@ public static partial class SDL
     /// <see cref="GPUVertexAttribute"/>. For example, if an attribute has a buffer_slot of
     /// 0, then that attribute belongs to the vertex buffer bound at slot 0.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUVertexAttribute"/>
     /// <seealso cref="GPUVertexInputState"/>
     [StructLayout(LayoutKind.Sequential)]

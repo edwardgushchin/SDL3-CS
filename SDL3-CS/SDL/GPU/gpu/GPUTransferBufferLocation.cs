@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure specifying a location in a transfer buffer.</para>
     /// <para>Used when transferring buffer data to or from a transfer buffer.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUBuffer"/>
     /// <seealso cref="DownloadFromGPUBuffer"/>
     [StructLayout(LayoutKind.Sequential)]

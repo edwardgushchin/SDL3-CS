@@ -36,7 +36,7 @@ public static partial class SDL
     /// more with a simple text string. Those strings are parsed into a collection
     /// of these structs to make it easier to operate on the data.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadBindings"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadBinding

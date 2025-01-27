@@ -44,7 +44,7 @@ public static partial class SDL
     /// <param name="dirname">the directory that is being enumerated.</param>
     /// <param name="fname">the next entry in the enumeration.</param>
     /// <returns>how the enumeration should proceed.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="EnumerateDirectory"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate EnumerationResult EnumerateDirectoryCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string dirname, [MarshalAs(UnmanagedType.LPUTF8Str)] string fname);

@@ -31,7 +31,7 @@ public static partial class SDL
     /// A rectangle, with the origin at the upper left (using floating point
     /// values).
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="RectEmptyFloat"/>
     /// <seealso cref="RectsEqualFloat"/>
     /// <seealso cref="RectsEqualEpsilon"/>

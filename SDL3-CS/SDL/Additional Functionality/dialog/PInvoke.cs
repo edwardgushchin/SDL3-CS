@@ -67,7 +67,7 @@ public static partial class SDL
     /// <threadsafety>This function should be called only from the main thread. The
     /// callback may be invoked from the same thread or from a
     /// different one, depending on the OS's constraints.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowSaveFileDialog"/>
@@ -144,7 +144,7 @@ public static partial class SDL
     /// <threadsafety>This function should be called only from the main thread. The
     /// callback may be invoked from the same thread or from a
     /// different one, depending on the OS's constraints.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
@@ -217,7 +217,7 @@ public static partial class SDL
     /// <threadsafety>This function should be called only from the main thread. The
     /// callback may be invoked from the same thread or from a
     /// different one, depending on the OS's constraints.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>

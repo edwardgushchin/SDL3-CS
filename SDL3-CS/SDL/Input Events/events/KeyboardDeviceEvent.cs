@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Keyboard device event structure (event.kdevice.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct KeyboardDeviceEvent
     {

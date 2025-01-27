@@ -31,7 +31,7 @@ public static partial class SDL
     /// function, etc.), this is not an exhaustive list, but rather a
     /// representative sample of the kinds of colorspaces supported in SDL.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="ColorPrimaries"/>
     /// <seealso cref="ColorRange"/>
     /// <seealso cref="ColorType"/>

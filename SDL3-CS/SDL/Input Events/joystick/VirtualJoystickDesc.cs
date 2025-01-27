@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>This structure should be initialized using SDL_INIT_INTERFACE(). All
     /// elements of this structure are optional.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="AttachVirtualJoystick"/>
     /// <seealso cref="VirtualJoystickSensorDesc"/>
     /// <seealso cref="VirtualJoystickTouchpadDesc"/>

@@ -34,7 +34,7 @@ public static partial class SDL
     /// motors, commonly found in modern game controllers. The small (right) motor
     /// is high frequency, and the large (left) motor is low frequency.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HAPTIC_LEFTRIGHT"/>
     /// <seealso cref="HapticEffect"/>
     [StructLayout(LayoutKind.Sequential)]

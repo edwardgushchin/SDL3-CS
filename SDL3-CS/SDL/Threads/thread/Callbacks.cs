@@ -33,7 +33,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="data">what was passed as <c>data</c> to <see cref="CreateThread"/>.</param>
     /// <returns>a value that can be reported through <see cref="WaitThread"/>.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int ThreadFunction(IntPtr data);
     
@@ -44,7 +44,7 @@ public static partial class SDL
     /// <para>This is called when a thread exits, to allow an app to free any resources.</para>
     /// </summary>
     /// <param name="value">a pointer previously handed to <see cref="SetTLS"/>.</param>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetTLS"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void TLSDestructorCallback(IntPtr value);

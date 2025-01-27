@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure specifying a location in a buffer.</para>
     /// <para>Used when copying data between buffers.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CopyGPUBufferToBuffer"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUBufferLocation

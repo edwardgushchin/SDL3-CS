@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A rectangle, with the origin at the upper left (using integers).
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="RectEmpty"/>
     /// <seealso cref="RectsEqual"/>
     /// <seealso cref="HasRectIntersection"/>

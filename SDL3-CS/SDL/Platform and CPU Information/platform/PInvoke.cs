@@ -42,7 +42,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the name of the platform. If the correct platform name is not
     /// available, returns a string beginning with the text "Unknown".</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPlatform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string GetPlatform();

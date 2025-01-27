@@ -52,7 +52,7 @@ public static partial class SDL
     /// <returns>an opaque pointer to the new thread object on success, <c>null</c> if the
     /// new thread could not be created; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateThreadWithProperties"/>
     /// <seealso cref="WaitThread"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -110,7 +110,7 @@ public static partial class SDL
 	/// <returns>an opaque pointer to the new thread object on success, <c>null</c> if the
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -129,7 +129,7 @@ public static partial class SDL
 	/// <returns>an opaque pointer to the new thread object on success, <c>null</c> if the
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, FunctionPointer? pfnBeginThread, FunctionPointer? pfnEndThread);
 	
@@ -144,7 +144,7 @@ public static partial class SDL
 	/// <returns>an opaque pointer to the new thread object on success, <c>null</c> if the
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadWithPropertiesRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr CreateThreadWithPropertiesRuntime(uint props, FunctionPointer? pfnBeginThread, FunctionPointer? pfnEndThread);
 	
@@ -156,7 +156,7 @@ public static partial class SDL
 	/// <param name="thread">the thread to query.</param>
 	/// <returns>a pointer to a UTF-8 string that names the specified thread, or
 	/// <c>null</c> if it doesn't have a name.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
 	public static partial string? GetThreadName(IntPtr thread);
@@ -172,7 +172,7 @@ public static partial class SDL
 	/// thread.</para>
 	/// </summary>
 	/// <returns>the ID of the current thread.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetThreadID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ulong GetCurrentThreadID();
@@ -188,7 +188,7 @@ public static partial class SDL
 	/// <param name="thread">the thread to query.</param>
 	/// <returns>the ID of the specified thread, or the ID of the current thread if
 	/// <c>thread</c> is <c>null</c>.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetCurrentThreadID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ulong GetThreadID(IntPtr thread);
@@ -204,7 +204,7 @@ public static partial class SDL
 	/// <param name="priority">the <see cref="ThreadPriority"/> to set.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCurrentThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetCurrentThreadPriority(ThreadPriority priority);
@@ -232,7 +232,7 @@ public static partial class SDL
 	/// <param name="status">a pointer filled in with the value returned from the thread
 	/// function by its <c>return</c>, or -1 if the thread has been
 	/// detached or isn't valid, may be <c>null</c>.</param>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="DetachThread"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -275,7 +275,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="thread">the SDL_Thread pointer that was returned from the
 	/// <see cref="CreateThread"/> call that started this thread.</param>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -290,7 +290,7 @@ public static partial class SDL
 	/// <returns>the value associated with the ID for the current thread or <c>null</c> if
 	/// no value has been set; call <see cref="GetError"/> for more information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="SetTLS"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr GetTLS(IntPtr id);
@@ -314,7 +314,7 @@ public static partial class SDL
 	/// <returns><c>null</c> on success or <c>null</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetTLS"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -329,7 +329,7 @@ public static partial class SDL
 	/// properly clean up SDL memory.</para>
 	/// </summary>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CleanupTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial void CleanupTLS();
 }

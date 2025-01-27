@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>For a complete set, you should look at the button and gamepad type and have
     /// a set of symbols that work well with your art style.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum GamepadButtonLabel
     {
         Unknown,

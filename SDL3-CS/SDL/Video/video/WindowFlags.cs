@@ -32,7 +32,7 @@ public static partial class SDL
     /// changed on existing windows by the app, and some of it might be altered by
     /// the user or system outside of the app's control.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFlags"/>
     [Flags]
     public enum WindowFlags : ulong

@@ -44,7 +44,7 @@ public static partial class SDL
     /// format with a pitch of 32 would consist of 32x32 bytes of Y plane followed
     /// by 32x16 bytes of UV plane.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CreateSurface"/>
     /// <seealso cref="DestroySurface"/>
     [StructLayout(LayoutKind.Sequential)]

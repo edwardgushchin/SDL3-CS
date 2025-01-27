@@ -40,7 +40,7 @@ public partial class SDL
     /// <param name="size">the size to allocate.</param>
     /// <returns>a pointer to the allocated memory, or <c>null</c> if allocation failed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="Calloc"/>
     /// <seealso cref="Realloc"/>
@@ -59,7 +59,7 @@ public partial class SDL
     /// <param name="size">the size of each element of the array.</param>
     /// <returns>a pointer to the allocated array, or <c>null</c> if allocation failed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_calloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr Calloc(ulong nmemb, ulong size);
     
@@ -88,7 +88,7 @@ public partial class SDL
     /// <returns>a pointer to the newly allocated memory, or <c>null</c> if allocation
     /// failed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="Malloc"/>
     /// <seealso cref="Calloc"/>
@@ -105,7 +105,7 @@ public partial class SDL
     /// </summary>
     /// <param name="mem">a pointer to allocated memory, or <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Free(IntPtr mem);
     
@@ -123,7 +123,7 @@ public partial class SDL
     /// <param name="reallocFunc">filled with realloc function.</param>
     /// <param name="freeFunc">filled with free function.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOriginalMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
     
@@ -139,7 +139,7 @@ public partial class SDL
     /// <threadsafety>This does not hold a lock, so do not call this in the
     /// unlikely event of a background thread calling
     /// <see cref="SetMemoryFunctions"/> simultaneously.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetMemoryFunctions"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -164,7 +164,7 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but one
     /// should not replace the memory functions once any allocations
     /// are made!</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMemoryFunctions"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -186,7 +186,7 @@ public partial class SDL
     /// <param name="size">the size to allocate.</param>
     /// <returns>a pointer to the aligned memory, or <c>null</c> if allocation failed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr AlignedAlloc(ulong alignment, ulong size);
@@ -201,7 +201,7 @@ public partial class SDL
     /// </summary>
     /// <param name="mem">a pointer previously returned by <see cref="AlignedAlloc"/>, or <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AlignedFree(IntPtr mem);
@@ -214,7 +214,7 @@ public partial class SDL
     /// <returns>the number of allocations or -1 if allocation counting is
     /// disabled.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumAllocations"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumAllocations();
     
@@ -231,7 +231,7 @@ public partial class SDL
     /// <returns>a pointer to the environment for the process or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironmentVariable"/>
     /// <seealso cref="GetEnvironmentVariables"/>
     /// <seealso cref="SetEnvironmentVariable"/>
@@ -251,7 +251,7 @@ public partial class SDL
     /// <threadsafety>If <c>populated</c> is false, it is safe to call this function
     /// from any thread, otherwise it is safe if no other threads are
     /// calling setenv() or unsetenv()</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironmentVariable"/>
     /// <seealso cref="GetEnvironmentVariables"/>
     /// <seealso cref="SetEnvironmentVariable"/>
@@ -270,7 +270,7 @@ public partial class SDL
     /// <returns>a pointer to the value of the variable or <c>null</c> if it can't be
     /// found.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironment"/>
     /// <seealso cref="CreateEnvironment"/>
     /// <seealso cref="GetEnvironmentVariables"/>
@@ -293,7 +293,7 @@ public partial class SDL
     /// for more information. This is a single allocation that should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironment"/>
     /// <seealso cref="CreateEnvironment"/>
     /// <seealso cref="GetEnvironmentVariables"/>
@@ -327,7 +327,7 @@ public partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironment"/>
     /// <seealso cref="CreateEnvironment"/>
     /// <seealso cref="GetEnvironmentVariable"/>
@@ -348,7 +348,7 @@ public partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironment"/>
     /// <seealso cref="CreateEnvironment"/>
     /// <seealso cref="GetEnvironmentVariable"/>
@@ -367,7 +367,7 @@ public partial class SDL
     /// <param name="env">the environment to destroy.</param>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the environment is no longer in use.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateEnvironment"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyEnvironment(IntPtr env);
@@ -383,7 +383,7 @@ public partial class SDL
     /// <see cref="GetPerformanceCounter"/>.</param>
     /// <threadsafety>This should be called on the same thread that calls
     /// Rand*()</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Rand"/>
     /// <seealso cref="RandBits"/>
     /// <seealso cref="RandF"/>
@@ -412,7 +412,7 @@ public partial class SDL
     /// <param name="n">the number of possible outcomes. n must be positive.</param>
     /// <returns>a random value in the range of [0 .. n-1].</returns>
     /// <threadsafety>All calls should be made from a single thread</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <see cref="SRand"/>
     /// <seealso cref="RandF"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -432,7 +432,7 @@ public partial class SDL
     /// </summary>
     /// <returns>a random value in the range of [0.0, 1.0).</returns>
     /// <threadsafety>All calls should be made from a single thread</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SRand"/>
     /// <seealso cref="Rand"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -451,7 +451,7 @@ public partial class SDL
     /// </summary>
     /// <returns>a random value in the range of [0-SDL_MAX_UINT32].</returns>
     /// <threadsafety>All calls should be made from a single thread</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Rand"/>
     /// <seealso cref="RandF"/>
     /// <seealso cref="SRand"/>
@@ -481,7 +481,7 @@ public partial class SDL
     /// <returns>a random value in the range of [0 .. n-1].</returns>
     /// <threadsafety>This function is thread-safe, as long as the state pointer
     /// isn't shared between threads.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Rand"/>
     /// <seealso cref="RandBitsR"/>
     /// <seealso cref="RandFR"/>
@@ -505,7 +505,7 @@ public partial class SDL
     /// <returns>a random value in the range of [0.0, 1.0).</returns>
     /// <threadsafety>This function is thread-safe, as long as the state pointer
     /// isn't shared between threads.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RandBitsR"/>
     /// <seealso cref="RandR"/>
     /// <seealso cref="RandF"/>
@@ -528,7 +528,7 @@ public partial class SDL
     /// <returns>a random value in the range of [0-SDL_MAX_UINT32].</returns>
     /// <threadsafety>This function is thread-safe, as long as the state pointer
     /// isn't shared between threads.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RandR"/>
     /// <seealso cref="RandFR"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_bits_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -548,7 +548,7 @@ public partial class SDL
     /// <param name="len">the length, in bytes, to set in <c>dst</c>.</param>
     /// <returns><c>dst</c></returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_memset"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr Memset(IntPtr dst, int c, uint len);
 }

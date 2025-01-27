@@ -35,7 +35,7 @@ public static partial class SDL
 	/// joysticks while processing to guarantee that the joystick list won't change
 	/// and joystick and gamepad events will not be delivered.</para>
 	/// </summary>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_LockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial void LockJoysticks();
 	
@@ -44,7 +44,7 @@ public static partial class SDL
 	/// <summary>
 	/// Unlocking for atomic access to the joystick API.
 	/// </summary>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial void UnlockJoysticks();
 	
@@ -54,7 +54,7 @@ public static partial class SDL
 	/// Return whether a joystick is currently connected.
 	/// </summary>
 	/// <returns><c>true</c> if a joystick is connected, <c>false</c> otherwise.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_HasJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -72,7 +72,7 @@ public static partial class SDL
 	/// <returns>a 0 terminated array of joystick instance IDs or <c>null</c> on failure;
 	/// call <see cref="GetError"/> for more information. This should be freed
 	/// with <see cref="Free"/> when it is no longer needed.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="HasJoystick"/>
 	/// <seealso cref="OpenJoystick"/>
 	public static uint[]? GetJoysticks(out int count)
@@ -98,7 +98,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the name of the selected joystick. If no name can be found, this
 	/// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickName"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -114,7 +114,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the path of the selected joystick. If no path can be found, this
 	/// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPath"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPathForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -129,7 +129,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the player index of a joystick, or -1 if it's not available.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPlayerIndex"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPlayerIndexForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -144,7 +144,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the GUID of the selected joystick. If called with an invalid
 	/// <c>instanceId</c>, this function returns a zero GUID.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUID"/>
 	/// <seealso cref="GUIDToString"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUIDForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -160,7 +160,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the USB vendor ID of the selected joystick. If called with an
 	/// invalid instance_id, this function returns 0.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickVendor"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendorForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -176,7 +176,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the USB product ID of the selected joystick. If called with an
 	/// invalid <c>instanceId</c>, this function returns 0.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProduct"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -192,7 +192,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>the product version of the selected joystick. If called with an
 	/// invalid <c>instanceId</c>, this function returns 0.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProductVersion"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersionForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -208,7 +208,7 @@ public static partial class SDL
 	/// <returns>the <see cref="JoystickType"/> of the selected joystick. If called with an
 	/// invalid <c>instanceId</c>, this function returns
 	/// <see cref="JoystickType.Unknown"/>.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickType"/>
 	/// <seealso cref="GetJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -224,7 +224,7 @@ public static partial class SDL
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns>a joystick identifier or <c>null</c> on failure; call <see cref="GetError"/> for
 	/// more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="CloseJoystick"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr OpenJoystick(uint instanceId);
@@ -237,7 +237,7 @@ public static partial class SDL
 	/// <param name="instanceId">the instance ID to get the SDL_Joystick for.</param>
 	/// <returns>an SDL_Joystick on success or <c>null</c> on failure or if it hasn't been
 	/// opened yet; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr GetJoystickFromID(uint instanceId);
 
@@ -249,7 +249,7 @@ public static partial class SDL
 	/// <param name="playerIndex">the player index to get the SDL_Joystick for.</param>
 	/// <returns>an SDL_Joystick on success or <c>null</c> on failure; call <see cref="GetError"/>
 	/// for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPlayerIndex"/>
 	/// <seealso cref="SetJoystickPlayerIndex"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFromPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -263,7 +263,7 @@ public static partial class SDL
 	/// <param name="desc">joystick description, initialized using <see cref="InitInterface(ref VirtualJoystickDesc)"/>.</param>
 	/// <returns>the joystick instance ID, or 0 on failure; call <see cref="GetError"/> for
 	/// more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="DetachVirtualJoystick"/>
 	[DllImport(SDLLibrary, EntryPoint = "SDL_AttachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static extern uint AttachVirtualJoystick(in VirtualJoystickDesc desc);
@@ -277,7 +277,7 @@ public static partial class SDL
 	/// <see cref="AttachVirtualJoystick"/>.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="AttachVirtualJoystick"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -290,7 +290,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="instanceId">the joystick instance ID.</param>
 	/// <returns><c>true</c> if the joystick is virtual, <c>false</c> otherwise.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_IsJoystickVirtual"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool IsJoystickVirtual(uint instanceId);
@@ -313,7 +313,7 @@ public static partial class SDL
 	/// <param name="value">the new value for the specified axis.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
@@ -334,7 +334,7 @@ public static partial class SDL
 	/// <param name="yrel">the relative motion on the Y axis.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
@@ -354,7 +354,7 @@ public static partial class SDL
 	/// <param name="down"><c>true</c> if the button is pressed, <c>false</c> otherwise.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualButton(IntPtr joystick, int button, [MarshalAs(UnmanagedType.I1)] bool down);
@@ -374,7 +374,7 @@ public static partial class SDL
 	/// <param name="value">the new value for the specified hat.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value);
@@ -401,7 +401,7 @@ public static partial class SDL
 	/// <param name="pressure">the pressure of the finger.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualTouchpad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] bool down, float x, float y, float pressure);
@@ -424,7 +424,7 @@ public static partial class SDL
 	/// <param name="numValues">the number of values pointed to by <c>data</c>.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickVirtualSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues);
@@ -450,7 +450,7 @@ public static partial class SDL
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>a valid property ID on success or 0 on failure; call
 	/// <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial uint GetJoystickProperties(IntPtr joystick);
 	
@@ -462,7 +462,7 @@ public static partial class SDL
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the name of the selected joystick. If no name can be found, this
 	/// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickNameForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -476,7 +476,7 @@ public static partial class SDL
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the path of the selected joystick. If no path can be found, this
 	/// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPathForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -491,7 +491,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the player index, or -1 if it's not available.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="SetJoystickPlayerIndex"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial int GetJoystickPlayerIndex(IntPtr joystick);
@@ -506,7 +506,7 @@ public static partial class SDL
 	/// the player index and turn off player LEDs.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPlayerIndex"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -522,7 +522,7 @@ public static partial class SDL
 	/// <returns>the <see cref="GUID"/> of the given joystick. If called on an invalid index,
 	/// this function returns a zero <see cref="GUID"/>; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUIDForID"/>
 	/// <seealso cref="GUIDToString"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -536,7 +536,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the USB vendor ID of the selected joystick, or 0 if unavailable.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickVendorForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ushort GetJoystickVendor(IntPtr joystick);
@@ -549,7 +549,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the USB product ID of the selected joystick, or 0 if unavailable.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProductForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProduct"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ushort GetJoystickProduct(IntPtr joystick);
@@ -562,7 +562,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the product version of the selected joystick, or 0 if unavailable.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProductVersionForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ushort GetJoystickProductVersion(IntPtr joystick);
@@ -576,7 +576,7 @@ public static partial class SDL
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the firmware version of the selected joystick, or 0 if
 	/// unavailable.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFirmwareVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ushort GetJoystickFirmwareVersion(IntPtr joystick);
 	
@@ -589,7 +589,7 @@ public static partial class SDL
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the serial number of the selected joystick, or <c>null</c> if
 	/// unavailable.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickSerial"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
 	public static partial string? GetJoystickSerial(IntPtr joystick);
@@ -601,7 +601,7 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="joystick">the SDL_Joystick obtained from <see cref="OpenJoystick"/>.</param>
 	/// <returns>the <see cref="JoystickType"/> of the selected joystick.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickTypeForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial JoystickType GetJoystickType(IntPtr joystick);
@@ -620,7 +620,7 @@ public static partial class SDL
 	/// available.</param>
 	/// <param name="crc16">a pointer filled in with a CRC used to distinguish different
 	/// products with the same VID/PID, or 0 if not available.</param>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUIDForID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUIDInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial void GetJoystickGUIDInfo(GUID guid, out short vendor, out short product, out short version, out short crc16);
@@ -633,7 +633,7 @@ public static partial class SDL
 	/// <param name="joystick">the joystick to query.</param>
 	/// <returns><c>true</c> if the joystick has been opened, <c>false</c> if it has not; call
 	/// <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickConnected"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool JoystickConnected(IntPtr joystick);
@@ -646,7 +646,7 @@ public static partial class SDL
 	/// <param name="joystick">an SDL_Joystick structure containing joystick information.</param>
 	/// <returns>the instance ID of the specified joystick on success or 0 on
 	/// failure; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial uint GetJoystickID(IntPtr joystick);
 	
@@ -661,7 +661,7 @@ public static partial class SDL
 	/// <param name="joystick">an SDL_Joystick structure containing joystick information.</param>
 	/// <returns>the number of axis controls/number of axes on success or -1 on
 	/// failure; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickAxis"/>
 	/// <seealso cref="GetNumJoystickBalls"/>
 	/// <seealso cref="GetNumJoystickButtons"/>
@@ -680,7 +680,7 @@ public static partial class SDL
 	/// <param name="joystick">an SDL_Joystick structure containing joystick information.</param>
 	/// <returns>the number of trackballs on success or -1 on failure; call
 	/// <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickBall"/>
 	/// <seealso cref="GetNumJoystickAxes"/>
 	/// <seealso cref="GetNumJoystickButtons"/>
@@ -696,7 +696,7 @@ public static partial class SDL
 	/// <param name="joystick">an SDL_Joystick structure containing joystick information.</param>
 	/// <returns>the number of POV hats on success or -1 on failure; call
 	/// <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickHat"/>
 	/// <seealso cref="GetNumJoystickAxes"/>
 	/// <seealso cref="GetNumJoystickBalls"/>
@@ -712,7 +712,7 @@ public static partial class SDL
 	/// <param name="joystick">an SDL_Joystick structure containing joystick information.</param>
 	/// <returns>the number of buttons on success or -1 on failure; call
 	/// <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickButton"/>
 	/// <seealso cref="GetNumJoystickAxes"/>
 	/// <seealso cref="GetNumJoystickBalls"/>
@@ -729,7 +729,7 @@ public static partial class SDL
 	/// information.</para>
 	/// </summary>
 	/// <param name="enabled">whether to process joystick events or not.</param>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="JoystickEventsEnabled"/>
 	/// <seealso cref="UpdateJoysticks"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -756,7 +756,7 @@ public static partial class SDL
 	/// <para>This is called automatically by the event loop if any joystick events are
 	/// enabled.</para>
 	/// </summary>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial void UpdateJoysticks();
 	
@@ -777,7 +777,7 @@ public static partial class SDL
 	/// <param name="axis">the axis to query; the axis indices start at index 0.</param>
 	/// <returns>a 16-bit signed integer representing the current position of the
 	/// axis or 0 on failure; call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickAxes"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial short GetJoystickAxis(IntPtr joystick, int axis);
@@ -793,7 +793,7 @@ public static partial class SDL
 	/// <param name="axis">the axis to query; the axis indices start at index 0.</param>
 	/// <param name="state">upon return, the initial value is supplied here.</param>
 	/// <returns><c>true</c> if this axis has any initial value, or <c>false</c> if not.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickAxisInitialState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool GetJoystickAxisInitialState(IntPtr joystick, int axis, out short state);
@@ -812,7 +812,7 @@ public static partial class SDL
 	/// <param name="dy">stores the difference in the y axis position since the last poll.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickBalls"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -827,7 +827,7 @@ public static partial class SDL
 	/// <param name="joystick">an SDL_Joystick structure containing joystick information.</param>
 	/// <param name="hat">the hat index to get the state from; indices start at index 0.</param>
 	/// <returns>the current hat position.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickHats"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial JoystickHat GetJoystickHat(IntPtr joystick, int hat);
@@ -841,7 +841,7 @@ public static partial class SDL
 	/// <param name="button">the button index to get the state from; indices start at
 	/// index 0.</param>
 	/// <returns><c>true</c> if the button is pressed, <c>false</c> otherwise.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickButtons"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -863,7 +863,7 @@ public static partial class SDL
 	/// rumble motor, from 0 to 0xFFFF.</param>
 	/// <param name="durationMs">the duration of the rumble effect, in milliseconds.</param>
 	/// <returns><c>true</c>, or <c>false</c> if rumble isn't supported on this joystick.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool RumbleJoystick(IntPtr joystick, short lowFrequencyRumble, short highFrequencyRumble, int durationMs);
@@ -889,7 +889,7 @@ public static partial class SDL
 	/// <param name="durationMs">the duration of the rumble effect, in milliseconds.</param>
 	/// <returns><c>true on</c> success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="RumbleJoystick"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleJoystickTriggers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -910,7 +910,7 @@ public static partial class SDL
 	/// <param name="blue">the intensity of the blue LED.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickLED"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue);
@@ -925,7 +925,7 @@ public static partial class SDL
 	/// <param name="size">the size of the data to send to the joystick.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SendJoystickEffect(IntPtr joystick, IntPtr data, int size);
@@ -940,7 +940,7 @@ public static partial class SDL
 	/// <param name="size">the size of the data to send to the joystick.</param>
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SendJoystickEffect(IntPtr joystick, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size);
@@ -951,7 +951,7 @@ public static partial class SDL
 	/// Close a joystick previously opened with <see cref="OpenJoystick"/>.
 	/// </summary>
 	/// <param name="joystick">the joystick device to close.</param>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="OpenJoystick"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial void CloseJoystick(IntPtr joystick);
@@ -965,7 +965,7 @@ public static partial class SDL
 	/// <returns>the connection state on success or
 	/// <see cref="JoystickConnectionState"/> on failure; call <see cref="GetError"/>
 	/// for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickConnectionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial JoystickConnectionState GetJoystickConnectionState(IntPtr joystick);
 	
@@ -986,7 +986,7 @@ public static partial class SDL
 	/// battery.</param>
 	/// <returns>the current battery state or <see cref="PowerState.Error"/> on failure;
 	/// call <see cref="GetError"/> for more information.</returns>
-	/// <since>This function is available since SDL 3.1.3.</since>
+	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPowerInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial PowerState GetJoystickPowerInfo(IntPtr joystick, out int percent);
 }

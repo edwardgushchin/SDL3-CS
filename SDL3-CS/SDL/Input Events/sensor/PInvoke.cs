@@ -39,7 +39,7 @@ public static partial class SDL
     /// <returns>a 0 terminated array of sensor instance IDs or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static uint[]? GetSensors(out int count)
     {
         var ptr = SDL_GetSensors(out count);
@@ -62,7 +62,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="instanceID">the sensor instance ID.</param>
     /// <returns>the sensor name, or <c>null</c> if <c>instanceID</c> is not valid.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string? GetSensorNameForID(int instanceID);
@@ -76,7 +76,7 @@ public static partial class SDL
     /// <param name="instanceID">the sensor instance ID.</param>
     /// <returns>the <c>SensorType</c>, or <see cref="SensorType.Invalid"/> if <c>instanceID</c> is
     /// not valid.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SensorType GetSensorTypeForID(int instanceID);
     
@@ -89,7 +89,7 @@ public static partial class SDL
     /// <param name="instanceID">the sensor instance ID.</param>
     /// <returns>the sensor platform dependent type, or -1 if <c>instanceID</c> is not
     /// valid.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNonPortableTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetSensorNonPortableTypeForID(int instanceID);
     
@@ -101,7 +101,7 @@ public static partial class SDL
     /// <param name="instanceID">the sensor instance ID.</param>
     /// <returns>an SDL_Sensor object or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr OpenSensor(int instanceID);
     
@@ -113,7 +113,7 @@ public static partial class SDL
     /// <param name="instanceID">the sensor instance ID.</param>
     /// <returns>an SDL_Sensor object or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetSensorFromID(int instanceID);
     
@@ -125,7 +125,7 @@ public static partial class SDL
     /// <param name="sensor">the SDL_Sensor object.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetSensorProperties(IntPtr sensor);
     
@@ -137,7 +137,7 @@ public static partial class SDL
     /// <param name="sensor">the SDL_Sensor object.</param>
     /// <returns>the sensor name or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string? GetSensorName(IntPtr sensor);
@@ -150,7 +150,7 @@ public static partial class SDL
     /// <param name="sensor">the SDL_Sensor object to inspect.</param>
     /// <returns>the <see cref="SensorType"/> type, or <see cref="SensorType.Invalid"/> if <c>sensor</c> is
     /// <c>null</c>.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "GetSensorType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SensorType GetSensorType(IntPtr sensor);
 
@@ -161,7 +161,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="sensor">the SDL_Sensor object to inspect.</param>
     /// <returns>the sensor platform dependent type, or -1 if <c>sensor</c> is <c>null</c>.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNonPortableType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetSensorNonPortableType(IntPtr sensor);
     
@@ -173,7 +173,7 @@ public static partial class SDL
     /// <param name="sensor">the SDL_Sensor object to inspect.</param>
     /// <returns>the sensor instance ID, or 0 on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetSensorID(IntPtr sensor);
 
@@ -188,7 +188,7 @@ public static partial class SDL
     /// <param name="numValues">the number of values to write to data.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetSensorData(IntPtr sensor, out float data, int numValues);
@@ -199,7 +199,7 @@ public static partial class SDL
     /// Close a sensor previously opened with <see cref="OpenSensor"/>.
     /// </summary>
     /// <param name="sensor">the SDL_Sensor object to close.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseSensor(IntPtr sensor);
     

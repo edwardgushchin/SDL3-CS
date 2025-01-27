@@ -36,7 +36,7 @@ public static partial class SDL
     /// <param name="props">a property list that may contain backend-specific information.</param>
     /// <returns>a title storage container on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseStorage"/>
     /// <seealso cref="GetStorageFileSize"/>
     /// <seealso cref="OpenUserStorage"/>
@@ -58,7 +58,7 @@ public static partial class SDL
     /// <param name="props">a property list that may contain backend-specific information.</param>
     /// <returns>a user storage container on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseStorage"/>
     /// <seealso cref="GetStorageFileSize"/>
     /// <seealso cref="GetStorageSpaceRemaining"/>
@@ -81,7 +81,7 @@ public static partial class SDL
     /// base path.</param>
     /// <returns>a filesystem storage container on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseStorage"/>
     /// <seealso cref="GetStorageFileSize"/>
     /// <seealso cref="GetStorageSpaceRemaining"/>
@@ -108,7 +108,7 @@ public static partial class SDL
     /// <param name="userdata">the pointer that will be passed to the interface functions.</param>
     /// <returns>a storage container on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseStorage"/>
     /// <seealso cref="GetStorageFileSize"/>
     /// <seealso cref="GetStorageSpaceRemaining"/>
@@ -129,7 +129,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. Even if the function
     /// returns an error, the container data will be freed; the error is
     /// only for informational purposes.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenFileStorage"/>
     /// <seealso cref="OpenStorage"/>
     /// <seealso cref="OpenTitleStorage"/>
@@ -148,7 +148,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="storage">a storage container to query.</param>
     /// <returns><c>true</c> if the container is ready, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StorageReady"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool StorageReady(IntPtr storage);
@@ -163,7 +163,7 @@ public static partial class SDL
     /// <param name="length">a pointer to be filled with the file's length.</param>
     /// <returns><c>true</c> if the file could be queried or <c>false</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ReadStorageFile"/>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetStorageFileSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -185,7 +185,7 @@ public static partial class SDL
     /// <param name="length">the length of the destination buffer.</param>
     /// <returns><c>true</c> if the file was read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetStorageFileSize"/>
     /// <seealso cref="StorageReady"/>
     /// <seealso cref="WriteStorageFile"/>
@@ -204,7 +204,7 @@ public static partial class SDL
     /// <param name="length">the length of the source buffer.</param>
     /// <returns><c>true</c> if the file was written or <c>false</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetStorageSpaceRemaining"/>
     /// <seealso cref="ReadStorageFile"/>
     /// <seealso cref="StorageReady"/>
@@ -221,7 +221,7 @@ public static partial class SDL
     /// <param name="path">the path of the directory to create.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateStorageDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -248,7 +248,7 @@ public static partial class SDL
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnumerateStorageDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -263,7 +263,7 @@ public static partial class SDL
     /// <param name="path">the path of the directory to enumerate.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -279,7 +279,7 @@ public static partial class SDL
     /// <param name="newpath">the new path.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenameStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -295,7 +295,7 @@ public static partial class SDL
     /// <param name="newpath">the new path.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyStorageFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -312,7 +312,7 @@ public static partial class SDL
     /// check for the existence of a file.</param>
     /// <returns><c>true</c> on success or <c>false</c> if the file doesn't exist, or another
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetStoragePathInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -325,7 +325,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="storage">a storage container to query.</param>
     /// <returns>the amount of remaining space, in bytes.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StorageReady"/>
     /// <seealso cref="WriteStorageFile"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetStorageSpaceRemaining"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -365,7 +365,7 @@ public static partial class SDL
     /// longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread, assuming
     /// the <c>storage</c> object is thread-safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static string[]? GlobStorageDirectory(IntPtr storage, string path, string? pattern, GlobFlags flags, out int count)
     {
         var ptr = SDL_GlobStorageDirectory(storage, path, pattern, flags, out count);

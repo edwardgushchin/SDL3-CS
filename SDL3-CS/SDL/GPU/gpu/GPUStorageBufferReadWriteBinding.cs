@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure specifying parameters related to binding buffers in a compute
     /// pass.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BeginGPUComputePass"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUStorageBufferReadWriteBinding

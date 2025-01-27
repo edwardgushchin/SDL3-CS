@@ -36,7 +36,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="HasClipboardText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -54,7 +54,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -68,7 +68,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the clipboard has text, or <c>false</c> if it does not.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -84,7 +84,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="HasPrimarySelectionText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -102,7 +102,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -117,7 +117,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the primary selection has text, or <c>false</c> if it does not.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -146,7 +146,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
     /// <seealso cref="HasClipboardData"/>
@@ -163,7 +163,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -182,7 +182,7 @@ public static partial class SDL
     /// for more information. This should be freed with <see cref="Free"/> when it
     /// is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasClipboardData"/>
     /// <seealso cref="SetClipboardData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -197,7 +197,7 @@ public static partial class SDL
     /// <returns><c>true</c> if there exists data in clipboard for the provided mime type,
     /// <c>false</c> if it does not.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -217,7 +217,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     public static string[]? GetClipboardMimeTypes(out ulong numMimeTypes)
     {

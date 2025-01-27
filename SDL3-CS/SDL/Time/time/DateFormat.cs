@@ -29,7 +29,7 @@ public static partial class SDL
     /// The preferred date format of the current system locale.
     /// components.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GetDateTimeLocalePreferences"/>
     public enum DateFormat
     {

@@ -102,7 +102,7 @@ public static partial class SDL
     /// <para>Unless D16Unorm is sufficient for your purposes, always check which of
     /// D24/D32 is supported before creating a depth-stencil texture!</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUTexture"/>
     /// <seealso cref="GPUTextureSupportsFormat"/>
     public enum GPUTextureFormat

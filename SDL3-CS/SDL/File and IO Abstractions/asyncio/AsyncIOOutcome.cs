@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Information about a completed asynchronous I/O request.
     /// </summary>
-    /// <since>This struct is available since SDL 3.2.0.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct AsyncIOOutcome
     {

@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>This is for buttons on the pen itself that the user might click. The pen
     /// itself pressing down to draw triggers a <see cref="EventType.PenDown"/> event instead.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenButtonEvent
     {

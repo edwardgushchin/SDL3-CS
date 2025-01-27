@@ -39,7 +39,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="window">the window.</param>
     /// <returns>handle NSView or UIView.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalDestroyView"/>
     /// <seealso cref="MetalGetLayer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_CreateView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -53,7 +53,7 @@ public static partial class SDL
     /// called after <see cref="CreateWindow"/>.</para>
     /// </summary>
     /// <param name="view">the SDL_MetalView object.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalCreateView"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_DestroyView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MetalDestroyView(IntPtr view);
@@ -65,7 +65,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="view">the SDL_MetalView object.</param>
     /// <returns>a pointer.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_GetLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr MetalGetLayer(IntPtr view);
 }

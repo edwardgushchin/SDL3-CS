@@ -42,7 +42,7 @@ public static partial class SDL
     /// <para>You can query the labels for the face buttons using
     /// <see cref="GetGamepadButtonLabel"/></para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum GamepadButton
     {
         Invalid = -1,

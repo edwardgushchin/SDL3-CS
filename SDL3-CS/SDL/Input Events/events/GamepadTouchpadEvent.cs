@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Gamepad touchpad event structure (event.gtouchpad.*)
     /// </summary>
-    /// <since>TThis struct is available since SDL 3.1.3.</since>
+    /// <since>TThis struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct GamepadTouchpadEvent
     {

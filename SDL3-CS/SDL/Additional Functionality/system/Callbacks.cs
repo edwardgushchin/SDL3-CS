@@ -41,7 +41,7 @@ public static partial class SDL
     /// <returns><c>true</c> to let event continue on, <c>false</c> to drop it.</returns>
     /// <threadsafety>This may only be called (by SDL) from the thread handling the
     /// Windows event loop.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -62,7 +62,7 @@ public static partial class SDL
     /// <returns><c>true</c> to let event continue on, <c>false</c> to drop it.</returns>
     /// <threadsafety>This may only be called (by SDL) from the thread handling the
     /// X11 event loop.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <see cref="SetX11EventHook"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -79,7 +79,7 @@ public static partial class SDL
     /// <param name="userdata">what was passed as <c>callbackParam</c> to
     /// <see cref="SetiOSAnimationCallback"/> as <c>callbackParam</c>.</param>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetiOSAnimationCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IOSAnimationCallback(IntPtr userdata);
@@ -92,7 +92,7 @@ public static partial class SDL
     /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
     /// <param name="permission">the Android-specific permission name that was requested.</param>
     /// <param name="granted">true if permission is granted, false if denied.</param>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="RequestAndroidPermission"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void RequestAndroidPermissionCallback(IntPtr userdata,

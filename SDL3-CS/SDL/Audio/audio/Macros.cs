@@ -39,7 +39,7 @@ public static partial class SDL
     /// <param name="size">number of bits per sample.</param>
     /// <returns>a format value in the style of <see cref="AudioFormat"/>.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static ushort DefineAudioFormat(bool signed, bool bigendian, bool flt, int size)
     {
@@ -67,7 +67,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>data size in bits.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static uint AudioBitSize(uint x) => x & AudioMaskBitSize;
 
@@ -79,7 +79,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>data size in bytes.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static uint AudioByteSize(uint x) => AudioBitSize(x) / 8;
     
@@ -91,7 +91,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>non-zero if format is floating point, zero otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static bool AudioIsFloat(uint x) => (x & AudioMaskFloat) != 0;
     
@@ -103,7 +103,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>non-zero if format is bigendian, zero otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static bool AudioIsBigEndian(uint x) => (x & AudioMaskBigEndian) != 0;
     
@@ -115,7 +115,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>non-zero if format is littleendian, zero otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static bool AudioIsLittleEndian(uint x) => !AudioIsBigEndian(x);
     
@@ -127,7 +127,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>non-zero if format is signed, zero otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static bool AudioIsSigned(uint x) => (x & AudioMaskSigned) != 0;
     
@@ -139,7 +139,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>non-zero if format is integer, zero otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static bool AudioIsInt(uint x) => !AudioIsFloat(x);
     
@@ -151,7 +151,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioFormat"/> value.</param>
     /// <returns>non-zero if format is unsigned, zero otherwise.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static bool AudioIsUnsigned(uint x) => !AudioIsSigned(x);
     
@@ -164,7 +164,7 @@ public static partial class SDL
     /// <param name="x">an <see cref="AudioSpec"/> to query.</param>
     /// <returns>the number of bytes used per sample frame.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static uint AudioFrameSize(AudioSpec x) => (uint) (AudioByteSize((uint) x.Format) * x.Channels);
 }

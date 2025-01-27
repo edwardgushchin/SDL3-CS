@@ -45,7 +45,7 @@ public static partial class SDL
     /// returning no data is more or less undefined behavior and may cause
     /// breakage in receiving applications. The returned data will not be
     /// freed so it needs to be retained and dealt with internally.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr ClipboardDataCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out ulong size);
@@ -57,7 +57,7 @@ public static partial class SDL
     /// data is set.
     /// </summary>
     /// <param name="userdata">a pointer to provided user data.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void ClipboardCleanupCallback(IntPtr userdata);

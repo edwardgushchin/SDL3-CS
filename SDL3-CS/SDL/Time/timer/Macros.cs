@@ -46,7 +46,7 @@ public static partial class SDL
     /// <param name="ns">the number of nanoseconds to convert.</param>
     /// <returns>expressed in seconds.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static ulong NsToSeconds(ulong ns) => ns / NsPerSecond;
     
@@ -59,7 +59,7 @@ public static partial class SDL
     /// <param name="ms">the number of milliseconds to convert.</param>
     /// <returns>expressed in nanoseconds.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static ulong MsToNs(ulong ms) => ms * NsPerMs;
     
@@ -73,7 +73,7 @@ public static partial class SDL
     /// <param name="ns">the number of nanoseconds to convert.</param>
     /// <returns>expressed in milliseconds.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static ulong NsToMs(ulong ns) => ns / NsPerMs;
     
@@ -86,7 +86,7 @@ public static partial class SDL
     /// <param name="us">the number of microseconds to convert.</param>
     /// <returns>expressed in nanoseconds.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static ulong UsToNs(ulong us) => us * NsPerUs;
     
@@ -100,7 +100,7 @@ public static partial class SDL
     /// <param name="ns">the number of nanoseconds to convert.</param>
     /// <returns>expressed in microseconds.</returns>
     /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static ulong NsToUs(ulong ns) => ns / NsPerUs;
 }

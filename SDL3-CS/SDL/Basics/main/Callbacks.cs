@@ -36,7 +36,7 @@ public static partial class SDL
     /// <returns>an ANSI-C main return code; generally 0 is considered successful
     /// program completion, and small non-zero values are considered
     /// errors.</returns>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int MainFunc(int argc, string[] argv);
 }

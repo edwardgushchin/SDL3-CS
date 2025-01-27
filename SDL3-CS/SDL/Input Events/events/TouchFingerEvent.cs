@@ -42,7 +42,7 @@ public static partial class SDL
     /// report a touch outside of the window, which will also be outside of the
     /// range.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TouchFingerEvent
     {

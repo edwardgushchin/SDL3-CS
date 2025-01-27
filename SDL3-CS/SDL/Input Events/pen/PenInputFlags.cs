@@ -33,7 +33,7 @@ public static partial class SDL
     /// <summary>
     /// Pen input flags, as reported by various pen events' <c>pen_state</c> field.
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [Flags]
     public enum PenInputFlags : uint
     {

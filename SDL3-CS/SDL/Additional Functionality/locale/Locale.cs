@@ -34,7 +34,7 @@ public static partial class SDL
     /// would be "en"), and the country, if not NULL, will be an ISO-3166 country
     /// code (so Canada would be "CA").</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPreferredLocales"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Locale

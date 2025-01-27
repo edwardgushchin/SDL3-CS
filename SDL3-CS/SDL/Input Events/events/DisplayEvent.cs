@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Display state change event data (event.display.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct DisplayEvent
     {

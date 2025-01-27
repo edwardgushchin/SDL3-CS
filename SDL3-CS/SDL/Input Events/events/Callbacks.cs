@@ -40,7 +40,7 @@ public static partial class SDL
     /// <threadsafety>SDL may call this callback at any time from any thread; the
     /// application is responsible for locking resources the callback
     /// touches that need to be protected.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetEventFilter"/>
     /// <seealso cref="AddEventWatch"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

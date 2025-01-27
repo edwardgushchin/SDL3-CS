@@ -39,7 +39,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if a mouse is connected, <c>false</c> otherwise.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -62,7 +62,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMouseNameForID"/>
     /// <seealso cref="HasMouse"/>
     public static uint[]? GetMice(out int count)
@@ -89,7 +89,7 @@ public static partial class SDL
     /// <returns>the name of the selected mouse, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -102,7 +102,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the window with mouse focus.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetMouseFocus();
     
@@ -123,7 +123,7 @@ public static partial class SDL
     /// <returns>a 32-bit bitmask of the button state that can be bitwise-compared
     /// against the <see cref="ButtonMask"/> macro.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGlobalMouseState"/>
     /// <seealso cref="GetRelativeMouseState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -154,7 +154,7 @@ public static partial class SDL
     /// <returns>a 32-bit bitmask of the button state that can be bitwise-compared
     /// against the <see cref="ButtonMask"/> macro.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CaptureMouse"/>
     /// <seealso cref="GetMouseState"/>
     /// <seealso cref="GetGlobalMouseState"/>
@@ -188,7 +188,7 @@ public static partial class SDL
     /// <returns>a 32-bit bitmask of the button state that can be bitwise-compared
     /// against the <see cref="ButtonMask"/> macro.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMouseState"/>
     /// <seealso cref="GetGlobalMouseState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRelativeMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -209,7 +209,7 @@ public static partial class SDL
     /// <param name="x">the x coordinate within the window.</param>
     /// <param name="y">the y coordinate within the window.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WarpMouseGlobal"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseInWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void WarpMouseInWindow(IntPtr window, float x, float y);
@@ -229,7 +229,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WarpMouseInWindow"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseGlobal"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -254,7 +254,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowRelativeMouseMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowRelativeMouseMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -268,7 +268,7 @@ public static partial class SDL
     /// <param name="window">the window to query.</param>
     /// <returns><c>true</c> if relative mode is enabled for a window or <c>false</c> otherwise.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowRelativeMouseMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowRelativeMouseMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -311,7 +311,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGlobalMouseState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CaptureMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -348,7 +348,7 @@ public static partial class SDL
     /// <returns>a new cursor with the specified parameters on success or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
@@ -376,7 +376,7 @@ public static partial class SDL
     /// <returns>the new cursor on success or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
@@ -393,7 +393,7 @@ public static partial class SDL
     /// <returns>a cursor on success or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyCursor"/>
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateSystemCursor(SystemCursor id);
@@ -411,7 +411,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -426,7 +426,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the active cursor or <c>null</c> if there is no mouse.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetCursor();
@@ -441,7 +441,7 @@ public static partial class SDL
     /// <returns>the default cursor on success or <c>null</c> on failuree; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetDefaultCursor();
     
@@ -454,7 +454,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="cursor">the cursor to free.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
@@ -469,7 +469,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CursorVisible"/>
     /// <seealso cref="HideCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -484,7 +484,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CursorVisible"/>
     /// <seealso cref="ShowCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HideCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -499,7 +499,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the cursor is being shown, or <c>false</c> if the cursor is
     /// hidden.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HideCursor"/>
     /// <seealso cref="ShowCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CursorVisible"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

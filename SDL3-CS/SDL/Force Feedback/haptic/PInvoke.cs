@@ -39,7 +39,7 @@ public static partial class SDL
     /// <returns>a 0 terminated array of haptic device instance IDs or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenHaptic"/>
     public static int[]? GetHaptics(out int count)
     {
@@ -65,7 +65,7 @@ public static partial class SDL
     /// <returns>the name of the selected haptic device. If no name can be found,
     /// this function returns <c>null</c>; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticName"/>
     /// <seealso cref="OpenHaptic"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -85,7 +85,7 @@ public static partial class SDL
     /// <param name="instanceId">the haptic device instance ID.</param>
     /// <returns>the device identifier or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseHaptic"/>
     /// <seealso cref="GetHaptics"/>
     /// <seealso cref="OpenHapticFromJoystick"/>
@@ -103,7 +103,7 @@ public static partial class SDL
     /// <param name="instanceId">the instance ID to get the SDL_Haptic for.</param>
     /// <returns>an SDL_Haptic on success or <c>null</c> on failure or if it hasn't been
     /// opened yet; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetHapticFromID(int instanceId);
     
@@ -115,7 +115,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to query.</param>
     /// <returns>the instance ID of the specified haptic device on success or 0 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetHapticID(IntPtr haptic);
     
@@ -128,7 +128,7 @@ public static partial class SDL
     /// <returns>the name of the selected haptic device. If no name can be found,
     /// this function returns <c>null</c>; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticNameForID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -140,7 +140,7 @@ public static partial class SDL
     /// Query whether or not the current mouse has haptic capabilities.
     /// </summary>
     /// <returns><c>true</c> if the mouse is haptic or <c>false</c> if it isn't.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenHapticFromMouse"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsMouseHaptic"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -153,7 +153,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the haptic device identifier or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseHaptic"/>
     /// <seealso cref="IsMouseHaptic"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenHapticFromMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -166,7 +166,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="joystick">the SDL_Joystick to test for haptic capabilities.</param>
     /// <returns><c>true</c> if the joystick is haptic or <c>false</c> if it isn't.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenHapticFromJoystick"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsJoystickHaptic"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -186,7 +186,7 @@ public static partial class SDL
     /// <param name="joystick">the SDL_Joystick to create a haptic device from.</param>
     /// <returns>a valid haptic device identifier on success or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseHaptic"/>
     /// <seealso cref="IsJoystickHaptic"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenHapticFromJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -198,7 +198,7 @@ public static partial class SDL
     /// Close a haptic device previously opened with <see cref="OpenHaptic"/>.
     /// </summary>
     /// <param name="haptic">the SDL_Haptic device to close.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenHaptic"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseHaptic"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseHaptic(IntPtr haptic);
@@ -214,7 +214,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to query.</param>
     /// <returns>the number of effects the haptic device can store or a negative
     /// error code on failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMaxHapticEffectsPlaying"/>
     /// <seealso cref="GetHapticFeatures"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMaxHapticEffects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -229,7 +229,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to query maximum playing effects.</param>
     /// <returns>the number of effects the haptic device can play at the same time
     /// or -1 on failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMaxHapticEffects"/>
     /// <seealso cref="GetHapticFeatures"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMaxHapticEffectsPlaying"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -243,7 +243,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to query.</param>
     /// <returns>a list of supported haptic features in bitwise manner (OR'd), or 0
     /// on failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HapticEffectSupported"/>
     /// <seealso cref="GetMaxHapticEffects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticFeatures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -259,7 +259,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to query.</param>
     /// <returns>the number of axes on success or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumHapticAxes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumHapticAxes(IntPtr haptic);
     
@@ -271,7 +271,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to query.</param>
     /// <param name="effect">the desired effect to query.</param>
     /// <returns><c>true</c> if the effect is supported or <c>false</c> if it isn't.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateHapticEffect"/>
     /// <seealso cref="GetHapticFeatures"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_HapticEffectSupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -288,7 +288,7 @@ public static partial class SDL
     /// the effect to create.</param>
     /// <returns>the ID of the effect on success or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyHapticEffect"/>
     /// <seealso cref="RunHapticEffect"/>
     /// <seealso cref="UpdateHapticEffect"/>
@@ -311,7 +311,7 @@ public static partial class SDL
     /// properties to use.</returns>
     /// <since><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</since>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateHapticEffect"/>
     /// <seealso cref="RunHapticEffect"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_UpdateHapticEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -334,7 +334,7 @@ public static partial class SDL
     /// <c>HAPTIC_INFINITY</c> to repeat forever.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticEffectStatus"/>
     /// <seealso cref="StopHapticEffect"/>
     /// <seealso cref="StopHapticEffects"/>
@@ -351,7 +351,7 @@ public static partial class SDL
     /// <param name="effect">the ID of the haptic effect to stop.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RunHapticEffect"/>
     /// <seealso cref="StopHapticEffects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopHapticEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -367,7 +367,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="haptic">the SDL_Haptic device to destroy the effect on.</param>
     /// <param name="effect">the ID of the haptic effect to destroy.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateHapticEffect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyHapticEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyHapticEffect(IntPtr haptic, int effect);
@@ -382,7 +382,7 @@ public static partial class SDL
     /// <param name="effect">the ID of the haptic effect to query its status.</param>
     /// <returns><c>true</c> if it is playing, <c>false</c> if it isn't playing or haptic status
     /// isn't supported.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticFeatures"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticEffectStatus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -403,7 +403,7 @@ public static partial class SDL
     /// 100).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticFeatures"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetHapticGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -421,7 +421,7 @@ public static partial class SDL
     /// <param name="autocenter">value to set autocenter to (0-100).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticFeatures"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetHapticAutocenter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -439,7 +439,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to pause.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResumeHaptic"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseHaptic"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -454,7 +454,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to unpause.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PauseHaptic"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeHaptic"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -468,7 +468,7 @@ public static partial class SDL
     /// <param name="haptic">the SDL_Haptic device to stop.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RunHapticEffect"/>
     /// <seealso cref="StopHapticEffects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopHapticEffects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -482,7 +482,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="haptic">haptic device to check for rumble support.</param>
     /// <returns><c>true</c> if the effect is supported or <c>false</c> if it isn't.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="InitHapticRumble"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HapticRumbleSupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -496,7 +496,7 @@ public static partial class SDL
     /// <param name="haptic">the haptic device to initialize for simple rumble playback.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PlayHapticRumble"/>
     /// <seealso cref="StopHapticRumble"/>
     /// <seealso cref="HapticRumbleSupported"/>
@@ -514,7 +514,7 @@ public static partial class SDL
     /// <param name="length">length of the rumble to play in milliseconds.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="InitHapticRumble"/>
     /// <seealso cref="StopHapticRumble"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PlayHapticRumble"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -529,7 +529,7 @@ public static partial class SDL
     /// <param name="haptic">the haptic device to stop the rumble effect on.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PlayHapticRumble"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopHapticRumble"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

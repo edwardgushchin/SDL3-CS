@@ -34,7 +34,7 @@ public static partial class SDL
     /// implementations for many things you might expect to do with an SDL_Storage.</para>
     /// <para>This structure should be initialized using <see cref="InitInterface(ref StorageInterface)"/></para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="InitInterface(ref StorageInterface)"/>
     public struct StorageInterface
     {

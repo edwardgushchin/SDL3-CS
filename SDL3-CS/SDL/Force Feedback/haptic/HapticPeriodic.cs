@@ -77,7 +77,7 @@ public static partial class SDL
     ///     \|  \|  \|  \|  \|  \|  \|
     /// </code>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HAPTIC_SINE"/>
     /// <seealso cref="HAPTIC_SQUARE"/>
     /// <seealso cref="HAPTIC_TRIANGLE"/>

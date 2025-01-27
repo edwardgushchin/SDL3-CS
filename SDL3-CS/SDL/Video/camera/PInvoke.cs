@@ -42,7 +42,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the number of built-in camera drivers.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameraDriver"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumCameraDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumCameraDrivers();
@@ -63,7 +63,7 @@ public static partial class SDL
     /// <returns>the name of the camera driver at the requested index, or <c>null</c> if
     /// an invalid index was specified.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumCameraDrivers"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -80,7 +80,7 @@ public static partial class SDL
     /// <returns>the name of the current camera driver or <c>null</c> if no driver has
     /// been initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentCameraDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string? GetCurrentCameraDriver();
@@ -98,7 +98,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     public static uint[]? GetCameras(out int count)
     {
@@ -144,7 +144,7 @@ public static partial class SDL
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     public static CameraSpec[]? GetCameraSupportedFormats(uint devid, out int count)
@@ -170,7 +170,7 @@ public static partial class SDL
     /// <returns>a human-readable device name or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -188,7 +188,7 @@ public static partial class SDL
     /// <param name="instanceId">the camera device instance ID.</param>
     /// <returns>the position of the camera on the system hardware.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial CameraPosition GetCameraPosition(uint instanceId);
@@ -229,7 +229,7 @@ public static partial class SDL
     /// <returns>an SDL_Camera object or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     /// <seealso cref="GetCameraFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -270,7 +270,7 @@ public static partial class SDL
     /// <returns>an SDL_Camera object or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     /// <seealso cref="GetCameraFormat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -298,7 +298,7 @@ public static partial class SDL
     /// <returns>-1 if user denied access to the camera, 1 if user approved access,
     /// 0 if no decision has been made yet.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     /// <seealso cref="CloseCamera"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPermissionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -313,7 +313,7 @@ public static partial class SDL
     /// <returns>the instance ID of the specified camera on success or 0 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetCameraID(IntPtr camera);
@@ -327,7 +327,7 @@ public static partial class SDL
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetCameraProperties(IntPtr camera);
     
@@ -349,7 +349,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>    
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetCameraFormat(IntPtr camera, out CameraSpec spec);
@@ -386,7 +386,7 @@ public static partial class SDL
     /// <returns>a new frame of video on success, <c>null</c> if none is currently
     /// available.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ReleaseCameraFrame"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AcquireCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr AcquireCameraFrame(IntPtr camera, out ulong timestampNS);
@@ -409,7 +409,7 @@ public static partial class SDL
     /// <param name="camera">opened camera device.</param>
     /// <param name="frame">the video frame surface to release.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AcquireCameraFrame"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ReleaseCameraFrame(IntPtr camera, IntPtr frame);
@@ -423,7 +423,7 @@ public static partial class SDL
     /// <param name="camera">opened camera device.</param>
     /// <threadsafety>It is safe to call this function from any thread, but no
     /// thread may reference <c>device</c> once this function is called.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseCamera(IntPtr camera);

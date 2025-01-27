@@ -40,7 +40,7 @@ public static partial class SDL
     /// SDL_sinf on the XTILT, YTILT, or ROTATION component, for example:</para>
     /// <para><c>SDL_sinf(xtilt * SDL_PI_F / 180.0)</c></para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum PenAxis
     {
         /// <summary>

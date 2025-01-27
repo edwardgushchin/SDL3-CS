@@ -40,7 +40,7 @@ public static partial class SDL
     /// <item>Button 5: Side mouse button 2</item>
     /// </list>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="GetMouseState"/>
     /// <seealso cref="GetGlobalMouseState"/>
     /// <seealso cref="GetRelativeMouseState"/>

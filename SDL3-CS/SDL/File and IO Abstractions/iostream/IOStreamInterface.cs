@@ -35,7 +35,7 @@ public static partial class SDL
     /// <see cref="IOFromFile"/> and <see cref="IOFromMem"/>.</para>
     /// <para>This structure should be initialized using <see cref="SDL.InitInterface(ref SDL3.SDL.IOStreamInterface)"/></para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="SDL.InitInterface(ref SDL3.SDL.IOStreamInterface)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct IOStreamInterface

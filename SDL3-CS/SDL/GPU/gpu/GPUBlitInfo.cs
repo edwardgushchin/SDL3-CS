@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// A structure containing parameters for a blit command.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BlitGPUTexture"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUBlitInfo

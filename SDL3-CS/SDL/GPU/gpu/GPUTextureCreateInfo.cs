@@ -33,7 +33,7 @@ public static partial class SDL
     /// that certain usage combinations are invalid, for example <see cref="GPUTextureUsageFlags.Sampler"/> and
     /// GRAPHICS_STORAGE.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUTexture"/>
     /// <seealso cref="GPUTextureType"/>
     /// <seealso cref="GPUTextureFormat"/>

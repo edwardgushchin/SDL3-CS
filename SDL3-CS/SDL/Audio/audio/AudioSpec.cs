@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// Format specifier for audio data.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="AudioFormat"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct AudioSpec

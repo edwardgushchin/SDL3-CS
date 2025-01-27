@@ -36,7 +36,7 @@ public static partial class SDL
 	/// <param name="d">the fourth character of the FourCC code.</param>
 	/// <returns>a format value in the style of <see cref="PixelFormat"/>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static PixelFormat DefinePixelFourCC(char a, char b, char c, char d) => (PixelFormat)FourCC(a, b, c, d);
 	
@@ -55,7 +55,7 @@ public static partial class SDL
 	/// <param name="bytes">the number of bytes per pixel of the new format.</param>
 	/// <returns>a format value in the style of <see cref="PixelFormat"/></returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static PixelFormat DefinePixelFormat(PixelType type, byte order, PackedLayout layout, byte bits, byte bytes) => (PixelFormat)((1 << 28) | ((byte)type << 24) | (order << 20) | ((byte)layout << 16) | (bits << 8) | bytes);
     
@@ -68,7 +68,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the flags of <c>format</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static uint PixelFlag(PixelFormat x) => ((uint)x >> 28) & 0x0F;
     
@@ -80,7 +80,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the type of <c>format</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static PixelType GetPixelType(PixelFormat x) => (PixelType)(((uint)x >> 24) & 0x0F);
     
@@ -93,7 +93,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the order of <c>format</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
 	public static uint PixelOrder(PixelFormat x) => ((uint)x >> 20) & 0x0F;
 
@@ -106,7 +106,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the layout of <c>format</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static PackedLayout PixelLayout(PixelFormat x) => (PackedLayout)(((uint)x >> 16) & 0x0F);
 
@@ -121,7 +121,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the bits-per-pixel of <c>format</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	/// <seealso cref="BytesPerPixel"/>
 	[Macro]
 	public static uint BitsPerPixel(PixelFormat x) => IsPixelFormatFourCC(x) ? 0 : (((uint)x >> 8) & 0xFF);
@@ -137,7 +137,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns>the bytes-per-pixel of <c>format</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	/// <seealso cref="BitsPerPixel"/>
 	[Macro]
 	public static uint BytesPerPixel(PixelFormat x) => IsPixelFormatFourCC(x) ? (((x == PixelFormat.YUY2) || (x == PixelFormat.UYVY) || (x == PixelFormat.YVYU) || (x == PixelFormat.P010)) ? 2u : 1u) : (((uint)x >> 0) & 0xFF);
@@ -151,7 +151,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format is indexed, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormatIndexed(PixelFormat x) => (!IsPixelFormatFourCC(x)) && ((GetPixelType(x) == PixelType.Index1) || (GetPixelType(x) == PixelType.Index2) || (GetPixelType(x) == PixelType.Index4) || (GetPixelType(x) == PixelType.Index8));
 
@@ -164,7 +164,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format is packed, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormatPacked(PixelFormat x) => (!IsPixelFormatFourCC(x)) && ((GetPixelType(x) == PixelType.Packed8) || (GetPixelType(x) == PixelType.Packed16) || (GetPixelType(x) == PixelType.Packed32));
 
@@ -177,7 +177,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format is an array, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormatArray(PixelFormat x) => (!IsPixelFormatFourCC(x)) && ((GetPixelType(x) == PixelType.ArrayU8) || (GetPixelType(x) == PixelType.ArrayU16) || (GetPixelType(x) == PixelType.ArrayU32) || (GetPixelType(x) == PixelType.ArrayF16) || (GetPixelType(x) == PixelType.ArrayF32));
 
@@ -190,7 +190,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format is 10-bit, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormat10Bit(PixelFormat x) => (!IsPixelFormatFourCC(x)) && ((GetPixelType(x) == PixelType.Packed32) || (PixelLayout(x) == PackedLayout.Layout2101010));
 	
@@ -203,7 +203,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format is 10-bit, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormatFloat(PixelFormat x) => (!IsPixelFormatFourCC(x)) && ((GetPixelType(x) == PixelType.ArrayF16) || (GetPixelType(x) == PixelType.ArrayF32));
 	
@@ -216,7 +216,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format has alpha, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormatAlpha(PixelFormat x) => IsPixelFormatPacked(x) && ((PixelOrder(x) == (uint)PackedOrder.ARGB) || (PixelOrder(x) == (uint)PackedOrder.RGBA) || (PixelOrder(x) == (uint)PackedOrder.ABGR) || (PixelOrder(x) == (uint)PackedOrder.BGRA));
 
@@ -229,7 +229,7 @@ public static partial class SDL
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
 	/// <returns><c>true</c> if the format has alpha, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsPixelFormatFourCC(PixelFormat x) => (x != PixelFormat.Unknown) && (PixelFlag(x) != 1);
 
@@ -258,7 +258,7 @@ public static partial class SDL
 	/// <see cref="ChromaLocation"/> value.</param>
 	/// <returns>a format value in the style of <see cref="ColorRange"/>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static Colorspace DefineColorspace(ColorType type, ColorRange range, ColorPrimaries primaries, TransferCharacteristics transfer, MatrixCoefficients matrix, ChromaLocation chroma) => (Colorspace)(((byte)type << 28) | ((byte)range << 24) | ((byte)chroma << 20) | ((byte)primaries << 10) | ((byte)transfer << 5) | (byte)matrix);
 
@@ -269,7 +269,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns>the <see cref="ColorType"/> for <c>cspace</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static ColorType ColorspaceType(Colorspace cspace) => (ColorType)(((uint)cspace >> 28) & 0x0F);
 
@@ -280,7 +280,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns>the <see cref="ColorRange"/> of <c>cspace</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static ColorRange ColorspaceRange(Colorspace cspace) => (ColorRange)(((uint)cspace >> 24) & 0x0F);
 
@@ -291,7 +291,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns>the <see cref="ChromaLocation"/> of <c>cspace</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static ChromaLocation ColorspaceChroma(Colorspace cspace) => (ChromaLocation)(((uint)cspace >> 20) & 0x0F);
 
@@ -302,7 +302,7 @@ public static partial class SDL
 	/// <param name="cspace">an SDL_Colorspace to check.</param>
 	/// <returns>the <see cref="ColorPrimaries"/> of <c>cspace</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static ColorPrimaries ColorspacePrimaries(Colorspace cspace) => (ColorPrimaries)(((uint)cspace >> 10) & 0x1F);
 
@@ -313,7 +313,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns>the <see cref="TransferCharacteristics"/> of <c>cspace</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static TransferCharacteristics ColorspaceTransfer(Colorspace cspace) => (TransferCharacteristics)(((uint)cspace >> 5) & 0x1F);
 
@@ -324,7 +324,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns> the <see cref="MatrixCoefficients"/> of <c>cspace</c>.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static MatrixCoefficients ColorspaceMatrix(Colorspace cspace) => (MatrixCoefficients)((uint)cspace & 0x1F);
 
@@ -338,7 +338,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns><c>true</c> if BT601 or BT470BG, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsColorspaceMatrixBT601(Colorspace cspace) => (ColorspaceMatrix(cspace) == MatrixCoefficients.BT601) || (ColorspaceMatrix(cspace) == MatrixCoefficients.BT470BG);
 
@@ -349,7 +349,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns>true if BT709, false otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsColorspaceMatrixBT709(Colorspace cspace) => ColorspaceMatrix(cspace) == MatrixCoefficients.BT709;
 
@@ -361,7 +361,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns><c>true</c> if BT2020_NCL, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsColorspaceMatrixBT2020NCL(Colorspace cspace) => ColorspaceMatrix(cspace) == MatrixCoefficients.BT2020NCL;
 
@@ -372,7 +372,7 @@ public static partial class SDL
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
 	/// <returns><c>true</c> if limited range, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsColorspaceLimitedRange(Colorspace cspace) => ColorspaceRange(cspace) != ColorRange.Full;
 
@@ -383,7 +383,7 @@ public static partial class SDL
 	/// <param name="cspace">an SDL_Colorspace to check.</param>
 	/// <returns><c>true</c> if full range, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
-	/// <since>This macro is available since SDL 3.1.3.</since>
+	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
 	public static bool IsColorspaceFullRange(Colorspace cspace) => ColorspaceRange(cspace) == ColorRange.Full;
 }

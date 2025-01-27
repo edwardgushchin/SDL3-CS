@@ -34,6 +34,7 @@ public static partial class SDL
     /// condition, try to break in a debugger, kill the program, or ignore the
     /// problem).</para>
     /// </summary>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum AssertState
     {
         /// <summary>

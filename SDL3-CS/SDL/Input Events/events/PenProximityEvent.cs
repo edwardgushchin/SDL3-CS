@@ -38,7 +38,7 @@ public static partial class SDL
     /// is there." The pen touching and lifting off from the tablet while not
     /// leaving the area are handled by <see cref="EventType.PenDown"/> and <see cref="EventType.PenUp"/>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenProximityEvent
     {

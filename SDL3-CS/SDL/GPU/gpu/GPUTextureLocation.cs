@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure specifying a location in a texture.</para>
     /// <para>Used when copying data from one texture to another.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CopyGPUTextureToTexture"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUTextureLocation

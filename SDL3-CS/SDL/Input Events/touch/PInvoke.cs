@@ -42,7 +42,7 @@ public static partial class SDL
     /// <returns>a 0 terminated array of touch device IDs or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static ulong[]? GetTouchDevices(out int count)
     {
         var ptr = SDL_GetTouchDevices(out count);
@@ -65,7 +65,7 @@ public static partial class SDL
     /// <param name="touchID">the touch device instance ID.</param>
     /// <returns>touch device name, or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     public static partial string? GetTouchDeviceName(ulong touchID);
@@ -77,7 +77,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="touchID">the ID of a touch device.</param>
     /// <returns>touch device type.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial TouchDeviceType GetTouchDeviceType(ulong touchID);
     
@@ -95,7 +95,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This is a single
     /// allocation that should be freed with <see cref="Free"/> when it is no
     /// longer needed.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static Finger[]? GetTouchFingers(ulong touchID, out int count)
     {
         var ptr = SDL_GetTouchFingers(touchID, out count);

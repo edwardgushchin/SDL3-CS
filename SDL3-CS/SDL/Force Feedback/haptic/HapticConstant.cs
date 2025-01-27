@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure containing a template for a Constant effect.</para>
     /// <para>This struct is exclusively for the <see cref="HAPTIC_CONSTANT"/> effect.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HAPTIC_CONSTANT"/>
     /// <seealso cref="HapticEffect"/>
     [StructLayout(LayoutKind.Sequential)]

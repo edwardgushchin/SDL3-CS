@@ -95,7 +95,7 @@ public static partial class SDL
     /// <returns>a pointer to the SDL_IOStream structure that is created or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="FlushIO"/>
     /// <seealso cref="ReadIO"/>
@@ -130,7 +130,7 @@ public static partial class SDL
     /// <param name="size">the buffer size, in bytes.</param>
     /// <returns>a pointer to a new SDL_IOStream structure or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOFromConstMem"/>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="FlushIO"/>
@@ -167,7 +167,7 @@ public static partial class SDL
     /// <param name="size">the buffer size, in bytes.</param>
     /// <returns>a pointer to a new SDL_IOStream structure or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOFromMem"/>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="ReadIO"/>
@@ -195,7 +195,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>a pointer to a new SDL_IOStream structure or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="ReadIO"/>
     /// <seealso cref="SeekIO"/>
@@ -220,7 +220,7 @@ public static partial class SDL
     /// <param name="userdata">the pointer that will be passed to the interface functions.</param>
     /// <returns>a pointer to the allocated memory on success or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="InitInterface(ref IOStreamInterface)"/>
     /// <seealso cref="IOFromConstMem"/>
@@ -251,7 +251,7 @@ public static partial class SDL
     /// <param name="context">SDL_IOStream structure to close.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -265,7 +265,7 @@ public static partial class SDL
     /// <param name="context">a pointer to an SDL_IOStream structure.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetIOProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetIOProperties(IntPtr context);
     
@@ -284,7 +284,7 @@ public static partial class SDL
     /// <returns>an <see cref="IOStatus"/> enum with the current state.</returns>
     /// <threadsafety>This function should not be called at the same time that
     /// another thread is operating on the same SDL_IOStream.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetIOStatus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IOStatus GetIOStatus(IntPtr context);
     
@@ -297,7 +297,7 @@ public static partial class SDL
     /// <returns>the size of the data stream in the SDL_IOStream on success or a
     /// negative error code on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetIOSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial long GetIOSize(IntPtr context);
     
@@ -321,7 +321,7 @@ public static partial class SDL
     /// <see cref="IOWhence.End"/>.</param>
     /// <returns>the final offset in the data stream after the seek or -1 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="TellIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SeekIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial long SeekIO(IntPtr context, long offset, IOWhence whence);
@@ -338,7 +338,7 @@ public static partial class SDL
     /// current offset.</param>
     /// <returns>the current offset in the stream, or -1 if the information can not
     /// be determined.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SeekIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TellIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial long TellIO(IntPtr context);
@@ -359,7 +359,7 @@ public static partial class SDL
     /// <param name="size">the number of bytes to read from the data source.</param>
     /// <returns>the number of bytes read, or 0 on end of file or other failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WriteIO"/>
     /// <seealso cref="GetIOStatus"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -383,7 +383,7 @@ public static partial class SDL
     /// <param name="size">the number of bytes to write.</param>
     /// <returns>the number of bytes written, which will be less than <c>size</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOprintf"/>
     /// <seealso cref="ReadIO"/>
     /// <seealso cref="SeekIO"/>
@@ -402,7 +402,7 @@ public static partial class SDL
     /// <param name="fmt">a printf() style format string.</param>
     /// <returns>the number of bytes written or 0 on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOvprintf"/>
     /// <seealso cref="WriteIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -420,7 +420,7 @@ public static partial class SDL
     /// <param name="ap">a variable argument list.</param>
     /// <returns>the number of bytes written or 0 on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOprintf"/>
     /// <seealso cref="WriteIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOvprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -438,7 +438,7 @@ public static partial class SDL
     /// <param name="context">SDL_IOStream structure to flush.</param>
     /// <returns><c>true on</c> success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenIO"/>
     /// <seealso cref="WriteIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -461,7 +461,7 @@ public static partial class SDL
     /// in the case of an error.</param>
     /// <returns>the data or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadFile"/>
     /// <seealso cref="SaveFileIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFile_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -480,7 +480,7 @@ public static partial class SDL
     /// <param name="datasize">if not <c>null</c>, will store the number of bytes read.</param>
     /// <returns>the data or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadFileIO"/>
     /// <seealso cref="SaveFile"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -537,7 +537,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure or EOF; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU8(IntPtr src, out byte value);
@@ -555,7 +555,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS8(IntPtr src, out sbyte value);
@@ -576,7 +576,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU16LE(IntPtr src, out ushort value);
@@ -597,7 +597,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS16LE(IntPtr src, out short value);
@@ -618,7 +618,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU16BE(IntPtr src, out ushort value);
@@ -639,7 +639,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS16BE(IntPtr src, out short value);
@@ -660,7 +660,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU32LE(IntPtr src, out uint value);
@@ -681,7 +681,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS32LE(IntPtr src, out int value);
@@ -702,7 +702,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU32BE(IntPtr src, out uint value);
@@ -723,7 +723,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS32BE(IntPtr src, out int value);
@@ -744,7 +744,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU64LE(IntPtr src, out ulong value);
@@ -765,7 +765,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS64LE(IntPtr src, out long value);
@@ -786,7 +786,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadU64BE(IntPtr src, out ulong value);
@@ -807,7 +807,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ReadS64BE(IntPtr src, out long value);
@@ -821,7 +821,7 @@ public static partial class SDL
     /// <param name="value">the byte value to write.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU8(IntPtr dst, byte value);
@@ -835,7 +835,7 @@ public static partial class SDL
     /// <param name="value">the byte value to write.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS8(IntPtr dst, sbyte value);
@@ -853,7 +853,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful <c>write</c> or false on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU16LE(IntPtr dst, ushort value);
@@ -871,7 +871,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS16LE(IntPtr dst, short value);
@@ -888,7 +888,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU16BE(IntPtr dst, ushort value);
@@ -905,7 +905,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful <c>write</c> or false on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS16BE(IntPtr dst, short value);
@@ -923,7 +923,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU32LE(IntPtr dst, uint value);
@@ -941,7 +941,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS32LE(IntPtr dst, int value);
@@ -958,7 +958,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU32BE(IntPtr dst, uint value);
@@ -975,7 +975,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS32BE(IntPtr dst, int value);
@@ -993,7 +993,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU64LE(IntPtr dst, ulong value);
@@ -1011,7 +1011,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS64LE(IntPtr dst, long value);
@@ -1028,7 +1028,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteU64BE(IntPtr dst, ulong value);
@@ -1045,7 +1045,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WriteS64BE(IntPtr dst, long value);

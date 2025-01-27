@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// The largest value an SDL_Joystick's axis can report.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="JoystickAxisMin"/>
     public const short JoystickAxisMax = short.MaxValue;
     
@@ -36,7 +36,7 @@ public static partial class SDL
     /// <para>The smallest value an SDL_Joystick's axis can report.</para>
     /// <para>This is a negative number!</para>
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="JoystickAxisMax"/>
     public const short JoystickAxisMin = short.MinValue;
     

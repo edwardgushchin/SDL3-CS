@@ -44,7 +44,7 @@ public static partial class SDL
     /// <threadsafety>SDL may call this callback at any time from a background
     /// thread; the application is responsible for locking resources
     /// the callback touches that need to be protected.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimer"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate uint TimerCallback(IntPtr userdata, uint timerId, uint interval);
@@ -68,7 +68,7 @@ public static partial class SDL
     /// <threadsafety>SDL may call this callback at any time from a background
     /// thread; the application is responsible for locking resources
     /// the callback touches that need to be protected.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimerNS"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate ulong NSTimerCallback(IntPtr userdata, uint timerId, ulong interval);

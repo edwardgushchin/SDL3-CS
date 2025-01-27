@@ -35,7 +35,7 @@ public static partial class SDL
     /// effects get added to the ramp effect making the effect become quadratic
     /// instead of linear.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HAPTIC_RAMP"/>
     /// <seealso cref="HapticEffect"/>
     [StructLayout(LayoutKind.Sequential)]

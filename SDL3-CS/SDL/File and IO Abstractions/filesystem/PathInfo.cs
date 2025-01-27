@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// Information about a path on the filesystem.
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="GetPathInfo"/>
     /// <seealso cref="GetStoragePathInfo"/>
     public struct PathInfo

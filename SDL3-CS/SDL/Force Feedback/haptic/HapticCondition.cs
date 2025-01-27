@@ -44,7 +44,7 @@ public static partial class SDL
     /// <see cref="HapticDirection"/> diagram for which side is positive and which is
     /// negative.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HapticDirection"/>
     /// <seealso cref="HAPTIC_SPRING"/>
     /// <seealso cref="HAPTIC_DAMPER"/>

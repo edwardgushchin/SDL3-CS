@@ -28,7 +28,7 @@ public static partial class SDL
     /// <summary>
     /// A fully opaque 8-bit alpha value.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="AlphaTransparent"/>
     public const uint AlphaOpaque = 255;
 
@@ -36,7 +36,7 @@ public static partial class SDL
     /// <summary>
     /// A fully opaque floating point alpha value.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="AlphaTransparentFloat"/>
     public const float AlphaOpaqueFloat = 1.0f;
 
@@ -44,7 +44,7 @@ public static partial class SDL
     /// <summary>
     /// A fully transparent 8-bit alpha value.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="AlphaOpaque"/>
     public const int AlphaTransparent = 0;
 
@@ -52,7 +52,7 @@ public static partial class SDL
     /// <summary>
     /// A fully transparent floating point alpha value.
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     /// <seealso cref="AlphaOpaqueFloat"/>
     public const float AlphaTransparentFloat = 0.0f;
 }

@@ -114,7 +114,7 @@ public static partial class SDL
     /// direction.dir[0] = 9000; // Since we only have two axes we don't need more parameters.
     /// </code>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="HAPTIC_POLAR"/>
     /// <seealso cref="HAPTIC_CARTESIAN"/>
     /// <seealso cref="HAPTIC_SPHERICAL"/>

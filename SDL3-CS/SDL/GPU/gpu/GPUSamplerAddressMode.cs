@@ -29,7 +29,7 @@ public static partial class SDL
     /// Specifies behavior of texture sampling when the coordinates exceed the 0-1
     /// range.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUSampler"/>
     public enum GPUSamplerAddressMode
     {

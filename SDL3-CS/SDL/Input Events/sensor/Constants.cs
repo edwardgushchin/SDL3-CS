@@ -32,6 +32,6 @@ public static partial class SDL
     /// rest will have an value of SDL_STANDARD_GRAVITY away from the center of the
     /// earth, which is a positive Y value.</para>
     /// </summary>
-    /// <since>This macro is available since SDL 3.1.3.</since>
+    /// <since>This macro is available since SDL 3.2.0</since>
     public const float StandardGravity = 9.80665f;
 }

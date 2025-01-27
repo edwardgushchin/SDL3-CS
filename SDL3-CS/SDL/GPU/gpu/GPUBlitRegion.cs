@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// <para>A structure specifying a region of a texture used in the blit operation.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BlitGPUTexture"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUBlitRegion

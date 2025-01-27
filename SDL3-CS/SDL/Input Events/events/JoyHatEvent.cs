@@ -31,7 +31,7 @@ public static partial class SDL
     /// <summary>
     /// Joystick hat position change event structure (event.jhat.*)
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyHatEvent
     {

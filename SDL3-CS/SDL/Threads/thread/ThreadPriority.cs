@@ -33,7 +33,7 @@ public static partial class SDL
     /// state. <see cref="Hints.ThreadPriorityPolicy"/> can be used to control aspects of
     /// this behavior.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum ThreadPriority
     {
         Low,

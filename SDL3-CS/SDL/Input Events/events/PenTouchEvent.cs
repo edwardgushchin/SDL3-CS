@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>These events come when a pen touches a surface (a tablet, etc), or lifts
     /// off from one.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct PenTouchEvent
     {

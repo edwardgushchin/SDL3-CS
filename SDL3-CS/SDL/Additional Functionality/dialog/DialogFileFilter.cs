@@ -36,7 +36,7 @@ public static partial class SDL
     /// <c>"doc;docx"</c>). File extensions may only contain alphanumeric characters,
     /// hyphens, underscores and periods. Alternatively, the whole string can be a
     /// single asterisk (<c>"*"</c>), which serves as an "<c>All files</c>" filter.</param>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>

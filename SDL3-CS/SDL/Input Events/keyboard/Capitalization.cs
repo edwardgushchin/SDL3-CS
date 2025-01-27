@@ -31,7 +31,7 @@ public static partial class SDL
     /// Not every value is valid on every platform, but where a value isn't
     /// supported, a reasonable fallback will be used.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInputWithProperties"/>
     public enum Capitalization
     {

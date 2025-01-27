@@ -64,7 +64,7 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information. This is a single
     /// allocation that should be freed with <see cref="Free"/> when it is no
     /// longer needed.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static Locale[]? GetPreferredLocales(out int count)
     {
         var ptr = SDL_GetPreferredLocales(out count);

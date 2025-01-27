@@ -69,7 +69,7 @@ public static partial class SDL
     /// <param name="flags">subsystem initialization flags.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAppMetadata"/>
     /// <seealso cref="SetAppMetadataProperty"/>
     /// <seealso cref="InitSubSystem"/>
@@ -88,7 +88,7 @@ public static partial class SDL
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="Quit"/>
     /// <seealso cref="QuitSubSystem"/>
@@ -104,7 +104,7 @@ public static partial class SDL
     /// <remarks>You still need to call <see cref="Quit"/> even if you close all open subsystems
     /// with <see cref="QuitSubSystem"/>.</remarks>
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_QuitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -118,7 +118,7 @@ public static partial class SDL
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <returns>a mask of all initialized subsystems if <c>flags</c> is <c>0</c>, otherwise it
     /// returns the initialization status of the specified subsystems.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="InitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WasInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -135,7 +135,7 @@ public static partial class SDL
     /// application is shutdown, but it is not wise to do this from a library or
     /// other dynamically loaded code.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="QuitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -178,7 +178,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IsMainThread"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunOnMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -211,7 +211,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAppMetadataProperty"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadata"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -272,7 +272,7 @@ public static partial class SDL
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAppMetadataProperty"/>
     /// <seealso cref="SetAppMetadata"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -294,7 +294,7 @@ public static partial class SDL
     /// the string returned is not protected and could potentially be
     /// freed if you call <see cref="SetAppMetadataProperty"/> to set that
     /// property from another thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAppMetadata"/>
     /// <seealso cref="SetAppMetadataProperty"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

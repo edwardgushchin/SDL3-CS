@@ -36,7 +36,7 @@ public static partial class SDL
     /// technologies such as hyperthreading, the number of logical cores
     /// may be more than the number of physical cores.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumLogicalCPUCores"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumLogicalCPUCores();
     
@@ -49,7 +49,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the L1 cache line size of the CPU, in bytes.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCPUCacheLineSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetCPUCacheLineSize();
     
@@ -62,7 +62,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has AltiVec features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAltiVec"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasAltiVec();
@@ -75,7 +75,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has MMX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMMX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasMMX();
@@ -88,7 +88,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE3"/>
     /// <seealso cref="HasSSE41"/>
@@ -105,7 +105,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE2 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasSSE"/>
     /// <seealso cref="HasSSE3"/>
     /// <seealso cref="HasSSE41"/>
@@ -122,7 +122,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE3 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasSSE"/>
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE41"/>
@@ -139,7 +139,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE4.1 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasSSE"/>
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE3"/>
@@ -156,7 +156,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE4.2 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasSSE"/>
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE3"/>
@@ -173,7 +173,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has AVX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasAVX2"/>
     /// <seealso cref="HasAVX512F"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -188,7 +188,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has AVX2 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasAVX"/>
     /// <seealso cref="HasAVX512F"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -203,7 +203,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has AVX-512F features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasAVX"/>
     /// <seealso cref="HasAVX2"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX512F"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -219,7 +219,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has ARM SIMD features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasNEON"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasARMSIMD"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -233,7 +233,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has ARM NEON features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasNEON"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasNEON();
@@ -247,7 +247,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has LOONGARCH LSX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLSX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasLSX();
@@ -261,7 +261,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the CPU has LOONGARCH LASX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLASX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasLASX();
@@ -273,7 +273,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the amount of RAM configured in the system in MiB.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemRAM"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetSystemRAM();
     
@@ -293,7 +293,7 @@ public static partial class SDL
     /// <returns>the alignment in bytes needed for available, known SIMD
     /// instructions.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AlignedAlloc"/>
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSIMDAlignment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

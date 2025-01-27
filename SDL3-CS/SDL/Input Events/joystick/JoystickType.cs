@@ -33,7 +33,7 @@ public static partial class SDL
     /// <para>This is by no means a complete list of everything that can be plugged into
     /// a computer.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum JoystickType : ushort
     {
         Unknown,

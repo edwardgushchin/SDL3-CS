@@ -39,7 +39,7 @@ public static partial class SDL
     /// <param name="line">line number.</param>
     /// <returns>assert state.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReportAssertion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial AssertState ReportAssertion(IntPtr data, [MarshalAs(UnmanagedType.LPUTF8Str)] string func, [MarshalAs(UnmanagedType.LPUTF8Str)] string file, int line);
     
@@ -59,7 +59,7 @@ public static partial class SDL
     /// fails or <c>null</c> for the default handler.</param>
     /// <param name="userdata">a pointer that is passed to <c>handler</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAssertionHandler"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAssertionHandler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetAssertionHandler(AssertionHandler handler, IntPtr userdata);
@@ -76,7 +76,7 @@ public static partial class SDL
     /// <returns>the default <see cref="AssertionHandler"/> that is called when an assert
     /// triggers.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAssertionHandler"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultAssertionHandler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial AssertionHandler GetDefaultAssertionHandler();
@@ -98,7 +98,7 @@ public static partial class SDL
     /// was passed to <see cref="SetAssertionHandler"/>.</param>
     /// <returns>the <see cref="AssertionHandler"/> that is called when an assert triggers.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAssertionHandler"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAssertionHandler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial AssertionHandler GetAssertionHandler(IntPtr puserdata);
@@ -125,7 +125,7 @@ public static partial class SDL
     /// <threadsafety>This function is not thread safe. Other threads calling
     /// <see cref="ResetAssertionReport"/> simultaneously, may render the
     /// returned pointer invalid.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResetAssertionReport"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAssertionReport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetAssertionReport();
@@ -142,7 +142,7 @@ public static partial class SDL
     /// <threadsafety>This function is not thread safe. Other threads triggering an
     /// assertion, or simultaneously calling this function may cause
     /// memory leaks or crashes.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAssertionReport"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetAssertionReport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ResetAssertionReport();

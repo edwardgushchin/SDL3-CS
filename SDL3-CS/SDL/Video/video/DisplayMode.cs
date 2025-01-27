@@ -30,7 +30,7 @@ public static partial class SDL
     /// <summary>
     /// The structure that defines a display mode.
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GetFullscreenDisplayModes"/>
     /// <seealso cref="GetDesktopDisplayMode(uint)"/>
     /// <seealso cref="GetCurrentDisplayMode(uint)"/>

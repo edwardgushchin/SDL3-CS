@@ -38,7 +38,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the initialized and unlocked mutex or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyMutex"/>
     /// <seealso cref="LockMutex"/>
     /// <seealso cref="TryLockMutex"/>
@@ -61,7 +61,7 @@ public static partial class SDL
     /// block until it can lock the mutex, and return with it locked.</para>
     /// </summary>
     /// <param name="mutex">the mutex to lock.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="TryLockMutex"/>
     /// <seealso cref="UnlockMutex"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -79,7 +79,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="mutex">the mutex to try to lock.</param>
     /// <returns><c>null</c> on success, <c>null</c> if the mutex would block.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockMutex"/>
     /// <seealso cref="UnlockMutex"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -97,7 +97,7 @@ public static partial class SDL
     /// thread, and doing so results in undefined behavior.</para>
     /// </summary>
     /// <param name="mutex">the mutex to unlock.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockMutex"/>
     /// <seealso cref="TryLockMutex"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -114,7 +114,7 @@ public static partial class SDL
     /// on the platform.</para>
     /// </summary>
     /// <param name="mutex">the mutex to destroy.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateMutex"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyMutex(IntPtr mutex);
@@ -146,7 +146,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the initialized and unlocked read/write lock or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyRWLock"/>
     /// <seealso cref="LockRWLockForReading"/>
     /// <seealso cref="LockRWLockForWriting"/>
@@ -181,7 +181,7 @@ public static partial class SDL
     /// block until it can lock the mutex, and return with it locked.</para>
     /// </summary>
     /// <param name="rwlock">the read/write lock to lock.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockRWLockForWriting"/>
     /// <seealso cref="TryLockRWLockForReading"/>
     /// <seealso cref="UnlockRWLock"/>
@@ -208,7 +208,7 @@ public static partial class SDL
     /// block until it can lock the mutex, and return with it locked.</para>
     /// </summary>
     /// <param name="rwlock">the read/write lock to lock.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockRWLockForReading"/>
     /// <seealso cref="TryLockRWLockForWriting"/>
     /// <seealso cref="UnlockRWLock"/>
@@ -229,7 +229,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="rwlock">the rwlock to try to lock.</param>
     /// <returns><c>true</c> on success, <c>false</c> if the lock would block.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockRWLockForReading"/>
     /// <seealso cref="TryLockRWLockForWriting"/>
     /// <seealso cref="UnlockRWLock"/>
@@ -255,7 +255,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="rwlock">the rwlock to try to lock.</param>
     /// <returns><c>true</c> on success, <c>false</c> if the lock would block.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockRWLockForWriting"/>
     /// <seealso cref="TryLockRWLockForReading"/>
     /// <seealso cref="UnlockRWLock"/>
@@ -277,7 +277,7 @@ public static partial class SDL
     /// thread, and doing so results in undefined behavior.</para>
     /// </summary>
     /// <param name="rwlock">the rwlock to unlock.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockRWLockForReading"/>
     /// <seealso cref="LockRWLockForWriting"/>
     /// <seealso cref="TryLockRWLockForReading"/>
@@ -296,7 +296,7 @@ public static partial class SDL
     /// undefined behavior depending on the platform.</para>
     /// </summary>
     /// <param name="rwlock">the rwlock to destroy.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateRWLock"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyRWLock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyRWLock(IntPtr rwlock);
@@ -314,7 +314,7 @@ public static partial class SDL
     /// <param name="initialValue">the starting value of the semaphore.</param>
     /// <returns>a new semaphore or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroySemaphore"/>
     /// <seealso cref="SignalSemaphore"/>
     /// <seealso cref="TryWaitSemaphore"/>
@@ -332,7 +332,7 @@ public static partial class SDL
     /// waiting on it.</para>
     /// </summary>
     /// <param name="sem">the semaphore to destroy.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateSemaphore"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroySemaphore"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroySemaphore(IntPtr sem);
@@ -348,7 +348,7 @@ public static partial class SDL
     /// a time length of -1.</para>
     /// </summary>
     /// <param name="sem">the semaphore wait on.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SignalSemaphore"/>
     /// <seealso cref="TryWaitSemaphore"/>
     /// <seealso cref="WaitSemaphoreTimeout"/>
@@ -366,7 +366,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="sem">the semaphore to wait on.</param>
     /// <returns><c>true</c> if the wait succeeds, <c>false</c> if the wait would block.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SignalSemaphore"/>
     /// <seealso cref="WaitSemaphore"/>
     /// <seealso cref="WaitSemaphoreTimeout"/>
@@ -386,7 +386,7 @@ public static partial class SDL
     /// <param name="timeoutMS">the length of the timeout, in milliseconds, or -1 to wait
     /// indefinitely.</param>
     /// <returns><c>true</c> if the wait succeeds or <c>false</c> if the wait times out.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SignalSemaphore"/>
     /// <seealso cref="TryWaitSemaphore"/>
     /// <seealso cref="WaitSemaphore"/>
@@ -400,7 +400,7 @@ public static partial class SDL
     /// Atomically increment a semaphore's value and wake waiting threads.
     /// </summary>
     /// <param name="sem">the semaphore to increment.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="TryWaitSemaphore"/>
     /// <seealso cref="WaitSemaphore"/>
     /// <seealso cref="WaitSemaphoreTimeout"/>
@@ -414,7 +414,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="sem">the semaphore to query.</param>
     /// <returns>the current value of the semaphore.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSemaphoreValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetSemaphoreValue(IntPtr sem);
     
@@ -425,7 +425,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>a new condition variable or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BroadcastCondition"/>
     /// <seealso cref="SignalCondition"/>
     /// <seealso cref="WaitCondition"/>
@@ -440,7 +440,7 @@ public static partial class SDL
     /// <para>Destroy a condition variable.</para>
     /// </summary>
     /// <param name="cond">the condition variable to destroy.</param>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateCondition"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyCondition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyCondition(IntPtr cond);
@@ -452,7 +452,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="cond">the condition variable to signal.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BroadcastCondition"/>
     /// <seealso cref="WaitCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
@@ -466,7 +466,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="cond">the condition variable to signal.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SignalCondition"/>
     /// <seealso cref="WaitCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
@@ -489,7 +489,7 @@ public static partial class SDL
     /// <param name="cond">the condition variable to wait on.</param>
     /// <param name="mutex">the mutex used to coordinate thread access.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BroadcastCondition"/>
     /// <seealso cref="SignalCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
@@ -516,7 +516,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the condition variable is signaled, <c>false</c> if the condition
     /// is not signaled in the allotted time.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BroadcastCondition"/>
     /// <seealso cref="SignalCondition"/>
     /// <seealso cref="WaitCondition"/>
@@ -538,7 +538,7 @@ public static partial class SDL
     /// <param name="state">the initialization state to check.</param>
     /// <returns><c>true</c> if initialization needs to be done, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetInitialized"/>
     /// <seealso cref="ShouldQuit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShouldInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -557,7 +557,7 @@ public static partial class SDL
     /// <param name="state">the initialization state to check.</param>
     /// <returns><c>true</c> if cleanup needs to be done, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetInitialized"/>
     /// <seealso cref="ShouldInit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShouldQuit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -575,7 +575,7 @@ public static partial class SDL
     /// <param name="state">the initialization state to check.</param>
     /// <param name="initialized">the new initialization state.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.3.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ShouldInit"/>
     /// <seealso cref="ShouldQuit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetInitialized"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

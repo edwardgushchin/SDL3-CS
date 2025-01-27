@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>Message box flags.</para>
     /// <para>If supported will display warning icon, etc.</para>
     /// </summary>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     [Flags]
     public enum MessageBoxFlags : uint
     {

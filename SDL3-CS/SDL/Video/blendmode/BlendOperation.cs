@@ -29,7 +29,7 @@ public static partial class SDL
     /// The blend operation used when combining source and destination pixel
     /// components.
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     public enum BlendOperation
     {
         /// <summary>

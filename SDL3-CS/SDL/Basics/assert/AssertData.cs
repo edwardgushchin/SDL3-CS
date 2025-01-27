@@ -33,7 +33,7 @@ public static partial class SDL
     /// used by the assertion handler, then added to the assertion report. This is
     /// returned as a linked list from <see cref="GetAssertionReport"/>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct AssertData
     {

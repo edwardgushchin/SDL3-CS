@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>SDL will send <see cref="EventType.JoystickAdded"/> events for devices that are already plugged in
     /// during <see cref="Init"/>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadDeviceEvent"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct JoyDeviceEvent

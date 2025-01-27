@@ -436,7 +436,7 @@ public partial class SDL
     /// using trays but aren't handling SDL events.</para>
     /// </summary>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTrays"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UpdateTrays();
 }

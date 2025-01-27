@@ -57,7 +57,7 @@ public static partial class SDL
     /// serialize access; this lock will be held before your callback
     /// is called, so your callback does not need to manage the lock
     /// explicitly.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamGetCallback"/>
     /// <seealso cref="SetAudioStreamPutCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -90,7 +90,7 @@ public static partial class SDL
     /// <threadsafety>This will run from a background thread owned by SDL. The
     /// application is responsible for locking resources the callback
     /// touches that need to be protected.</threadsafety>
-    /// <since>This datatype is available since SDL 3.1.3.</since>
+    /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioPostmixCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void AudioPostmixCallback(IntPtr userdata, in AudioSpec spec, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] float[] buffer, int buflen);

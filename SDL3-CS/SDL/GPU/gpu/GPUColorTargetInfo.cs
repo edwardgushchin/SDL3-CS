@@ -58,7 +58,7 @@ public static partial class SDL
     /// significant memory bandwidth.</item>
     /// </list>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUColorTargetInfo

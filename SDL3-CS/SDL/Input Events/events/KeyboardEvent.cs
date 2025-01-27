@@ -35,7 +35,7 @@ public static partial class SDL
     /// event scancode and modifiers directly from the keyboard layout, bypassing
     /// <see cref="Hints.KeycodeOptions"/>, by calling <see cref="GetKeyFromScancode"/>.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="Hints.KeycodeOptions"/>
     [StructLayout(LayoutKind.Sequential)]

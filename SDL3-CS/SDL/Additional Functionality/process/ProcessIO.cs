@@ -54,7 +54,7 @@ public static partial class SDL
     /// <see cref="Props.IOStreamFileDescriptorNumber"/> set. This is true for streams
     /// representing files and process I/O.</para>
     /// </summary>
-    /// <since>This enum is available since SDL 3.1.3.</since>
+    /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="GetProcessProperties"/>
     /// <seealso cref="ReadProcess"/>

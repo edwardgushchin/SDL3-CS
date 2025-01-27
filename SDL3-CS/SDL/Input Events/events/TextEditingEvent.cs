@@ -33,7 +33,7 @@ public static partial class SDL
     /// will be inserted into the editing text. The length is the number of UTF-8
     /// characters that will be replaced by new typing.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3.</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct TextEditingEvent
     {

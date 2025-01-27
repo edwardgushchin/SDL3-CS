@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>Usage flags can be bitwise OR'd together for combinations of usages. Note
     /// that certain combinations are invalid, for example VERTEX and INDEX.</para>
     /// </summary>
-    /// <since>This struct is available since SDL 3.1.3</since>
+    /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUBuffer"/>
     /// <seealso cref="GPUBufferUsageFlags"/>
     [StructLayout(LayoutKind.Sequential)]

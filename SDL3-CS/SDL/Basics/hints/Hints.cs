@@ -50,7 +50,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AllowAltTabWhileGrabbed = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
         
         /// <summary>
@@ -67,7 +67,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AndroidAllowRecreateActivity = "SDL_ANDROID_ALLOW_RECREATE_ACTIVITY";
         
         /// <summary>
@@ -80,7 +80,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AndroidBlockOnPause = "SDL_ANDROID_BLOCK_ON_PAUSE";
         
         /// <summary>
@@ -94,7 +94,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL audio is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AndroidLowLatencyAudio = "SDL_ANDROID_LOW_LATENCY_AUDIO";
         
         /// <summary>
@@ -114,7 +114,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AndroidTrapBackButton = "SDL_ANDROID_TRAP_BACK_BUTTON";
         
         /// <summary>
@@ -126,7 +126,7 @@ public static partial class SDL
         /// application.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AppID = "SDL_APP_ID";
         
         /// <summary>
@@ -140,7 +140,7 @@ public static partial class SDL
         /// application.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AppName = "SDL_APP_NAME";
         
         /// <summary>
@@ -159,7 +159,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AppleTVControllerUIEvents = "SDL_APPLE_TV_CONTROLLER_UI_EVENTS";
         
         /// <summary>
@@ -172,7 +172,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AppleTVRemoteAllowRotation = "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION";
         
         /// <summary>
@@ -185,7 +185,7 @@ public static partial class SDL
         /// is set.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         /// <seealso cref="AudioALSADefaultPlaybackDevice"/>
         /// <seealso cref="AudioALSADefaultRecordingDevice"/>
         public const string AudioALSADefaultDevice = "SDL_AUDIO_ALSA_DEFAULT_DEVICE";
@@ -228,7 +228,7 @@ public static partial class SDL
         /// https://developer.apple.com/library/content/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioCategory = "SDL_AUDIO_CATEGORY";
 
         /// <summary>
@@ -238,7 +238,7 @@ public static partial class SDL
         /// be used. This defaults to <c>"1"</c> for recording and <c>"2"</c> for playback devices.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioChannels = "SDL_AUDIO_CHANNELS";
         
         /// <summary>
@@ -257,7 +257,7 @@ public static partial class SDL
         /// for the relevant XDG icon specs.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDeviceAppIconName = "SDL_AUDIO_DEVICE_APP_ICON_NAME";
         
         /// <summary>
@@ -274,7 +274,7 @@ public static partial class SDL
         /// or might adjust it.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDeviceSampleFrames = "SDL_AUDIO_DEVICE_SAMPLE_FRAMES";
         
         /// <summary>
@@ -295,7 +295,7 @@ public static partial class SDL
         /// SDL_AudioStream, nor an SDL logical audio device.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDeviceStreamName = "SDL_AUDIO_DEVICE_STREAM_NAME";
         
         /// <summary>
@@ -315,7 +315,7 @@ public static partial class SDL
         /// SDL_AudioStream, nor an SDL logical audio device.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDeviceStreamRole = "SDL_AUDIO_DEVICE_STREAM_ROLE";
         
         /// <summary>
@@ -323,7 +323,7 @@ public static partial class SDL
         /// <para>This defaults to <c>"sdlaudio-in.raw"</c>;</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDiskInputFile = "SDL_AUDIO_DISK_INPUT_FILE";
         
         /// <summary>
@@ -331,7 +331,7 @@ public static partial class SDL
         /// <para>This defaults to <c>"sdlaudio.raw"</c>;</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDiskOutputFile = "SDL_AUDIO_DISK_OUTPUT_FILE";
         
         /// <summary>
@@ -341,7 +341,7 @@ public static partial class SDL
         /// lower down to 0. The default value is <c>"1.0"</c>.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDiskTimescale = "SDL_AUDIO_DISK_TIMESCALE";
         
         /// <summary>
@@ -352,7 +352,7 @@ public static partial class SDL
         /// but want to try talking to the lower level instead.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDriver = "SDL_AUDIO_DRIVER";
         
         /// <summary>
@@ -362,7 +362,7 @@ public static partial class SDL
         /// lower down to 0. The default value is <c>"1.0"</c>.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDummyTimescale = "SDL_AUDIO_DUMMY_TIMESCALE";
         
         /// <summary>
@@ -386,7 +386,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioFormat = "SDL_AUDIO_FORMAT";
         
         /// <summary>
@@ -396,7 +396,7 @@ public static partial class SDL
         /// used. This defaults to <c>"44100"</c>.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioFrequency = "SDL_AUDIO_FREQUENCY";
         
         /// <summary>
@@ -415,7 +415,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioIncludeMonitors = "SDL_AUDIO_INCLUDE_MONITORS";
         
         /// <summary>
@@ -428,7 +428,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AutoUpdateJoysticks = "SDL_AUTO_UPDATE_JOYSTICKS";
         
         /// <summary>
@@ -441,7 +441,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string AutoUpdateSensors = "SDL_AUTO_UPDATE_SENSORS";
         
         /// <summary>
@@ -461,7 +461,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string BMPSaveLegacyFormat = "SDL_BMP_SAVE_LEGACY_FORMAT";
         
         /// <summary>
@@ -475,7 +475,7 @@ public static partial class SDL
         /// <see cref="SDL.Init(SDL.InitFlags)"/> is called to be useful.</para>
         /// </summary>
         /// <remarks></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string CameraDriver = "SDL_CAMERA_DRIVER";
         
         /// <summary>
@@ -504,7 +504,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>The items can be prefixed by <c>'+'/'-'</c> to add/remove features.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string CPUFeatureMask = "SDL_CPU_FEATURE_MASK";
         
         /// <summary>
@@ -516,7 +516,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickDirectinput = "SDL_JOYSTICK_DIRECTINPUT";
         
         /// <summary>
@@ -539,7 +539,7 @@ public static partial class SDL
         /// <para>More options may be added in the future.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string FileDialogDriver = "SDL_FILE_DIALOG_DRIVER";
         
         /// <summary>
@@ -553,7 +553,7 @@ public static partial class SDL
         /// the bounds x, then y, width and height, in that order.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string DisplayUsableBounds = "SDL_DISPLAY_USABLE_BOUNDS";
         
         /// <summary>
@@ -570,7 +570,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EmscriptenAsyncify = "SDL_EMSCRIPTEN_ASYNCIFY";
         
         /// <summary>
@@ -579,7 +579,7 @@ public static partial class SDL
         /// <para>The default value is <c>"#canvas";</c></para>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EmscriptenCanvasSelector = "SDL_EMSCRIPTEN_CANVAS_SELECTOR";
         
         /// <summary>
@@ -597,7 +597,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EmscriptenKeyboardElement = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
         
         /// <summary>
@@ -612,7 +612,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint must be set before <see cref="StartTextInput"/> is called</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EnableScreenKeyboard = "SDL_ENABLE_SCREEN_KEYBOARD";
         
         /// <summary>
@@ -624,7 +624,7 @@ public static partial class SDL
         /// path is the full path to the event device.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EvdevDevices = "SDL_EVDEV_DEVICES";
         
         /// <summary>
@@ -644,7 +644,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EventLogging = "SDL_EVENT_LOGGING";
         
         /// <summary>
@@ -661,7 +661,7 @@ public static partial class SDL
         /// discussion.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ForceRaiseWindow = "SDL_FORCE_RAISEWINDOW";
         
         /// <summary>
@@ -679,7 +679,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="GetWindowSurface"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string FramebufferAcceleration = "SDL_FRAMEBUFFER_ACCELERATION";
         
         /// <summary>
@@ -690,7 +690,7 @@ public static partial class SDL
         /// <see cref="GetGamepadMappingForGUID"/> and <see cref="AddGamepadMapping"/></para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GameControllerConfig = "SDL_GAMECONTROLLERCONFIG";
         
         /// <summary>
@@ -702,7 +702,7 @@ public static partial class SDL
         /// <see cref="GetGamepadMappingForGUID"/> and <see cref="AddGamepadMapping"/></para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GameControllerConfigFile = "SDL_GAMECONTROLLERCONFIG_FILE";
         
         /// <summary>
@@ -721,7 +721,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GameControllerType = "SDL_GAMECONTROLLERTYPE";
         
         /// <summary>
@@ -734,7 +734,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GameControllerIgnoreDevices = "SDL_GAMECONTROLLER_IGNORE_DEVICES";
         
         /// <summary>
@@ -747,7 +747,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GameControllerIgnoreDevicesExcept = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT";
         
         /// <summary>
@@ -765,7 +765,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint should be set before a gamepad is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GameControllerSensorFusion = "SDL_GAMECONTROLLER_SENSOR_FUSION";
         
         /// <summary>
@@ -774,7 +774,7 @@ public static partial class SDL
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GDKTextInputDefaultText = "SDL_GDK_TEXTINPUT_DEFAULT_TEXT";
         
         /// <summary>
@@ -783,7 +783,7 @@ public static partial class SDL
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GDKTextInputDescription = "SDL_GDK_TEXTINPUT_DESCRIPTION";
         
         /// <summary>
@@ -794,7 +794,7 @@ public static partial class SDL
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GDKTextInputMaxLength = "SDL_GDK_TEXTINPUT_MAX_LENGTH";
         
         /// <summary>
@@ -806,7 +806,7 @@ public static partial class SDL
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GDKTextInputScope = "SDL_GDK_TEXTINPUT_SCOPE";
         
         /// <summary>
@@ -814,7 +814,7 @@ public static partial class SDL
         /// <para>This hint is available only if SDL_GDK_TEXTINPUT defined.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="StartTextInput"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GDKTextInputTitle = "SDL_GDK_TEXTINPUT_TITLE";
         
         /// <summary>
@@ -829,7 +829,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string HIDAPILibusb = "SDL_HIDAPI_LIBUSB";
         
         /// <summary>
@@ -844,7 +844,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string HIDAPILibusbWhitelist = "SDL_HIDAPI_LIBUSB_WHITELIST";
         
         /// <summary>
@@ -856,7 +856,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string HIDAPIUdev = "SDL_HIDAPI_UDEV";
         
         /// <summary>
@@ -867,7 +867,7 @@ public static partial class SDL
         /// supports D3D12 but want to try using D3D11 instead.</para>
         /// </summary>
         /// <remarks>This hint should be set before any GPU functions are called.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string GPUDriver = "SDL_GPU_DRIVER";
         
         /// <summary>
@@ -883,7 +883,7 @@ public static partial class SDL
         /// permission prompts.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string HIDAPIEnumerateOnlyControllers = "SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS";
         
         /// <summary>
@@ -895,7 +895,7 @@ public static partial class SDL
         /// you might use the string <c>0x2563/0x0523,0x28de/0x0000</c>;</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string HIDAPIIgnoreDevices = "SDL_HIDAPI_IGNORE_DEVICES";
         
         /// <summary>
@@ -915,7 +915,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string IMEImplementedUI = "SDL_IME_IMPLEMENTED_UI";
         
         /// <summary>
@@ -932,7 +932,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string IOSHideHomeIndicator = "SDL_IOS_HIDE_HOME_INDICATOR";
         
         /// <summary>
@@ -947,7 +947,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickAllowBackgroundEvents = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
         
         /// <summary>
@@ -959,7 +959,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickArcadestickDevices = "SDL_JOYSTICK_ARCADESTICK_DEVICES";
         
         /// <summary>
@@ -974,7 +974,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickArcadestickDevicesExcluded = "SDL_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED";
         
         /// <summary>
@@ -987,7 +987,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickBlacklistDevices = "SDL_JOYSTICK_BLACKLIST_DEVICES";
         
         /// <summary>
@@ -1002,7 +1002,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickBlacklistDevicesExcluded = "SDL_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED";
         
         /// <summary>
@@ -1010,7 +1010,7 @@ public static partial class SDL
         /// joysticks.</para>
         /// </summary>
         /// <remarks>This variable is currently only used by the Linux joystick driver.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickDevice = "SDL_JOYSTICK_DEVICE";
         
         
@@ -1045,7 +1045,7 @@ public static partial class SDL
         /// will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickFlightstickDevices = "SDL_JOYSTICK_FLIGHTSTICK_DEVICES";
         
         /// <summary>
@@ -1060,7 +1060,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickFlightstickDevicesExcluded = "SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED";
         
         /// <summary>
@@ -1074,7 +1074,7 @@ public static partial class SDL
         /// <para>The default is <c>"1"</c> on GDK platforms, and <c>"0"</c> otherwise.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickGameInput = "SDL_JOYSTICK_GAMEINPUT";
         
         /// <summary>
@@ -1087,7 +1087,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickGameCubeDevices = "SDL_JOYSTICK_GAMECUBE_DEVICES";
         
         /// <summary>
@@ -1102,7 +1102,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickGameCubeDevicesExcluded = "SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED";
         
         /// <summary>
@@ -1116,7 +1116,7 @@ public static partial class SDL
         /// hints for specific drivers below.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPI = "SDL_JOYSTICK_HIDAPI";
         
         /// <summary>
@@ -1129,7 +1129,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPICombineJoyCons = "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS";
         
         /// <summary>
@@ -1143,7 +1143,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIGameCube = "SDL_JOYSTICK_HIDAPI_GAMECUBE";
         
         /// <summary>
@@ -1161,7 +1161,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIGameCubeRumbleBrake = "SDL_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE";
         
         /// <summary>
@@ -1175,7 +1175,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIJoyCons = "SDL_JOYSTICK_HIDAPI_JOY_CONS";
         
         /// <summary>
@@ -1191,7 +1191,7 @@ public static partial class SDL
         /// brightness of the Home button LED.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIJoyconHomeLED = "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED";
         
         /// <summary>
@@ -1205,7 +1205,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPILuna = "SDL_JOYSTICK_HIDAPI_LUNA";
         
         /// <summary>
@@ -1219,7 +1219,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPINintendoClassic = "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC";
         
         /// <summary>
@@ -1237,7 +1237,7 @@ public static partial class SDL
         /// https://github.com/ViGEm/DsHidMini for an alternative driver on Windows.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIPS3 = "SDL_JOYSTICK_HIDAPI_PS3";
         
         /// <summary>
@@ -1251,7 +1251,7 @@ public static partial class SDL
         /// <para>The default value is 0.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIPS3SixAxisDriver = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         
         /// <summary>
@@ -1265,7 +1265,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIPS4 = "SDL_JOYSTICK_HIDAPI_PS4";
         
         /// <summary>
@@ -1277,7 +1277,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint can be set anytime, but only takes effect when extended input
         /// reports are enabled.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIPS4ReportInterval = "SDL_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL";
         
         
@@ -1292,7 +1292,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIPS5 = "SDL_JOYSTICK_HIDAPI_PS5";
         
         /// <summary>
@@ -1304,7 +1304,7 @@ public static partial class SDL
         /// <item><c>"1"</c>: player LEDs are enabled. (default)</item>
         /// </list>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIPS5PlayerLED = "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED";
         
         
@@ -1319,7 +1319,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIShield = "SDL_JOYSTICK_HIDAPI_SHIELD";
         
         /// <summary>
@@ -1332,7 +1332,7 @@ public static partial class SDL
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIStadia = "SDL_JOYSTICK_HIDAPI_STADIA";
         
         /// <summary>
@@ -1347,7 +1347,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISteam = "SDL_JOYSTICK_HIDAPI_STEAM";
         
         /// <summary>
@@ -1377,7 +1377,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISteamdeck = "SDL_JOYSTICK_HIDAPI_STEAMDECK";
         
         /// <summary>
@@ -1387,7 +1387,7 @@ public static partial class SDL
         /// not used <c>"1"</c> - HIDAPI driver is used</para>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISteamHORI = "SDL_JOYSTICK_HIDAPI_STEAM_HORI";
         
         /// <summary>
@@ -1401,7 +1401,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISwitch = "SDL_JOYSTICK_HIDAPI_SWITCH";
         
         /// <summary>
@@ -1417,7 +1417,7 @@ public static partial class SDL
         /// brightness of the Home button LED.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISwitchHomeLED = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED";
         
         /// <summary>
@@ -1430,7 +1430,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISwitchPlayerLED = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED";
         
         /// <summary>
@@ -1443,7 +1443,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before opening a Joy-Con controller.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIVerticalJoyCons = "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS";
         
         /// <summary>
@@ -1458,7 +1458,7 @@ public static partial class SDL
         /// now.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIWii = "SDL_JOYSTICK_HIDAPI_WII";
         
         /// <summary>
@@ -1471,7 +1471,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIWiiPlayerLED = "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED";
         
         /// <summary>
@@ -1486,7 +1486,7 @@ public static partial class SDL
         /// <see cref="JoystickHIDAPI"/></para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXbox = "SDL_JOYSTICK_HIDAPI_XBOX";
         
         /// <summary>
@@ -1500,7 +1500,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPIXbox"/></para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXbox360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
         
         /// <summary>
@@ -1513,7 +1513,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXbox360PlayerLED = "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED";
         
         /// <summary>
@@ -1527,7 +1527,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPIXbox360"/></para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXbox360Wireless = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS";
         
         /// <summary>
@@ -1541,7 +1541,7 @@ public static partial class SDL
         /// <para>The default is the value of <see cref="JoystickHIDAPIXbox"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXboxOne = "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
         
         /// <summary>
@@ -1557,7 +1557,7 @@ public static partial class SDL
         /// brightness of the Home button LED. The default brightness is 0.4.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXboxOneHomeLED = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED";
         
         /// <summary>
@@ -1570,7 +1570,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickIOKit = "SDL_JOYSTICK_IOKIT";
         
         /// <summary>
@@ -1584,7 +1584,7 @@ public static partial class SDL
         /// <para></para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickLinuxClassic = "SDL_JOYSTICK_LINUX_CLASSIC";
         
         /// <summary>
@@ -1597,7 +1597,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before a controller is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickLinuxDeadzones = "SDL_JOYSTICK_LINUX_DEADZONES";
         
         /// <summary>
@@ -1611,7 +1611,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before a controller is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickLinuxDigitalHats = "SDL_JOYSTICK_LINUX_DIGITAL_HATS";
         
         /// <summary>
@@ -1624,7 +1624,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before a controller is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickLinuxHatDeadzones = "SDL_JOYSTICK_LINUX_HAT_DEADZONES";
         
         /// <summary>
@@ -1637,7 +1637,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickMFI = "SDL_JOYSTICK_MFI";
         
         /// <summary>
@@ -1650,7 +1650,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickRawinput = "SDL_JOYSTICK_RAWINPUT";
         
         /// <summary>
@@ -1665,7 +1665,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before a gamepad is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickRawinputCorrelateXInput = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT";
         
         /// <summary>
@@ -1678,7 +1678,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickROGChakram = "SDL_JOYSTICK_ROG_CHAKRAM";
         
         /// <summary>
@@ -1691,7 +1691,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickThread = "SDL_JOYSTICK_THREAD";
         
         /// <summary>
@@ -1703,7 +1703,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickThrottleDevices = "SDL_JOYSTICK_THROTTLE_DEVICES";
         
         /// <summary>
@@ -1718,7 +1718,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickThrottleDevicesExcluded = "SDL_JOYSTICK_THROTTLE_DEVICES_EXCLUDED";
         
         /// <summary>
@@ -1731,7 +1731,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickWGI = "SDL_JOYSTICK_WGI";
         
         /// <summary>
@@ -1743,7 +1743,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickWheelDevices = "SDL_JOYSTICK_WHEEL_DEVICES";
         
         /// <summary>
@@ -1758,7 +1758,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickWheelDevicesExcluded = "SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED";
         
         /// <summary>
@@ -1771,7 +1771,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint should be set before a controller is opened.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickZeroCenteredDevices = "SDL_JOYSTICK_ZERO_CENTERED_DEVICES";
         
         /// <summary>
@@ -1800,7 +1800,7 @@ public static partial class SDL
         /// events.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string KeycodeOptions = "SDL_KEYCODE_OPTIONS";
         
         /// <summary>
@@ -1811,7 +1811,7 @@ public static partial class SDL
         /// to a number between 0 and 99 to force selection.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string KMSDRMDeviceIndex = "SDL_KMSDRM_DEVICE_INDEX";
         
         /// <summary>
@@ -1835,7 +1835,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string KMSDRMRequireDRMMaster = "SDL_KMSDRM_REQUIRE_DRM_MASTER";
         
         /// <summary>
@@ -1853,7 +1853,7 @@ public static partial class SDL
         /// <para><c>`app=info,assert=warn,test=verbose,*=error`</c></para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string Logging = "SDL_LOGGING";
         
         /// <summary>
@@ -1867,7 +1867,7 @@ public static partial class SDL
         /// </list>
         /// <para>This hint needs to be set before <see cref="Init"/>.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MacBackgroundApp = "SDL_MAC_BACKGROUND_APP";
         
         /// <summary>
@@ -1881,7 +1881,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MacCtrlClickEmulateRightClick = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK";
 
         /// <summary>
@@ -1901,7 +1901,7 @@ public static partial class SDL
         /// waiting for the main thread to do an update, this might fix your issue.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MacOpenGLAsyncDispatch = "SDL_MAC_OPENGL_ASYNC_DISPATCH";
         
         /// <summary>
@@ -1936,7 +1936,7 @@ public static partial class SDL
         /// </list>
         /// <para>This hint needs to be set before <see cref="Init"/>.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.2.0.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MacScrollMomentum = "SDL_MAC_SCROLL_MOMENTUM";
         
         /// <summary>
@@ -1956,7 +1956,7 @@ public static partial class SDL
         /// the default.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MainCallbackRate = "SDL_MAIN_CALLBACK_RATE";
         
         /// <summary>
@@ -1972,21 +1972,21 @@ public static partial class SDL
         /// mouse events until the button is released.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseAutoCapture = "SDL_MOUSE_AUTO_CAPTURE";
         
         /// <summary>
         /// <para>A variable setting the double click radius, in pixels.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseDoubleClickRadius = "SDL_MOUSE_DOUBLE_CLICK_RADIUS";
         
         /// <summary>
         /// <para>A variable setting the double click time, in milliseconds.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseDoubleClickTime = "SDL_MOUSE_DOUBLE_CLICK_TIME";
         
         
@@ -1996,7 +1996,7 @@ public static partial class SDL
         /// The default value is zero (<see cref="SystemCursor.Default"/>).</para>
         /// </summary>
         /// <remarks>This hint needs to be set before <see cref="Init"/>.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseDefaultSystemCursor = "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR";
         
         
@@ -2023,7 +2023,7 @@ public static partial class SDL
         /// relative mouse mode directly.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseEmulateWarpWithRelative = "SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE";
         
         /// <summary>
@@ -2035,7 +2035,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseFocusClickthrough = "SDL_MOUSE_FOCUS_CLICKTHROUGH";
         
         /// <summary>
@@ -2043,7 +2043,7 @@ public static partial class SDL
         /// when the mouse is not in relative mode.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseNormalSpeedScale = "SDL_MOUSE_NORMAL_SPEED_SCALE";
         
         /// <summary>
@@ -2061,7 +2061,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseRelativeModeCenter = "SDL_MOUSE_RELATIVE_MODE_CENTER";
         
         /// <summary>
@@ -2069,7 +2069,7 @@ public static partial class SDL
         /// mouse is in relative mode.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseRelativeSpeedScale = "SDL_MOUSE_RELATIVE_SPEED_SCALE";
         
         /// <summary>
@@ -2085,7 +2085,7 @@ public static partial class SDL
         /// system speed scale.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseRelativeSystemScale = "SDL_MOUSE_RELATIVE_SYSTEM_SCALE";
         
         /// <summary>
@@ -2101,7 +2101,7 @@ public static partial class SDL
         /// motion due to warping.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseRelativeWarpMotion = "SDL_MOUSE_RELATIVE_WARP_MOTION";
         
         /// <summary>
@@ -2117,7 +2117,7 @@ public static partial class SDL
         /// frames if this is enabled on those systems.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseRelativeCursorVisible = "SDL_MOUSE_RELATIVE_CURSOR_VISIBLE";
         
         /// <summary>
@@ -2132,7 +2132,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseTouchEvents = "SDL_MOUSE_TOUCH_EVENTS";
         
         /// <summary>
@@ -2147,7 +2147,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string MuteConsoleKeyboard = "SDL_MUTE_CONSOLE_KEYBOARD";
         
         /// <summary>
@@ -2160,7 +2160,7 @@ public static partial class SDL
         /// </list>
         /// <para>This hint should be set before SDL is initialized.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string NoSignalHandlers = "SDL_NO_SIGNAL_HANDLERS";
         
         /// <summary>
@@ -2169,7 +2169,7 @@ public static partial class SDL
         /// <remarks>This hint should be set before creating an OpenGL window or creating an
         /// OpenGL context. If this hint isn't set, SDL will choose a reasonable
         /// default.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string OpenGLLibrary = "SDL_OPENGL_LIBRARY";
         
         /// <summary>
@@ -2179,7 +2179,7 @@ public static partial class SDL
         /// manage OpenGL contexts. If this hint isn't set, SDL will choose a
         /// reasonable default.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.2.0.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string EGLLibrary = "SDL_EGL_LIBRARY";
         
         /// <summary>
@@ -2207,7 +2207,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string OpenGLESDriver = "SDL_OPENGL_ES_DRIVER";
         
         /// <summary>
@@ -2217,7 +2217,7 @@ public static partial class SDL
         /// specify that by using this hint. This should be the full or relative path
         /// to a .dll on Windows or .so on Linux.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.2.0.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string OpenVRLibrary = "SDL_OPENVR_LIBRARY";
         
         /// <summary>
@@ -2233,7 +2233,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string Orientations = "SDL_ORIENTATIONS";
         
         /// <summary>
@@ -2250,7 +2250,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string PollSentinel = "SDL_POLL_SENTINEL";
         
         /// <summary>
@@ -2264,7 +2264,7 @@ public static partial class SDL
         /// optional: <c>"en"</c>. So you might have a list like this: <c>"en_GB,jp,es_PT"</c>;</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string PreferredLocales = "SDL_PREFERRED_LOCALES";
         
         /// <summary>
@@ -2284,7 +2284,7 @@ public static partial class SDL
         /// icon will be destroyed.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string QuitOnLastWindowClose = "SDL_QUIT_ON_LAST_WINDOW_CLOSE";
         
         /// <summary>
@@ -2297,7 +2297,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderDirect3DThreadsafe = "SDL_RENDER_DIRECT3D_THREADSAFE";
         
         /// <summary>
@@ -2310,7 +2310,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderDirect3D11Debug = "SDL_RENDER_DIRECT3D11_DEBUG";
         
         /// <summary>
@@ -2322,7 +2322,7 @@ public static partial class SDL
         /// </list>
         /// <para>By default, SDL does not use Vulkan Validation Layers.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderVulkanDebug = "SDL_RENDER_VULKAN_DEBUG";
         
         /// <summary>
@@ -2334,7 +2334,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderGPUDebug = "SDL_RENDER_GPU_DEBUG";
         
         /// <summary>
@@ -2347,7 +2347,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderGPULowPower = "SDL_RENDER_GPU_LOW_POWER";
         
         /// <summary>
@@ -2374,7 +2374,7 @@ public static partial class SDL
         /// available on the current platform.</para>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderDriver = "SDL_RENDER_DRIVER";
         
         /// <summary>
@@ -2390,7 +2390,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderLineMethod = "SDL_RENDER_LINE_METHOD";
         
         /// <summary>
@@ -2403,7 +2403,7 @@ public static partial class SDL
         /// </list>
         /// <para>This hint should be set before creating a renderer.</para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderMetalPreferLowPowerDevice = "SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE";
         
         /// <summary>
@@ -2417,7 +2417,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a renderer.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RenderVsync = "SDL_RENDER_VSYNC";
         
         /// <summary>
@@ -2431,7 +2431,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ReturnKeyHidesIME = "SDL_RETURN_KEY_HIDES_IME";
         
         /// <summary>
@@ -2443,7 +2443,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         /// <seealso cref="ROGGamepadMiceExcluded"/>
         public const string ROGGamepadMice = "SDL_ROG_GAMEPAD_MICE";
         
@@ -2458,7 +2458,7 @@ public static partial class SDL
         /// file will be loaded and interpreted as the value of the variable.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ROGGamepadMiceExcluded = "SDL_ROG_GAMEPAD_MICE_EXCLUDED";
         
         /// <summary>
@@ -2467,7 +2467,7 @@ public static partial class SDL
         /// The default is 10000.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string RPIVideoLayer = "SDL_RPI_VIDEO_LAYER";
         
         
@@ -2485,7 +2485,7 @@ public static partial class SDL
         /// default: <c>"Playing a game"</c> or something similar.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="DisableScreenSaver"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ScreensaverInhibitActivityName = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME";
         
         /// <summary>
@@ -2501,7 +2501,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ShutdownDbusOnQuit = "SDL_SHUTDOWN_DBUS_ON_QUIT";
         
         /// <summary>
@@ -2512,7 +2512,7 @@ public static partial class SDL
         /// want to avoid SteamRemoteStorage for title data.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string StorageTitleDriver = "SDL_STORAGE_TITLE_DRIVER";
         
         /// <summary>
@@ -2523,7 +2523,7 @@ public static partial class SDL
         /// want to avoid SteamRemoteStorage for user data.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string StorageUserDriver = "SDL_STORAGE_USER_DRIVER";
         
         /// <summary>
@@ -2549,7 +2549,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before calling SDL_SetCurrentThreadPriority</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ThreadForceRealtimeTimeCritical = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
         
         /// <summary>
@@ -2567,7 +2567,7 @@ public static partial class SDL
         /// through RLIMIT_RTTIME after calling SDL_SetCurrentThreadPriority.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling SDL_SetCurrentThreadPriority</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string ThreadPriorityPolicy = "SDL_THREAD_PRIORITY_POLICY";
         
         /// <summary>
@@ -2581,7 +2581,7 @@ public static partial class SDL
         /// <para>If this variable is set to <c>"0"</c>, the system timer resolution is not set.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string TimerResolution = "SDL_TIMER_RESOLUTION";
         
         /// <summary>
@@ -2594,7 +2594,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string TouchMouseEvents = "SDL_TOUCH_MOUSE_EVENTS";
         
         /// <summary>
@@ -2612,7 +2612,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string TrackpadIsTouchOnly = "SDL_TRACKPAD_IS_TOUCH_ONLY";
         
         /// <summary>
@@ -2625,7 +2625,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string TVRemoteAsJoystick = "SDL_TV_REMOTE_AS_JOYSTICK";
         
         /// <summary>
@@ -2637,7 +2637,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoAllowScreensaver = "SDL_VIDEO_ALLOW_SCREENSAVER";
         
         /// <summary>
@@ -2658,7 +2658,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.2.0.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoDisplayPriority = "SDL_VIDEO_DISPLAY_PRIORITY";
         
         /// <summary>
@@ -2677,7 +2677,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoDoubleBuffer = "SDL_VIDEO_DOUBLE_BUFFER";
         
         /// <summary>
@@ -2691,7 +2691,7 @@ public static partial class SDL
         /// fail.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoDriver = "SDL_VIDEO_DRIVER";
         
         /// <summary>
@@ -2703,7 +2703,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoDummySaveFrames = "SDL_VIDEO_DUMMY_SAVE_FRAMES";
         
         /// <summary>
@@ -2715,7 +2715,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoEGLAllowGetDisplayFallback = "SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK";
         
         /// <summary>
@@ -2729,7 +2729,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoForceEGL = "SDL_VIDEO_FORCE_EGL";
         
         /// <summary>
@@ -2745,7 +2745,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoMacFullscreenSpaces = "SDL_VIDEO_MAC_FULLSCREEN_SPACES";
         
         /// <summary>
@@ -2778,7 +2778,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoMinimizeOnFocusLoss = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS";
         
         /// <summary>
@@ -2793,7 +2793,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoOffscreenSaveFrames = "SDL_VIDEO_OFFSCREEN_SAVE_FRAMES";
         
         /// <summary>
@@ -2815,7 +2815,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoSyncWindowOperations = "SDL_VIDEO_SYNC_WINDOW_OPERATIONS";
         
         /// <summary>
@@ -2830,7 +2830,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoWaylandAllowLibdecor = "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR";
         
         /// <summary>
@@ -2847,7 +2847,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoWaylandModeEmulation = "SDL_VIDEO_WAYLAND_MODE_EMULATION";
         
         /// <summary>
@@ -2866,7 +2866,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoWaylandModeScaling = "SDL_VIDEO_WAYLAND_MODE_SCALING";
         
         /// <summary>
@@ -2883,7 +2883,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoWaylandPreferLibdecor = "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR";
         
         /// <summary>
@@ -2917,7 +2917,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoWaylandScaleToDisplay = "SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY";
         
         /// <summary>
@@ -2936,7 +2936,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoWinD3Dcompiler = "SDL_VIDEO_WIN_D3DCOMPILER";
         
         /// <summary>
@@ -2949,7 +2949,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11NetWMBypassCompositor = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR";
         
         /// <summary>
@@ -2965,7 +2965,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11NetWMPing = "SDL_VIDEO_X11_NET_WM_PING";
         
         /// <summary>
@@ -2977,7 +2977,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before initializing the video subsystem.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11Nodirectcolor = "SDL_VIDEO_X11_NODIRECTCOLOR";
         
         /// <summary>
@@ -2985,21 +2985,21 @@ public static partial class SDL
         /// <para>The variable can be set to a floating point value in the range 1.0-10.0f</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11ScalingFactor = "SDL_VIDEO_X11_SCALING_FACTOR";
         
         /// <summary>
         /// <para>A variable forcing the visual ID used for X11 display modes.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing the video subsystem.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11VisualID = "SDL_VIDEO_X11_VISUALID";
         
         /// <summary>
         /// <para>A variable forcing the visual ID chosen for new X11 windows.</para>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11WindowVisualID = "SDL_VIDEO_X11_WINDOW_VISUALID";
         
         /// <summary>
@@ -3011,7 +3011,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VideoX11XRandR = "SDL_VIDEO_X11_XRANDR";
         
         /// <summary>
@@ -3024,7 +3024,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaEnableBackTouch = "SDL_VITA_ENABLE_BACK_TOUCH";
         
         /// <summary>
@@ -3037,7 +3037,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaEnableFrontTouch = "SDL_VITA_ENABLE_FRONT_TOUCH";
         
         /// <summary>
@@ -3045,7 +3045,7 @@ public static partial class SDL
         /// <para>This hint defaults to <c>"app0:module"</c>;</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaModulePath = "SDL_VITA_MODULE_PATH";
         
         /// <summary>
@@ -3057,7 +3057,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaPvrInit = "SDL_VITA_PVR_INIT";
         
         /// <summary>
@@ -3070,7 +3070,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaResolution = "SDL_VITA_RESOLUTION";
         
         /// <summary>
@@ -3083,7 +3083,7 @@ public static partial class SDL
         /// </list>>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaPvrOpenGL = "SDL_VITA_PVR_OPENGL";
         
         /// <summary>
@@ -3097,7 +3097,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VitaTouchMouseDevice = "SDL_VITA_TOUCH_MOUSE_DEVICE";
         
         /// <summary>
@@ -3105,7 +3105,7 @@ public static partial class SDL
         /// <para>The display index starts at 0, which is the default.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="SDL.VulkanCreateSurface"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VulkanDisplay = "SDL_VULKAN_DISPLAY";
         
         /// <summary>
@@ -3113,7 +3113,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint should be set before creating a Vulkan window or calling
         /// <see cref="SDL.VulkanLoadLibrary(string)"/>.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string VulkanLibrary = "SDL_VULKAN_LIBRARY";
         
         /// <summary>
@@ -3141,7 +3141,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WaveFactChunk = "SDL_WAVE_FACT_CHUNK";
         
         /// <summary>
@@ -3150,7 +3150,7 @@ public static partial class SDL
         /// wasting time on malformed or corrupt WAVE files. This defaults to <c>"10000"</c>.</para>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WaveChunkLimit = "SDL_WAVE_CHUNK_LIMIT";
         
         /// <summary>
@@ -3174,7 +3174,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WaveRiffChunkSize = "SDL_WAVE_RIFF_CHUNK_SIZE";
         
         /// <summary>
@@ -3191,7 +3191,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before calling <see cref="LoadWAV"/> or <see cref="LoadWAVIO"/></remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WaveTruncation = "SDL_WAVE_TRUNCATION";
         
         /// <summary>
@@ -3206,7 +3206,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowActivateWhenRaised = "SDL_WINDOW_ACTIVATE_WHEN_RAISED";
         
         /// <summary>
@@ -3221,7 +3221,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowActivateWhenShown = "SDL_WINDOW_ACTIVATE_WHEN_SHOWN";
         
         /// <summary>
@@ -3236,7 +3236,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowAllowTopmost = "SDL_WINDOW_ALLOW_TOPMOST";
         
         /// <summary>
@@ -3250,7 +3250,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowFrameUsableWhileCursorHidden = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN";
         
         /// <summary>
@@ -3264,7 +3264,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsCloseOnAltF4 = "SDL_WINDOWS_CLOSE_ON_ALT_F4";
         
         /// <summary>
@@ -3288,7 +3288,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsEnableMenuMnemonics = "SDL_WINDOWS_ENABLE_MENU_MNEMONICS";
         
         /// <summary>
@@ -3301,7 +3301,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsEnableMessageLoop = "SDL_WINDOWS_ENABLE_MESSAGELOOP";
         
         /// <summary>
@@ -3315,7 +3315,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsGameInput = "SDL_WINDOWS_GAMEINPUT";
         
         /// <summary>
@@ -3327,7 +3327,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsRawKeyboard = "SDL_WINDOWS_RAW_KEYBOARD";
         
         /// <summary>
@@ -3345,7 +3345,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsForceSemaphoreKernel = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL";
         
         /// <summary>
@@ -3353,7 +3353,7 @@ public static partial class SDL
         /// platform.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsIntresourceIcon = "SDL_WINDOWS_INTRESOURCE_ICON";
         
         /// <summary>
@@ -3361,7 +3361,7 @@ public static partial class SDL
         /// platform.</para>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsIntresourceIconSmall = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL";
         
         /// <summary>
@@ -3384,7 +3384,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsUseD3D9Ex = "SDL_WINDOWS_USE_D3D9EX";
         
         /// <summary>
@@ -3399,7 +3399,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string WindowsEraseBackgroundMode = "SDL_WINDOWS_ERASE_BACKGROUND_MODE";
         
         /// <summary>
@@ -3416,7 +3416,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string X11ForceOverrideRedirect = "SDL_X11_FORCE_OVERRIDE_REDIRECT";
         
         /// <summary>
@@ -3430,7 +3430,7 @@ public static partial class SDL
         /// _NET_WM_WINDOW_TYPE_DOCK.</para>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string X11WindowType = "SDL_X11_WINDOW_TYPE";
         
         /// <summary>
@@ -3438,7 +3438,7 @@ public static partial class SDL
         /// <para>The default is platform-specific, often <c>"libX11-xcb.so.1"</c>.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing the video subsystem.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string X11XcbLibrary = "SDL_X11_XCB_LIBRARY";
         
         /// <summary>
@@ -3451,7 +3451,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string XInputEnabled = "SDL_XINPUT_ENABLED";
 
         
@@ -3473,7 +3473,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint should be set before an assertion failure is triggered and can be
         /// changed at any time.</remarks>
-        /// <since>This hint is available since SDL 3.1.3.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string Assert = "SDL_ASSERT";
         
         
@@ -3487,7 +3487,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.2.0.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string PenMouseEevents = "SDL_PEN_MOUSE_EVENTS";
         
         
@@ -3502,7 +3502,7 @@ public static partial class SDL
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
-        /// <since>This hint is available since SDL 3.2.0.</since>
+        /// <since>This hint is available since SDL 3.2.0</since>
         public const string PenTouchEevents = "SDL_PEN_TOUCH_EVENTS";
     }
 }
