@@ -27,15 +27,19 @@ public static partial class TTF
 {
     /// <summary>
     /// Direction flags
+    /// <para>The values here are chosen to match
+    /// [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t)</para>
     /// </summary>
     /// <since>This enum is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="SetFontDirection"/>
     public enum Direction
     {
+        Invalid = 0,
+        
         /// <summary>
         /// Left to Right
         /// </summary>
-        LTR = 0,
+        LTR = 4,
         
         /// <summary>
         /// Right to Left

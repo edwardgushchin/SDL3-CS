@@ -134,10 +134,12 @@ public static partial class TTF
     /// <list type="bullet">
     /// <item><see cref="Props.FontCreateFilenameString"/>: the font file to open, if an
     /// SDL_IOStream isn't being used. This is required if
-    /// <see cref="Props.FontCreateIOStreamPointer"/> isn't set.</item>
+    /// <see cref="Props.FontCreateIOStreamPointer"/> and
+    /// <see cref="Props.FontCreateExistingFont"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamPointer"/>: an SDL_IOStream containing the
     /// font to be opened. This should not be closed until the font is closed.
-    /// This is required if <see cref="Props.FontCreateFilenameString"/> isn't set.</item>
+    /// This is required if <see cref="Props.FontCreateFilenameString"/> and
+    /// <see cref="Props.FontCreateExistingFont"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamOffsetNumber"/>: the offset in the iostream
     /// for the beginning of the font, defaults to 0.</item>
     /// <item><see cref="Props.FontCreateIOStreamAutoCloseBoolean"/>: true if closing the
@@ -154,6 +156,9 @@ public static partial class TTF
     /// <item><see cref="Props.FontCreateVerticalDPINumber"/>: the vertical DPI to use for
     /// font rendering, defaults to <see cref="Props.FontCreateHorizontalDPINumber"/>
     /// if set, or 72 otherwise.</item>
+    /// <item><see cref="Props.FontCreateExistingFont"/>: an optional TTF_Font that, if set,
+    /// will be used as the font data source and the initial size and style of
+    /// the new font.</item>
     /// </list>
     /// </summary>
     /// <param name="props">the properties to use.</param>
@@ -164,6 +169,24 @@ public static partial class TTF
     /// <seealso cref="CloseFont"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_OpenFontWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr OpenFontWithProperties(uint props);
+    
+    
+    /// <code>extern SDL_DECLSPEC TTF_Font * SDLCALL TTF_CopyFont(TTF_Font *existing_font);</code>
+    /// <summary>
+    /// <para>Create a copy of an existing font.</para>
+    /// <para>The copy will be distinct from the original, but will share the font file
+    /// and have the same size and style as the original.</para>
+    /// <para>When done with the returned TTF_Font, use <see cref="CloseFont"/> to dispose of it.</para>
+    /// </summary>
+    /// <param name="existingFont">the font to copy.</param>
+    /// <returns>a valid TTF_Font, or <c>null</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// original font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="CloseFont"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_CopyFont"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CopyFont(IntPtr existingFont);
     
     
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL TTF_GetFontProperties(TTF_Font *font);</code>
@@ -206,6 +229,59 @@ public static partial class TTF
     public static partial uint GetFontGeneration(IntPtr font);
     
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_AddFallbackFont(TTF_Font *font, TTF_Font *fallback);</code>
+    /// <summary>
+    /// <para>Add a fallback font.</para>
+    /// <para>Add a font that will be used for glyphs that are not in the current font.
+    /// The fallback font should have the same size and style as the current font.</para>
+    /// <para>If there are multiple fallback fonts, they are used in the order added.</para>
+    /// <para>This updates any TTF_Text objects using this font.</para>
+    /// </summary>
+    /// <param name="font">the font to modify.</param>
+    /// <param name="fallback">the font to add as a fallback.</param>
+    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created
+    /// both fonts.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="ClearFallbackFonts"/>
+    /// <seealso cref="RemoveFallbackFont"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_AddFallbackFont"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool AddFallbackFont(IntPtr font, IntPtr fallback);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL TTF_RemoveFallbackFont(TTF_Font *font, TTF_Font *fallback);</code>
+    /// <summary>
+    /// <para>Remove a fallback font.</para>
+    /// <para>This updates any TTF_Text objects using this font.</para>
+    /// </summary>
+    /// <param name="font">the font to modify.</param>
+    /// <param name="fallback">the font to remove as a fallback.</param>
+    /// <threadsafety>This function should be called on the thread that created
+    /// both fonts.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="AddFallbackFont"/>
+    /// <seealso cref="ClearFallbackFonts"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RemoveFallbackFont"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RemoveFallbackFont(IntPtr font, IntPtr fallback);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL TTF_ClearFallbackFonts(TTF_Font *font);</code>
+    /// <summary>
+    /// <para>Remove all fallback fonts.</para>
+    /// <para>This updates any TTF_Text objects using this font.</para>
+    /// </summary>
+    /// <param name="font">the font to modify.</param>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="AddFallbackFont"/>
+    /// <seealso cref="RemoveFallbackFont"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_ClearFallbackFonts"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void ClearFallbackFonts(IntPtr font);
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontSize(TTF_Font *font, float ptsize);</code>
     /// <summary>
     /// <para>Set a font's size dynamically.</para>
@@ -241,7 +317,6 @@ public static partial class TTF
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="GetFontSize"/>
-    /// <seealso cref="GetFontSizeDPI"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontSizeDPI"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetFontSizeDPI(IntPtr font, float ptsize, int hdpi, int vdpi);
@@ -385,6 +460,18 @@ public static partial class TTF
     public static partial void SetFontHinting(IntPtr font, HintingFlags hinting);
     
     
+    /// <code>extern SDL_DECLSPEC int SDLCALL TTF_GetNumFontFaces(const TTF_Font *font);</code>
+    /// <summary>
+    /// <para>Query the number of faces of a font.</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <returns>the number of FreeType font faces.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetNumFontFaces"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetNumFontFaces(IntPtr font);
+    
+    
     /// <code>extern SDL_DECLSPEC TTF_HintingFlags SDLCALL TTF_GetFontHinting(const TTF_Font *font);</code>
     /// <summary>
     /// <para>Query a font's current FreeType hinter setting.</para>
@@ -409,9 +496,12 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool TTF_SetFontSDF(TTF_Font *font, bool enabled);</code>
     /// <summary>
     /// <para>Enable Signed Distance Field rendering for a font.</para>
-    /// <para>This works with the Blended APIs. SDF is a technique that
-    /// helps fonts look sharp even when scaling and rotating.</para>
-    /// <para>This updates any <see cref="TTFText"/> objects using this font, and clears already-generated glyphs, if any, from the cache.</para>
+    /// <para>SDF is a technique that helps fonts look sharp even when scaling and
+    /// rotating, and requires special shader support for display.</para>
+    /// <para>This works with Blended APIs, and generates the raw signed distance values in
+    /// the alpha channel of the resulting texture.</para>
+    /// <para>This updates any <see cref="TTFText"/> objects using this font, and clears already-
+    /// generated glyphs, if any, from the cache.</para>
     /// </summary>
     /// <param name="font">the font to set SDF support on.</param>
     /// <param name="enabled"><c>true</c> to enable SDF, <c>false</c> to disable.</param>
@@ -633,109 +723,14 @@ public static partial class TTF
     public static partial string GetFontStyleName(IntPtr font);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
-    /// <summary>
-    /// <para>Render UTF-8 text at fast quality to a new 8-bit surface.</para>
-    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
-    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
-    /// will be set to the text color.</para>
-    /// <para>This will not word-wrap the string; you'll get a surface with a single line
-    /// of text, as long as the string requires. You can use
-    /// <see cref="RenderTextSolidWrapped"/> instead if you need to wrap the output to
-    /// multiple lines.</para>
-    /// <para>This will not wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextShaded"/>,
-    /// TTF_RenderText_Blended, and <see cref="RenderTextLCD"/>.</para>
-    /// </summary>
-    /// <param name="font">the font to render with.</param>
-    /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
-    /// text.</param>
-    /// <param name="fg">the foreground color for the text.</param>
-    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// font.</threadsafety>
-    /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
-    /// <seealso cref="RenderTextLCD"/>
-    /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
-    /// <seealso cref="RenderTextSolidWrapped"/>
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextSolid(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg);
-    
-    
-    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrapLength);</code>
-    /// <summary>
-    /// <para>Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.</para>
-    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
-    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
-    /// will be set to the text color.</para>
-    /// <para>Text is wrapped to multiple lines on line endings and on word boundaries if
-    /// it extends beyond <c>wrapLength</c> in pixels.</para>
-    /// <para>If wrapLength is 0, this function will only wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextShadedWrapped"/>,
-    /// <see cref="RenderTextBlendedWrapped"/>, and TTF_RenderText_LCD_Wrapped.</para>
-    /// </summary>
-    /// <param name="font">the font to render with.</param>
-    /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
-    /// text.</param>
-    /// <param name="fg">the foreground color for the text.</param>
-    /// <param name="wrapLength">the maximum width of the text surface or 0 to wrap on
-    /// newline characters.</param>
-    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// font.</threadsafety>
-    /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlendedWrapped"/>
-    /// <seealso cref="RenderTextLCDWrapped"/>
-    /// <seealso cref="RenderTextShadedWrapped"/>
-    /// <seealso cref="RenderTextSolid"/>
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextSolidWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, int wrapLength);
-    
-    
-    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderGlyph_Solid(TTF_Font *font, Uint32 ch, SDL_Color fg);</code>
-    /// <summary>
-    /// <para>Render a single 32-bit glyph at fast quality to a new 8-bit surface.</para>
-    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
-    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
-    /// will be set to the text color.</para>
-    /// <para>The glyph is rendered without any padding or centering in the X direction,
-    /// and aligned normally in the Y direction.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderGlyphShaded"/>,
-    /// <see cref="RenderGlyphBlended"/>, and <see cref="RenderGlyphLCD"/>.</para>
-    /// </summary>
-    /// <param name="font">the font to render with.</param>
-    /// <param name="ch">the character to render.</param>
-    /// <param name="fg">the foreground color for the text.</param>
-    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// font.</threadsafety>
-    /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderGlyphBlended"/>
-    /// <seealso cref="RenderGlyphLCD"/>
-    /// <seealso cref="RenderGlyphShaded"/>
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderGlyph_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderGlyphSolid(IntPtr font, uint ch, SDL.Color fg);
-    
-    
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontDirection(TTF_Font *font, TTF_Direction direction);</code>
     /// <summary>
-    /// <para>Set direction to be used for text shaping by a font.</para>
-    /// <para>Possible direction values are:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Direction.LTR"/> (Left to Right)</item>
-    /// <item><see cref="Direction.RTL"/> (Right to Left)</item>
-    /// <item><see cref="Direction.TTB"/> (Top to Bottom)</item>
-    /// <item><see cref="Direction.BTT"/> (Bottom to Top)</item>
-    /// </list>
-    /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns
-    /// <c>false</c>.</para>
-    /// <para>This updates any <see cref="TTFText"/> objects using this font.</para>
+    /// <para>Set the direction to be used for text shaping by a font.</para>
+    /// <para>This function only supports left-to-right text shaping if SDL_ttf was not
+    /// built with HarfBuzz support.</para>
+    /// <para>This updates any TTF_Text objects using this font.</para>
     /// </summary>
-    /// <param name="font">the font to specify a direction for.</param>
+    /// <param name="font">the font to modify.</param>
     /// <param name="direction">the new direction for text to flow.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
@@ -749,16 +744,8 @@ public static partial class TTF
     
     /// <code>extern SDL_DECLSPEC TTF_Direction SDLCALL TTF_GetFontDirection(TTF_Font *font);</code>
     /// <summary>
-    /// <para>Get direction to be used for text shaping by a font.</para>
-    /// <para>Possible direction values are:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Direction.LTR"/> (Left to Right)</item>
-    /// <item><see cref="Direction.RTL"/> (Right to Left)</item>
-    /// <item><see cref="Direction.TTB"/> (Top to Bottom)</item>
-    /// <item><see cref="Direction.BTT"/> (Bottom to Top)</item>
-    /// </list>
-    /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns
-    /// <see cref="Direction.LTR"/>.</para>
+    /// <para>Get the direction to be used for text shaping by a font.</para>
+    /// <para>This defaults to <see cref="Direction.Invalid"/> if it hasn't been set.</para>
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <returns>the direction to be used for text shaping.</returns>
@@ -769,46 +756,48 @@ public static partial class TTF
     public static partial Direction GetFontDirection(IntPtr font);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontScript(TTF_Font *font, const char *script);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontScript(TTF_Font *font, Uint32 script);</code>
     /// <summary>
-    /// <para>Set script to be used for text shaping by a font.</para>
-    /// <para>The supplied script value must be a null-terminated string of exactly four
-    /// characters.</para>
-    /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns
-    /// false.</para>
+    /// <para>Set the script to be used for text shaping by a font.</para>
+    /// <para>This returns false if SDL_ttf isn't build with HarfBuzz support.</para>
     /// <para>This updates any <see cref="TTFText"/> objects using this font.</para>
     /// </summary>
-    /// <param name="font">the font to specify a script name for.</param>
-    /// <param name="script">null-terminated string of exactly 4 characters.</param>
+    /// <param name="font">the font to modify.</param>
+    /// <param name="script">a script tag in the format used by HarfBuzz.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function is not thread-safe.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetFontScript(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string script);
+    public static partial bool SetFontScript(IntPtr font, uint script);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetGlyphScript(Uint32 ch, char *script, size_t script_size);</code>
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL TTF_GetFontScript(TTF_Font *font);</code>
+    /// <summary>
+    /// <para>Get the script used for text shaping a font.</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <returns>a script tag in the format used by HarfBuzz.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetFontScript(IntPtr font);
+    
+    
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL TTF_GetGlyphScript(Uint32 ch);</code>
     /// <summary>
     /// <para>Get the script used by a 32-bit codepoint.</para>
-    /// <para>The supplied script value will be a null-terminated string of exactly four
-    /// characters.</para>
-    /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns
-    /// false.</para>
     /// </summary>
     /// <param name="ch">the character code to check.</param>
-    /// <param name="script">a pointer filled in with the script used by <c>ch</c>.</param>
-    /// <param name="scriptSize">the size of the script buffer, which must be at least 5
-    /// characters.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetGlyphScript(uint ch, [MarshalAs(UnmanagedType.LPUTF8Str)] out string script, ulong scriptSize);
+    public static partial uint GetGlyphScript(uint ch);
     
     
     /// <code>extern SDL_DECLSPEC bool TTF_SetFontLanguage(TTF_Font *font, const char *language_bcp47);</code>
@@ -843,22 +832,41 @@ public static partial class TTF
     public static partial bool FontHasGlyph(IntPtr font, uint ch);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_GetGlyphImage(TTF_Font *font, Uint32 ch);</code>
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_GetGlyphImage(TTF_Font *font, Uint32 ch, TTF_ImageType *image_type);</code>
     /// <summary>
     /// Get the pixel image for a UNICODE codepoint.
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="ch">the codepoint to check.</param>
+    /// <param name="imageType">a pointer filled in with the glyph image type, may be
+    /// <c>null</c>.</param>
     /// <returns>an <see cref="SDL.Surface"/> containing the glyph, or <c>null</c> on failure; call
     /// <see cref="SDL.GetError"/> for more information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphImage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetGlyphImage(IntPtr font, uint ch);
+    public static partial IntPtr GetGlyphImage(IntPtr font, uint ch, IntPtr imageType);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_GetGlyphImageForIndex(TTF_Font *font, Uint32 glyph_index);</code>
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_GetGlyphImage(TTF_Font *font, Uint32 ch, TTF_ImageType *image_type);</code>
+    /// <summary>
+    /// Get the pixel image for a UNICODE codepoint.
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <param name="ch">the codepoint to check.</param>
+    /// <param name="imageType">a pointer filled in with the glyph image type, may be
+    /// <c>null</c>.</param>
+    /// <returns>an <see cref="SDL.Surface"/> containing the glyph, or <c>null</c> on failure; call
+    /// <see cref="SDL.GetError"/> for more information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphImage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetGlyphImage(IntPtr font, uint ch, out ImageType imageType);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_GetGlyphImageForIndex(TTF_Font *font, Uint32 glyph_index, TTF_ImageType *image_type);</code>
     /// <summary>
     /// <para>Get the pixel image for a character index.</para>
     /// <para>This is useful for text engine implementations, which can call this with
@@ -866,13 +874,34 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="glyphIndex">the index of the glyph to return.</param>
+    /// <param name="imageType">a pointer filled in with the glyph image type, may be
+    /// <c>null</c>.</param>
     /// <returns>an <see cref="SDL.Surface"/> containing the glyph, or <c>null</c> on failure; call
     /// <see cref="SDL.GetError"/> for more information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphImageForIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetGlyphImageForIndex(IntPtr font, uint glyphIndex);
+    public static partial IntPtr GetGlyphImageForIndex(IntPtr font, uint glyphIndex, IntPtr imageType);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_GetGlyphImageForIndex(TTF_Font *font, Uint32 glyph_index, TTF_ImageType *image_type);</code>
+    /// <summary>
+    /// <para>Get the pixel image for a character index.</para>
+    /// <para>This is useful for text engine implementations, which can call this with
+    /// the <c>glyphIndex</c> in a TTF_CopyOperation</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <param name="glyphIndex">the index of the glyph to return.</param>
+    /// <param name="imageType">a pointer filled in with the glyph image type, may be
+    /// <c>null</c>.</param>
+    /// <returns>an <see cref="SDL.Surface"/> containing the glyph, or <c>null</c> on failure; call
+    /// <see cref="SDL.GetError"/> for more information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphImageForIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetGlyphImageForIndex(IntPtr font, uint glyphIndex, out ImageType imageType);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetGlyphMetrics(TTF_Font *font, Uint32 ch, int *minx, int *maxx, int *miny, int *maxy, int *advance);</code>
@@ -995,6 +1024,94 @@ public static partial class TTF
     [LibraryImport(FontLibrary, EntryPoint = "TTF_MeasureString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool MeasureString(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, int maxWidth, out int measuredWidth, out ulong measuredLength);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
+    /// <summary>
+    /// <para>Render UTF-8 text at fast quality to a new 8-bit surface.</para>
+    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
+    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
+    /// will be set to the text color.</para>
+    /// <para>This will not word-wrap the string; you'll get a surface with a single line
+    /// of text, as long as the string requires. You can use
+    /// <see cref="RenderTextSolidWrapped"/> instead if you need to wrap the output to
+    /// multiple lines.</para>
+    /// <para>This will not wrap on newline characters.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextShaded"/>,
+    /// TTF_RenderText_Blended, and <see cref="RenderTextLCD"/>.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="text">text to render, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextLCD"/>
+    /// <seealso cref="RenderTextShaded"/>
+    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolidWrapped"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr RenderTextSolid(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrapLength);</code>
+    /// <summary>
+    /// <para>Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.</para>
+    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
+    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
+    /// will be set to the text color.</para>
+    /// <para>Text is wrapped to multiple lines on line endings and on word boundaries if
+    /// it extends beyond <c>wrapLength</c> in pixels.</para>
+    /// <para>If wrapLength is 0, this function will only wrap on newline characters.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextShadedWrapped"/>,
+    /// <see cref="RenderTextBlendedWrapped"/>, and TTF_RenderText_LCD_Wrapped.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="text">text to render, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <param name="wrapLength">the maximum width of the text surface or 0 to wrap on
+    /// newline characters.</param>
+    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderTextBlendedWrapped"/>
+    /// <seealso cref="RenderTextLCDWrapped"/>
+    /// <seealso cref="RenderTextShadedWrapped"/>
+    /// <seealso cref="RenderTextSolid"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr RenderTextSolidWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, int wrapLength);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderGlyph_Solid(TTF_Font *font, Uint32 ch, SDL_Color fg);</code>
+    /// <summary>
+    /// <para>Render a single 32-bit glyph at fast quality to a new 8-bit surface.</para>
+    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
+    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
+    /// will be set to the text color.</para>
+    /// <para>The glyph is rendered without any padding or centering in the X direction,
+    /// and aligned normally in the Y direction.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderGlyphShaded"/>,
+    /// <see cref="RenderGlyphBlended"/>, and <see cref="RenderGlyphLCD"/>.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="ch">the character to render.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderGlyphBlended"/>
+    /// <seealso cref="RenderGlyphLCD"/>
+    /// <seealso cref="RenderGlyphShaded"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderGlyph_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr RenderGlyphSolid(IntPtr font, uint ch, SDL.Color fg);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Shaded(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg);</code>
@@ -1329,8 +1446,35 @@ public static partial class TTF
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="DestroyRendererTextEngine"/>
+    /// <seealso cref="DrawRendererText"/>
+    /// <seealso cref="CreateRendererTextEngineWithProperties"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_CreateRendererTextEngine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateRendererTextEngine(IntPtr renderer);
+    
+    
+    /// <code>extern SDL_DECLSPEC TTF_TextEngine * SDLCALL TTF_CreateRendererTextEngineWithProperties(SDL_PropertiesID props);</code>
+    /// <summary>
+    /// <para>Create a text engine for drawing text on an SDL renderer, with the
+    /// specified properties.</para>
+    /// <para>These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.RendererTextEngineRenderer"/>: the renderer to use for
+    /// creating textures and drawing text</item>
+    /// <item><see cref="Props.RendererTextEngineAtlasTextureSize"/>: the size of the
+    /// texture atlas</item>
+    /// </list>
+    /// </summary>
+    /// <param name="props">the properties to use.</param>
+    /// <returns>a TTF_TextEngine object or <c>null</c> on failure; call <see cref="SDL.GetError"/>
+    /// for more information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="CreateRendererTextEngine"/>
+    /// <seealso cref="DestroyRendererTextEngine"/>
+    /// <seealso cref="DrawRendererText"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_CreateRendererTextEngineWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateRendererTextEngineWithProperties(uint props);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_DrawRendererText(TTF_Text *text, float x, float y);</code>
@@ -1384,16 +1528,48 @@ public static partial class TTF
     /// <threadsafety>This function should be called on the thread that created the
     /// device.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="CreateGPUTextEngineWithProperties"/>
     /// <seealso cref="DestroyGPUTextEngine"/>
+    /// <seealso cref="GetGPUTextDrawData"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_CreateGPUTextEngine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateGPUTextEngine(IntPtr device);
     
     
-    /// <code>extern SDL_DECLSPEC TTF_GPUAtlasDrawSequence* SDLCALL TTF_GetGPUTextDrawData(TTF_Text *text);</code>
+    /// <code>extern SDL_DECLSPEC TTF_TextEngine * SDLCALL TTF_CreateGPUTextEngineWithProperties(SDL_PropertiesID props);</code>
+    /// <summary>
+    /// <para>Create a text engine for drawing text with the SDL GPU API, with the
+    /// specified properties.</para>
+    /// <para>These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.GPUTextEngineDevice"/>: the SDL_GPUDevice to use for creating
+    /// textures and drawing text.</item>
+    /// <item><see cref="Props.GPUTextEngineAtlasTextureSize"/>: the size of the texture
+    /// atlas</item>
+    /// </list>
+    /// </summary>
+    /// <param name="props">the properties to use.</param>
+    /// <returns>a TTF_TextEngine object or <c>null</c> on failure; call <see cref="SDL.GetError"/>
+    /// for more information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// device.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="CreateGPUTextEngine"/>
+    /// <seealso cref="DestroyGPUTextEngine"/>
+    /// <seealso cref="GetGPUTextDrawData"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_CreateGPUTextEngineWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateGPUTextEngineWithProperties(uint props);
+    
+    
+    /// <code>extern SDL_DECLSPEC TTF_GPUAtlasDrawSequence * SDLCALL TTF_GetGPUTextDrawData(TTF_Text *text);</code>
     /// <summary>
     /// <para>Get the geometry data needed for drawing the text.</para>
     /// <para><c>text</c> must have been created using a TTF_TextEngine from
     /// <see cref="CreateGPUTextEngine"/>.</para>
+    /// <para>The positive X-axis is taken towards the right and the positive Y-axis is
+    /// taken upwards for both the vertex and the texture coordinates, i.e, it
+    /// follows the same convention used by the SDL_GPU API. If you want to use a
+    /// different coordinate system you will need to transform the vertices
+    /// yourself.</para>
     /// <para>If the text looks blocky use linear filtering.</para>
     /// </summary>
     /// <param name="text">the text to draw.</param>
@@ -1495,6 +1671,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextEngine(TTF_Text *text, TTF_TextEngine *engine);</code>
     /// <summary>
     /// Set the text engine used by a text object.
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="engine">the text engine to use for drawing.</param>
@@ -1530,6 +1707,7 @@ public static partial class TTF
     /// <para>When a text object has a font, any changes to the font will automatically
     /// regenerate the text. If you set the font to <c>null</c>, the text will continue to
     /// render but changes to the font will no longer affect the text.</para>
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="font">the font to use, may be <c>null</c>.</param>
@@ -1554,6 +1732,69 @@ public static partial class TTF
     /// <seealso cref="SetTextFont"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetTextFont"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetTextFont(IntPtr text);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextDirection(TTF_Text *text, TTF_Direction direction);</code>
+    /// <summary>
+    /// <para>Set the direction to be used for text shaping a text object.</para>
+    /// <para>This function only supports left-to-right text shaping if SDL_ttf was not
+    /// built with HarfBuzz support.</para>
+    /// </summary>
+    /// <param name="text">the text to modify.</param>
+    /// <param name="direction">the new direction for text to flow.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// text.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_SetTextDirection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetTextDirection(IntPtr text, Direction direction);
+    
+    
+    /// <code>extern SDL_DECLSPEC TTF_Direction SDLCALL TTF_GetTextDirection(TTF_Text *text);</code>
+    /// <summary>
+    /// <para>Get the direction to be used for text shaping a text object.</para>
+    /// <para>This defaults to the direction of the font used by the text object.</para>
+    /// </summary>
+    /// <param name="text">the text to query.</param>
+    /// <returns>the direction to be used for text shaping.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// text.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetTextDirection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial Direction GetTextDirection(IntPtr text);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextScript(TTF_Text *text, Uint32 script);</code>
+    /// <summary>
+    /// <para>Set the script to be used for text shaping a text object.</para>
+    /// <para>This returns false if SDL_ttf isn't build with HarfBuzz support.</para>
+    /// </summary>
+    /// <param name="text">the text to modify.</param>
+    /// <param name="script">a script tag in the format used by HarfBuzz.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// text.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_SetTextScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetTextScript(IntPtr text, uint script);
+    
+    
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL TTF_GetTextScript(TTF_Text *text);</code>
+    /// <summary>
+    /// <para>Get the script used for text shaping a text object.</para>
+    /// <para>This defaults to the script of the font used by the text object.</para>
+    /// </summary>
+    /// <param name="text">the text to query.</param>
+    /// <returns>a script tag in the format used by HarfBuzz.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// text.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetTextScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetTextScript(IntPtr text);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextColor(TTF_Text *text, Uint8 r, Uint8 g, Uint8 b, Uint8 a);</code>
@@ -1655,6 +1896,7 @@ public static partial class TTF
     /// <para>Set the position of a text object.</para>
     /// <para>This can be used to position multiple text objects within a single wrapping
     /// text area.</para>
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="x">the x offset of the upper left corner of this text in pixels.</param>
@@ -1691,6 +1933,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextWrapWidth(TTF_Text *text, int wrap_width);</code>
     /// <summary>
     /// Set whether wrapping is enabled on a text object.
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="wrapWidth">the maximum width in pixels, 0 to wrap on newline
@@ -1731,6 +1974,7 @@ public static partial class TTF
     /// alignment and wrapping. This is good for editing, but looks better when
     /// centered or aligned if whitespace around line wrapping is hidden. This
     /// defaults false.</para>
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="visible"><c>true</c> to show whitespace when wrapping text, <c>false</c> to hide
@@ -1765,6 +2009,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextString(TTF_Text *text, const char *string, size_t length);</code>
     /// <summary>
     /// Set the UTF-8 text used by a text object.
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="string">the UTF-8 text to use, may be <c>null</c>.</param>
@@ -1786,6 +2031,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_InsertTextString(TTF_Text *text, int offset, const char *string, size_t length);</code>
     /// <summary>
     /// Insert UTF-8 text into a text object.
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="offset">the offset, in bytes, from the beginning of the string if >=
@@ -1811,6 +2057,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_AppendTextString(TTF_Text *text, const char *string, size_t length);</code>
     /// <summary>
     /// Append UTF-8 text to a text object.
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="string">the UTF-8 text to insert.</param>
@@ -1832,6 +2079,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_DeleteTextString(TTF_Text *text, int offset, int length);</code>
     /// <summary>
     /// Delete UTF-8 text from a text object.
+    /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="offset">the offset, in bytes, from the beginning of the string if >=
@@ -2058,14 +2306,7 @@ public static partial class TTF
     /// using the font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="OpenFont"/>
-    /// <seealso cref="OpenFontIndexDPIIO"/>
     /// <seealso cref="OpenFontIO"/>
-    /// <seealso cref="OpenFontDPI"/>
-    /// <seealso cref="OpenFontDPIIO"/>
-    /// <seealso cref="OpenFontIndex"/>
-    /// <seealso cref="OpenFontIndexDPI"/>
-    /// <seealso cref="OpenFontIndexDPIIO"/>
-    /// <seealso cref="OpenFontIndexIO"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_CloseFont"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseFont(IntPtr font);
     

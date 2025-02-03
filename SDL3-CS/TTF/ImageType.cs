@@ -21,53 +21,31 @@
  */
 #endregion
 
-using System.Runtime.InteropServices;
-
 namespace SDL3;
 
 public static partial class TTF
 {
     /// <summary>
-    /// Draw sequence returned by <see cref="GetGPUTextDrawData"/>
+    /// The type of data in a glyph image
     /// </summary>
-    /// <since>This struct is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="GetGPUTextDrawData"/>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GPUAtlasDrawSequence
+    /// <since>This enum is available since SDL_ttf 3.0.0.</since>
+    public enum ImageType
     {
-        /// <summary>
-        /// Texture atlas that stores the glyphs
-        /// </summary>
-        public IntPtr AtlasTexture;
+        Invalid,
         
         /// <summary>
-        /// An array of vertex positions
+        /// The color channels are white
         /// </summary>
-        public IntPtr XY;
+        Alpha, 
         
         /// <summary>
-        /// An array of normalized texture coordinates for each vertex
+        /// The color channels have image data
         /// </summary>
-        public IntPtr UV;
+        Color,
         
         /// <summary>
-        /// Number of vertices
+        /// The alpha channel has signed distance field
         /// </summary>
-        public int NumVertices;
-        
-        /// <summary>
-        /// An array of indices into the 'vertices' arrays
-        /// </summary>
-        public IntPtr Indices;
-        
-        /// <summary>
-        /// Number of indices
-        /// </summary>
-        public int NumIndices;
-
-        /// <summary>
-        /// The image type of this draw sequence
-        /// </summary>
-        public ImageType ImageType;
+        SDF
     }
 }

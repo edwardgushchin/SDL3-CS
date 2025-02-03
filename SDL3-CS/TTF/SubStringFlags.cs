@@ -33,23 +33,28 @@ public static partial class TTF
     public enum SubStringFlags
     {
         /// <summary>
+        /// The mask for the flow direction for this substring
+        /// </summary>
+        DirectionMask = 0x000000FF,
+        
+        /// <summary>
         /// This substring contains the beginning of the text
         /// </summary>
-        TextStart = 0x00000001,
+        TextStart = 0x00000100,
         
         /// <summary>
         /// This substring contains the beginning of line <c>LineIndex</c>
         /// </summary>
-        LineStart = 0x00000002,
+        LineStart = 0x00000200,
         
         /// <summary>
         /// This substring contains the end of line <c>LineIndex</c> 
         /// </summary>
-        LineEnd = 0x00000004,
+        LineEnd = 0x00000400,
         
         /// <summary>
         /// This substring contains the end of the text
         /// </summary>
-        TextEnd = 0x00000008
+        TextEnd = 0x00000800
     }
 }
