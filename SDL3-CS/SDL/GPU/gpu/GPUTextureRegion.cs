@@ -34,6 +34,7 @@ public static partial class SDL
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>
     /// <seealso cref="DownloadFromGPUTexture"/>
+    /// <seealso cref="CreateGPUTexture"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUTextureRegion
     {

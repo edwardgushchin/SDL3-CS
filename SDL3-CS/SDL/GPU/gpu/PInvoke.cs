@@ -1785,6 +1785,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);</code>
     /// <summary>
     /// Releases a fence obtained from <see cref="SubmitGPUCommandBufferAndAcquireFence"/>.
+    /// <para>You must not reference the fence after calling this function.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="fence">a fence.</param>

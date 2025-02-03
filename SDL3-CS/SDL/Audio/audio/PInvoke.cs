@@ -1222,6 +1222,8 @@ public static partial class SDL
     /// <para>This function unpauses audio processing for a given device that has
     /// previously been paused. Once unpaused, any bound audio streams will begin
     /// to progress again, and audio can be generated.</para>
+    /// <para>Remember, <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback, IntPtr)"/> opens device in a paused state, so this
+    /// function call is required for audio playback to begin on such device.</para>
     /// </summary>
     /// <param name="stream">the audio stream associated with the audio device to resume.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more

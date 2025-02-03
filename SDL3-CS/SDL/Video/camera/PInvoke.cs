@@ -116,7 +116,7 @@ public static partial class SDL
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetCameraSupportedFormats(uint devid, out int count);
+    private static partial IntPtr SDL_GetCameraSupportedFormats(uint instanceId, out int count);
     /// <code>extern SDL_DECLSPEC SDL_CameraSpec *SDLCALL SDL_GetCameraSupportedFormats(SDL_CameraID devid, int *count);</code>
     /// <summary>
     /// <para>Get the list of native formats/sizes a camera supports.</para>
@@ -136,7 +136,7 @@ public static partial class SDL
     /// there _is_ a camera until the user has given you permission to check
     /// through a scary warning popup.</para>
     /// </summary>
-    /// <param name="devid">the camera device instance ID to query.</param>
+    /// <param name="instanceId">the camera device instance ID.</param>
     /// <param name="count">a pointer filled in with the number of elements in the list,
     /// may be <c>null</c>.</param>
     /// <returns>a <c>null</c> terminated array of pointers to <see cref="CameraSpec"/> or <c>null</c> on
@@ -147,9 +147,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     /// <seealso cref="OpenCamera(uint, nint)"/>
-    public static CameraSpec[]? GetCameraSupportedFormats(uint devid, out int count)
+    public static CameraSpec[]? GetCameraSupportedFormats(uint instanceId, out int count)
     {
-        var ptr = SDL_GetCameraSupportedFormats(devid, out count);
+        var ptr = SDL_GetCameraSupportedFormats(instanceId, out count);
         
         try
         {
