@@ -61,7 +61,7 @@ internal class Program
                 }
             }
 
-            if (newfileName != string.Empty && (newfileName!.ToLower().EndsWith(".jpg") || newfileName!.ToLower().EndsWith(".png")) && newfileName != oldFilename)
+            if (!string.IsNullOrEmpty(newfileName) && (newfileName.ToLower().EndsWith(".jpg") || newfileName.ToLower().EndsWith(".png")) && newfileName != oldFilename)
             {
                 var surface = Image.Load(newfileName);
                 
