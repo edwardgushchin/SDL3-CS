@@ -75,17 +75,17 @@ internal static class Program
             
             while (SDL.PollEvent(out var sdlEvent))
             {
-                if (sdlEvent.Type == SDL.EventType.Quit)
+                if (sdlEvent.Type == (uint)SDL.EventType.Quit)
                 {
                     loop = false;
                 }
 
-                if (sdlEvent.Type == SDL.EventType.CameraDeviceApproved)
+                if (sdlEvent.Type == (uint)SDL.EventType.CameraDeviceApproved)
                 {
                     SDL.LogInfo(SDL.LogCategory.Application, "Camera use approved by user!");
                 }
 
-                if (sdlEvent.Type == SDL.EventType.CameraDeviceDenied)
+                if (sdlEvent.Type == (uint)SDL.EventType.CameraDeviceDenied)
                 {
                     SDL.LogInfo(SDL.LogCategory.Application, "Camera use denied by user!");
                 }

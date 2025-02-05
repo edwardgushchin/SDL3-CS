@@ -40,10 +40,15 @@ public static partial class SDL
     /// to SDLK_0...SDLK_9 on AZERTY layouts.</para>
     /// <para>Keys with the <see cref="ExtendedMask"/> bit set do not map to a scancode or
     /// unicode code point.</para>
+    /// <para>Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
+    /// unicode code point.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
     public enum Keycode : uint
     {
+        ExtendedMask = (1u << 29),
+        ScanCodeMask = (1u << 30),
+        
         /// <summary>
         /// 0
         /// </summary>

@@ -597,10 +597,10 @@ public static partial class SDL
         #endregion
 
         #region Reserved events for private platforms
-        Privated0 = 04000,
-        Privated1,
-        Privated2,
-        Privated3,
+        Private0 = 04000,
+        Private1,
+        Private2,
+        Private3,
         #endregion
 
         #region Internal events

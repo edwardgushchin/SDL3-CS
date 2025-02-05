@@ -66,22 +66,22 @@ internal static class Program
             
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit)
+                if (e.Type == (uint)SDL.EventType.Quit)
                 {
                     loop = false;
                 }
 
-                if (e.Type == SDL.EventType.KeyDown && e.Key.Key == SDL.Keycode.Alpha1)
+                if (e.Type == (uint)SDL.EventType.KeyDown && e.Key.Key == SDL.Keycode.Alpha1)
                 {
                     SDL.ShowOpenFileDialog(callback, IntPtr.Zero, window, openFileFilters, openFileFilters.Length, null, true);
                 }
                 
-                if (e.Type == SDL.EventType.KeyDown && e.Key.Key == SDL.Keycode.Alpha2)
+                if (e.Type == (uint)SDL.EventType.KeyDown && e.Key.Key == SDL.Keycode.Alpha2)
                 {
                     SDL.ShowSaveFileDialog(callback, IntPtr.Zero, window, saveFileFilters, saveFileFilters.Length, "test");
                 }
 
-                if (e.Type == SDL.EventType.KeyDown && e.Key.Key == SDL.Keycode.Alpha3)
+                if (e.Type == (uint)SDL.EventType.KeyDown && e.Key.Key == SDL.Keycode.Alpha3)
                 {
                     SDL.ShowOpenFolderDialog(callback, IntPtr.Zero, window, null, false);
                 }

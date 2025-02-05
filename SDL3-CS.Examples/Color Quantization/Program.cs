@@ -49,12 +49,12 @@ internal class Program
         {
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit || e is {Type: SDL.EventType.KeyDown, Key.Key: SDL.Keycode.Escape})
+                if (e.Type == (uint)SDL.EventType.Quit || e is {Type: (uint)SDL.EventType.KeyDown, Key.Key: SDL.Keycode.Escape})
                 {
                     loop = false;
                 }
 
-                if (e.Type == SDL.EventType.DropFile)
+                if (e.Type == (uint)SDL.EventType.DropFile)
                 {
                     newfileName = Marshal.PtrToStringUTF8(e.Drop.Data);
                     Console.WriteLine($"Dropped file: {newfileName}");

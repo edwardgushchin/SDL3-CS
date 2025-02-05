@@ -52,7 +52,7 @@ internal static class Program
         {
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit || e is {Type: SDL.EventType.KeyDown, Key.Key: SDL.Keycode.Escape})
+                if (e.Type == (uint)SDL.EventType.Quit || e is {Type: (uint)SDL.EventType.KeyDown, Key.Key: SDL.Keycode.Escape})
                 {
                     loop = false;
                 }

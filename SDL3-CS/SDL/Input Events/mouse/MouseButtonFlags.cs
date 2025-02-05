@@ -45,13 +45,12 @@ public static partial class SDL
     /// <seealso cref="GetGlobalMouseState"/>
     /// <seealso cref="GetRelativeMouseState"/>
     [Flags]
-    public enum MouseButtonFlags 
+    public enum MouseButtonFlags : uint
     {
-        None     = 0,
-        Left     = (int) (1u << 0),
-        Middle   = (int) (1u << 1),
-        Right    = (int) (1u << 2),
-        X2       = (int) (1u << 3),
-        X1       = (int) (1u << 4),
+         Left = 1 << (ButtonLeft - 1),
+         Middle = 1 << (ButtonMiddle - 1),
+         Right = 1 << (ButtonRight - 1),
+         X1 = 1 << (ButtonX1 - 1),
+         X2 = 1 << (ButtonX2 - 1)
     }
 }

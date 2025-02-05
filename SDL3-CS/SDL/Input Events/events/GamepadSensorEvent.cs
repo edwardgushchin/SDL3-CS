@@ -54,7 +54,7 @@ public static partial class SDL
         /// <summary>
         /// The type of the sensor, one of the values of <see cref="SensorType"/>
         /// </summary>
-        public SensorType Sensor;
+        public Int32 Sensor;
         
         /// <summary>
         /// Up to 3 values from the sensor, as defined in SDL_sensor.h

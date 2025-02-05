@@ -45,7 +45,7 @@ public static partial class SDL
         /// </summary>
         public UInt32 Type;
         
-        private UInt64 _reserved;
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>

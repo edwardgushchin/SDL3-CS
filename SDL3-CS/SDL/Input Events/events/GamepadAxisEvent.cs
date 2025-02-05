@@ -54,7 +54,7 @@ public static partial class SDL
         /// <summary>
         /// The gamepad axis (<see cref="GamepadAxis"/>)
         /// </summary>
-        public GamepadAxis Axis;
+        public Byte Axis;
         
         private Byte _padding1;
         

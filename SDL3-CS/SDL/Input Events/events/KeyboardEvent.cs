@@ -46,22 +46,22 @@ public static partial class SDL
         /// </summary>
         public EventType Type;
         
-        private UInt32 _reserved;
+        private uint _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
         /// </summary>
-        public UInt64 Timestamp;
+        public ulong Timestamp;
         
         /// <summary>
         /// The window with keyboard focus, if any
         /// </summary>
-        public UInt32 WindowID;
+        public uint WindowID;
         
         /// <summary>
         /// The keyboard instance id, or 0 if unknown or virtual
         /// </summary>
-        public UInt32 Which;
+        public uint Which;
         
         /// <summary>
         /// SDL physical key code
@@ -81,7 +81,7 @@ public static partial class SDL
         /// <summary>
         /// The platform dependent scancode for this event
         /// </summary>
-        public UInt16 Raw;
+        public ushort Raw;
         
         /// <summary>
         /// true if the key is pressed

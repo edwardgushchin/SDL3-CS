@@ -54,7 +54,7 @@ public static partial class SDL
         /// <summary>
         /// The gamepad button (<see cref="GamepadButton"/>)
         /// </summary>
-        public GamepadButton Button;
+        public Byte Button;
 
         /// <summary>
         /// true if the button is pressed

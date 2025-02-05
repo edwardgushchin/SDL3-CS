@@ -29,17 +29,17 @@ internal static class Program
             
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit)
+                if (e.Type == (uint)SDL.EventType.Quit)
                 {
                     loop = false;
                 }
 
-                if (e is {Type: SDL.EventType.KeyDown, Key.Key: SDL.Keycode.S})
+                if (e is {Type: (uint)SDL.EventType.KeyDown, Key.Key: SDL.Keycode.S})
                 {
                     SDL.ShowSimpleMessageBox(SDL.MessageBoxFlags.Information, "Information!", "ShowSimpleMessageBox called!", window);
                 }
                 
-                if (e is {Type: SDL.EventType.KeyDown, Key.Key: SDL.Keycode.E})
+                if (e is {Type: (uint)SDL.EventType.KeyDown, Key.Key: SDL.Keycode.E})
                 {
 
                     var buttons = new SDL.MessageBoxButtonData[]

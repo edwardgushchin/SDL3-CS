@@ -69,7 +69,7 @@ public static partial class SDL
         /// <seealso cref="JoystickHat.LeftDown"/>
         /// <seealso cref="JoystickHat.Down"/>
         /// <seealso cref="JoystickHat.RightDown"/>
-        public JoystickHat Value;
+        public Byte Value;
         
         private Byte _padding1;
         

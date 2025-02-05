@@ -37,7 +37,7 @@ public static partial class SDL
         /// <summary>
         /// Event type, shared with all events, Uint32 to cover user events which are not in the SDL_EventType enumeration
         /// </summary>
-        [FieldOffset(0)] public EventType Type;
+        [FieldOffset(0)] public UInt32 Type;
         
         /// <summary>
         /// Common event data

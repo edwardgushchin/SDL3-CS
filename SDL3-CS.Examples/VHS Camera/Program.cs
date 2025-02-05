@@ -80,23 +80,23 @@ internal static class Program
             
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit || e is {Type: SDL.EventType.KeyDown, Key.Key: SDL.Keycode.Escape})
+                if (e.Type == (uint)SDL.EventType.Quit || e is {Type: (uint)SDL.EventType.KeyDown, Key.Key: SDL.Keycode.Escape})
                 {
                     loop = false;
                 }
                 
-                if (e is {Type: SDL.EventType.KeyDown, Key.Key: SDL.Keycode.V})
+                if (e is {Type: (uint)SDL.EventType.KeyDown, Key.Key: SDL.Keycode.V})
                 {
                     vhs = !vhs;
                     SDL.LogInfo(SDL.LogCategory.Render, $"VHS effect: {vhs}");
                 }
 
-                if (e.Type == SDL.EventType.CameraDeviceApproved)
+                if (e.Type == (uint)SDL.EventType.CameraDeviceApproved)
                 {
                     SDL.LogInfo(SDL.LogCategory.Application, "Camera use approved by user!");
                 }
 
-                if (e.Type == SDL.EventType.CameraDeviceDenied)
+                if (e.Type == (uint)SDL.EventType.CameraDeviceDenied)
                 {
                     SDL.LogInfo(SDL.LogCategory.Application, "Camera use denied by user!");
                 }

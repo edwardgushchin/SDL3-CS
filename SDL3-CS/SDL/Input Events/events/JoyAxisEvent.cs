@@ -38,7 +38,8 @@ public static partial class SDL
         /// <see cref="EventType.JoystickAxisMotion"/>
         /// </summary>
         public EventType Type;
-        private UInt32 Reserved;
+        
+        private UInt32 _reserved;
         
         /// <summary>
         /// In nanoseconds, populated using <see cref="GetTicksNS"/>
@@ -64,8 +65,8 @@ public static partial class SDL
         /// <summary>
         /// The axis value (range: -32768 to 32767)
         /// </summary>
-        public Int16 Value;
+        public short Value;
         
-        private UInt16 Padding4;
+        private Byte _padding4;
     }
 }

@@ -28,9 +28,11 @@
 
 namespace SDL3;
 
-public partial class SDL
+public static partial class SDL
 {
-    public const uint ExtendedMask = 1u << 29;
-    
-    public const uint ScanCodeMask = 1u << 30;
+    public const int ButtonLeft = 1;
+    public const int ButtonMiddle = 2;
+    public const int ButtonRight = 3;
+    public const int ButtonX1 = 4;
+    public const int ButtonX2 = 5;
 }

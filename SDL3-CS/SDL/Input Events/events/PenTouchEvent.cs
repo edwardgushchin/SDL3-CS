@@ -76,7 +76,7 @@ public static partial class SDL
         /// <summary>
         /// true if eraser end is used (not all pens support this).
         /// </summary>
-        [MarshalAs(UnmanagedType.I1)] public bool Eraset;
+        [MarshalAs(UnmanagedType.I1)] public bool Eraser;
 
         /// <summary>
         /// true if the pen is touching or false if the pen is lifted off
