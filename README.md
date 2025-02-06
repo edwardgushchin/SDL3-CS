@@ -48,6 +48,12 @@ cd SDL3-CS
 dotnet build -c Release
 ```
 
+or
+
+```
+dotnet add package SDL3-CS --version 3.2.2-doc
+```
+
 ## 🎓 Examples
 
 ```C#
