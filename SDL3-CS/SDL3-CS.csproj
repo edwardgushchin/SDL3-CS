@@ -8,10 +8,23 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
+        <PackageLicenseUrl>https://github.com/edwardgushchin/SDL3-CS/blob/release-3.2.x/LICENSE</PackageLicenseUrl>
+        <PackageReleaseNotes>
+            This is a stable bugfix release, with the following changes:
+
+            - Fixed mouse motion while the mouse is grabbed on Linux
+            - Fixed audio gain not applying in some cases
+            - Fixed a potential crash when applying audio gain
+            - Removed audio resampling frequency limit
+            - Fixed a crash on Windows if a tray is created without any menus
+            - Fixed being able to open BMP files saved with SDL_SaveBMP() on macOS
+            - Fixed inverted Y axis pen input on macOS
+            - Allow the window manager to position windows that don't specify a position on Linux
+        </PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>0.0.1-preview</Version>
+        <Version>3.2.2-doc</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
@@ -23,12 +36,20 @@
         <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>logo.png</PackageIcon>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\SDL3-CS.xml</DocumentationFile>
+      <DebugType>embedded</DebugType>
     </PropertyGroup>
     
     <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
       <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
       <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
+      <None Include="bin\Release\SDL3-CS.xml" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

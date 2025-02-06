@@ -940,9 +940,9 @@ public static partial class SDL
         /// when your app is in the background.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item>"0": Disable joystick & gamecontroller input events when the application
+        /// <item>"0": Disable joystick &amp; gamecontroller input events when the application
         /// is in the background. (default)</item>
-        /// <item>"1": Enable joystick & gamecontroller input events when the application
+        /// <item>"1": Enable joystick &amp; gamecontroller input events when the application
         /// is in the background.</item>
         /// </list>
         /// </summary>
@@ -1786,7 +1786,7 @@ public static partial class SDL
         /// modifiers, and <see cref="Keycode.Left"/> if it is unset.</item>
         /// <item><c>"french_numbers"</c>: The number row on French keyboards is inverted, so
         /// pressing the 1 key would yield the keycode <see cref="Keycode.Alpha1"/>, or <c>'1'</c>, instead of
-        /// <see cref="Keycode.Ampersand"/>, or <c>'&'</c></item>
+        /// <see cref="Keycode.Ampersand"/>, or <c>'&amp;'</c></item>
         /// <item><c>"latin_letters"</c>: For keyboards using non-Latin letters, such as Russian
         /// or Thai, the letter keys generate keycodes as though it had an en_US
         /// layout. e.g. pressing the key associated with <see cref="Scancode.A"/> on a Russian

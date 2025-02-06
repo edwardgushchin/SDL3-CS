@@ -32,7 +32,7 @@ public static partial class SDL
     /// <para>Depending on the hardware, you may get motion events when the pen is not
     /// touching a tablet, for tracking a pen even when it isn't drawing. You
     /// should listen for <see cref="EventType.PenDown"/> and <see cref="EventType.PenUp"/> events, or check
-    /// <c>pen_state & PenInputFlags.Down</c> to decide if a pen is "drawing" when
+    /// <c>pen_state &amp; PenInputFlags.Down</c> to decide if a pen is "drawing" when
     /// dealing with pen motion.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
