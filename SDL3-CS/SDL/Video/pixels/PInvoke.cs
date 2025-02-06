@@ -203,7 +203,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatDetails"/>
     /// ReSharper disable once InvalidXmlDocComment
-    /// <seealso cref="GetRGBA"/>
+    /// <seealso cref="GetRGBA(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte, out byte)"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapSurfaceRGBA"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -277,7 +277,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatDetails"/>
     /// ReSharper disable once InvalidXmlDocComment
-    /// <seealso cref="GetRGB"/>
+    /// <seealso cref="GetRGB(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte)"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapRGBA"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -307,7 +307,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatDetails"/>
     /// ReSharper disable once InvalidXmlDocComment
-    /// <seealso cref="GetRGB"/>
+    /// <seealso cref="GetRGB(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte)"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapRGBA"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
