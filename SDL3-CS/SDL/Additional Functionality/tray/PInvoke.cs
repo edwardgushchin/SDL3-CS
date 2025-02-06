@@ -158,8 +158,8 @@ public partial class SDL
     
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntries"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTrayEntries(IntPtr menu, out int size);
-    /// <code>extern SDL_DECLSPEC const SDL_TrayEntry **SDLCALL SDL_GetTrayEntries(SDL_TrayMenu *menu, int *size);</code>
+    private static partial IntPtr SDL_GetTrayEntries(IntPtr menu, out int count);
+    /// <code>extern SDL_DECLSPEC const SDL_TrayEntry **SDLCALL SDL_GetTrayEntries(SDL_TrayMenu *menu, int *count);</code>
     /// <summary>
     /// Returns a list of entries in the menu, in order.
     /// </summary>
