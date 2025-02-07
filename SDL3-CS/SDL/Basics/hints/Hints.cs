@@ -1905,8 +1905,8 @@ public static partial class SDL
         public const string MacOpenGLAsyncDispatch = "SDL_MAC_OPENGL_ASYNC_DISPATCH";
         
         /// <summary>
-        /// <para>A variable controlling whether the Option (⌥) key on macOS should be
-        /// remapped to act as the Alt key.</para>
+        /// <para>AA variable controlling whether the Option key on macOS should be remapped
+        /// to act as the Alt key.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"none</c>: The Option key is not remapped to Alt. (default)</item>

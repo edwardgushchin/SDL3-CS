@@ -35,6 +35,7 @@ public static partial class SDL
     /// <param name="guid">the <see cref="GUID"/> you wish to convert to string.</param>
     /// <param name="pszGUID">buffer in which to write the ASCII string.</param>
     /// <param name="cbGUID">the size of pszGUID, should be at least 33 bytes.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StringToGUID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GUIDToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -51,6 +52,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="pchGUID">string containing an ASCII representation of a GUID.</param>
     /// <returns>a <see cref="GUID"/> structure.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GUIDToString"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_StringToGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

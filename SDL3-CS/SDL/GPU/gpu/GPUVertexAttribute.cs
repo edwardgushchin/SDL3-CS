@@ -35,6 +35,7 @@ public static partial class SDL
     /// </summary>
     /// <seealso cref="GPUVertexBufferDescription"/>
     /// <seealso cref="GPUVertexInputState"/>
+    /// <seealso cref="GPUVertexElementFormat"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUVertexAttribute
     {

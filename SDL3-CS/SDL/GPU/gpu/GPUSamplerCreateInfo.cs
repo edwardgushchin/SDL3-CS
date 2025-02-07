@@ -32,6 +32,10 @@ public static partial class SDL
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUSampler"/>
+    /// <seealso cref="GPUFilter"/>
+    /// <seealso cref="GPUSamplerMipmapMode"/>
+    /// <seealso cref="GPUSamplerAddressMode"/>
+    /// <seealso cref="GPUCompareOp"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUSamplerCreateInfo
     {
