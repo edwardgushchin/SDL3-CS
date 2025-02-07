@@ -756,18 +756,50 @@ public static partial class TTF
     public static partial Direction GetFontDirection(IntPtr font);
     
     
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL TTF_StringToTag(const char *string);</code>
+    /// <summary>
+    /// Convert from a 4 character string to a 32-bit tag.
+    /// </summary>
+    /// <param name="string">the 4 character string to convert.</param>
+    /// <returns>the 32-bit representation of the string.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="TagToString"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_StringToTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint StringToTag([MarshalAs(UnmanagedType.LPUTF8Str)] string @string);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL TTF_TagToString(Uint32 tag, char *string, size_t size);</code>
+    /// <summary>
+    /// Convert from a 32-bit tag to a 4 character string.
+    /// </summary>
+    /// <param name="tag">the 32-bit tag to convert.</param>
+    /// <param name="string">a pointer filled in with the 4 character representation of
+    /// the tag.</param>
+    /// <param name="size">the size of the buffer pointed at by string, should be at least
+    /// 4.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="StringToTag"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_TagToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void TagToString(uint tag, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, ulong size);
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontScript(TTF_Font *font, Uint32 script);</code>
     /// <summary>
     /// <para>Set the script to be used for text shaping by a font.</para>
-    /// <para>This returns false if SDL_ttf isn't build with HarfBuzz support.</para>
+    /// <para>This returns false if SDL_ttf isn't built with HarfBuzz support.</para>
     /// <para>This updates any <see cref="TTFText"/> objects using this font.</para>
     /// </summary>
     /// <param name="font">the font to modify.</param>
-    /// <param name="script">a script tag in the format used by HarfBuzz.</param>
+    /// <param name="script">an
+    /// [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+    /// .</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function is not thread-safe.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="StringToTag"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetFontScript(IntPtr font, uint script);
@@ -778,10 +810,13 @@ public static partial class TTF
     /// <para>Get the script used for text shaping a font.</para>
     /// </summary>
     /// <param name="font">the font to query.</param>
-    /// <returns>a script tag in the format used by HarfBuzz.</returns>
+    /// <returns>an
+    /// [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+    /// or 0 if a script hasn't been set.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="TagToString"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetFontScript(IntPtr font);
     
@@ -791,11 +826,14 @@ public static partial class TTF
     /// <para>Get the script used by a 32-bit codepoint.</para>
     /// </summary>
     /// <param name="ch">the character code to check.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns>an
+    /// [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+    /// on success, or 0 on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="TagToString"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetGlyphScript(uint ch);
     
@@ -1769,15 +1807,18 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextScript(TTF_Text *text, Uint32 script);</code>
     /// <summary>
     /// <para>Set the script to be used for text shaping a text object.</para>
-    /// <para>This returns false if SDL_ttf isn't build with HarfBuzz support.</para>
+    /// <para>TThis returns false if SDL_ttf isn't built with HarfBuzz support.</para>
     /// </summary>
-    /// <param name="text">the text to modify.</param>
+    /// <param name="text">an
+    /// [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+    /// .</param>
     /// <param name="script">a script tag in the format used by HarfBuzz.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// text.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="StringToTag"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetTextScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetTextScript(IntPtr text, uint script);
@@ -1789,10 +1830,14 @@ public static partial class TTF
     /// <para>This defaults to the script of the font used by the text object.</para>
     /// </summary>
     /// <param name="text">the text to query.</param>
-    /// <returns>a script tag in the format used by HarfBuzz.</returns>
+    /// <returns>an
+    /// [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+    /// or 0 if a script hasn't been set on either the text object or the
+    /// font.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// text.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="TagToString"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetTextScript"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetTextScript(IntPtr text);
     
