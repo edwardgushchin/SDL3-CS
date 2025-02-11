@@ -149,6 +149,8 @@ public static partial class SDL
 	public static partial IntPtr CreateThreadWithPropertiesRuntime(uint props, FunctionPointer? pfnBeginThread, FunctionPointer? pfnEndThread);
 	
 	
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetThreadName(IntPtr thread);
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetThreadName(SDL_Thread *thread);</code>
 	/// <summary>
 	/// Get the thread name as it was specified in <see cref="CreateThread"/>.
@@ -157,9 +159,11 @@ public static partial class SDL
 	/// <returns>a pointer to a UTF-8 string that names the specified thread, or
 	/// <c>null</c> if it doesn't have a name.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	public static partial string? GetThreadName(IntPtr thread);
+	public static string? GetThreadName(IntPtr thread)
+	{
+		var value = SDL_GetThreadName(thread); 
+		return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+	}
 	
 	
 	/// <code>extern SDL_DECLSPEC SDL_ThreadID SDLCALL SDL_GetCurrentThreadID(void);</code>

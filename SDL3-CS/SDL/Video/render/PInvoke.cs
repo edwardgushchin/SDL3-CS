@@ -45,6 +45,8 @@ public static partial class SDL
     public static partial int GetNumRenderDrivers();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRenderDriver(int index);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetRenderDriver(int index);</code>
     /// <summary>
     /// <para>Use this function to get the name of a built in 2D rendering driver.</para>
@@ -62,9 +64,11 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumRenderDrivers"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetRenderDriver(int index);
+    public static string? GetRenderDriver(int index)
+    {
+        var value = SDL_GetRenderDriver(index); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CreateWindowAndRenderer(const char *title, int width, int height, SDL_WindowFlags window_flags, SDL_Window **window, SDL_Renderer **renderer);</code>
@@ -218,6 +222,8 @@ public static partial class SDL
     public static partial IntPtr GetRenderWindow(IntPtr renderer);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRendererName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRendererName(IntPtr renderer);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetRendererName(SDL_Renderer *renderer);</code>
     /// <summary>
     /// Get the name of a renderer.
@@ -229,9 +235,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateRenderer"/>
     /// <seealso cref="CreateRendererWithProperties"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRendererName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetRendererName(IntPtr renderer);
+    public static string? GetRendererName(IntPtr renderer)
+    {
+        var value = SDL_GetRendererName(renderer); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetRendererProperties(SDL_Renderer *renderer);</code>

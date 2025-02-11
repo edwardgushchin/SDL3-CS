@@ -48,6 +48,8 @@ public static partial class SDL
     public static partial int GetNumCameraDrivers();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCameraDriver(int index);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetCameraDriver(int index);</code>
     /// <summary>
     /// <para>Use this function to get the name of a built in camera driver.</para>
@@ -65,11 +67,16 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumCameraDrivers"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetCameraDriver(int index);
+    public static string? GetCameraDriver(int index)
+    {
+        var value = SDL_GetCameraDriver(index);
+
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentCameraDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCurrentCameraDriver();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetCurrentCameraDriver(void);</code>
     /// <summary>
     /// <para>Get the name of the current camera driver.</para>
@@ -81,9 +88,11 @@ public static partial class SDL
     /// been initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentCameraDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetCurrentCameraDriver();
+    public static string? GetCurrentCameraDriver()
+    { 
+        var value = SDL_GetCurrentCameraDriver();
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -162,6 +171,8 @@ public static partial class SDL
     }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCameraName(uint instanceId);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetCameraName(SDL_CameraID instance_id);</code>
     /// <summary>
     /// <para>Get the human-readable device name for a camera.</para>
@@ -172,9 +183,11 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetCameraName(uint instanceId);
+    public static string? GetCameraName(uint instanceId)
+    {
+        var value = SDL_GetCameraName(instanceId); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
 
     /// <code>extern SDL_DECLSPEC SDL_CameraPosition SDLCALL SDL_GetCameraPosition(SDL_CameraID instance_id);</code>

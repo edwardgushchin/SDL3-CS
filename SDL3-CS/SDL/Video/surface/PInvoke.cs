@@ -1221,7 +1221,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
@@ -1291,7 +1291,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
@@ -1361,7 +1361,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
@@ -1431,7 +1431,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and

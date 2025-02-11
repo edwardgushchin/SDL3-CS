@@ -269,6 +269,8 @@ public partial class SDL
     public static partial void SendAndroidBackButton();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidInternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAndroidInternalStoragePath();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAndroidInternalStoragePath(void);</code>
     /// <summary>
     /// <para>Get the path used for internal storage for this Android application.</para>
@@ -284,9 +286,11 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidExternalStoragePath"/>
     /// <seealso cref="GetAndroidCachePath"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidInternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetAndroidInternalStoragePath();
+    public static string? GetAndroidInternalStoragePath()
+    {
+        var value = SDL_GetAndroidInternalStoragePath(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_GetAndroidExternalStorageState(void);</code>
@@ -304,6 +308,8 @@ public partial class SDL
     public static partial uint GetAndroidExternalStorageState();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidExternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAndroidExternalStoragePath();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAndroidExternalStoragePath(void);</code>
     /// <summary>
     /// <para>Get the path used for external storage for this Android application.</para>
@@ -320,11 +326,15 @@ public partial class SDL
     /// <seealso cref="GetAndroidExternalStorageState"/>
     /// <seealso cref="GetAndroidInternalStoragePath"/>
     /// <seealso cref="GetAndroidCachePath"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidExternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetAndroidExternalStoragePath();
+    public static string? GetAndroidExternalStoragePath()
+    {
+        var value = SDL_GetAndroidExternalStoragePath(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidCachePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAndroidCachePath();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAndroidCachePath(void);</code>
     /// <summary>
     /// <para>Get the path used for caching data for this Android application.</para>
@@ -339,9 +349,11 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidInternalStoragePath"/>
     /// <seealso cref="GetAndroidExternalStoragePath"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidCachePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetAndroidCachePath();
+    public static string? GetAndroidCachePath()
+    {
+        var value = SDL_GetAndroidCachePath(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RequestAndroidPermission(const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata);</code>

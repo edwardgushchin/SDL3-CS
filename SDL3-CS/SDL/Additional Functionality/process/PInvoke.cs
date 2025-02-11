@@ -34,7 +34,7 @@ public static partial class SDL
     /// <para>The path to the executable is supplied in args[0]. args[1..N] are
     /// additional arguments passed on the command line of the new process, and the
     /// argument list should be terminated with a <c>null</c>, e.g.:</para>
-    /// <code>const char *args[] = { "myprogram", "argument", NULL };</code>
+    /// <code>const char *args[] = { "myprogram", "argument", <c>null</c>};</code>
     /// <para>Setting pipe_stdio to true is equivalent to setting
     /// <see cref="Props.ProcessCreateSTDInNumber"/> and
     /// <see cref="Props.ProcessCreateSTDOutNumber"/> to <see cref="ProcessIO.App"/>, and
@@ -70,7 +70,7 @@ public static partial class SDL
     /// <list type="bullet">
     /// <item><see cref="Props.ProcessCreateArgsPointer"/>: an array of strings containing
     /// the program to run, any arguments, and a <c>null</c> pointer, e.g. const char
-    /// *args[] = { "myprogram", "argument", NULL }. This is a required property.</item>
+    /// *args[] = { "myprogram", "argument", <c>null</c>}. This is a required property.</item>
     /// <item><see cref="Props.ProcessCreateEnvironmentPointer"/>: an SDL_Environment
     /// pointer. If this property is set, it will be the entire environment for
     /// the process, otherwise the current environment is used.</item>

@@ -90,6 +90,8 @@ public static partial class SDL
 	}
 	
 	
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickNameForID(uint instanceId);
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetJoystickNameForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
 	/// <para>Get the implementation dependent name of a joystick.</para>
@@ -101,11 +103,15 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickName"/>
 	/// <seealso cref="GetJoysticks"/>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	public static partial string GetJoystickNameForID(uint instanceId);
+	public static string? GetJoystickNameForID(uint instanceId)
+    {
+        var value = SDL_GetJoystickNameForID(instanceId); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
 	
 	
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPathForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickPathForID(uint instanceId);
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetJoystickPathForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
 	/// <para>Get the implementation dependent path of a joystick.</para>
@@ -117,9 +123,11 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPath"/>
 	/// <seealso cref="GetJoysticks"/>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPathForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	public static partial string GetJoystickPathForID(uint instanceId);
+	public static string? GetJoystickPathForID(uint instanceId)
+	{
+		var value = SDL_GetJoystickPathForID(instanceId); 
+		return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+	}
 	
 	
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetJoystickPlayerIndexForID(SDL_JoystickID instance_id);</code>
@@ -455,6 +463,8 @@ public static partial class SDL
 	public static partial uint GetJoystickProperties(IntPtr joystick);
 	
 	
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickName(IntPtr joystick);
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetJoystickName(SDL_Joystick *joystick);</code>
 	/// <summary>
 	/// Get the implementation dependent name of a joystick.
@@ -464,11 +474,15 @@ public static partial class SDL
 	/// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickNameForID"/>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	public static partial string? GetJoystickName(IntPtr joystick);
+	public static string? GetJoystickName(IntPtr joystick)
+	{
+		var value = SDL_GetJoystickName(joystick); 
+		return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+	}
 	
 	
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickPath(IntPtr joystick);
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetJoystickPath(SDL_Joystick *joystick);</code>
 	/// <summary>
 	/// <para>Get the implementation dependent path of a joystick.</para>
@@ -478,9 +492,11 @@ public static partial class SDL
 	/// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPathForID"/>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	public static partial string? GetJoystickPath(IntPtr joystick);
+	public static string? GetJoystickPath(IntPtr joystick)
+	{
+		var value = SDL_GetJoystickPath(joystick); 
+		return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+	}
 	
 	
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetJoystickPlayerIndex(SDL_Joystick *joystick);</code>
@@ -581,6 +597,8 @@ public static partial class SDL
 	public static partial ushort GetJoystickFirmwareVersion(IntPtr joystick);
 	
 	
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickSerial"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickSerial(IntPtr joystick);
 	/// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetJoystickSerial(SDL_Joystick *joystick);</code>
 	/// <summary>
 	/// <para>Get the serial number of an opened joystick, if available.</para>
@@ -590,9 +608,11 @@ public static partial class SDL
 	/// <returns>the serial number of the selected joystick, or <c>null</c> if
 	/// unavailable.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickSerial"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.LPUTF8Str)]
-	public static partial string? GetJoystickSerial(IntPtr joystick);
+	public static string? GetJoystickSerial(IntPtr joystick)
+	{
+		var value = SDL_GetJoystickSerial(joystick); 
+		return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+	}
 	
 	
 	/// <code>extern SDL_DECLSPEC SDL_JoystickType SDLCALL SDL_GetJoystickType(SDL_Joystick *joystick);</code>

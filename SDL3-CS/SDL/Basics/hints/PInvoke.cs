@@ -107,6 +107,8 @@ public static partial class SDL
     public static partial void ResetHints();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetHint(const char *name);</code>
     /// <summary>
     /// Get the value of a hint.
@@ -122,9 +124,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetHint"/>
     /// <seealso cref="SetHintWithPriority"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHint", StringMarshalling = StringMarshalling.Utf8), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetHint(string name);
+    public static string? GetHint(string name)
+    {
+        var value = SDL_GetHint(name); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetHintBoolean(const char *name, bool default_value);</code>

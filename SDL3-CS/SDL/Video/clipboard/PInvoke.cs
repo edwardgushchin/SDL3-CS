@@ -44,6 +44,8 @@ public static partial class SDL
     public static partial bool SetClipboardText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetClipboardText();
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetClipboardText(void);</code>
     /// <summary>
     /// <para>Get UTF-8 text from the clipboard.</para>
@@ -57,9 +59,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetClipboardText();
+    public static string GetClipboardText()
+    {
+        var value = SDL_GetClipboardText(); 
+        try
+        {
+            return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+        }
+        finally
+        {
+            if(value != IntPtr.Zero) Free(value);
+        }
+    }
 
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasClipboardText(void);</code>
@@ -92,6 +103,8 @@ public static partial class SDL
     public static partial bool SetPrimarySelectionText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetPrimarySelectionText();
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetPrimarySelectionText(void);</code>
     /// <summary>
     /// <para>Get UTF-8 text from the primary selection.</para>
@@ -105,9 +118,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetPrimarySelectionText();
+    public static string GetPrimarySelectionText()
+    {
+        var value = SDL_GetPrimarySelectionText(); 
+        try
+        {
+            return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+        }
+        finally
+        {
+            if(value != IntPtr.Zero) Free(value);
+        }
+    }
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasPrimarySelectionText(void);</code>
