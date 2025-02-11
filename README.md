@@ -49,7 +49,7 @@ dotnet build -c Release
 or
 
 ```
-dotnet add package SDL3-CS --version 3.2.2-doc
+dotnet add package SDL3-CS --version 3.2.2.1
 ```
 
 ## 🎓 Examples
