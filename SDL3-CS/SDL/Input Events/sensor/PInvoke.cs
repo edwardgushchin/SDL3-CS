@@ -55,17 +55,21 @@ public static partial class SDL
     }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetSensorNameForID(int instanceId);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetSensorNameForID(SDL_SensorID instance_id);</code>
     /// <summary>
     /// <para>Get the implementation dependent name of a sensor.</para>
     /// <para>This can be called before any sensors are opened.</para>
     /// </summary>
-    /// <param name="instanceID">the sensor instance ID.</param>
+    /// <param name="instanceId">the sensor instance ID.</param>
     /// <returns>the sensor name, or <c>null</c> if <c>instanceID</c> is not valid.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetSensorNameForID(int instanceID);
+    public static string? GetSensorNameForID(int instanceId)
+    {
+        var value = SDL_GetSensorNameForID(instanceId); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_SensorType SDLCALL SDL_GetSensorTypeForID(SDL_SensorID instance_id);</code>
@@ -130,6 +134,8 @@ public static partial class SDL
     public static partial uint GetSensorProperties(IntPtr sensor);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetSensorName(IntPtr sensor);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetSensorName(SDL_Sensor *sensor);</code>
     /// <summary>
     /// Get the implementation dependent name of a sensor.
@@ -138,9 +144,11 @@ public static partial class SDL
     /// <returns>the sensor name or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetSensorName(IntPtr sensor);
+    public static string? GetSensorName(IntPtr sensor)
+    {
+        var value = SDL_GetSensorName(sensor); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
 
 
     /// <code>extern SDL_DECLSPEC SDL_SensorType SDLCALL SDL_GetSensorType(SDL_Sensor *sensor);</code>

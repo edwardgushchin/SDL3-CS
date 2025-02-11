@@ -571,6 +571,8 @@ public partial class Mixer
     public static partial int GetNumChunkDecoders();
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetChunkDecoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetChunkDecoder(int index);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL Mix_GetChunkDecoder(int index);</code>
     /// <summary>
     /// <para>Get a chunk decoder's name.</para>
@@ -586,9 +588,11 @@ public partial class Mixer
     /// <returns>the chunk decoder's name.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="GetNumChunkDecoders"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetChunkDecoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetChunkDecoder(int index);
+    public static string GetChunkDecoder(int index)
+    {
+        var value = Mix_GetChunkDecoder(index); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL Mix_HasChunkDecoder(const char *name);</code>
@@ -633,6 +637,8 @@ public partial class Mixer
     public static partial int GetNumMusicDecoders();
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicDecoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetMusicDecoder(int index);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL Mix_GetMusicDecoder(int index);</code>
     /// <summary>
     /// <para>Get a music decoder's name.</para>
@@ -648,9 +654,11 @@ public partial class Mixer
     /// <returns>the music decoder's name.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="GetNumMusicDecoders"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicDecoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetMusicDecoder(int index);
+    public static string GetMusicDecoder(int index)
+    {
+        var value = Mix_GetMusicDecoder(index); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL Mix_HasMusicDecoder(const char *name);</code>
@@ -688,6 +696,8 @@ public partial class Mixer
     public static partial MusicType GetMusicType(IntPtr music);
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetMusicTitle(IntPtr music);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL Mix_GetMusicTitle(const Mix_Music *music);</code>
     /// <summary>
     /// <para>Get the title for a music object.</para>
@@ -707,11 +717,15 @@ public partial class Mixer
     /// <seealso cref="GetMusicArtistTag"/>
     /// <seealso cref="GetMusicAlbumTag"/>
     /// <seealso cref="GetMusicCopyrightTag"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetMusicTitle(IntPtr music);
+    public static string GetMusicTitle(IntPtr music)
+    {
+        var value = Mix_GetMusicTitle(music); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicTitleTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetMusicTitleTag(IntPtr music);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL Mix_GetMusicTitleTag(const Mix_Music *music);</code>
     /// <summary>
     /// <para>Get the title for a music object.</para>
@@ -731,11 +745,15 @@ public partial class Mixer
     /// <seealso cref="GetMusicArtistTag"/>
     /// <seealso cref="GetMusicAlbumTag"/>
     /// <seealso cref="GetMusicCopyrightTag"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicTitleTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetMusicTitleTag(IntPtr music);
+    public static string GetMusicTitleTag(IntPtr music)
+    {
+        var value = Mix_GetMusicTitleTag(music); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicArtistTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetMusicArtistTag(IntPtr music);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL Mix_GetMusicArtistTag(const Mix_Music *music);</code>
     /// <summary>
     /// <para>Get the artist name for a music object.</para>
@@ -751,11 +769,15 @@ public partial class Mixer
     /// <seealso cref="GetMusicTitleTag"/>
     /// <seealso cref="GetMusicAlbumTag"/>
     /// <seealso cref="GetMusicCopyrightTag"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicArtistTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetMusicArtistTag(IntPtr music);
+    public static string GetMusicArtistTag(IntPtr music)
+    {
+        var value = Mix_GetMusicArtistTag(music); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicAlbumTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetMusicAlbumTag(IntPtr music);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL Mix_GetMusicAlbumTag(const Mix_Music *music);</code>
     /// <summary>
     /// <para>Get the album name for a music object.</para>
@@ -771,11 +793,15 @@ public partial class Mixer
     /// <seealso cref="GetMusicTitleTag"/>
     /// <seealso cref="GetMusicArtistTag"/>
     /// <seealso cref="GetMusicCopyrightTag"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicAlbumTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetMusicAlbumTag(IntPtr music);
+    public static string GetMusicAlbumTag(IntPtr music)
+    {
+        var value = Mix_GetMusicAlbumTag(music); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicCopyrightTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetMusicCopyrightTag(IntPtr music);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL Mix_GetMusicCopyrightTag(const Mix_Music *music);</code>
     /// <summary>
     /// <para>Get the copyright text for a music object.</para>
@@ -791,9 +817,11 @@ public partial class Mixer
     /// <seealso cref="GetMusicTitleTag"/>
     /// <seealso cref="GetMusicArtistTag"/>
     /// <seealso cref="GetMusicAlbumTag"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetMusicCopyrightTag"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetMusicCopyrightTag(IntPtr music);
+    public static string GetMusicCopyrightTag(IntPtr music)
+    {
+        var value = Mix_GetMusicCopyrightTag(music); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL Mix_SetPostMix(Mix_MixCallback mix_func, void *arg);</code>
@@ -2090,6 +2118,8 @@ public partial class Mixer
     public static partial bool SetSoundFonts([MarshalAs(UnmanagedType.LPUTF8Str)] string paths);
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetSoundFonts"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetSoundFonts();
     /// <code>extern SDL_DECLSPEC const char* SDLCALL Mix_GetSoundFonts(void);</code>
     /// <summary>
     /// <para>Get SoundFonts paths to use by supported MIDI backends.</para>
@@ -2113,9 +2143,11 @@ public partial class Mixer
     /// </summary>
     /// <returns>semicolon-separated list of sound font paths.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetSoundFonts"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetSoundFonts();
+    public static string GetSoundFonts()
+    {
+        var value = Mix_GetSoundFonts(); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL Mix_EachSoundFont(Mix_EachSoundFontCallback function, void *data);</code>
@@ -2158,6 +2190,8 @@ public partial class Mixer
     public static partial bool SetTimidityCfg([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
     
     
+    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetTimidityCfg"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr Mix_GetTimidityCfg();
     /// <code>extern SDL_DECLSPEC const char* SDLCALL Mix_GetTimidityCfg(void);</code>
     /// <summary>
     /// <para>Get full path of a previously-specified Timidity config file.</para>
@@ -2169,9 +2203,11 @@ public partial class Mixer
     /// <returns>the previously-specified path, or <c>null</c> if not set.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="SetTimidityCfg"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_GetTimidityCfg"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetTimidityCfg();
+    public static string? GetTimidityCfg()
+    {
+        var value = Mix_GetTimidityCfg(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC Mix_Chunk * SDLCALL Mix_GetChunk(int channel);</code>

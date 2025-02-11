@@ -28,6 +28,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
+    private static partial IntPtr SDL_GetPixelFormatName(PixelFormat format);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetPixelFormatName(SDL_PixelFormat format);</code>
     /// <summary>
     /// Get the human readable name of a pixel format.
@@ -37,9 +39,11 @@ public static partial class SDL
     /// <see cref="PixelFormat.Unknown"/> if the format isn't recognized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetPixelFormatName(PixelFormat format); 
+    public static string GetPixelFormatName(PixelFormat format)
+    {
+        var value = SDL_GetPixelFormatName(format); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetMasksForPixelFormat(SDL_PixelFormat format, int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask);</code>

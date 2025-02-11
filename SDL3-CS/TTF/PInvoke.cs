@@ -689,6 +689,8 @@ public static partial class TTF
     public static partial bool FontIsScalable(IntPtr font);
     
     
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontFamilyName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr TTF_GetFontFamilyName(IntPtr font);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL TTF_GetFontFamilyName(const TTF_Font *font);</code>
     /// <summary>
     /// <para>Query a font's family name.</para>
@@ -701,11 +703,15 @@ public static partial class TTF
     /// <returns>the font's family name.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontFamilyName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetFontFamilyName(IntPtr font);
+    public static string GetFontFamilyName(IntPtr font)
+    {
+        var value = TTF_GetFontFamilyName(font); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontStyleName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr TTF_GetFontStyleName(IntPtr font);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL TTF_GetFontStyleName(const TTF_Font *font);</code>
     /// <summary>
     /// <para>Query a font's style name.</para>
@@ -718,9 +724,11 @@ public static partial class TTF
     /// <returns>the font's style name.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontStyleName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetFontStyleName(IntPtr font);
+    public static string GetFontStyleName(IntPtr font)
+    {
+        var value = TTF_GetFontStyleName(font); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontDirection(TTF_Font *font, TTF_Direction direction);</code>

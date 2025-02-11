@@ -248,6 +248,8 @@ public partial class SDL
     public static partial void SetTrayEntryLabel(IntPtr entry, [MarshalAs(UnmanagedType.LPUTF8Str)] string label);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryLabel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTrayEntryLabel(IntPtr entry);
     /// <code>extern SDL_DECLSPEC const char *SDLCALL SDL_GetTrayEntryLabel(SDL_TrayEntry *entry);</code>
     /// <summary>
     /// <para>Gets the label of an entry.</para>
@@ -261,9 +263,11 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryLabel"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryLabel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetTrayEntryLabel(IntPtr entry);
+    public static string? GetTrayEntryLabel(IntPtr entry)
+    {
+    	var value = SDL_GetTrayEntryLabel(entry); 
+    	return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayEntryChecked(SDL_TrayEntry *entry, bool checked);</code>

@@ -40,6 +40,8 @@ public static partial class SDL
     public static partial int GetNumVideoDrivers();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVideoDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetVideoDriver(int index);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetVideoDriver(int index);</code>
     /// <summary>
     /// <para>Get the name of a built in video driver.</para>
@@ -54,11 +56,15 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumVideoDrivers"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVideoDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetVideoDriver(int index);
+    public static string GetVideoDriver(int index)
+    {
+        var value = SDL_GetVideoDriver(index); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentVideoDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCurrentVideoDriver();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetCurrentVideoDriver(void);</code>
     /// <summary>
     /// <para>Get the name of the currently initialized video driver.</para>
@@ -72,9 +78,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumVideoDrivers"/>
     /// <seealso cref="GetVideoDriver"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentVideoDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetCurrentVideoDriver();
+    public static string? GetCurrentVideoDriver()
+    {
+        var value = SDL_GetCurrentVideoDriver(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_SystemTheme SDLCALL SDL_GetSystemTheme(void);</code>
@@ -157,6 +165,8 @@ public static partial class SDL
     public static partial uint GetDisplayProperties(uint displayID);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetDisplayName(uint displayID);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetDisplayName(SDL_DisplayID displayID);</code>
     /// <summary>
     /// Get the name of a display in UTF-8 encoding.
@@ -167,9 +177,11 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplays"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetDisplayName(uint displayID);
+    public static string? GetDisplayName(uint displayID)
+    {
+        var value = SDL_GetDisplayName(displayID); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDisplayBounds(SDL_DisplayID displayID, SDL_Rect *rect);</code>
@@ -1058,6 +1070,8 @@ public static partial class SDL
     public static partial bool SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindowTitle(IntPtr window);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetWindowTitle(SDL_Window *window);</code>
     /// <summary>
     /// Get the title of a window.
@@ -1068,9 +1082,11 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowTitle"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetWindowTitle(IntPtr window);
+    public static string GetWindowTitle(IntPtr window)
+    {
+        var value = SDL_GetWindowTitle(window); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);</code>
