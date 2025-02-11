@@ -198,7 +198,7 @@ public partial class Image
     /// </summary>
     /// <param name="renderer">the SDL_Renderer to use to create the GPU texture.</param>
     /// <param name="file">a path on the filesystem to load an image from.</param>
-    /// <returns>a new texture, or NULL on error.</returns>
+    /// <returns>a new texture, or <c>null</c>on error.</returns>
     /// <since>This function is available since SDL_image 3.0.0.</since>
     /// <seealso cref="LoadTextureTypedIO"/>
     /// <seealso cref="LoadTextureIO"/>
@@ -1513,7 +1513,7 @@ public partial class Image
     /// interface available here.</para>
     /// </summary>
     /// <param name="src">an SDL_IOStream to load image data from.</param>
-    /// <returns>SDL surface, or NULL on error.</returns>
+    /// <returns>SDL surface, or <c>null</c>on error.</returns>
     /// <since>This function is available since SDL_image 3.0.0.</since>
     /// <seealso cref="LoadAVIFIO"/>
     /// <seealso cref="LoadICOIO"/>

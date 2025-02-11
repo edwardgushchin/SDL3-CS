@@ -2297,7 +2297,7 @@ public static partial class SDL
     /// existence of the appropriate extension with <see cref="GLExtensionSupported"/>,
     /// or verifying that the version of OpenGL you're using offers the function
     /// as core functionality.</item>
-    /// <item>Some OpenGL drivers, on all platforms, <b>will</b> return NULL if a function
+    /// <item>Some OpenGL drivers, on all platforms, <b>will</b> return <c>null</c>if a function
     /// isn't supported, but you can't count on this behavior. Check for
     /// extensions you use, and if you get a <c>null</c> anyway, act as if that
     /// extension wasn't available. This is probably a bug in the driver, but you

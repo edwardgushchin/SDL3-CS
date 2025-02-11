@@ -805,7 +805,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="count">a pointer filled in with the number of bindings returned.</param>
-    /// <returns>a <c>null</c> terminated array of pointers to bindings or NULL on
+    /// <returns>a <c>null</c> terminated array of pointers to bindings or <c>null</c>on
     /// failure; call <see cref="GetError"/> for more information. This is a
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>

@@ -38,7 +38,7 @@ public static partial class SDL
     /// Country strings are in the format YY, where "YY" is an ISO-3166 country
     /// code (such as "US" for the United States, "CA" for Canada, etc). Country
     /// might be <c>null</c> if there's no specific guidance on them (so you might get {
-    /// "en", "US" } for American English, but { "en", NULL } means "English
+    /// "en", "US" } for American English, but { "en", <c>null</c>} means "English
     /// language, generically"). Language strings are never <c>null</c>, except to
     /// terminate the array.</para>
     /// <para>Please note that not all of these strings are 2 characters; some are three
@@ -46,9 +46,9 @@ public static partial class SDL
     /// <para>The returned list of locales are in the order of the user's preference. For
     /// example, a German citizen that is fluent in US English and knows enough
     /// Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
-    /// "jp", NULL }. Someone from England might prefer British English (where
+    /// "jp", <c>null</c>}. Someone from England might prefer British English (where
     /// "color" is spelled "colour", etc), but will settle for anything like it: {
-    /// "en_GB", "en", NULL }.</para>
+    /// "en_GB", "en", <c>null</c>}.</para>
     /// <para>This function returns <c>null</c> on error, including when the platform does not
     /// supply this information at all.</para>
     /// <para>This might be a "slow" call that has to query the operating system. It's
