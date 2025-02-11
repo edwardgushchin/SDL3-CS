@@ -32,9 +32,7 @@
 
 ## 🚀 About
 
-SDL3 is still under active development, and the shell follows suit.
-
-For more information on what is currently ready for use, see the <a href="#-readiness">Readiness</a> section.
+This is SDL3#, a C# wrapper for SDL3.
 
 ## 📚 Documentation
 
