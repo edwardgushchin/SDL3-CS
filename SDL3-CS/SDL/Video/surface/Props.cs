@@ -30,7 +30,7 @@ public static partial class SDL
         public const string SurfaceSDRWhitePointFloat = "SDL.surface.SDR_white_point";
         public const string SurfaceHDRHeadroomFloat = "SDL.surface.HDR_headroom";
         public const string SurfaceTonemapOperatorString = "SDL.surface.tonemap";
-        
-        //public const string SurfaceColorspaceNumber = "SDL.video.wayland.wl_display";
+        public const string SurfaceHotspotXNumber = "SDL.surface.hotspot.x";
+        public const string SurfaceHotspotYNumber = "SDL.surface.hotspot.y";
     }
 }
