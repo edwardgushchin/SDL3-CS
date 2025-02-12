@@ -1216,7 +1216,7 @@ public static partial class SDL
     /// <seealso cref="RumbleGamepad"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleGamepadTriggers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RumbleGamepadTriggers(IntPtr gamepad, ushort leftRumble, ushort rightRumble, ushort durationMs);
+    public static partial bool RumbleGamepadTriggers(IntPtr gamepad, ushort leftRumble, ushort rightRumble, uint durationMs);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGamepadLED(SDL_Gamepad *gamepad, Uint8 red, Uint8 green, Uint8 blue);</code>
