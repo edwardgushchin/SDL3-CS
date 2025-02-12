@@ -129,7 +129,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="ResetKeyboard"/> 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, "SDL_GetKeyboardState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.I1)]
     public static partial bool[] GetKeyboardState(out int numkeys);
     
