@@ -1169,7 +1169,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] float[] data, int numValues);
+    public static partial bool GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out float[] data, int numValues);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RumbleGamepad(SDL_Gamepad *gamepad, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms);</code>
