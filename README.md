@@ -49,7 +49,7 @@ dotnet build -c Release
 or
 
 ```
-dotnet add package SDL3-CS --version 3.2.2.1
+dotnet add package SDL3-CS --version 3.2.2.2
 ```
 
 ## 🎓 Examples
@@ -85,7 +85,7 @@ internal static class Program
 
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit)
+                if ((SDL.EventType)e.Type == SDL.EventType.Quit)
                 {
                     loop = false;
                 }
