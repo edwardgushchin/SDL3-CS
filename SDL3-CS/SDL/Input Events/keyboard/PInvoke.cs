@@ -106,6 +106,9 @@ public static partial class SDL
     public static partial IntPtr GetKeyboardFocus();
     
     
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetKeyboardState(out int numkeys);
     /// <code>extern SDL_DECLSPEC const bool * SDLCALL SDL_GetKeyboardState(int *numkeys);</code>
     /// <summary>
     /// <para>Get a snapshot of the current state of the keyboard.</para>
@@ -129,9 +132,14 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="ResetKeyboard"/> 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.I1)]
-    public static partial bool[] GetKeyboardState(out int numkeys);
+    public static bool[] GetKeyboardState(out int numkeys)
+    {
+        var statePtr = SDL_GetKeyboardState(out numkeys);
+        unsafe
+        {
+            return new Span<byte>((void*)statePtr, numkeys).ToArray().Select(b => b != 0).ToArray();
+        }
+    }
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetKeyboard(void);</code>
