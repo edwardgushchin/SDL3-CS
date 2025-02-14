@@ -380,8 +380,8 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_srand(Uint64 seed);</code>
     /// <summary>
     /// Seeds the pseudo-random number generator.
-    /// <para>Reusing the seed number will cause Rand*() to repeat the same stream
-    /// of <c>random</c> numbers.</para>
+    /// <para>Reusing the seed number will cause Rand() to repeat the same stream of
+    /// <c>random</c> numbers.</para>
     /// </summary>
     /// <param name="seed">the value to use as a random number seed, or 0 to use
     /// <see cref="GetPerformanceCounter"/>.</param>
