@@ -32,9 +32,7 @@
 
 ## 🚀 About
 
-SDL3 is still under active development, and the shell follows suit.
-
-For more information on what is currently ready for use, see the <a href="#-readiness">Readiness</a> section.
+This is SDL3#, a C# wrapper for SDL3.
 
 ## 📚 Documentation
 
@@ -51,7 +49,7 @@ dotnet build -c Release
 or
 
 ```
-dotnet add package SDL3-CS --version 3.2.2-doc
+dotnet add package SDL3-CS --version 3.2.4.1
 ```
 
 ## 🎓 Examples
@@ -87,7 +85,7 @@ internal static class Program
 
             while (SDL.PollEvent(out var e))
             {
-                if (e.Type == SDL.EventType.Quit)
+                if ((SDL.EventType)e.Type == SDL.EventType.Quit)
                 {
                     loop = false;
                 }

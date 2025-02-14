@@ -8,7 +8,6 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
-        <PackageLicenseUrl>https://github.com/edwardgushchin/SDL3-CS/blob/release-3.2.x/LICENSE</PackageLicenseUrl>
         <PackageReleaseNotes>
             This is a stable bugfix release, with the following changes:
 
@@ -24,11 +23,11 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.2-doc</Version>
+        <Version>3.2.4.1</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL3.</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL3.2.2</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
@@ -38,6 +37,7 @@
         <PackageIcon>logo.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591</NoWarn>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -47,9 +47,10 @@
     
     <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
+      <None Include="../LICENSE" Pack="true" PackagePath="\"/>
       <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
       <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
-      <None Include="bin\Release\SDL3-CS.xml" Pack="true" PackagePath="\" />
+      <None Include="bin\Release\SDL3-CS.xml" Visible="false" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
