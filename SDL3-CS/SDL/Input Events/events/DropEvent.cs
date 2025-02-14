@@ -65,7 +65,7 @@ public static partial class SDL
         public float Y;
         
         /// <summary>
-        /// The source app that sent this drop event, or NULL if that isn't available
+        /// The source app that sent this drop event, or <c>null</c>if that isn't available
         /// </summary>
         public IntPtr Source;
         

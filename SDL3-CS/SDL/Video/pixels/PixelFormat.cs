@@ -387,5 +387,11 @@ public static partial class SDL
         /// <code>DefinePixelFourCC('O', 'E', 'S', ' ')</code>
         /// </summary>
         ExternalOES = 0x2053454fu,
+        
+        /// <summary>
+        /// <para>Motion JPEG</para>
+        /// <code>DefinePixelFourCC('M', 'J', 'P', 'G')</code>
+        /// </summary>
+        MJPG = 0x47504a4du,
     }
 }

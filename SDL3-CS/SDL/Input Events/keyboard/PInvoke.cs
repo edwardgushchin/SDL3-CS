@@ -75,6 +75,8 @@ public static partial class SDL
     }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetKeyboardNameForID(uint instanceId);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetKeyboardNameForID(SDL_KeyboardID instance_id);</code>
     /// <summary>
     /// <para>Get the name of a keyboard.</para>
@@ -86,9 +88,11 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboards"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "GetKeyboardNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetKeyboardNameForID(uint instanceId);
+    public static string? GetKeyboardNameForID(uint instanceId)
+    {
+        var value = SDL_GetKeyboardNameForID(instanceId); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
 
     
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);</code>
@@ -102,6 +106,9 @@ public static partial class SDL
     public static partial IntPtr GetKeyboardFocus();
     
     
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetKeyboardState(out int numkeys);
     /// <code>extern SDL_DECLSPEC const bool * SDLCALL SDL_GetKeyboardState(int *numkeys);</code>
     /// <summary>
     /// <para>Get a snapshot of the current state of the keyboard.</para>
@@ -125,9 +132,14 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="ResetKeyboard"/> 
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.I1)]
-    public static partial bool[] GetKeyboardState(out int numkeys);
+    public static bool[] GetKeyboardState(out int numkeys)
+    {
+        var statePtr = SDL_GetKeyboardState(out numkeys);
+        unsafe
+        {
+            return new Span<byte>((void*)statePtr, numkeys).ToArray().Select(b => b != 0).ToArray();
+        }
+    }
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetKeyboard(void);</code>
@@ -233,6 +245,8 @@ public static partial class SDL
     public static partial bool SetScancodeName(Scancode scancode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetScancodeName(Scancode scancode);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetScancodeName(SDL_Scancode scancode);</code>
     /// <summary>
     /// <para>Get a human-readable name for a scancode.</para>
@@ -253,9 +267,11 @@ public static partial class SDL
     /// <seealso cref="GetScancodeFromKey"/>
     /// <seealso cref="GetScancodeFromName"/>
     /// <seealso cref="SetScancodeName"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetScancodeName(Scancode scancode);
+    public static string GetScancodeName(Scancode scancode)
+    {
+        var value = SDL_GetScancodeName(scancode); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromName(const char *name);</code>
@@ -274,6 +290,8 @@ public static partial class SDL
     public static partial Scancode GetScancodeFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetKeyName(Keycode key);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetKeyName(SDL_Keycode key);</code>
     /// <summary>
     /// <para>Get a human-readable name for a key.</para>
@@ -287,9 +305,11 @@ public static partial class SDL
     /// <seealso cref="GetKeyFromName"/>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetScancodeFromKey"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetKeyName(Keycode key);
+    public static string GetKeyName(Keycode key)
+    {
+        var value = SDL_GetKeyName(key); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromName(const char *name);</code>

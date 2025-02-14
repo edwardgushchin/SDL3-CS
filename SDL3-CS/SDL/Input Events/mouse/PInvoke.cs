@@ -80,6 +80,8 @@ public static partial class SDL
     }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetMouseNameForID(uint instanceId);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetMouseNameForID(SDL_MouseID instance_id);</code>
     /// <summary>
     /// <para>Get the name of a mouse.</para>
@@ -91,9 +93,11 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMice"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetMouseNameForID(uint instanceId);
+    public static string? GetMouseNameForID(uint instanceId)
+    {
+        var value = SDL_GetMouseNameForID(instanceId); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
 
     
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);</code>

@@ -48,6 +48,8 @@ public static partial class SDL
     public static partial int GetNumAudioDrivers();
    
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAudioDriver(int index);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAudioDriver(int index);</code>
     /// <summary>
     /// <para>Use this function to get the name of a built in audio driver.</para>
@@ -65,11 +67,15 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumAudioDrivers"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetAudioDriver(int index);
+    public static string? GetAudioDriver(int index)
+    {
+        var value = SDL_GetAudioDriver(index); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentAudioDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCurrentAudioDriver();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetCurrentAudioDriver(void);</code>
     /// <summary>
     /// <para>Get the name of the current audio driver.</para>
@@ -81,9 +87,11 @@ public static partial class SDL
     /// initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentAudioDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetCurrentAudioDriver();
+    public static string? GetCurrentAudioDriver()
+    {
+        var value = SDL_GetCurrentAudioDriver(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -161,7 +169,9 @@ public static partial class SDL
         }
     }
 
-
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAudioDeviceName(uint devid);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAudioDeviceName(SDL_AudioDeviceID devid);</code>
     /// <summary>
     /// Get the human-readable name of a specific audio device.
@@ -173,9 +183,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioPlaybackDevices"/>
     /// <seealso cref="GetAudioRecordingDevices"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetAudioDeviceName(uint devid);
+    public static string? GetAudioDeviceName(uint devid)
+    {
+        var value = SDL_GetAudioDeviceName(devid); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetAudioDeviceFormat(SDL_AudioDeviceID devid, SDL_AudioSpec *spec, int *sample_frames);</code>
@@ -1703,19 +1715,23 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ConvertAudioSamples(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen);
 
-
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioFormatName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAudioFormatName(AudioFormat format);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAudioFormatName(SDL_AudioFormat format);</code>
     /// <summary>
     /// Get the human readable name of an audio format.
     /// </summary>
     /// <param name="format">the audio format to query.</param>
     /// <returns>the human readable name of the specified audio format or
-    /// "SDL_AUDIO_UNKNOWN" if the format isn't recognized.</returns>
+    /// <see cref="AudioFormat.Unknown"/> if the format isn't recognized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioFormatName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetAudioFormatName(AudioFormat format);
+    public static string GetAudioFormatName(AudioFormat format)
+    {
+        var value = SDL_GetAudioFormatName(format); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
 
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetSilenceValueForFormat(SDL_AudioFormat format);</code>

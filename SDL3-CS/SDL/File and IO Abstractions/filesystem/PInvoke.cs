@@ -28,6 +28,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBasePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetBasePath();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetBasePath(void);</code>
     /// <summary>
     /// <para>Get the directory where the application was run from.</para>
@@ -61,11 +63,15 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPrefPath"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBasePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetBasePath();
+    public static string? GetBasePath()
+    {
+        var value = SDL_GetBasePath(); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrefPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetPrefPath([MarshalAs(UnmanagedType.LPUTF8Str)] string org, [MarshalAs(UnmanagedType.LPUTF8Str)] string app);
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetPrefPath(const char *org, const char *app);</code>
     /// <summary>
     /// <para>Get the user-and-app-specific path where files can be written.</para>
@@ -107,11 +113,22 @@ public static partial class SDL
     /// needed.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetBasePath"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrefPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetPrefPath([MarshalAs(UnmanagedType.LPUTF8Str)] string org, [MarshalAs(UnmanagedType.LPUTF8Str)] string app);
+    public static string? GetPrefPath(string org, string app)
+    {
+        var value = SDL_GetPrefPath(org, app); 
+        try
+        {
+            return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+        }
+        finally
+        {
+            if(value != IntPtr.Zero) Free(value);
+        }
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetUserFolder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetUserFolder(Folder folder);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetUserFolder(SDL_Folder folder);</code>
     /// <summary>
     /// <para>Finds the most suitable user folder for a specific purpose.</para>
@@ -130,9 +147,11 @@ public static partial class SDL
     /// <returns>either a null-terminated C string containing the full path to the
     /// folder, or <c>null</c> if an error happened.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetUserFolder(Folder folder);
+    public static string? GetUserFolder(Folder folder)
+    {
+        var value = SDL_GetUserFolder(folder); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
 
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CreateDirectory(const char *path);</code>
@@ -305,6 +324,8 @@ public static partial class SDL
     }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCurrentDirectory();
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetCurrentDirectory(void);</code>
     /// <summary>
     /// <para>Get what the system believes is the "current working directory."</para>
@@ -320,7 +341,16 @@ public static partial class SDL
     /// platform-dependent notation. <c>null</c> if there's a problem. This
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <since>This function is available since SDL 3.1.8.</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetCurrentDirectory();
+    public static string? GetCurrentDirectory()
+    {
+        var value = SDL_GetCurrentDirectory(); 
+        try
+        {
+            return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+        }
+        finally
+        {
+            if(value != IntPtr.Zero) Free(value);
+        }
+    }
 }

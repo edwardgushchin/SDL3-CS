@@ -144,6 +144,8 @@ public partial class SDL
     public static partial int GetNumGPUDrivers();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetGPUDriver(int index);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetGPUDriver(int index);</code>
     /// <summary>
     /// <para>Get the name of a built in GPU driver.</para>
@@ -157,11 +159,15 @@ public partial class SDL
     /// <returns>the name of the GPU driver with the given <b>index</b>.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumGPUDrivers"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetGPUDriver(int index);
+    public static string GetGPUDriver(int index)
+    {
+        var value = SDL_GetGPUDriver(index); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDeviceDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetGPUDeviceDriver(IntPtr device);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetGPUDeviceDriver(SDL_GPUDevice *device);</code>
     /// <summary>
     /// Returns the name of the backend used to create this GPU context.
@@ -169,9 +175,11 @@ public partial class SDL
     /// <param name="device">a GPU context to query.</param>
     /// <returns>the name of the device's driver, or <c>null</c> on error.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDeviceDriver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetGPUDeviceDriver(IntPtr device);
+    public static string? GetGPUDeviceDriver(IntPtr device)
+    {
+        var value = SDL_GetGPUDeviceDriver(device); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPUShaderFormat SDLCALL SDL_GetGPUShaderFormats(SDL_GPUDevice *device);</code>

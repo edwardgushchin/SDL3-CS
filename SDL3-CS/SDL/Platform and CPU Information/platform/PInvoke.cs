@@ -28,6 +28,8 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPlatform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetPlatform();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetPlatform(void);</code>
     /// <summary>
     /// <para>Get the name of the platform.</para>
@@ -43,7 +45,9 @@ public static partial class SDL
     /// <returns>the name of the platform. If the correct platform name is not
     /// available, returns a string beginning with the text "Unknown".</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPlatform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetPlatform();
+    public static string GetPlatform()
+    {
+        var value = SDL_GetPlatform(); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
 }
