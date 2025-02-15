@@ -1104,7 +1104,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] float[] data, int numValues);
+    public static partial bool GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out float[] data, int numValues);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RumbleGamepad(SDL_Gamepad *gamepad, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms);</code>
@@ -1151,7 +1151,7 @@ public static partial class SDL
     /// <seealso cref="RumbleGamepad"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleGamepadTriggers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RumbleGamepadTriggers(IntPtr gamepad, ushort leftRumble, ushort rightRumble, ushort durationMs);
+    public static partial bool RumbleGamepadTriggers(IntPtr gamepad, ushort leftRumble, ushort rightRumble, uint durationMs);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGamepadLED(SDL_Gamepad *gamepad, Uint8 red, Uint8 green, Uint8 blue);</code>
