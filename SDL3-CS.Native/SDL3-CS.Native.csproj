@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ 
+    <PropertyGroup>
+        <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
+        <RootNamespace>SDL3_CS.Native</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet">
+        <Version>3.2.4</Version>
+        <Title>SDL3 C#</Title>
+        <Authors>Eduard Gushchin</Authors>
+        <Company>Eduard Gushchin</Company>
+        <Description>This is native library for SDL3-CS 3.2.4.x</Description>
+        <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
+        <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>logo.png</PackageIcon>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>1591</NoWarn>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Включаем библиотеки в пакете NuGet -->
+        <None Include="../LICENSE" Pack="true" PackagePath="\"/>
+        <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
+        
+        <None Include="lib\win-x64\SDL3.dll">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\win-x64\native\SDL3.dll</PackagePath>
+        </None>
+        <None Include="lib\win-x86\SDL3.dll">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\win-x86\native\SDL3.dll</PackagePath>
+        </None>
+        <None Include="lib\win-arm64\SDL3.dll">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\win-arm64\native\SDL3.dll</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <!-- Настройка копирования файлов в выходную папку проекта -->
+    <!-- <ItemGroup>
+        <Content Include="lib\win-x64\SDL3.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>runtimes\win-x64\native\SDL3.dll</Link>
+        </Content>
+        <Content Include="lib\win-x86\SDL3.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>runtimes\win-x86\native\SDL3.dll</Link>
+        </Content>
+        <Content Include="lib\win-arm64\SDL3.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>runtimes\win-arm64\native\SDL3.dll</Link>
+        </Content>
+    </ItemGroup> -->
+
+</Project>
