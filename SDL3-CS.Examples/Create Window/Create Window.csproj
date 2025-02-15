@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\SDL3-CS.Native\SDL3-CS.Native.csproj" />
       <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
     </ItemGroup>
 
