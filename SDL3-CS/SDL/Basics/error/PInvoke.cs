@@ -82,6 +82,8 @@ public static partial class SDL
     public static partial bool OutOfMemory();
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetError();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetError(void);</code>
     /// <summary>
     /// <para>Retrieve a message about the last error that occurred on the current
@@ -110,9 +112,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearError"/>
     /// <seealso cref="SetError"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetError();
+    public static string GetError()
+    {
+        var value = SDL_GetError(); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearError(void);</code>

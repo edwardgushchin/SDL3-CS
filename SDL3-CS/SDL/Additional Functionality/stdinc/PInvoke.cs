@@ -261,6 +261,8 @@ public partial class SDL
     public static partial IntPtr CreateEnvironment([MarshalAs(UnmanagedType.I1)] bool populated);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironmentVariable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetEnvironmentVariable(IntPtr env, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);</code>
     /// <summary>
     /// <para>Get the value of a variable in the environment.</para>
@@ -276,9 +278,11 @@ public partial class SDL
     /// <seealso cref="GetEnvironmentVariables"/>
     /// <seealso cref="SetEnvironmentVariable"/>
     /// <seealso cref="UnsetEnvironmentVariable"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironmentVariable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetEnvironmentVariable(IntPtr env, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static string? GetEnvironmentVariable(IntPtr env, string name)
+    {
+        var value = SDL_GetEnvironmentVariable(env, name); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironmentVariables"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -376,8 +380,8 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_srand(Uint64 seed);</code>
     /// <summary>
     /// Seeds the pseudo-random number generator.
-    /// <para>Reusing the seed number will cause Rand*() to repeat the same stream
-    /// of <c>random</c> numbers.</para>
+    /// <para>Reusing the seed number will cause Rand() to repeat the same stream of
+    /// <c>random</c> numbers.</para>
     /// </summary>
     /// <param name="seed">the value to use as a random number seed, or 0 to use
     /// <see cref="GetPerformanceCounter"/>.</param>

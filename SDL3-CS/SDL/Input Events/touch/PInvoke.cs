@@ -57,7 +57,9 @@ public static partial class SDL
         }
     }
 
-
+    
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTouchDeviceName(ulong touchID);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetTouchDeviceName(SDL_TouchID touchID);</code>
     /// <summary>
     /// Get the touch device name as reported from the driver.
@@ -66,9 +68,11 @@ public static partial class SDL
     /// <returns>touch device name, or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetTouchDeviceName(ulong touchID);
+    public static string? GetTouchDeviceName(ulong touchID)
+    {
+        var value = SDL_GetTouchDeviceName(touchID); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_TouchDeviceType SDLCALL SDL_GetTouchDeviceType(SDL_TouchID touchID);</code>

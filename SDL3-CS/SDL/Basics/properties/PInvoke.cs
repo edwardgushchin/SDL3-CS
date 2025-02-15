@@ -299,6 +299,9 @@ public static partial class SDL
         IntPtr defaultValue);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetStringProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string defaultValue);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);</code>
     /// <summary>
     /// Get a string property from a group of properties.
@@ -318,10 +321,11 @@ public static partial class SDL
     /// <seealso cref="GetPropertyType"/>
     /// <seealso cref="HasProperty"/>
     /// <seealso cref="SetStringProperty"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetStringProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string GetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string defaultValue);
+    public static string GetStringProperty(uint props, string name, string defaultValue)
+    {
+        var value = SDL_GetStringProperty(props, name, defaultValue); 
+        return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
+    }
     
     
     /// <code>extern SDL_DECLSPEC Sint64 SDLCALL SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);</code>

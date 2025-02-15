@@ -56,6 +56,8 @@ public static partial class SDL
     }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetHapticNameForID(int instanceId);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetHapticNameForID(SDL_HapticID instance_id);</code>
     /// <summary>
     /// <para>Get the implementation dependent name of a haptic device.</para>
@@ -68,9 +70,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticName"/>
     /// <seealso cref="OpenHaptic"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticNameForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetHapticNameForID(int instanceId);
+    public static string? GetHapticNameForID(int instanceId)
+    {
+        var value = SDL_GetHapticNameForID(instanceId); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_Haptic * SDLCALL SDL_OpenHaptic(SDL_HapticID instance_id);</code>
@@ -120,6 +124,8 @@ public static partial class SDL
     public static partial int GetHapticID(IntPtr haptic);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetHapticName(IntPtr haptic);
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetHapticName(SDL_Haptic *haptic);</code>
     /// <summary>
     /// Get the implementation dependent name of a haptic device.
@@ -130,9 +136,11 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHapticNameForID"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHapticName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-    public static partial string? GetHapticName(IntPtr haptic);
+    public static string? GetHapticName(IntPtr haptic)
+    {
+        var value = SDL_GetHapticName(haptic); 
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsMouseHaptic(void);</code>

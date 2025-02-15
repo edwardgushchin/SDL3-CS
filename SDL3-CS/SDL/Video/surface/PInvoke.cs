@@ -106,6 +106,10 @@ public static partial class SDL
     /// the same tone mapping that Chrome uses for HDR content, the form "*=N",
     /// where N is a floating point scale factor applied in linear space, and
     /// "none", which disables tone mapping. This defaults to "chrome".</item>
+    /// <item><see cref="Props.SurfaceHotspotXNumber"/>: the hotspot pixel offset from the
+    /// left edge of the image, if this surface is being used as a cursor.</item>
+    /// <item><see cref="Props.SurfaceHotspotYNumber"/>: the hotspot pixel offset from the
+    /// top edge of the image, if this surface is being used as a cursor.</item>
     /// </list>
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> structure to query.</param>
@@ -1217,7 +1221,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
@@ -1287,7 +1291,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
@@ -1357,7 +1361,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
@@ -1427,7 +1431,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, or NULL to copy the entire surface.</param>
+    /// copied, or <c>null</c>to copy the entire surface.</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the x and y position in
     /// the destination surface, or <c>null</c> for (0,0). The width and
