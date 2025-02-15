@@ -23,11 +23,11 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.4.2</Version>
+        <Version>3.2.4.3</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL3.2.2</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.2.4</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
