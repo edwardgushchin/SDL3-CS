@@ -33,7 +33,7 @@
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReadmeFile>README-nuget.md</PackageReadmeFile>
         <PackageIcon>logo.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591</NoWarn>
@@ -47,6 +47,7 @@
     
     <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\"/>
+      <None Include="../README-nuget.md" Pack="true" PackagePath="\"/>
       <None Include="../LICENSE" Pack="true" PackagePath="\"/>
       <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
       <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
