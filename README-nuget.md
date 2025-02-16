@@ -1,35 +1,3 @@
-<p align="center">
-  <img src="./logo.png?raw=true" alt="SDL3#">
-</p>
-
-<h4 align="center">This is SDL3#, a C# wrapper for SDL3.</h4>
-
-<p align="center">
-    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/edwardgushchin/SDL3-CS">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/edwardgushchin/SDL3-CS">
-    <img alt="Static Badge" src="https://img.shields.io/badge/license-zlib-blue">
-</p>
-
-<p align="center">
-    <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0,_9.0-512BD4">
-    <img alt="Static Badge" src="https://img.shields.io/badge/Language-C%23_12-239120">
-</p>
-
-<p align="center">
-  <a href="#-about">About</a> •
-  <a href="#-documentation">Documentation</a> •
-  <a href="#-installation">Installation</a> •
-  <a href="#-examples">Examples</a> •
-  <a href="#-readiness">Readiness</a>
-</p>
-<p align="center">
-  <a href="#-feedback-and-contributions">Feedback and Contributions</a> •
-  <a href="#-authors">Authors</a> •
-  <a href="#-license">License</a>
-</p>
-
-<p align="center">⭐ Star us on GitHub — it motivates us a lot!</p>
-
 ## 🚀 About
 
 This is SDL3#, a C# wrapper for SDL3.
