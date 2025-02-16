@@ -12,4 +12,8 @@
       <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SDL3-CS.Native" Version="3.2.4" />
+    </ItemGroup>
+
 </Project>

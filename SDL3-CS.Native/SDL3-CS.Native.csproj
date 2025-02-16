@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.4</Version>
+        <Version>3.2.4.1</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
@@ -32,17 +32,17 @@
         <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
         <None Include="../README.md" Pack="true" PackagePath="\"/>
         
-        <None Include="lib\win-x64\SDL3.dll">
+        <None Include="lib\win-x64\*">
             <Pack>True</Pack>
-            <PackagePath>runtimes\win-x64\native\SDL3.dll</PackagePath>
+            <PackagePath>runtimes\win-x64\native\</PackagePath>
         </None>
-        <None Include="lib\win-x86\SDL3.dll">
+        <None Include="lib\win-x86\*">
             <Pack>True</Pack>
-            <PackagePath>runtimes\win-x86\native\SDL3.dll</PackagePath>
+            <PackagePath>runtimes\win-x86\native\</PackagePath>
         </None>
-        <None Include="lib\win-arm64\SDL3.dll">
+        <None Include="lib\win-arm64\*">
             <Pack>True</Pack>
-            <PackagePath>runtimes\win-arm64\native\SDL3.dll</PackagePath>
+            <PackagePath>runtimes\win-arm64\native\</PackagePath>
         </None>
     </ItemGroup>
 
