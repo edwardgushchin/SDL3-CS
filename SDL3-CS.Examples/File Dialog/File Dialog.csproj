@@ -9,11 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="SDL3-CS.Native" Version="3.2.4" />
+      <PackageReference Include="SDL3-CS" Version="3.2.4.3" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.2.4.2" />
     </ItemGroup>
 
 </Project>
