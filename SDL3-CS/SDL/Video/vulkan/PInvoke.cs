@@ -102,7 +102,7 @@ public static partial class SDL
     public static partial void VulkanUnloadLibrary();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetInstanceExtensions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_Vulkan_GetInstanceExtensions(out uint count);
     /// <code>extern SDL_DECLSPEC char const * const * SDLCALL SDL_Vulkan_GetInstanceExtensions(Uint32 *count);</code>
     /// <summary>

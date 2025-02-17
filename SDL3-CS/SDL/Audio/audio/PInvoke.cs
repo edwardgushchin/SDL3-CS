@@ -94,7 +94,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioPlaybackDevices"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetAudioPlaybackDevices(out int count);
     /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID * SDLCALL SDL_GetAudioPlaybackDevices(int *count);</code>
     /// <summary>
@@ -132,7 +132,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioRecordingDevices"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetAudioRecordingDevices(out int count);
     /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID * SDLCALL SDL_GetAudioRecordingDevices(int *count);</code>
     /// <summary>
@@ -221,7 +221,7 @@ public static partial class SDL
     public static partial bool GetAudioDeviceFormat(uint devid, out AudioSpec spec, out int sampleFrames);
 
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetAudioDeviceChannelMap(uint devid, out int count);
     /// <c>extern SDL_DECLSPEC int * SDLCALL SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int *count);</c>
     /// <summary>
