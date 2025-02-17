@@ -30,8 +30,8 @@ public static partial class SDL
     /// <summary>
     /// <para>A structure specifying the parameters of vertex buffers used in a graphics
     /// pipeline.</para>
-    /// <para>When you call <see cref="BindGPUVertexBuffers"/>, you specify the binding slots of
-    /// the vertex buffers. For example if you called <see cref="BindGPUVertexBuffers"/> with
+    /// <para>When you call <see cref="BindGPUVertexBuffers(nint, uint, in GPUBufferBinding[], uint)"/>, you specify the binding slots of
+    /// the vertex buffers. For example if you called <see cref="BindGPUVertexBuffers(nint, uint, in GPUBufferBinding[], uint)"/> with
     /// a first_slot of 2 and num_bindings of 3, the binding slots 2, 3, 4 would be
     /// used by the vertex buffers you pass in.</para>
     /// <para>Vertex attributes are linked to buffers via the buffer_slot field of

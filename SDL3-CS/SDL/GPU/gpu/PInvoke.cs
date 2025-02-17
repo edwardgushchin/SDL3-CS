@@ -265,7 +265,7 @@ public partial class SDL
     /// <returns>a sampler object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="BindGPUVertexSamplers"/>
+    /// <seealso cref="BindGPUVertexSamplers(nint, uint, in GPUTextureSamplerBinding[], uint)"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     /// <seealso cref="ReleaseGPUSampler"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUSampler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -382,7 +382,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>
     /// <seealso cref="DownloadFromGPUTexture"/>
-    /// <seealso cref="BindGPUVertexSamplers"/>
+    /// <seealso cref="BindGPUVertexSamplers(nint, uint, in GPUTextureSamplerBinding[], uint)"/>
     /// <seealso cref="BindGPUVertexStorageTextures"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     /// <seealso cref="BindGPUFragmentStorageTextures"/>
@@ -421,7 +421,7 @@ public partial class SDL
     /// <seealso cref="UploadToGPUBuffer"/>
     /// <seealso cref="DownloadFromGPUBuffer"/>
     /// <seealso cref="CopyGPUBufferToBuffer"/>
-    /// <seealso cref="BindGPUVertexBuffers"/>
+    /// <seealso cref="BindGPUVertexBuffers(nint, uint, in GPUBufferBinding[], uint)"/>
     /// <seealso cref="BindGPUIndexBuffer"/>
     /// <seealso cref="BindGPUVertexStorageBuffers"/>
     /// <seealso cref="BindGPUFragmentStorageBuffers"/>
