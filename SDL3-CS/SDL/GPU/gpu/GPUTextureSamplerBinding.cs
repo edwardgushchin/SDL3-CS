@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure specifying parameters in a sampler binding call.
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
-    /// <seealso cref="BindGPUVertexSamplers(nint, uint, in GPUTextureSamplerBinding[], uint)"/>
+    /// <seealso cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUTextureSamplerBinding

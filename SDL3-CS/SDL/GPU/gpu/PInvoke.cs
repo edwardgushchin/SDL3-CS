@@ -265,7 +265,7 @@ public partial class SDL
     /// <returns>a sampler object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="BindGPUVertexSamplers(nint, uint, in GPUTextureSamplerBinding[], uint)"/>
+    /// <seealso cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     /// <seealso cref="ReleaseGPUSampler"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUSampler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -382,7 +382,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>
     /// <seealso cref="DownloadFromGPUTexture"/>
-    /// <seealso cref="BindGPUVertexSamplers(nint, uint, in GPUTextureSamplerBinding[], uint)"/>
+    /// <seealso cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
     /// <seealso cref="BindGPUVertexStorageTextures"/>
     /// <seealso cref="BindGPUFragmentSamplers"/>
     /// <seealso cref="BindGPUFragmentStorageTextures"/>
@@ -421,7 +421,7 @@ public partial class SDL
     /// <seealso cref="UploadToGPUBuffer"/>
     /// <seealso cref="DownloadFromGPUBuffer"/>
     /// <seealso cref="CopyGPUBufferToBuffer"/>
-    /// <seealso cref="BindGPUVertexBuffers(nint, uint, in GPUBufferBinding[], uint)"/>
+    /// <seealso cref="BindGPUVertexBuffers(nint, uint, GPUBufferBinding[], uint)"/>
     /// <seealso cref="BindGPUIndexBuffer"/>
     /// <seealso cref="BindGPUVertexStorageBuffers"/>
     /// <seealso cref="BindGPUFragmentStorageBuffers"/>
@@ -904,7 +904,7 @@ public partial class SDL
     /// <param name="numBindings">the number of bindings in the bindings array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] in GPUBufferBinding[] bindings, uint numBindings);
+    public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GPUBufferBinding[] bindings, uint numBindings);
 
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);</code>
@@ -951,7 +951,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] in GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
+    public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
 
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
