@@ -61,7 +61,7 @@ public static partial class SDL
 	public static partial bool HasJoystick();
 	
 	
-	[LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial IntPtr SDL_GetJoysticks(out int count);
 	/// <code>extern SDL_DECLSPEC SDL_JoystickID * SDLCALL SDL_GetJoysticks(int *count);</code>
 	/// <summary>

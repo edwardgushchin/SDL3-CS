@@ -28,7 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetSensors(out int count);
     /// <code>extern SDL_DECLSPEC SDL_SensorID * SDLCALL SDL_GetSensors(int *count);</code>
     /// <summary>
@@ -208,7 +208,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="sensor">the SDL_Sensor object to close.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseSensor(IntPtr sensor);
     
 

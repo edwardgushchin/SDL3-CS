@@ -394,7 +394,7 @@ public static partial class SDL
     /// <returns>the number of bytes actually copied or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_report_descriptor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int HIDGetReportDescriptor(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, ulong bufSize);
 
 
@@ -404,6 +404,6 @@ public static partial class SDL
     /// </summary>
     /// <param name="active"><c>true</c> to start the scan, <c>false</c> to stop the scan.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_ble_scan"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void HIDBLEScan([MarshalAs(UnmanagedType.I1)] bool active);
 }

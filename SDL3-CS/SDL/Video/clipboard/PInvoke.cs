@@ -227,7 +227,7 @@ public static partial class SDL
     public static partial bool HasClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType);
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardMimeTypes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetClipboardMimeTypes(out ulong numMimeTypes);
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GetClipboardMimeTypes(size_t *num_mime_types);</code>
     /// <summary>

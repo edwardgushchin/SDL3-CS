@@ -46,7 +46,7 @@ public static partial class SDL
     public static partial bool HasMouse();
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetMice(out int count);
     /// <code>extern SDL_DECLSPEC SDL_MouseID * SDLCALL SDL_GetMice(int *count);</code>
     /// <summary>
@@ -399,7 +399,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyCursor"/>
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSystemCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateSystemCursor(SystemCursor id);
 
 

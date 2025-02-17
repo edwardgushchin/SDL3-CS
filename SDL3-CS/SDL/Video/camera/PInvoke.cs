@@ -95,7 +95,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameras"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetCameras(out int count);
     /// <code>extern SDL_DECLSPEC SDL_CameraID * SDLCALL SDL_GetCameras(int *count);</code>
     /// <summary>
@@ -124,7 +124,7 @@ public static partial class SDL
     }
     
     
-    [LibraryImport(SDLLibrary), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraSupportedFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetCameraSupportedFormats(uint instanceId, out int count);
     /// <code>extern SDL_DECLSPEC SDL_CameraSpec *SDLCALL SDL_GetCameraSupportedFormats(SDL_CameraID devid, int *count);</code>
     /// <summary>
