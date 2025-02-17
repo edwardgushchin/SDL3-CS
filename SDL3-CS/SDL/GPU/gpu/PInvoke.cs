@@ -890,8 +890,8 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBlendConstants"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetGPUBlendConstants(IntPtr renderPass, byte reference);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// Binds vertex buffers on a command buffer for use with subsequent draw
@@ -904,7 +904,22 @@ public partial class SDL
     /// <param name="numBindings">the number of bindings in the bindings array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, in GPUBufferBinding[] bindings, uint numBindings);
+    public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] in GPUBufferBinding[] bindings, uint numBindings);
+
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);</code>
+    /// <summary>
+    /// Binds vertex buffers on a command buffer for use with subsequent draw
+    /// calls.
+    /// </summary>
+    /// <param name="renderPass">a render pass handle.</param>
+    /// <param name="firstSlot">the vertex buffer slot to begin binding from.</param>
+    /// <param name="bindings">a pointer to an array of <see cref="GPUBufferBinding"/> structs containing vertex
+    /// buffers and offset values.</param>
+    /// <param name="numBindings">the number of bindings in the bindings array.</param>
+    /// <since>This function is available since SDL 3.2.0</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, IntPtr bindings, uint numBindings);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUIndexBuffer(SDL_GPURenderPass *render_pass, const SDL_GPUBufferBinding *binding, SDL_GPUIndexElementSize index_element_size);</code>
@@ -936,7 +951,25 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUShader"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, in GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
+    public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] in GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
+
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <summary>
+    /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
+    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// </summary>
+    /// <param name="renderPass">a render pass handle.</param>
+    /// <param name="firstSlot">the vertex sampler slot to begin binding from.</param>
+    /// <param name="textureSamplerBindings">a pointer an array of texture-sampler binding
+    /// structs.</param>
+    /// <param name="numBindings">the number of texture-sampler pairs to bind from the
+    /// array.</param>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUShader"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
