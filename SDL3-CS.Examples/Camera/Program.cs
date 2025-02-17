@@ -36,7 +36,7 @@ internal static class Program
             return;
         }
         
-        if (!SDL.CreateWindowAndRenderer("SDL3 Create Window", 800, 600, 0, out var window, out var renderer))
+        if (!SDL.CreateWindowAndRenderer("SDL3 Camera example", 800, 600, 0, out var window, out var renderer))
         {
             SDL.LogError(SDL.LogCategory.Application, $"Error creating window and rendering: {SDL.GetError()}");
             return;
@@ -58,7 +58,7 @@ internal static class Program
             return;
         }
         
-        var camera = SDL.OpenCamera(devices[0], default);
+        var camera = SDL.OpenCamera(devices[0], 0);
         
         if (camera == IntPtr.Zero) 
         {
