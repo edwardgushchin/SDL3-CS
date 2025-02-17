@@ -1657,6 +1657,8 @@ public partial class SDL
     /// <para>The swapchain texture is managed by the implementation and must not be
     /// freed by the user. You MUST NOT call this function from any thread other
     /// than the one that created the window.</para>
+    /// <para>The swapchain texture is write-only and cannot be used as a sampler or for
+    /// another reading operation.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="window">a window that has been claimed.</param>
@@ -1673,6 +1675,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SubmitGPUCommandBuffer"/>
     /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
+    /// <seealso cref="AcquireGPUSwapchainTexture"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitAndAcquireGPUSwapchainTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WaitAndAcquireGPUSwapchainTexture(IntPtr commandBuffer, IntPtr window, out IntPtr swapchainTexture, out uint swapchainTextureWidth, out uint swapchainTextureHeight);
