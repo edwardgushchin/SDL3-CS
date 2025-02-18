@@ -134,9 +134,14 @@ If you have any feedback, please reach out to us at [eduardgushchin@yandex.ru](m
 
 We also have a [chat](https://t.me/sdl3cs) in Telegram, where I am ready to answer any of your questions.
 
-## 💻 Authors
+## 💻 Contributors
 
-- Eduard Gushchin - Initial work - [edwardgushchin](https://github.com/edwardgushchin)
+<a href = "https://github.com/edwardgushchin/SDL3-CS/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=edwardgushchin/SDL3-CS"/>
+</a>
+
+
+Made with [contributors-img](https://contrib.rocks).
 
 See also the list of [contributors](https://github.com/edwardgushchin/SDL3-CS/graphs/contributors) who participated in this project.
 
