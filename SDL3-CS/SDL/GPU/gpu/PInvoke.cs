@@ -779,7 +779,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 3)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo);
+    public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo);
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPURenderPass *SDLCALL SDL_BeginGPURenderPass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info);</code>
@@ -831,7 +831,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 3)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo);
+    public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUGraphicsPipeline(SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline);</code>
