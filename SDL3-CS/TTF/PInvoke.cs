@@ -498,16 +498,17 @@ public static partial class TTF
     /// <para>Enable Signed Distance Field rendering for a font.</para>
     /// <para>SDF is a technique that helps fonts look sharp even when scaling and
     /// rotating, and requires special shader support for display.</para>
-    /// <para>This works with Blended APIs, and generates the raw signed distance values in
-    /// the alpha channel of the resulting texture.</para>
-    /// <para>This updates any <see cref="TTFText"/> objects using this font, and clears already-
-    /// generated glyphs, if any, from the cache.</para>
+    /// <para>This works with Blended APIs, and generates the raw signed distance values
+    /// in the alpha channel of the resulting texture.</para>
+    /// <para>This updates any <see cref="TTFText"/> objects using this font, and clears
+    /// already-generated glyphs, if any, from the cache.</para>
     /// </summary>
     /// <param name="font">the font to set SDF support on.</param>
     /// <param name="enabled"><c>true</c> to enable SDF, <c>false</c> to disable.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/>
-    /// for more information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the font.</threadsafety>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="GetFontSDF"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontSDF"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -519,7 +520,7 @@ public static partial class TTF
     /// <summary>
     /// Query whether Signed Distance Field rendering is enabled for a font.
     /// </summary>
-    /// <param name="font">the font to query</param>
+    /// <param name="font">the font to query.</param>
     /// <returns><c>true</c> if enabled, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
@@ -679,7 +680,7 @@ public static partial class TTF
     /// <para>Query whether a font is scalable or not.</para>
     /// <para>Scalability lets us distinguish between outline and bitmap fonts.</para>
     /// </summary>
-    /// <param name="font">the font to query</param>
+    /// <param name="font">the font to query.</param>
     /// <returns><c>true</c> if the font is scalable, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
@@ -849,14 +850,17 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool TTF_SetFontLanguage(TTF_Font *font, const char *language_bcp47);</code>
     /// <summary>
     /// <para>Set language to be used for text shaping by a font.</para>
-    /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns false.</para>
+    /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns
+    /// false.</para>
     /// <para>This updates any <see cref="TTFText"/> objects using this font.</para>
     /// </summary>
     /// <param name="font">the font to specify a language for.</param>
-    /// <param name="languageBcp47">a null-terminated string containing the desired language's BCP47 code. Or <c>null</c> to reset the value.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/>
-    /// for more information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the font.</threadsafety>
+    /// <param name="languageBcp47">a null-terminated string containing the desired
+    /// language's BCP47 code. Or null to reset the value.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontLanguage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -987,10 +991,12 @@ public static partial class TTF
     /// <param name="font">the font to query.</param>
     /// <param name="previousCh">the previous codepoint.</param>
     /// <param name="ch">the current codepoint.</param>
-    /// <param name="kerning">a pointer filled in with the kerning size between the two glyphs, in pixels, may be <c>null</c>.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/>
-    /// for more information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the font.</threadsafety>
+    /// <param name="kerning">a pointer filled in with the kerning size between the two
+    /// glyphs, in pixels, may be <c>null</c>.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphKerning"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
