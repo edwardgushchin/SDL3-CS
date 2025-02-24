@@ -29,6 +29,8 @@ public static partial class SDL
 {
     /// <summary>
     /// A structure specifying the parameters of a sampler.
+    /// <para>Note that mip_lod_bias is a no-op for the Metal driver. For Metal, LOD bias
+    /// must be applied via shader instead.</para>
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUSampler"/>
@@ -104,13 +106,24 @@ public static partial class SDL
         /// </summary>
         public Byte EnableCompare;
         
-        private Byte _padding1;
-        
-        private Byte _padding2;
+        /// <summary>
+        /// The binding slot of the vertex buffer.
+        /// </summary>
+        public uint Slot;
         
         /// <summary>
-        /// A properties ID for extensions. Should be 0 if no extensions are needed.
+        /// The byte pitch between consecutive elements of the vertex buffer.
         /// </summary>
-        public UInt32 Props;
+        public uint Pitch;
+        
+        /// <summary>
+        /// Whether attribute addressing is a function of the vertex index or instance index.
+        /// </summary>
+        public GPUVertexInputRate InputRate;
+        
+        /// <summary>
+        /// Ignored, reserved for future use.
+        /// </summary>
+        public uint InstanceStepRate;
     }
 }

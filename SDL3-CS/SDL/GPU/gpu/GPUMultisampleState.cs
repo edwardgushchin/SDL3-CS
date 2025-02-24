@@ -42,12 +42,12 @@ public static partial class SDL
         public GPUSampleCount SampleCount;
         
         /// <summary>
-        /// Determines which samples get updated in the render targets. Treated as 0xFFFFFFFF if enable_mask is false.
+        /// Ignored, reserved for future use.
         /// </summary>
         public UInt32 SampleMask;
         
         /// <summary>
-        /// Enables sample masking.
+        /// Ignored, reserved for future use.
         /// </summary>
         public Byte EnableMask;
         

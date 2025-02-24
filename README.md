@@ -140,9 +140,6 @@ We also have a [chat](https://t.me/sdl3cs) in Telegram, where I am ready to answ
   <img src = "https://contrib.rocks/image?repo=edwardgushchin/SDL3-CS"/>
 </a>
 
-
-Made with [contributors-img](https://contrib.rocks).
-
 See also the list of [contributors](https://github.com/edwardgushchin/SDL3-CS/graphs/contributors) who participated in this project.
 
 ## 📃 License

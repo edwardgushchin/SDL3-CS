@@ -30,10 +30,12 @@ public static partial class SDL
     /// <summary>
     /// <para>A structure specifying the parameters of the graphics pipeline rasterizer
     /// state.</para>
-    /// <para>NOTE: Some backend APIs (D3D11/12) will enable depth clamping even if
-    /// <see cref="EnableDepthClip"/> is true. If you rely on this clamp+clip behavior,
-    /// consider enabling depth clip and then manually clamping depth in your
-    /// fragment shaders on Metal and Vulkan.</para>
+    /// <para>Note that <see cref="GPUFillMode.Line"/> is not supported on many Android devices.
+    /// For those devices, the fill mode will automatically fall back to FILL.</para>
+    /// <para>Also note that the D3D12 driver will enable depth clamping even if
+    /// enable_depth_clip is true. If you need this clamp+clip behavior, consider
+    /// enabling depth clip and then manually clamping depth in your fragment
+    /// shaders on Metal and Vulkan.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUGraphicsPipelineCreateInfo"/>
