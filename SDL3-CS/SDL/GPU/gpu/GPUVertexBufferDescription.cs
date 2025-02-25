@@ -60,7 +60,7 @@ public static partial class SDL
         public GPUVertexInputRate InputRate;
         
         /// <summary>
-        /// The number of instances to draw using the same per-instance data before advancing in the instance buffer by one element. Ignored unless input_rate is <see cref="GPUVertexInputRate.Instance"/>
+        /// Reserved for future use. Must be set to 0.
         /// </summary>
         public UInt32 InstanceStepRate;
     }

@@ -1774,6 +1774,24 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickZeroCenteredDevices = "SDL_JOYSTICK_ZERO_CENTERED_DEVICES";
         
+        //#define SDL_HINT_JOYSTICK_HAPTIC_AXES "SDL_JOYSTICK_HAPTIC_AXES"
+        /// <summary>
+        /// <para>A variable containing a list of devices and their desired number of haptic
+        /// (force feedback) enabled axis.</para>
+        /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
+        /// hexadecimal form plus the number of desired axes, e.g.</para>
+        /// <para><c>0xAAAA/0xBBBB/1,0xCCCC/0xDDDD/3</c></para>
+        /// <para>This hint supports a "wildcard" device that will set the number of haptic
+        /// axes on all initialized haptic devices which were not defined explicitly in
+        /// this hint.</para>
+        /// <para><c>0xFFFF/0xFFFF/1</c></para>
+        /// <para>This hint should be set before a controller is opened. The number of haptic
+        /// axes won't exceed the number of real axes found on the device.</para>
+        /// </summary>
+        /// <since>This hint is available since SDL 3.2.5.</since>
+        public const string JoystickHapticAxes = "SDL_JOYSTICK_HAPTIC_AXES";
+        
+        
         /// <summary>
         /// <para>A variable that controls keycode representation in keyboard events.</para>
         /// <para>This variable is a comma separated set of options for translating keycodes

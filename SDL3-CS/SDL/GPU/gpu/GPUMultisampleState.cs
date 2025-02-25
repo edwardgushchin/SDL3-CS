@@ -42,14 +42,14 @@ public static partial class SDL
         public GPUSampleCount SampleCount;
         
         /// <summary>
-        /// Ignored, reserved for future use.
+        /// eserved for future use. Must be set to 0.
         /// </summary>
         public UInt32 SampleMask;
         
         /// <summary>
-        /// Ignored, reserved for future use.
+        /// Reserved for future use. Must be set to false.
         /// </summary>
-        public Byte EnableMask;
+        public byte EnableMask;
         
         private Byte _padding1;
         
