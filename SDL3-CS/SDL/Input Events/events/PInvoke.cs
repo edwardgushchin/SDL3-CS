@@ -74,7 +74,7 @@ public static partial class SDL
     /// <param name="numevents">if action is <see cref="EventAction.AddEvent"/>, the number of events to add
     /// back to the event queue; if action is <see cref="EventAction.PeekEvent"/> or
     /// <see cref="EventAction.GetEvent"/>, the maximum number of events to retrieve.</param>
-    /// <param name="action">action to take; see [[#action|Remarks]] for details.</param>
+    /// <param name="action">action to take; see Remarks for details.</param>
     /// <param name="minType">minimum value of the event type to be considered;
     /// <see cref="EventType.First"/> is a safe choice.</param>
     /// <param name="maxType">maximum value of the event type to be considered;

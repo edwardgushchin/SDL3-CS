@@ -144,7 +144,8 @@ public static partial class SDL
     /// <para>Checks if the storage container is ready to use.</para>
     /// <para>This function should be called in regular intervals until it returns true -
     /// however, it is not recommended to spinwait on this call, as the backend may
-    /// depend on a synchronous message loop.</para>
+    /// depend on a synchronous message loop. You might instead poll this
+    /// game's main loop while processing events and drawing a loading screen.</para>
     /// </summary>
     /// <param name="storage">a storage container to query.</param>
     /// <returns><c>true</c> if the container is ready, <c>false</c> otherwise.</returns>

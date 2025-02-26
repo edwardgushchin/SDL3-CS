@@ -3161,14 +3161,19 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
     /// <para>Read pixels from the current rendering target.</para>
-    /// <para>The returned surface should be freed with <see cref="DestroySurface"/></para>
+    /// <para>The returned surface contains pixels inside the desired area clipped to the
+    /// current viewport, and should be freed with <see cref="DestroySurface"/>.</para>
+    /// <para>Note that this returns the actual pixels on the screen, so if you are using
+    /// logical presentation you should use <see cref="GetRenderLogicalPresentationRect"/>
+    /// to get the area containing your content.</para>
     /// <para><b>WARNING</b>: This is a very slow operation, and should not be used
     /// frequently. If you're using this on the main rendering target, it should be
     /// called after rendering and before <see cref="RenderPresent"/>.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
-    /// <param name="rect">an <see cref="Rect"/> structure representing the area in pixels relative
-    /// to the to current viewport, or <c>null</c> for the entire viewport.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the area to read, which will
+    /// be clipped to the current viewport, or <c>null</c> for the entire
+    /// viewport.</param>
     /// <returns>a new <see cref="Surface"/> on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
