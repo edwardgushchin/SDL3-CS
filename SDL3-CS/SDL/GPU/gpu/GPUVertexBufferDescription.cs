@@ -40,7 +40,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUVertexAttribute"/>
-    /// <seealso cref="GPUVertexInputState"/>
+    /// <seealso cref="GPUVertexInputRate"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUVertexBufferDescription
     {
