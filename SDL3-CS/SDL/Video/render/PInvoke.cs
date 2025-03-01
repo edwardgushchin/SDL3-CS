@@ -2190,7 +2190,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, FRect srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
@@ -2218,7 +2218,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, FRect dstrect, double angle, IntPtr center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
@@ -2246,7 +2246,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, FRect center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, in FRect center, FlipMode flip);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
@@ -2274,7 +2274,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, FRect srcrect, FRect dstrect, double angle, IntPtr center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
@@ -2302,7 +2302,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, FRect dstrect, double angle, FRect center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, in FRect center, FlipMode flip);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
@@ -2330,7 +2330,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, FRect srcrect, IntPtr dstrect, double angle, FRect center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, in FRect center, FlipMode flip);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
@@ -2358,7 +2358,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, FRect srcrect, FRect dstrect, double angle, FPoint center, FlipMode flip);
+    public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
     #endregion
     
     
