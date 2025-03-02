@@ -333,6 +333,8 @@ public static partial class SDL
     /// <para>Get the output size in pixels of a rendering context.</para>
     /// <para>This returns the true output size in pixels, ignoring any render targets or
     /// logical size and presentation.</para>
+    /// <para>For the output size of the current rendering target, with logical size
+    /// adjustments, use <see cref="GetCurrentRenderOutputSize"/> instead.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="w">a pointer filled in with the width in pixels.</param>
@@ -351,9 +353,9 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the current output size in pixels of a rendering context.</para>
     /// <para>If a rendering target is active, this will return the size of the rendering
-    /// target in pixels, otherwise if a logical size is set, it will return the
-    /// logical size, otherwise it will return the value of
-    /// <see cref="GetRenderOutputSize"/>.</para>
+    /// target in pixels, otherwise return the value of <see cref="GetRenderOutputSize"/>.</para>
+    /// <para>Rendering target or not, the output will be adjusted by the current
+    /// logical presentation state, dictated by <see cref="SetRenderLogicalPresentation"/>.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="w">a pointer filled in with the current width.</param>
@@ -1275,6 +1277,10 @@ public static partial class SDL
     /// <para>The default render target is the window for which the renderer was created.
     /// To stop rendering to a texture and render to the window again, call this
     /// function with a <c>null</c> <c>texture</c>.</para>
+    /// <para>Viewport, cliprect, scale, and logical presentation are unique to each
+    /// render target. Get and set functions for these states apply to the current
+    /// render target set by this function, and those states persist on each target
+    /// when the current render target changes.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">the targeted texture, which must be created with the
@@ -1307,21 +1313,34 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderLogicalPresentation(SDL_Renderer *renderer, int w, int h, SDL_RendererLogicalPresentation mode);</code>
     /// <summary>
-    /// <para>Set a device independent resolution and presentation mode for rendering.</para>
+    /// <para>Set a device-independent resolution and presentation mode for rendering.</para>
     /// <para>This function sets the width and height of the logical rendering output.
-    /// The renderer will act as if the window is always the requested dimensions,
-    /// scaling to the actual window resolution as necessary.</para>
+    /// The renderer will act as if the current render target is always the
+    /// requested dimensions, scaling to the actual resolution as necessary.</para>
     /// <para>This can be useful for games that expect a fixed size, but would like to
     /// scale the output to whatever is available, regardless of how a user resizes
     /// a window, or if the display is high DPI.</para>
+    /// <para>Logical presentation can be used with both render target textures
+    /// and the renderer's window; the state is unique to each render target, and
+    /// this function sets the state for the current render target. It might be
+    /// useful to draw to a texture that matches the window dimensions with logical
+    /// presentation enabled, and then draw that texture across the entire window
+    /// with logical presentation disabled. Be careful not to render both with
+    /// logical presentation enabled, however, as this could produce
+    /// double-letterboxing, etc.</para>
     /// <para>You can disable logical coordinates by setting the mode to
     /// <see cref="RendererLogicalPresentation.Disabled"/>, and in that case you get the full pixel
-    /// resolution of the output window; it is safe to toggle logical presentation
+    /// resolution of the render target; it is safe to toggle logical presentation
     /// during the rendering of a frame: perhaps most of the rendering is done to
     /// specific dimensions but to make fonts look sharp, the app turns off logical
-    /// presentation while drawing text.</para>
-    /// <para>Letterboxing will only happen if logical presentation is enabled during
-    /// <see cref="RenderPresent"/>; be sure to reenable it first if you were using it.</para>
+    /// presentation while drawing text, for example.</para>
+    /// <para>For the renderer's window, letterboxing is drawn into the framebuffer
+    /// if logical presentation is enabled during SDL_RenderPresent; be sure to
+    /// reenable it before presenting if you were toggling it, otherwise the
+    /// letterbox areas might have artifacts from previous frames (or artifacts
+    /// from external overlays, etc). Letterboxing is never drawn into texture
+    /// render targets; be sure to call <see cref="RenderClear"/> before drawing into
+    /// the texture so the letterboxing areas are cleared, if appropriate.</para>
     /// <para>You can convert coordinates in an event into rendering coordinates using
     /// <see cref="ConvertEventToRenderCoordinates"/>.</para>
     /// </summary>
@@ -1346,6 +1365,8 @@ public static partial class SDL
     /// <para>Get device independent resolution and presentation mode for rendering.</para>
     /// <para>This function gets the width and height of the logical rendering output, or
     /// the output size in pixels if a logical resolution is not enabled.</para>
+    /// <para>Each render target has its own logical presentation state. This function
+    /// gets the state for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="w">an int to be filled with the width.</param>
@@ -1368,6 +1389,8 @@ public static partial class SDL
     /// presentation, based on the presentation mode and output size. If logical
     /// presentation is disabled, it will fill the rectangle with the output size,
     /// in pixels.</para>
+    /// <para>Each render target has its own logical presentation state. This function
+    /// gets the rectangle for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">a pointer filled in with the final presentation rectangle, may
@@ -1475,9 +1498,11 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the drawing area for rendering on the current target.</para>
     /// <para>Drawing will clip to this area (separately from any clipping done with
-    /// <see cref="SetRenderClipRect(nint, nint)"/>), and the top left of the area will become coordinate
+    /// <see cref="SetRenderClipRect"/>), and the top left of the area will become coordinate
     /// (0, 0) for future drawing commands.</para>
     /// <para>The area's width and height must be >= 0.</para>
+    /// <para>Each render target has its own viewport. This function sets the viewport
+    /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">the <see cref="Rect"/> structure representing the drawing area, or <c>null</c>
@@ -1497,7 +1522,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the drawing area for rendering on the current target.</para>
     /// <para>Drawing will clip to this area (separately from any clipping done with
-    /// <see cref="SetRenderClipRect(nint, nint)"/>), and the top left of the area will become coordinate
+    /// <see cref="SetRenderClipRect"/>), and the top left of the area will become coordinate
     /// (0, 0) for future drawing commands.</para>
     /// <para>The area's width and height must be >= 0.</para>
     /// </summary>
@@ -1518,6 +1543,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
     /// Get the drawing area for the current target.
+    /// <para>Each render target has its own viewport. This function gets the viewport
+    /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure filled in with the current drawing area.</param>
@@ -1538,6 +1565,8 @@ public static partial class SDL
     /// <para>This is useful if you're saving and restoring the viewport and want to know
     /// whether you should restore a specific rectangle or <c>null</c>. Note that the
     /// viewport is always reset when changing rendering targets.</para>
+    /// <para>Each render target has its own viewport. This function checks the viewport
+    /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <returns>true if the viewport was set to a specific rectangle, or false if
@@ -1576,24 +1605,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
     /// Set the clip rectangle for rendering on the specified target.
-    /// </summary>
-    /// <param name="renderer">the rendering context.</param>
-    /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
-    /// the viewport, or <c>null</c> to disable clipping.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="RenderClipEnabled"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetRenderClipRect(IntPtr renderer, IntPtr rect);
-    
-    
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
-    /// <summary>
-    /// Set the clip rectangle for rendering on the specified target.
+    /// <para>Each render target has its own clip rectangle. This function
+    /// sets the cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
@@ -1612,6 +1625,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
     /// Get the clip rectangle for the current target.
+    /// <para>Each render target has its own clip rectangle. This function
+    /// gets the cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure filled in with the current clipping area
@@ -1621,15 +1636,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderClipEnabled"/>
-    /// <seealso cref="SetRenderClipRect(nint, nint)"/>
+    /// <seealso cref="SetRenderClipRect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetRenderClipRect(IntPtr renderer, ref Rect rect);
+    public static partial bool GetRenderClipRect(IntPtr renderer, out Rect rect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderClipEnabled(SDL_Renderer *renderer);</code>
     /// <summary>
-    /// Get whether clipping is enabled on the given renderer.
+    /// <para>Get whether clipping is enabled on the given render target.</para>
+    /// <para> Each render target has its own clip rectangle. This function
+    /// checks the cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <returns><c>true</c> if clipping is enabled or <c>false</c> if not; call <see cref="GetError"/>
@@ -1637,7 +1654,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="SetRenderClipRect(nint, nint)"/>
+    /// <seealso cref="SetRenderClipRect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClipEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderClipEnabled(IntPtr renderer);
@@ -1652,6 +1669,8 @@ public static partial class SDL
     /// <para>If this results in scaling or subpixel drawing by the rendering backend, it
     /// will be handled using the appropriate quality hints. For best results use
     /// integer scaling factors.</para>
+    /// <para>Each render target has its own scale. This function sets the scale for the
+    /// current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="scalex">the horizontal scaling factor.</param>
@@ -1669,6 +1688,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);</code>
     /// <summary>
     /// Get the drawing scale for the current target.
+    /// <para>Each render target has its own scale. This function gets the scale for the
+    /// current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="scalex">a pointer filled in with the horizontal scaling factor.</param>
@@ -3096,6 +3117,38 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
+
+    
+    #region RenderGeometryRaw
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
+    /// <summary>
+    /// Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays Color and alpha modulation is done per vertex
+    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="xy">vertex positions.</param>
+    /// <param name="xyStride">byte size to move from one element to the next element.</param>
+    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
+    /// <param name="colorStride">byte size to move from one element to the next element.</param>
+    /// <param name="uv">vertex normalized texture coordinates.</param>
+    /// <param name="uvStride">byte size to move from one element to the next element.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
+    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color, 
+        int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
@@ -3154,6 +3207,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
+    
+    #endregion
     
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderReadPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

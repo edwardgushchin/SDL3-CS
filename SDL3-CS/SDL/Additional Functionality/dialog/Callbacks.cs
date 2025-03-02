@@ -37,7 +37,7 @@ public static partial class SDL
     /// <item>A pointer to <c>null</c>, the user either didn't choose any file or canceled the
     /// dialog.</item>
     /// <item>A pointer to non-<c>null</c>, the user chose one or more files. The argument
-    /// is a null-terminated list of pointers to C strings, each containing a
+    /// is a null-terminated array of pointers to UTF-8 encoded strings, each containing a
     /// path.</item>
     /// </list>
     /// <para>The filelist argument should not be freed; it will automatically be

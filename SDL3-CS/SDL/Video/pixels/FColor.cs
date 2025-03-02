@@ -33,15 +33,15 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FColor
+    public struct FColor(float r, float g, float b, float a)
     {
-        public float R;
+        public float R = r;
         
-        public float G;
+        public float G = g;
         
-        public float B;
+        public float B = b;
         
-        public float A;
+        public float A = a;
     }
 }
 
