@@ -11,23 +11,41 @@
         <PackageReleaseNotes>
             This is a stable bugfix release, with the following changes:
 
-            - Fixed mouse motion while the mouse is grabbed on Linux
-            - Fixed audio gain not applying in some cases
-            - Fixed a potential crash when applying audio gain
-            - Removed audio resampling frequency limit
-            - Fixed a crash on Windows if a tray is created without any menus
-            - Fixed being able to open BMP files saved with SDL_SaveBMP() on macOS
-            - Fixed inverted Y axis pen input on macOS
-            - Allow the window manager to position windows that don't specify a position on Linux
+            - Added support for Motion JPEG camera capture
+            - Allow 2D render targets to use logical presentation
+            - Ensure all drawing is completed before destroying a software renderer
+            - Fixed audio glitch when resampling between large frequency differences
+            - Fixed pen generated mouse events not having SDL_PEN_MOUSEID
+            - Added support for the 8BitDo Micro gamepad
+            - Fixed lack of input from Nintendo Switch Pro controllers when plugged in wired in some applications
+            - Added SDL_HINT_JOYSTICK_HAPTIC_AXES to specify how many haptic axes a device has
+            - Fixed SDL_GetRelativeMouseState() returning no motion when not in relative mouse mode
+            - Added SDL_PROP_SURFACE_HOTSPOT_X_NUMBER and SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER to allow storing cursor hotspot positions directly in an SDL_Surface
+            - Fixed camera frame capture on Windows 7
+            - Fixed 2D texture rendering using the direct3d12 renderer on the latest NVIDIA drivers
+            - Improved naming of keyboards and mice under Windows
+            - Fixed opening one Joy-Con of a pair when the other is disconnected on Windows
+            - Fixed stack overflow when setting thread debug names on Windows
+            - Fixed Russian input on some Linux desktop environments
+            - Fixed non-text clipboard handling on Wayland
+            - Added support for high DPI icons on Wayland
+            - Added color management protocol support on Wayland
+            - Fixed flushing audio forever in some cases when recording PulseAudio on Linux
+            - Fixed a rare deadlock when opening an audio device using PipeWire on Linux
+            - Fixed SDL_WaitEvent() returning false when keys are repeated under Wayland
+            - Fixed not getting mouse focus on older versions of macOS
+            - Fixed the cursor confinement area when toggling window borders on macOS
+            - Added a mapping for the 8BitDo SN30 Pro+ controller on macOS
+            - Fixed visual orientation when using SDL GPU on Android
         </PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.3.0.0</Version>
+        <Version>3.2.6.0</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL 3.3.0</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.2.6</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
