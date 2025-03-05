@@ -240,6 +240,24 @@ public static partial class SDL
     public static partial bool WarpMouseGlobal(float x, float y);
     
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRelativeMouseTransform(SDL_MouseMotionTransformCallback callback, void *userdata);</code>
+    /// <summary>
+    /// <para>Set a user-defined function by which to transform relative mouse inputs.</para>
+    /// <para>This overrides the relative system scale and relative speed scale hints.
+    /// Should be called prior to enabling relative mouse mode, fails otherwise.</para>
+    /// </summary>
+    /// <param name="callback">a callback used to transform relative mouse motion, or <c>null</c>
+    /// for default behavior.</param>
+    /// <param name="userdata">a pointer that will be passed to <c>callback</c>.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRelativeMouseTransform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetRelativeMouseTransform(MouseMotionTransformCallback callback, IntPtr userdata);
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);</code>
     /// <summary>
     /// <para>Set relative mouse mode for a window.</para>

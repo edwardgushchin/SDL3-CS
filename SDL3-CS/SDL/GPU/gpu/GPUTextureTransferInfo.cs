@@ -30,6 +30,10 @@ public static partial class SDL
     /// <summary>
     /// A structure specifying parameters related to transferring data to or from a
     /// texture.
+    /// <para>If either of <see cref="PixelsPerRow"/> or <see cref="RowsPerLayer"/> is zero, then width and
+    /// height of passed <see cref="GPUTextureRegion"/> to <see cref="UploadToGPUTexture"/></para>
+    /// <para><see cref="DownloadFromGPUTexture"/> are used as default values respectively and
+    /// data is considered to be tightly packed.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>

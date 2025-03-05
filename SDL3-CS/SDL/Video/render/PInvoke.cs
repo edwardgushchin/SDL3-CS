@@ -3070,6 +3070,152 @@ public static partial class SDL
     public static partial bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, FRect dstrect);
     #endregion
     
+    #region RenderTexture9GridTiled
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
+    /// <summary>
+    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// target at subpixel precision.</para>
+    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
+    /// corner sizes for each corner, and the sides and center making up the
+    /// remaining pixels. The corners are then scaled using <c>scale</c> and fit into
+    /// the corners of the destination rectangle. The sides and center are then
+    /// tiled into place to cover the remaining destination rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">the SDL_Rect structure representing the rectangle to be used
+    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
+    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
+    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
+    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
+    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
+    /// <c>srcrect</c>.</param>
+    /// <param name="scale">the scale used to transform the corner of <c>srcrect</c> into the
+    /// corner of <c>dstrect</c>, or <c>0.0f</c> for an unscaled copy.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <param name="tileScale">the scale used to transform the borders and center of
+    /// <c>srcrect</c> into the borders and middle of <c>dstrect</c>, or
+    /// <c>1.0f</c> for an unscaled copy.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
+    /// <summary>
+    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// target at subpixel precision.</para>
+    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
+    /// corner sizes for each corner, and the sides and center making up the
+    /// remaining pixels. The corners are then scaled using <c>scale</c> and fit into
+    /// the corners of the destination rectangle. The sides and center are then
+    /// tiled into place to cover the remaining destination rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">the SDL_Rect structure representing the rectangle to be used
+    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
+    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
+    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
+    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
+    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
+    /// <c>srcrect</c>.</param>
+    /// <param name="scale">the scale used to transform the corner of <c>srcrect</c> into the
+    /// corner of <c>dstrect</c>, or <c>0.0f</c> for an unscaled copy.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <param name="tileScale">the scale used to transform the borders and center of
+    /// <c>srcrect</c> into the borders and middle of <c>dstrect</c>, or
+    /// <c>1.0f</c> for an unscaled copy.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
+    /// <summary>
+    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// target at subpixel precision.</para>
+    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
+    /// corner sizes for each corner, and the sides and center making up the
+    /// remaining pixels. The corners are then scaled using <c>scale</c> and fit into
+    /// the corners of the destination rectangle. The sides and center are then
+    /// tiled into place to cover the remaining destination rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">the SDL_Rect structure representing the rectangle to be used
+    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
+    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
+    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
+    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
+    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
+    /// <c>srcrect</c>.</param>
+    /// <param name="scale">the scale used to transform the corner of <c>srcrect</c> into the
+    /// corner of <c>dstrect</c>, or <c>0.0f</c> for an unscaled copy.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <param name="tileScale">the scale used to transform the borders and center of
+    /// <c>srcrect</c> into the borders and middle of <c>dstrect</c>, or
+    /// <c>1.0f</c> for an unscaled copy.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
+    /// <summary>
+    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// target at subpixel precision.</para>
+    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
+    /// corner sizes for each corner, and the sides and center making up the
+    /// remaining pixels. The corners are then scaled using <c>scale</c> and fit into
+    /// the corners of the destination rectangle. The sides and center are then
+    /// tiled into place to cover the remaining destination rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">the SDL_Rect structure representing the rectangle to be used
+    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
+    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
+    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
+    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
+    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
+    /// <c>srcrect</c>.</param>
+    /// <param name="scale">the scale used to transform the corner of <c>srcrect</c> into the
+    /// corner of <c>dstrect</c>, or <c>0.0f</c> for an unscaled copy.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <param name="tileScale">the scale used to transform the borders and center of
+    /// <c>srcrect</c> into the borders and middle of <c>dstrect</c>, or
+    /// <c>1.0f</c> for an unscaled copy.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
+    
+    #endregion
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
     /// <summary>
@@ -3517,4 +3663,40 @@ public static partial class SDL
     /// <seealso cref="DebugTextFontCharacterSize"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugTextFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderDebugTextFormat(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt); }
+    public static partial bool RenderDebugTextFormat(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt); 
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode scale_mode);</code>
+    /// <summary>
+    /// <para>Set default scale mode for new textures for given renderer.</para>
+    /// <para>When a renderer is created, <c>scaleMode</c> defaults to <see cref="ScaleMode.Linear"/>.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer to update.</param>
+    /// <param name="scaleMode">the scale mode to change to for new textures.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="GetDefaultTextureScaleMode"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetDefaultTextureScaleMode(IntPtr renderer, ScaleMode scaleMode); 
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode *scale_mode);</code>
+    /// <summary>
+    /// Get default texture scale mode of the given renderer.
+    /// </summary>
+    /// <param name="renderer">the renderer to get data from.</param>
+    /// <param name="scaleMode">a <see cref="ScaleMode"/> filled with current default scale mode.
+    /// See <see cref="SetDefaultTextureScaleMode"/> for the meaning of
+    /// the value.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="SetDefaultTextureScaleMode"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetDefaultTextureScaleMode(IntPtr renderer, out ScaleMode scaleMode); 
+}
