@@ -3354,6 +3354,54 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
     
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
+    /// <summary>
+    /// Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays Color and alpha modulation is done per vertex
+    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="xy">vertex positions.</param>
+    /// <param name="xyStride">byte size to move from one element to the next element.</param>
+    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
+    /// <param name="colorStride">byte size to move from one element to the next element.</param>
+    /// <param name="uv">vertex normalized texture coordinates.</param>
+    /// <param name="uvStride">byte size to move from one element to the next element.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
+    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, Span<float> xy, 
+        int xyStride, Span<FColor> color, int colorStride, Span<float> uv, int uvStride,
+        int numVertices, Span<TIndex> indices, int numIndices, int sizeIndices) where TIndex : unmanaged
+    {
+        fixed (float* pXy = xy)
+        fixed (FColor* pColor = color)
+        fixed (float* pUV = uv)
+        {
+            if (indices.Length == 0)
+            {
+                return RenderGeometryRaw(renderer, texture, (IntPtr)pXy, xyStride,
+                    (IntPtr)pColor, colorStride, (IntPtr)pUV, uvStride,
+                    numVertices, IntPtr.Zero, 0, 0);
+            }
+
+            fixed (TIndex* pIndices = indices)
+            {
+                return RenderGeometryRaw(renderer, texture, (IntPtr)pXy, xyStride,
+                    (IntPtr)pColor, colorStride, (IntPtr)pUV, uvStride,
+                    numVertices, (IntPtr)pIndices, numIndices, sizeIndices);
+            }
+        }
+    }
     #endregion
     
     
