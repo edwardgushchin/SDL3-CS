@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.2.0</Version>
+        <Version>3.2.4.0</Version>
         <Title>SDL3 C# Native image libraries</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
