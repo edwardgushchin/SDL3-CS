@@ -52,7 +52,7 @@ public static partial class SDL
         /// <summary>
         /// The size and type of the attribute data.
         /// </summary>
-        GPUVertexElementFormat Format;
+        public GPUVertexElementFormat Format;
         
         /// <summary>
         /// The byte offset of this attribute relative to the start of the vertex element.
