@@ -979,8 +979,6 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
     public static unsafe bool UpdateTexture(IntPtr texture, IntPtr rect, Span<byte> pixels, int pitch)
     {
         fixed (byte* p = pixels)
@@ -1078,8 +1076,6 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
     public static unsafe bool UpdateTexture(IntPtr texture, in Rect rect, Span<byte> pixels, int pitch)
     {
         fixed (byte* p = pixels)
