@@ -30,10 +30,12 @@ public static partial class SDL
 {
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetTicks(void);</code>
     /// <summary>
-    /// Get the number of milliseconds since SDL library initialization.
+    /// Get the number of milliseconds that have elapsed since the SDL library
+    /// initialization.
     /// </summary>
-    /// <returns>an unsigned 64-bit value representing the number of milliseconds
-    /// since the SDL library initialized.</returns>
+    /// <returns>n unsigned 64‑bit integer that represents the number of
+    /// milliseconds that have elapsed since the SDL library was
+    /// initialized (typically via a call to SDL_Init).</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

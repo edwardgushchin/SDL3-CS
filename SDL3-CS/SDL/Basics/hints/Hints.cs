@@ -2958,6 +2958,20 @@ public static partial class SDL
         public const string VideoWinD3Dcompiler = "SDL_VIDEO_WIN_D3DCOMPILER";
         
         /// <summary>
+        /// A variable controlling whether SDL should call XSelectInput() to enable
+        /// input events on X11 windows wrapped by SDL windows.
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Don't call XSelectInput(), assuming the native window code has done
+        /// it already.</item>
+        /// <item><c>"1"</c>: Call XSelectInput() to enable input events. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before creating a window.</remarks>
+        /// <since>This hint is available since SDL 3.2.10.</since>
+        public const string VideoX11ExternalWindowInput = "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT";
+        
+        /// <summary>
         /// <para>A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint
         /// should be used.</para>
         /// <para>The variable can be set to the following values:</para>
