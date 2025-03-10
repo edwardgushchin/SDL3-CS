@@ -31,6 +31,8 @@ public static partial class SDL
     /// <since>This enum is available since SDL 3.2.0</since>
     public enum ScaleMode
     {
+        Invalid = -1,
+        
         /// <summary>
         /// nearest pixel sampling
         /// </summary>

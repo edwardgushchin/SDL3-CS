@@ -940,11 +940,12 @@ public static partial class SDL
     /// <para>Triggers range from 0 when released to 32767 when fully pressed, and never
     /// return a negative value. Note that this differs from the value reported by
     /// the lower-level <see cref="GetJoystickAxis"/>, which normally uses the full range.</para>
+    /// <para>Note that for invalid gamepads or axes, this will return 0. Zero is also a
+    /// valid value in normal operation; usually it means a centered axis.</para>
     /// </summary>
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="axis">an axis index (one of the <see cref="GamepadAxis"/> values).</param>
-    /// <returns>axis state (including 0) on success or 0 (also) on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <returns>axis state.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadHasAxis"/>
     /// <seealso cref="GetGamepadButton"/>
