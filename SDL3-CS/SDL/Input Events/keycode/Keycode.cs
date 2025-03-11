@@ -502,7 +502,7 @@ public static partial class SDL
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.ScrollLock)
         /// </summary>
-        ScrolLlock = 0x40000047u,
+        ScrollLock = 0x40000047u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Pause)

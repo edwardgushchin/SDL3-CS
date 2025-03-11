@@ -1572,7 +1572,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the drawing area for rendering on the current target.</para>
     /// <para>Drawing will clip to this area (separately from any clipping done with
-    /// <see cref="SetRenderClipRect"/>), and the top left of the area will become coordinate
+    /// <see cref="SetRenderClipRect(nint, in Rect)"/>), and the top left of the area will become coordinate
     /// (0, 0) for future drawing commands.</para>
     /// <para>The area's width and height must be >= 0.</para>
     /// <para>Each render target has its own viewport. This function sets the viewport
@@ -1596,7 +1596,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the drawing area for rendering on the current target.</para>
     /// <para>Drawing will clip to this area (separately from any clipping done with
-    /// <see cref="SetRenderClipRect"/>), and the top left of the area will become coordinate
+    /// <see cref="SetRenderClipRect(nint, in Rect)"/>), and the top left of the area will become coordinate
     /// (0, 0) for future drawing commands.</para>
     /// <para>The area's width and height must be >= 0.</para>
     /// </summary>
@@ -1693,7 +1693,27 @@ public static partial class SDL
     /// <seealso cref="RenderClipEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetRenderClipRect(IntPtr renderer, Rect rect);
+    public static partial bool SetRenderClipRect(IntPtr renderer, IntPtr rect);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
+    /// <summary>
+    /// Set the clip rectangle for rendering on the specified target.
+    /// <para>Each render target has its own clip rectangle. This function
+    /// sets the cliprect for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
+    /// the viewport, or <c>null</c> to disable clipping.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetRenderClipRect"/>
+    /// <seealso cref="RenderClipEnabled"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetRenderClipRect(IntPtr renderer, in Rect rect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);</code>
@@ -1710,7 +1730,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderClipEnabled"/>
-    /// <seealso cref="SetRenderClipRect"/>
+    /// <seealso cref="SetRenderClipRect(nint, in Rect)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRenderClipRect(IntPtr renderer, out Rect rect);
@@ -1728,7 +1748,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="SetRenderClipRect"/>
+    /// <seealso cref="SetRenderClipRect(nint, in Rect)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClipEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderClipEnabled(IntPtr renderer);
