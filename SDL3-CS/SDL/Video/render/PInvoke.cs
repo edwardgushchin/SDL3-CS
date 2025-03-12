@@ -2203,7 +2203,7 @@ public static partial class SDL
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, FRect srcrect, IntPtr dstrect);
+    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
@@ -2225,7 +2225,7 @@ public static partial class SDL
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, FRect dstrect);
+    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
@@ -2247,7 +2247,7 @@ public static partial class SDL
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, FRect srcrect, FRect dstrect);
+    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
     #endregion
     
     
