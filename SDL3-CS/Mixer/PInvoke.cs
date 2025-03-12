@@ -1986,7 +1986,7 @@ public partial class Mixer
     /// <para>Set the current position in the music stream, in seconds.</para>
     /// <para>To convert from milliseconds, divide by 1000.0.</para>
     /// <para>This function is only implemented for MOD music formats (set pattern order
-    /// number) and for WAV, OGG, FLAC, MP3, and MODPLUG music at the moment.</para>
+    /// number) and for WAV, OGG, FLAC, MP3, and MOD music at the moment.</para>
     /// </summary>
     /// <param name="position">the new position, in seconds (as a double).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more

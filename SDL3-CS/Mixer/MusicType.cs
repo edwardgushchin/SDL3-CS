@@ -36,9 +36,7 @@ public partial class Mixer
         MID,
         OGG,
         MP3,
-        MP3MadUnused,
         FLAC,
-        MODPlugUnused,
         OPUS,
         WAVPACK,
         GME
