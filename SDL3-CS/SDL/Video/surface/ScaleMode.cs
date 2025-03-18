@@ -41,6 +41,11 @@ public static partial class SDL
         /// <summary>
         /// linear filtering
         /// </summary>
-        Linear
+        Linear,
+        
+        /// <summary>
+        /// nearest pixel sampling with improved scaling for pixel art
+        /// </summary>
+        PixelArt
     }
 }

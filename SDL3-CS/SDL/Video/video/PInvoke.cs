@@ -843,6 +843,23 @@ public static partial class SDL
     /// with the window, if you want to wrap an existing window.</item>
     /// </list>
     /// <para>The window is implicitly shown if the <c>"hidden"</c> property is not set.</para>
+    /// <para>These are additional supported properties with Emscripten:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.WindowCreateEmscriptennCanvasId"/>: the id given to the canvas
+    /// element. This should start with a <c>#</c> sign</item>
+    /// <item><see cref="Props.WindowCreateEmscriptenKeyboardElement"/>: override the
+    /// binding element for keyboard inputs for this canvas. The variable can be
+    /// one of:</item>
+    /// <item><c>"#window"</c>: the javascript window object (default)</item>
+    /// <item><c>"#document"</c>: the javascript document object</item>
+    /// <item><c>"#screen"</c>: the javascript window.screen object</item>
+    /// <item><c>"#canvas"</c>: the WebGL canvas element</item>
+    /// <item><c>"#none"</c>: Don't bind anything at all</item>
+    /// <item>any other string without a leading # sign applies to the element on the
+    /// page with that ID. Windows with the "tooltip" and "menu" properties are
+    /// popup windows and have the behaviors and guidelines outlined in
+    /// <see cref="CreatePopupWindow"/>.</item>
+    /// </list>
     /// <para>Windows with the <c>"tooltip"</c> and <c>"menu"</c> properties are popup windows and have
     /// the behaviors and guidelines outlined in <see cref="CreatePopupWindow"/>.</para>
     /// <para>If this window is being created to be used with an SDL_Renderer, you should

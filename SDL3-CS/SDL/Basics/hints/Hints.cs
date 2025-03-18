@@ -576,7 +576,6 @@ public static partial class SDL
         /// <summary>
         /// <para>Specify the CSS selector used for the <c>"default"</c> window/canvas.</para>
         /// <para>This hint only applies to the emscripten platform.</para>
-        /// <para>The default value is <c>"#canvas";</c></para>
         /// </summary>
         /// <remarks>This hint should be set before creating a window.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
@@ -587,7 +586,7 @@ public static partial class SDL
         /// <para>This hint only applies to the emscripten platform.</para>
         /// <para>The variable can be one of:</para>
         /// <list type="bullet">
-        /// <item><c>"#window"</c>: the javascript window object (default)</item>
+        /// <item><c>"#window"</c>: the javascript window object</item>
         /// <item><c>"#document"</c>: the javascript document object</item>
         /// <item><c>"#screen"</c>: the javascript window.screen object</item>
         /// <item><c>"#canvas"</c>: the WebGL canvas element</item>
@@ -1389,6 +1388,18 @@ public static partial class SDL
         /// </summary>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISteamHORI = "SDL_JOYSTICK_HIDAPI_STEAM_HORI";
+        
+        /// <summary>
+        /// <para>A variable controlling whether the HIDAPI driver for some Logitech wheels
+        /// should be used.</para>
+        /// <para>This variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: HIDAPI driver is not used</item>
+        /// <item><c>"1"</c>: HIDAPI driver is used</item>
+        /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
+        /// </summary>
+        public const string JoystickHIDAPILG4FF = "SDL_JOYSTICK_HIDAPI_LG4FF";
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for Nintendo Switch
@@ -2784,6 +2795,24 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.1.9.</since>
         public const string VideoMacFullScreenMenuVisibility = "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY";
+        
+        /// <summary>
+        /// <para>A variable controlling whether SDL will attempt to automatically set the
+        /// destination display to a mode most closely matching that of the previous
+        /// display if an exclusive fullscreen window is moved onto it.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: SDL will not attempt to automatically set a matching mode on the
+        /// destination display. If an exclusive fullscreen window is moved to a new
+        /// display, the window will become fullscreen desktop.</item>
+        /// <item><c>"1"</c>: SDL will attempt to automatically set a mode on the destination
+        /// display that most closely matches the mode of the display that the 
+        /// exclusive fullscreen window was previously on. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string VideoMatchExclusiveModeOnMove = "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON";
         
         /// <summary>
         /// <para>A variable controlling whether fullscreen windows are minimized when they

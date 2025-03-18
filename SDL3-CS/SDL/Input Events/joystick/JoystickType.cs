@@ -32,6 +32,9 @@ public static partial class SDL
     /// <see cref="GetJoystickTypeForID"/>).</para>
     /// <para>This is by no means a complete list of everything that can be plugged into
     /// a computer.</para>
+    /// <para>You may refer to
+    /// <a href="https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes">XInput Controller Types</a>
+    /// table for a general understanding of each joystick type.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
     public enum JoystickType : ushort

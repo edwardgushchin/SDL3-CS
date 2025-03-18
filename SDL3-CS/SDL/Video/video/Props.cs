@@ -78,6 +78,8 @@ public static partial class SDL
 		public const string WindowCreateWin32HWNDPointer = "SDL.window.create.win32.hwnd";
 		public const string WindowCreateWin32PixelFormatHWNDPointer = "SDL.window.create.win32.pixel_format_hwnd";
 		public const string WindowCreateX11WindowNumber = "SDL.window.create.x11.window";
+		public const string WindowCreateEmscriptennCanvasId = "SDL.window.create.emscripten.canvas_id";
+		public const string WindowCreateEmscriptenKeyboardElement = "SDL.window.create.emscripten.keyboard_element";
 		
 		public const string WindowShapePointer = "SDL.window.shape";
 		public const string WindowHDREnabledBoolean = "SDL.window.HDR_enabled";

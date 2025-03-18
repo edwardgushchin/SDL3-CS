@@ -1873,7 +1873,7 @@ public partial class SDL
     /// <param name="device">a GPU context.</param>
     /// <param name="format">the texture format to check.</param>
     /// <param name="sampleСount">the sample count to check.</param>
-    /// <returns>a hardware-specific version of min(preferred, possible).</returns>
+    /// <returns>whether the sample count is supported for this texture format.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUTextureSupportsSampleCount"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

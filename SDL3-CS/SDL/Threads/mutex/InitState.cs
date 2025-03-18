@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure used for thread-safe initialization and shutdown.</para>
     /// <para>Here is an example of using this:</para>
     /// <code>
-    /// static SDL_AtomicInitState init;
+    /// static SDL_InitState init;
     ///
     ///    bool InitSystem(void)
     ///    {

@@ -3841,4 +3841,73 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetDefaultTextureScaleMode(IntPtr renderer, out ScaleMode scaleMode); 
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPURenderState * SDLCALL SDL_CreateGPURenderState(SDL_Renderer *renderer, SDL_GPURenderStateDesc *desc);</code>
+    /// <summary>
+    /// <para>Create custom GPU render state.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer to use.</param>
+    /// <param name="desc">GPU render state description, initialized using
+    /// SDL_INIT_INTERFACE().</param>
+    /// <returns>a custom GPU render state or <c>null</c> on failure; call <see cref="GetError"/>
+    /// for more information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="SetGPURenderStateFragmentUniforms"/>
+    /// <seealso cref="SetRenderGPUState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateGPURenderState(IntPtr renderer, IntPtr desc); 
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);</code>
+    /// <summary>
+    /// <para>Set fragment shader uniform variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be pushed using
+    /// <see cref="PushGPUFragmentUniformData"/> during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="slotIndex">the fragment uniform slot to push data to.</param>
+    /// <param name="data">client data to write.</param>
+    /// <param name="length">the length of the data to write.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateFragmentUniforms"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length); 
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderGPUState(SDL_Renderer *renderer, SDL_GPURenderState *state);</code>
+    /// <summary>
+    /// <para>Set custom GPU render state.</para>
+    /// <para>This function sets custom GPU render state for subsequent draw calls. This
+    /// allows using custom shaders with the GPU renderer.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer to use.</param>
+    /// <param name="state">the state to to use, or <c>null</c> to clear custom GPU render state.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderGPUState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetRenderGPUState(IntPtr renderer, IntPtr state);
+    
+    
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyGPURenderState(SDL_GPURenderState *state);</code>
+    /// <summary>
+    /// <para>Destroy custom GPU render state.</para>
+    /// </summary>
+    /// <param name="state">state the state to destroy.</param>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyGPURenderState(IntPtr state); 
 }
