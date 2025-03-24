@@ -40,7 +40,7 @@ public partial class Image
 
         public int Count;
 
-        public IntPtr Framse;
+        public IntPtr Frames;
         
         public IntPtr Delays;
     }
