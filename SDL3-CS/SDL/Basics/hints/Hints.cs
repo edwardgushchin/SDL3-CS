@@ -1401,6 +1401,18 @@ public static partial class SDL
         /// </summary>
         public const string JoystickHIDAPILG4FF = "SDL_JOYSTICK_HIDAPI_LG4FF";
         
+        
+        /// <summary>
+        /// <para>A variable controlling whether the HIDAPI driver for 8BitDo controllers
+        /// should be used.</para>
+        /// <para>This variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c> - HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c> - HIDAPI driver is used.</item>
+        /// </list>
+        /// </summary>
+        public const string JoystickHIDAPI8BITDO = "SDL_JOYSTICK_HIDAPI_8BITDO";
+        
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for Nintendo Switch
         /// controllers should be used.</para>

@@ -36,6 +36,11 @@ public partial class SDL
     /// <para>If <c>size</c> is 0, it will be set to 1.</para>
     /// <para>If you want to allocate memory aligned to a specific alignment, consider
     /// using <see cref="AlignedAlloc"/>.</para>
+    /// <para>If the allocation is successful, the returned pointer is guaranteed to be
+    /// aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
+    /// C11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use
+    /// SDL_aligned_alloc() if you need to allocate memory aligned to an alignment
+    /// greater than this guarantee.</para>
     /// </summary>
     /// <param name="size">the size to allocate.</param>
     /// <returns>a pointer to the allocated memory, or <c>null</c> if allocation failed.</returns>
@@ -54,6 +59,9 @@ public partial class SDL
     /// <para>Allocate a zero-initialized array.</para>
     /// <para>The memory returned by this function must be freed with <see cref="Free"/>.</para>
     /// <para>If either of <c>nmemb</c> or <c>size</c> is 0, they will both be set to 1.</para>
+    /// <para>If the allocation is successful, the returned pointer is guaranteed to be
+    /// aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
+    /// C11 and later) or `2 * sizeof(void *)`, whichever is smaller.</para>
     /// </summary>
     /// <param name="nmemb">the number of elements in the array.</param>
     /// <param name="size">the size of each element of the array.</param>
@@ -82,6 +90,10 @@ public partial class SDL
     /// <item>If it returns <c>null</c> (indicating failure), then <c>mem</c> will remain valid and
     /// must still be freed with <see cref="Free"/>.</item>
     /// </list>
+    /// <para>If the allocation is successfully resized, the returned pointer is
+    /// guaranteed to be aligned to either the *fundamental alignment*
+    /// (`alignof(max_align_t)` in C11 and later) or `2 * sizeof(void *)`,
+    /// whichever is smaller.</para>
     /// </summary>
     /// <param name="mem">a pointer to allocated memory to reallocate, or <c>null</c>.</param>
     /// <param name="size">the new size of the memory.</param>

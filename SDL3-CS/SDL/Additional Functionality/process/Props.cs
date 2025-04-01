@@ -29,6 +29,7 @@ public static partial class SDL
     {
         public const string ProcessCreateArgsPointer = "SDL.process.create.args";
         public const string ProcessCreateEnvironmentPointer = "SDL.process.create.environment";
+        public const string ProcessCreateWorkingDirectoryString = "SDL.process.create.working_directory";
         public const string ProcessCreateSTDInNumber = "SDL.process.create.stdin_option";
         public const string ProcessCreateSTDInPointer = "SDL.process.create.stdin_source";
         public const string ProcessCreateSTDOutNumber = "SDL.process.create.stdout_option";

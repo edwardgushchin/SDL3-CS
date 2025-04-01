@@ -155,6 +155,11 @@ public static partial class SDL
     /// responsible for any coordinate transformations needed to conform to the
     /// requested display orientation.</item>
     /// </list>
+    /// <para>On Wayland:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.DisplayWaylandWLOutputPointer"/>: the wl_output associated
+    /// with the display</item>
+    /// </list>
     /// </summary>
     /// <param name="displayID">displayID the instance ID of the display to query.</param>
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
@@ -2196,6 +2201,64 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlashWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FlashWindow(IntPtr window, FlashOperation operation);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowProgressState(SDL_Window *window, SDL_ProgressState state);</code>
+    /// <summary>
+    /// Sets the state of the progress bar for the given window’s taskbar icon.
+    /// </summary>
+    /// <param name="window">the window whose progress state is to be modified.</param>
+    /// <param name="state">the progress state. <see cref="ProgressState.None"/> stops displaying
+    /// the progress bar.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowProgressState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetWindowProgressState(IntPtr window, ProgressState state);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_ProgressState SDLCALL SDL_GetWindowProgressState(SDL_Window *window);</code>
+    /// <summary>
+    /// Get the state of the progress bar for the given window’s taskbar icon.
+    /// </summary>
+    /// <param name="window">the window to get the current progress state from.</param>
+    /// <returns>the progress state, or <see cref="ProgressState.Invalid"/> on failure;
+    /// call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProgressState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial ProgressState GetWindowProgressState(IntPtr window);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowProgressValue(SDL_Window *window, float value);</code>
+    /// <summary>
+    /// <para>Sets the value of the progress bar for the given window’s taskbar icon.</para>
+    /// </summary>
+    /// <param name="window">the window whose progress value is to be modified.</param>
+    /// <param name="value">the progress value in the range of [0.0f - 1.0f]. If the value
+    /// is outside the valid range, it gets clamped.</param>
+    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowProgressValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetWindowProgressValue(IntPtr window, float value);
+    
+    
+    /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowProgressValue(SDL_Window *window);</code>
+    /// <summary>
+    /// Get the value of the progress bar for the given window’s taskbar icon.
+    /// </summary>
+    /// <param name="window">the window to get the current progress value from.</param>
+    /// <returns>the progress value in the range of [0.0f - 1.0f], or -1.0f on
+    /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProgressValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetWindowProgressValue(IntPtr window);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyWindow(SDL_Window *window);</code>

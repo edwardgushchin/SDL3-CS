@@ -74,6 +74,9 @@ public static partial class SDL
     /// <item><see cref="Props.ProcessCreateEnvironmentPointer"/>: an SDL_Environment
     /// pointer. If this property is set, it will be the entire environment for
     /// the process, otherwise the current environment is used.</item>
+    /// <item><see cref="Props.ProcessCreateWorkingDirectoryString"/>: a UTF-8 encoded
+    /// string representing the working directory for the process, defaults to
+    /// the current working directory.</item>
     /// <item><see cref="Props.ProcessCreateSTDInNumber"/>: an SDL_ProcessIO value describing
     /// where standard input for the process comes from, defaults to
     /// <see cref="ProcessIO.Null"/>.</item>

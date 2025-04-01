@@ -3330,6 +3330,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, IntPtr indices, int numIndices);
@@ -3354,6 +3355,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
@@ -3385,6 +3387,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color, 
@@ -3415,6 +3418,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices);
@@ -3444,6 +3448,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
@@ -3473,6 +3478,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, Span<float> xy, 
         int xyStride, Span<FColor> color, int colorStride, Span<float> uv, int uvStride,
         int numVertices, Span<TIndex> indices, int numIndices, int sizeIndices) where TIndex : unmanaged
@@ -3497,6 +3503,46 @@ public static partial class SDL
         }
     }
     #endregion
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode);</code>
+    /// <summary>
+    /// <para>Set the texture addressing mode used in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="umode">the <see cref="TextureAddressMode"/> to use for horizontal texture
+    /// coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</param>
+    /// <param name="vmode">the <see cref="TextureAddressMode"/> to use for vertical texture
+    /// coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/></param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
+    /// <seealso cref="GetRenderTextureAddressMode"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetRenderTextureAddressMode(IntPtr renderer, TextureAddressMode umode, TextureAddressMode vmode);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode *u_mode, SDL_TextureAddressMode *v_mode);</code>
+    /// <summary>
+    /// Get the texture addressing mode used in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="umode">a pointer filled in with the <see cref="TextureAddressMode"/> to use
+    /// for horizontal texture coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>,
+    /// may be <c>null</c>.</param>
+    /// <param name="vmode">a pointer filled in with the <see cref="TextureAddressMode"/> to use
+    /// for vertical texture coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>, may
+    /// be <c>null</c>.</param>
+    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetRenderTextureAddressMode(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode);
     
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderReadPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -3866,7 +3912,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Set fragment shader uniform variables in a custom GPU render state.</para>
     /// <para>The data is copied and will be pushed using
-    /// <see cref="PushGPUFragmentUniformData"/> during draw call execution.</para>
+    /// <see cref="PushGPUFragmentUniformData(nint, uint, byte[], uint)"/> during draw call execution.</para>
     /// </summary>
     /// <param name="state">the state to modify.</param>
     /// <param name="slotIndex">the fragment uniform slot to push data to.</param>

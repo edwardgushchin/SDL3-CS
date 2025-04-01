@@ -1316,7 +1316,7 @@ public static partial class SDL
     /// <para>The callback can (optionally) call <see cref="PutAudioStreamData(nint, byte[], int)"/> to add more
     /// audio to the stream during this call; if needed, the request that triggered
     /// this callback will obtain the new data immediately.</para>
-    /// <para>The callback's <c>approx_request</c> argument is roughly how many bytes of
+    /// <para>The callback's <c>additional_amount</c> argument is roughly how many bytes of
     /// _unconverted_ data (in the stream's input format) is needed by the caller,
     /// although this may overestimate a little for safety. This takes into account
     /// how much is already in the stream and only asks for any extra necessary to
@@ -1354,13 +1354,13 @@ public static partial class SDL
     /// callback the chance to obtain it immediately.</para>
     /// <para>The callback can (optionally) call <see cref="GetAudioStreamData(nint, byte[], int)"/> to obtain audio
     /// from the stream during this call.</para>
-    /// <para>The callback's <c>approx_request</c> argument is how many bytes of _converted_
-    /// data (in the stream's output format) was provided by the caller, although
-    /// this may underestimate a little for safety. This value might be less than
-    /// what is currently available in the stream, if data was already there, and
-    /// might be less than the caller provided if the stream needs to keep a buffer
-    /// to aid in resampling. Which means the callback may be provided with zero
-    /// bytes, and a different amount on each call.</para>
+    /// <para>TThe callback's <c>additional_amount</c> argument is how many bytes of
+    /// _converted_ data (in the stream's output format) was provided by the
+    /// caller, although this may underestimate a little for safety. This value
+    /// might be less than what is currently available in the stream, if data was
+    /// already there, and might be less than the caller provided if the stream
+    /// needs to keep a buffer to aid in resampling. Which means the callback may
+    /// be provided with zero bytes, and a different amount on each call.</para>
     /// <para>The callback may call <see cref="GetAudioStreamAvailable"/> to see the total amount
     /// currently available to read from the stream, instead of the total provided
     /// by the current call.</para>

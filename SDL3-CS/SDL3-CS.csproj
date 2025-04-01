@@ -11,20 +11,32 @@
         <PackageReleaseNotes>
             This is a stable bugfix release, with the following changes:
 
-            - Fixed restoring the desktop mode on macOS and X11
-            - Fixed being unable to get message box fonts on some Linux systems
-            - Fixed a potential crash unplugging a HIDAPI controller
-            - Fixed the 2D clip rect when logical presentation is enabled
-            - Fixed SDL GPU output orientation on Android
+            - Added support for SDL_PIXELFORMAT_MJPG to SDL_DuplicateSurface()
+            - Added SIMD blitters for 8888 to 8888 swizzled format conversion
+            - Return an error trying to create surfaces with invalid pixel formats
+            - Handle windows being resized to 0 height on Windows
+            - Fixed controller GUIDs changing randomly on Windows
+            - Fixed mixed trigger and body rumble for Xbox controllers on Windows
+            - Added mappings for the Nintendo Switch Online N64/SEGA/SNES controllers on Linux
+            - Fixed Nintendo controller face button layout under Steam
+            - Fixed showing the on-screen keyboard on Steam Deck
+            - Fixed pen events on iOS after reinitializing SDL
+            - Fixed building with SDL_LEAN_AND_MEAN
+            - Fixed a memory leak in memory leak tracking
+            - Fixed a memory leak calling SDL_GetDisplayUsableBounds() on macOS
+            - Fixed mouse relative motion speed on non-desktop resolutions under Wayland
+            - Fixed keyboard grab on XWayland under GNOME
+            - Added SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT to control whether XSelectInput() should be called on external windows
+            - Implemented SDL_GetSystemRAM and SDL_GetNumLogicalCPUCores for the Nintendo 3DS
         </PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.8.3</Version>
+        <Version>3.2.10.0</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL 3.2.8</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.2.10</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>

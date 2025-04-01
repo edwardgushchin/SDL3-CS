@@ -43,6 +43,7 @@ public static partial class SDL
 		
 		public const string DisplayHDREnabledBoolean = "SDL.display.HDR_enabled";
 	    public const string DisplayKMSDRMPanelOrientationNumber = "SDL.display.KMSDRM.panel_orientation";
+		public const string DisplayWaylandWLOutputPointer = "SDL.display.wayland.wl_output";
 	    
 	    public const string WindowCreateAlwaysOnTopBoolean = "SDL.window.create.always_on_top";
 		public const string WindowCreateBorderlessBoolean = "SDL.window.create.borderless";
