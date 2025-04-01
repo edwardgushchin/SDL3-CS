@@ -28,5 +28,5 @@ public static partial class SDL
     public const int RendererVSyncDisabled = 0;
     public const int RendererVSyncAdaptive = -1;
 
-    public const int DebugTextFontCharacterSize = 0;
+    public const int DebugTextFontCharacterSize = 8;
 }
