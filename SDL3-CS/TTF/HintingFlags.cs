@@ -36,6 +36,8 @@ public static partial class TTF
     /// <seealso cref="GetFontHinting"/>
     public enum HintingFlags
     {
+        Invalid = -1,
+        
         /// <summary>
         /// Normal hinting applies standard grid-fitting.
         /// </summary>

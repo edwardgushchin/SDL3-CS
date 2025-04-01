@@ -530,6 +530,19 @@ public static partial class TTF
     public static partial bool GetFontSDF(IntPtr font);
     
     
+    /// <code>extern SDL_DECLSPEC int SDLCALL TTF_GetFontWeight(const TTF_Font *font);</code>
+    /// <summary>
+    /// Query a font's weight, in terms of the lightness/heaviness of the strokes.
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <returns>the font's current weight.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.4.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontWeight"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetFontWeight(in IntPtr font);
+    
+    
     /// <code>extern SDL_DECLSPEC void SDLCALL TTF_SetFontWrapAlignment(TTF_Font *font, TTF_HorizontalAlignment align);</code>
     /// <summary>
     /// <para>Set a font's current wrap alignment option.</para>

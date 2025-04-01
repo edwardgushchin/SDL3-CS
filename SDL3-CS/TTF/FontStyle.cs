@@ -31,7 +31,7 @@ public static partial class TTF
     /// SDL_ttf. A combination of these flags can be used with functions that set
     /// or query font style, such as <see cref="SetFontStyle"/> or <see cref="GetFontStyle"/>.</para>
     /// </summary>
-    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <since>This datatype is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="SetFontStyle"/>
     /// <seealso cref="GetFontStyle"/>
     [Flags]
