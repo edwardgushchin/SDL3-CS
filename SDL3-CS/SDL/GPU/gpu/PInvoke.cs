@@ -74,7 +74,7 @@ public partial class SDL
     /// <seealso cref="DestroyGPUDevice"/>
     /// <seealso cref="GPUSupportsShaderFormats"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateGPUDevice(GPUShaderFormat formatFlags, [MarshalAs(UnmanagedType.I1)] bool debugMode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static partial IntPtr CreateGPUDevice(GPUShaderFormat formatFlags, [MarshalAs(UnmanagedType.I1)] bool debugMode, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPUDevice *SDLCALL SDL_CreateGPUDeviceWithProperties(SDL_PropertiesID props);</code>
