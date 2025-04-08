@@ -49,18 +49,30 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
       <DocumentationFile>bin\Release\SDL3-CS.xml</DocumentationFile>
       <DebugType>embedded</DebugType>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DocumentationFile>bin\Debug\SDL3-CS.xml</DocumentationFile>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
     
     <ItemGroup>
-      <None Include="../README.md" Pack="true" PackagePath="\"/>
-      <None Include="../README-nuget.md" Pack="true" PackagePath="\"/>
-      <None Include="../LICENSE" Pack="true" PackagePath="\"/>
-      <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
-      <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
-      <None Include="bin\Release\SDL3-CS.xml" Visible="false" Pack="true" PackagePath="\" />
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
+        <None Include="../README-nuget.md" Pack="true" PackagePath="\"/>
+        <None Include="../LICENSE" Pack="true" PackagePath="\"/>
+        <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
+        <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <None Include="bin\Release\SDL3-CS.xml" Visible="false" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <None Include="bin\Debug\SDL3-CS.xml" Visible="false" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
