@@ -132,6 +132,6 @@ public static partial class SDL
         /// <summary>
         /// The encoded direction.
         /// </summary>
-        public unsafe fixed short Dir[3];
+        public unsafe fixed int Dir[3];
     }
 }
