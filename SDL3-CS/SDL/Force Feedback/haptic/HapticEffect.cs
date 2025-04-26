@@ -87,42 +87,42 @@ public static partial class SDL
     /// <seealso cref="HapticRamp"/>
     /// <seealso cref="HapticLeftRight"/>
     /// <seealso cref="HapticCustom"/>
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct HapticEffect
     {
         /// <summary>
         /// Effect type.
         /// </summary>
-        public UInt16 Type;
+        [FieldOffset(0)] public UInt16 Type;
 
         /// <summary>
         /// Constant effect.
         /// </summary>
-        public HapticConstant Constant;
+        [FieldOffset(0)] public HapticConstant Constant;
         
         /// <summary>
         /// Periodic effect.
         /// </summary>
-        public HapticPeriodic Periodic;
+        [FieldOffset(0)] public HapticPeriodic Periodic;
         
         /// <summary>
         /// Condition effect.
         /// </summary>
-        public HapticCondition Condition;
+        [FieldOffset(0)] public HapticCondition Condition;
         
         /// <summary>
         /// Ramp effect.
         /// </summary>
-        public HapticRamp Ramp;
+        [FieldOffset(0)] public HapticRamp Ramp;
         
         /// <summary>
         /// Left/Right effect.
         /// </summary>
-        public HapticLeftRight Leftright;
+        [FieldOffset(0)] public HapticLeftRight Leftright;
         
         /// <summary>
         /// Custom effect.
         /// </summary>
-        public HapticCustom Custom;
+        [FieldOffset(0)] public HapticCustom Custom;
     }
 }
