@@ -84,5 +84,5 @@ public static partial class SDL
     /// <returns>an <see cref="HitTestResult"/> value.</returns>
     /// <seealso cref="SetWindowHitTest"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate HitTestResult HitTest(IntPtr win, Point area, IntPtr data);
+    public delegate HitTestResult HitTest(IntPtr win, in Point area, IntPtr data);
 }
