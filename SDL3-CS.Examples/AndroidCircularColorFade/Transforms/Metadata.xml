@@ -1,0 +1,14 @@
+﻿<metadata>
+    <remove-node
+            path="/api/package[@name='org.libsdl.app']/class[@name='SDLActivity']/field[@name='mClipboardHandler']"/>
+    <remove-node
+            path="/api/package[@name='org.libsdl.app']/class[@name='SDLActivity']/field[@name='mMotionListener']"/>
+    <remove-node
+            path="/api/package[@name='org.libsdl.app']/class[@name='SDLActivity']/field[@name='mTextEdit']"/>
+    <remove-node
+            path="/api/package[@name='org.libsdl.app']/class[@name='SDLActivity']/method[@name='getMotionListener' and count(parameter)=0]"/>
+    <remove-node
+            path="/api/package[@name='org.libsdl.app']/class[@name='SDLControllerManager']/field[@name='mHapticHandler']"/>
+    <remove-node
+            path="/api/package[@name='org.libsdl.app']/class[@name='SDLControllerManager']/field[@name='mJoystickHandler']"/>
+</metadata>
