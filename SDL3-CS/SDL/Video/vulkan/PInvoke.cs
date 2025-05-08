@@ -124,7 +124,7 @@ public static partial class SDL
     public static string[]? VulkanGetInstanceExtensions(out uint count)
     {
         var ptr = SDL_Vulkan_GetInstanceExtensions(out count);
-        return ptr == IntPtr.Zero ? null : PointerToStringArray(ptr);
+        return ptr == IntPtr.Zero ? null : PointerToStringArray(ptr, (int)count);
     }
     
     
