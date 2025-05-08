@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0-android</TargetFramework>
+        <TargetFramework>net9.0-android35.0</TargetFramework>
         <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
         <OutputType>Exe</OutputType>
         <Nullable>enable</Nullable>
@@ -13,6 +13,9 @@
           To learn more, see: https://learn.microsoft.com/dotnet/core/deploying/trimming/trimming-options#trimming-granularity
         -->
         <TrimMode>full</TrimMode>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AndroidSdkDirectory>C:\android-sdk</AndroidSdkDirectory>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="SDL3-CS" Version="3.2.10" />
