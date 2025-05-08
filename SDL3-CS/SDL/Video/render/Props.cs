@@ -32,6 +32,9 @@ public static partial class SDL
 		public const string RendererCreateSurfacePointer = "SDL.renderer.create.surface";
 		public const string RendererCreateOutputColorspaceNumber = "SDL.renderer.create.output_colorspace";
 		public const string RendererCreatePresentVSyncNumber = "SDL.renderer.create.present_vsync";
+		public const string RendererCreateGPUShadersSPIRVBoolean = "SDL.renderer.create.gpu.shaders_spirv";
+		public const string RendererCreateGPUShadersDXILBoolean = "SDL.renderer.create.gpu.shaders_dxil";
+		public const string RendererCreateGPUShadersMSLBoolean = "SDL.renderer.create.gpu.shaders_msl";
 		public const string RendererCreateVulkanInstancePointer = "SDL.renderer.create.vulkan.instance";
 		public const string RendererCreateVulkanSurfaceNumber = "SDL.renderer.create.vulkan.surface";
 		public const string RendererCreateVulkanPhysicalDevicePointer = "SDL.renderer.create.vulkan.physical_device";

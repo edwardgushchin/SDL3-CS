@@ -111,7 +111,7 @@ public static partial class TTF
     /// size becomes the index of choosing which size. If the value is too high,
     /// the last indexed size will be the default.</para>
     /// <para>If <c>closeio</c> is true, <c>src</c> will be automatically closed once the font is
-    /// closed. Otherwise you should close <c>src</c> yourself after closing the font.</para>
+    /// closed. Otherwise you should keep <c>src</c> open until the font is closed.</para>
     /// <para>When done with the returned TTF_Font, use <see cref="CloseFont"/> to dispose of it.</para>
     /// </summary>
     /// <param name="src">an SDL_IOStream to provide a font file's data.</param>
@@ -538,7 +538,7 @@ public static partial class TTF
     /// <returns>the font's current weight.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
-    /// <since>This function is available since SDL_ttf 3.4.0.</since>
+    /// <since>This function is available since SDL_ttf 3.2.2.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontWeight"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetFontWeight(in IntPtr font);
     

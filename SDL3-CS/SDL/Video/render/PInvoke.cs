@@ -147,6 +147,15 @@ public static partial class SDL
     /// present synchronized with the refresh rate. This property can take any
     /// value that is supported by <see cref="SetRenderVSync"/> for the renderer.</item>
     /// </list>
+    /// <para>With the SDL GPU renderer:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.RendererCreateGPUShadersSPIRVBoolean"/>: the app is able to
+    /// provide SPIR-V shaders to SDL_GPURenderState, optional.</item>
+    /// <item><see cref="Props.RendererCreateGPUShadersDXILBoolean"/>: the app is able to
+    /// provide DXIL shaders to SDL_GPURenderState, optional.</item>
+    /// <item><see cref="Props.RendererCreateGPUShadersMSLBoolean"/>: the app is able to
+    /// provide MSL shaders to SDL_GPURenderState, optional.</item>
+    /// </list>
     /// <para>With the vulkan renderer:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.RendererCreateVulkanInstancePointer"/>: the VkInstance to use
@@ -175,6 +184,34 @@ public static partial class SDL
     /// <seealso cref="GetRendererName"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRendererWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateRendererWithProperties(uint props);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateGPURenderer(SDL_Window *window, SDL_GPUShaderFormat format_flags, SDL_GPUDevice **device);</code>
+    /// <summary>
+    /// <para>Create a 2D GPU rendering context for a window, with support for the
+    /// specified shader format.</para>
+    /// <para>This is a convenience function to create a SDL GPU backed renderer,
+    /// intended to be used with SDL_GPURenderState. The resulting renderer will
+    /// support shaders in one of the specified shader formats.</para>
+    /// <para>If no available GPU driver supports any of the specified shader formats,
+    /// this function will fail.</para>
+    /// </summary>
+    /// <param name="window">the window where rendering is displayed.</param>
+    /// <param name="formatFlags">a bitflag indicating which shader formats the app is
+    /// able to provide.</param>
+    /// <param name="device">a pointer filled with the associated GPU device, or NULL on
+    /// error.</param>
+    /// <returns>a valid rendering context or NULL if there was an error; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="CreateRendererWithProperties"/>
+    /// <seealso cref="GetGPUShaderFormats"/>
+    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetRenderGPUState"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateGPURenderer(IntPtr window, GPUShaderFormat formatFlags, out IntPtr device);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateSoftwareRenderer(SDL_Surface *surface);</code>
@@ -1637,8 +1674,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Return whether an explicit rectangle was set as the viewport.</para>
     /// <para>This is useful if you're saving and restoring the viewport and want to know
-    /// whether you should restore a specific rectangle or <c>null</c>. Note that the
-    /// viewport is always reset when changing rendering targets.</para>
+    /// whether you should restore a specific rectangle or NULL.</para>
     /// <para>Each render target has its own viewport. This function checks the viewport
     /// for the current render target.</para>
     /// </summary>

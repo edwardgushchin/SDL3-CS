@@ -60,6 +60,13 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_GPUDevice *SDLCALL SDL_CreateGPUDevice(SDL_GPUShaderFormat format_flags, bool debug_mode, const char *name);</code>
     /// <summary>
     /// Creates a GPU context.
+    /// <para>The GPU driver name can be one of the following:</para>
+    /// <list type="bullet">
+    /// <item><c>vulkan</c>: [Vulkan](CategoryGPU#vulkan)</item>
+    /// <item><c>direct3d12</c>: [D3D12](CategoryGPU#d3d12)</item>
+    /// <item><c>metal</c>: [Metal](CategoryGPU#metal)</item>
+    /// <item><c>NULL</c>: let SDL pick the optimal driver</item>
+    /// </list>
     /// </summary>
     /// <param name="formatFlags">a bitflag indicating which shader formats the app is
     /// able to provide.</param>
@@ -69,6 +76,7 @@ public partial class SDL
     /// <returns>a GPU context on success or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateGPUDeviceWithProperties"/>
     /// <seealso cref="GetGPUShaderFormats"/>
     /// <seealso cref="GetGPUDeviceDriver"/>
     /// <seealso cref="DestroyGPUDevice"/>
@@ -86,6 +94,8 @@ public partial class SDL
     /// properties and validations, defaults to true.</item>
     /// <item><see cref="Props.GPUDeviceCreatePreferLowPowerBoolean"/>: enable to prefer
     /// energy efficiency over maximum GPU performance, defaults to false.</item>
+    /// <item><see cref="Props.GPUDeviceCreateVerboseBoolean"/>: enable to automatically log
+    /// useful debug information on device creation, defaults to true.</item>
     /// <item><see cref="Props.GPUDeviceCreateNameString"/>: the name of the GPU driver to
     /// use, if a specific one is desired.</item>
     /// </list>
@@ -192,6 +202,101 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUShaderFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial GPUShaderFormat GetGPUShaderFormats(IntPtr device);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetGPUDeviceProperties(SDL_GPUDevice *device);</code>
+    /// <summary>
+    /// <para>Get the properties associated with a GPU device.</para>
+    /// <para>All properties are optional and may differ between GPU backends and SDL
+    /// versions.</para>
+    /// <para>The following properties are provided by SDL:</para>
+    /// <para><see cref="Props.GPUDeviceNameString"/>: Contains the name of the underlying
+    /// device as reported by the system driver. This string has no standardized
+    /// format, is highly inconsistent between hardware devices and drivers, and is
+    /// able to change at any time. Do not attempt to parse this string as it is
+    /// bound to fail at some point in the future when system drivers are updated,
+    /// new hardware devices are introduced, or when SDL adds new GPU backends or
+    /// modifies existing ones.</para>
+    /// <para>Strings that have been found in the wild include:</para>
+    /// <list type="bullet">
+    /// <item>GTX 970</item>
+    /// <item>GeForce GTX 970</item>
+    /// <item>NVIDIA GeForce GTX 970</item>
+    /// <item>Microsoft Direct3D12 (NVIDIA GeForce GTX 970)</item>
+    /// <item>NVIDIA Graphics Device</item>
+    /// <item>GeForce GPU</item>
+    /// <item>P106-100</item>
+    /// <item>AMD 15D8:C9</item>
+    /// <item>AMD Custom GPU 0405</item>
+    /// <item>AMD Radeon (TM) Graphics</item>
+    /// <item>ASUS Radeon RX 470 Series</item>
+    /// <item>Intel(R) Arc(tm) A380 Graphics (DG2)</item>
+    /// <item>Virtio-GPU Venus (NVIDIA TITAN V)</item>
+    /// <item>SwiftShader Device (LLVM 16.0.0)</item>
+    /// <item>llvmpipe (LLVM 15.0.4, 256 bits)</item>
+    /// <item>Microsoft Basic Render Driver</item>
+    /// <item>unknown device</item>
+    /// </list>
+    /// <para>The above list shows that the same device can have different formats, the
+    /// vendor name may or may not appear in the string, the included vendor name
+    /// may not be the vendor of the chipset on the device, some manufacturers
+    /// include pseudo-legal marks while others don't, some devices may not use a
+    /// marketing name in the string, the device string may be wrapped by the name
+    /// of a translation interface, the device may be emulated in software, or the
+    /// string may contain generic text that does not identify the device at all.</para>
+    /// <para><see cref="Props.GPUDeviceDriverNameString"/>: Contains the self-reported name
+    /// of the underlying system driver.</para>
+    /// <para>Strings that have been found in the wild include:</para>
+    /// <list type="bullet">
+    /// <item>Intel Corporation</item>
+    /// <item>Intel open-source Mesa driver</item>
+    /// <item>Qualcomm Technologies Inc. Adreno Vulkan Driver</item>
+    /// <item>MoltenVK</item>
+    /// <item>Mali-G715</item>
+    /// <item>venus</item>
+    /// </list>
+    /// <para><see cref="Props.GPUDeviceDriverVersionString"/>: Contains the self-reported
+    /// version of the underlying system driver. This is a relatively short version
+    /// string in an unspecified format. If <see cref="Props.GPUDeviceDriverInfoString"/>
+    /// is available then that property should be preferred over this one as it may
+    /// contain additional information that is useful for identifying the exact
+    /// driver version used.</para>
+    /// <para>Strings that have been found in the wild include:</para>
+    /// <list type="bullet">
+    /// <item>53.0.0</item>
+    /// <item>0.405.2463</item>
+    /// <item>32.0.15.6614</item>
+    /// </list>
+    /// <para><see cref="Props.GPUDeviceDriverInfoString"/>: Contains the detailed version
+    /// information of the underlying system driver as reported by the driver. This
+    /// is an arbitrary string with no standardized format and it may contain
+    /// newlines. This property should be preferred over
+    /// <see cref="Props.GPUDeviceDriverVersionString"/> if it is available as it usually
+    /// contains the same information but in a format that is easier to read.</para>
+    /// <para>Strings that have been found in the wild include:</para>
+    /// <list type="bullet">
+    /// <item>101.6559</item>
+    /// <item>1.2.11</item>
+    /// <item>Mesa 21.2.2 (LLVM 12.0.1)</item>
+    /// <item>Mesa 22.2.0-devel (git-f226222 2022-04-14 impish-oibaf-ppa)</item>
+    /// <item>v1.r53p0-00eac0.824c4f31403fb1fbf8ee1042422c2129</item>
+    /// </list>
+    /// <para>This string has also been observed to be a multiline string (which has a
+    /// trailing newline):</para>
+    /// <code>
+    /// Driver Build: 85da404, I46ff5fc46f, 1606794520
+    /// Date: 11/30/20
+    /// Compiler Version: EV031.31.04.01
+    /// Driver Branch: promo490_3_Google
+    /// </code>
+    /// </summary>
+    /// <param name="device">a GPU context to query.</param>
+    /// <returns>a valid property ID on success or 0 on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUDeviceProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint GetGPUDeviceProperties(IntPtr device);
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline *SDLCALL SDL_CreateGPUComputePipeline(SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);</code>
@@ -372,6 +477,9 @@ public partial class SDL
     /// <item><see cref="Props.GPUTextureCreateD3D12ClearStencilUint8"/>: (Direct3D 12 only)
     /// if the texture usage is <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>, clear
     /// the texture to a stencil of this value. Defaults to zero.</item>
+    /// <item><see cref="Props.GPUTextureCreateD3D12ClearStencilNumber"/>: (Direct3D 12
+    /// only) if the texture usage SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET/>,
+    /// clear the texture to a stencil of this Uint8 value. Defaults to zero.</item>
     /// <item><see cref="Props.GPUShaderCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
     /// </summary>
@@ -644,6 +752,8 @@ public partial class SDL
     /// <para>The data being pushed must respect std140 layout conventions. In practical
     /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
     /// aligned.</para>
+    /// <para>For detailed information about accessing uniform data from a shader, please
+    /// refer to <see cref="CreateGPUShader"/>.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="slotIndex">the vertex uniform slot to push data to.</param>
@@ -1556,7 +1666,7 @@ public partial class SDL
     /// composition are unsupported by the device. Check if the parameters are
     /// supported via <see cref="WindowSupportsGPUPresentMode"/> /
     /// <see cref="WindowSupportsGPUSwapchainComposition"/> prior to calling this function.</para>
-    /// <para><see cref="GPUPresentMode.VSync"/> and <see cref="GPUSwapchainComposition.SDR"/> are always
+    /// <para><see cref="GPUPresentMode.VSync"/> with <see cref="GPUSwapchainComposition.SDR"/> is always
     /// supported.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
@@ -1618,8 +1728,10 @@ public partial class SDL
     /// automatically be submitted for presentation when the command buffer is
     /// submitted. The swapchain texture should only be referenced by the command
     /// buffer used to acquire it.</para>
-    /// <para>This function will fill the swapchain texture handle with <c>null</c> if too many
-    /// frames are in flight. This is not an error.</para>
+    /// <para>This function will fill the swapchain texture handle with NULL if too many
+    /// frames are in flight. This is not an error. This NULL pointer should not be
+    /// passed back into SDL. Instead, it should be considered as an indication to
+    /// wait until the swapchain is available.</para>
     /// <para>If you use this function, it is possible to create a situation where many
     /// command buffers are allocated while the rendering context waits for the GPU
     /// to catch up, which will cause memory usage to grow. You should use

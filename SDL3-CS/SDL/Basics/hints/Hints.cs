@@ -862,8 +862,8 @@ public static partial class SDL
         /// <para>A variable that specifies a GPU backend to use.</para>
         /// <para>By default, SDL will try all available GPU backends in a reasonable order
         /// until it finds one that can work, but this hint allows the app or user to
-        /// force a specific target, such as <c>"direct3d11"</c> if, say, your hardware
-        /// supports D3D12 but want to try using D3D11 instead.</para>
+        /// force a specific target, such as <c>direct3d12</c> if, say, your hardware
+        /// supports Vulkan but you want to try using D3D12 instead.</para>
         /// </summary>
         /// <remarks>This hint should be set before any GPU functions are called.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
@@ -1582,6 +1582,37 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPIXboxOneHomeLED = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED";
+
+
+        /// <summary>
+        /// <para> A variable controlling whether the new HIDAPI driver for wired Xbox One
+        /// (GIP) controllers should be used.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c>: HIDAPI driver is used.</item>
+        /// <para>The default is the value of <see cref="JoystickHIDAPIXboxOne"/>.</para>
+        /// <para>This hint should be set before initializing joysticks and gamepads.</para>
+        /// </list>
+        /// </summary>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string JoystickHIDAPIGIP = "SDL_JOYSTICK_HIDAPI_GIP";
+        
+        
+        /// <summary>
+        /// <para>A variable controlling whether the new HIDAPI driver for wired Xbox One
+        /// (GIP) controllers should reset the controller if it can't get the metadata
+        /// from the controller.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Assume this is a generic controller.</item>
+        /// <item><c>"1"</c>: Reset the controller to get metadata.</item>
+        /// </list>
+        /// <para>By default the controller is not reset.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string JoystickHIDAPIGIPResetForMetadata = "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA";
         
         /// <summary>
         /// <para>A variable controlling whether IOKit should be used for controller

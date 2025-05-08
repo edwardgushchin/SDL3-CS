@@ -626,6 +626,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_CreateWindow(const char *title, int w, int h, SDL_WindowFlags flags);</code>
     /// <summary>
     /// <para>Create a window with the specified dimensions and flags.</para>
+    /// <para>The window size is a request and may be different than expected based on
+    /// the desktop layout and window manager policies. Your application should be
+    /// prepared to handle a window of any size.</para>
     /// <para><c>flags</c> may be any of the following OR'd together:</para>
     /// <list type="bullet">
     /// <item><see cref="WindowFlags.Fullscreen"/>: fullscreen window at desktop resolution</item>
@@ -703,6 +706,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_CreatePopupWindow(SDL_Window *parent, int offset_x, int offset_y, int w, int h, SDL_WindowFlags flags);</code>
     /// <summary>
     /// <para>Create a child popup window of the specified parent window.</para>
+    /// <para>The window size is a request and may be different than expected based on
+    /// the desktop layout and window manager policies. Your application should be
+    /// prepared to handle a window of any size.</para>
     /// <para>The flags parameter **must** contain at least one of the following:</para>
     /// <list type="bullet">
     /// <item><see cref="WindowFlags.Tooltip"/>: The popup window is a tooltip and will not pass any
@@ -732,6 +738,14 @@ public static partial class SDL
     /// the mouse and/or keyboard. Attempts to do so will fail.</para>
     /// <para>Popup windows implicitly do not have a border/decorations and do not appear
     /// on the taskbar/dock or in lists of windows such as alt-tab menus.</para>
+    /// <para>By default, popup window positions will automatically be constrained to
+    /// keep the entire window within display bounds. This can be overridden with
+    /// the <see cref="Props.WindowCreateConstrainPopupBoolean"/> property.</para>
+    /// <para>By default, popup menus will automatically grab keyboard focus from the
+    /// parent when shown. This behavior can be overridden by setting the
+    /// <see cref="WindowFlags.NotFocusable"/> flag, setting the
+    /// <see cref="Props.WindowCreateFocusableBoolean"/> property to false, or toggling
+    /// it after creation via the <see cref="SetWindowFocusable"/> function.</para>
     /// <para>If a parent window is hidden or destroyed, any child popup windows will be
     /// recursively hidden or destroyed as well. Child popup windows not explicitly
     /// hidden will be restored when the parent is shown.</para>
@@ -825,7 +839,7 @@ public static partial class SDL
     /// <item><see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - true if
     /// the application wants to use the Wayland surface for a custom role and
     /// does not want it attached to an XDG toplevel window. See
-    /// [README/wayland](README/wayland) for more information on using custom
+    /// [README-wayland](README-wayland) for more information on using custom
     /// surfaces.</item>
     /// <item><see cref="Props.WindowCreateWaylandCreateEGLWindowBoolean"/> - true if the
     /// application wants an associated <c>wl_egl_window</c> object to be created and
@@ -833,7 +847,7 @@ public static partial class SDL
     /// property or <see cref="WindowFlags.OpenGL"/> flag set.</item>
     /// <item><see cref="Props.WindowCreateWaylandWLSurfacePointer"/> - the wl_surface
     /// associated with the window, if you want to wrap an existing window. See
-    /// [README/wayland](README/wayland) for more information.</item>
+    /// [README-wayland](README-wayland) for more information.</item>
     /// </list>
     /// <para>These are additional supported properties on Windows:</para>
     /// <list type="bullet">
@@ -850,9 +864,9 @@ public static partial class SDL
     /// <para>The window is implicitly shown if the <c>"hidden"</c> property is not set.</para>
     /// <para>These are additional supported properties with Emscripten:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateEmscriptennCanvasId"/>: the id given to the canvas
+    /// <item><see cref="Props.WindowCreateEmscriptennCanvasIdString"/>: the id given to the canvas
     /// element. This should start with a <c>#</c> sign</item>
-    /// <item><see cref="Props.WindowCreateEmscriptenKeyboardElement"/>: override the
+    /// <item><see cref="Props.WindowCreateEmscriptenKeyboardElementString"/>: override the
     /// binding element for keyboard inputs for this canvas. The variable can be
     /// one of:</item>
     /// <item><c>"#window"</c>: the javascript window object (default)</item>
@@ -994,7 +1008,7 @@ public static partial class SDL
     /// </list>
     /// <para>On OpenVR:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowOpenVROverlayID"/>: the OpenVR Overlay Handle ID for the
+    /// <item><see cref="Props.WindowOpenVROverlayIdNumber"/>: the OpenVR Overlay Handle ID for the
     /// associated overlay window.</item>
     /// </list>
     /// <para>On Vivante:</para>
@@ -1045,6 +1059,13 @@ public static partial class SDL
     /// the window</item>
     /// <item><see cref="Props.WindowX11WindowNumber"/>: the X11 Window associated with the
     /// window</item>
+    /// </list>
+    /// <para>On Emscripten:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.WindowEmscriptenCanvasIdString"/>: the id the canvas element
+    /// will have</item>
+    /// <item><see cref="Props.WindowEmscriptenKeyboardElementString"/>: the keyboard
+    /// element that associates keyboard events to this window</item>
     /// </list>
     /// </summary>
     /// <param name="window">the window to query.</param>
@@ -1892,7 +1913,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
-    /// <seealso cref="SetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

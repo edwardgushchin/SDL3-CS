@@ -33,10 +33,12 @@ public static partial class SDL
         public const string GPUTextureCreateD3D12ClearAFloat = "SDL.gpu.texture.create.d3d12.clear.a";
         public const string GPUTextureCreateD3D12ClearDepthFloat = "SDL.gpu.texture.create.d3d12.clear.depth";
         public const string GPUTextureCreateD3D12ClearStencilUint8 = "SDL.gpu.texture.create.d3d12.clear.stencil";
+        public const string GPUTextureCreateD3D12ClearStencilNumber = "SDL.gpu.texture.create.d3d12.clear.stencil";
         public const string GPUTextureCreateNameString = "SDL.gpu.texture.create.name";
 
         public const string GPUDeviceCreateDebugModeBoolean = "SDL.gpu.device.create.debugmode";
         public const string GPUDeviceCreatePreferLowPowerBoolean = "SDL.gpu.device.create.preferlowpower";
+        public const string GPUDeviceCreateVerboseBoolean = "SDL.gpu.device.create.verbose";
         public const string GPUDeviceCreateNameString = "SDL.gpu.device.create.name";
         public const string GPUDeviceCreateShadersPrivateBoolean = "SDL.gpu.device.create.shaders.private";
         public const string GPUDeviceCreateShadersSPIRVBoolean = "SDL.gpu.device.create.shaders.spirv";
@@ -50,5 +52,10 @@ public static partial class SDL
         public const string GPUShaderCreateNameString = "SDL.gpu.shader.create.name";
         public const string GPUBufferCreateNameString = "SDL.gpu.buffer.create.name";
         public const string GPUTransferBufferCreateNameString = "SDL.gpu.transferbuffer.create.name";
+
+        public const string GPUDeviceNameString = "SDL.gpu.device.name";
+        public const string GPUDeviceDriverNameString = "SDL.gpu.device.driver_name";
+        public const string GPUDeviceDriverVersionString = "SDL.gpu.device.driver_version";
+        public const string GPUDeviceDriverInfoString = "SDL.gpu.device.driver_info";
     }
 }

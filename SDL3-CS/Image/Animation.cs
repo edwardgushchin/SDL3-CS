@@ -34,14 +34,29 @@ public partial class Image
     [StructLayout(LayoutKind.Sequential)]
     public struct Animation
     {
+        /// <summary>
+        /// The width of the frames
+        /// </summary>
         public int W;
         
+        /// <summary>
+        /// The height of the frames
+        /// </summary>
         public int H;
 
+        /// <summary>
+        /// The number of frames
+        /// </summary>
         public int Count;
 
+        /// <summary>
+        /// An array of frames
+        /// </summary>
         public IntPtr Frames;
         
+        /// <summary>
+        /// An array of frame delays, in milliseconds
+        /// </summary>
         public IntPtr Delays;
     }
 }

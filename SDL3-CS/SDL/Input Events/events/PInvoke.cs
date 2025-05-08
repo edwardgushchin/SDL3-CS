@@ -504,4 +504,72 @@ public static partial class SDL
     /// <seealso cref="WaitEventTimeout"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static extern IntPtr GetWindowFromEvent(in Event @event);
+    
+    
+    [DllImport(SDLLibrary, EntryPoint = "SDL_GetEventDescription"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static extern int SDL_GetEventDescription(in IntPtr @event, IntPtr buf, int buflen);
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);</code>
+    /// <summary>
+    /// <para>Generate a human-readable description of an event.</para>
+    /// <para>This will fill <c>buf</c> with a null-terminated string that might look 
+    /// something like this:</para>
+    /// <code>EventMouseMotion(timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)</code>
+    /// <para>The exact format of the string is not guaranteed; it is intended for
+    /// logging purposes, to be read by a human, and not parsed by a computer.</para>
+    /// <para>The returned value follows the same rules as SDL_snprintf(): <c>buf</c> will
+    /// always be NULL-terminated (unless <c>buflen</c> is zero), and will be truncated
+    /// if <c>buflen</c> is too small. The return code is the number of bytes needed for
+    /// the complete string, not counting the NULL-terminator, whether the string
+    /// was truncated or not. Unlike SDL_snprintf(), though, this function never
+    /// returns -1.</para>
+    /// </summary>
+    /// <param name="event">an event to describe. May be NULL.</param>
+    /// <param name="buf">the buffer to fill with the description string. May be NULL.</param>
+    /// <param name="buflen">the maximum bytes that can be written to <c>buf</c>.</param>
+    /// <returns>number of bytes needed for the full string, not counting the
+    /// null-terminator byte.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    public static int GetEventDescription(in Event @event, byte[]? buf, int buflen)
+    {
+        var eventPtr = StructureToPointer<Event>(@event);
+        try
+        {
+            var bufPtr = buf is null ? IntPtr.Zero : Marshal.UnsafeAddrOfPinnedArrayElement(buf, 0);
+            return SDL_GetEventDescription(in eventPtr, bufPtr, buflen);
+        }
+        finally
+        {
+            if (eventPtr != IntPtr.Zero)
+                Marshal.FreeHGlobal(eventPtr);
+        }
+    }
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);</code>
+    /// <summary>
+    /// <para>Generate a human-readable description of an event.</para>
+    /// <para>This will fill <c>buf</c> with a null-terminated string that might look 
+    /// something like this:</para>
+    /// <code>EventMouseMotion(timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)</code>
+    /// <para>The exact format of the string is not guaranteed; it is intended for
+    /// logging purposes, to be read by a human, and not parsed by a computer.</para>
+    /// <para>The returned value follows the same rules as SDL_snprintf(): <c>buf</c> will
+    /// always be NULL-terminated (unless <c>buflen</c> is zero), and will be truncated
+    /// if <c>buflen</c> is too small. The return code is the number of bytes needed for
+    /// the complete string, not counting the NULL-terminator, whether the string
+    /// was truncated or not. Unlike SDL_snprintf(), though, this function never
+    /// returns -1.</para>
+    /// </summary>
+    /// <param name="event">an event to describe. May be NULL.</param>
+    /// <param name="buf">the buffer to fill with the description string. May be NULL.</param>
+    /// <param name="buflen">the maximum bytes that can be written to <c>buf</c>.</param>
+    /// <returns>number of bytes needed for the full string, not counting the
+    /// null-terminator byte.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    public static int GetEventDescription(in IntPtr @event, byte[]? buf, int buflen)
+    {
+        var bufPtr = buf is null ? IntPtr.Zero : Marshal.UnsafeAddrOfPinnedArrayElement(buf, 0);
+        return SDL_GetEventDescription(in @event, bufPtr, buflen);
+    }
+
 }

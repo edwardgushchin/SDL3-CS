@@ -1054,6 +1054,56 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool PutAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamPlanarData(SDL_AudioStream *stream, const void * const *channel_buffers, int num_channels, int num_samples);</code>
+    /// <summary>
+    /// <para>Add data to the stream with each channel in a separate array.</para>
+    /// <para>This data must match the format/channels/samplerate specified in the latest
+    /// call to SDL_SetAudioStreamFormat, or the format specified when creating the
+    /// stream if it hasn't been changed.</para>
+    /// <para>The data will be interleaved and queued. Note that AudioStream only
+    /// operates on interleaved data, so this is simply a convenience function for
+    /// easily queueing data from sources that provide separate arrays. There is no
+    /// equivalent function to retrieve planar data.</para>
+    /// <para>The arrays in <c>channelBuffers</c> are ordered as they are to be interleaved;
+    /// the first array will be the first sample in the interleaved data. Any
+    /// individual array may be <c>null</c>; in this case, silence will be interleaved for
+    /// that channel.</para>
+    /// <para><c>numChannels</c> specifies how many arrays are in <c>channelBuffers</c>. This can
+    /// be used as a safety to prevent overflow, in case the stream format has
+    /// changed elsewhere. If more channels are specified than the current input
+    /// spec, they are ignored. If less channels are specified, the missing arrays
+    /// are treated as if they are <c>null</c> (silence is written to those channels). If
+    /// the count is -1, SDL will assume the array count matches the current input
+    /// spec.</para>
+    /// <para>Note that <c>numSamples</c> is the number of _samples per array_. This can also
+    /// be thought of as the number of _sample frames_ to be queued. A value of 1
+    /// with stereo arrays will queue two samples to the stream. This is different
+    /// than <code>PutAudioStreamData</code>, which wants the size of a single array in
+    /// bytes.</para>
+    /// </summary>
+    /// <param name="stream">the stream the audio data is being added to.</param>
+    /// <param name="channelBuffers">a pointer to an array of arrays, one array per
+    /// channel.</param>
+    /// <param name="numChannels">the number of arrays in <c>channelBuffers</c> or -1.</param>
+    /// <param name="numSamples">the number of _samples_ per array to write to the
+    /// stream.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, but if the
+    /// stream has a callback set, the caller might need to manage
+    /// extra locking.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="ClearAudioStream"/>
+    /// <seealso cref="FlushAudioStream"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
+    /// <seealso cref="GetAudioStreamQueued"/>
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamPlanarData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static extern bool PutAudioStreamPlanarData(IntPtr stream, 
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPArray)] IntPtr[] channelBuffers, 
+        int numChannels, int numSamples);
 
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);</code>
@@ -1234,8 +1284,8 @@ public static partial class SDL
     /// <para>This function unpauses audio processing for a given device that has
     /// previously been paused. Once unpaused, any bound audio streams will begin
     /// to progress again, and audio can be generated.</para>
-    /// <para>Remember, <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback, IntPtr)"/> opens device in a paused state, so this
-    /// function call is required for audio playback to begin on such device.</para>
+    /// <para><see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback, IntPtr)"/> opens audio devices in a paused state, so this
+    /// function call is required for audio playback to begin on such devices.</para>
     /// </summary>
     /// <param name="stream">the audio stream associated with the audio device to resume.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
@@ -1505,6 +1555,46 @@ public static partial class SDL
     /// <seealso cref="ResumeAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr OpenAudioDeviceStream(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioIterationCallbacks(SDL_AudioDeviceID devid, SDL_AudioIterationCallback start, SDL_AudioIterationCallback end, void *userdata);</code>
+    /// <summary>
+    /// <para>Set callbacks that fire around a new iteration of audio device processing.</para>
+    /// <para>Two callbacks are provided here: one that runs when a device is about to
+    /// process its bound audio streams, and another that runs when the device has
+    /// finished processing them.</para>
+    /// <para>These callbacks can run at any time, and from any thread; if you need to
+    /// serialize access to your app's data, you should provide and use a mutex or
+    /// other synchronization device.</para>
+    /// <para>Generally these callbacks are used to apply state that applies to multiple
+    /// bound audio streams, with a guarantee that the audio device's thread isn't
+    /// halfway through processing them. Generally a finer-grained lock through
+    /// <see cref="LockAudioStream"/> is more appropriate.</para>
+    /// <para>The callbacks are extremely time-sensitive; the callback should do the
+    /// least amount of work possible and return as quickly as it can. The longer
+    /// the callback runs, the higher the risk of audio dropouts or other problems.</para>
+    /// <para>This function will block until the audio device is in between iterations,
+    /// so any existing callback that might be running will finish before this
+    /// function sets the new callback and returns.</para>
+    /// <para>Physical devices do not accept these callbacks, only logical devices
+    /// created through <see cref="OpenAudioDevice(uint, in AudioSpec)"/> can be.</para>
+    /// <para>Setting a NULL callback function disables any previously-set callback.
+    /// Either callback may be NULL, and the same callback is permitted to be used
+    /// for both.</para>
+    /// </summary>
+    /// <param name="devid">the ID of an opened audio device.</param>
+    /// <param name="start">a callback function to be called at the start of an iteration.
+    /// Can be NULL.</param>
+    /// <param name="end">a callback function to be called at the end of an iteration. Can
+    /// be NULL.</param>
+    /// <param name="userdata">app-controlled pointer passed to callback. Can be NULL.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioIterationCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetAudioIterationCallbacks(uint devid, AudioIterationCallback start, AudioIterationCallback end, IntPtr userdata);    
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);</code>

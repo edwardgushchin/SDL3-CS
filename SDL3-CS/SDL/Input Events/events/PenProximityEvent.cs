@@ -28,7 +28,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// <para>Pressure-sensitive pen proximity event structure (event.pmotion.*)</para>
+    /// <para>Pressure-sensitive pen proximity event structure (event.pproximity.*)</para>
     /// <para>When a pen becomes visible to the system (it is close enough to a tablet,
     /// etc), SDL will send an <see cref="EventType.PenProximityIn"/> event with the new pen's
     /// ID. This ID is valid until the pen leaves proximity again (has been removed
