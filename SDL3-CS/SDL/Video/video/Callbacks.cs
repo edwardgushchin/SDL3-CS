@@ -33,7 +33,7 @@ public static partial class SDL
     /// <para>This is called when SDL is attempting to create an EGL context, to let the
     /// app add extra attributes to its eglGetPlatformDisplay() call.</para>
     /// <para>The callback should return a pointer to an EGL attribute array terminated
-    /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the SDL_CreateWindow
+    /// with <c>EGL_NONE</c>. If this function returns <c>null</c>, the <see cref="CreateWindow"/>
     /// process will fail gracefully.</para>
     /// <para>The returned pointer should be allocated with SDL_malloc() and will be
     /// passed to <see cref="Free"/>.</para>

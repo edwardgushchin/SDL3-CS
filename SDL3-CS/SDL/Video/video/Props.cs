@@ -47,6 +47,7 @@ public static partial class SDL
 	    
 	    public const string WindowCreateAlwaysOnTopBoolean = "SDL.window.create.always_on_top";
 		public const string WindowCreateBorderlessBoolean = "SDL.window.create.borderless";
+		public const string WindowCreateConstrainPopupBoolean = "SDL.window.create.constrain_popup";
 		public const string WindowCreateFocusableBoolean = "SDL.window.create.focusable";
 		public const string WindowCreateExternalGraphicsContextBoolean = "SDL.window.create.external_graphics_context";
 		public const string WindowCreateFlagsNumber = "SDL.window.create.flags";
@@ -79,8 +80,8 @@ public static partial class SDL
 		public const string WindowCreateWin32HWNDPointer = "SDL.window.create.win32.hwnd";
 		public const string WindowCreateWin32PixelFormatHWNDPointer = "SDL.window.create.win32.pixel_format_hwnd";
 		public const string WindowCreateX11WindowNumber = "SDL.window.create.x11.window";
-		public const string WindowCreateEmscriptennCanvasId = "SDL.window.create.emscripten.canvas_id";
-		public const string WindowCreateEmscriptenKeyboardElement = "SDL.window.create.emscripten.keyboard_element";
+		public const string WindowCreateEmscriptennCanvasIdString = "SDL.window.create.emscripten.canvas_id";
+		public const string WindowCreateEmscriptenKeyboardElementString = "SDL.window.create.emscripten.keyboard_element";
 		
 		public const string WindowShapePointer = "SDL.window.shape";
 		public const string WindowHDREnabledBoolean = "SDL.window.HDR_enabled";
@@ -98,7 +99,7 @@ public static partial class SDL
 		public const string WindowKMSDRMGBMDevicePointer = "SDL.window.kmsdrm.gbm_dev";
 		public const string WindowCocoaWindowPointer = "SDL.window.cocoa.window";
 		public const string WindowCocoaMetalViewTagNumber = "SDL.window.cocoa.metal_view_tag";
-		public const string WindowOpenVROverlayID = "SDL.window.openvr.overlay_id";
+		public const string WindowOpenVROverlayIdNumber = "SDL.window.openvr.overlay_id";
 		public const string WindowVivanteDisplayPointer = "SDL.window.vivante.display";
 		public const string WindowVivanteWindowPointer = "SDL.window.vivante.window";
 		public const string WindowVivanteSurfacePointer = "SDL.window.vivante.surface";
@@ -117,5 +118,7 @@ public static partial class SDL
 		public const string WindowX11DisplayPointer = "SDL.window.x11.display";
 		public const string WindowX11ScreenNumber = "SDL.window.x11.screen";
 		public const string WindowX11WindowNumber = "SDL.window.x11.window";
+		public const string WindowEmscriptenCanvasIdString = "SDL.window.emscripten.canvas_id";
+		public const string WindowEmscriptenKeyboardElementString = "SDL.window.emscripten.keyboard_element";
 	}
 }

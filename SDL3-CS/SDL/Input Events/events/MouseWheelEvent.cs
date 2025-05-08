@@ -80,5 +80,15 @@ public static partial class SDL
         /// Y coordinate, relative to window
         /// </summary>
         public float MouseY;
+        
+        /// <summary>
+        /// The amount scrolled horizontally, accumulated to whole scroll "ticks" (added in 3.2.12)
+        /// </summary>
+        public int IntegerX;
+        
+        /// <summary>
+        /// The amount scrolled vertically, accumulated to whole scroll "ticks" (added in 3.2.12)
+        /// </summary>
+        public int IntegerY;
     }
 }

@@ -41,22 +41,22 @@ public static partial class SDL
     public enum GLAttr
     {
         /// <summary>
-        /// the minimum number of bits for the red channel of the color buffer; defaults to 3.
+        /// the minimum number of bits for the red channel of the color buffer; defaults to 8.
         /// </summary>
         RedSize,
         
         /// <summary>
-        /// the minimum number of bits for the green channel of the color buffer; defaults to 3.
+        /// the minimum number of bits for the green channel of the color buffer; defaults to 8.
         /// </summary>
         GreenSize,
         
         /// <summary>
-        /// the minimum number of bits for the blue channel of the color buffer; defaults to 2.
+        /// the minimum number of bits for the blue channel of the color buffer; defaults to 8.
         /// </summary>
         BlueSize,
         
         /// <summary>
-        /// the minimum number of bits for the alpha channel of the color buffer; defaults to 0.
+        /// the minimum number of bits for the alpha channel of the color buffer; defaults to 8
         /// </summary>
         AlphaSize,
         

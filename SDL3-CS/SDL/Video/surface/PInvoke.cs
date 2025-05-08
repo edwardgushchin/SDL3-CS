@@ -1255,8 +1255,6 @@ public static partial class SDL
     /// with clipping.</para>
     /// <para>If either <c>srcrect</c> or <c>dstrect</c> are <c>null</c>, the entire surface (<c>src</c> or
     /// <c>dst</c>) is copied while ensuring clipping to <c>dst.clip_rect</c>.</para>
-    /// <para> The final blit rectangles are saved in <c>srcrect</c> and <c>dstrect</c> after all
-    /// clipping is performed.</para>
     /// <para>The blit function should not be called on a locked surface.</para>
     /// <para>The blit semantics for surfaces with and without blending and colorkey are
     /// defined as follows:</para>

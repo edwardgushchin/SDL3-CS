@@ -46,6 +46,7 @@ public static partial class SDL
         NintendoSwitchJoyconLeft,
         NintendoSwitchJoyconRight,
         NintendoSwitchJoyconPair,
+        GameCube,
         Count
     }
 }

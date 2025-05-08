@@ -222,7 +222,7 @@ public static partial class SDL
     /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
     /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
     /// </summary>
-    /// <param name="pixel">a pixel value.</param>
+    /// <param name="pixelvalue">a pixel value.</param>
     /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
     /// format.</param>
     /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
@@ -233,7 +233,7 @@ public static partial class SDL
     /// the palette is not modified.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void GetRGB(uint pixel, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b);
+    public static partial void GetRGB(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
@@ -244,7 +244,7 @@ public static partial class SDL
     /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
     /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
     /// </summary>
-    /// <param name="pixel">a pixel value.</param>
+    /// <param name="pixelvalue">a pixel value.</param>
     /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
     /// format.</param>
     /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
@@ -255,7 +255,7 @@ public static partial class SDL
     /// the palette is not modified.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [DllImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern void GetRGB(uint pixel, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
+    public static extern void GetRGB(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
 
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
@@ -268,7 +268,7 @@ public static partial class SDL
     /// <para>If the surface has no alpha component, the alpha will be returned as 0xff
     /// (100% opaque).</para>
     /// </summary>
-    /// <param name="pixel">a pixel value.</param>
+    /// <param name="pixelvalue">a pixel value.</param>
     /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
     /// format.</param>
     /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
@@ -285,7 +285,7 @@ public static partial class SDL
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapRGBA"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void GetRGBA(uint pixel, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b, out byte a);
+    public static partial void GetRGBA(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b, out byte a);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
@@ -298,7 +298,7 @@ public static partial class SDL
     /// <para>If the surface has no alpha component, the alpha will be returned as 0xff
     /// (100% opaque).</para>
     /// </summary>
-    /// <param name="pixel">a pixel value.</param>
+    /// <param name="pixelvalue">a pixel value.</param>
     /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
     /// format.</param>
     /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
@@ -315,5 +315,5 @@ public static partial class SDL
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapRGBA"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern void GetRGBA(uint pixel, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
+    public static extern void GetRGBA(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
 }

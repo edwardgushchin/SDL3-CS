@@ -256,7 +256,7 @@ public static partial class SDL
     
     /// <code>SDL_FORCE_INLINE bool SDL_RectEmptyFloat(const SDL_FRect *r)</code>
     /// <summary>
-    /// <para>Determine whether a floating point rectangle can contain any point.</para>
+    /// <para>Determine whether a floating point rectangle takes no space.</para>
     /// <para>A rectangle is considered "empty" for this function if <c>r</c> is <c>null</c>, or if
     /// <c>r</c>'s width and/or height are &lt; 0.0f.</para>
     /// <para>Note that this is a forced-inline function in a header, and not a public
