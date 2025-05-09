@@ -51,7 +51,7 @@ public partial class SDL
     /// <seealso cref="Realloc"/>
     /// <seealso cref="AlignedAlloc"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_malloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr Malloc(ulong size);
+    public static partial IntPtr Malloc(UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC SDL_MALLOC SDL_ALLOC_SIZE2(1, 2) void * SDLCALL SDL_calloc(size_t nmemb, size_t size);</code>
@@ -69,7 +69,7 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_calloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr Calloc(ulong nmemb, ulong size);
+    public static partial IntPtr Calloc(UIntPtr nmemb, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC SDL_ALLOC_SIZE(2) void * SDLCALL SDL_realloc(void *mem, size_t size);</code>
@@ -105,7 +105,7 @@ public partial class SDL
     /// <seealso cref="Malloc"/>
     /// <seealso cref="Calloc"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_realloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr Realloc(IntPtr mem, ulong size);
+    public static partial IntPtr Realloc(IntPtr mem, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_free(void *mem);</code>
@@ -201,7 +201,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr AlignedAlloc(ulong alignment, ulong size);
+    public static partial IntPtr AlignedAlloc(UIntPtr alignment, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_aligned_free(void *mem);</code>
@@ -566,5 +566,5 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_memset"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr Memset(IntPtr dst, int c, uint len);
+    public static partial IntPtr Memset(IntPtr dst, int c, UIntPtr len);
 }

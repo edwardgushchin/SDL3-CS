@@ -41,7 +41,7 @@ public static partial class SDL
     /// <seealso cref="GetMemoryFunctions"/>
     /// <seealso cref="SetMemoryFunctions"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr MallocFunc(ulong size);
+    public delegate IntPtr MallocFunc(UIntPtr size);
     
     
     /// <code>typedef void *(SDLCALL *SDL_calloc_func)(size_t nmemb, size_t size);</code>
@@ -60,7 +60,7 @@ public static partial class SDL
     /// <seealso cref="GetMemoryFunctions"/>
     /// <seealso cref="SetMemoryFunctions"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr CallocFunc(ulong nmemb, ulong size);
+    public delegate IntPtr CallocFunc(UIntPtr nmemb, UIntPtr size);
     
     
     /// <code>typedef void *(SDLCALL *SDL_realloc_func)(void *mem, size_t size);</code>
@@ -79,7 +79,7 @@ public static partial class SDL
     /// <seealso cref="GetMemoryFunctions"/>
     /// <seealso cref="SetMemoryFunctions"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr ReallocFunc(IntPtr mem, ulong size);
+    public delegate IntPtr ReallocFunc(IntPtr mem, UIntPtr size);
     
     
     /// <code>typedef void (SDLCALL *SDL_free_func)(void *mem);</code>

@@ -297,5 +297,5 @@ public static partial class SDL
     /// <seealso cref="AlignedAlloc"/>
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSIMDAlignment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ulong GetSIMDAlignment();
+    public static partial UIntPtr GetSIMDAlignment();
 }

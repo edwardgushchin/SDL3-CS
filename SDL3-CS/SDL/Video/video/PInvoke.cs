@@ -577,7 +577,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowICCProfile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetWindowICCProfile(IntPtr window, out ulong size);
+    public static partial IntPtr GetWindowICCProfile(IntPtr window, out UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC SDL_PixelFormat SDLCALL SDL_GetWindowPixelFormat(SDL_Window *window);</code>
