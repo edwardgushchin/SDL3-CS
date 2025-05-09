@@ -40,7 +40,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.12.1</Version>
+        <Version>3.2.12.2</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
