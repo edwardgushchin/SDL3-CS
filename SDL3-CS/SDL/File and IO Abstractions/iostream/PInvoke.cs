@@ -139,7 +139,7 @@ public static partial class SDL
     /// <seealso cref="TellIO"/>
     /// <seealso cref="WriteIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOFromMem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr IOFromMem(IntPtr mem, ulong size);
+    public static partial IntPtr IOFromMem(IntPtr mem, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC SDL_IOStream * SDLCALL SDL_IOFromConstMem(const void *mem, size_t size);</code>
@@ -174,7 +174,7 @@ public static partial class SDL
     /// <seealso cref="SeekIO"/>
     /// <seealso cref="TellIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOFromConstMem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr IOFromConstMem(IntPtr mem, ulong size);
+    public static partial IntPtr IOFromConstMem(IntPtr mem, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC SDL_IOStream * SDLCALL SDL_IOFromDynamicMem(void);</code>
@@ -363,7 +363,7 @@ public static partial class SDL
     /// <seealso cref="WriteIO"/>
     /// <seealso cref="GetIOStatus"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ulong ReadIO(IntPtr context, IntPtr ptr, ulong size);
+    public static partial ulong ReadIO(IntPtr context, IntPtr ptr, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);</code>
@@ -390,7 +390,7 @@ public static partial class SDL
     /// <seealso cref="FlushIO"/>
     /// <seealso cref="GetIOStatus"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ulong WriteIO(IntPtr context, IntPtr ptr, ulong size);
+    public static partial ulong WriteIO(IntPtr context, IntPtr ptr, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_IOprintf(SDL_IOStream *context, SDL_PRINTF_FORMAT_STRING const char *fmt, ...)  SDL_PRINTF_VARARG_FUNC(2);</code>
@@ -407,7 +407,7 @@ public static partial class SDL
     /// <seealso cref="WriteIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     // ReSharper disable once InconsistentNaming
-    public static partial ulong IOprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    public static partial UIntPtr IOprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
     
     
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_IOvprintf(SDL_IOStream *context, SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap) SDL_PRINTF_VARARG_FUNCV(2);</code>
@@ -425,7 +425,7 @@ public static partial class SDL
     /// <seealso cref="WriteIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOvprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     // ReSharper disable once InconsistentNaming
-    public static partial ulong IOvprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
+    public static partial UIntPtr IOvprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_FlushIO(SDL_IOStream *context);</code>
@@ -465,7 +465,7 @@ public static partial class SDL
     /// <seealso cref="LoadFile"/>
     /// <seealso cref="SaveFileIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFile_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr LoadFileIO(IntPtr src, ulong datasize, [MarshalAs(UnmanagedType.I1)] bool closeio);
+    public static partial IntPtr LoadFileIO(IntPtr src, out UIntPtr datasize, [MarshalAs(UnmanagedType.I1)] bool closeio);
     
     
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_LoadFile(const char *file, size_t *datasize);</code>
@@ -484,7 +484,7 @@ public static partial class SDL
     /// <seealso cref="LoadFileIO"/>
     /// <seealso cref="SaveFile"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr LoadFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, ulong datasize);
+    public static partial IntPtr LoadFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, out UIntPtr datasize);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SaveFile_IO(SDL_IOStream *src, const void *data, size_t datasize, bool closeio);</code>
@@ -504,7 +504,7 @@ public static partial class SDL
     /// <seealso cref="LoadFileIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveFile_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SaveFileIO(IntPtr src, IntPtr data, ulong datasize, [MarshalAs(UnmanagedType.I1)] bool closeio);
+    public static partial bool SaveFileIO(IntPtr src, IntPtr data, UIntPtr datasize, [MarshalAs(UnmanagedType.I1)] bool closeio);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SaveFile(const char *file, const void *data, size_t datasize);</code>
@@ -522,7 +522,7 @@ public static partial class SDL
     /// <seealso cref="LoadFile"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SaveFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, IntPtr data, ulong datasize);
+    public static partial bool SaveFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, IntPtr data, UIntPtr datasize);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadU8(SDL_IOStream *src, Uint8 *value);</code>

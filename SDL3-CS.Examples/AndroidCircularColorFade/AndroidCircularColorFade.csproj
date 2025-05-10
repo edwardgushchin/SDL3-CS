@@ -18,6 +18,6 @@
         <AndroidSdkDirectory>C:\android-sdk</AndroidSdkDirectory>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="SDL3-CS" Version="3.2.10" />
+      <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
     </ItemGroup>
 </Project>

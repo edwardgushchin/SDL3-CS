@@ -180,7 +180,7 @@ public static partial class SDL
     /// <seealso cref="CreateProcessWithProperties"/>
     /// <seealso cref="DestroyProcess"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadProcess"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr ReadProcess(IntPtr process, out ulong datasize, out int exitcode);
+    public static partial IntPtr ReadProcess(IntPtr process, out UIntPtr datasize, out int exitcode);
     
     
     /// <code>extern SDL_DECLSPEC SDL_IOStream *SDLCALL SDL_GetProcessInput(SDL_Process *process);</code>

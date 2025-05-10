@@ -804,7 +804,7 @@ public static partial class TTF
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="StringToTag"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_TagToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void TagToString(uint tag, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, ulong size);
+    public static partial void TagToString(uint tag, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, UIntPtr size);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontScript(TTF_Font *font, Uint32 script);</code>
@@ -1035,7 +1035,7 @@ public static partial class TTF
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetStringSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetStringSize(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, out int w, out int h);
+    public static partial bool GetStringSize(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, out int w, out int h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetStringSizeWrapped(TTF_Font *font, const char *text, size_t length, int wrap_width, int *w, int *h);</code>
@@ -1061,7 +1061,7 @@ public static partial class TTF
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetStringSizeWrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetStringSizeWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, int wrapWidth, out int w, out int h);
+    public static partial bool GetStringSizeWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, int wrapWidth, out int w, out int h);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_MeasureString(TTF_Font *font, const char *text, size_t length, int max_width, int *measured_width, size_t *measured_length);</code>
@@ -1088,7 +1088,7 @@ public static partial class TTF
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_MeasureString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool MeasureString(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, int maxWidth, out int measuredWidth, out ulong measuredLength);
+    public static partial bool MeasureString(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, int maxWidth, out int measuredWidth, out ulong measuredLength);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
@@ -1120,7 +1120,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextSolid"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextSolid(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg);
+    public static partial IntPtr RenderTextSolid(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrapLength);</code>
@@ -1151,7 +1151,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextShadedWrapped"/>
     /// <seealso cref="RenderTextSolid"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextSolidWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, int wrapLength);
+    public static partial IntPtr RenderTextSolidWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, int wrapLength);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderGlyph_Solid(TTF_Font *font, Uint32 ch, SDL_Color fg);</code>
@@ -1209,7 +1209,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextShadedWrapped"/>
     /// <seealso cref="RenderTextSolid"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Shaded"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextShaded(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, SDL.Color bg);
+    public static partial IntPtr RenderTextShaded(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, SDL.Color bg);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Shaded_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg, int wrap_width);</code>
@@ -1237,7 +1237,7 @@ public static partial class TTF
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Shaded_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextShadedWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, SDL.Color bg, int wrapWidth);
+    public static partial IntPtr RenderTextShadedWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, SDL.Color bg, int wrapWidth);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderGlyph_Shaded(TTF_Font *font, Uint32 ch, SDL_Color fg, SDL_Color bg);</code>
@@ -1295,7 +1295,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextShaded"/>
     /// <seealso cref="RenderTextSolid"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextBlended(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg);
+    public static partial IntPtr RenderTextBlended(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Blended_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrap_width);</code>
@@ -1326,7 +1326,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextShadedWrapped"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextBlendedWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, int wrapWidth);
+    public static partial IntPtr RenderTextBlendedWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, int wrapWidth);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderGlyph_Blended(TTF_Font *font, Uint32 ch, SDL_Color fg);</code>
@@ -1383,7 +1383,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextShaded"/>
     /// <seealso cref="RenderTextSolid"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_LCD"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextLCD(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, SDL.Color bg);
+    public static partial IntPtr RenderTextLCD(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, SDL.Color bg);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_LCD_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg, int wrap_width);</code>
@@ -1416,7 +1416,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextShadedWrapped"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_LCD_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr RenderTextLCDWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length, SDL.Color fg, SDL.Color bg, int wrapWidth);
+    public static partial IntPtr RenderTextLCDWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, SDL.Color bg, int wrapWidth);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderGlyph_LCD(TTF_Font *font, Uint32 ch, SDL_Color fg, SDL_Color bg);</code>
@@ -1716,7 +1716,7 @@ public static partial class TTF
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
     /// <seealso cref="DestroyText"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_CreateText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateText(IntPtr engine, IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, ulong length);
+    public static partial IntPtr CreateText(IntPtr engine, IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length);
     
     
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL TTF_GetTextProperties(TTF_Text *text);</code>
@@ -2097,7 +2097,7 @@ public static partial class TTF
     /// <seealso cref="InsertTextString"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetTextString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetTextString(IntPtr text, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, ulong length);
+    public static partial bool SetTextString(IntPtr text, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, UIntPtr length);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_InsertTextString(TTF_Text *text, int offset, const char *string, size_t length);</code>
@@ -2123,7 +2123,7 @@ public static partial class TTF
     /// <seealso cref="SetTextString"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_InsertTextString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool InsertTextString(IntPtr text, int offset, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, ulong length);
+    public static partial bool InsertTextString(IntPtr text, int offset, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, UIntPtr length);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_AppendTextString(TTF_Text *text, const char *string, size_t length);</code>
@@ -2145,7 +2145,7 @@ public static partial class TTF
     /// <seealso cref="SetTextString"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_AppendTextString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool AppendTextString(IntPtr text, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, ulong length);
+    public static partial bool AppendTextString(IntPtr text, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, UIntPtr length);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_DeleteTextString(TTF_Text *text, int offset, int length);</code>
