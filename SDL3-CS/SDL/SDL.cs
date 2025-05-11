@@ -328,6 +328,29 @@ public static partial class SDL
 
         return result;
     }
+
+
+    /// <summary>
+    /// Converts a managed UTF-16 string to an unmanaged, null-terminated UTF-8 string pointer.
+    /// </summary>
+    /// <param name="str">The managed string to convert. Can be <c>null</c>.</param>
+    /// <returns>
+    /// A pointer to unmanaged memory containing the null-terminated UTF-8 encoded version of the input string,
+    /// or <see cref="IntPtr.Zero"/> if <paramref name="str"/> is <c>null</c>.
+    /// </returns>
+    /// <remarks>
+    /// The returned pointer must be freed manually using <see cref="Marshal.FreeHGlobal(IntPtr)"/> 
+    /// to avoid memory leaks. If the returned pointer is <see cref="IntPtr.Zero"/>, no deallocation is needed.
+    /// </remarks>
+    public static IntPtr StringToPointer(string? str)
+    {
+        if (str == null) return IntPtr.Zero;
+        
+        var utf8Bytes = System.Text.Encoding.UTF8.GetBytes(str + '\0');
+        var unmanagedPointer = Marshal.AllocHGlobal(utf8Bytes.Length);
+        Marshal.Copy(utf8Bytes, 0, unmanagedPointer, utf8Bytes.Length);
+        return unmanagedPointer;
+    }
     
     
     /// <summary>
