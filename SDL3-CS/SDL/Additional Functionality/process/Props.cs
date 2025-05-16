@@ -38,6 +38,7 @@ public static partial class SDL
         public const string ProcessCreateSTDErrPointer = "SDL.process.create.stderr_source";
         public const string ProcessCreateSTDErrToSTDOutBoolean = "SDL.process.create.stderr_to_stdout";
         public const string ProcessCreateBackgroundBoolean = "SDL.process.create.background";
+        public const string ProcessCreateCMDLineString = "SDL.process.create.cmdline";
 
         public const string ProcessPIDNumber = "SDL.process.pid";
         public const string ProcessSTDInPointer = "SDL.process.stdin";
