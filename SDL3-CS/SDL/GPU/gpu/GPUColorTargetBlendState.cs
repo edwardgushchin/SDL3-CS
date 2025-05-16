@@ -32,6 +32,9 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUColorTargetDescription"/>
+    /// <seealso cref="GPUBlendFactor"/>
+    /// <seealso cref="GPUBlendOp"/>
+    /// <seealso cref="GPUColorComponentFlags"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUColorTargetBlendState
     {

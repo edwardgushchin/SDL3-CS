@@ -103,6 +103,12 @@ public static partial class SDL
     /// run in the background. In this case the default input and output is
     /// <see cref="ProcessIO.Null"/> and the exitcode of the process is not
     /// available, and will always be 0.</item>
+    /// <item><see cref="Props.ProcessCreateCMDLineString"/>: a string containing the program
+    /// to run and any parameters. This string is passed directly to
+    /// <c>CreateProcess</c> on Windows, and does nothing on other platforms. This
+    /// property is only important if you want to start programs that does
+    /// non-standard command-line processing, and in most cases using
+    /// <see cref="Props.ProcessCreateArgsPointer"/> is sufficient.</item>
     /// </list>
     /// <para>On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
     /// SIGCHLD should not be ignored or handled because those would prevent SDL

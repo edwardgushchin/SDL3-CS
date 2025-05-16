@@ -119,6 +119,25 @@ public partial class SDL
     /// <item><see cref="Props.GPUDeviceCreateD3D12SemanticNameString"/>: the prefix to
     /// use for all vertex semantics, default is "TEXCOORD".</item>
     /// </list>
+    /// <para>With the Vulkan renderer:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.GPUDeviceCreateVulkanShaderClipDistanceBoolean"/>: Enable
+    /// device feature shaderClipDistance. If disabled, clip distances are not
+    /// supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+    /// SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+    /// Metal. Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateVulkanDepthClampBoolean"/>: Enable device
+    /// feature depthClamp. If disabled, there is no depth clamp support and
+    /// enable_depth_clip in <see cref="GPURasterizerState"/> must always be set to true.
+    /// Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateVulkanDrawInDirectFirstBoolean"/>: Enable device
+    /// feature drawIndirectFirstInstance. If disabled, the argument
+    /// first_instance of <see cref="GPUIndirectDrawCommand"/> must be set to zero.
+    /// Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateVulkanSamplerAnisotropyBoolean"/>: Enable device
+    /// feature samplerAnisotropy. If disabled, enable_anisotropy of 
+    /// <see cref="GPUSamplerCreateInfo"/> must be set to false. Defaults to true.</item>
+    /// </list>
     /// </summary>
     /// <param name="props">the properties to use.</param>
     /// <returns>a GPU context on success or <c>null</c> on failure; call <see cref="GetError"/>
