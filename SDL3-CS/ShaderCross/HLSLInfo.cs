@@ -35,7 +35,11 @@ public partial class ShaderCross
         /// <summary>
         /// The HLSL source code for the shader.
         /// </summary>
-        public string Source => Marshal.PtrToStringUTF8(source)!;
+        public string Source
+        {
+            get => Marshal.PtrToStringUTF8(source)!;
+            set => source = SDL.StringToPointer(value);
+        }
         
         private IntPtr entrypoint;
         
@@ -49,7 +53,11 @@ public partial class ShaderCross
         /// <summary>
         /// The include directory for shader code. Optional, can be NULL.
         /// </summary>
-        public string? IncludeDir => Marshal.PtrToStringUTF8(include_dir);
+        public string? IncludeDir
+        {
+            get => Marshal.PtrToStringUTF8(include_dir);
+            set => include_dir = SDL.StringToPointer(value);
+        }
         
         private IntPtr define;
         
@@ -79,7 +87,11 @@ public partial class ShaderCross
         /// <summary>
         /// A UTF-8 name to associate with the shader. Optional, can be NULL.
         /// </summary>
-        public string? Name => Marshal.PtrToStringUTF8(name);
+        public string? Name
+        {
+            get => Marshal.PtrToStringUTF8(name);
+            set => name = SDL.StringToPointer(value);
+        }
 
         /// <summary>
         /// A properties ID for extensions. Should be 0 if no extensions are needed.
