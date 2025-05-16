@@ -32,7 +32,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
-    /// <seealso cref="BindGPUFragmentSamplers"/>
+    /// <seealso cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUTextureSamplerBinding
     {
