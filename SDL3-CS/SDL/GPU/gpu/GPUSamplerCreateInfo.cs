@@ -106,24 +106,8 @@ public static partial class SDL
         /// </summary>
         public Byte EnableCompare;
         
-        /// <summary>
-        /// The binding slot of the vertex buffer.
-        /// </summary>
-        public uint Slot;
+        private byte padding1;
         
-        /// <summary>
-        /// The byte pitch between consecutive elements of the vertex buffer.
-        /// </summary>
-        public uint Pitch;
-        
-        /// <summary>
-        /// Whether attribute addressing is a function of the vertex index or instance index.
-        /// </summary>
-        public GPUVertexInputRate InputRate;
-        
-        /// <summary>
-        /// Ignored, reserved for future use.
-        /// </summary>
-        public uint InstanceStepRate;
+        private byte padding2;
     }
 }
