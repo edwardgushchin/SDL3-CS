@@ -46,7 +46,11 @@ public partial class ShaderCross
         /// <summary>
         /// The entry point function name for the shader in UTF-8.
         /// </summary>
-        public string Entrypoint => Marshal.PtrToStringUTF8(entrypoint)!;
+        public string Entrypoint
+        {
+            get => Marshal.PtrToStringUTF8(entrypoint)!;
+            set => entrypoint = SDL.StringToPointer(value);
+        }
         
         private IntPtr include_dir;
         
