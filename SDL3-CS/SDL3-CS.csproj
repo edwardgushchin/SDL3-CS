@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net9.0</TargetFrameworks>
         <PackageReleaseNotes>
             This is a stable bugfix release, with the following changes:
 

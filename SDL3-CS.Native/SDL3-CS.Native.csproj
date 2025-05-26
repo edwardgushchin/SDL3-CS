@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
  
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net9.0</TargetFrameworks>
         <RootNamespace>SDL3_CS.Native</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -42,6 +42,25 @@
         <None Include="lib\win-arm64\*">
             <Pack>True</Pack>
             <PackagePath>runtimes\win-arm64\native\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="lib\linux-x64\*" Condition="Exists('lib\linux-x64')">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\linux-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\linux-arm64\*" Condition="Exists('lib\linux-arm64')">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\linux-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\osx-x64\*" Condition="Exists('lib\osx-x64')">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\osx-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\osx-arm64\*" Condition="Exists('lib\osx-arm64')">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\osx-arm64\native\</PackagePath>
         </None>
     </ItemGroup>
 

@@ -1,0 +1,250 @@
+name: Build SDL Native Libraries & Create ZIP Release
+
+on:
+  push:
+    branches: [ main ] # Adjust to your default branch
+    paths:
+      - 'SDL3-CS.Native/**'
+      - 'SDL3-CS.Native.Image/**'
+      - 'SDL3-CS.Native.Mixer/**'
+      - 'SDL3-CS.Native.TTF/**'
+      - 'SDL3-CS/**'
+      - '.github/workflows/build-native-libs.yml'
+  workflow_dispatch: # Allows manual triggering
+
+env:
+  # For SDL Core: Derived from SDL3-CS.Native.csproj <Version>3.2.14.0</Version>
+  # This implies the C# wrapper targets version 3.2.14 of the SDL C library.
+  # !!! CRITICAL: Please verify that the tag 'release-3.2.14' actually exists in the libsdl-org/SDL repository (https://github.com/libsdl-org/SDL/tags).
+  # If not, you MUST update this to an existing tag or a specific commit SHA that your C# wrappers target, otherwise the build will fail.
+  SDL_VERSION_TAG: release-3.2.14
+
+  # For SDL_image: Wrapper version is <Version>3.2.4.0</Version> (from SDL3-CS.Native.Image.csproj).
+  # For SDL3 compatibility, the C library is taken from the 'main' branch of libsdl-org/SDL_image.
+  # !!! RECOMMENDATION: For reproducible builds, replace 'main' with a specific commit SHA from the 'main' branch (https://github.com/libsdl-org/SDL_image).
+  SDL_IMAGE_VERSION_TAG: release-3.2.4
+
+  # For SDL_mixer: Wrapper version is <Version>2.8.1.0</Version> (from SDL3-CS.Native.Mixer.csproj).
+  # While a C library tag 'release-2.8.1' exists for SDL_mixer (for SDL2), for SDL3 compatibility,
+  # the C library is taken from the 'main' branch of libsdl-org/SDL_mixer.
+  # !!! RECOMMENDATION: For reproducible builds, replace 'main' with a specific commit SHA from the 'main' branch (https://github.com/libsdl-org/SDL_mixer).
+  SDL_MIXER_VERSION_TAG: release-2.8.1
+
+  # For SDL_ttf: Wrapper version is <Version>3.2.2.0</Version> (from SDL3-CS.Native.TTF.csproj).
+  # For SDL3 compatibility, the C library is taken from the 'main' branch of libsdl-org/SDL_ttf.
+  # !!! RECOMMENDATION: For reproducible builds, replace 'main' with a specific commit SHA from the 'main' branch (https://github.com/libsdl-org/SDL_ttf).
+  SDL_TTF_VERSION_TAG: release-3.2.2
+
+jobs:
+  build_sdl_libs:
+    name: Build for ${{ matrix.os_name }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows x64
+          - os_name: win
+            arch: x64
+            runner: windows-latest
+            cmake_arch_flag: '' 
+            output_dir_suffix: windows
+            sdl_dll: SDL3.dll
+            sdl_image_dll: SDL3_image.dll
+            sdl_mixer_dll: SDL3_mixer.dll
+            sdl_ttf_dll: SDL3_ttf.dll
+          # Linux x64
+          - os_name: linux
+            arch: x64
+            runner: ubuntu-latest
+            cmake_arch_flag: ''
+            output_dir_suffix: linux
+            sdl_dll: libSDL3.so
+            sdl_image_dll: libSDL3_image.so
+            sdl_mixer_dll: libSDL3_mixer.so
+            sdl_ttf_dll: libSDL3_ttf.so
+          # macOS (Universal Binary: x64 + arm64)
+          - os_name: osx
+            arch: universal
+            runner: macos-latest
+            cmake_arch_flag: '-DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"'
+            output_dir_suffix: macos
+            sdl_dll: libSDL3.dylib
+            sdl_image_dll: libSDL3_image.dylib
+            sdl_mixer_dll: libSDL3_mixer.dylib
+            sdl_ttf_dll: libSDL3_ttf.dylib
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout SDL sources
+        uses: actions/checkout@v4
+        with: { repository: libsdl-org/SDL, ref: '${{ env.SDL_VERSION_TAG }}', path: SDL_src }
+      - name: Checkout SDL_image sources
+        uses: actions/checkout@v4
+        with: { repository: libsdl-org/SDL_image, ref: '${{ env.SDL_IMAGE_VERSION_TAG }}', path: SDL_image_src }
+      - name: Checkout SDL_mixer sources
+        uses: actions/checkout@v4
+        with: { repository: libsdl-org/SDL_mixer, ref: '${{ env.SDL_MIXER_VERSION_TAG }}', path: SDL_mixer_src }
+      - name: Checkout SDL_ttf sources
+        uses: actions/checkout@v4
+        with: { repository: libsdl-org/SDL_ttf, ref: '${{ env.SDL_TTF_VERSION_TAG }}', path: SDL_ttf_src }
+
+      - name: Install build dependencies (Linux)
+        if: matrix.runner == 'ubuntu-latest'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y cmake ninja-build pkg-config \\
+            libasound2-dev libdbus-1-dev libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev \\
+            libglu1-mesa-dev libibus-1.0-dev libpulse-dev libsndio-dev libudev-dev libwayland-dev \\
+            libx11-dev libxcursor-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev \\
+            libxkbcommon-dev libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev
+      
+      - name: Install build dependencies (macOS)
+        if: matrix.runner == 'macos-latest'
+        run: |
+          brew install cmake ninja pkg-config
+
+      - name: Configure & Build SDL3
+        run: |
+          cmake -S SDL_src -B build/sdl3 -G Ninja \\
+            ${{ matrix.cmake_arch_flag }} \\
+            -DCMAKE_BUILD_TYPE=Release \\
+            -DSDL_SHARED=ON -DSDL_STATIC=OFF \\
+            -DSDL_TEST=OFF
+          cmake --build build/sdl3 --config Release
+        shell: bash
+
+      - name: Configure & Build SDL3_image
+        run: |
+          cmake -S SDL_image_src -B build/sdl_image -G Ninja \\
+            ${{ matrix.cmake_arch_flag }} \\
+            -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/build/sdl3 \\
+            -DSDL3_DIR=$GITHUB_WORKSPACE/build/sdl3 \\
+            -DCMAKE_BUILD_TYPE=Release \\
+            -DSDL_IMAGE_SHARED=ON -DSDL_IMAGE_STATIC=OFF \\
+            -DSDL_IMAGE_TEST=OFF
+          cmake --build build/sdl_image --config Release
+        shell: bash
+
+      - name: Configure & Build SDL3_mixer
+        run: |
+          cmake -S SDL_mixer_src -B build/sdl_mixer -G Ninja \\
+            ${{ matrix.cmake_arch_flag }} \\
+            -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/build/sdl3 \\
+            -DSDL3_DIR=$GITHUB_WORKSPACE/build/sdl3 \\
+            -DCMAKE_BUILD_TYPE=Release \\
+            -DSDL_MIXER_SHARED=ON -DSDL_MIXER_STATIC=OFF \\
+            -DSDL_MIXER_TEST=OFF \\
+            -DSDL_MIXER_SAMPLES=OFF
+          cmake --build build/sdl_mixer --config Release
+        shell: bash
+
+      - name: Configure & Build SDL3_ttf
+        run: |
+          cmake -S SDL_ttf_src -B build/ttf -G Ninja \\
+            ${{ matrix.cmake_arch_flag }} \\
+            -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/build/sdl3 \\
+            -DSDL3_DIR=$GITHUB_WORKSPACE/build/sdl3 \\
+            -DCMAKE_BUILD_TYPE=Release \\
+            -DSDL_TTF_SHARED=ON -DSDL_TTF_STATIC=OFF \\
+            -DSDL_TTF_TEST=OFF
+          cmake --build build/ttf --config Release
+        shell: bash
+      
+      - name: Stage Native Libraries
+        shell: bash
+        run: |
+          BASE_STAGING_DIR="staging/${{ matrix.output_dir_suffix }}"
+          mkdir -p $BASE_STAGING_DIR
+
+          # Define expected library paths after build
+          # These might need adjustment based on actual CMake output structure
+          SDL3_LIB_PATH_PATTERN="build/sdl3/${{ matrix.sdl_dll }}"
+          SDL_IMAGE_LIB_PATH_PATTERN="build/sdl_image/${{ matrix.sdl_image_dll }}"
+          SDL_MIXER_LIB_PATH_PATTERN="build/sdl_mixer/${{ matrix.sdl_mixer_dll }}"
+          SDL_TTF_LIB_PATH_PATTERN="build/ttf/${{ matrix.sdl_ttf_dll }}"
+          
+          if [ "${{ matrix.runner }}" = "windows-latest" ]; then
+            SDL3_LIB_PATH_PATTERN="build/sdl3/Release/${{ matrix.sdl_dll }}"
+            SDL_IMAGE_LIB_PATH_PATTERN="build/sdl_image/Release/${{ matrix.sdl_image_dll }}"
+            SDL_MIXER_LIB_PATH_PATTERN="build/sdl_mixer/Release/${{ matrix.sdl_mixer_dll }}"
+            SDL_TTF_LIB_PATH_PATTERN="build/ttf/Release/${{ matrix.sdl_ttf_dll }}"
+          fi
+          
+          echo "Copying SDL3 lib from potential path: $SDL3_LIB_PATH_PATTERN"
+          find build/sdl3 -name "${{ matrix.sdl_dll }}" -print -exec cp {} $BASE_STAGING_DIR/ \;
+          echo "Copying SDL_image lib from potential path: $SDL_IMAGE_LIB_PATH_PATTERN"
+          find build/sdl_image -name "${{ matrix.sdl_image_dll }}" -print -exec cp {} $BASE_STAGING_DIR/ \;
+          echo "Copying SDL_mixer lib from potential path: $SDL_MIXER_LIB_PATH_PATTERN"
+          find build/sdl_mixer -name "${{ matrix.sdl_mixer_dll }}" -print -exec cp {} $BASE_STAGING_DIR/ \;
+          echo "Copying SDL_ttf lib from potential path: $SDL_TTF_LIB_PATH_PATTERN"
+          find build/ttf -name "${{ matrix.sdl_ttf_dll }}" -print -exec cp {} $BASE_STAGING_DIR/ \;
+          
+      - name: Upload Staged Libraries Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: staged-libs-${{ matrix.os_name }}-${{ matrix.arch }}
+          path: staging/
+          if-no-files-found: error
+
+  create_release_zip:
+    name: Create Release ZIP
+    needs: build_sdl_libs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all staged library artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-artifacts
+
+      - name: Organize libraries for ZIP
+        shell: bash
+        run: |
+          mkdir -p release_bundle
+          echo "Downloaded artifact structure:"
+          ls -R downloaded-artifacts
+
+          # Artifacts are in downloaded-artifacts/staged-libs-OS-ARCH/OS_FOLDER/
+          # e.g. downloaded-artifacts/staged-libs-win-x64/windows/SDL3.dll
+
+          if [ -d "downloaded-artifacts/staged-libs-win-x64/windows" ]; then
+            echo "Copying Windows libraries..."
+            mkdir -p release_bundle/windows
+            cp -r downloaded-artifacts/staged-libs-win-x64/windows/* release_bundle/windows/
+          else
+            echo "Warning: Windows artifact directory not found."
+          fi
+          
+          if [ -d "downloaded-artifacts/staged-libs-linux-x64/linux" ]; then
+            echo "Copying Linux libraries..."
+            mkdir -p release_bundle/linux
+            cp -r downloaded-artifacts/staged-libs-linux-x64/linux/* release_bundle/linux/
+          else
+            echo "Warning: Linux artifact directory not found."
+          fi
+
+          # For macOS, the artifact name will be staged-libs-osx-universal, containing a 'macos' folder
+          if [ -d "downloaded-artifacts/staged-libs-osx-universal/macos" ]; then
+            echo "Copying macOS libraries..."
+            mkdir -p release_bundle/macos
+            cp -r downloaded-artifacts/staged-libs-osx-universal/macos/* release_bundle/macos/
+          else
+            echo "Warning: macOS artifact directory not found."
+          fi
+          
+          echo "Final release_bundle structure:"
+          ls -R release_bundle
+
+      - name: Create ZIP archive
+        shell: bash
+        run: |
+          zip -r SDL3_Native_Libs.zip release_bundle
+          
+      - name: Upload Release ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL3-Native-Libs-Bundle
+          path: SDL3_Native_Libs.zip
+          if-no-files-found: error
