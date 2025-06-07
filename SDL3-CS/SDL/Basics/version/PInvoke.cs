@@ -48,11 +48,12 @@ public static partial class SDL
     private static partial IntPtr SDL_GetRevision();
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetRevision(void);</code>
     /// <summary>
-    /// <para>Get the code revision of SDL that is linked against your program.</para>
-    /// <para>This value is the revision of the code you are linked with and may be
+    /// <para>Get the code revision of the SDL library that is linked against your
+    /// program.</para>
+    /// <para>This value is the revision of the code you are linking against and may be
     /// different from the code you are compiling with, which is found in the
     /// constant SDL_REVISION.</para>
-    /// <para>The revision is arbitrary string (a hash value) uniquely identifying the
+    /// <para>The revision is an arbitrary string (a hash value) uniquely identifying the
     /// exact revision of the SDL library in use, and is only useful in comparing
     /// against other revisions. It is NOT an incrementing number.</para>
     /// <para>If SDL wasn't built from a git repository with the appropriate tools, this

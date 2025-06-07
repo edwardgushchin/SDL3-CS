@@ -88,6 +88,8 @@ public static partial class SDL
     /// <para>By default <see cref="LogPriority.Info"/> and below have no prefix, and
     /// <see cref="LogPriority.Warn"/> and higher have a prefix showing their priority, e.g.
     /// <c>"WARNING: "</c>.</para>
+    /// <para>This function makes a copy of its string argument, <b>prefix</b>, so it is not
+    /// necessary to keep the value of **prefix** alive after the call returns.</para>
     /// </summary>
     /// <param name="priority">the <see cref="LogPriority"/> to modify.</param>
     /// <param name="prefix">the prefix to use for that log priority, or <c>null</c> to use no

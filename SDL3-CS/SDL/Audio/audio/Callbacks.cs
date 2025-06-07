@@ -123,4 +123,31 @@ public static partial class SDL
     /// <seealso cref="SetAudioIterationCallbacks"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void AudioIterationCallback(IntPtr userdata, uint devid, bool start);
+    
+    
+    /// <code>typedef void (SDLCALL *SDL_AudioStreamDataCompleteCallback)(void *userdata, const void *buf, int buflen);</code>
+    /// <summary>
+    /// <para>A callback that fires for completed <see cref="PutAudioStreamDataNoCopy"/> data.</para>
+    /// <para>When using <see cref="PutAudioStreamDataNoCopy"/> to provide data to an
+    /// SDL_AudioStream, it's not safe to dispose of the data until the stream has
+    /// completely consumed it. Often times it's difficult to know exactly when
+    /// this has happened.</para>
+    /// <para>This callback fires once when the stream no longer needs the buffer,
+    /// allowing the app to easily free or reuse it.</para>
+    /// </summary>
+    /// <param name="userdata">an opaque pointer provided by the app for their personal
+    /// use.</param>
+    /// <param name="buflen">the size of buffer, in bytes, provided to
+    /// <see cref="PutAudioStreamDataNoCopy"/>.</param>
+    /// <param name="buf">the pointer provided to <see cref="PutAudioStreamDataNoCopy"/>.</param>
+    /// <threadsafety>This callbacks may run from any thread, so if you need to
+    /// protect shared data, you should use SDL_LockAudioStream to
+    /// serialize access; this lock will be held before your callback
+    /// is called, so your callback does not need to manage the lock
+    /// explicitly.</threadsafety>
+    /// <since>This datatype is available since SDL 3.4.0.</since>
+    /// <seealso cref="SetAudioStreamGetCallback"/>
+    /// <seealso cref="SetAudioStreamPutCallback"/>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void AudioStreamDataCompleteCallback(IntPtr userdata, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int buflen);
 }
