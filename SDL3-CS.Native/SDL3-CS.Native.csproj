@@ -9,11 +9,11 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.14.0</Version>
+        <Version>3.2.16.0</Version>
         <Title>SDL3 C# Native library</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is native library for SDL3-CS 3.2.14.x</Description>
+        <Description>This is native library for SDL3-CS 3.2.16.x</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
