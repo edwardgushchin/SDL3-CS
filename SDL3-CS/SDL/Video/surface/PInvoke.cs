@@ -1674,10 +1674,11 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
     /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
-    /// copied, may not be <c>null</c>.</param>
+    /// copied, or NULL to copy the entire surface..</param>
     /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
     /// <param name="dstrect">the <see cref="Rect"/> structure representing the target rectangle in
-    /// the destination surface, may not be <c>null</c>.</param>
+    /// the destination surface, or NULL to fill the entire
+    /// destination surface.</param>
     /// <param name="scaleMode">the <see cref="ScaleMode"/> to be used.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
@@ -1688,6 +1689,75 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StretchSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
     [return: MarshalAs(UnmanagedType.I1)] 
     public static partial bool StretchSurface(IntPtr src, in Rect srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);</code>
+    /// <summary>
+    /// Perform a stretched pixel copy from one surface to another.
+    /// </summary>
+    /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
+    /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
+    /// copied, or NULL to copy the entire surface..</param>
+    /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
+    /// <param name="dstrect">the <see cref="Rect"/> structure representing the target rectangle in
+    /// the destination surface, or NULL to fill the entire
+    /// destination surface.</param>
+    /// <param name="scaleMode">the <see cref="ScaleMode"/> to be used.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>Only one thread should be using the <c>src</c> and <c>dst</c> surfaces
+    /// at any given time.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="BlitSurfaceScaled(IntPtr, IntPtr, IntPtr, IntPtr, ScaleMode)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StretchSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
+    [return: MarshalAs(UnmanagedType.I1)] 
+    public static partial bool StretchSurface(IntPtr src, IntPtr srcrect, IntPtr dst, in Rect dstrect, ScaleMode scaleMode);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);</code>
+    /// <summary>
+    /// Perform a stretched pixel copy from one surface to another.
+    /// </summary>
+    /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
+    /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
+    /// copied, or NULL to copy the entire surface..</param>
+    /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
+    /// <param name="dstrect">the <see cref="Rect"/> structure representing the target rectangle in
+    /// the destination surface, or NULL to fill the entire
+    /// destination surface.</param>
+    /// <param name="scaleMode">the <see cref="ScaleMode"/> to be used.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>Only one thread should be using the <c>src</c> and <c>dst</c> surfaces
+    /// at any given time.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="BlitSurfaceScaled(IntPtr, IntPtr, IntPtr, IntPtr, ScaleMode)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StretchSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
+    [return: MarshalAs(UnmanagedType.I1)] 
+    public static partial bool StretchSurface(IntPtr src, in Rect srcrect, IntPtr dst, IntPtr dstrect, ScaleMode scaleMode);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);</code>
+    /// <summary>
+    /// Perform a stretched pixel copy from one surface to another.
+    /// </summary>
+    /// <param name="src">the <see cref="Surface"/> structure to be copied from.</param>
+    /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be
+    /// copied, or NULL to copy the entire surface..</param>
+    /// <param name="dst">the <see cref="Surface"/> structure that is the blit target.</param>
+    /// <param name="dstrect">the <see cref="Rect"/> structure representing the target rectangle in
+    /// the destination surface, or NULL to fill the entire
+    /// destination surface.</param>
+    /// <param name="scaleMode">the <see cref="ScaleMode"/> to be used.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>Only one thread should be using the <c>src</c> and <c>dst</c> surfaces
+    /// at any given time.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="BlitSurfaceScaled(IntPtr, IntPtr, IntPtr, IntPtr, ScaleMode)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StretchSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
+    [return: MarshalAs(UnmanagedType.I1)] 
+    public static partial bool StretchSurface(IntPtr src, IntPtr srcrect, IntPtr dst, IntPtr dstrect, ScaleMode scaleMode);
 
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);</code>

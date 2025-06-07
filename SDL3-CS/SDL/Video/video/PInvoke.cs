@@ -1135,15 +1135,16 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);</code>
     /// <summary>
     /// <para>Set the icon for a window.</para>
-    /// <para>If this function is passed a surface with alternate representations, the
-    /// surface will be interpreted as the content to be used for 100% display
-    /// scale, and the alternate representations will be used for high DPI
-    /// situations. For example, if the original surface is 32x32, then on a 2x
-    /// macOS display or 200% display scale on Windows, a 64x64 version of the
-    /// image will be used, if available. If a matching version of the image isn't
-    /// available, the closest larger size image will be downscaled to the
-    /// appropriate size and be used instead, if available. Otherwise, the closest
-    /// smaller image will be upscaled and be used instead.</para>
+    /// <para>If this function is passed a surface with alternate representations added
+    /// using <see cref="AddSurfaceAlternateImage"/>, the surface will be interpreted as
+    /// the content to be used for 100% display scale, and the alternate
+    /// representations will be used for high DPI situations. For example, if the
+    /// original surface is 32x32, then on a 2x macOS display or 200% display scale
+    /// on Windows, a 64x64 version of the image will be used, if available. If a
+    /// matching version of the image isn't available, the closest larger size
+    /// image will be downscaled to the appropriate size and be used instead, if
+    /// available. Otherwise, the closest smaller image will be upscaled and be
+    /// used instead.</para>
     /// </summary>
     /// <param name="window">the window to change.</param>
     /// <param name="icon">an <see cref="Surface"/> structure containing the icon for the window.</param>
@@ -1151,6 +1152,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="AddSurfaceAlternateImage"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetWindowIcon(IntPtr window, IntPtr icon);

@@ -1413,6 +1413,19 @@ public static partial class SDL
         /// </summary>
         public const string JoystickHIDAPI8BITDO = "SDL_JOYSTICK_HIDAPI_8BITDO";
         
+        
+        /// <summary>
+        /// <para>A variable controlling whether the HIDAPI driver for Flydigi controller
+        /// should be used.</para>
+        /// <para>This variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><b>"0"</b> - HIDAPI driver is not used.</item>
+        /// <item><b>"1"</b> - HIDAPI driver is used.</item>
+        /// </list>
+        /// </summary>
+        public const string JoystickHIDAPIFLYDIGI  = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
+        
+        
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for Nintendo Switch
         /// controllers should be used.</para>
@@ -1699,8 +1712,8 @@ public static partial class SDL
         /// for better handling XInput-capable devices.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: RAWINPUT drivers are not used.</item>
-        /// <item><c>"1"</c>: RAWINPUT drivers are used. (default)</item>
+        /// <item><c>"0"</c>: RAWINPUT drivers are not used. (default)</item>
+        /// <item><c>"1"</c>: RAWINPUT drivers are used.</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>

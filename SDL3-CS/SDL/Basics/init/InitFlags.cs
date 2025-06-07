@@ -50,8 +50,7 @@ public static partial class SDL
         Video =     0x00000020u,
         
         /// <summary>
-        /// <see cref="Joystick"/> implies <see cref="Events"/>, should be initialized on the same thread as
-        /// <see cref="Video"/> on Windows if you don't set <see cref="Hints.JoystickThread"/>
+        /// <see cref="Joystick"/> implies <see cref="Events"/>
         /// </summary>
         Joystick =  0x00000200u,
         Haptic =    0x00001000u,

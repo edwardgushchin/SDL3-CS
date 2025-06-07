@@ -31,6 +31,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Storage * SDLCALL SDL_OpenTitleStorage(const char *override, SDL_PropertiesID props);</code>
     /// <summary>
     /// Opens up a read-only container for the application's filesystem.
+    /// <para>By default, <see cref="OpenTitleStorage"/> uses the generic storage implementation.
+    /// When the path override is not provided, the generic implementation will use
+    /// the output of <see cref="GetBasePath"/> as the base path.</para>
     /// </summary>
     /// <param name="override">a path to override the backend's default title root.</param>
     /// <param name="props">a property list that may contain backend-specific information.</param>

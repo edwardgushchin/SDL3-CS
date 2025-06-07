@@ -382,15 +382,16 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);</code>
     /// <summary>
     /// <para>Create a color cursor.</para>
-    /// <para>If this function is passed a surface with alternate representations, the
-    /// surface will be interpreted as the content to be used for 100% display
-    /// scale, and the alternate representations will be used for high DPI
-    /// situations. For example, if the original surface is 32x32, then on a 2x
-    /// macOS display or 200% display scale on Windows, a 64x64 version of the
-    /// image will be used, if available. If a matching version of the image isn't
-    /// available, the closest larger size image will be downscaled to the
-    /// appropriate size and be used instead, if available. Otherwise, the closest
-    /// smaller image will be upscaled and be used instead.</para>
+    /// <para>If this function is passed a surface with alternate representations added
+    /// with <see cref="AddSurfaceAlternateImage"/>, the surface will be interpreted as the
+    /// content to be used for 100% display scale, and the alternate
+    /// representations will be used for high DPI situations. For example, if the
+    /// original surface is 32x32, then on a 2x macOS display or 200% display scale
+    /// on Windows, a 64x64 version of the image will be used, if available. If a
+    /// matching version of the image isn't available, the closest larger size
+    /// image will be downscaled to the appropriate size and be used instead, if
+    /// available. Otherwise, the closest smaller image will be upscaled and be
+    /// used instead.</para>
     /// </summary>
     /// <param name="surface">an <see cref="Surface"/> structure representing the cursor image.</param>
     /// <param name="hotX">the x position of the cursor hot spot.</param>
@@ -399,6 +400,7 @@ public static partial class SDL
     /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="AddSurfaceAlternateImage"/>
     /// <seealso cref="CreateCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>

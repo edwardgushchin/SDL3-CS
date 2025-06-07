@@ -32,6 +32,8 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="GPUShaderFormat"/>
+    /// <seealso cref="GPUShaderStage"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUShaderCreateInfo
     {

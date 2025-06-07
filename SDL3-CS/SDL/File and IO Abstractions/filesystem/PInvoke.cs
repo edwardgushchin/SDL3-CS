@@ -287,10 +287,10 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);</code>
     /// <summary>
     /// <para>Files are filtered out if they don't match the string in `pattern`, which
-    /// may contain wildcard characters '\*' (match everything) and '?' (match one
+    /// may contain wildcard characters `*` (match everything) and `?` (match one
     /// character). If pattern is NULL, no filtering is done and all results are
     /// returned. Subdirectories are permitted, and are specified with a path
-    /// separator of '/'. Wildcard characters '\*' and '?' never match a path
+    /// separator of `/`. Wildcard characters `*` and `?` never match a path
     /// separator.</para>
     /// <para><c>flags</c> may be set to <see cref="GlobFlags.CaseInsensitive"/> to make the pattern matching
     /// case-insensitive.</para>
