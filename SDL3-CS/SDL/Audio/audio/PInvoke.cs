@@ -1068,7 +1068,7 @@ public static partial class SDL
     /// <seealso cref="GetAudioStreamQueued"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamDataNoCopy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_PutAudioStreamDataNoCopy(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata);
+    public static partial bool PutAudioStreamDataNoCopy(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata);
     
     
     
