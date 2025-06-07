@@ -8,25 +8,26 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
-        <PackageReleaseNotes>
-            This is a stable bugfix release, with the following changes:
+        <PackageReleaseNotes>This is a stable bugfix release, with the following changes:
 
-            - Fixed a crash querying the name of logical audio devices
-            - Fixed a rare crash when rumbling controllers on Windows
-            - Fixed a TLS related black screen issue when pulseaudio audio output is active
-            - Reverted dead key reporting on X11, which introduced bugs with IME handling
-            - Fixed incorrect destination usage mode for storage buffer read/write bindings on Vulkan
-            - Implemented SDL_HINT_AUDIO_DEVICE_SAMPLE_FRAMES on Android
-            - Fixed audio playback on PS Vita
-        </PackageReleaseNotes>
+- Fixed a rare crash in SDL_WaitEvent()
+- Fixed entering fullscreen mode on some X11 window managers
+- Fixed mouse click coordinates on macOS Catalina
+- Fixed fullscreen windows occasionally losing mouse focus on macOS
+- Fixed touch not being delivered as mouse events by default on PS Vita
+- Fixed hang processing mouse input on Wayland
+- Fixed occasionally corrupt text input on Wayland
+- Respect the application text input area on Wayland
+- Use XInput instead of raw input for controllers by default on Windows
+- Fixed building for XBox</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.14.2</Version>
+        <Version>3.2.16.0</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL 3.2.14</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.2.16</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
