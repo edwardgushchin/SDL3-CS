@@ -28,7 +28,7 @@ namespace SDL3;
 public partial class ShaderCross
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct SPIRVInfo
+    public struct SPIRVInfo : IDisposable
     {
         /// <summary>
         /// The SPIRV bytecode.
@@ -40,12 +40,16 @@ public partial class ShaderCross
         /// </summary>
         public UIntPtr ByteCodeSize;
 
-        private IntPtr entryPoint;
-
+        private IntPtr entrypoint;
+        
         /// <summary>
         /// The entry point function name for the shader in UTF-8.
         /// </summary>
-        public string EntryPoint => Marshal.PtrToStringUTF8(entryPoint)!;
+        public string Entrypoint
+        {
+            get => Marshal.PtrToStringUTF8(entrypoint)!;
+            set => entrypoint = SDL.StringToPointer(value);
+        }
 
         /// <summary>
         /// The shader stage to transpile the shader with.
@@ -64,11 +68,22 @@ public partial class ShaderCross
         /// <summary>
         /// A UTF-8 name to associate with the shader. Optional, can be NULL.
         /// </summary>
-        public string? Name =>  Marshal.PtrToStringUTF8(name);
+        public string? Name
+        {
+            get => Marshal.PtrToStringUTF8(name);
+            set => name = SDL.StringToPointer(value);
+        }
 
         /// <summary>
         /// A properties ID for extensions. Should be 0 if no extensions are needed.
         /// </summary>
-        public uint Props; 
+        public uint Props;
+
+
+        public void Dispose()
+        {
+            Marshal.FreeHGlobal(entrypoint);
+            Marshal.FreeHGlobal(name);
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace SDL3;
 public partial class ShaderCross
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct HLSLInfo
+    public struct HLSLInfo : IDisposable
     {
         private IntPtr source;
         
@@ -62,8 +62,6 @@ public partial class ShaderCross
             get => Marshal.PtrToStringUTF8(include_dir);
             set => include_dir = SDL.StringToPointer(value);
         }
-        
-        private IntPtr define;
         
         /// <summary>
         /// An array of defines. Optional, can be NULL. If not NULL, must be terminated with a fully NULL define struct.
@@ -101,5 +99,13 @@ public partial class ShaderCross
         /// A properties ID for extensions. Should be 0 if no extensions are needed.
         /// </summary>
         public uint Props;
+
+        public void Dispose()
+        {
+            Marshal.FreeHGlobal(source);
+            Marshal.FreeHGlobal(entrypoint);
+            Marshal.FreeHGlobal(include_dir);
+            Marshal.FreeHGlobal(name);
+        }
     }
 }
