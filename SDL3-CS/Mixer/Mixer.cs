@@ -44,5 +44,5 @@ namespace SDL3;
 /// </summary>
 public partial class Mixer
 {
-    private const string MixerLibrary = "SDL3_mixer";
+    private const string MixerLibrary = "SDL2_mixer";
 }
