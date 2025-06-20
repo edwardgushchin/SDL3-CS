@@ -28,37 +28,37 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data);</code>
-    /// <summary>
-    /// <para>Create a new thread with a default stack size.</para>
-    /// <para>This is a convenience function, equivalent to calling
-    /// <see cref="CreateThreadWithProperties"/> with the following properties set:</para>
-    /// <list type="bullet">
-    ///	<item><see cref="Props.ThreadCreateEntryFunctionPointer"/>: <c>fn</c></item>
-    /// <item><see cref="Props.ThreadCreateNameString"/>: <c>name</c></item>
-    /// <item><see cref="Props.ThreadCreateUserdataPointer"/>: <c>data</c></item>
-    /// </list>
-    /// <para>Note that this "function" is actually a macro that calls an internal
-    /// function with two extra parameters not listed here; they are hidden through
-    /// preprocessor macros and are needed to support various C runtimes at the
-    /// point of the function call. Language bindings that aren't using the C
-    /// headers will need to deal with this.</para>
-    /// <para>Usually, apps should just call this function the same way on every platform
-    /// and let the macros hide the details.</para>
-    /// </summary>
-    /// <param name="fn">the <see cref="ThreadFunction"/> function to call in the new thread.</param>
-    /// <param name="name">the name of the thread.</param>
-    /// <param name="data">a pointer that is passed to <c>fn</c>.</param>
-    /// <returns>an opaque pointer to the new thread object on success, <c>null</c> if the
-    /// new thread could not be created; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateThreadWithProperties"/>
-    /// <seealso cref="WaitThread"/>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial IntPtr CreateThread(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data);
-    
-    
+	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data);</code>
+	/// <summary>
+	/// <para>Create a new thread with a default stack size.</para>
+	/// <para>This is a convenience function, equivalent to calling
+	/// <see cref="CreateThreadWithProperties"/> with the following properties set:</para>
+	/// <list type="bullet">
+	///	<item><see cref="Props.ThreadCreateEntryFunctionPointer"/>: <c>fn</c></item>
+	/// <item><see cref="Props.ThreadCreateNameString"/>: <c>name</c></item>
+	/// <item><see cref="Props.ThreadCreateUserdataPointer"/>: <c>data</c></item>
+	/// </list>
+	/// <para>Note that this "function" is actually a macro that calls an internal
+	/// function with two extra parameters not listed here; they are hidden through
+	/// preprocessor macros and are needed to support various C runtimes at the
+	/// point of the function call. Language bindings that aren't using the C
+	/// headers will need to deal with this.</para>
+	/// <para>Usually, apps should just call this function the same way on every platform
+	/// and let the macros hide the details.</para>
+	/// </summary>
+	/// <param name="fn">the <see cref="ThreadFunction"/> function to call in the new thread.</param>
+	/// <param name="name">the name of the thread.</param>
+	/// <param name="data">a pointer that is passed to <c>fn</c>.</param>
+	/// <returns>an opaque pointer to the new thread object on success, <c>null</c> if the
+	/// new thread could not be created; call <see cref="GetError"/> for more
+	/// information.</returns>
+	/// <since>This function is available since SDL 3.2.0</since>
+	/// <seealso cref="CreateThreadWithProperties"/>
+	/// <seealso cref="WaitThread"/>
+	public static IntPtr CreateThread(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data) => 
+		CreateThreadRuntime(fn, name, data, null, null);
+
+
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadWithProperties(SDL_PropertiesID props);</code>
 	/// <summary>
 	/// <para>Create a new thread with with the specified properties.</para>
@@ -113,8 +113,8 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial IntPtr CreateThreadWithProperties(uint props);
+	public static IntPtr CreateThreadWithProperties(uint props) =>
+		CreateThreadWithPropertiesRuntime(props, null, null);
 	
 	
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadRuntime(SDL_ThreadFunction fn, const char *name, void *data, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);</code>
