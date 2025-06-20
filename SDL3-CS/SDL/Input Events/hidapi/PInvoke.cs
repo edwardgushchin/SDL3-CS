@@ -23,6 +23,7 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace SDL3;
 
@@ -129,7 +130,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_open"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr HIDOpen(ushort vendorId, ushort productId, [MarshalAs(UnmanagedType.LPUTF8Str)] string? serialNumber);
+    public static partial IntPtr HIDOpen(ushort vendorId, ushort productId,  [MarshalUsing(typeof(WCharStringMarshaller))] string? serialNumber);
     
     
     /// <code>extern SDL_DECLSPEC SDL_hid_device * SDLCALL SDL_hid_open_path(const char *path);</code>
@@ -325,7 +326,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_manufacturer_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetManufacturerString(IntPtr dev, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, UIntPtr maxlen);
+    public static partial int HIDGetManufacturerString(IntPtr dev, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
     
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
@@ -338,7 +339,7 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_product_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetProductString(IntPtr dev, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, UIntPtr maxlen);
+    public static partial int HIDGetProductString(IntPtr dev, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
     
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
@@ -352,7 +353,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_serial_number_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetSerialNumberString(IntPtr dev, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, UIntPtr maxlen);
+    public static partial int HIDGetSerialNumberString(IntPtr dev, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
     
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);</code>
@@ -367,7 +368,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_indexed_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetIndexedString(IntPtr dev, int stringIndex, [MarshalAs(UnmanagedType.LPUTF8Str)] out string @string, UIntPtr maxlen);
+    public static partial int HIDGetIndexedString(IntPtr dev, int stringIndex, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
     
     
     /// <code>extern SDL_DECLSPEC SDL_hid_device_info * SDLCALL SDL_hid_get_device_info(SDL_hid_device *dev);</code>
