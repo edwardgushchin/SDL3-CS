@@ -71,6 +71,16 @@ public static class WCharStringMarshaller
 
         public static void Free(IntPtr ptr) => Marshal.FreeHGlobal(ptr);
     }
+    
+    // The size in bytes of a wide character for the current runtime
+    public static UIntPtr WCharSize
+    {
+        get => (UIntPtr)(
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 
+                2 : 4
+        );
+    }
+        
 
     // Выбираем реализацию в зависимости от платформы
     public static IntPtr ConvertToUnmanaged(string? managed)
