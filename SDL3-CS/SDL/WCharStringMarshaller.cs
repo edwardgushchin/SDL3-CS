@@ -73,11 +73,12 @@ public static class WCharStringMarshaller
     }
     
     // The size in bytes of a wide character for the current runtime
-    public static UIntPtr WCharSize {
+    public static UIntPtr WCharSize
+    {
         get => (UIntPtr)(
             RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 
                 2 : 4
-            );
+        );
     }
         
 
