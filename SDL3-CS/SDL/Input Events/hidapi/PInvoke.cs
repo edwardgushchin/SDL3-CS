@@ -327,7 +327,8 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static int HIDGetManufacturerString(IntPtr dev, out string @string, UIntPtr maxlen) {
+    public static int HIDGetManufacturerString(IntPtr dev, out string @string, UIntPtr maxlen)
+    {
         // Allocate a buffer for maxlen characters
         var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
         var buf = Marshal.AllocHGlobal((int)maxbytes);
@@ -358,7 +359,8 @@ public static partial class SDL
     /// <param name="maxlen">the length of the buffer in multiples of wchar_t.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    public static int HIDGetProductString(IntPtr dev, out string @string, UIntPtr maxlen) {
+    public static int HIDGetProductString(IntPtr dev, out string @string, UIntPtr maxlen)
+    {
         // Allocate a buffer for maxlen characters
         var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
         var buf = Marshal.AllocHGlobal((int)maxbytes);
@@ -390,7 +392,8 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static int HIDGetSerialNumberString(IntPtr dev, out string @string, UIntPtr maxlen) {
+    public static int HIDGetSerialNumberString(IntPtr dev, out string @string, UIntPtr maxlen)
+    {
         // Allocate a buffer for maxlen characters
         var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
         var buf = Marshal.AllocHGlobal((int)maxbytes);
@@ -423,7 +426,8 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static int HIDGetIndexedString(IntPtr dev, int stringIndex, out string @string, UIntPtr maxlen) {
+    public static int HIDGetIndexedString(IntPtr dev, int stringIndex, out string @string, UIntPtr maxlen)
+    {
         // Allocate a buffer for maxlen characters
         var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
         var buf = Marshal.AllocHGlobal((int)maxbytes);
