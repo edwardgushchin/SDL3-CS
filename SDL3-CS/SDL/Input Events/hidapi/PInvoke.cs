@@ -315,6 +315,8 @@ public static partial class SDL
     public static partial int HIDClose(IntPtr dev);
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_manufacturer_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_manufacturer_string(IntPtr dev, IntPtr @string, UIntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_manufacturer_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
     /// <summary>
     /// Get The Manufacturer String from a HID device.
@@ -325,10 +327,29 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_manufacturer_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetManufacturerString(IntPtr dev, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
+    public static int HIDGetManufacturerString(IntPtr dev, out string @string, UIntPtr maxlen)
+    {
+        // Allocate a buffer for maxlen characters
+        var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
+        var buf = Marshal.AllocHGlobal((int)maxbytes);
+        maxlen = maxbytes / WCharStringMarshaller.WCharSize; // In case the previous multiplication overflowed
+        
+        try
+        {
+            // Call original function to populate the buffer
+            var result = SDL_hid_get_manufacturer_string(dev, buf, maxlen);
+            // Convert contents of buffer into managed string
+            @string = WCharStringMarshaller.ConvertToManaged(buf)!;
+            return result;
+        }
+        finally {
+            Marshal.FreeHGlobal(buf);
+        }
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_product_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_product_string(IntPtr dev, IntPtr @string, UIntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
     /// <summary>
     /// Get The Product String from a HID device.
@@ -338,10 +359,29 @@ public static partial class SDL
     /// <param name="maxlen">the length of the buffer in multiples of wchar_t.</param>
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_product_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetProductString(IntPtr dev, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
+    public static int HIDGetProductString(IntPtr dev, out string @string, UIntPtr maxlen)
+    {
+        // Allocate a buffer for maxlen characters
+        var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
+        var buf = Marshal.AllocHGlobal((int)maxbytes);
+        maxlen = maxbytes / WCharStringMarshaller.WCharSize; // In case the previous multiplication overflowed
+        
+        try
+        {
+            // Call original function to populate the buffer
+            var result = SDL_hid_get_product_string(dev, buf, maxlen);
+            // Convert contents of buffer into managed string
+            @string = WCharStringMarshaller.ConvertToManaged(buf)!;
+            return result;
+        }
+        finally {
+            Marshal.FreeHGlobal(buf);
+        }
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_serial_number_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_serial_number_string(IntPtr dev, IntPtr @string, UIntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);</code>
     /// <summary>
     /// Get The Serial Number String from a HID device.
@@ -352,10 +392,29 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_serial_number_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetSerialNumberString(IntPtr dev, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
+    public static int HIDGetSerialNumberString(IntPtr dev, out string @string, UIntPtr maxlen)
+    {
+        // Allocate a buffer for maxlen characters
+        var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
+        var buf = Marshal.AllocHGlobal((int)maxbytes);
+        maxlen = maxbytes / WCharStringMarshaller.WCharSize; // In case the previous multiplication overflowed
+        
+        try
+        {
+            // Call original function to populate the buffer
+            var result = SDL_hid_get_serial_number_string(dev, buf, maxlen);
+            // Convert contents of buffer into managed string
+            @string = WCharStringMarshaller.ConvertToManaged(buf)!;
+            return result;
+        }
+        finally {
+            Marshal.FreeHGlobal(buf);
+        }
+    }
     
     
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_indexed_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_indexed_string(IntPtr dev, int stringIndex, IntPtr @string, UIntPtr maxlen);
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);</code>
     /// <summary>
     /// Get a string from a HID device, based on its string index.
@@ -367,8 +426,25 @@ public static partial class SDL
     /// <returns>0 on success or a negative error code on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_indexed_string"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int HIDGetIndexedString(IntPtr dev, int stringIndex, [MarshalUsing(typeof(WCharStringMarshaller))] out string @string, UIntPtr maxlen);
+    public static int HIDGetIndexedString(IntPtr dev, int stringIndex, out string @string, UIntPtr maxlen)
+    {
+        // Allocate a buffer for maxlen characters
+        var maxbytes = unchecked(WCharStringMarshaller.WCharSize * maxlen);
+        var buf = Marshal.AllocHGlobal((int)maxbytes);
+        maxlen = maxbytes / WCharStringMarshaller.WCharSize; // In case the previous multiplication overflowed
+        
+        try
+        {
+            // Call original function to populate the buffer
+            var result = SDL_hid_get_indexed_string(dev, stringIndex, buf, maxlen);
+            // Convert contents of buffer into managed string
+            @string = WCharStringMarshaller.ConvertToManaged(buf)!;
+            return result;
+        }
+        finally {
+            Marshal.FreeHGlobal(buf);
+        }
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_hid_device_info * SDLCALL SDL_hid_get_device_info(SDL_hid_device *dev);</code>

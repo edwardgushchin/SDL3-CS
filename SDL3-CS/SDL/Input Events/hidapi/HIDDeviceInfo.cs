@@ -52,7 +52,7 @@ public static partial class SDL
         /// <summary>
         /// Serial Number
         /// </summary>
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string SerialNumber;
+        public IntPtr SerialNumber;
         
         /// <summary>
         /// Device Release Number in binary-coded decimal,
@@ -63,12 +63,12 @@ public static partial class SDL
         /// <summary>
         /// Manufacturer String
         /// </summary>
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string ManufacturerString;
+        public IntPtr ManufacturerString;
         
         /// <summary>
         /// Product string
         /// </summary>
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string ProductString;
+        public IntPtr ProductString;
         
         /// <summary>
         /// Usage Page for this Device/Interface
