@@ -71,7 +71,7 @@ public static partial class SDL
         /// <summary>
         /// SDL virtual key code
         /// </summary>
-        public Keycode Key;
+        public Keycode Keycode;
         
         /// <summary>
         /// current key modifiers
