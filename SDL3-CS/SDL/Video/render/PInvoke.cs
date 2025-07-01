@@ -2174,9 +2174,16 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderFillRects"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderFillRect(IntPtr renderer, FRect rect);
+    public static bool RenderFillRect(IntPtr renderer, FRect? rect)
+    {
+        var rectSrc = rect.GetValueOrDefault();
+
+        unsafe
+        {
+            var pSrc = rect.HasValue ? (IntPtr)Unsafe.AsPointer(ref rectSrc) : IntPtr.Zero;
+            return RenderFillRect(renderer, pSrc);
+        }
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
@@ -2239,7 +2246,7 @@ public static partial class SDL
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect);
+    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, FRect srcrect, IntPtr dstrect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
@@ -2261,7 +2268,7 @@ public static partial class SDL
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect);
+    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, FRect dstrect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
@@ -2283,7 +2290,7 @@ public static partial class SDL
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
+    public static partial bool RenderTexture(IntPtr renderer, IntPtr texture, FRect srcrect, FRect dstrect);
     #endregion
     
     
@@ -2512,6 +2519,8 @@ public static partial class SDL
     public static partial bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
     #endregion
     
+    
+    #region RenderTextureAffine
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
@@ -2960,6 +2969,8 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down);
     
+    #endregion
+    
     
     #region RenderTextureTiled
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
@@ -3009,61 +3020,19 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, FRect srcrect, float scale, IntPtr dstrect);
-    
-    
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
-    /// <summary>
-    /// <para>Tile a portion of the texture to the current rendering target at subpixel
-    /// precision.</para>
-    /// <para>The pixels in <c>srcrect</c> will be repeated as many times as needed to
-    /// completely fill <c>dstrect</c>.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
-    /// texture.</param>
-    /// <param name="scale">the scale used to transform srcrect into the destination
-    /// rectangle, e.g. a 32x32 texture with a scale of 2 would fill
-    /// 64x64 tiles.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, FRect dstrect);
-    
-    
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
-    /// <summary>
-    /// <para>Tile a portion of the texture to the current rendering target at subpixel
-    /// precision.</para>
-    /// <para>The pixels in <c>srcrect</c> will be repeated as many times as needed to
-    /// completely fill <c>dstrect</c>.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
-    /// texture.</param>
-    /// <param name="scale">the scale used to transform srcrect into the destination
-    /// rectangle, e.g. a 32x32 texture with a scale of 2 would fill
-    /// 64x64 tiles.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, FRect srcrect, float scale, FRect dstrect);
+    public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, FRect? srcrect, float scale, FRect? dstrect)
+    {
+        var rectSrc = srcrect.GetValueOrDefault();
+        var rectDst = dstrect.GetValueOrDefault();
+
+        unsafe
+        {
+            var pSrc = srcrect.HasValue ? (IntPtr)Unsafe.AsPointer(ref rectSrc) : IntPtr.Zero;
+            var pDst = dstrect.HasValue ? (IntPtr)Unsafe.AsPointer(ref rectDst) : IntPtr.Zero;
+
+            return RenderTextureTiled(renderer, texture, pSrc, scale, pDst);
+        }
+    }
     #endregion
     
     
@@ -3199,6 +3168,7 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, FRect dstrect);
     #endregion
+    
     
     #region RenderTexture9GridTiled
     
@@ -3347,6 +3317,9 @@ public static partial class SDL
     
     #endregion
     
+    
+    #region RenderGeometry
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
     /// <summary>
     /// Render a list of triangles, optionally using a texture and indices into the
@@ -3395,7 +3368,9 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
-
+    
+    #endregion
+    
     
     #region RenderGeometryRaw
     
@@ -3541,6 +3516,8 @@ public static partial class SDL
     #endregion
     
     
+    #region SetRenderTextureAddressMode
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode);</code>
     /// <summary>
     /// <para>Set the texture addressing mode used in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</para>
@@ -3580,6 +3557,7 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRenderTextureAddressMode(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode);
     
+    #endregion
     
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderReadPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_RenderReadPixels(IntPtr renderer, IntPtr rect);
