@@ -3011,7 +3011,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, FRect srcrect, float scale, IntPtr dstrect);
+    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, IntPtr dstrect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
@@ -3037,7 +3037,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, FRect dstrect);
+    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, in FRect dstrect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
@@ -3063,7 +3063,7 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, FRect srcrect, float scale, FRect dstrect);
+    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect);
     #endregion
     
     
