@@ -2176,7 +2176,7 @@ public static partial class SDL
     /// <seealso cref="RenderFillRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderFillRect(IntPtr renderer, FRect rect);
+    public static partial bool RenderFillRect(IntPtr renderer, in FRect rect);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
