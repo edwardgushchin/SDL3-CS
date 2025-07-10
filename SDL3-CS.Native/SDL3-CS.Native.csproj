@@ -35,13 +35,29 @@
             <Pack>True</Pack>
             <PackagePath>runtimes\win-x64\native\</PackagePath>
         </None>
-        <None Include="lib\win-x86\*">
+        <!--<None Include="lib\win-x86\*">
             <Pack>True</Pack>
             <PackagePath>runtimes\win-x86\native\</PackagePath>
-        </None>
+        </None>-->
         <None Include="lib\win-arm64\*">
             <Pack>True</Pack>
             <PackagePath>runtimes\win-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\linux-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\linux-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\linux-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\linux-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\osx-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\osx-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\osx-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\osx-arm64\native\</PackagePath>
         </None>
     </ItemGroup>
 
