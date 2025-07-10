@@ -3017,6 +3017,58 @@ public static partial class SDL
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, IntPtr dstrect);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
+    /// <summary>
+    /// <para>Tile a portion of the texture to the current rendering target at subpixel
+    /// precision.</para>
+    /// <para>The pixels in <c>srcrect</c> will be repeated as many times as needed to
+    /// completely fill <c>dstrect</c>.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="scale">the scale used to transform srcrect into the destination
+    /// rectangle, e.g. a 32x32 texture with a scale of 2 would fill
+    /// 64x64 tiles.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, in FRect dstrect);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
+    /// <summary>
+    /// <para>Tile a portion of the texture to the current rendering target at subpixel
+    /// precision.</para>
+    /// <para>The pixels in <c>srcrect</c> will be repeated as many times as needed to
+    /// completely fill <c>dstrect</c>.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="scale">the scale used to transform srcrect into the destination
+    /// rectangle, e.g. a 32x32 texture with a scale of 2 would fill
+    /// 64x64 tiles.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect);  
     #endregion
     
