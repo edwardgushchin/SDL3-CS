@@ -1,0 +1,36 @@
+name: Build native libs
+on:
+  workflow_dispatch:
+    inputs:
+      sdl-tag:
+        description: "The SDL release tag to build"
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build SDL for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-13, macos-latest]
+
+    steps:
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: 'libsdl-org/SDL'
+          submodules: recursive
+          ref: tags/${{ inputs.sdl-tag }}
+
+      - name: Prepare CMake
+        run: |
+          cd SDL
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build SDL
+        run: cmake --build . --config Release
+      
+    
