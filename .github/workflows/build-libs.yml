@@ -26,7 +26,6 @@ jobs:
 
       - name: Prepare CMake
         run: |
-          cd SDL
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
