@@ -21,6 +21,7 @@ jobs:
         with:
           repository: 'libsdl-org/SDL'
           submodules: recursive
+          fetch-depth: 0
           ref: tags/${{ inputs.sdl-tag }}
 
       - name: Prepare CMake
