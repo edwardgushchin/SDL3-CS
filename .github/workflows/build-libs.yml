@@ -30,11 +30,11 @@ jobs:
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build SDL ${{ sdl-setup.version }}
+      - name: Build SDL ${{ steps.sdl-setup.outputs.version }}
         run: cmake --build build --config Release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL-${{ sdl-setup.version}}-${{ matrix.os }}
+          name: SDL-${{ steps.sdl-setup.outputs.version }}-${{ matrix.os }}
           path: build
