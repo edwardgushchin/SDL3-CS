@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Setup SDL
-        uses: libsdl-org/setup-sdl@main
+        uses: libsdl-org/setup-sdl@6574e20ac65ce362cd12f9c26b3a5e4d3cd31dee
         id: sdl-setup
         with:
           install-linux-dependencies: true
