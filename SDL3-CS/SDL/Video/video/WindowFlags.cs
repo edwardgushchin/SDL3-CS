@@ -31,6 +31,11 @@ public static partial class SDL
     /// immutable after being set through <see cref="CreateWindow"/>, some of it can be
     /// changed on existing windows by the app, and some of it might be altered by
     /// the user or system outside of the app's control.</para>
+    /// <para>When creating windows with <see cref="Resizable"/>, SDL will constrain
+    /// resizable windows to the dimensions recommended by the compositor to fit it
+    /// within the usable desktop space, although some compositors will do this
+    /// automatically without intervention as well. Use <see cref="Resizable"/>
+    /// after creation instead if you wish to create a window with a specific size.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFlags"/>

@@ -32,6 +32,7 @@ public partial class ShaderCross
     /// <summary>
     /// Initializes SDL_shadercross
     /// </summary>
+    /// <returns>true on success, false otherwise.</returns>
     /// <threadsafety>This should only be called once, from a single thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -45,6 +46,16 @@ public partial class ShaderCross
     /// <threadsafety>This should only be called once, from a single thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Quit();
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPUShaderFormat SDLCALL SDL_ShaderCross_GetSPIRVShaderFormats(void);</code>
+    /// <summary>
+    /// Get the supported shader formats that SPIRV cross-compilation can output
+    /// </summary>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <returns>GPU shader formats supported by SPIRV cross-compilation.</returns>
+    [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_GetSPIRVShaderFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial SDL.GPUShaderFormat GetSPIRVShaderFormats();
     
     
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_TranspileMSLFromSPIRV(const SDL_ShaderCross_SPIRV_Info *info);</code>
@@ -93,43 +104,45 @@ public partial class ShaderCross
     public static partial IntPtr CompileDXILFromSPIRV(in SPIRVInfo info, out UIntPtr size);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_GPUShader * SDLCALL SDL_ShaderCross_CompileGraphicsShaderFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, SDL_ShaderCross_GraphicsShaderMetadata *metadata);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPUShader * SDLCALL SDL_ShaderCross_CompileGraphicsShaderFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, const SDL_ShaderCross_GraphicsShaderMetadata *metadata, SDL_PropertiesID props);</code>
     /// <summary>
-    /// Compile an SDL GPU shader from SPIRV code.
+    /// Compile an SDL GPU shader from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL"/>.
     /// </summary>
     /// <param name="device">the SDL GPU device.</param>
     /// <param name="info">a struct describing the shader to transpile.</param>
-    /// <param name="metadata">a pointer filled in with shader metadata.</param>
+    /// <param name="metadata">a struct describing shader metadata. Can be obtained from <see cref="ReflectGraphicsSPIRV"/>.</param>
+    /// <param name="props">a properties object filled in with extra shader metadata.</param>
     /// <returns>a compiled SDL_GPUShader</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileGraphicsShaderFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileGraphicsShaderFromSPIRV(IntPtr device, in SPIRVInfo info, out GraphicsShaderMetadata metadata);
+    public static partial IntPtr CompileGraphicsShaderFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderMetadata metadata, uint props);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_ShaderCross_CompileComputePipelineFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, SDL_ShaderCross_ComputePipelineMetadata *metadata);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_ShaderCross_CompileComputePipelineFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, const SDL_ShaderCross_ComputePipelineMetadata *metadata, SDL_PropertiesID props);</code>
     /// <summary>
-    /// Compile an SDL GPU compute pipeline from SPIRV code.
+    /// Compile an SDL GPU compute pipeline from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL"/>.
     /// </summary>
     /// <param name="device">the SDL GPU device.</param>
     /// <param name="info">a struct describing the shader to transpile.</param>
-    /// <param name="metadata">a pointer filled in with compute pipeline metadata.</param>
-    /// <returns>a compiled SDL_GPUComputePipeline</returns>
+    /// <param name="metadata">a struct describing shader metadata. Can be obtained from <see cref="ReflectComputeSPIRV"/>.</param>
+    /// <param name="props">a properties object filled in with extra shader metadata.</param>
+    /// <returns>a compiled SDL_GPUComputePipeline.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileComputePipelineFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileComputePipelineFromSPIRV(IntPtr device, in SPIRVInfo info, out GraphicsShaderMetadata metadata);
+    public static partial IntPtr CompileComputePipelineFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderMetadata metadata, uint props);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShaderCross_ReflectGraphicsSPIRV(const Uint8 *bytecode, size_t bytecode_size, SDL_ShaderCross_GraphicsShaderMetadata *metadata);</code>
+    /// <code>extern SDL_DECLSPEC SDL_ShaderCross_GraphicsShaderMetadata * SDLCALL SDL_ShaderCross_ReflectGraphicsSPIRV(const Uint8 *bytecode, size_t bytecode_size, SDL_PropertiesID props);</code>
     /// <summary>
-    /// Reflect graphics shader info from SPIRV code.
+    /// Reflect graphics shader info from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL"/>. This must be freed with <see cref="SDL.Free"/> when you are done with the metadata.
     /// </summary>
     /// <param name="bytecode">the SPIRV bytecode.</param>
     /// <param name="bytecodeSize">the length of the SPIRV bytecode.</param>
-    /// <param name="metadata">a pointer filled in with shader metadata.</param>
+    /// <param name="props">a properties object filled in with extra shader metadata, provided by the user.</param>
+    /// <returns>A metadata struct on success, NULL otherwise. The struct must be free'd when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_ReflectGraphicsSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool ReflectGraphicsSPIRV(IntPtr bytecode, UIntPtr bytecodeSize, out GraphicsShaderMetadata metadata);
+    public static partial IntPtr ReflectGraphicsSPIRV(IntPtr bytecode, UIntPtr bytecodeSize, uint props);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShaderCross_ReflectComputeSPIRV(const Uint8 *bytecode, size_t bytecode_size, SDL_ShaderCross_ComputePipelineMetadata *metadata);</code>
@@ -149,6 +162,7 @@ public partial class ShaderCross
     /// <summary>
     /// Get the supported shader formats that HLSL cross-compilation can output
     /// </summary>
+    /// <returns>GPU shader formats supported by HLSL cross-compilation.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_GetHLSLShaderFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL.GPUShaderFormat GetHLSLShaderFormats();
@@ -191,30 +205,4 @@ public partial class ShaderCross
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileSPIRVFromHLSL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CompileSPIRVFromHLSL(in HLSLInfo info, out UIntPtr size);
-    
-    
-    /// <code>extern SDL_DECLSPEC SDL_GPUShader * SDLCALL SDL_ShaderCross_CompileGraphicsShaderFromHLSL(SDL_GPUDevice *device, const SDL_ShaderCross_HLSL_Info *info, SDL_ShaderCross_GraphicsShaderMetadata *metadata);</code>
-    /// <summary>
-    /// Compile an SDL GPU shader from HLSL code.
-    /// </summary>
-    /// <param name="device">the SDL GPU device.</param>
-    /// <param name="info">a struct describing the shader to transpile.</param>
-    /// <param name="metadata">a pointer filled in with shader metadata.</param>
-    /// <returns>a compiled SDL_GPUShader</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileGraphicsShaderFromHLSL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileGraphicsShaderFromHLSL(IntPtr device, in HLSLInfo info, out GraphicsShaderMetadata metadata);
-    
-    
-    /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_ShaderCross_CompileComputePipelineFromHLSL(SDL_GPUDevice *device, const SDL_ShaderCross_HLSL_Info *info, SDL_ShaderCross_ComputePipelineMetadata *metadata);</code>
-    /// <summary>
-    /// Compile an SDL GPU compute pipeline from code.
-    /// </summary>
-    /// <param name="device">the SDL GPU device.</param>
-    /// <param name="info">a struct describing the shader to transpile.</param>
-    /// <param name="metadata">a pointer filled in with compute pipeline metadata.</param>
-    /// <returns>a compiled SDL_GPUComputePipeline</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileComputePipelineFromHLSL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileComputePipelineFromHLSL(IntPtr device, in HLSLInfo info, out GraphicsShaderMetadata metadata);
 }

@@ -38,6 +38,7 @@ public static partial class SDL
     /// initialized (typically via a call to SDL_Init).</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetTicksNS"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ulong GetTicks();
     

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2025 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -28,41 +28,32 @@ namespace SDL3;
 public partial class ShaderCross
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct GraphicsShaderMetadata
+    public struct IOVarMetadata
     {
         /// <summary>
-        /// The number of samplers defined in the shader.
+        /// The UTF-8 name of the variable.
         /// </summary>
-        public uint NumSamplers;
-
-        /// <summary>
-        /// The number of storage textures defined in the shader.
-        /// </summary>
-        public uint NumStorageTextures;
+        public string Name
+        {
+            get => Marshal.PtrToStringUTF8(name)!;
+            set => name = SDL.StringToPointer(value);
+        }
+        
+        private IntPtr name;
         
         /// <summary>
-        /// The number of storage buffers defined in the shader.
+        /// The location of the variable.
         /// </summary>
-        public uint NumStorageBuffers;
+        public UInt32 Location;
         
         /// <summary>
-        /// The number of uniform buffers defined in the shader.
+        /// The vector type of the variable.
         /// </summary>
-        public uint NumUniformBuffers;
-
-        /// <summary>
-        /// The inputs defined in the shader.
-        /// </summary>
-        public IntPtr Inputs;
+        public IOVarType VectorType;
         
         /// <summary>
-        /// The number of outputs defined in the shader.
+        /// The number of components in the vector type of the variable.
         /// </summary>
-        public UInt32 NumOutputs;
-        
-        /// <summary>
-        /// The outputs defined in the shader.
-        /// </summary>
-        public IntPtr Outputs;
+        public UInt32 VectorSize;
     }
 }

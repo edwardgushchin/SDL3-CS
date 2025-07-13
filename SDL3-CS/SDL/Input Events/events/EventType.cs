@@ -146,7 +146,8 @@ public static partial class SDL
         WindowHidden,
         
         /// <summary>
-        /// Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event
+        /// Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event.
+        /// data1 is 1 for live-resize expose events, 0 otherwise.
         /// </summary>
         WindowExposed,
         

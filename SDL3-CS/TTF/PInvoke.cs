@@ -135,11 +135,11 @@ public static partial class TTF
     /// <item><see cref="Props.FontCreateFilenameString"/>: the font file to open, if an
     /// SDL_IOStream isn't being used. This is required if
     /// <see cref="Props.FontCreateIOStreamPointer"/> and
-    /// <see cref="Props.FontCreateExistingFont"/> aren't set.</item>
+    /// <see cref="Props.FontCreateExistingFontPointer"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamPointer"/>: an SDL_IOStream containing the
     /// font to be opened. This should not be closed until the font is closed.
     /// This is required if <see cref="Props.FontCreateFilenameString"/> and
-    /// <see cref="Props.FontCreateExistingFont"/> aren't set.</item>
+    /// <see cref="Props.FontCreateExistingFontPointer"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamOffsetNumber"/>: the offset in the iostream
     /// for the beginning of the font, defaults to 0.</item>
     /// <item><see cref="Props.FontCreateIOStreamAutoCloseBoolean"/>: true if closing the
@@ -156,9 +156,9 @@ public static partial class TTF
     /// <item><see cref="Props.FontCreateVerticalDPINumber"/>: the vertical DPI to use for
     /// font rendering, defaults to <see cref="Props.FontCreateHorizontalDPINumber"/>
     /// if set, or 72 otherwise.</item>
-    /// <item><see cref="Props.FontCreateExistingFont"/>: an optional TTF_Font that, if set,
-    /// will be used as the font data source and the initial size and style of
-    /// the new font.</item>
+    /// <item><see cref="Props.FontCreateExistingFontPointer"/>: an optional TTF_Font that, if set,
+    /// if set, will be used as the font data source and the initial size and
+    /// style of the new font.</item>
     /// </list>
     /// </summary>
     /// <param name="props">the properties to use.</param>
@@ -1523,9 +1523,9 @@ public static partial class TTF
     /// specified properties.</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.RendererTextEngineRenderer"/>: the renderer to use for
+    /// <item><see cref="Props.RendererTextEngineRendererPointer"/>: the renderer to use for
     /// creating textures and drawing text</item>
-    /// <item><see cref="Props.RendererTextEngineAtlasTextureSize"/>: the size of the
+    /// <item><see cref="Props.RendererTextEngineAtlasTextureSizeNumber"/>: the size of the
     /// texture atlas</item>
     /// </list>
     /// </summary>
@@ -1606,9 +1606,9 @@ public static partial class TTF
     /// specified properties.</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.GPUTextEngineDevice"/>: the SDL_GPUDevice to use for creating
+    /// <item><see cref="Props.GPUTextEngineDevicePointer"/>: the SDL_GPUDevice to use for creating
     /// textures and drawing text.</item>
-    /// <item><see cref="Props.GPUTextEngineAtlasTextureSize"/>: the size of the texture
+    /// <item><see cref="Props.GPUTextEngineAtlasTextureSizeNumber"/>: the size of the texture
     /// atlas</item>
     /// </list>
     /// </summary>

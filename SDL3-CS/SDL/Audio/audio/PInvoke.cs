@@ -653,7 +653,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID SDLCALL SDL_GetAudioStreamDevice(SDL_AudioStream *stream);</code>
     /// <summary>
     /// <para>Query an audio stream for its currently-bound device.</para>
-    /// <para>This reports the audio device that an audio stream is currently bound to.</para>
+    /// <para>This reports the logical audio device that an audio stream is currently
+    /// bound to.</para>
     /// <para>If not bound, or invalid, this returns zero, which is not a valid device
     /// ID.</para>
     /// </summary>
@@ -690,7 +691,18 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetAudioStreamProperties(SDL_AudioStream *stream);</code>
     /// <summary>
-    /// Get the properties associated with an audio stream.
+    /// <para>Get the properties associated with an audio stream.</para>
+    /// <para>The application can hang any data it wants here, but the following
+    /// properties are understood by SDL:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.AudioStreamAutoCleanupBoolean"/>: if true (the default), the
+    /// stream be automatically cleaned up when the audio subsystem quits. If set
+    /// to false, the streams will persist beyond that. This property is ignored
+    /// for streams created through <see cref="OpenAudioDeviceStream(uint, in AudioSpec, AudioStreamCallback?, nint)"/>, and will always
+    /// be cleaned up. Streams that are not cleaned up will still be unbound from
+    /// devices when the audio subsystem quits. This property was added in SDL
+    /// 3.4.0.</item>
+    /// </list>
     /// </summary>
     /// <param name="stream">the SDL_AudioStream to query.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
@@ -773,13 +785,13 @@ public static partial class SDL
     /// <para>Change the frequency ratio of an audio stream.</para>
     /// <para>The frequency ratio is used to adjust the rate at which input data is
     /// consumed. Changing this effectively modifies the speed and pitch of the
-    /// audio. A value greater than 1.0 will play the audio faster, and at a higher
-    /// pitch. A value less than 1.0 will play the audio slower, and at a lower
-    /// pitch.</para>
+    /// audio. A value greater than 1.0f will play the audio faster, and at a
+    /// higher pitch. A value less than 1.0f will play the audio slower, and at a
+    /// lower pitch. 1.0f means play at normal speed.</para>
     /// <para>This is applied during <see cref="GetAudioStreamData(nint, byte[], int)"/>, and can be continuously
     /// changed to create various effects.</para>
     /// </summary>
-    /// <param name="stream">the stream the frequency ratio is being changed.</param>
+    /// <param name="stream">the stream on which the frequency ratio is being changed.</param>
     /// <param name="ratio">the frequency ratio. 1.0 is normal speed. Must be between 0.01
     /// and 100.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
@@ -957,7 +969,7 @@ public static partial class SDL
     /// <para>Set the current output channel map of an audio stream.</para>
     /// <para>Channel maps are optional; most things do not need them, instead passing
     /// data in the [order that SDL expects](CategoryAudio#channel-layouts).</para>
-    /// <para>The output channel map reorders data that leaving a stream via
+    /// <para>The output channel map reorders data that is leaving a stream via
     /// <see cref="GetAudioStreamData(nint, byte[], int)"/>.</para>
     /// <para>Each item in the array represents an input channel, and its value is th
     /// channel that it should be remapped to. To reverse a stereo signal's left
@@ -1598,7 +1610,7 @@ public static partial class SDL
     /// <seealso cref="GetAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr OpenAudioDeviceStream(uint devid, in IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
+    public static partial IntPtr OpenAudioDeviceStream(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioIterationCallbacks(SDL_AudioDeviceID devid, SDL_AudioIterationCallback start, SDL_AudioIterationCallback end, void *userdata);</code>

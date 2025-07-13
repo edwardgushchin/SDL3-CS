@@ -574,7 +574,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -595,7 +595,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -616,7 +616,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -637,7 +637,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -658,7 +658,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -679,7 +679,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -700,7 +700,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -721,7 +721,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -742,7 +742,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -763,7 +763,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -784,7 +784,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -805,7 +805,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="src">the stream from which to read data.</param>
     /// <param name="value">a pointer filled in with the data read.</param>
-    /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

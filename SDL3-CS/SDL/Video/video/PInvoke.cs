@@ -52,7 +52,8 @@ public static partial class SDL
     /// to be proper names.</para>
     /// </summary>
     /// <param name="index">the index of a video driver.</param>
-    /// <returns>the name of the video driver with the given <c>"index"</c>.</returns>
+    /// <returns>the name of the video driver with the given <b>index</b>, or <c>null</c> if
+    /// index is out of bounds.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumVideoDrivers"/>
@@ -1334,7 +1335,7 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);</code>
     /// <summary>
-    /// Get the size of a window's client area.
+    /// Get the aspect ratio of a window's client area.
     /// </summary>
     /// <param name="window">the window to query the width and height from.</param>
     /// <param name="minAspect">a pointer filled in with the minimum aspect ratio of the

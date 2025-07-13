@@ -35,16 +35,16 @@ public static partial class TTF
         public const string FontCreateFaceNumber = "SDL_ttf.font.create.face";
         public const string FontCreateHorizontalDPINumber = "SDL_ttf.font.create.hdpi";
         public const string FontCreateVerticalDPINumber = "SDL_ttf.font.create.vdpi";
-        public const string FontCreateExistingFont = "SDL_ttf.font.create.existing_font";
+        public const string FontCreateExistingFontPointer = "SDL_ttf.font.create.existing_font";
 
         public const string FontOutlineLineCapNumber = "SDL_ttf.font.outline.line_cap";
         public const string FontOutlineLineJoinNumber = "SDL_ttf.font.outline.line_join";
         public const string FontOutlineMiterLimitNumber = "SDL_ttf.font.outline.miter_limit";
 
-        public const string RendererTextEngineRenderer = "SDL_ttf.renderer_text_engine.create.renderer";
-        public const string RendererTextEngineAtlasTextureSize = "SDL_ttf.renderer_text_engine.create.atlas_texture_size";
+        public const string RendererTextEngineRendererPointer = "SDL_ttf.renderer_text_engine.create.renderer";
+        public const string RendererTextEngineAtlasTextureSizeNumber = "SDL_ttf.renderer_text_engine.create.atlas_texture_size";
 
-        public const string GPUTextEngineDevice = "SDL_ttf.gpu_text_engine.create.device";
-        public const string GPUTextEngineAtlasTextureSize = "SDL_ttf.gpu_text_engine.create.atlas_texture_size";
+        public const string GPUTextEngineDevicePointer = "SDL_ttf.gpu_text_engine.create.device";
+        public const string GPUTextEngineAtlasTextureSizeNumber = "SDL_ttf.gpu_text_engine.create.atlas_texture_size";
     }
 }

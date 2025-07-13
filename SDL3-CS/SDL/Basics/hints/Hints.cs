@@ -2039,6 +2039,9 @@ public static partial class SDL
         /// changed at any time.</para>
         /// <para>This defaults to 0, and specifying <c>null</c> for the hint's value will restore
         /// the default.</para>
+        /// <para>This doesn't have to be an integer value. For example, "59.94" won't be
+        /// rounded to an integer rate; the digits after the decimal are actually
+        /// respected.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
