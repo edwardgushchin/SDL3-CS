@@ -3624,5 +3624,24 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string PenTouchEevents = "SDL_PEN_TOUCH_EVENTS";
+
+        /// <summary>
+        /// <para>A variable controlling whether SDL backend information is logged.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Subsystem information will not be logged. (default)</item>
+        /// <item><c>"1"</c>: Subsystem information will be logged.</item>
+        /// </list>
+        /// <para>This is generally meant to be used as an environment variable to let
+        /// end-users report what subsystems were chosen on their system, to aid in
+        /// debugging. Logged information is sent through <see cref="Log"/>, which means by
+        /// default they appear on stdout on most platforms or maybe
+        /// <c>OutputDebugString()</c> on Windows, and can be funneled by the app with
+        /// <see cref="SetLogOutputFunction"/>, etc.</para>
+        /// </summary>
+        /// <remarks>This hint can be set anytime, but the specific logs are generated during
+        /// subsystem init.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string LogBackends = "SDL_LOG_BACKENDS";
     }
 }

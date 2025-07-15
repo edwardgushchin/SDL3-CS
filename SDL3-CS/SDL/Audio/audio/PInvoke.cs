@@ -579,7 +579,10 @@ public static partial class SDL
     /// <para>Binding a stream to a device will set its output format for playback
     /// devices, and its input format for recording devices, so they match the
     /// device's settings. The caller is welcome to change the other end of the
-    ///stream's format at any time with <see cref="SetAudioStreamFormat"/>.</para>
+    /// stream's format at any time with <see cref="SetAudioStreamFormat"/>. If the other
+    /// end of the stream's format has never been set (the audio stream was created
+    /// with a NULL audio spec), this function will set it to match the device
+    /// end's format.</para>
     /// </summary>
     /// <param name="devid">an audio device to bind a stream to.</param>
     /// <param name="streams">an array of audio streams to bind.</param>
