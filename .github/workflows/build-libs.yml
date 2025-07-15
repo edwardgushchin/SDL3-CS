@@ -34,11 +34,11 @@ jobs:
 
       - name: Prepare CMake
         run: |
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
+          if ($env:RUNNER_OS -eq "macOS") {
             cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
-          else
+          } else {
             cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-          fi
+          }
 
       - name: Build SDL ${{ inputs.sdl-version }}
         run: cmake --build build --config Release
