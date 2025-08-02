@@ -50,7 +50,7 @@ public static partial class SDL
         public UInt32 Slot;
         
         /// <summary>
-        /// The byte pitch between consecutive elements of the vertex buffer.
+        /// The size of a single element + the offset between elements.
         /// </summary>
         public UInt32 Pitch;
         

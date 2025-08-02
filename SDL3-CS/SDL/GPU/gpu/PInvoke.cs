@@ -469,7 +469,8 @@ public partial class SDL
     /// <summary>
     /// <para>Creates a texture object to be used in graphics or compute workflows.</para>
     /// <para>The contents of this texture are undefined until data is written to the
-    /// texture.</para>
+    /// texture, either via <see cref="UploadToGPUTexture"/> or by performing a render or
+    /// compute pass with this texture as a target.</para>
     /// <para>Note that certain combinations of usage flags are invalid. For example, a
     /// texture cannot have both the <see cref="GPUTextureUsageFlags.Sampler"/> and <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/> flags.</para>
     /// <para>If you request a sample count higher than the hardware supports, the
@@ -497,7 +498,7 @@ public partial class SDL
     /// if the texture usage is <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>, clear
     /// the texture to a stencil of this value. Defaults to zero.</item>
     /// <item><see cref="Props.GPUTextureCreateD3D12ClearStencilNumber"/>: (Direct3D 12
-    /// only) if the texture usage SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET/>,
+    /// only) if the texture usage <see cref="GPUTextureUsageFlags.DepthStencilTarget"/>,
     /// clear the texture to a stencil of this Uint8 value. Defaults to zero.</item>
     /// <item><see cref="Props.GPUShaderCreateNameString"/>: a name that can be displayed in debugging tools.</item>
     /// </list>
@@ -509,6 +510,11 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UploadToGPUTexture"/>
     /// <seealso cref="DownloadFromGPUTexture"/>
+    /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
+    /// <seealso cref="BeginGPURenderPass(nint, in GPUColorTargetInfo[], uint, nint)"/>
+    /// <seealso cref="BeginGPURenderPass(nint, nint, uint, in GPUDepthStencilTargetInfo)"/>
+    /// <seealso cref="BeginGPURenderPass(nint, in GPUColorTargetInfo[], uint, in GPUDepthStencilTargetInfo)"/>
+    /// <seealso cref="BeginGPUComputePass"/>
     /// <seealso cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
     /// <seealso cref="BindGPUVertexStorageTextures"/>
     /// <seealso cref="BindGPUFragmentSamplers(nint, uint, nint, uint)"/>

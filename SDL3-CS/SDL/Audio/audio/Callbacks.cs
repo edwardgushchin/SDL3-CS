@@ -96,35 +96,6 @@ public static partial class SDL
     public delegate void AudioPostmixCallback(IntPtr userdata, in AudioSpec spec, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] float[] buffer, int buflen);
     
     
-    /// <code>typedef void (SDLCALL *SDL_AudioIterationCallback)(void *userdata, SDL_AudioDeviceID devid, bool start);</code>
-    /// <summary>
-    /// <para>A callback that fires around an audio device's processing work.</para>
-    /// <para>This callback fires when a logical audio device is about to start accessing
-    /// its bound audio streams, and fires again when it has finished accessing
-    /// them. It covers the range of one "iteration" of the audio device.</para>
-    /// <para>It can be useful to use this callback to update state that must apply to
-    /// all bound audio streams atomically: to make sure state changes don't happen
-    /// while half of the streams are already processed for the latest audio
-    /// buffer.</para>
-    /// <para>This callback should run as quickly as possible and not block for any
-    /// significant time, as this callback delays submission of data to the audio
-    /// device, which can cause audio playback problems. This callback delays all
-    /// audio processing across a single physical audio device: all its logical
-    /// devices and all bound audio streams. Use it carefully.</para>
-    /// </summary>
-    /// <param name="userdata">a pointer provided by the app through
-    /// <see cref="SetAudioPostmixCallback"/>, for its own use.</param>
-    /// <param name="devid">the audio device this callback is running for.</param>
-    /// <param name="start">true if this is the start of the iteration, false if the end.</param>
-    /// <threadsafety>This will run from a background thread owned by SDL. The
-    /// application is responsible for locking resources the callback
-    /// touches that need to be protected.</threadsafety>
-    /// <since>This datatype is available since SDL 3.4.0.</since>
-    /// <seealso cref="SetAudioIterationCallbacks"/>
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void AudioIterationCallback(IntPtr userdata, uint devid, bool start);
-    
-    
     /// <code>typedef void (SDLCALL *SDL_AudioStreamDataCompleteCallback)(void *userdata, const void *buf, int buflen);</code>
     /// <summary>
     /// <para>A callback that fires for completed <see cref="PutAudioStreamDataNoCopy"/> data.</para>

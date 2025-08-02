@@ -203,7 +203,7 @@ public static partial class SDL
         /// <summary>
         /// This is the additional key that ISO
         /// keyboards have over ANSI ones,
-        /// located between left shift and Y.
+        /// located between left shift and Z.
         /// Produces GRAVE ACCENT and TILDE in a
         /// US or UK Mac layout, REVERSE SOLIDUS
         /// (backslash) and VERTICAL LINE in a
@@ -212,7 +212,7 @@ public static partial class SDL
         /// in a Swiss German, German, or French
         /// layout.
         /// </summary>
-        NonUsbackslash = 100,
+        NonUsBackSlash = 100,
         
         /// <summary>
         /// windows contextual menu, compose

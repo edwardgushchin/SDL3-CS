@@ -1412,6 +1412,20 @@ public static partial class SDL
         /// </list>
         /// </summary>
         public const string JoystickHIDAPI8BITDO = "SDL_JOYSTICK_HIDAPI_8BITDO";
+
+
+        /// <summary>
+        /// <para>A variable controlling whether the HIDAPI driver for SInput controllers
+        /// should be used.</para>
+        /// <para>More info - https://github.com/HandHeldLegend/SInput-HID</para>
+        /// <para>This variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c> - HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c> - HIDAPI driver is used.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>The default is the value of <see cref="JoystickHIDAPI"/></remarks>
+        public const string JoystickHIDAPISInput = "SDL_JOYSTICK_HIDAPI_SINPUT";
         
         
         /// <summary>
@@ -3098,7 +3112,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint should be set before initializing the video subsystem.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
-        public const string VideoX11Nodirectcolor = "SDL_VIDEO_X11_NODIRECTCOLOR";
+        public const string VideoX11NoDirectColor = "SDL_VIDEO_X11_NODIRECTCOLOR";
         
         /// <summary>
         /// <para>A variable forcing the content scaling factor for X11 displays.</para>
@@ -3608,7 +3622,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
-        public const string PenMouseEevents = "SDL_PEN_MOUSE_EVENTS";
+        public const string PenMouseEvents = "SDL_PEN_MOUSE_EVENTS";
         
         
         
@@ -3623,25 +3637,28 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
-        public const string PenTouchEevents = "SDL_PEN_TOUCH_EVENTS";
+        public const string PenTouchEvents = "SDL_PEN_TOUCH_EVENTS";
+
 
         /// <summary>
-        /// <para>A variable controlling whether SDL backend information is logged.</para>
+        /// <para>A variable controlling whether SDL logs some debug information.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: Subsystem information will not be logged. (default)</item>
-        /// <item><c>"1"</c>: Subsystem information will be logged.</item>
+        /// <item><c>"0"</c>: SDL debug information will not be logged. (default)</item>
+        /// <item><c>"1"</c>: SDL debug information will be logged.</item>
         /// </list>
         /// <para>This is generally meant to be used as an environment variable to let
-        /// end-users report what subsystems were chosen on their system, to aid in
-        /// debugging. Logged information is sent through <see cref="Log"/>, which means by
-        /// default they appear on stdout on most platforms or maybe
-        /// <c>OutputDebugString()</c> on Windows, and can be funneled by the app with
-        /// <see cref="SetLogOutputFunction"/>, etc.</para>
+        /// end-users report what subsystems were chosen on their system, perhaps what
+        /// sort of hardware they are running on, etc, to aid in debugging. Logged
+        /// information is sent through <see cref="Log"/>, which means by default they appear
+        /// on stdout on most platforms, or maybe <c>OutputDebugString()</c> on Windows, and
+        /// can be funneled by the app with <see cref="SetLogOutputFunction"/>, etc.</para>
+        /// <para>The specific output might change between SDL versions; more information
+        /// might be deemed useful in the future.</para>
         /// </summary>
         /// <remarks>This hint can be set anytime, but the specific logs are generated during
         /// subsystem init.</remarks>
         /// <since>This hint is available since SDL 3.4.0.</since>
-        public const string LogBackends = "SDL_LOG_BACKENDS";
+        public const string DebugLogging = "SDL_DEBUG_LOGGING";
     }
 }

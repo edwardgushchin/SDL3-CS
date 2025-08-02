@@ -28,6 +28,23 @@ namespace SDL3;
 
 public partial class SDL
 {
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTraySupported(void);</code>
+    /// <summary>
+    /// <para>Check whether or not tray icons can be created.</para>
+    /// <para>Note that this function does not guarantee that <see cref="CreateTray"/> will or
+    /// will not work; you should still check <see cref="CreateTray"/> for errors.</para>
+    /// <para>Using tray icons require the video subsystem.</para>
+    /// </summary>
+    /// <returns>true if trays are available, false otherwise.</returns>
+    /// <threadsafety>This function should only be called on the main thread. It
+    /// will return false if not called on the main thread.</threadsafety>
+    /// <returns>This function is available since SDL 3.4.0.</returns>
+    /// <seealso cref="CreateTray"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTraySupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool IsTraySupported();
+    
+    
     /// <code>extern SDL_DECLSPEC SDL_Tray *SDLCALL SDL_CreateTray(SDL_Surface *icon, const char *tooltip);</code>
     /// <summary>
     /// <para>Create an icon to be placed in the operating system's tray, or equivalent.</para>

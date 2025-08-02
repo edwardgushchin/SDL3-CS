@@ -1614,46 +1614,6 @@ public static partial class SDL
     /// <seealso cref="ResumeAudioStreamDevice"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr OpenAudioDeviceStream(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
-    
-    
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioIterationCallbacks(SDL_AudioDeviceID devid, SDL_AudioIterationCallback start, SDL_AudioIterationCallback end, void *userdata);</code>
-    /// <summary>
-    /// <para>Set callbacks that fire around a new iteration of audio device processing.</para>
-    /// <para>Two callbacks are provided here: one that runs when a device is about to
-    /// process its bound audio streams, and another that runs when the device has
-    /// finished processing them.</para>
-    /// <para>These callbacks can run at any time, and from any thread; if you need to
-    /// serialize access to your app's data, you should provide and use a mutex or
-    /// other synchronization device.</para>
-    /// <para>Generally these callbacks are used to apply state that applies to multiple
-    /// bound audio streams, with a guarantee that the audio device's thread isn't
-    /// halfway through processing them. Generally a finer-grained lock through
-    /// <see cref="LockAudioStream"/> is more appropriate.</para>
-    /// <para>The callbacks are extremely time-sensitive; the callback should do the
-    /// least amount of work possible and return as quickly as it can. The longer
-    /// the callback runs, the higher the risk of audio dropouts or other problems.</para>
-    /// <para>This function will block until the audio device is in between iterations,
-    /// so any existing callback that might be running will finish before this
-    /// function sets the new callback and returns.</para>
-    /// <para>Physical devices do not accept these callbacks, only logical devices
-    /// created through <see cref="OpenAudioDevice(uint, in AudioSpec)"/> can be.</para>
-    /// <para>Setting a NULL callback function disables any previously-set callback.
-    /// Either callback may be NULL, and the same callback is permitted to be used
-    /// for both.</para>
-    /// </summary>
-    /// <param name="devid">the ID of an opened audio device.</param>
-    /// <param name="start">a callback function to be called at the start of an iteration.
-    /// Can be NULL.</param>
-    /// <param name="end">a callback function to be called at the end of an iteration. Can
-    /// be NULL.</param>
-    /// <param name="userdata">app-controlled pointer passed to callback. Can be NULL.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.4.0.</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioIterationCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetAudioIterationCallbacks(uint devid, AudioIterationCallback start, AudioIterationCallback end, IntPtr userdata);    
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);</code>

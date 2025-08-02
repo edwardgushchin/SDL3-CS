@@ -30,6 +30,9 @@ public static partial class SDL
     /// <summary>
     /// Audio device event structure (event.adevice.*)
     /// </summary>
+    /// <remarks>Note that SDL will send a <see cref="EventType.AudioDeviceAdded"/> event for every
+    /// device it discovers during initialization. After that, this event will only
+    /// arrive when a device is hotplugged during the program's run.</remarks>
     /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]
     public struct AudioDeviceEvent

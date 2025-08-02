@@ -36,15 +36,15 @@ public static partial class SDL
     /// clipboard is cleared or new data is set. The clipboard is automatically
     /// cleared in <see cref="Quit()"/>.</para>
     /// </summary>
-    /// <param name="userdata">a pointer to provided user data.</param>
+    /// <param name="userdata">a pointer to the provided user data.</param>
     /// <param name="mimeType">the requested mime-type.</param>
     /// <param name="size">a pointer filled in with the length of the returned data.</param>
     /// <returns>a pointer to the data for the provided mime-type. Returning <c>null</c>
-    /// or setting length to 0 will cause no data to be sent to the
+    /// or setting the length to 0 will cause no data to be sent to the
     /// "receiver". It is up to the receiver to handle this. Essentially
     /// returning no data is more or less undefined behavior and may cause
     /// breakage in receiving applications. The returned data will not be
-    /// freed so it needs to be retained and dealt with internally.</returns>
+    /// freed, so it needs to be retained and dealt with internally.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -53,10 +53,10 @@ public static partial class SDL
     
     /// <code>typedef void (SDLCALL *SDL_ClipboardCleanupCallback)(void *userdata);</code>
     /// <summary>
-    /// Callback function that will be called when the clipboard is cleared, or new
-    /// data is set.
+    /// Callback function that will be called when the clipboard is cleared, or
+    /// when new data is set.
     /// </summary>
-    /// <param name="userdata">a pointer to provided user data.</param>
+    /// <param name="userdata">a pointer to the provided user data.</param>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

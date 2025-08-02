@@ -65,7 +65,9 @@ public static partial class SDL
     /// <param name="dst">the destination properties.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <threadsafety>It is safe to call this function from any thread. This
+    /// function acquires simultaneous mutex locks on both the source
+    /// and destination property sets.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

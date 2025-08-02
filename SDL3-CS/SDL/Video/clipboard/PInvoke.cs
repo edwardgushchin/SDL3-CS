@@ -49,7 +49,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetClipboardText(void);</code>
     /// <summary>
     /// <para>Get UTF-8 text from the clipboard.</para>
-    /// <para>This functions returns an empty string if there was not enough memory left
+    /// <para>This function returns an empty string if there is not enough memory left
     /// for a copy of the clipboard's content.</para>
     /// </summary>
     /// <returns>the clipboard text on success or an empty string on failure; call
@@ -108,7 +108,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetPrimarySelectionText(void);</code>
     /// <summary>
     /// <para>Get UTF-8 text from the primary selection.</para>
-    /// <para>This functions returns an empty string if there was not enough memory left
+    /// <para>This function returns an empty string if there is not enough memory left
     /// for a copy of the primary selection's content.</para>
     /// </summary>
     /// <returns>the primary selection text on success or an empty string on
@@ -155,7 +155,7 @@ public static partial class SDL
     /// data the callback function will be called allowing it to generate and
     /// respond with the data for the requested mime-type.</para>
     /// <para>The size of text data does not include any terminator, and the text does
-    /// not need to be null terminated (e.g. you can directly copy a portion of a
+    /// not need to be null-terminated (e.g., you can directly copy a portion of a
     /// document)</para>
     /// </summary>
     /// <param name="callback">a function pointer to the function that provides the
@@ -163,7 +163,8 @@ public static partial class SDL
     /// <param name="cleanup">a function pointer to the function that cleans up the
     /// clipboard data.</param>
     /// <param name="userdata">an opaque pointer that will be forwarded to the callbacks.</param>
-    /// <param name="mimeTypes">a list of mime-types that are being offered.</param>
+    /// <param name="mimeTypes">a list of mime-types that are being offered. SDL copies
+    /// the given list.</param>
     /// <param name="numMimeTypes">the number of mime-types in the mime_types list.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
@@ -194,9 +195,9 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetClipboardData(const char *mime_type, size_t *size);</code>
     /// <summary>
-    /// <para>Get the data from clipboard for a given mime type.</para>
+    /// <para>Get the data from the clipboard for a given mime type.</para>
     /// <para>The size of text data does not include the terminator, but the text is
-    /// guaranteed to be null terminated.</para>
+    /// guaranteed to be null-terminated.</para>
     /// </summary>
     /// <param name="mimeType">the mime type to read from the clipboard.</param>
     /// <param name="size">a pointer filled in with the length of the returned data.</param>
@@ -215,8 +216,8 @@ public static partial class SDL
     /// <summary>
     /// Query whether there is data in the clipboard for the provided mime type.
     /// </summary>
-    /// <param name="mimeType">the mime type to check for data for.</param>
-    /// <returns><c>true</c> if there exists data in clipboard for the provided mime type,
+    /// <param name="mimeType">the mime type to check for data.</param>
+    /// <returns><c>true</c> if data exists in the clipboard for the provided mime type,
     /// <c>false</c> if it does not.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -235,7 +236,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="numMimeTypes">a pointer filled with the number of mime types, may
     /// be <c>null</c>.</param>
-    /// <returns>a null terminated array of strings with mime types, or <c>null</c> on
+    /// <returns>a null-terminated array of strings with mime types, or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>

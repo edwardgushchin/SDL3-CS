@@ -102,6 +102,11 @@ public static partial class SDL
     /// <item>...only use letters, numbers, and spaces. Avoid punctuation like "Game
     /// Name 2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.</item>
     /// </list>
+    /// <para>Due to historical mistakes, <c>org</c> is allowed to be <c>null</c> or <c>""</c>. In such
+    /// cases, SDL will omit the org subdirectory, including on platforms where it
+    /// shouldn't, and including on platforms where this would make your app fail
+    /// certification for an app store. New apps should definitely specify a real
+    /// string for <c>org</c>.</para>
     /// <para>The returned path is guaranteed to end with a path separator ('\\' on
     /// Windows, '/' on most other platforms).</para>
     /// </summary>

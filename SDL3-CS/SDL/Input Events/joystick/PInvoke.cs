@@ -267,12 +267,27 @@ public static partial class SDL
 	/// <code>extern SDL_DECLSPEC SDL_JoystickID SDLCALL SDL_AttachVirtualJoystick(const SDL_VirtualJoystickDesc *desc);</code>
 	/// <summary>
 	/// Attach a new virtual joystick.
+	/// <para>Apps can create virtual joysticks, that exist without hardware directly
+	/// backing them, and have program-supplied inputs. Once attached, a virtual
+	/// joystick looks like any other joystick that SDL can access. These can be
+	/// used to make other things look like joysticks, or provide pre-recorded
+	/// input, etc.</para>
+	/// <para>Once attached, the app can send joystick inputs to the new virtual joystick
+	/// using <see cref="SetJoystickVirtualAxis"/>, etc.</para>
+	/// <para>When no longer needed, the virtual joystick can be removed by calling
+	/// <see cref="DetachVirtualJoystick"/>.</para>
 	/// </summary>
 	/// <param name="desc">joystick description, initialized using <see cref="InitInterface(ref VirtualJoystickDesc)"/>.</param>
 	/// <returns>the joystick instance ID, or 0 on failure; call <see cref="GetError"/> for
 	/// more information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="DetachVirtualJoystick"/>
+	/// <seealso cref="SetJoystickVirtualAxis"/>
+	/// <seealso cref="SetJoystickVirtualButton"/>
+	/// <seealso cref="SetJoystickVirtualBall"/>
+	/// <seealso cref="SetJoystickVirtualHat"/>
+	/// <seealso cref="SetJoystickVirtualTouchpad"/>
+	/// <seealso cref="SetJoystickVirtualSensorData"/>
 	[DllImport(SDLLibrary, EntryPoint = "SDL_AttachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static extern uint AttachVirtualJoystick(in VirtualJoystickDesc desc);
 	
@@ -322,6 +337,11 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <sealso cref="SetJoystickVirtualButton"/>
+	/// <sealso cref="SetJoystickVirtualBall"/>
+	/// <sealso cref="SetJoystickVirtualHat"/>
+	/// <sealso cref="SetJoystickVirtualTouchpad"/>
+	/// <sealso cref="SetJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
@@ -343,6 +363,11 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <seealso cref="SetJoystickVirtualAxis"/>
+	/// <seealso cref="SetJoystickVirtualButton"/>
+	/// <seealso cref="SetJoystickVirtualHat"/>
+	/// <seealso cref="SetJoystickVirtualTouchpad"/>
+	/// <seealso cref="SetJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
@@ -363,6 +388,11 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <seealso cref="SetJoystickVirtualAxis"/>
+	/// <seealso cref="SetJoystickVirtualBall"/>
+	///	<seealso cref="SetJoystickVirtualHat"/>
+	///	<seealso cref="SetJoystickVirtualTouchpad"/>
+	///	<seealso cref="SetJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualButton(IntPtr joystick, int button, [MarshalAs(UnmanagedType.I1)] bool down);
@@ -383,6 +413,11 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <seealso cref="SetJoystickVirtualAxis"/>
+	/// <seealso cref="SetJoystickVirtualButton"/>
+	/// <seealso cref="SetJoystickVirtualBall"/>
+	/// <seealso cref="SetJoystickVirtualTouchpad"/>
+	/// <seealso cref="SetJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value);
@@ -410,6 +445,11 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <sealso cref="SetJoystickVirtualAxis"/>
+	/// <sealso cref="SetJoystickVirtualButton"/>
+	/// <sealso cref="SetJoystickVirtualBall"/>
+	/// <sealso cref="SetJoystickVirtualHat"/>
+	/// <sealso cref="SetJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualTouchpad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] bool down, float x, float y, float pressure);
@@ -433,6 +473,11 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <sealso cref="SetJoystickVirtualAxis"/>
+	/// <sealso cref="SetJoystickVirtualButton"/>
+	/// <sealso cref="SetJoystickVirtualBall"/>
+	/// <sealso cref="SetJoystickVirtualHat"/>
+	/// <sealso cref="SetJoystickVirtualTouchpad"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickVirtualSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues);

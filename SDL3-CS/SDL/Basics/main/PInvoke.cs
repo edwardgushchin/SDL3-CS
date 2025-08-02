@@ -121,8 +121,8 @@ public partial class SDL
     /// <para>Apps implement this function when using SDL_MAIN_USE_CALLBACKS. If using a
     /// standard "main" function, you should not supply this.</para>
     /// <para>This function is called once by SDL before terminating the program.</para>
-    /// <para>This function will be called no matter what, even if <see cref="AppInit"/> requests
-    /// termination.</para>
+    /// <para>This function will be called in all cases, even if <see cref="AppInit"/> requests
+    /// termination at startup.</para>
     /// <para>This function should not go into an infinite mainloop; it should
     /// deinitialize any resources necessary, perform whatever shutdown activities,
     /// and return.</para>

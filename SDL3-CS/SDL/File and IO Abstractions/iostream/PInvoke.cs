@@ -113,8 +113,7 @@ public static partial class SDL
     /// <para>This function sets up an SDL_IOStream struct based on a memory area of a
     /// certain size, for both read and write access.</para>
     /// <para>This memory buffer is not copied by the SDL_IOStream; the pointer you
-    /// provide must remain valid until you close the stream. Closing the stream
-    /// will not free the original buffer.</para>
+    /// provide must remain valid until you close the stream.</para>
     /// <para>If you need to make sure the SDL_IOStream never writes to the memory
     /// buffer, you should use <see cref="IOFromConstMem"/> with a read-only buffer of
     /// memory instead.</para>
@@ -124,6 +123,13 @@ public static partial class SDL
     /// was passed to this function.</item>
     /// <item><see cref="Props.IOStreamMemorySizeNumber"/>: this will be the <c>size</c> parameter
     /// that was passed to this function.</item>
+    /// </list>
+    /// <para>Additionally, the following properties are recognized:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.IOStreamMemoryFreeFuncPointer"/>: if this property is set to
+    /// a non-NULL value it will be interpreted as a function of SDL_free_func
+    /// type and called with the passed `mem` pointer when closing the stream. By
+    /// default it is unset, i.e., the memory will not be freed.</item>
     /// </list>
     /// </summary>
     /// <param name="mem">a pointer to a buffer to feed an SDL_IOStream stream.</param>
@@ -151,8 +157,7 @@ public static partial class SDL
     /// <para>Attempting to write to this SDL_IOStream stream will report an error
     /// without writing to the memory buffer.</para>
     /// <para>This memory buffer is not copied by the SDL_IOStream; the pointer you
-    /// provide must remain valid until you close the stream. Closing the stream
-    /// will not free the original buffer.</para>
+    /// provide must remain valid until you close the stream.</para>
     /// <para>If you need to write to a memory buffer, you should use <see cref="IOFromMem"/>
     /// with a writable buffer of memory instead.</para>
     /// <para>The following properties will be set at creation time by SDL:</para>
@@ -161,6 +166,13 @@ public static partial class SDL
     /// was passed to this function.</item>
     /// <item><see cref="Props.IOStreamMemorySizeNumber"/>: this will be the <c>size</c> parameter
     /// that was passed to this function.</item>
+    /// </list>
+    /// <para>Additionally, the following properties are recognized:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.IOStreamMemoryFreeFuncPointer"/>: if this property is set to
+    /// a non-NULL value it will be interpreted as a function of SDL_free_func
+    /// type and called with the passed <c>mem</c> pointer when closing the stream. By
+    /// default it is unset, i.e., the memory will not be freed.</item>
     /// </list>
     /// </summary>
     /// <param name="mem">a pointer to a read-only buffer to feed an SDL_IOStream stream.</param>

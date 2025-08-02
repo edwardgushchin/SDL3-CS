@@ -36,6 +36,8 @@ public static partial class SDL
         public const string IOStreamMemorySizeNumber = "SDL.iostream.memory.size";
 
         public const string IOStreamDynamicMemoryPointer = "SDL.iostream.dynamic.memory";
-        public const string IOStreamDynamicChunksizeNumber = "SDL.iostream.dynamic.chunksize";
+        public const string IOStreamDynamicChunkSizeNumber = "SDL.iostream.dynamic.chunksize";
+
+        public const string IOStreamMemoryFreeFuncPointer = "SDL.iostream.memory.free";
     }
 }
