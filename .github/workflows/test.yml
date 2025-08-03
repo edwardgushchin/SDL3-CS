@@ -1,0 +1,60 @@
+name: Build native libs
+on:
+  workflow_dispatch:
+    inputs:
+      sdl-version:
+        description: "The SDL version to build"
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build SDL for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
+
+    steps:
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: 'libsdl-org/SDL'
+          submodules: recursive
+          fetch-depth: 0
+          ref: release-${{ inputs.sdl-version }}
+
+      - name: Install Deps
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt-get update -y && sudo apt-get install -y \
+              cmake make ninja-build libasound2-dev libpulse-dev \
+              libaudio-dev libjack-dev libsndio-dev libusb-1.0-0-dev \
+              libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+              libxfixes-dev libxi-dev libxss-dev libwayland-dev \
+              libdecor-0-dev libdbus-1-dev libibus-1.0-dev libudev-dev \
+              fcitx-libs-dev
+          fi
+
+      - name: Prepare CMake
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          else
+            cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          fi
+
+      - name: Build SDL ${{ inputs.sdl-version }}
+        run: cmake --build build --config Release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL-${{ inputs.sdl-version }}-${{ matrix.os }}
+          path: |
+            build/**/*.dll
+            build/**/*.so
+            build/**/*.dylib
