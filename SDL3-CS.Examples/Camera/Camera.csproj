@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SDL3-CS.Native" Version="3.2.18.1" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.2.18.2" />
     </ItemGroup>
 
     <ItemGroup>
