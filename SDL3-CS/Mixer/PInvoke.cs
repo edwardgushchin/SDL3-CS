@@ -89,7 +89,7 @@ public partial class Mixer
     /// prepare to play sound (with <see cref="OpenAudio(uint, in SDL.AudioSpec)"/>), and load audio data to play
     /// with that device.</para>
     /// </summary>
-    /// <param name="flags">nitialization flags, OR'd together.</param>
+    /// <param name="flags">initialization flags, OR'd together.</param>
     /// <returns>all currently initialized flags.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="Quit"/>

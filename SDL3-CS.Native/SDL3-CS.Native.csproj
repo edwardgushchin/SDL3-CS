@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.18.0</Version>
+        <Version>3.2.18.1</Version>
         <Title>SDL3 C# Native library</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
