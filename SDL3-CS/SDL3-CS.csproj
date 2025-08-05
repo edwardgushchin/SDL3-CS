@@ -10,27 +10,21 @@
         <TargetFrameworks>net8.0;net9.0;net7.0</TargetFrameworks>
         <PackageReleaseNotes>This is a stable bugfix release, with the following changes:
 
-            - Added SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN to support non-constrained and non-grabbing popups
-            - Fixed a crash in SDL_GetAudioDeviceChannelMap()
-            - Fixed a crash on older Proton runtimes
-            - Fixed unregistering raw input on Windows
-            - Fixed duplicate mouse events when using a pen under X11
-            - Handle quirks with window management on XMonad and fvwm
-            - Fixed showing the dock briefly at launch on macOS
-            - Fixed replacing existing gamepad mappings at runtime
-            - Improved thumbstick range for Nintendo Switch Pro Controllers
-            - Fixed loading user calibration for Nintendo Switch Pro Controllers
-            - Added support for the ZEROPLUS P4 Wired Gamepad
-            - Fixed input from the MayFlash GameCube adapter with version 7 firmware
-            - Added support for the NACON Revolution X Unlimited controller over Bluetooth on macOS</PackageReleaseNotes>
+            - Fixed a crash when passing large invalid coordinates to SDL_BlitSurfaceScaled()
+            - Fixed doubled mouse wheel events on X11
+            - Fixed doubled SDL_EVENT_GAMEPAD_ADDED events for controllers with automatic gamepad mappings
+            - Added support for the Google Play 16 KB page size requirement
+            - Fixed a crash on Android if using SDL for other functionality besides video
+            - Fixed dynamic loading of the environ symbol on FreeBSD
+            - Fixed audio playback on PSP</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.18.0</Version>
+        <Version>3.2.20.0</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL 3.2.18</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.2.20</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
