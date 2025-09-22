@@ -401,10 +401,11 @@ public static partial class SDL
         }
         else
         {
+            var sizePtr = IntPtr.Size;
             for (var i = 0; i < count; i++)
             {
-                var elementPtr = Marshal.ReadIntPtr(pointer);
-                array[i] = Marshal.PtrToStructure<T>(elementPtr);
+                var elementPtr = Marshal.ReadIntPtr(pointer, i * sizePtr);
+                array[i] = Marshal.PtrToStructure<T>(elementPtr)!;
             }
         }
     
