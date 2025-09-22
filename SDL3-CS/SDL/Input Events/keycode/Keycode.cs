@@ -1102,7 +1102,7 @@ public static partial class SDL
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.LGUI)
         /// </summary>
-        LGui = 0x400000e3u,
+        LGUI = 0x400000e3u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.RCtrl)
