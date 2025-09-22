@@ -451,7 +451,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SRand"/>
     /// <seealso cref="Rand"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_randf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float RandF();
     
     
@@ -471,7 +471,7 @@ public partial class SDL
     /// <seealso cref="Rand"/>
     /// <seealso cref="RandF"/>
     /// <seealso cref="SRand"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_bits"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint RandBits();
     
     
