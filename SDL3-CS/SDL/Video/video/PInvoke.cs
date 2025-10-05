@@ -2422,7 +2422,7 @@ public static partial class SDL
     /// <see cref="GLLoadLibrary"/>
     /// <see cref="GLUnloadLibrary"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial FunctionPointer GLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
+    public static partial FunctionPointer? GLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
     
     
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_EGL_GetProcAddress(const char *proc);</code>
@@ -2439,7 +2439,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EGLGetCurrentDisplay"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial FunctionPointer EGLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
+    public static partial FunctionPointer? EGLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GL_UnloadLibrary(void);</code>
