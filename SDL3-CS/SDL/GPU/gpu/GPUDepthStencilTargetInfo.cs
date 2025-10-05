@@ -65,6 +65,8 @@ public static partial class SDL
     /// be reused again.</item>
     /// </list>
     /// <para>Note that depth/stencil targets do not support multisample resolves.</para>
+    /// <para>Due to ABI limitations, depth textures with more than 255 layers are not
+    /// supported.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
@@ -111,8 +113,14 @@ public static partial class SDL
         /// </summary>
         public Byte ClearStencil;
         
-        private Byte _padding1;
+        /// <summary>
+        /// The mip level to use as the depth stencil target.
+        /// </summary>
+        public Byte MipLevel;
         
-        private Byte _padding2;
+        /// <summary>
+        /// The layer index to use as the depth stencil target.
+        /// </summary>
+        public Byte Layer;
     }
 }

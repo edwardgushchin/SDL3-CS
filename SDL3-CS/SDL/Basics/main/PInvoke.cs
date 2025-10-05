@@ -251,13 +251,12 @@ public partial class SDL
     /// to increment a counter.</para>
     /// <para>Most applications do not need to, and should not, call this directly; SDL
     /// will call it when initializing the video subsystem.</para>
+    /// <para>If <c>`name`</c> is <c>null</c>, SDL currently uses <c>`(CS_BYTEALIGNCLIENT | CS_OWNDC)`</c> for
+    /// the style, regardless of what is specified here.</para>
     /// </summary>
     /// <param name="name">the window class name, in UTF-8 encoding. If <c>null</c>, SDL
     /// currently uses "SDL_app" but this isn't guaranteed.</param>
-    /// <param name="style">the value to use in WNDCLASSEX::style. If `name` is <c>null</c>, SDL
-    /// currently uses `(CS_BYTEALIGNCLIENT \| CS_OWNDC)` regardless
-    /// of what is specified here.
-    /// what is specified here.</param>
+    /// <param name="style">the value to use in WNDCLASSEX::style.</param>
     /// <param name="hInst">the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL
     /// will use <c>GetModuleHandle(NULL)</c> instead.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more

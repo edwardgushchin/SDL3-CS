@@ -98,6 +98,27 @@ public partial class SDL
     /// useful debug information on device creation, defaults to true.</item>
     /// <item><see cref="Props.GPUDeviceCreateNameString"/>: the name of the GPU driver to
     /// use, if a specific one is desired.</item>
+    /// <item><see cref="Props.GPUDeviceCreateFeatureClipDistanceBoolean"/>: Enable Vulkan
+    /// device feature shaderClipDistance. If disabled, clip distances are not
+    /// supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+    /// SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+    /// Metal. Disabling optional features allows the application to run on some
+    /// older Android devices. Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateFeatureDepthClampingBoolean"/>: Enable
+    /// Vulkan device feature depthClamp. If disabled, there is no depth clamp
+    /// support and enable_depth_clip in <see cref="GPURasterizerState"/> must always be
+    /// set to true. Disabling optional features allows the application to run on
+    /// some older Android devices. Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateFeatureIndirectDrawFirstInstanceBoolean"/>:
+    /// Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+    /// argument first_instance of <seealso cref="GPUIndirectDrawCommand"/> must be set to
+    /// zero. Disabling optional features allows the application to run on some
+    /// older Android devices. Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateFeatureAnisotropyBoolean"/>: Enable Vulkan
+    /// device feature samplerAnisotropy. If disabled, enable_anisotropy of
+    /// <see cref="GPUSamplerCreateInfo"/> must be set to false. Disabling optional
+    /// features allows the application to run on some older Android devices.
+    /// Defaults to true.</item>
     /// </list>
     /// <para>These are the current shader format properties:</para>
     /// <list type="bullet">
@@ -633,7 +654,7 @@ public partial class SDL
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PushGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer, const char *name);</code>
     /// <summary>
-    /// <para>Begins a debug group with an arbitary name.</para>
+    /// <para>Begins a debug group with an arbitrary name.</para>
     /// <para>Used for denoting groups of calls when viewing the command buffer
     /// callstream in a graphics debugging tool.</para>
     /// <para>Each call to <see cref="PushGPUDebugGroup"/> must have a corresponding call to
@@ -1596,8 +1617,33 @@ public partial class SDL
     /// <param name="commandBuffer">a command buffer.</param>
     /// <returns>a copy pass handle.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="EndGPUCopyPass"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPUCopyPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr BeginGPUCopyPass(IntPtr commandBuffer);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_PixelFormat SDLCALL SDL_GetPixelFormatFromGPUTextureFormat(SDL_GPUTextureFormat format);</code>
+    /// <summary>
+    /// <para>Get the SDL pixel format corresponding to a GPU texture format.</para>
+    /// </summary>
+    /// <param name="format">a texture format.</param>
+    /// <returns>the corresponding pixel format, or <see cref="PixelFormat.Unknown"/> if
+    /// there is no corresponding pixel format.</returns>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatFromGPUTextureFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial PixelFormat GetPixelFormatFromGPUTextureFormat(GPUTextureFormat format);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPUTextureFormat SDLCALL SDL_GetGPUTextureFormatFromPixelFormat(SDL_PixelFormat format);</code>
+    /// <summary>
+    /// Get the GPU texture format corresponding to an SDL pixel format.
+    /// </summary>
+    /// <param name="format">a pixel format.</param>
+    /// <returns>the corresponding GPU texture format, or
+    /// <see cref="GPUTextureFormat.Invalid"/> if there is no corresponding GPU
+    /// texture format.</returns>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUTextureFormatFromPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial GPUTextureFormat GetPixelFormatFromGPUTextureFormat(PixelFormat format);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UploadToGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureTransferInfo *source, const SDL_GPUTextureRegion *destination, bool cycle);</code>

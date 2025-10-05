@@ -40,12 +40,17 @@ public static partial class SDL
         public const string GPUDeviceCreatePreferLowPowerBoolean = "SDL.gpu.device.create.preferlowpower";
         public const string GPUDeviceCreateVerboseBoolean = "SDL.gpu.device.create.verbose";
         public const string GPUDeviceCreateNameString = "SDL.gpu.device.create.name";
+        public const string GPUDeviceCreateFeatureClipDistanceBoolean = "SDL.gpu.device.create.feature.clip_distance";
+        public const string GPUDeviceCreateFeatureDepthClampingBoolean = "SDL.gpu.device.create.feature.depth_clamping";
+        public const string GPUDeviceCreateFeatureIndirectDrawFirstInstanceBoolean = "SDL.gpu.device.create.feature.indirect_draw_first_instance";
+        public const string GPUDeviceCreateFeatureAnisotropyBoolean = "SDL.gpu.device.create.feature.anisotropy";
         public const string GPUDeviceCreateShadersPrivateBoolean = "SDL.gpu.device.create.shaders.private";
         public const string GPUDeviceCreateShadersSPIRVBoolean = "SDL.gpu.device.create.shaders.spirv";
         public const string GPUDeviceCreateShadersDXBCBoolean = "SDL.gpu.device.create.shaders.dxbc";
         public const string GPUDeviceCreateShadersDXILBoolean = "SDL.gpu.device.create.shaders.dxil";
         public const string GPUDeviceCreateShadersMSLBoolean = "SDL.gpu.device.create.shaders.msl";
         public const string GPUDeviceCreateShadersMetalLibBoolean = "SDL.gpu.device.create.shaders.metallib";
+        public const string GPUDeviceCreateD3D12AllowFewerResourceSlotsBoolean = "SDL.gpu.device.create.d3d12.allowtier1resourcebinding";
         public const string GPUDeviceCreateD3D12SemanticNameString = "SDL.gpu.device.create.d3d12.semantic";
         public const string GPUDeviceCreateVulkanShaderClipDistanceBoolean = "SDL.gpu.device.create.vulkan.shaderclipdistance";
         public const string GPUDeviceCreateVulkanDepthClampBoolean = "SDL.gpu.device.create.vulkan.depthclamp";

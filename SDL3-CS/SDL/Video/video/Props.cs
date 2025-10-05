@@ -118,7 +118,8 @@ public static partial class SDL
 		public const string WindowX11DisplayPointer = "SDL.window.x11.display";
 		public const string WindowX11ScreenNumber = "SDL.window.x11.screen";
 		public const string WindowX11WindowNumber = "SDL.window.x11.window";
-		public const string WindowEmscriptenCanvasIdString = "SDL.window.emscripten.canvas_id";
-		public const string WindowEmscriptenKeyboardElementString = "SDL.window.emscripten.keyboard_element";
+		public const string WindowEMScriptenCanvasIdString = "SDL.window.emscripten.canvas_id";
+		public const string WindowEMScriptenFillDocumentBoolean = "SDL.window.emscripten.fill_document";
+		public const string WindowEMScriptenKeyboardElementString = "SDL.window.emscripten.keyboard_element";
 	}
 }

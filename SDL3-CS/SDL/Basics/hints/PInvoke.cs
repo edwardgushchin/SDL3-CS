@@ -115,12 +115,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="name">name the hint to query.</param>
     /// <returns>the string value of a hint or <c>null</c> if the hint isn't set.</returns>
-    /// <threadsafety>It is safe to call this function from any thread, however the
-    /// return value only remains valid until the hint is changed; if
-    /// another thread might do so, the app should supply locks
-    /// and/or make a copy of the string. Note that using a hint
-    /// callback instead is always thread-safe, as SDL holds a lock
-    /// on the thread subsystem during the callback.</threadsafety>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetHint"/>
     /// <seealso cref="SetHintWithPriority"/>

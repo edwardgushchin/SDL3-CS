@@ -140,7 +140,6 @@ public static partial class SDL
     /// <seealso cref="LogInfo"/>
     /// <seealso cref="LogMessage"/>
     /// <seealso cref="LogMessageV"/>
-    /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogTrace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

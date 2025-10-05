@@ -634,8 +634,6 @@ public static partial class SDL
     /// <list type="bullet">
     /// <item><see cref="WindowFlags.Fullscreen"/>: fullscreen window at desktop resolution</item>
     /// <item><see cref="WindowFlags.OpenGL"/>: window usable with an OpenGL context</item>
-    /// <item><see cref="WindowFlags.Occluded"/>: window partially or completely obscured by another
-    /// window</item>
     /// <item><see cref="WindowFlags.Hidden"/>: window is not visible</item>
     /// <item><see cref="WindowFlags.Borderless"/>: no window decoration</item>
     /// <item><see cref="WindowFlags.Resizable"/>: window can be resized</item>
@@ -663,7 +661,8 @@ public static partial class SDL
     /// <item><see cref="WindowFlags.Transparent"/>: window with transparent buffer</item>
     /// <item><see cref="WindowFlags.NotFocusable"/>: window should not be focusable</item>
     /// </list>
-    /// <para>The SDL_Window is implicitly shown if <see cref="WindowFlags.Hidden"/> is not set.</para>
+    /// <para>The SDL_Window will be shown if <see cref="WindowFlags.Hidden"/> is not set. If hidden at
+    /// creation time, <see cref="ShowWindow"/> can be used to show it later.</para>
     /// <para>On Apple's macOS, you <b>must</b> set the NSHighResolutionCapable Info.plist
     /// property to YES, otherwise you will not receive a High-DPI OpenGL canvas.</para>
     /// <para>The window pixel size may differ from its window coordinate size if the
@@ -1005,7 +1004,7 @@ public static partial class SDL
     /// <item><see cref="Props.WindowCocoaWindowPointer"/>: the <c>(__unsafe_unretained)</c>
     /// NSWindow associated with the window</item>
     /// <item><see cref="Props.WindowCocoaMetalViewTagNumber"/>: the NSInteger tag
-    /// assocated with metal views on the window</item>
+    /// associated with metal views on the window</item>
     /// </list>
     /// <para>On OpenVR:</para>
     /// <list type="bullet">
@@ -1063,9 +1062,12 @@ public static partial class SDL
     /// </list>
     /// <para>On Emscripten:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowEmscriptenCanvasIdString"/>: the id the canvas element
+    /// <item><see cref="Props.WindowEMScriptenCanvasIdString"/>: the id the canvas element
     /// will have</item>
-    /// <item><see cref="Props.WindowEmscriptenKeyboardElementString"/>: the keyboard
+    /// <item><see cref="Props.WindowEMScriptenFillDocumentBoolean"/>: true if the canvas is
+    /// set to consume the entire browser window, bypassing some SDL window 
+    /// functionality.</item>
+    /// <item><see cref="Props.WindowEMScriptenKeyboardElementString"/>: the keyboard
     /// element that associates keyboard events to this window</item>
     /// </list>
     /// </summary>

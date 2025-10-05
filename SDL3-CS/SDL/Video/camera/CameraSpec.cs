@@ -64,8 +64,8 @@ public static partial class SDL
         public int FramerateNumerator;  // Frame rate numerator
         
         /// <summary>
-        /// Frame rate demoninator ((num / denom) == FPS, (denom / num) == duration in seconds)
+        /// Frame rate denominator ((num / denom) == FPS, (denom / num) == duration in seconds)
         /// </summary>
-        public int FramerateDenominator;// Frame rate denominator
+        public int FramerateDenominator;
     }
 }

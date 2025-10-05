@@ -60,6 +60,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BeginGPURenderPass(nint, nint, uint, nint)"/>
+    /// <seealso cref="FColor"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUColorTargetInfo
     {

@@ -61,6 +61,7 @@ public static partial class SDL
     /// directory. <c>null</c> will be returned on error or when the platform
     /// doesn't implement this functionality, call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPrefPath"/>
     public static string? GetBasePath()
@@ -116,6 +117,7 @@ public static partial class SDL
     /// notation. <c>null</c> if there's a problem (creating directory failed,
     /// etc.). This should be freed with <see cref="Free"/> when it is no longer
     /// needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetBasePath"/>
     public static string? GetPrefPath(string org, string app)
@@ -151,6 +153,7 @@ public static partial class SDL
     /// <param name="folder">the type of folder to find.</param>
     /// <returns>either a null-terminated C string containing the full path to the
     /// folder, or <c>null</c> if an error happened.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     public static string? GetUserFolder(Folder folder)
     {
@@ -169,6 +172,7 @@ public static partial class SDL
     /// <param name="path">the path of the directory to create.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call SDL_GetError() for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -207,6 +211,7 @@ public static partial class SDL
     /// <param name="path">the path to remove from the filesystem.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemovePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -216,7 +221,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenamePath(const char *oldpath, const char *newpath);</code>
     /// <summary>
     /// <para>Rename a file or directory.</para>
-    /// <para>If the file at <c>newpath</c> already exists, it will replaced.</para>
+    /// <para>If the file at <c>newpath</c> already exists, it will be replaced.</para>
     /// <para>Note that this will not copy files across filesystems/drives/volumes, as
     /// that is a much more complicated (and possibly time-consuming) operation.</para>
     /// <para>Which is to say, if this function fails, <see cref="CopyFile"/> to a temporary file
@@ -229,6 +234,7 @@ public static partial class SDL
     /// <param name="newpath">the new path.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenamePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -266,6 +272,9 @@ public static partial class SDL
     /// <param name="newpath">the new path.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, but this
+    /// operation is not atomic, so the app might need to protect
+    /// access to specific paths from other threads if appropriate.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -281,6 +290,7 @@ public static partial class SDL
     /// check for the existence of a file.</param>
     /// <returns><c>true</c> on success or <c>false</c> if the file doesn't exist, or another
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPathInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -345,6 +355,7 @@ public static partial class SDL
     /// <returns>a UTF-8 string of the current working directory in
     /// platform-dependent notation. <c>null</c> if there's a problem. This
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     public static string? GetCurrentDirectory()
     {

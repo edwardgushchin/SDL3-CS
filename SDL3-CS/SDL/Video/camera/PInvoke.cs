@@ -298,8 +298,9 @@ public static partial class SDL
     /// presents as a popup dialog where the user has to explicitly approve access;
     /// on others the approval might be implicit and not alert the user at all.</para>
     /// <para>This function can be used to check the status of that approval. It will
-    /// return 0 if still waiting for user response, 1 if the camera is approved
-    /// for use, and -1 if the user denied access.</para>
+    /// return <see cref="CameraPermissionState.Pending"/> if waiting for user response,
+    /// <see cref="CameraPermissionState.Approved"/> if the camera is approved for use, and
+    /// <see cref="CameraPermissionState.Denied"/> if the user denied access.</para>
     /// <para>Instead of polling with this function, you can wait for a
     /// <see cref="EventType.CameraDeviceApproved"/> (or <see cref="EventType.CameraDeviceDenied"/>) event
     /// in the standard SDL event loop, which is guaranteed to be sent once when
@@ -308,14 +309,15 @@ public static partial class SDL
     /// <see cref="CloseCamera"/> to dispose of it.</para>
     /// </summary>
     /// <param name="camera">the opened camera device to query.</param>
-    /// <returns>-1 if user denied access to the camera, 1 if user approved access,
-    /// 0 if no decision has been made yet.</returns>
+    /// <returns>a <see cref="CameraPermissionState"/> value indicating if access is
+    /// granted, or <see cref="CameraPermissionState.Pending"/> if the decision
+    /// is still pending.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     /// <seealso cref="CloseCamera"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPermissionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int GetCameraPermissionState(IntPtr camera);
+    public static partial CameraPermissionState GetCameraPermissionState(IntPtr camera);
     
 
     /// <code>extern SDL_DECLSPEC SDL_CameraID SDLCALL SDL_GetCameraID(SDL_Camera *camera);</code>

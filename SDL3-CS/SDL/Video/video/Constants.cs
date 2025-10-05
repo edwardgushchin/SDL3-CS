@@ -31,7 +31,8 @@ public static partial class SDL
     /// <see cref="WindowPosUndefined"/> or <see cref="WindowPosUndefinedDisplay"/>.</para>
     /// </summary>
     /// <since>This macro is available since SDL 3.2.0</since>
-    public const uint WindowposUndefinedMask = 0x1FFF0000u;
+    /// <seealso cref="SetWindowPosition"/>
+    public const uint WindowPosUndefinedMask = 0x1FFF0000u;
     
     
     /// <summary>
@@ -40,7 +41,8 @@ public static partial class SDL
     /// <see cref="WindowPosCentered"/> or <see cref="WindowPosCenteredDisplay"/>.</para>
     /// </summary>
     /// <since>This macro is available since SDL 3.2.0</since>
-    public const uint WindowposCenteredMask = 0x2FFF0000u;
+    /// <seealso cref="SetWindowPosition"/>
+    public const uint WindowPosCenteredMask = 0x2FFF0000u;
     
     public const int WindowSurfaceVSyncDisabled = 0;
     public const int WindowSurfaceVSyncAdaptive = -1;

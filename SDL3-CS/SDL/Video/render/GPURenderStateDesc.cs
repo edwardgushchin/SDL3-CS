@@ -28,19 +28,13 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// GPU render state description.
-    /// <para>This structure should be initialized using SDL_INIT_INTERFACE().</para>
+    /// A structure specifying the parameters of a GPU render state.
     /// </summary>
     /// <since>This struct is available since SDL 3.4.0.</since>
     /// <seealso cref="CreateGPURenderState"/>
     [StructLayout(LayoutKind.Sequential)]
-    public struct GPURenderStateDesc
+    public struct GPURenderStateCreateInfo
     {
-        /// <summary>
-        /// the version of this interface
-        /// </summary>
-        public uint Version;
-    
         /// <summary>
         /// The fragment shader to use when this render state is active 
         /// </summary>
@@ -75,5 +69,10 @@ public static partial class SDL
         /// Storage buffers to bind when this render state is active
         /// </summary>
         public IntPtr StorageBuffers;
+        
+        /// <summary>
+        /// A properties ID for extensions. Should be 0 if no extensions are needed.
+        /// </summary>
+        public uint Props;
     }
 }

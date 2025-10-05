@@ -159,8 +159,7 @@ public static partial class SDL
     /// <summary>
     /// Get the current key modifier state for the keyboard.
     /// </summary>
-    /// <returns>an OR'd combination of the modifier keys for the keyboard. See
-    /// <see cref="Keymod"/> for details.</returns>
+    /// <returns>an OR'd combination of the modifier keys for the keyboard.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboardState"/>

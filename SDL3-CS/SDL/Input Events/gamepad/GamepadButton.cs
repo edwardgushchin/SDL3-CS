@@ -85,22 +85,22 @@ public static partial class SDL
         Misc1,
         
         /// <summary>
-        /// Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1)
+        /// Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button)
         /// </summary>
         RightPaddle1,
         
         /// <summary>
-        /// Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3)
+        /// Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button)
         /// </summary>
         LeftPaddle1,
         
         /// <summary>
-        /// Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2)
+        /// Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button
         /// </summary>
         RightPaddle2,
         
         /// <summary>
-        /// Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
+        /// Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button)
         /// </summary>
         LeftPaddle2,
         
@@ -115,12 +115,12 @@ public static partial class SDL
         Misc2,
         
         /// <summary>
-        /// Additional button
+        /// Additional button (e.g. Nintendo GameCube left trigger click)
         /// </summary>
         Misc3,
         
         /// <summary>
-        /// Additional button
+        /// Additional button (e.g. Nintendo GameCube right trigger click)
         /// </summary>
         Misc4,
         

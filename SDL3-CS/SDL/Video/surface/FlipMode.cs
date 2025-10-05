@@ -44,6 +44,11 @@ public static partial class SDL
         /// <summary>
         /// flip vertically
         /// </summary>
-        Vertical
+        Vertical,
+        
+        /// <summary>
+        /// flip horizontally and vertically (not a diagonal flip)
+        /// </summary>
+        HorizontalAndVertical = Horizontal |  Vertical
     }
 }

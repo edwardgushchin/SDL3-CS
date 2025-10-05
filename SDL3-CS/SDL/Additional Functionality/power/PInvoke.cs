@@ -50,8 +50,8 @@ public static partial class SDL
 	/// can't determine a value or there is no battery.</param>
 	/// <param name="percent">a pointer filled in with the percentage of battery life
 	/// left, between 0 and 100, or <c>null</c> to ignore. This will be
-	/// filled in with -1 we can't determine a value or there is no
-	/// battery.</param>
+	/// filled in with -1 when we can't determine a value or there
+	/// is no batter</param>
 	/// <returns>the current battery state or <see cref="PowerState.Error"/> on failure;
 	/// call <see cref="GetError"/> for more information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>

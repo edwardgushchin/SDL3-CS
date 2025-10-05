@@ -65,7 +65,7 @@ public static partial class SDL
         NotEqual,
         
         /// <summary>
-        /// The comparison evalutes reference &lt;= test.
+        /// The comparison evaluates reference &lt;= test.
         /// </summary>
         GreaterOrEqual,
         

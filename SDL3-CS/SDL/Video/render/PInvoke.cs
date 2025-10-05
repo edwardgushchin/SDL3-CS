@@ -147,7 +147,7 @@ public static partial class SDL
     /// present synchronized with the refresh rate. This property can take any
     /// value that is supported by <see cref="SetRenderVSync"/> for the renderer.</item>
     /// </list>
-    /// <para>With the SDL GPU renderer:</para>
+    /// <para>With the SDL GPU renderer (since SDL 3.4.0):</para>
     /// <list type="bullet">
     /// <item><see cref="Props.RendererCreateGPUShadersSPIRVBoolean"/>: the app is able to
     /// provide SPIR-V shaders to SDL_GPURenderState, optional.</item>
@@ -188,30 +188,46 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateGPURenderer(SDL_Window *window, SDL_GPUShaderFormat format_flags, SDL_GPUDevice **device);</code>
     /// <summary>
-    /// <para>Create a 2D GPU rendering context for a window, with support for the
-    /// specified shader format.</para>
-    /// <para>This is a convenience function to create a SDL GPU backed renderer,
-    /// intended to be used with SDL_GPURenderState. The resulting renderer will
-    /// support shaders in one of the specified shader formats.</para>
-    /// <para>If no available GPU driver supports any of the specified shader formats,
-    /// this function will fail.</para>
+    /// <para>Create a 2D GPU rendering context.</para>
+    /// <para>The GPU device to use is passed in as a parameter. If this is <c>null</c>, then a
+    /// device will be created normally and can be retrieved using
+    /// <see cref="GetGPURendererDevice"/>.</para>
+    /// <para>The window to use is passed in as a parameter. If this is <c>null</c>, then this
+    /// will become an offscreen renderer. In that case, you should call
+    /// <see cref="SetRenderTarget"/> to setup rendering to a texture, and then call
+    /// <see cref="RenderPresent"/> normally to complete drawing a frame.</para>
     /// </summary>
-    /// <param name="window">the window where rendering is displayed.</param>
-    /// <param name="formatFlags">a bitflag indicating which shader formats the app is
+    /// <param name="device">the window where rendering is displayed, or <c>null</c> to create an
+    /// offscreen renderer.</param>
+    /// <param name="window">a bitflag indicating which shader formats the app is
     /// able to provide.</param>
-    /// <param name="device">a pointer filled with the associated GPU device, or NULL on
-    /// error.</param>
-    /// <returns>a valid rendering context or NULL if there was an error; call
+    /// <returns>a valid rendering context or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <threadsafety>If this function is called with a valid GPU device, it should
+    /// be called on the thread that created the device. If this
+    /// function is called with a valid window, it should be called
+    /// on the thread that created the window.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="CreateRendererWithProperties"/>
-    /// <seealso cref="GetGPUShaderFormats"/>
+    /// <seealso cref="GetGPURendererDevice"/>
     /// <seealso cref="CreateGPUShader"/>
     /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetRenderGPUState"/>
+    /// <seealso cref="SetGPURenderState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateGPURenderer(IntPtr window, GPUShaderFormat formatFlags, out IntPtr device);
+    public static partial IntPtr CreateGPURenderer(IntPtr device, IntPtr window);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPUDevice * SDLCALL SDL_GetGPURendererDevice(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// Return the GPU device used by a renderer.
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <returns>the GPU device used by the renderer, or <c>null</c> if the renderer is
+    /// not a GPU renderer; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPURendererDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetGPURendererDevice(IntPtr renderer);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateSoftwareRenderer(SDL_Surface *surface);</code>
@@ -226,7 +242,7 @@ public static partial class SDL
     /// rendering is done.</param>
     /// <returns>a valid rendering context or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyRenderer"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSoftwareRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -472,6 +488,9 @@ public static partial class SDL
     /// pixels, required</item>
     /// <item><see cref="Props.TextureCreateHeightNumber"/>: the height of the texture in
     /// pixels, required</item>
+    /// <item><see cref="Props.TextureCreatePalettePointer"/>: an SDL_Palette to use with
+    /// palettized texture formats. This can be set later with
+    /// <see cref="SetTexturePalette"/></item>
     /// <item><see cref="Props.TextureCreateSDRWhitePointFloat"/>: for HDR10 and floating
     /// point textures, this defines the value of 100% diffuse white, with higher
     /// values being displayed in the High Dynamic Range headroom. This defaults
@@ -643,6 +662,22 @@ public static partial class SDL
     /// <item><see cref="Props.TextureOpenGLES2TextureTargetNumber"/>: the GLenum for the
     /// texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)</item>
     /// </list>
+    /// <para>With the gpu renderer:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.TextureOpenGLES2TextureTargetNumber"/>: the SDL_GPUTexture associated
+    /// with the texture</item>
+    /// </list>
+    /// <para>With the gpu renderer:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.TextureGPUTexturePointer"/>: the SDL_GPUTexture associated
+    /// with the texture</item>
+    /// <item><see cref="Props.TextureGPUTextureUVPointer"/>: the SDL_GPUTexture associated
+    /// with the UV plane of an NV12 texture</item>
+    /// <item><see cref="Props.TextureGPUTextureUPointer"/>: the SDL_GPUTexture associated
+    /// with the U plane of a YUV texture</item>
+    /// <item><see cref="Props.TextureGPUTextureVPointer"/>: the SDL_GPUTexture associated
+    /// with the V plane of a YUV texture</item>
+    /// </list>
     /// </summary>
     /// <param name="texture">the texture to query.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
@@ -682,6 +717,40 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetTextureSize(IntPtr texture, out float w, out float h);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTexturePalette(SDL_Texture *texture, SDL_Palette *palette);</code>
+    /// <summary>
+    /// <para>Set the palette used by a texture.</para>
+    /// <para>Setting the palette keeps an internal reference to the palette, which can
+    /// be safely destroyed afterwards.</para>
+    /// <para>A single palette can be shared with many textures.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="palette">the <see cref="Palette"/> structure to use.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="CreatePalette"/>
+    /// <seealso cref="GetTexturePalette"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTexturePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetTexturePalette(IntPtr texture, IntPtr palette);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Palette * SDLCALL SDL_GetTexturePalette(SDL_Texture *texture);</code>
+    /// <summary>
+    /// Get the palette used by a texture.
+    /// </summary>
+    /// <param name="texture">the texture to query.</param>
+    /// <returns>a pointer to the palette used by the texture, or <c>null</c> if there is
+    /// no palette used.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="SetTexturePalette"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTexturePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr GetTexturePalette(IntPtr texture);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b);</code>
@@ -896,7 +965,9 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the scale mode used for texture scale operations.</para>
     /// <para>The default texture scale mode is <see cref="ScaleMode.Linear"/>.</para>
-    /// <para>If the scale mode is not supported, the closest supported mode is chosen.</para>
+    /// <para>If the scale mode is not supported, the closest supported mode is chosen. 
+    /// Palettized textures will use <see cref="ScaleMode.PixelArt"/> instead of
+    /// <see cref="ScaleMode.Linear"/>.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
     /// <param name="scaleMode">the <seealso cref="ScaleMode"/> to use for texture scaling.</param>
@@ -1447,13 +1518,6 @@ public static partial class SDL
     /// during the rendering of a frame: perhaps most of the rendering is done to
     /// specific dimensions but to make fonts look sharp, the app turns off logical
     /// presentation while drawing text, for example.</para>
-    /// <para>For the renderer's window, letterboxing is drawn into the framebuffer
-    /// if logical presentation is enabled during SDL_RenderPresent; be sure to
-    /// reenable it before presenting if you were toggling it, otherwise the
-    /// letterbox areas might have artifacts from previous frames (or artifacts
-    /// from external overlays, etc). Letterboxing is never drawn into texture
-    /// render targets; be sure to call <see cref="RenderClear"/> before drawing into
-    /// the texture so the letterboxing areas are cleared, if appropriate.</para>
     /// <para>You can convert coordinates in an event into rendering coordinates using
     /// <see cref="ConvertEventToRenderCoordinates"/>.</para>
     /// </summary>
@@ -1477,14 +1541,15 @@ public static partial class SDL
     /// <summary>
     /// <para>Get device independent resolution and presentation mode for rendering.</para>
     /// <para>This function gets the width and height of the logical rendering output, or
-    /// the output size in pixels if a logical resolution is not enabled.</para>
+    /// 0 if a logical resolution is not enabled.</para>
     /// <para>Each render target has its own logical presentation state. This function
     /// gets the state for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
-    /// <param name="w">an int to be filled with the width.</param>
-    /// <param name="h">an int to be filled with the height.</param>
-    /// <param name="mode">the presentation mode used.</param>
+    /// <param name="w">an int filled with the logical presentation width.</param>
+    /// <param name="h">an int filled with the logical presentation height.</param>
+    /// <param name="mode">a variable filled with the logical presentation mode being
+    /// used.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
@@ -3819,8 +3884,8 @@ public static partial class SDL
     /// <para>Among these limitations:</para>
     /// <list type="bullet">
     /// <item>It accepts UTF-8 strings, but will only renders ASCII characters.</item>
-    /// <item>It has a single, tiny size (8x8 pixels). One can use logical presentation
-    /// or scaling to adjust it, but it will be blurry.</item>
+    /// <item>It has a single, tiny size (8x8 pixels). You can use logical presentation
+    /// or <see cref="SetRenderScale"/> to adjust it.</item>
     /// <item>It uses a simple, hardcoded bitmap font. It does not allow different font
     /// selections and it does not support truetype, for proper scaling.</item>
     /// <item>It does no word-wrapping and does not treat newline characters as a line
@@ -3851,7 +3916,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Draw debug text to an SDL_Renderer.</para>
     /// <para>This function will render a printf()-style format string to a renderer.
-    /// Note that this is a convinence function for debugging, with severe
+    /// Note that this is a convenience function for debugging, with severe
     /// limitations, and is not intended to be used for production apps and games.</para>
     /// <para>For the full list of limitations and other useful information, see
     /// <see cref="RenderDebugText"/>.</para>
@@ -3911,18 +3976,17 @@ public static partial class SDL
     /// <para>Create custom GPU render state.</para>
     /// </summary>
     /// <param name="renderer">the renderer to use.</param>
-    /// <param name="desc">GPU render state description, initialized using
-    /// SDL_INIT_INTERFACE().</param>
+    /// <param name="createinfo">a struct describing the GPU render state to create.</param>
     /// <returns>a custom GPU render state or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="SetGPURenderStateFragmentUniforms"/>
-    /// <seealso cref="SetRenderGPUState"/>
+    /// <seealso cref="SetGPURenderState"/>
     /// <seealso cref="DestroyGPURenderState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateGPURenderState(IntPtr renderer, IntPtr desc); 
+    public static partial IntPtr CreateGPURenderState(IntPtr renderer, IntPtr createinfo); 
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);</code>
@@ -3958,9 +4022,9 @@ public static partial class SDL
     /// <threadsafety>This function should be called on the thread that created the
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderGPUState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetRenderGPUState(IntPtr renderer, IntPtr state);
+    public static partial bool SetGPURenderState(IntPtr renderer, IntPtr state);
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyGPURenderState(SDL_GPURenderState *state);</code>

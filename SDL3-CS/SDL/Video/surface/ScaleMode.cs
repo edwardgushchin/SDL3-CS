@@ -44,7 +44,7 @@ public static partial class SDL
         Linear,
         
         /// <summary>
-        /// nearest pixel sampling with improved scaling for pixel art
+        /// nearest pixel sampling with improved scaling for pixel art, available since SDL 3.4.0
         /// </summary>
         PixelArt
     }

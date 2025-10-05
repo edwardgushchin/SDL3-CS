@@ -145,6 +145,23 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_open_path"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr HIDOpenPath([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_hid_get_properties(SDL_hid_device *dev);</code>
+    /// <summary>
+    /// <para>Get the properties associated with an SDL_hid_device.</para>
+    /// <para>The following read-only properties are provided by SDL:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.HIDAPILibUSBDeviceHandlePointer"/>: the libusb_device_handle 
+    /// associated with the device, if it was opened using libus 
+    /// </item>
+    /// </list>
+    /// </summary>
+    /// <param name="dev">a device handle returned from SDL_hid_open().</param>
+    /// <returns>a valid property ID on success or 0 on failure; call 
+    /// <see cref="GetError"/> for more information.</returns>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_properties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint HIDGetProperties(IntPtr dev);
 
     
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);</code>

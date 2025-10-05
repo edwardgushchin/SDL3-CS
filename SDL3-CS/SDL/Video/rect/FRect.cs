@@ -28,8 +28,10 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// A rectangle, with the origin at the upper left (using floating point
-    /// values).
+    /// A rectangle stored using floating point values.
+    /// <para>The origin of the coordinate space is in the top-left, with increasing
+    /// values moving down and right. The properties <c>`x`</c> and <c>`y`</c> represent the
+    /// coordinates of the top-left corner of the rectangle.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="RectEmptyFloat"/>

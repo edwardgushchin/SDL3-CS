@@ -555,6 +555,20 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string DisplayUsableBounds = "SDL_DISPLAY_USABLE_BOUNDS";
+
+        /// <summary>
+        /// <para>Set the level of checking for invalid parameters passed to SDL functions.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"1"</c>: Enable fast parameter error checking, e.g. quick <c>null</c> checks, etc.
+        /// (default)</item>
+        /// <item><c>"2"</c>: Enable full parameter error checking, e.g. validating objects are
+        /// the correct type, etc.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string InvalidParamChecks = "SDL_INVALID_PARAM_CHECKS";
         
         /// <summary>
         /// <para>Disable giving back control to the browser automatically when running with
@@ -598,6 +612,21 @@ public static partial class SDL
         /// <remarks>This hint should be set before creating a window.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string EmscriptenKeyboardElement = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
+
+
+        /// <summary>
+        /// Dictate that newly-created windows will fill the whole browser window.
+        /// <para>The canvas element fills the entire document. Resize events will be
+        /// generated as the browser window is resized, as that will adjust the canvas
+        /// size as well. The canvas will cover anything else on the page, including
+        /// any controls provided by Emscripten in its generated HTML file. Often times
+        /// this is desirable for a browser-based game, but it means several things
+        /// that we expect of an SDL window on other platforms might not work as
+        /// expected, such as minimum window sizes and aspect ratios.</para>
+        /// <para>This hint overrides <see cref="Props.WindowCreateEMScriptenFillDocumentBoolean"/>
+        /// properties when creating an SDL window.</para>
+        /// </summary>
+        public const string EmscriptenFillDocument = "SDL_EMSCRIPTEN_FILL_DOCUMENT";
         
         /// <summary>
         /// <para>A variable that controls whether the on-screen keyboard should be shown
@@ -1426,6 +1455,19 @@ public static partial class SDL
         /// </summary>
         /// <remarks>The default is the value of <see cref="JoystickHIDAPI"/></remarks>
         public const string JoystickHIDAPISInput = "SDL_JOYSTICK_HIDAPI_SINPUT";
+
+        
+        /// <summary>
+        /// <para>A variable controlling whether the HIDAPI driver for ZUIKI controllers
+        /// should be used.</para>
+        /// <para>This variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c> - HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c> - HIDAPI driver is used.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>The default is the value of <see cref="JoystickHIDAPI"/></remarks>
+        public const string JoystickHIDAPIZUIKI = "SDL_JOYSTICK_HIDAPI_ZUIKI";
         
         
         /// <summary>
@@ -1482,6 +1524,20 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickHIDAPISwitchPlayerLED = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED";
+
+        /// <summary>
+        /// <para> A variable controlling whether the HIDAPI driver for Nintendo Switch 2
+        /// controllers should be used.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c>: HIDAPI driver is used.</item>
+        /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string JoystickHIDAPISwitch2 = "SDL_JOYSTICK_HIDAPI_SWITCH2";
         
         /// <summary>
         /// <para>A variable controlling whether Nintendo Switch Joy-Con controllers will be
@@ -1807,8 +1863,8 @@ public static partial class SDL
         /// controller handling.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: WGI is not used.</item>
-        /// <item><c>"1"</c>: WGI is used. (default)</item>
+        /// <item><c>"0"</c>: WGI is not used.(default)</item>
+        /// <item><c>"1"</c>: WGI is used.</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
@@ -1950,6 +2006,9 @@ public static partial class SDL
         /// categories.</para>
         /// <para>If this hint isn't set, the default log levels are equivalent to:</para>
         /// <para><c>`app=info,assert=warn,test=verbose,*=error`</c></para>
+        /// <para>If the <c>`DEBUG_INVOCATION`</c> environment variable is set to <c>"1"</c>, the default
+        /// log levels are equivalent to:</para>
+        /// <para><c>`assert=warn,test=verbose,*=debug`</c></para>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
@@ -2109,7 +2168,7 @@ public static partial class SDL
         /// the window center occur within a short time period, SDL will emulate mouse
         /// warps using relative mouse mode. This can provide smoother and more
         /// reliable mouse motion for some older games, which continuously calculate
-        /// the distance travelled by the mouse pointer and warp it back to the center
+        /// the distance traveled by the mouse pointer and warp it back to the center
         /// of the window, rather than using relative mouse motion.</para>
         /// <para>Note that relative mouse mode may have different mouse acceleration
         /// behavior than pointer warps.</para>
@@ -2416,6 +2475,21 @@ public static partial class SDL
         public const string RenderDirect3D11Debug = "SDL_RENDER_DIRECT3D11_DEBUG";
         
         /// <summary>
+        /// <para>A variable controlling whether to use the Direct3D 11 WARP software 
+        /// rasterizer.</para>
+        /// <para>For more information, see:
+        /// https://learn.microsoft.com/en-us/windows/win32/direct3darticles/directx-warp</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Disable WARP rasterizer. (default)</item>
+        /// <item><c>"1"</c>: Enable WARP rasterizer.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before creating a renderer.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string RenderDirect3D11Warp = "SDL_RENDER_DIRECT3D11_WARP";
+        
+        /// <summary>
         /// <para>A variable controlling whether to enable Vulkan Validation Layers.</para>
         /// <para>This variable can be set to the following values:</para>
         /// <list type="bullet">
@@ -2564,6 +2638,37 @@ public static partial class SDL
         public const string ROGGamepadMiceExcluded = "SDL_ROG_GAMEPAD_MICE_EXCLUDED";
         
         /// <summary>
+        /// <para>Variable controlling the width of the PS2's framebuffer in pixels</para>
+        /// <para>By default, this variable is <c>"640"</c></para>
+        /// </summary>
+        public const string PS2GSWidth = "SDL_PS2_GS_WIDTH";
+        
+        /// <summary>
+        /// <para>Variable controlling the height of the PS2's framebuffer in pixels</para>
+        /// <para>By default, this variable is "448"</para>
+        /// </summary>
+        public const string PS2GSHeight = "SDL_PS2_GS_HEIGHT";
+
+        /// <summary>
+        /// <para>Variable controlling whether the signal is interlaced or progressive</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Image is interlaced. (default)</item>
+        /// <item><c>"1"</c>: Image is progressive</item>
+        /// </list>
+        /// </summary>
+        public const string PS2GSProgressive = "SDL_PS2_GS_PROGRESSIVE";
+        
+        /// <summary>
+        /// <para>Variable controlling the video mode of the console</para>
+        /// <list type="bullet">
+        /// <item><c>""</c>: Console-native. (default)</item>
+        /// <item><c>"NTSC"</c>: 60hz region</item>
+        /// <item><c>"PAL"</c>: 50hz region</item>
+        /// </list>
+        /// </summary>
+        public const string PS2GSMode = "SDL_PS2_GS_MODE";
+        
+        /// <summary>
         /// <para>A variable controlling which Dispmanx layer to use on a Raspberry PI.</para>
         /// <para>Also known as Z-order. The variable can take a negative or positive value.
         /// The default is 10000.</para>
@@ -2571,7 +2676,6 @@ public static partial class SDL
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string RPIVideoLayer = "SDL_RPI_VIDEO_LAYER";
-        
         
         /// <summary>
         /// <para>Specify an <c>"activity name"</c> for screensaver inhibition.</para>

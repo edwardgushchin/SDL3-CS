@@ -189,6 +189,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetSurfacePalette(SDL_Surface *surface, SDL_Palette *palette);</code>
     /// <summary>
     /// <para>Set the palette used by a surface.</para>
+    /// <para>Setting the palette keeps an internal reference to the palette, which can
+    /// be safely destroyed afterwards.</para>
     /// <para>A single palette can be shared with many surfaces.</para>
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> structure to update.</param>

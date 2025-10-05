@@ -32,6 +32,7 @@ public static partial class SDL
 		public const string RendererCreateSurfacePointer = "SDL.renderer.create.surface";
 		public const string RendererCreateOutputColorspaceNumber = "SDL.renderer.create.output_colorspace";
 		public const string RendererCreatePresentVSyncNumber = "SDL.renderer.create.present_vsync";
+		public const string RendererCreateGPUDevicePointer = "SDL.renderer.create.gpu.device";
 		public const string RendererCreateGPUShadersSPIRVBoolean = "SDL.renderer.create.gpu.shaders_spirv";
 		public const string RendererCreateGPUShadersDXILBoolean = "SDL.renderer.create.gpu.shaders_dxil";
 		public const string RendererCreateGPUShadersMSLBoolean = "SDL.renderer.create.gpu.shaders_msl";
@@ -72,6 +73,7 @@ public static partial class SDL
 		public const string TextureCreateAccessNumber = "SDL.texture.create.access";
 		public const string TextureCreateWidthNumber = "SDL.texture.create.width";
 		public const string TextureCreateHeightNumber = "SDL.texture.create.height";
+		public const string TextureCreatePalettePointer = "SDL.texture.create.palette";
 		public const string TextureCreateSDRWhitePointFloat = "SDL.texture.create.SDR_white_point";
 		public const string TextureCreateHDRHeadroomFloat = "SDL.texture.create.HDR_headroom";
 		public const string TextureCreateD3D11TexturePointer = "SDL.texture.create.d3d11.texture";
@@ -117,5 +119,9 @@ public static partial class SDL
 		public const string TextureOpenGLES2TextureVNumber = "SDL.texture.opengles2.texture_v";
 		public const string TextureOpenGLES2TextureTargetNumber = "SDL.texture.opengles2.target";
 		public const string TextureVulkanTextureNumber = "SDL.texture.vulkan.texture";
+		public const string TextureGPUTexturePointer = "SDL.texture.gpu.texture";
+		public const string TextureGPUTextureUVPointer = "SDL.texture.gpu.texture_uv";
+		public const string TextureGPUTextureUPointer = "SDL.texture.gpu.texture_u";
+		public const string TextureGPUTextureVPointer = "SDL.texture.gpu.texture_v";
 	}
 }

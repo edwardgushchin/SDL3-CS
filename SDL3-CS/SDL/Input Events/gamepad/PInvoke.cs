@@ -111,6 +111,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReloadGamepadMappings"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -129,6 +130,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information. This is a
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     public static string[]? GetGamepadMappings(out int count)
     {
@@ -183,6 +185,7 @@ public static partial class SDL
     /// <returns>a string that has the gamepad's mapping or <c>null</c> if no mapping is
     /// available; call <see cref="GetError"/> for more information. This should
     /// be freed with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddGamepadMapping"/>
     /// <seealso cref="GetGamepadMappingForID"/>
@@ -212,6 +215,7 @@ public static partial class SDL
     /// mapping.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddGamepadMapping"/>
     /// <seealso cref="GetGamepadMapping"/>
@@ -225,6 +229,7 @@ public static partial class SDL
     /// Return whether a gamepad is currently connected.
     /// </summary>
     /// <returns><c>true</c> if a gamepad is connected, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepads"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasGamepad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -243,6 +248,7 @@ public static partial class SDL
     /// <returns>a 0 terminated array of joystick instance IDs or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information. This should be freed
     /// with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasGamepad"/>
     /// <seealso cref="OpenGamepad"/>
@@ -268,6 +274,7 @@ public static partial class SDL
     /// <param name="instanceId">the joystick instance ID.</param>
     /// <returns><c>true</c> if the given joystick is supported by the gamepad interface,
     /// <c>false</c> if it isn't or it's an invalid index.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetJoysticks"/>
     /// <seealso cref="OpenGamepad"/>
@@ -286,6 +293,7 @@ public static partial class SDL
     /// <param name="instanceId">the joystick instance ID.</param>
     /// <returns>the name of the selected gamepad. If no name can be found, this
     /// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadName"/>
     /// <seealso cref="GetGamepads"/>
@@ -306,6 +314,7 @@ public static partial class SDL
     /// <param name="instanceId">the joystick instance ID.</param>
     /// <returns>the path of the selected gamepad. If no path can be found, this
     /// function returns <c>null</c>; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadPath"/>
     /// <seealso cref="GetGamepads"/>
@@ -323,6 +332,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the player index of a gamepad, or -1 if it's not available.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadPlayerIndex"/>
     /// <seealso cref="GetGamepads"/>
@@ -338,6 +348,7 @@ public static partial class SDL
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the GUID of the selected gamepad. If called on an invalid index,
     /// this function returns a zero GUID.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GUIDToString"/>
     /// <seealso cref="GetGamepads"/>
@@ -354,6 +365,7 @@ public static partial class SDL
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the USB vendor ID of the selected gamepad. If called on an invalid
     /// index, this function returns zero.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadVendor"/>
     /// <seealso cref="GetGamepads"/>
@@ -370,6 +382,7 @@ public static partial class SDL
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the USB product ID of the selected gamepad. If called on an
     /// invalid index, this function returns zero.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadProduct"/>
     /// <seealso cref="GetGamepads"/>
@@ -386,6 +399,7 @@ public static partial class SDL
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the product version of the selected gamepad. If called on an
     /// invalid index, this function returns zero.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadProductVersion"/>
     /// <seealso cref="GetGamepads"/>
@@ -400,6 +414,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the gamepad type.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadType"/>
     /// <seealso cref="GetGamepads"/>
@@ -415,6 +430,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>the gamepad type.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadTypeForID"/>
     /// <seealso cref="GetGamepads"/>
@@ -433,6 +449,7 @@ public static partial class SDL
     /// <param name="instanceId">the joystick instance ID.</param>
     /// <returns>the mapping string. Returns <c>null</c> if no mapping is available. This
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepads"/>
     /// <seealso cref="GetGamepadMapping"/>
@@ -457,6 +474,7 @@ public static partial class SDL
     /// <param name="instanceID">the joystick instance ID.</param>
     /// <returns>a gamepad identifier or <c>null</c> if an error occurred; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseGamepad"/>
     /// <seealso cref="IsGamepad"/>
@@ -472,6 +490,7 @@ public static partial class SDL
     /// <param name="instanceID">the joystick instance ID of the gamepad.</param>
     /// <returns>an SDL_Gamepad on success or <c>null</c> on failure or if it hasn't been
     /// opened yet; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetGamepadFromID(uint instanceID);
@@ -483,6 +502,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="playerIndex">the player index, which different from the instance ID.</param>
     /// <returns>the SDL_Gamepad associated with a player index.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadPlayerIndex"/>
     /// <seealso cref="SetGamepadPlayerIndex"/>
@@ -511,6 +531,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad identifier previously returned by
     /// <see cref="OpenGamepad"/>.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -525,6 +546,7 @@ public static partial class SDL
     /// <see cref="OpenGamepad"/>.</param>
     /// <returns>the instance ID of the specified gamepad on success or 0 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetGamepadID(IntPtr gamepad);
@@ -540,6 +562,7 @@ public static partial class SDL
     /// <see cref="OpenGamepad"/>.</param>
     /// <returns>the implementation dependent name for the gamepad, or <c>null</c> if
     /// there is no name or the identifier passed is invalid.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadNameForID"/>
     public static string? GetGamepadName(IntPtr gamepad)
@@ -559,6 +582,7 @@ public static partial class SDL
     /// <see cref="OpenGamepad"/>.</param>
     /// <returns>the implementation dependent path for the gamepad, or <c>null</c> if
     /// there is no path or the identifier passed is invalid.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadPathForID"/>
     public static string? GetGamepadPath(IntPtr gamepad)
@@ -575,6 +599,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the gamepad type, or <see cref="GamepadType.Unknown"/> if it's not
     /// available.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadTypeForID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -588,6 +613,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the gamepad type, or <see cref="GamepadType.Unknown"/> if it's not
     /// available.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRealGamepadTypeForID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRealGamepadType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -601,6 +627,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the player index for gamepad, or -1 if it's not available.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetGamepadPlayerIndex"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -616,6 +643,7 @@ public static partial class SDL
     /// the player index and turn off player LEDs.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <seealso cref="GetGamepadPlayerIndex"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGamepadPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -629,6 +657,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the USB vendor ID, or zero if unavailable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadVendorForID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadVendor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -642,6 +671,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the USB product ID, or zero if unavailable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadProductForID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadProduct"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -655,6 +685,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the USB product version, or zero if unavailable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadProductVersionForID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadProductVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -668,6 +699,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the gamepad firmware version, or zero if unavailable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadFirmwareVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ushort GetGamepadFirmwareVersion(IntPtr gamepad);
@@ -682,6 +714,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the serial number, or <c>null</c> if unavailable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     public static string? GetGamepadSerial(IntPtr gamepad)
     {
@@ -698,6 +731,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad object to query.</param>
     /// <returns>the gamepad handle, or 0 if unavailable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSteamHandle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial ulong GetGamepadSteamHandle(IntPtr gamepad);
@@ -711,6 +745,7 @@ public static partial class SDL
     /// <returns>the connection state on success or
     /// <see cref="JoystickConnectionState.Invalid"/> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadConnectionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial JoystickConnectionState GetGamepadConnectionState(IntPtr gamepad);
@@ -731,6 +766,7 @@ public static partial class SDL
     /// filled in with -1 we can't determine a value or there is no
     /// battery.</param>
     /// <returns>the current battery state.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadPowerInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial PowerState GetGamepadPowerInfo(IntPtr gamepad, out int percent);
@@ -743,6 +779,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad identifier previously returned by
     /// <see cref="OpenGamepad"/>.</param>
     /// <returns><c>true</c> if the gamepad has been opened and is currently connected, or
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <c>false</c> if not.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GamepadConnected"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -764,6 +801,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad object that you want to get a joystick from.</param>
     /// <returns>an SDL_Joystick object, or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetGamepadJoystick(IntPtr gamepad);
@@ -777,6 +815,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="enabled">whether to process gamepad events or not.</param>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <seealso cref="GamepadEventsEnabled"/>
     /// <seealso cref="UpdateGamepads"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGamepadEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -790,6 +829,7 @@ public static partial class SDL
     /// and check the state of the gamepad when you want gamepad information.</para>
     /// </summary>
     /// <returns><c>true</c> if gamepad events are being processed, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetGamepadEventsEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GamepadEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -809,6 +849,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information. This is a
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     public static GamepadBinding[]? GetGamepadBindings(IntPtr gamepad, out int count)
     {
@@ -834,6 +875,7 @@ public static partial class SDL
     /// enabled. Under such circumstances, it will not be necessary to call this
     /// function.</para>
     /// </summary>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateGamepads"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UpdateGamepads();
@@ -850,6 +892,7 @@ public static partial class SDL
     /// <param name="str">string representing a <see cref="GamepadType"/> type.</param>
     /// <returns>the <see cref="GamepadType"/> enum corresponding to the input string, or
     /// <see cref="GamepadType.Unknown"/> if no match was found.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadStringForType"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadTypeFromString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -866,6 +909,7 @@ public static partial class SDL
     /// <returns>a string for the given type, or <c>null</c> if an invalid type is
     /// specified. The string returned is of the format used by
     /// SDL_Gamepad mapping strings.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadTypeFromString"/>
     public static string? GetGamepadStringForType(GamepadType type)
@@ -889,6 +933,7 @@ public static partial class SDL
     /// <param name="str">string representing a SDL_Gamepad axis.</param>
     /// <returns>the <see cref="GamepadAxis"/> enum corresponding to the input string, or
     /// <see cref="GamepadAxis.Invalid"/> if no match was found.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadStringForAxis"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadAxisFromString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -905,6 +950,7 @@ public static partial class SDL
     /// <returns>a string for the given axis, or <c>null</c> if an invalid axis is
     /// specified. The string returned is of the format used by
     /// SDL_Gamepad mapping strings.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadAxisFromString"/>
     public static string? GetGamepadStringForAxis(GamepadAxis axis)
@@ -923,6 +969,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="axis">an axis enum value (an <see cref="GamepadAxis"/> value).</param>
     /// <returns><c>true</c> if the gamepad has this axis, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadHasButton"/>
     /// <seealso cref="GetGamepadAxis"/>
@@ -946,6 +993,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="axis">an axis index (one of the <see cref="GamepadAxis"/> values).</param>
     /// <returns>axis state.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadHasAxis"/>
     /// <seealso cref="GetGamepadButton"/>
@@ -964,6 +1012,7 @@ public static partial class SDL
     /// <param name="str">string representing a SDL_Gamepad axis.</param>
     /// <returns>the <see cref="GamepadButton"/> enum corresponding to the input string, or
     /// <see cref="GamepadButton.Invalid"/> if no match was found.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadStringForButton"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadButtonFromString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -980,6 +1029,7 @@ public static partial class SDL
     /// <returns>a string for the given button, or <c>null</c> if an invalid button is
     /// specified. The string returned is of the format used by
     /// SDL_Gamepad mapping strings.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadButtonFromString"/>
     public static string? GetGamepadStringForButton(GamepadButton button)
@@ -998,6 +1048,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="button">a button enum value (an <see cref="GamepadButton"/> value).</param>
     /// <returns><c>true</c> if the gamepad has this button, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadHasAxis"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GamepadHasButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1012,6 +1063,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="button">a button index (one of the SDL_GamepadButton values).</param>
     /// <returns><c>true</c> if the button is pressed, <c>false</c> otherwise.</returns>
+    /// /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadHasButton"/>
     /// <seealso cref="GetGamepadAxis"/>
@@ -1027,6 +1079,7 @@ public static partial class SDL
     /// <param name="type">the type of gamepad to check.</param>
     /// <param name="button">a button index (one of the <see cref="GamepadButton"/> values).</param>
     /// <returns>the <see cref="GamepadButtonLabel"/> enum corresponding to the button label.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadButtonLabel"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadButtonLabelForType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1041,6 +1094,7 @@ public static partial class SDL
     /// <param name="button">a button index (one of the <see cref="GamepadButton"/> values).</param>
     /// <returns>the <see cref="GamepadButtonLabel"/> enum corresponding to the button label.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <seealso cref="GetGamepadButtonLabelForType"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadButtonLabel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial GamepadButtonLabel GetGamepadButtonLabel(IntPtr gamepad, GamepadButton button);
@@ -1052,6 +1106,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">a gamepad.</param>
     /// <returns>number of touchpads.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumGamepadTouchpadFingers"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumGamepadTouchpads"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1066,6 +1121,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="touchpad">a touchpad.</param>
     /// <returns>number of supported simultaneous fingers.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadTouchpadFinger"/>
     /// <seealso cref="GetNumGamepadTouchpads"/>
@@ -1089,6 +1145,7 @@ public static partial class SDL
     /// <param name="pressure">a pointer filled with pressure value, may be <c>null</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumGamepadTouchpadFingers"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadTouchpadFinger"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1103,6 +1160,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="type">the type of sensor to query.</param>
     /// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadSensorData"/>
     /// <seealso cref="GetGamepadSensorDataRate"/>
@@ -1121,6 +1179,7 @@ public static partial class SDL
     /// <param name="enabled">whether data reporting should be enabled.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GamepadHasSensor"/>
     /// <seealso cref="GamepadSensorEnabled"/>
@@ -1136,6 +1195,7 @@ public static partial class SDL
     /// <param name="gamepd">the gamepad to query.</param>
     /// <param name="type">the type of sensor to query.</param>
     /// <returns><c>true</c> if the sensor is enabled, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetGamepadSensorEnabled"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GamepadSensorEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1150,6 +1210,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="type">the type of sensor to query.</param>
     /// <returns>the data rate, or 0.0f if the data rate is not available.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorDataRate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetGamepadSensorDataRate(IntPtr gamepad, SensorType type);
@@ -1167,6 +1228,7 @@ public static partial class SDL
     /// <param name="numValues">the number of values to write to data.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1189,6 +1251,8 @@ public static partial class SDL
     /// <param name="durationMs">the duration of the rumble effect, in milliseconds.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleGamepad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RumbleGamepad(IntPtr gamepad, ushort lowFrequencyRumble, ushort highFrequencyRumble, uint durationMs);
@@ -1213,6 +1277,7 @@ public static partial class SDL
     /// <param name="durationMs">the duration of the rumble effect, in milliseconds.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RumbleGamepad"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleGamepadTriggers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1234,6 +1299,7 @@ public static partial class SDL
     /// <param name="blue">the intensity of the blue LED.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGamepadLED"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1249,6 +1315,7 @@ public static partial class SDL
     /// <param name="size">the size of the data to send to the gamepad.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendGamepadEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1264,6 +1331,7 @@ public static partial class SDL
     /// <param name="size">the size of the data to send to the gamepad.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendGamepadEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1276,6 +1344,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">a gamepad identifier previously returned by
     /// <see cref="OpenGamepad"/>.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenGamepad"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseGamepad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1292,6 +1361,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="button">a button on the gamepad.</param>
     /// <returns>the sfSymbolsName or <c>null</c> if the name can't be found.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadAppleSFSymbolsNameForAxis"/>
     public static string? GetGamepadAppleSFSymbolsNameForButton(IntPtr gamepad, GamepadButton button)
@@ -1310,6 +1380,7 @@ public static partial class SDL
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="axis">an axis on the gamepad.</param>
     /// <returns>the sfSymbolsName or <c>null</c> if the name can't be found.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGamepadAppleSFSymbolsNameForButton"/>
     public static string? GetGamepadAppleSFSymbolsNameForAxis(IntPtr gamepad, GamepadAxis axis)

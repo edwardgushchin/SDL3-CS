@@ -233,6 +233,22 @@ public static partial class SDL
     public static partial uint GetAtomicU32(ref AtomicU32 a);
     
     
+    /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_AddAtomicU32(SDL_AtomicU32 *a, int v);</code>
+    /// <summary>
+    /// <para>Add to an atomic variable.</para>
+    /// <para>This function also acts as a full memory barrier.</para>
+    /// <para><b>Note: If you don't know what this function is for, you shouldn't use
+    /// it!</b></para>
+    /// </summary>
+    /// <param name="a">a pointer to an <see cref="AtomicU32"/> variable to be modified.</param>
+    /// <param name="v">the desired value to add or subtract.</param>
+    /// <returns>the previous value of the atomic variable.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddAtomicU32"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint AddAtomicU32(ref AtomicU32 a, int v);
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);</code>
     /// <summary>
     /// <para>Set a pointer to a new value if it is currently an old value.</para>

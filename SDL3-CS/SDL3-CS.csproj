@@ -10,17 +10,25 @@
         <TargetFrameworks>net8.0;net9.0;net7.0</TargetFrameworks>
         <PackageReleaseNotes>This is a stable bugfix release, with the following changes:
 
-            - Fixed a crash when passing large invalid coordinates to SDL_BlitSurfaceScaled()
-            - Fixed doubled mouse wheel events on X11
-            - Fixed doubled SDL_EVENT_GAMEPAD_ADDED events for controllers with automatic gamepad mappings
-            - Added support for the Google Play 16 KB page size requirement
-            - Fixed a crash on Android if using SDL for other functionality besides video
-            - Fixed dynamic loading of the environ symbol on FreeBSD
-            - Fixed audio playback on PSP</PackageReleaseNotes>
+            - Fixed a crash at startup on some installations of macOS
+            - Fixed the reported fullscreen window position on MacBooks with a camera notch
+            - Fixed Android applications losing vsync when being resumed
+            - Fixed SDL_RunOnMainThread() on Android when using SDL_WaitEvent()
+            - Fixed a crash when enumerating Steam Controllers
+            - Fixed rumble strength on DualSense Edge and Bluetooth connected controllers
+            - Fixed the HP Deluxe Webcam KQ246AA being detected as joystick
+            - Disable Windows.Gaming.Input by default, this functionality is already covered by other APIs
+            - Use the correct controller name on iOS
+            - Enabled high refresh rates on iOS when using main callbacks
+            - Fixed VMware not capturing the mouse when relative mode is enabled
+            - Increased the maximum color target bindings from 4 to 8 in the GPU API
+            - When using SDL_SetRenderLogicalPresentation(), letterboxing now uses the clear color instead of black
+            - Fixed crash at startup when redirecting X11 output over ssh
+            - Fixed a memory leak when using detached threads</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.2.20.0</Version>
+        <Version>3.2.24.0</Version>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>

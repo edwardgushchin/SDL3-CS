@@ -110,6 +110,8 @@ public static partial class SDL
         /// <summary>
         /// Gyroscope for right Joy-Con controller
         /// </summary>
-        GyroR
+        GyroR,
+        
+        Count
     }
 }

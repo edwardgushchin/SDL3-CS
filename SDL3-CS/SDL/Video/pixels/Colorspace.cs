@@ -123,6 +123,6 @@ public static partial class SDL
         /// <summary>
         /// The default colorspace for YUV surfaces if no colorspace is specified
         /// </summary>
-        YUVDefault = JPEG
+        YUVDefault = BT601Limited
     }
 }

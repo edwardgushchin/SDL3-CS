@@ -94,7 +94,7 @@ public static partial class SDL
     /// the file.</param>
     /// <returns>a pointer to the SDL_IOStream structure that is created or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseIO"/>
     /// <seealso cref="FlushIO"/>
@@ -263,6 +263,7 @@ public static partial class SDL
     /// <param name="context">SDL_IOStream structure to close.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -294,8 +295,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="context">the SDL_IOStream to query.</param>
     /// <returns>an <see cref="IOStatus"/> enum with the current state.</returns>
-    /// <threadsafety>This function should not be called at the same time that
-    /// another thread is operating on the same SDL_IOStream.</threadsafety>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetIOStatus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IOStatus GetIOStatus(IntPtr context);
@@ -309,6 +309,7 @@ public static partial class SDL
     /// <returns>the size of the data stream in the SDL_IOStream on success or a
     /// negative error code on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetIOSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial long GetIOSize(IntPtr context);
@@ -333,6 +334,7 @@ public static partial class SDL
     /// <see cref="IOWhence.End"/>.</param>
     /// <returns>the final offset in the data stream after the seek or -1 on
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="TellIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SeekIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -350,6 +352,7 @@ public static partial class SDL
     /// current offset.</param>
     /// <returns>the current offset in the stream, or -1 if the information can not
     /// be determined.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SeekIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TellIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -365,12 +368,16 @@ public static partial class SDL
     /// <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If zero is returned and
     /// the stream is not at EOF, <see cref="GetIOStatus"/> will return a different error
     /// value and <see cref="GetError"/> will offer a human-readable message.</para>
+    /// <para>A request for zero bytes on a valid stream will return zero immediately
+    /// without accessing the stream, so the stream status (EOF, err, etc) will not
+    /// change.</para>
     /// </summary>
     /// <param name="context">a pointer to an SDL_IOStream structure.</param>
     /// <param name="ptr">a pointer to a buffer to read data into.</param>
     /// <param name="size">the number of bytes to read from the data source.</param>
     /// <returns>the number of bytes read, or 0 on end of file or other failure;
     /// call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WriteIO"/>
     /// <seealso cref="GetIOStatus"/>
@@ -389,12 +396,16 @@ public static partial class SDL
     /// <para>The caller can use <see cref="GetIOStatus"/> to determine if the problem is
     /// recoverable, such as a non-blocking write that can simply be retried later,
     /// or a fatal error.</para>
+    /// <para>A request for zero bytes on a valid stream will return zero immediately
+    /// without accessing the stream, so the stream status (EOF, err, etc) will not
+    /// change.</para>
     /// </summary>
     /// <param name="context">a pointer to an SDL_IOStream structure.</param>
     /// <param name="ptr">a pointer to a buffer containing data to write.</param>
     /// <param name="size">the number of bytes to write.</param>
     /// <returns>the number of bytes written, which will be less than <c>size</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOprintf"/>
     /// <seealso cref="ReadIO"/>
@@ -414,6 +425,7 @@ public static partial class SDL
     /// <param name="fmt">a printf() style format string.</param>
     /// <returns>the number of bytes written or 0 on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOvprintf"/>
     /// <seealso cref="WriteIO"/>
@@ -432,6 +444,7 @@ public static partial class SDL
     /// <param name="ap">a variable argument list.</param>
     /// <returns>the number of bytes written or 0 on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOprintf"/>
     /// <seealso cref="WriteIO"/>
@@ -450,6 +463,7 @@ public static partial class SDL
     /// <param name="context">SDL_IOStream structure to flush.</param>
     /// <returns><c>true on</c> success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenIO"/>
     /// <seealso cref="WriteIO"/>
@@ -473,6 +487,7 @@ public static partial class SDL
     /// in the case of an error.</param>
     /// <returns>the data or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadFile"/>
     /// <seealso cref="SaveFileIO"/>
@@ -492,6 +507,7 @@ public static partial class SDL
     /// <param name="datasize">if not <c>null</c>, will store the number of bytes read.</param>
     /// <returns>the data or <c>null</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadFileIO"/>
     /// <seealso cref="SaveFile"/>
@@ -511,6 +527,7 @@ public static partial class SDL
     /// in the case of an error.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SaveFile"/>
     /// <seealso cref="LoadFileIO"/>
@@ -529,6 +546,7 @@ public static partial class SDL
     /// <param name="datasize">the number of bytes to be written.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SaveFileIO"/>
     /// <seealso cref="LoadFile"/>
@@ -549,6 +567,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure or EOF; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -567,6 +586,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -588,6 +608,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -609,6 +630,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -630,6 +652,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -651,6 +674,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -672,6 +696,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -693,6 +718,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -714,6 +740,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -735,6 +762,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -756,6 +784,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -777,6 +806,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -798,6 +828,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadU64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -819,6 +850,7 @@ public static partial class SDL
     /// <param name="value">a pointer filled in with the data read.</param>
     /// <returns><c>true</c> on successful read or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadS64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -833,6 +865,7 @@ public static partial class SDL
     /// <param name="value">the byte value to write.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -847,6 +880,7 @@ public static partial class SDL
     /// <param name="value">the byte value to write.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS8"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -865,6 +899,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful <c>write</c> or false on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -883,6 +918,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS16LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -900,6 +936,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -917,6 +954,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful <c>write</c> or false on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS16BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -935,6 +973,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -953,6 +992,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS32LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -970,6 +1010,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -987,6 +1028,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS32BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1005,6 +1047,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1023,6 +1066,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS64LE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1040,6 +1084,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteU64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1057,6 +1102,7 @@ public static partial class SDL
     /// <param name="value">the data to be written, in native format.</param>
     /// <returns><c>true</c> on successful write or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
+    /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteS64BE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

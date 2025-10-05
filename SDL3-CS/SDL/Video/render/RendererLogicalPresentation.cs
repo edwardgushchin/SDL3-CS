@@ -42,7 +42,7 @@ public static partial class SDL
         Stretch,
         
         /// <summary>
-        /// The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars
+        /// The rendered content is fit to the largest dimension and the other dimension is letterboxed with the clear color
         /// </summary>
         Letterbox,
         
