@@ -1023,8 +1023,8 @@ public partial class SDL
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="reference">the stencil reference value to set.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBlendConstants"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetGPUBlendConstants(IntPtr renderPass, byte reference);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUStencilReference"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetGPUStencilReference(IntPtr renderPass, byte reference);
 
     
     #region BindGPUVertexBuffers
