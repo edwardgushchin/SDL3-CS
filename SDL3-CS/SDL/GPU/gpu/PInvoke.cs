@@ -934,8 +934,19 @@ public partial class SDL
     /// <returns>a render pass handle.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
-    [DllImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo);
+    public static IntPtr BeginGPURenderPass(IntPtr commandBuffer, in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo)
+    {
+        if (colorTargetInfos.Length == 0)
+            return BeginGPURenderPass(commandBuffer, IntPtr.Zero, 0, depthStencilTargetInfo);
+        
+        unsafe
+        {
+            fixed (GPUColorTargetInfo* pInfos = &colorTargetInfos[0])
+            { 
+                return BeginGPURenderPass(commandBuffer, (nint)pInfos, numColorTargets, depthStencilTargetInfo);
+            }
+        }
+    }
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPURenderPass *SDLCALL SDL_BeginGPURenderPass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info);</code>
@@ -986,9 +997,19 @@ public partial class SDL
     /// <returns>a render pass handle.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EndGPURenderPass"/>
-    [DllImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern IntPtr BeginGPURenderPass(IntPtr commandBuffer, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo);
-    
+    public static IntPtr BeginGPURenderPass(IntPtr commandBuffer, in GPUColorTargetInfo[] colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo)
+    {
+        if (colorTargetInfos.Length == 0)
+            return BeginGPURenderPass(commandBuffer, IntPtr.Zero, 0, depthStencilTargetInfo);
+                
+        unsafe
+        {
+            fixed (GPUColorTargetInfo* pInfos = &colorTargetInfos[0])
+            { 
+                return BeginGPURenderPass(commandBuffer, (nint)pInfos, numColorTargets, depthStencilTargetInfo);
+            }
+        }
+    }
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUGraphicsPipeline(SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline);</code>
     /// <summary>
