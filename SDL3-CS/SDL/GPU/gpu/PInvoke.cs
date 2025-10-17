@@ -1081,9 +1081,19 @@ public partial class SDL
     /// buffers and offset values.</param>
     /// <param name="numBindings">the number of bindings in the bindings array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GPUBufferBinding[] bindings, uint numBindings);
-
+    public static void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, GPUBufferBinding[] bindings, uint numBindings)
+    {
+        if (bindings.Length == 0)
+            BindGPUVertexBuffers(renderPass, firstSlot, IntPtr.Zero, numBindings);
+        
+        unsafe
+        {
+            fixed (GPUBufferBinding* pInfos = &bindings[0])
+            { 
+                BindGPUVertexBuffers(renderPass, firstSlot, (nint)pInfos, numBindings);
+            }
+        }
+    }
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);</code>
     /// <summary>
@@ -1116,6 +1126,7 @@ public partial class SDL
     
     
     #region BindGPUVertexSamplers
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
@@ -1130,8 +1141,20 @@ public partial class SDL
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUShader"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
+    public static void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings)
+    {
+        if (textureSamplerBindings.Length == 0)
+            BindGPUVertexSamplers(renderPass, firstSlot, IntPtr.Zero, numBindings);
+        
+        unsafe
+        {
+            fixed (GPUTextureSamplerBinding* pInfos = &textureSamplerBindings[0])
+            { 
+                BindGPUVertexSamplers(renderPass, firstSlot, (nint)pInfos, numBindings);
+            }
+        }
+
+    }
 
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
