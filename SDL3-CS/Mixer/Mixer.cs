@@ -24,7 +24,7 @@
 namespace SDL3;
 
 /// <summary>
-/// <para>SDL_mixer:  An audio mixer library based on the SDL library
+/// <para>SDL_mixer: An audio mixer library based on the SDL library
 /// Copyright (C) 1997-2024 Sam Lantinga slouken@libsdl.org</para>
 /// <para>This software is provided 'as-is', without any express or implied
 /// warranty.  In no event will the authors be held liable for any damages

@@ -25,24 +25,6 @@ namespace SDL3;
 
 public partial class Mixer
 { 
-    public const int Channels = 8;
-        
-    public const int DefaultFrequency = 44100;
-        
-    public const SDL.AudioFormat DefaultFormat = SDL.AudioFormat.AudioS16LE;
-        
-    public const int DefaultChannels = 2;
-        
-    public const int MaxVolume = 128;
-
-    /// <summary>
-    /// Magic number for effects to operate on the postmix instead of a channel.
-    /// </summary>
-    public const int ChannelPost = -2;
-
-    /// <summary>
-    /// Environment variable that makes some mixing effects favor speed over
-    /// quality.
-    /// </summary>
-    public const string EffectsMaxSpeed = "MIX_EFFECTSMAXSPEED";
+    public const int DurationUnknown = -1;
+    public const int DurationInfinite = -2;
 }

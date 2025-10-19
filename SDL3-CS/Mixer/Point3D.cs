@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2025 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -26,19 +26,27 @@ namespace SDL3;
 public partial class Mixer
 {
     /// <summary>
-    /// These are types of music files (not libraries used to load them)
+    /// 3D coordinates for <see cref="SetTrack3DPosition"/>.
+    /// <para>The coordinates use a "right-handed" coordinate system, like OpenGL and
+    /// OpenAL.</para>
     /// </summary>
-    public enum MusicType
+    /// <since>This struct is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="SetTrack3DPosition"/>
+    public struct Point3D
     {
-        None,
-        WAV,
-        MOD,
-        MID,
-        OGG,
-        MP3,
-        FLAC,
-        OPUS,
-        WAVPACK,
-        GME
+        /// <summary>
+        /// X coordinate (negative left, positive right).
+        /// </summary>
+        public float X;
+        
+        /// <summary>
+        /// Y coordinate (negative down, positive up).
+        /// </summary>
+        public float Y;
+        
+        /// <summary>
+        /// Z coordinate (negative forward, positive back).
+        /// </summary>
+        public float Z;
     }
 }

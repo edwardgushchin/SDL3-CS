@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2025 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -26,19 +26,26 @@ namespace SDL3;
 public partial class Mixer
 {
     /// <summary>
-    /// The internal format for an audio chunk
+    /// A set of per-channel gains for tracks using <see cref="SetTrackStereo"/>.
+    /// <para>When forcing a track to stereo, the app can specify a per-channel gain, to
+    /// further adjust the left or right outputs.</para>
+    /// <para>When mixing audio that has been forced to stereo, each channel is modulated
+    /// by these values. A value of 1.0f produces no change, 0.0f produces silence.</para>
+    /// <para>A simple panning effect would be to set <c>left</c> to the desired value and
+    /// <c>right</c> to <c>1.0f - left</c>.</para>
     /// </summary>
-    public struct Chunk
+    /// <since>This struct is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="SetTrackStereo"/>
+    public struct StereoGains
     {
-        public int Allocated;
-        
-        public IntPtr ABuf;
-        
-        public uint ALen;
-
         /// <summary>
-        /// Per-sample volume, 0-128
+        /// left channel gain
         /// </summary>
-        public byte Volume;
+        public float Left;
+        
+        /// <summary>
+        /// right channel gain
+        /// </summary>
+        public float Right;
     }
 }
