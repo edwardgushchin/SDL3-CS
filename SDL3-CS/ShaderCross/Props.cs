@@ -27,7 +27,11 @@ public static partial class ShaderCross
 {
     public static class Props
     {
-        public const string SPIRVPSSLCompatibility = "SDL.shadercross.spirv.pssl.compatibility";
-        public const string SPIRVMSLVersion = "SDL.shadercross.spirv.msl.version";
+        public const string ShaderDebugEnableBoolean = "SDL_shadercross.spirv.debug.enable";
+        public const string ShaderDebugNameString = "SDL_shadercross.spirv.debug.name";
+        public const string ShaderCullUnusedBindingsBoolean = "SDL_shadercross.spirv.cull_unused_bindings";
+        
+        public const string SPIRVPSSLCompatibilityBoolean = "SDL.shadercross.spirv.pssl.compatibility";
+        public const string SPIRVMSLVersionString = "SDL.shadercross.spirv.msl.version";
     }
 }

@@ -61,8 +61,12 @@ public partial class ShaderCross
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_TranspileMSLFromSPIRV(const SDL_ShaderCross_SPIRV_Info *info);</code>
     /// <summary>
     /// <para>Transpile to MSL code from SPIRV code.</para>
+    /// You must <see cref="SDL.Free"/> the returned string once you are done with it.
+    /// <para>These are the optional properties that can be used:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.SPIRVMSLVersionString"/>: specifies the MSL version that should be emitted. Defaults to 1.2.0.</item>
+    /// </list>
     /// </summary>
-    /// <remarks>You must SDL_free the returned string once you are done with it.</remarks>
     /// <param name="info">a struct describing the shader to transpile.</param>
     /// <returns>an SDL_malloc'd string containing MSL code.</returns>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_TranspileMSLFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -72,8 +76,12 @@ public partial class ShaderCross
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_TranspileHLSLFromSPIRV(const SDL_ShaderCross_SPIRV_Info *info);</code>
     /// <summary>
     /// <para>Transpile to HLSL code from SPIRV code.</para>
+    /// You must SDL_free the returned string once you are done with it.
+    /// <para>These are the optional properties that can be used:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.SPIRVPSSLCompatibilityBoolean"/>: generates PSSL-compatible shader.</item>
+    /// </list>
     /// </summary>
-    /// <remarks>You must SDL_free the returned string once you are done with it.</remarks>
     /// <param name="info">a struct describing the shader to transpile.</param>
     /// <returns>an SDL_malloc'd string containing HLSL code.</returns>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_TranspileHLSLFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -110,12 +118,12 @@ public partial class ShaderCross
     /// </summary>
     /// <param name="device">the SDL GPU device.</param>
     /// <param name="info">a struct describing the shader to transpile.</param>
-    /// <param name="metadata">a struct describing shader metadata. Can be obtained from <see cref="ReflectGraphicsSPIRV"/>.</param>
+    /// <param name="resourceInfo">a struct describing resource info of the shader. Can be obtained from <see cref="ReflectGraphicsSPIRV"/>.</param>
     /// <param name="props">a properties object filled in with extra shader metadata.</param>
     /// <returns>a compiled SDL_GPUShader</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileGraphicsShaderFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileGraphicsShaderFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderMetadata metadata, uint props);
+    public static partial IntPtr CompileGraphicsShaderFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderResourceInfo resourceInfo, uint props);
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_ShaderCross_CompileComputePipelineFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, const SDL_ShaderCross_ComputePipelineMetadata *metadata, SDL_PropertiesID props);</code>
@@ -171,8 +179,14 @@ public partial class ShaderCross
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_CompileDXBCFromHLSL(const SDL_ShaderCross_HLSL_Info *info, size_t *size);</code>
     /// <summary>
     /// Compile to DXBC bytecode from HLSL code via a SPIRV-Cross round trip.
+    /// <para>You must <see cref="SDL.Free"/> the returned buffer once you are done with it.</para>
+    /// <para>These are the optional properties that can be used:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: When true, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// </list>
     /// </summary>
-    /// <remarks>You must SDL_free the returned buffer once you are done with it.</remarks>
     /// <param name="info">a struct describing the shader to transpile.</param>
     /// <param name="size">filled in with the bytecode buffer size.</param>
     /// <returns>an SDL_malloc'd buffer containing DXBC bytecode.</returns>
@@ -184,8 +198,14 @@ public partial class ShaderCross
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_CompileDXILFromHLSL(const SDL_ShaderCross_HLSL_Info *info, size_t *size);</code>
     /// <summary>
     /// Compile to DXIL bytecode from HLSL code via a SPIRV-Cross round trip.
+    /// <para>You must <see cref="SDL.Free"/> the returned buffer once you are done with it.</para>
+    /// <para>These are the optional properties that can be used:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when true, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// </list>
     /// </summary>
-    /// <remarks>You must SDL_free the returned buffer once you are done with it.</remarks>
     /// <param name="info">a struct describing the shader to transpile.</param>
     /// <param name="size">filled in with the bytecode buffer size.</param>
     /// <returns>an SDL_malloc'd buffer containing DXIL bytecode.</returns>
@@ -197,8 +217,13 @@ public partial class ShaderCross
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_CompileSPIRVFromHLSL(const SDL_ShaderCross_HLSL_Info *info, size_t *size);</code>
     /// <summary>
     /// Compile to SPIRV bytecode from HLSL code.
+    /// <para>These are the optional properties that can be used:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when true, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// </list>
     /// </summary>
-    /// <remarks>You must SDL_free the returned buffer once you are done with it.</remarks>
     /// <param name="info">a struct describing the shader to transpile.</param>
     /// <param name="size">filled in with the bytecode buffer size.</param>
     /// <returns>an SDL_malloc'd buffer containing SPIRV bytecode.</returns>

@@ -1918,6 +1918,7 @@ public partial class Mixer
     /// <seealso cref="CreateGroup"/>
     /// <seealso cref="SetGroupPostMixCallback"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackGroup"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetTrackGroup(IntPtr track, IntPtr group);
     
     
@@ -2201,6 +2202,5 @@ public partial class Mixer
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0</since>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_DecodeAudio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
     public static partial int DecodeAudio(IntPtr audiodecoder, IntPtr buffer, int buflen, IntPtr spec);
 }

@@ -40,7 +40,7 @@ public static partial class SDL
     public struct UserEvent
     {
         /// <summary>
-        /// <see cref="EventType.User"/> through <see cref="EventType.Last"/>-1,
+        /// <see cref="EventType.User"/> through <see cref="EventType.Last"/>,
         /// Uint32 because these are not in the <see cref="EventType"/> enumeration
         /// </summary>
         public UInt32 Type;

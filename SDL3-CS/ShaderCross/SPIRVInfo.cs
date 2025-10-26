@@ -56,34 +56,14 @@ public partial class ShaderCross
         /// </summary>
         public ShaderStage ShaderStage;
 
-        private byte enableDebug;
-
-        /// <summary>
-        /// Allows debug info to be emitted when relevant. Can be useful for graphics debuggers like RenderDoc.
-        /// </summary>
-        public bool EnableDebug => Convert.ToBoolean(enableDebug);
-
-        private IntPtr name;
-        
-        /// <summary>
-        /// A UTF-8 name to associate with the shader. Optional, can be NULL.
-        /// </summary>
-        public string? Name
-        {
-            get => Marshal.PtrToStringUTF8(name);
-            set => name = SDL.StringToPointer(value);
-        }
-
         /// <summary>
         /// A properties ID for extensions. Should be 0 if no extensions are needed.
         /// </summary>
         public uint Props;
-
-
+        
         public void Dispose()
         {
             Marshal.FreeHGlobal(entrypoint);
-            Marshal.FreeHGlobal(name);
         }
     }
 }

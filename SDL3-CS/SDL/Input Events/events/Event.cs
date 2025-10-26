@@ -187,6 +187,11 @@ public static partial class SDL
         /// Touch finger event data
         /// </summary>
         [FieldOffset(0)] public TouchFingerEvent TFinger;
+        
+        /// <summary>
+        /// Pinch event data
+        /// </summary>
+        [FieldOffset(0)] public PinchFingerEvent Pinch;
 
         /// <summary>
         /// Pen proximity event data

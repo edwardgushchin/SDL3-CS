@@ -371,6 +371,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateAnimatedCursor"/>
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
@@ -399,7 +400,8 @@ public static partial class SDL
     /// <returns>the new cursor on success or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0</since>+
+    /// <seealso cref="CreateAnimatedCursor"/>
     /// <seealso cref="AddSurfaceAlternateImage"/>
     /// <seealso cref="CreateCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
@@ -407,6 +409,49 @@ public static partial class SDL
     /// <seealso cref="SetCursor"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateColorCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateColorCursor(IntPtr surface, int hotX, int hotY);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_CreateAnimatedCursor(SDL_CursorFrameInfo *frames,int frame_count, int hot_x, int hot_y);</code>
+    /// <summary>
+    /// Create an animated color cursor.
+    /// <para>Animated cursors are composed of a sequential array of frames, specified as
+    /// surfaces and durations in an array of <see cref="CursorFrameInfo"/> structs. The hot
+    /// spot coordinates are universal to all frames, and all frames must have the
+    /// same dimensions.</para>
+    /// <para>Frame durations are specified in milliseconds. A duration of 0 implies an
+    /// infinite frame time, and the animation will stop on that frame. To create a
+    /// one-shot animation, set the duration of the last frame in the sequence to
+    /// 0.</para>
+    /// <para>If this function is passed surfaces with alternate representations added
+    /// with <see cref="AddSurfaceAlternateImage"/>, the surfaces will be interpreted as
+    /// the content to be used for 100% display scale, and the alternate
+    /// representations will be used for high DPI situations. For example, if the
+    /// original surfaces are 32x32, then on a 2x macOS display or 200% display
+    /// scale on Windows, a 64x64 version of the image will be used, if available.
+    /// If a matching version of the image isn't available, the closest larger size
+    /// image will be downscaled to the appropriate size and be used instead, if
+    /// available. Otherwise, the closest smaller image will be upscaled and be
+    /// used instead.</para>
+    /// <para>If the underlying platform does not support animated cursors, this function
+    /// will fall back to creating a static color cursor using the first frame in
+    /// the sequence.</para>
+    /// </summary>
+    /// <param name="frames">an array of cursor images composing the animation.</param>
+    /// <param name="frameCount">the number of frames in the sequence.</param>
+    /// <param name="hotX">the x position of the cursor hot spot.</param>
+    /// <param name="hotY">the y position of the cursor hot spot.</param>
+    /// <returns>the new cursor on success or <c>null</c> on failure; call <see cref="GetError"/>
+    /// for more information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="AddSurfaceAlternateImage"/>
+    /// <seealso cref="CreateCursor"/>
+    /// <seealso cref="CreateColorCursor"/>
+    /// <seealso cref="CreateSystemCursor"/>
+    /// <seealso cref="DestroyCursor"/>
+    /// <seealso cref="SetCursor"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAnimatedCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateAnimatedCursor([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] CursorFrameInfo[] frames, int frameCount, int hotX, int hotY);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_CreateSystemCursor(SDL_SystemCursor id);</code>
@@ -479,6 +524,7 @@ public static partial class SDL
     /// <param name="cursor">the cursor to free.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CreateAnimatedCursor"/>
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateCursor"/>
     /// <seealso cref="CreateSystemCursor"/>

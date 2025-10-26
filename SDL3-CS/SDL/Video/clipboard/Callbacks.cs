@@ -40,11 +40,10 @@ public static partial class SDL
     /// <param name="mimeType">the requested mime-type.</param>
     /// <param name="size">a pointer filled in with the length of the returned data.</param>
     /// <returns>a pointer to the data for the provided mime-type. Returning <c>null</c>
-    /// or setting the length to 0 will cause no data to be sent to the
-    /// "receiver". It is up to the receiver to handle this. Essentially
-    /// returning no data is more or less undefined behavior and may cause
-    /// breakage in receiving applications. The returned data will not be
-    /// freed, so it needs to be retained and dealt with internally.</returns>
+    /// or setting the length to 0 will cause zero length data to be sent
+    /// to the "receiver", which should be able to handle this. The
+    /// returned data will not be freed, so it needs to be retained and
+    /// dealt with internally.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

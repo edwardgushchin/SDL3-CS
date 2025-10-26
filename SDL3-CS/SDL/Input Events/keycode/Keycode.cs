@@ -44,6 +44,7 @@ public static partial class SDL
     /// unicode code point.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
+    /// <seealso cref="Hints.KeycodeOptions"/>
     public enum Keycode : uint
     {
         ExtendedMask = (1u << 29),

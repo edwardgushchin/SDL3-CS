@@ -49,6 +49,7 @@ public static partial class SDL
 		public const string RendererVSyncNumber = "SDL.renderer.vsync";
 		public const string RendererMaxTextureSizeNumber = "SDL.renderer.max_texture_size";
 		public const string RendererTextureFormatsPointer = "SDL.renderer.texture_formats";
+		public const string RendererTextureWrappingBoolean = "SDL.renderer.texture_wrapping";
 		public const string RendererOutputColorspaceNumber = "SDL.renderer.output_colorspace";
 		public const string RendererHDREnabledBoolean = "SDL.renderer.HDR_enabled";
 		public const string RendererSDRWhitePointFloat = "SDL.renderer.SDR_white_point";
@@ -123,5 +124,7 @@ public static partial class SDL
 		public const string TextureGPUTextureUVPointer = "SDL.texture.gpu.texture_uv";
 		public const string TextureGPUTextureUPointer = "SDL.texture.gpu.texture_u";
 		public const string TextureGPUTextureVPointer = "SDL.texture.gpu.texture_v";
+		
+		
 	}
 }

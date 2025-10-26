@@ -2497,13 +2497,13 @@ public static partial class SDL
     /// <see cref="GLGetAttribute"/> to check the values after creating the OpenGL
     /// context, since the values obtained can differ from the requested ones.</para>
     /// </summary>
-    /// <param name="attr">an <see cref="GLAttr"/> enum value specifying the OpenGL attribute to
-    /// set.</param>
+    /// <param name="attr">an enum value specifying the OpenGL attribute to set.</param>
     /// <param name="value">the desired value for the attribute.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GLCreateContext"/>
     /// <seealso cref="GLGetAttribute"/>
     /// <seealso cref="GLResetAttributes"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SetAttribute"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2532,6 +2532,10 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_GLContext SDLCALL SDL_GL_CreateContext(SDL_Window *window);</code>
     /// <summary>
     /// <para>Create an OpenGL context for an OpenGL window, and make it current.</para>
+    /// <para> The OpenGL context will be created with the current states set through
+    /// <see cref="GLSetAttribute"/>.</para>
+    /// <para>The SDL_Window specified must have been created with the <see cref="WindowFlags.OpenGL"/>
+    /// flag, or context creation will fail.</para>
     /// <para>Windows users new to OpenGL should note that, for historical reasons, GL
     /// functions added after OpenGL version 1.1 are not available by default.
     /// Those functions must be loaded at run-time, either with an OpenGL

@@ -28,6 +28,9 @@ public static partial class SDL
     /// <summary>
     /// The addressing mode for a texture when used in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.
     /// <para>This affects how texture coordinates are interpreted outside of [0, 1]</para>
+    /// <para>Texture wrapping is always supported for power of two texture sizes, and is
+    /// supported for other texture sizes if
+    /// <see cref="Props.RendererTextureWrappingBoolean"/> is set to true.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.4.0.</since>
     public enum TextureAddressMode

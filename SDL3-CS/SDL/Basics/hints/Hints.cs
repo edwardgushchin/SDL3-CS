@@ -313,10 +313,39 @@ public static partial class SDL
         /// <para>Note that while this talks about audio streams, this is an OS-level
         /// concept, so it applies to a physical audio device in this case, and not an
         /// SDL_AudioStream, nor an SDL logical audio device.</para>
+        /// <para>For Windows WASAPI audio, the following roles are supported, and map to
+        /// `AUDIO_STREAM_CATEGORY`:</para>
+        /// <list type="bullet">
+        /// <item>"Other" (default)</item>
+        /// <item>"Communications" - Real-time communications, such as VOIP or chat</item>
+        /// <item>"Game" - Game audio</item>
+        /// <item>"GameChat" - Game chat audio, similar to "Communications" except that
+        /// this will not attenuate other audio streams</item>
+        /// <item>"Movie" - Music or sound with dialog</item>
+        /// <item>"Media" - Music or sound without dialog</item>
+        /// </list>
+        /// <para>If your application applies its own echo cancellation, gain control, and
+        /// noise reduction it should also set <see cref="Hints.AudioDeviceRawStream"/>.</para>
         /// </summary>
         /// <remarks>This hint should be set before an audio device is opened.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDeviceStreamRole = "SDL_AUDIO_DEVICE_STREAM_ROLE";
+
+        /// <summary>
+        /// Specify whether this audio device should do audio processing.
+        /// <para>Some operating systems perform echo cancellation, gain control, and noise
+        /// reduction as needed. If your application already handles these, you can set
+        /// this hint to prevent the OS from doing additional audio processing.</para>
+        /// <para>This corresponds to the WASAPI audio option `AUDCLNT_STREAMOPTIONS_RAW`.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: audio processing can be done by the OS. (default)</item>
+        /// <item><c>"1"</c>: audio processing is done by the application.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before an audio device is opened.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string AudioDeviceRawStream = "SDL_AUDIO_DEVICE_RAW_STREAM";
         
         /// <summary>
         /// <para>Specify the input file when recording audio using the disk audio driver.</para>
@@ -947,6 +976,8 @@ public static partial class SDL
         public const string IMEImplementedUI = "SDL_IME_IMPLEMENTED_UI";
         
         /// <summary>
+        /// A variable controlling whether the home indicator bar on iPhone X and later
+        /// should be hidden.
         /// <para>A variable controlling whether the home indicator bar on iPhone X should be
         /// hidden.</para>
         /// <para>The variable can be set to the following values:</para>
@@ -1943,9 +1974,9 @@ public static partial class SDL
         /// pressing the 1 key would yield the keycode <see cref="Keycode.Alpha1"/>, or <c>'1'</c>, instead of
         /// <see cref="Keycode.Ampersand"/>, or <c>'&amp;'</c></item>
         /// <item><c>"latin_letters"</c>: For keyboards using non-Latin letters, such as Russian
-        /// or Thai, the letter keys generate keycodes as though it had an en_US
-        /// layout. e.g. pressing the key associated with <see cref="Scancode.A"/> on a Russian
-        /// keyboard would yield <c>'a'</c> instead of a Cyrillic letter.</item>
+        /// or Thai, the letter keys generate keycodes as though it had an English
+        /// QWERTY layout. e.g. pressing the key associated with <see cref="Scancode.A"/> on a
+        /// Russian keyboard would yield 'a' instead of a Cyrillic letter.</item>
         /// </list>
         /// <para>The default value for this hint is <c>"french_numbers,latin_letters"</c>;</para>
         /// <para>Some platforms like Emscripten only provide modified keycodes and the
@@ -1992,6 +2023,23 @@ public static partial class SDL
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string KMSDRMRequireDRMMaster = "SDL_KMSDRM_REQUIRE_DRM_MASTER";
+        
+        /// <summary>
+        /// A variable that controls whether KMSDRM will use "atomic" functionality.
+        /// <para>The KMSDRM backend can use atomic commits, if both DRM_CLIENT_CAP_ATOMIC
+        /// and DRM_CLIENT_CAP_UNIVERSAL_PLANES is supported by the system. As of SDL
+        /// 3.4.0, it will favor this functionality, but in case this doesn't work well
+        /// on a given system or other surprises, this hint can be used to disable it.</para>
+        /// <para>This hint can not enable the functionality if it isn't available.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: SDL will not use the KMSDRM "atomic" functionality.</item>
+        /// <item><c>"1"</c>: SDL will allow usage of the KMSDRM "atomic" functionality. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before SDL is initialized.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string KMSDRMAtomic = "SDL_KMSDRM_ATOMIC";
         
         /// <summary>
         /// <para>A variable controlling the default SDL log levels.</para>
@@ -2974,6 +3022,23 @@ public static partial class SDL
         public const string VideoMacFullScreenMenuVisibility = "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY";
         
         /// <summary>
+        /// <para>A variable indicating whether the metal layer drawable size should be 
+        /// updated for the <see cref="EventType.WindowPixelSizeChanged"/> event on macOS.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item>"0": the metal layer drawable size will not be updated on the 
+        /// <see cref="EventType.WindowPixelSizeChanged"/> event
+        /// </item>
+        /// <item>"1": the metal layer drawable size will be updated on the 
+        /// <see cref="EventType.WindowPixelSizeChanged"/> event. (default)
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before SDL_Metal_CreateView called.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string VideoMetalAutoResizeDrawable = "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE";
+        
+        /// <summary>
         /// <para>A variable controlling whether SDL will attempt to automatically set the
         /// destination display to a mode most closely matching that of the previous
         /// display if an exclusive fullscreen window is moved onto it.</para>
@@ -3547,7 +3612,7 @@ public static partial class SDL
         /// on Windows.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: GameInput is not used for raw keyboard and mouse events.</item>
+        /// <item><c>"0"</c>: GameInput is not used for raw keyboard and mouse events. (default)</item>
         /// <item><c>"1"</c>: GameInput is used for raw keyboard and mouse events, if available.
         /// (default)</item>
         /// </list>
@@ -3742,27 +3807,5 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string PenTouchEvents = "SDL_PEN_TOUCH_EVENTS";
-
-
-        /// <summary>
-        /// <para>A variable controlling whether SDL logs some debug information.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: SDL debug information will not be logged. (default)</item>
-        /// <item><c>"1"</c>: SDL debug information will be logged.</item>
-        /// </list>
-        /// <para>This is generally meant to be used as an environment variable to let
-        /// end-users report what subsystems were chosen on their system, perhaps what
-        /// sort of hardware they are running on, etc, to aid in debugging. Logged
-        /// information is sent through <see cref="Log"/>, which means by default they appear
-        /// on stdout on most platforms, or maybe <c>OutputDebugString()</c> on Windows, and
-        /// can be funneled by the app with <see cref="SetLogOutputFunction"/>, etc.</para>
-        /// <para>The specific output might change between SDL versions; more information
-        /// might be deemed useful in the future.</para>
-        /// </summary>
-        /// <remarks>This hint can be set anytime, but the specific logs are generated during
-        /// subsystem init.</remarks>
-        /// <since>This hint is available since SDL 3.4.0.</since>
-        public const string DebugLogging = "SDL_DEBUG_LOGGING";
     }
 }

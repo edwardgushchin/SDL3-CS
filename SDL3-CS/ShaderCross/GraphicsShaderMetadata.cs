@@ -31,25 +31,15 @@ public partial class ShaderCross
     public struct GraphicsShaderMetadata
     {
         /// <summary>
-        /// The number of samplers defined in the shader.
+        /// Sub-struct containing the resource info of the shader.
         /// </summary>
-        public uint NumSamplers;
+        public GraphicsShaderResourceInfo ResourceInfo;
 
         /// <summary>
-        /// The number of storage textures defined in the shader.
+        /// The number of inputs defined in the shader.
         /// </summary>
-        public uint NumStorageTextures;
+        public uint NumInputs;
         
-        /// <summary>
-        /// The number of storage buffers defined in the shader.
-        /// </summary>
-        public uint NumStorageBuffers;
-        
-        /// <summary>
-        /// The number of uniform buffers defined in the shader.
-        /// </summary>
-        public uint NumUniformBuffers;
-
         /// <summary>
         /// The inputs defined in the shader.
         /// </summary>

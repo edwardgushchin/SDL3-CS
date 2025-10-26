@@ -778,6 +778,43 @@ public static partial class TTF
     public static partial Direction GetFontDirection(IntPtr font);
     
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontCharSpacing(TTF_Font *font, int spacing);</code>
+    /// <summary>
+    /// Set additional space in pixels to be applied between any two rendered
+    /// characters.
+    /// <para>The spacing value is applied uniformly after each character, in addition to
+    /// the normal glyph's advance.</para>
+    /// <para>Spacing may be a negative value, in which case it will reduce the distance
+    /// instead.</para>
+    /// <para>This updates any TTF_Text objects using this font.</para>
+    /// </summary>
+    /// <param name="font">the font to specify a direction for.</param>
+    /// <param name="spacing"></param>
+    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.4.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontCharSpacing"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetFontCharSpacing(IntPtr font, int spacing);
+    
+    
+    /// <code>extern SDL_DECLSPEC int SDLCALL TTF_GetFontCharSpacing(TTF_Font *font);</code>
+    /// <summary>
+    /// Get the additional character spacing in pixels to be applied between any
+    /// two rendered characters.
+    /// <para>This defaults to 0 if it hasn't been set.</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <returns>the character spacing in pixels.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.4.0.</since>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontCharSpacing"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetFontCharSpacing(IntPtr font);
+    
+    
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL TTF_StringToTag(const char *string);</code>
     /// <summary>
     /// Convert from a 4 character string to a 32-bit tag.

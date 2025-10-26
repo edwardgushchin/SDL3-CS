@@ -237,6 +237,12 @@ public static partial class SDL
     /// // update game state, draw the current frame
     /// }
     /// </code>
+    /// <para>Note that Windows (and possibly other platforms) has a quirk about how it 
+    /// handles events while dragging/resizing a window, which can cause this 
+    /// function to block for significant amounts of time. Technical explanations 
+    /// and solutions are discussed on the wiki:
+    /// 
+    /// https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag</para>
     /// </summary>
     /// <param name="event">the <see cref="Event"/> structure to be filled with the next event from
     /// the queue, or <c>null</c>.</param>

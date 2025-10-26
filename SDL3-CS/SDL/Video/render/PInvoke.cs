@@ -311,6 +311,8 @@ public static partial class SDL
     /// <item><see cref="Props.RendererTextureFormatsPointer"/>: a (const SDL_PixelFormat *)
     /// array of pixel formats, terminated with <see cref="PixelFormat.Unknown"/>,
     /// representing the available texture formats for this renderer.</item>
+    /// <item> <seealso cref="Props.RendererTextureWrappingBoolean"/>: true if the renderer
+    /// supports SDL_TEXTURE_ADDRESS_WRAP on non-power-of-two textures.</item>
     /// <item><see cref="Props.RendererOutputColorspaceNumber"/>: an SDL_Colorspace value
     /// describing the colorspace for output to the display, defaults to
     /// <see cref="Colorspace.SRGB"/>.</item>
@@ -566,6 +568,20 @@ public static partial class SDL
     /// <item><see cref="Props.TextureCreateVulkanTextureNumber"/>: the VkImage with layout
     /// VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
     /// you want to wrap an existing texture.</item>
+    /// </list>
+    /// With the GPU renderer:
+    /// <list type="bullet">
+    /// <item><see cref="Props.TextureCreateGPUTexturePointer"/>: the SDL_GPUTexture
+    /// associated with the texture, if you want to wrap an existing texture.</item>
+    /// <item><see cref="Props.TextureCreateGPUTextureUVNumber"/>: the SDL_GPUTexture
+    /// associated with the UV plane of an NV12 texture, if you want to wrap an
+    /// existing texture.</item>
+    /// <item><see cref="Props.TextureCreateGPUTextureUNumber"/>: the SDL_GPUTexture
+    /// associated with the U plane of a YUV texture, if you want to wrap an
+    /// existing texture.</item>
+    /// <item><see cref="Props.TextureCreateGPUTextureVNumber"/>: the SDL_GPUTexture
+    /// associated with the V plane of a YUV texture, if you want to wrap an
+    /// existing texture.</item>
     /// </list>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
@@ -3167,6 +3183,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, IntPtr dstrect);
@@ -3200,6 +3217,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect);
@@ -3233,6 +3251,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect);
@@ -3271,6 +3290,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale);
@@ -3307,6 +3327,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale);
@@ -3343,6 +3364,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
@@ -3379,6 +3401,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);

@@ -135,7 +135,8 @@ public static partial class SDL
     /// colorspace.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceColorspace"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -153,7 +154,8 @@ public static partial class SDL
     /// <param name="surface">the <see cref="Surface"/> structure to query.</param>
     /// <returns>the colorspace used by the surface, or <see cref="Colorspace.Unknown"/> if
     /// the surface is <c>null</c>.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetSurfaceColorspace"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -179,7 +181,8 @@ public static partial class SDL
     /// <returns>a new <see cref="Palette"/> structure on success or <c>null</c> on failure (e.g. if
     /// the surface didn't have an index format); call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetPaletteColors"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSurfacePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -197,7 +200,8 @@ public static partial class SDL
     /// <param name="palette">the <see cref="Palette"/> structure to use.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreatePalette"/>
     /// <seealso cref="GetSurfacePalette"/>
@@ -234,7 +238,8 @@ public static partial class SDL
     /// surface.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RemoveSurfaceAlternateImages"/>
     /// <seealso cref="GetSurfaceImages"/>
@@ -277,7 +282,8 @@ public static partial class SDL
     /// <returns>a <c>null</c> terminated array of <see cref="Surface"/> pointers or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddSurfaceAlternateImage"/>
     /// <seealso cref="RemoveSurfaceAlternateImages"/>
@@ -304,7 +310,8 @@ public static partial class SDL
     /// destroying them if this is the last reference to them.</para>
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> structure to update.</param>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddSurfaceAlternateImage"/>
     /// <seealso cref="GetSurfaceImages"/>
@@ -327,9 +334,10 @@ public static partial class SDL
     /// <param name="surface">the <see cref="Surface"/> structure to be locked.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe. The locking referred to by
-    /// this function is making the pixels available for direct
-    /// access, not thread-safe locking.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces. The locking referred to by this function
+    /// is making the pixels available for direct access, not
+    /// thread-safe locking.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MustLock"/>
     /// <seealso cref="UnlockSurface"/>
@@ -405,7 +413,8 @@ public static partial class SDL
     /// in the case of an error.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadBMPIO"/>
     /// <seealso cref="SaveBMP"/>
@@ -416,7 +425,7 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SaveBMP(SDL_Surface *surface, const char *file);</code>
     /// <summary>
-    /// <para>Save a surface to a file.</para>
+    /// <para>Save a surface to a file in BMP format.</para>
     /// <para>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
     /// BMP directly. Other RGB formats with 8-bit or higher get converted to a
     /// 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
@@ -427,13 +436,90 @@ public static partial class SDL
     /// <param name="file">a file to save to.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadBMP"/>
     /// <seealso cref="SaveBMPIO"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SaveBMP"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SaveBMP(IntPtr surface, [MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadPNG_IO(SDL_IOStream *src, bool closeio);</code>
+    /// <summary>
+    /// Load a PNG image from a seekable SDL data stream.
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="src">the data stream for the surface.</param>
+    /// <param name="closeio">if true, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
+    /// in the case of an error.</param>
+    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadPNG"/>
+    /// <seealso cref="SavePNGIO"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadPNG_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadPNGIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadPNG(const char *file);</code>
+    /// <summary>
+    /// Load a PNG image from a file.
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="file">the PNG file to load.</param>
+    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadPNGIO"/>
+    /// <seealso cref="SavePNG"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadPNG"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadPNG([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SavePNG_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);</code>
+    /// <summary>
+    /// Save a surface to a seekable SDL data stream in PNG format.
+    /// </summary>
+    /// <param name="surface">the SDL_Surface structure containing the image to be saved.</param>
+    /// <param name="dst">a data stream to save to.</param>
+    /// <param name="closeio">if true, calls <see cref="CloseIO"/> on <c>dst</c> before returning, even
+    /// in the case of an error.</param>
+    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="LoadPNGIO"/>
+    /// <seealso cref="SavePNG"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SavePNG_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SavePNGIO(IntPtr surface, IntPtr dst, [MarshalAs(UnmanagedType.I1)] bool closeio);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SavePNG(SDL_Surface *surface, const char *file);</code>
+    /// <summary>
+    /// Save a surface to a file in PNG format.
+    /// </summary>
+    /// <param name="surface">the SDL_Surface structure containing the image to be saved.</param>
+    /// <param name="file">a file to save to.</param>
+    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="LoadPNG"/>
+    /// <seealso cref="SavePNGIO"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SavePNG"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SavePNG(IntPtr surface, [MarshalAs(UnmanagedType.LPUTF8Str)] string file);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);</code>
@@ -446,7 +532,8 @@ public static partial class SDL
     /// <param name="enabled"><c>true</c> to enable RLE acceleration, <c>false</c> to disable it.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BlitSurface(nint, nint, nint, nint)"/>
     /// <seealso cref="LockSurface"/>
@@ -485,7 +572,8 @@ public static partial class SDL
     /// <param name="key">the transparent pixel.</param>
     /// <returns><c>true</c> on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceColorKey"/>
     /// <seealso cref="SetSurfaceRLE"/>
@@ -545,7 +633,8 @@ public static partial class SDL
     /// <param name="b">the blue color value multiplied into blit operations.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceColorMod"/>
     /// <seealso cref="SetSurfaceAlphaMod"/>
@@ -564,7 +653,8 @@ public static partial class SDL
     /// <param name="b">a pointer filled in with the current blue color value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceAlphaMod"/>
     /// <seealso cref="SetSurfaceColorMod"/>
@@ -584,7 +674,8 @@ public static partial class SDL
     /// <param name="alpha">the alpha value multiplied into blit operations.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceAlphaMod"/>
     /// <seealso cref="SetSurfaceColorMod"/>
@@ -621,7 +712,8 @@ public static partial class SDL
     /// <param name="blendMode">the <see cref="BlendMode"/> to use for blit blending.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceBlendMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -658,7 +750,8 @@ public static partial class SDL
     /// <c>null</c> to disable clipping.</param>
     /// <returns>true if the rectangle intersects the surface, otherwise false and
     /// blits will be completely clipped.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetSurfaceClipRect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -698,7 +791,8 @@ public static partial class SDL
     /// the surface.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetSurfaceClipRect(nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSurfaceClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -714,11 +808,31 @@ public static partial class SDL
     /// <param name="flip">the direction to flip.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlipSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool FlipSurface(IntPtr surface, FlipMode flip);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_RotateSurface(SDL_Surface *surface, float angle);</code>
+    /// <summary>
+    /// Return a copy of a surface rotated clockwise a number of degrees.
+    /// <para>The angle of rotation can be negative for counter-clockwise rotation.</para>
+    /// <para>When the rotation isn't a multiple of 90 degrees, the resulting surface is
+    /// larger than the original, with the background filled in with the colorkey,
+    /// if available, or RGBA 255/255/255/0 if not.</para>
+    /// </summary>
+    /// <param name="surface">the surface to rotate.</param>
+    /// <param name="angle">the rotation angle, in degrees.</param>
+    /// <returns>a rotated copy of the surface or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RotateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr RotateSurface(IntPtr surface, float angle);
     
 
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_DuplicateSurface(SDL_Surface *surface);</code>
@@ -731,7 +845,8 @@ public static partial class SDL
     /// <param name="surface">the surface to duplicate.</param>
     /// <returns>a copy of the surface or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroySurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DuplicateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -750,7 +865,8 @@ public static partial class SDL
     /// <param name="scaleMode">the <see cref="ScaleMode"/> to be used.</param>
     /// <returns>a copy of the surface or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroySurface"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ScaleSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -773,7 +889,8 @@ public static partial class SDL
     /// <param name="format">the new pixel format.</param>
     /// <returns>the new <see cref="Surface"/> structure that is created or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ConvertSurfaceAndColorspace"/>
     /// <seealso cref="DestroySurface"/>
@@ -798,7 +915,8 @@ public static partial class SDL
     /// <param name="props">an SDL_PropertiesID with additional color properties, or 0.</param>
     /// <returns>the new <see cref="Surface"/> structure that is created or <c>null</c> on failure;
     /// call <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ConvertSurface"/>
     /// <seealso cref="DestroySurface"/>
@@ -1148,7 +1266,8 @@ public static partial class SDL
     /// multiplication, false to do multiplication in sRGB space.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplySurfaceAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1169,7 +1288,8 @@ public static partial class SDL
     /// <param name="a">the alpha component of the pixel, normally in the range 0-1.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1193,7 +1313,8 @@ public static partial class SDL
     /// <param name="color">the color to fill with.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="FillSurfaceRects"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2130,7 +2251,8 @@ public static partial class SDL
     /// <param name="g">the green component of the pixel in the range 0-255.</param>
     /// <param name="b">the blue component of the pixel in the range 0-255.</param>
     /// <returns>a pixel value.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MapSurfaceRGBA"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapSurfaceRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2158,7 +2280,8 @@ public static partial class SDL
     /// <param name="b">the blue component of the pixel in the range 0-255.</param>
     /// <param name="a">the alpha component of the pixel in the range 0-255.</param>
     /// <returns>a pixel value.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MapSurfaceRGB"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapSurfaceRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2186,7 +2309,8 @@ public static partial class SDL
     /// ignore this channel.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with 
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadSurfacePixel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2212,7 +2336,8 @@ public static partial class SDL
     /// 0-1, or <c>null</c> to ignore this channel.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadSurfacePixelFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2236,7 +2361,8 @@ public static partial class SDL
     /// <param name="a">the alpha channel value, 0-255.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
-    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteSurfacePixel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2258,6 +2384,8 @@ public static partial class SDL
     /// <param name="a">the alpha channel value, normally in the range 0-1.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function can be called on different threads with
+    /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteSurfacePixelFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

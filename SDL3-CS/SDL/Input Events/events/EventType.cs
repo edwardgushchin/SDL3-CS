@@ -130,8 +130,14 @@ public static partial class SDL
         /// Display has changed content scale
         /// </summary>
         DisplayContentScaleChanged,
+        
+        /// <summary>
+        /// Display has changed usable bounds
+        /// </summary>
+        UsableBoundsChanged,
+        
         DisplayFirst = DisplayOrientation,
-        DisplayLast = DisplayContentScaleChanged,
+        DisplayLast = UsableBoundsChanged,
         #endregion
 
         #region Window events
@@ -308,6 +314,16 @@ public static partial class SDL
         /// Keyboard text editing candidates
         /// </summary>
         TextEditingCandidates,
+        
+        /// <summary>
+        /// The on-screen keyboard has been shown
+        /// </summary>
+        ScreenKeyboardShown,
+        
+        /// <summary>
+        /// The on-screen keyboard has been hidden
+        /// </summary>
+        ScreenKeyboardHidden,
         #endregion
 
         #region Mouse events
@@ -457,10 +473,27 @@ public static partial class SDL
         FingerMotion,
         FingerCanceled,
         #endregion
+        
+        #region Pinch events
+        /// <summary>
+        /// Pinch gesture started
+        /// </summary>
+        PinchBegin      = 0x710,
+        
+        /// <summary>
+        /// Pinch gesture updated
+        /// </summary>
+        PinchUpdate,
+
+        /// <summary>
+        /// Pinch gesture ended
+        /// </summary>
+        PinchEnd,
+        #endregion
 
         #region Clipboard events
         /// <summary>
-        /// The clipboard or primary selection changed
+        /// The clipboard changed
         /// </summary>
         ClipboardUpdate = 0x900,
         #endregion
