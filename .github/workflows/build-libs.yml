@@ -23,7 +23,7 @@ jobs:
           repository: 'libsdl-org/SDL'
           submodules: recursive
           fetch-depth: 0
-          ref: release-${{ inputs.sdl-version }}
+          ref: ${{ inputs.sdl-version }}
 
       - name: Install Deps
         shell: bash
