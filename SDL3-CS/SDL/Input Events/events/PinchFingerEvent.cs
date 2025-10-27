@@ -31,7 +31,7 @@ public static partial class SDL
     /// Pinch event structure (event.pinch.*)
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class PinchFingerEvent
+    public struct PinchFingerEvent
     {
         /// <summary>
         /// <see cref="EventType.PinchBegin"/> or <see cref="EventType.PinchUpdate"/> or <see cref="EventType.PinchEnd"/>
