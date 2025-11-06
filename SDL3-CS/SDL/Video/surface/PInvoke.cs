@@ -449,6 +449,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadPNG_IO(SDL_IOStream *src, bool closeio);</code>
     /// <summary>
     /// Load a PNG image from a seekable SDL data stream.
+    /// <para>This is intended as a convenience function for loading images from trusted
+    /// sources. If you want to load arbitrary images you should use libpng or
+    /// another image loading library designed with security in mind.</para>
     /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
@@ -469,6 +472,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadPNG(const char *file);</code>
     /// <summary>
     /// Load a PNG image from a file.
+    /// <para>This is intended as a convenience function for loading images from trusted
+    /// sources. If you want to load arbitrary images you should use libpng or
+    /// another image loading library designed with security in mind.</para>
     /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
     /// will result in a memory leak.</para>
     /// </summary>

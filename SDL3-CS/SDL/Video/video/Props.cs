@@ -39,6 +39,7 @@ public static partial class SDL
 		/// prior to initialization, or <c>null</c>. See docs/README-wayland.md for more
 		/// information.</para>
 		/// </summary>
+		/// <since>This macro is available since SDL 3.2.0.</since>
 		public const string GlobalVideoWaylandWLDisplayPointer = "SDL.video.wayland.wl_display";
 		
 		public const string DisplayHDREnabledBoolean = "SDL.display.HDR_enabled";

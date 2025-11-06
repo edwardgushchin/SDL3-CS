@@ -3634,6 +3634,24 @@ public static partial class SDL
         public const string WindowsRawKeyboard = "SDL_WINDOWS_RAW_KEYBOARD";
         
         /// <summary>
+        /// A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
+        /// enabling Windows raw keyboard events.
+        /// <para>This blocks any hotkeys that have been registered by applications from
+        /// having any effect beyond generating raw WM_INPUT events.</para>
+        /// <para>This flag does not affect system-hotkeys like ALT-TAB or CTRL-ALT-DEL, but
+        /// does affect the Windows Logo key since it is a userland hotkey registered
+        /// by explorer.exe.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Hotkeys are not excluded. (default)</item>
+        /// <item><c>"1"</c>: Hotkeys are excluded.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string WindowsRawKeyboardExcludeHotkeys = "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS";
+        
+        /// <summary>
         /// <para>A variable controlling whether SDL uses Kernel Semaphores on Windows.</para>
         /// <para>Kernel Semaphores are inter-process and require a context switch on every
         /// interaction. On Windows 8 and newer, the WaitOnAddress API is available.

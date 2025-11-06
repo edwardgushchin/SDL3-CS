@@ -1678,8 +1678,8 @@ public static partial class SDL
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="event">the event to modify.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> if the event is converted or doesn't need conversion, or
+    /// false on failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderCoordinatesFromWindow"/>

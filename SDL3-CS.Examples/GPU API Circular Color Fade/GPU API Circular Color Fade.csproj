@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
-        <PackageReference Include="SDL3-CS.Native" Version="3.2.18.2" />
+        <PackageReference Include="SDL3-CS.Native" Version="3.3.2" />
     </ItemGroup>
     
 </Project>

@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SDL3-CS.Native" Version="3.2.18.2" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.3.2" />
     </ItemGroup>
 
     <ItemGroup>
