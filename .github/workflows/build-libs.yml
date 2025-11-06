@@ -18,12 +18,12 @@ jobs:
       CMAKE_BUILD_TYPE: Release
 
     steps:
-      # ---------- SDL core (master from edwardgushchin) ----------
-      - name: Clone SDL (master)
+      # ---------- SDL core (public fork, main) ----------
+      - name: Clone SDL (edwardgushchin/SDL@main)
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL
-          ref: master
+          ref: main            # можно удалить строку ref, тогда возьмётся default branch
           fetch-depth: 1
           submodules: recursive
           path: SDL
@@ -49,6 +49,7 @@ jobs:
           fi
           echo "extra=$EXTRA" >> $GITHUB_OUTPUT
 
+      # ---------- SDL ----------
       - name: Configure SDL
         shell: bash
         run: |
@@ -58,18 +59,21 @@ jobs:
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL
+        shell: bash
         run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
 
       - name: Install SDL
+        shell: bash
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_mixer ----------
-      - name: Clone SDL_mixer (master)
+      - name: Clone SDL_mixer (main)
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_mixer
-          ref: master
+          ref: main
           fetch-depth: 1
+          submodules: recursive
           path: SDL_mixer
 
       - name: Configure SDL_mixer
@@ -83,18 +87,21 @@ jobs:
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL_mixer
+        shell: bash
         run: cmake --build "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE} --parallel
 
       - name: Install SDL_mixer
+        shell: bash
         run: cmake --install "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_ttf ----------
-      - name: Clone SDL_ttf (master)
+      - name: Clone SDL_ttf (main)
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_ttf
-          ref: master
+          ref: main
           fetch-depth: 1
+          submodules: recursive
           path: SDL_ttf
 
       - name: Configure SDL_ttf
@@ -108,18 +115,21 @@ jobs:
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL_ttf
+        shell: bash
         run: cmake --build "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE} --parallel
 
       - name: Install SDL_ttf
+        shell: bash
         run: cmake --install "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_image ----------
-      - name: Clone SDL_image (master)
+      - name: Clone SDL_image (main)
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_image
-          ref: master
+          ref: main
           fetch-depth: 1
+          submodules: recursive
           path: SDL_image
 
       - name: Configure SDL_image
@@ -133,18 +143,21 @@ jobs:
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL_image
+        shell: bash
         run: cmake --build "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE} --parallel
 
       - name: Install SDL_image
+        shell: bash
         run: cmake --install "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_shadercross ----------
-      - name: Clone SDL_shadercross (master)
+      - name: Clone SDL_shadercross (main)
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_shadercross
-          ref: master
+          ref: main
           fetch-depth: 1
+          submodules: recursive
           path: SDL_shadercross
 
       - name: Configure SDL_shadercross
@@ -157,9 +170,11 @@ jobs:
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL_shadercross
+        shell: bash
         run: cmake --build "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE} --parallel
 
       - name: Install SDL_shadercross
+        shell: bash
         run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- Artifacts ----------
@@ -173,7 +188,6 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL-suite-master-${{ matrix.os }}
+          name: SDL-suite-main-${{ matrix.os }}
           path: |
             ${{ env.BUILD_DIR }}/artifacts/**
-
