@@ -1,60 +1,184 @@
 name: Build native libs
+
 on:
   workflow_dispatch:
     inputs:
       sdl-version:
-        description: "The SDL version to build"
+        description: "The SDL version/tag/commit to build (for libsdl-org/SDL)"
         required: true
         type: string
 
 jobs:
   build:
-    name: Build SDL for ${{ matrix.os }}
+    name: Build SDL & add-ons for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
 
+    env:
+      INSTALL_PREFIX: ${{ github.workspace }}/install
+      BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_TYPE: Release
+
     steps:
-      - name: Clone SDL
+      - name: Clone SDL (core)
         uses: actions/checkout@v4
         with:
-          repository: 'libsdl-org/SDL'
+          repository: libsdl-org/SDL
           submodules: recursive
           fetch-depth: 0
           ref: ${{ inputs.sdl-version }}
+          path: SDL
 
-      - name: Install Deps
+      - name: Install Linux deps
+        if: runner.os == 'Linux'
         shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo apt-get update -y && sudo apt-get install -y \
-              cmake make ninja-build libasound2-dev libpulse-dev \
-              libaudio-dev libjack-dev libsndio-dev libusb-1.0-0-dev \
-              libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
-              libxfixes-dev libxi-dev libxss-dev libwayland-dev \
-              libdecor-0-dev libdbus-1-dev libibus-1.0-dev libudev-dev \
-              fcitx-libs-dev
-          fi
+          sudo apt-get update -y && sudo apt-get install -y \
+            cmake make ninja-build pkg-config
 
-      - name: Prepare CMake
+      - name: Prepare CMake generator & arch flags
+        id: prep
         shell: bash
         run: |
+          GEN=""
+          EXTRA=""
           if [[ "$RUNNER_OS" == "macOS" ]]; then
-            cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
-          else
-            cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+            EXTRA='-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'
           fi
+          echo "gen=$GEN" >> $GITHUB_OUTPUT
+          echo "extra=$EXTRA" >> $GITHUB_OUTPUT
 
-      - name: Build SDL ${{ inputs.sdl-version }}
-        run: cmake --build build --config Release
+      # ---------- SDL core ----------
+      - name: Configure SDL
+        shell: bash
+        run: |
+          cmake -S SDL -B "$BUILD_DIR/SDL" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build SDL
+        run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL
+        run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- SDL_mixer ----------
+      - name: Clone SDL_mixer (master)
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_mixer
+          ref: master
+          fetch-depth: 1
+          path: SDL_mixer
+
+      - name: Configure SDL_mixer
+        shell: bash
+        run: |
+          cmake -S SDL_mixer -B "$BUILD_DIR/SDL_mixer" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DSDL3MIXER_VENDORED=ON \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build SDL_mixer
+        run: cmake --build "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_mixer
+        run: cmake --install "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- SDL_ttf ----------
+      - name: Clone SDL_ttf (master)
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_ttf
+          ref: master
+          fetch-depth: 1
+          path: SDL_ttf
+
+      - name: Configure SDL_ttf
+        shell: bash
+        run: |
+          cmake -S SDL_ttf -B "$BUILD_DIR/SDL_ttf" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DSDL3TTF_VENDORED=ON \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build SDL_ttf
+        run: cmake --build "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_ttf
+        run: cmake --install "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- SDL_image ----------
+      - name: Clone SDL_image (master)
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_image
+          ref: master
+          fetch-depth: 1
+          path: SDL_image
+
+      - name: Configure SDL_image
+        shell: bash
+        run: |
+          cmake -S SDL_image -B "$BUILD_DIR/SDL_image" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DSDL3IMAGE_VENDORED=ON \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build SDL_image
+        run: cmake --build "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_image
+        run: cmake --install "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- SDL_shadercross ----------
+      - name: Clone SDL_shadercross (master)
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_shadercross
+          ref: master
+          fetch-depth: 1
+          path: SDL_shadercross
+
+      - name: Configure SDL_shadercross
+        shell: bash
+        run: |
+          cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build SDL_shadercross
+        run: cmake --build "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_shadercross
+        run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- Artifacts ----------
+      - name: Collect binaries (DLL/SO/DYLIB) and configs
+        shell: bash
+        run: |
+          mkdir -p "${BUILD_DIR}/artifacts"
+          # Copy raw built binaries (useful for MSVC multi-config)
+          find "$BUILD_DIR" -type f \( -name "*.dll" -o -name "*.so*" -o -name "*.dylib" \) -print -exec cp -v {} "${BUILD_DIR}/artifacts" \; || true
+          # Also provide install prefix (includes headers + CMake packages)
+          echo "Packing install prefix…"
+          tar -C "${INSTALL_PREFIX}" -czf "${BUILD_DIR}/artifacts/install-prefix.tgz" .
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL-${{ inputs.sdl-version }}-${{ matrix.os }}
+          name: SDL-suite-${{ inputs.sdl-version }}-${{ matrix.os }}
           path: |
-            build/**/*.dll
-            build/**/*.so
-            build/**/*.dylib
+            ${{ env.BUILD_DIR }}/artifacts/**
