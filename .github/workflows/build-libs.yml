@@ -18,16 +18,17 @@ jobs:
       CMAKE_BUILD_TYPE: Release
 
     steps:
-      # ---------- SDL core (public fork, main) ----------
-      - name: Clone SDL (edwardgushchin/SDL@main)
+      # ---------- SDL core (edwardgushchin/SDL, default branch = main) ----------
+      - name: Clone SDL
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL
-          ref: main            # можно удалить строку ref, тогда возьмётся default branch
+          # ref: main  # можно не указывать, берется default branch
           fetch-depth: 1
           submodules: recursive
           path: SDL
 
+      # ---------- Linux deps ----------
       - name: Install Linux deps
         if: runner.os == 'Linux'
         shell: bash
@@ -46,15 +47,17 @@ jobs:
           )
           sudo apt-get install -y "${packages[@]}"
 
+      # ---------- macOS flags with escaped semicolon ----------
       - name: Prepare CMake extra flags
         id: prep
         shell: bash
         run: |
-          EXTRA=""
           if [[ "$RUNNER_OS" == "macOS" ]]; then
-            EXTRA='-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'
+            # важно экранировать ';' в outputs
+            echo 'extra=-DCMAKE_OSX_ARCHITECTURES=arm64\;x86_64' >> "$GITHUB_OUTPUT"
+          else
+            echo "extra=" >> "$GITHUB_OUTPUT"
           fi
-          echo "extra=$EXTRA" >> $GITHUB_OUTPUT
 
       # ---------- SDL ----------
       - name: Configure SDL
@@ -63,6 +66,7 @@ jobs:
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DSDL_INSTALL=ON \
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL
@@ -74,11 +78,10 @@ jobs:
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_mixer ----------
-      - name: Clone SDL_mixer (main)
+      - name: Clone SDL_mixer
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_mixer
-          ref: main
           fetch-depth: 1
           submodules: recursive
           path: SDL_mixer
@@ -102,11 +105,10 @@ jobs:
         run: cmake --install "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_ttf ----------
-      - name: Clone SDL_ttf (main)
+      - name: Clone SDL_ttf
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_ttf
-          ref: main
           fetch-depth: 1
           submodules: recursive
           path: SDL_ttf
@@ -130,11 +132,10 @@ jobs:
         run: cmake --install "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_image ----------
-      - name: Clone SDL_image (main)
+      - name: Clone SDL_image
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_image
-          ref: main
           fetch-depth: 1
           submodules: recursive
           path: SDL_image
@@ -158,11 +159,10 @@ jobs:
         run: cmake --install "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- SDL_shadercross ----------
-      - name: Clone SDL_shadercross (main)
+      - name: Clone SDL_shadercross
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_shadercross
-          ref: main
           fetch-depth: 1
           submodules: recursive
           path: SDL_shadercross
@@ -188,8 +188,11 @@ jobs:
       - name: Collect binaries and install prefix
         shell: bash
         run: |
+          set -eux
           mkdir -p "${BUILD_DIR}/artifacts"
+          # все динамические библиотеки
           find "$BUILD_DIR" -type f \( -name "*.dll" -o -name "*.so*" -o -name "*.dylib" \) -print -exec cp -v {} "${BUILD_DIR}/artifacts" \; || true
+          # install prefix (headers + cmake configs + libs)
           tar -C "${INSTALL_PREFIX}" -czf "${BUILD_DIR}/artifacts/install-prefix.tgz" .
 
       - name: Upload build artifacts
