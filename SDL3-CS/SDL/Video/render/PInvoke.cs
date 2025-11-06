@@ -2114,7 +2114,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderPoints"/>
+    /// <seealso cref="RenderPoints(nint, FPoint[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderPoint(IntPtr renderer, float x, float y);
@@ -2136,6 +2136,22 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderPoints(IntPtr renderer, FPoint[] points, int count);
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
+    /// <summary>
+    /// Draw multiple points on the current rendering target at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple points.</param>
+    /// <param name="points">the points to draw.</param>
+    /// <param name="count">the number of points to draw.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderPoint"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderPoints(IntPtr renderer, IntPtr points, int count);
+    
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLine(SDL_Renderer *renderer, float x1, float y1, float x2, float y2);</code>
     /// <summary>
@@ -2150,7 +2166,8 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderLines"/>
+    /// <seealso cref="RenderLines(IntPtr, FPoint[], int)"/>
+    /// <seealso cref="RenderLines(IntPtr, IntPtr, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderLine(IntPtr renderer, float x1, float y1, float x2, float y2);
@@ -2173,6 +2190,23 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderLines(IntPtr renderer, FPoint[] points, int count);
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
+    /// <summary>
+    /// Draw a series of connected lines on the current rendering target at
+    /// subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple lines.</param>
+    /// <param name="points">the points along the lines.</param>
+    /// <param name="count">the number of points, drawing count-1 lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderLine"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLines"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderLines(IntPtr renderer, IntPtr points, int count);
+    
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
     /// <summary>
@@ -2185,7 +2219,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderRects"/>
+    /// <seealso cref="RenderRects(nint, nint, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderRect(IntPtr renderer, IntPtr rect);
@@ -2202,7 +2236,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderRects"/>
+    /// <seealso cref="RenderRects(IntPtr, FRect[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderRect(IntPtr renderer, in FRect rect);
@@ -2225,6 +2259,23 @@ public static partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderRects(IntPtr renderer, FRect[] rects, int count);
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
+    /// <summary>
+    /// Draw some number of rectangles on the current rendering target at subpixel
+    /// precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
+    /// <param name="count">the number of rectangles.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <see cref="RenderRect(nint, nint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderRects(IntPtr renderer, IntPtr rects, int count);
+    
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
     /// <summary>
@@ -2238,7 +2289,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderFillRects"/>
+    /// <seealso cref="RenderFillRects(nint, nint, int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderFillRect(IntPtr renderer, IntPtr rect);
@@ -2256,7 +2307,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderFillRects"/>
+    /// <seealso cref="RenderFillRects(IntPtr, FRect[], int)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderFillRect(IntPtr renderer, in FRect rect);
@@ -2268,17 +2319,37 @@ public static partial class SDL
     /// drawing color at subpixel precision.
     /// </summary>
     /// <param name="renderer">the renderer which should fill multiple rectangles.</param>
-    /// <param name="rect">a pointer to an array of destination rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
     /// <param name="count">the number of rectangles.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderFillRect(nint, nint)"/>
+    /// <seealso cref="RenderFillRect(nint, in FRect)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderFillRects(IntPtr renderer, FRect[] rect, int count);
-
+    public static partial bool RenderFillRects(IntPtr renderer, FRect[] rects, int count);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
+    /// <summary>
+    /// Fill some number of rectangles on the current rendering target with the
+    /// drawing color at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should fill multiple rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
+    /// <param name="count">the number of rectangles.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderFillRect(nint, nint)"/>
+    /// <seealso cref="RenderFillRect(nint, in FRect)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool RenderFillRects(IntPtr renderer, IntPtr rects, int count);
+    
     
     #region RenderTexture
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
@@ -3721,13 +3792,13 @@ public static partial class SDL
     /// <seealso cref="CreateRenderer"/>
     /// <seealso cref="RenderClear"/>
     /// <seealso cref="RenderFillRect(IntPtr, IntPtr)"/>
-    /// <seealso cref="RenderFillRects"/>
+    /// <seealso cref="RenderFillRects(IntPtr, IntPtr, int)"/>
     /// <seealso cref="RenderLine"/>
-    /// <seealso cref="RenderLines"/>
+    /// <seealso cref="RenderLines(IntPtr, IntPtr, int)"/>
     /// <seealso cref="RenderPoint"/>
-    /// <seealso cref="RenderPoints"/>
+    /// <seealso cref="RenderPoints(IntPtr, IntPtr, int)"/>
     /// <seealso cref="RenderRect(IntPtr, IntPtr)"/>
-    /// <seealso cref="RenderRects"/>
+    /// <seealso cref="RenderRects(IntPtr, IntPtr, int)"/>
     /// <seealso cref="SetRenderDrawBlendMode"/>
     /// <seealso cref="SetRenderDrawColor(IntPtr, byte, byte, byte, byte)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPresent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
