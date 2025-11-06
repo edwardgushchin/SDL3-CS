@@ -2,11 +2,6 @@ name: Build native libs
 
 on:
   workflow_dispatch:
-    inputs:
-      sdl-version:
-        description: "The SDL version/tag/commit to build (for libsdl-org/SDL)"
-        required: true
-        type: string
 
 jobs:
   build:
@@ -23,13 +18,14 @@ jobs:
       CMAKE_BUILD_TYPE: Release
 
     steps:
-      - name: Clone SDL (core)
+      # ---------- SDL core (master from edwardgushchin) ----------
+      - name: Clone SDL (master)
         uses: actions/checkout@v4
         with:
-          repository: libsdl-org/SDL
+          repository: edwardgushchin/SDL
+          ref: master
+          fetch-depth: 1
           submodules: recursive
-          fetch-depth: 0
-          ref: ${{ inputs.sdl-version }}
           path: SDL
 
       - name: Install Linux deps
@@ -37,21 +33,22 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y && sudo apt-get install -y \
-            cmake make ninja-build pkg-config
+            cmake make ninja-build pkg-config \
+            libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
+            libusb-1.0-0-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+            libxfixes-dev libxi-dev libxss-dev libwayland-dev libdecor-0-dev \
+            libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev
 
-      - name: Prepare CMake generator & arch flags
+      - name: Prepare CMake extra flags
         id: prep
         shell: bash
         run: |
-          GEN=""
           EXTRA=""
           if [[ "$RUNNER_OS" == "macOS" ]]; then
             EXTRA='-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'
           fi
-          echo "gen=$GEN" >> $GITHUB_OUTPUT
           echo "extra=$EXTRA" >> $GITHUB_OUTPUT
 
-      # ---------- SDL core ----------
       - name: Configure SDL
         shell: bash
         run: |
@@ -166,19 +163,17 @@ jobs:
         run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
 
       # ---------- Artifacts ----------
-      - name: Collect binaries (DLL/SO/DYLIB) and configs
+      - name: Collect binaries and install prefix
         shell: bash
         run: |
           mkdir -p "${BUILD_DIR}/artifacts"
-          # Copy raw built binaries (useful for MSVC multi-config)
           find "$BUILD_DIR" -type f \( -name "*.dll" -o -name "*.so*" -o -name "*.dylib" \) -print -exec cp -v {} "${BUILD_DIR}/artifacts" \; || true
-          # Also provide install prefix (includes headers + CMake packages)
-          echo "Packing install prefix…"
           tar -C "${INSTALL_PREFIX}" -czf "${BUILD_DIR}/artifacts/install-prefix.tgz" .
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL-suite-${{ inputs.sdl-version }}-${{ matrix.os }}
+          name: SDL-suite-master-${{ matrix.os }}
           path: |
             ${{ env.BUILD_DIR }}/artifacts/**
+
