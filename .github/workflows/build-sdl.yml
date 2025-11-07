@@ -7,7 +7,6 @@ jobs:
   build:
     name: Build SDL for ${{ matrix.os }} (${{ matrix.arch_label }})
     runs-on: ${{ matrix.os }}
-
     strategy:
       fail-fast: false
       matrix:
@@ -21,7 +20,6 @@ jobs:
             host_os: Windows
             arch_label: arm64
             vs_arch: ARM64
-
           # macOS
           - os: macos-15-intel
             host_os: macOS
@@ -31,7 +29,6 @@ jobs:
             host_os: macOS
             arch_label: arm64
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
-
           # Linux
           - os: ubuntu-latest
             host_os: Linux
@@ -82,13 +79,17 @@ jobs:
       - name: Configure (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
-        run: >
-          cmake -S SDL -B "$env:BUILD_DIR/SDL"
-          -G "Visual Studio 17 2022"
-          -A ${{ matrix.vs_arch }}
-          -DCMAKE_BUILD_TYPE=${env:CMAKE_BUILD_TYPE}
-          -DCMAKE_INSTALL_PREFIX="${env:INSTALL_PREFIX}"
-          -DSDL_INSTALL=ON
+        run: |
+          $args = @(
+            "-S","SDL",
+            "-B","$env:BUILD_DIR/SDL",
+            "-G","Visual Studio 17 2022",
+            "-A","${{ matrix.vs_arch }}",
+            "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
+            "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
+            "-DSDL_INSTALL=ON"
+          )
+          & cmake @args
 
       - name: Configure (Unix)
         if: matrix.host_os != 'Windows'
@@ -104,7 +105,7 @@ jobs:
       - name: Build (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
-        run: cmake --build "$env:BUILD_DIR/SDL" --config ${env:CMAKE_BUILD_TYPE} --parallel
+        run: cmake --build "$env:BUILD_DIR/SDL" --config $env:CMAKE_BUILD_TYPE --parallel
 
       - name: Build (Unix)
         if: matrix.host_os != 'Windows'
@@ -115,7 +116,7 @@ jobs:
       - name: Install (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
-        run: cmake --install "$env:BUILD_DIR/SDL" --config ${env:CMAKE_BUILD_TYPE}
+        run: cmake --install "$env:BUILD_DIR/SDL" --config $env:CMAKE_BUILD_TYPE
 
       - name: Install (Unix)
         if: matrix.host_os != 'Windows'
