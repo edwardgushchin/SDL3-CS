@@ -109,16 +109,22 @@ jobs:
         shell: bash
         run: |
           EXTRA_SDL_FLAGS="-DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF"
+  
           if [[ "$RUNNER_OS" == "Linux" && "$HEADLESS" == "1" ]]; then
             EXTRA_SDL_FLAGS="$EXTRA_SDL_FLAGS \
-              -DSDL_VIDEO=OFF \
+              -DSDL_X11=OFF \
+              -DSDL_WAYLAND=OFF \
+              -DSDL_OFFSCREEN=ON \
+              -DSDL_DUMMYVIDEO=ON \
               -DSDL_RENDER=OFF \
               -DSDL_GPU=OFF \
               -DSDL_VULKAN=OFF \
               -DSDL_OPENGL=OFF \
               -DSDL_OPENGLES=OFF"
+              # ВАЖНО: не выключаем SDL_VIDEO целиком. Пусть остаётся ON,
+              # а роль окна берёт OFFSCREEN/DUMMYVIDEO.
           fi
-          
+  
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
