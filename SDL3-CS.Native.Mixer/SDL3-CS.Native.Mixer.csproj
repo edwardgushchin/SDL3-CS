@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>2.8.1.1</Version>
+        <Version>3.1.0.0</Version>
         <Title>SDL3 C# Native mixer libraries</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
@@ -35,9 +35,25 @@
             <Pack>True</Pack>
             <PackagePath>runtimes\win-x64\native\</PackagePath>
         </None>
-        <None Include="lib\win-x86\*">
+        <None Include="lib\win-arm64\*">
             <Pack>True</Pack>
-            <PackagePath>runtimes\win-x86\native\</PackagePath>
+            <PackagePath>runtimes\win-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\linux-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\linux-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\linux-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\linux-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\osx-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\osx-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\osx-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\osx-arm64\native\</PackagePath>
         </None>
     </ItemGroup>
 </Project>
