@@ -214,6 +214,10 @@ jobs:
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}${EXTRA_PREFIX}" \
+            -DSDLSHADERCROSS_INSTALL=ON \
+            -DSDLSHADERCROSS_SHARED=ON \
+            -DSDLSHADERCROSS_STATIC=ON \
+            -DSDLSHADERCROSS_CLI=OFF \
             ${SDL_HINT} \
             ${DXC_FLAG} \
             ${DXC_ROOT} \
@@ -232,7 +236,7 @@ jobs:
         with:
           name: SDL_shadercross-${{ matrix.os }}-${{ matrix.arch_label }}
           path: |
-            ${{ env.BUILD_DIR }}/SDL_shadercross/**/*.dll
-            ${{ env.BUILD_DIR }}/SDL_shadercross/**/*.so*
-            ${{ env.BUILD_DIR }}/SDL_shadercross/**/*.dylib
-            ${{ env.INSTALL_PREFIX }}/
+            ${{ env.INSTALL_PREFIX }}/include/**
+            ${{ env.INSTALL_PREFIX }}/lib/**
+            ${{ env.INSTALL_PREFIX }}/bin/**
+            ${{ env.INSTALL_PREFIX }}/lib/cmake/SDL3_shadercross/**
