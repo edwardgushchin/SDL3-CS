@@ -44,6 +44,7 @@ jobs:
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev
             libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev
             libpipewire-0.3-dev
+            libfreetype6-dev libharfbuzz-dev   # <-- нужно для SDL_ttf
           )
           sudo apt-get install -y "${packages[@]}"
 
@@ -121,6 +122,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
             -DSDL3TTF_VENDORED=ON \
+            -DSDL3TTF_HARFBUZZ=ON \
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL_ttf
@@ -167,14 +169,46 @@ jobs:
           submodules: recursive
           path: SDL_shadercross
 
+      - name: Setup vcpkg (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          git clone https://github.com/microsoft/vcpkg $env:VCPKG_INSTALLATION_ROOT
+          & "$env:VCPKG_INSTALLATION_ROOT\bootstrap-vcpkg.bat" -disableMetrics
+      
+      - name: Install SPIRV-Cross via vcpkg
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          if ("${{ matrix.os }}" -eq "windows-11-arm") {
+            $triplet = "arm64-windows"
+          } else {
+            $triplet = "x64-windows"
+          }
+          # core + C API; shared чтобы find_package нашёл *-shared config
+          $env:VCPKG_DEFAULT_TRIPLET = $triplet
+          $env:VCPKG_FEATURE_FLAGS = "manifests,versions,binarycaching"
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "spirv-cross[core,c]:$triplet" --clean-after-build
+
       - name: Configure SDL_shadercross
         shell: bash
         run: |
+          EXTRA_CMAKE=""
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            if [[ "${{ matrix.os }}" == "windows-11-arm" ]]; then
+              TRIPLET=arm64-windows
+            else
+              TRIPLET=x64-windows
+            fi
+            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${TRIPLET}"
+          fi
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            ${EXTRA_CMAKE} \
             ${{ steps.prep.outputs.extra }}
+
 
       - name: Build SDL_shadercross
         shell: bash
