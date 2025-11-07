@@ -52,6 +52,14 @@ jobs:
 
     steps:
       # ---------- Sources ----------
+      - name: Checkout SDL (your fork)
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL
+
       - name: Checkout SDL_shadercross
         uses: actions/checkout@v4
         with:
@@ -60,23 +68,72 @@ jobs:
           submodules: recursive
           path: SDL_shadercross
 
-      # ---------- Base toolchain ----------
-      - name: Install base tools (Linux)
+      # ---------- Linux deps for SDL full windowed stack ----------
+      - name: Install Linux deps
         if: matrix.host_os == 'Linux'
         shell: bash
         run: |
           set -eux
           sudo apt-get update -y
-          sudo apt-get install -y build-essential cmake ninja-build pkg-config git
+          sudo apt-get install -y \
+            build-essential cmake ninja-build pkg-config git \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+            libxi-dev libxrender-dev libxss-dev libxtst-dev \
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
+            libudev-dev libdrm-dev libgbm-dev
 
-      # ---------- vcpkg on all OS (we use it for SDL3 everywhere; DXC on Win + Linux x64) ----------
+      # ---------- Build & Install SDL from your repo ----------
+      - name: Configure SDL (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $args = @(
+            "-S","SDL",
+            "-B","$env:BUILD_DIR/SDL",
+            "-G","Visual Studio 17 2022",
+            "-A","${{ matrix.vs_arch }}",
+            "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
+            "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
+            "-DSDL_INSTALL=ON",
+            "-DSDL_TESTS=OFF","-DSDL_EXAMPLES=OFF",
+            "-DSDL_VIDEO=ON","-DSDL_RENDER=ON"
+          )
+          cmake @args
+
+      - name: Configure SDL (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: |
+          set -eux
+          cmake -S SDL -B "$BUILD_DIR/SDL" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DSDL_INSTALL=ON \
+            -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
+            -DSDL_VIDEO=ON -DSDL_RENDER=ON \
+            -DSDL_X11=ON -DSDL_WAYLAND=ON \
+            -DSDL_OPENGL=ON -DSDL_OPENGLES=ON -DSDL_VULKAN=ON \
+            ${{ matrix.cmake_osx_arch || '' }}
+
+      - name: Build SDL
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- vcpkg only for DXC (Win + Linux x64) ----------
       - name: Cache vcpkg
+        if: (matrix.host_os == 'Windows') || (matrix.host_os == 'Linux' && matrix.arch_label == 'x64')
         uses: actions/cache@v4
         with:
           path: ${{ (matrix.host_os == 'Windows') && format('{0}\\vcpkg', env.USERPROFILE) || format('{0}/vcpkg', env.HOME) }}
-          key: vcpkg-${{ matrix.os }}-${{ matrix.triplet }}-v1
+          key: vcpkg-${{ matrix.os }}-${{ matrix.triplet }}-dxc-v1
 
       - name: Bootstrap vcpkg
+        if: (matrix.host_os == 'Windows') || (matrix.host_os == 'Linux' && matrix.arch_label == 'x64')
         shell: bash
         run: |
           set -eux
@@ -98,18 +155,6 @@ jobs:
           fi
           echo "VCPKG_INSTALLATION_ROOT=$VCPKG_ROOT" >> "$GITHUB_ENV"
 
-      # ---------- Install SDL3 via vcpkg (all platforms) ----------
-      - name: Install SDL3 via vcpkg
-        shell: bash
-        run: |
-          set -eux
-          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
-            "$VCPKG_INSTALLATION_ROOT/vcpkg" install "sdl3:${{ matrix.triplet }}" --clean-after-build
-          else
-            "$VCPKG_INSTALLATION_ROOT/vcpkg" install "sdl3:${{ matrix.triplet }}"
-          fi
-
-      # ---------- Install DXC via vcpkg (Windows + Linux x64 only) ----------
       - name: Install DXC via vcpkg (Win + Linux x64)
         if: (matrix.host_os == 'Windows') || (matrix.host_os == 'Linux' && matrix.arch_label == 'x64')
         shell: bash
@@ -118,7 +163,7 @@ jobs:
           "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:${{ matrix.triplet }}" || \
           "$VCPKG_INSTALLATION_ROOT/vcpkg" install "dxcompiler:${{ matrix.triplet }}" || true
 
-      # ---------- SPIRV-Cross (build from source; provides C API shared) ----------
+      # ---------- SPIRV-Cross (from source, C API shared) ----------
       - name: Build & Install SPIRV-Cross
         shell: bash
         run: |
@@ -134,45 +179,27 @@ jobs:
           cmake --build build_spvc --config ${CMAKE_BUILD_TYPE} --parallel
           cmake --install build_spvc --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- Cache install prefix ----------
-      - name: Cache install prefix
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.INSTALL_PREFIX }}
-          key: install-prefix-shadercross-${{ matrix.os }}-${{ matrix.arch_label }}-v1
-
-      # ---------- Configure SDL_shadercross ----------
+      # ---------- Configure Shadercross ----------
       - name: Configure SDL_shadercross
         shell: bash
         run: |
           set -eux
-
-          # Where vcpkg installs things
-          VCPKG_TRIPLET="${{ matrix.triplet }}"
-          VCPKG_ROOT="$VCPKG_INSTALLATION_ROOT"
-          VCPKG_PREFIX="$VCPKG_ROOT/installed/$VCPKG_TRIPLET"
-
-          # Toolchain + triplet only where we really need it (Win always; Linux x64 for DXC; others optional)
-          EXTRA_CMAKE=""
-          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
-            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=$VCPKG_TRIPLET"
-          elif [[ "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ]]; then
-            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=$VCPKG_TRIPLET"
-          fi
-
-          # SDL3 hint (find_package(SDL3 ...))
-          SDL3_DIR_HINT="$VCPKG_PREFIX/share/SDL3"
+          SDL3_DIR_CANDIDATES=(
+            "${INSTALL_PREFIX}/lib/cmake/SDL3"
+            "${INSTALL_PREFIX}/share/SDL3"
+          )
           SDL_HINT=""
-          [[ -d "$SDL3_DIR_HINT" ]] && SDL_HINT="-DSDL3_DIR=$SDL3_DIR_HINT"
+          for d in "${SDL3_DIR_CANDIDATES[@]}"; do
+            if [[ -f "$d/SDL3Config.cmake" ]]; then SDL_HINT="-DSDL3_DIR=$d"; break; fi
+          done
 
-          # SPIRV-Cross hint
           SPVC_HINT=""
           CANDIDATE="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
           [[ -d "$CANDIDATE" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE"
 
-          # DXC hints (only where installed)
           DXC_HINTS=""
           if [[ ( "${{ matrix.host_os }}" == "Windows" ) || ( "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ) ]]; then
+            VCPKG_PREFIX="$VCPKG_INSTALLATION_ROOT/installed/${{ matrix.triplet }}"
             DXC_INC="$VCPKG_PREFIX/include"
             if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
               DXC_LIBC="$VCPKG_PREFIX/lib/dxcompiler.lib"
@@ -186,20 +213,15 @@ jobs:
             fi
           fi
 
-          # On platforms without DXC we must explicitly disable its REQUIRED find
           DXC_OFF_FLAGS=""
           if [[ ( "${{ matrix.host_os }}" == "macOS" ) || ( "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" != "x64" ) ]]; then
             DXC_OFF_FLAGS="-DSC_WITH_DXC=OFF -DCMAKE_DISABLE_FIND_PACKAGE_DirectXShaderCompiler=ON"
           fi
 
-          # Prefix path: our local install + vcpkg prefix
-          CMAKE_PREFIX="${INSTALL_PREFIX};${VCPKG_PREFIX}"
-
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
-            -DCMAKE_PREFIX_PATH="${CMAKE_PREFIX}" \
-            ${EXTRA_CMAKE} \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
             ${SDL_HINT} \
             ${SPVC_HINT} \
             ${DXC_HINTS} \
