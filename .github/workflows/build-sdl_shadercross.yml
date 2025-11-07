@@ -169,55 +169,54 @@ jobs:
           cmake --build build_spvc --config ${CMAKE_BUILD_TYPE} --parallel
           cmake --install build_spvc --config ${CMAKE_BUILD_TYPE}
 
-      - name: Make DXC optional in CMake
-        shell: bash
-        run: |
-          set -eux
-          perl -0777 -pe 's/find_package\(\s*DirectXShaderCompiler\s+REQUIRED\s*\)/if(SC_WITH_DXC)\n  find_package(DirectXShaderCompiler REQUIRED)\nendif()/s' -i SDL_shadercross/CMakeLists.txt
-
       - name: Configure SDL_shadercross
         shell: bash
         run: |
           set -eux
+      
+          # Подсказка для SDL3 (не обязательно, но пусть будет)
           SDL3_DIR_CANDIDATES=("${INSTALL_PREFIX}/lib/cmake/SDL3" "${INSTALL_PREFIX}/share/SDL3")
           SDL_HINT=""
           for d in "${SDL3_DIR_CANDIDATES[@]}"; do
             if [[ -f "$d/SDL3Config.cmake" ]]; then SDL_HINT="-DSDL3_DIR=$d"; break; fi
           done
-          SPVC_HINT=""
-          CANDIDATE="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
-          [[ -d "$CANDIDATE" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE"
-          DXC_HINTS=""
-          DXC_OFF_FLAGS=""
+      
+          # Готовим флаги DXC и префиксы поиска пакетов
+          DXC_FLAG=""
+          DXC_ROOT=""
+          EXTRA_PREFIX=""
+      
           if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
             VCPKG_PREFIX="$VCPKG_INSTALLATION_ROOT/installed/${{ matrix.triplet }}"
-            DXC_INC="$VCPKG_PREFIX/include"
-            DXC_LIBC="$VCPKG_PREFIX/lib/dxcompiler.lib"
-            DXC_LIBL="$VCPKG_PREFIX/lib/dxil.lib"
-            DXC_BIN_COMP="$VCPKG_PREFIX/bin/dxcompiler.dll"
-            DXC_BIN_XIL="$VCPKG_PREFIX/bin/dxil.dll"
-            if [[ -f "$DXC_INC/dxcapi.h" && -f "$DXC_LIBC" && -f "$DXC_LIBL" && -f "$DXC_BIN_COMP" && -f "$DXC_BIN_XIL" ]]; then
-              DXC_HINTS="-DDirectXShaderCompiler_INCLUDE_PATH=$DXC_INC -DDirectXShaderCompiler_dxcompiler_LIBRARY=$DXC_LIBC -DDirectXShaderCompiler_dxil_LIBRARY=$DXC_LIBL -DDirectXShaderCompiler_dxcompiler_BINARY=$DXC_BIN_COMP -DDirectXShaderCompiler_dxil_BINARY=$DXC_BIN_XIL"
+            if [[ -f "$VCPKG_PREFIX/include/dxcapi.h" && -f "$VCPKG_PREFIX/lib/dxcompiler.lib" ]]; then
+              DXC_FLAG="-DSDLSHADERCROSS_DXC=ON"
+              DXC_ROOT="-DDirectXShaderCompiler_ROOT=$VCPKG_PREFIX"
+              EXTRA_PREFIX=";$VCPKG_PREFIX"
+            else
+              DXC_FLAG="-DSDLSHADERCROSS_DXC=OFF"
             fi
           elif [[ "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ]]; then
             VCPKG_PREFIX="$VCPKG_INSTALLATION_ROOT/installed/${{ matrix.triplet }}"
-            DXC_INC="$VCPKG_PREFIX/include"
-            DXC_LIBC="$VCPKG_PREFIX/lib/libdxcompiler.so"
-            DXC_LIBL="$VCPKG_PREFIX/lib/libdxil.so"
-            if [[ -f "$DXC_INC/dxcapi.h" && -f "$DXC_LIBC" && -f "$DXC_LIBL" ]]; then
-              DXC_HINTS="-DDirectXShaderCompiler_INCLUDE_PATH=$DXC_INC -DDirectXShaderCompiler_dxcompiler_LIBRARY=$DXC_LIBC -DDirectXShaderCompiler_dxil_LIBRARY=$DXC_LIBL"
+            if [[ -f "$VCPKG_PREFIX/include/dxcapi.h" && -f "$VCPKG_PREFIX/lib/libdxcompiler.so" ]]; then
+              DXC_FLAG="-DSDLSHADERCROSS_DXC=ON"
+              DXC_ROOT="-DDirectXShaderCompiler_ROOT=$VCPKG_PREFIX"
+              EXTRA_PREFIX=";$VCPKG_PREFIX"
+            else
+              DXC_FLAG="-DSDLSHADERCROSS_DXC=OFF"
             fi
           else
-            DXC_OFF_FLAGS="-DSC_WITH_DXC=OFF"
+            # macOS и Linux ARM64 — DXC обычно недоступен
+            DXC_FLAG="-DSDLSHADERCROSS_DXC=OFF"
           fi
+      
+          # Конфигурируем проект
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
-            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}${EXTRA_PREFIX}" \
             ${SDL_HINT} \
-            ${SPVC_HINT} \
-            ${DXC_HINTS} \
-            ${DXC_OFF_FLAGS} \
+            ${DXC_FLAG} \
+            ${DXC_ROOT} \
             ${{ matrix.cmake_osx_arch || '' }}
 
       - name: Build SDL_shadercross
