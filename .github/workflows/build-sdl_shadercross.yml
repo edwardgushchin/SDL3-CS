@@ -41,7 +41,6 @@ jobs:
       INSTALL_PREFIX: ${{ github.workspace }}/install
       BUILD_DIR: ${{ github.workspace }}/build
       CMAKE_BUILD_TYPE: Release
-      HEADLESS: "1"  # по умолчанию headless на Unix
 
     steps:
       # ---------- Sources ----------
@@ -61,15 +60,24 @@ jobs:
           submodules: recursive
           path: SDL_shadercross
 
-      # ---------- Linux deps ----------
-      - name: Install Linux deps (base)
+      # ---------- Linux deps (full windowed) ----------
+      - name: Install Linux deps (X11/Wayland/GL/Vulkan + tools)
         if: matrix.host_os == 'Linux'
         shell: bash
         run: |
           set -eux
           sudo apt-get update -y
           sudo apt-get install -y \
-            build-essential cmake make ninja-build pkg-config
+            build-essential cmake make ninja-build pkg-config \
+            # X11
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+            libxi-dev libxrender-dev libxss-dev \
+            # Wayland
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            # GL / EGL / GLES / Vulkan
+            libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
+            # misc (hidapi, udev, gbm useful on some runners)
+            libudev-dev libdrm-dev libgbm-dev
 
       # ---------- SPIRV-Cross (Linux) ----------
       - name: Ensure SPIRV-Cross on Linux (apt or source)
@@ -99,7 +107,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: $HOME/vcpkg
-          key: vcpkg-${{ matrix.os }}-dxc-v2
+          key: vcpkg-${{ matrix.os }}-dxc-v3
 
       - name: Bootstrap vcpkg (Linux)
         if: matrix.host_os == 'Linux'
@@ -123,8 +131,7 @@ jobs:
           set -eux
           TRIPLET=x64-linux
           if [[ "$(uname -m)" == "aarch64" ]]; then TRIPLET=arm64-linux; fi
-          "$VCPKG_INSTALLATION_ROOT/vcpkg" search directxshadercompiler
-          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directxshadercompiler:$TRIPLET"
+          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "dxcompiler:$TRIPLET"
 
       # ---------- vcpkg (Windows: DXC) ----------
       - name: Cache vcpkg (Windows)
@@ -132,7 +139,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.USERPROFILE }}\vcpkg
-          key: vcpkg-${{ matrix.os }}-dxc-v2
+          key: vcpkg-${{ matrix.os }}-dxc-v3
 
       - name: Setup vcpkg (Windows)
         if: matrix.host_os == 'Windows'
@@ -155,8 +162,7 @@ jobs:
           if ("${{ matrix.os }}" -eq "windows-11-arm") { $triplet = "arm64-windows" } else { $triplet = "x64-windows" }
           $env:VCPKG_DEFAULT_TRIPLET = $triplet
           $env:VCPKG_FEATURE_FLAGS   = "manifests,versions,binarycaching"
-          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" search directxshadercompiler
-          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "directxshadercompiler:$triplet" --clean-after-build
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "dxcompiler:$triplet" --clean-after-build
 
       # ---------- SPIRV-Cross (Windows) ----------
       - name: Build & Install SPIRV-Cross from source (Windows)
@@ -177,13 +183,20 @@ jobs:
           cmake --install $buildDir --config Release
 
       # ---------- SPIRV-Cross (macOS) ----------
-      - name: Install SPIRV-Cross (macOS)
+      - name: Build & Install SPIRV-Cross (macOS)
         if: matrix.host_os == 'macOS'
         shell: bash
         run: |
           set -eux
-          brew update
-          brew install spirv-cross
+          git clone --depth=1 https://github.com/KhronosGroup/SPIRV-Cross.git
+          cmake -S SPIRV-Cross -B build_spvc \
+            -DSPIRV_CROSS_ENABLE_C_API=ON \
+            -DSPIRV_CROSS_SHARED=ON \
+            -DBUILD_SHARED_LIBS=ON \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}"
+          cmake --build build_spvc --config Release --parallel
+          cmake --install build_spvc --config Release
 
       # ---------- macOS flags ----------
       - name: Prepare CMake flags (macOS)
@@ -197,7 +210,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.INSTALL_PREFIX }}
-          key: install-prefix-shadercross-${{ matrix.os }}-${{ matrix.arch_label }}-v2
+          key: install-prefix-shadercross-${{ matrix.os }}-${{ matrix.arch_label }}-v3
 
       # ---------- SDL (Configure) ----------
       - name: Configure SDL (Windows)
@@ -220,11 +233,10 @@ jobs:
         if: matrix.host_os != 'Windows'
         shell: bash
         run: |
-          EXTRA_SDL_FLAGS="-DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF"
-          if [[ "$RUNNER_OS" == "Linux" && "$HEADLESS" == "1" ]]; then
-            # минимальный headless, чтобы не тащить X11/Wayland на CI
-            EXTRA_SDL_FLAGS="$EXTRA_SDL_FLAGS -DSDL_X11=OFF -DSDL_WAYLAND=OFF -DSDL_OFFSCREEN=ON -DSDL_DUMMYVIDEO=ON"
-          fi
+          EXTRA_SDL_FLAGS="-DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
+                           -DSDL_VIDEO=ON -DSDL_RENDER=ON \
+                           -DSDL_X11=ON -DSDL_WAYLAND=ON \
+                           -DSDL_OPENGL=ON -DSDL_OPENGLES=ON -DSDL_VULKAN=ON"
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
@@ -246,8 +258,6 @@ jobs:
         shell: bash
         run: |
           set -eux
-
-          # vcpkg toolchain (для DXC на Win/Linux)
           EXTRA_CMAKE=""
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             if [[ "${{ matrix.os }}" == "windows-11-arm" ]]; then TRIPLET=arm64-windows; else TRIPLET=x64-windows; fi
@@ -258,21 +268,18 @@ jobs:
             EXTRA_CMAKE="$EXTRA_CMAKE -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${TRIPLET}"
           fi
 
-          # Где искать SPIRV-Cross
           SPVC_HINT=""
           EXTRA_PREFIX_PATH="${INSTALL_PREFIX};/usr/local"
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             CANDIDATE_WIN="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
             [[ -d "$CANDIDATE_WIN" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE_WIN"
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            for d in /usr/local/lib/cmake/spirv_cross_c_shared /usr/lib/cmake/spirv_cross_c_shared; do
+            for d in /usr/local/lib/cmake/spirv_cross_c_shared /usr/lib/cmake/spirv_cross_c_shared "${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"; do
               [[ -d "$d" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$d"
             done
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            BREW_PREFIX="$(brew --prefix)"
-            CANDIDATE_MAC="${BREW_PREFIX}/lib/cmake/spirv_cross_c_shared"
+            CANDIDATE_MAC="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
             [[ -d "$CANDIDATE_MAC" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE_MAC"
-            EXTRA_PREFIX_PATH="${EXTRA_PREFIX_PATH};${BREW_PREFIX}"
           fi
 
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
