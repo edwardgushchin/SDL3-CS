@@ -1,0 +1,211 @@
+name: Build SDL_shadercross
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build SDL_shadercross for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
+
+    env:
+      INSTALL_PREFIX: ${{ github.workspace }}/install
+      BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_TYPE: Release
+
+    steps:
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL
+
+      - name: Clone SDL_shadercross
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_shadercross
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL_shadercross
+
+      - name: Install Linux deps (base)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          sudo apt-get update -y
+          sudo apt-get install -y build-essential cmake make ninja-build pkg-config
+
+      - name: Ensure SPIRV-Cross on Linux (apt or source)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          have_pkg() { apt-cache policy "$1" | grep -q 'Candidate:' && ! apt-cache policy "$1" | grep -q 'Candidate: (none)'; }
+          if have_pkg libspirv-cross-c-shared-dev; then
+            sudo apt-get install -y libspirv-cross-c-shared-dev
+          elif have_pkg spirv-cross-dev; then
+            sudo apt-get install -y spirv-cross-dev
+          else
+            git clone --depth=1 https://github.com/KhronosGroup/SPIRV-Cross.git
+            cmake -S SPIRV-Cross -B build_spvc \
+              -DSPIRV_CROSS_ENABLE_C_API=ON \
+              -DSPIRV_CROSS_SHARED=ON \
+              -DBUILD_SHARED_LIBS=ON \
+              -DCMAKE_BUILD_TYPE=Release
+            cmake --build build_spvc --config Release --parallel
+            sudo cmake --install build_spvc --config Release
+          fi
+
+      - name: Setup vcpkg + cache (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/cache@v4
+        with:
+          path: $HOME/vcpkg
+          key: vcpkg-${{ runner.os }}-${{ matrix.os }}-dxc-v1
+      - name: Bootstrap vcpkg (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          export VCPKG_INSTALLATION_ROOT="$HOME/vcpkg"
+          if [[ ! -d "$VCPKG_INSTALLATION_ROOT/.git" ]]; then
+            git clone https://github.com/microsoft/vcpkg "$VCPKG_INSTALLATION_ROOT"
+          fi
+          "$VCPKG_INSTALLATION_ROOT/bootstrap-vcpkg.sh" -disableMetrics
+          echo "VCPKG_INSTALLATION_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
+
+      - name: Install DXC via vcpkg (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          TRIPLET=x64-linux
+          if [[ "$(uname -m)" == "aarch64" ]]; then TRIPLET=arm64-linux; fi
+          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directxshadercompiler:$TRIPLET"
+
+      - name: Cache vcpkg (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.USERPROFILE }}\vcpkg
+          key: vcpkg-${{ runner.os }}-${{ matrix.os }}-dxc-v1
+      - name: Setup vcpkg (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:VCPKG_INSTALLATION_ROOT = "$env:USERPROFILE\vcpkg"
+          if (-not (Test-Path "$env:VCPKG_INSTALLATION_ROOT\.git")) {
+            git clone https://github.com/microsoft/vcpkg $env:VCPKG_INSTALLATION_ROOT
+          }
+          & "$env:VCPKG_INSTALLATION_ROOT\bootstrap-vcpkg.bat" -disableMetrics
+          "VCPKG_INSTALLATION_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Install DXC via vcpkg (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          if ("${{ matrix.os }}" -eq "windows-11-arm") { $triplet = "arm64-windows" } else { $triplet = "x64-windows" }
+          $env:VCPKG_DEFAULT_TRIPLET = $triplet
+          $env:VCPKG_FEATURE_FLAGS = "manifests,versions,binarycaching"
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "directxshadercompiler:$triplet" --clean-after-build
+
+      - name: Build & Install SPIRV-Cross from source (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $spvcSrc = "$env:RUNNER_TEMP\SPIRV-Cross"
+          git clone --depth=1 https://github.com/KhronosGroup/SPIRV-Cross.git $spvcSrc
+          if ("${{ matrix.os }}" -eq "windows-11-arm") { $arch = "ARM64" } else { $arch = "x64" }
+          $buildDir = "$env:RUNNER_TEMP\spvc_build"
+          cmake -S $spvcSrc -B $buildDir `
+            -DSPIRV_CROSS_ENABLE_C_API=ON `
+            -DSPIRV_CROSS_SHARED=ON `
+            -DBUILD_SHARED_LIBS=ON `
+            -DCMAKE_INSTALL_PREFIX="${env:INSTALL_PREFIX}" `
+            -A $arch
+          cmake --build $buildDir --config Release --parallel
+          cmake --install $buildDir --config Release
+
+      - name: Prepare CMake extra flags (macOS universal)
+        id: prep
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            echo 'extra=-DCMAKE_OSX_ARCHITECTURES=arm64\;x86_64' >> "$GITHUB_OUTPUT"
+          else
+            echo "extra=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cache install prefix
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.INSTALL_PREFIX }}
+          key: install-prefix-shadercross-${{ runner.os }}-${{ matrix.os }}-v1
+
+      - name: Configure & Install SDL (base)
+        shell: bash
+        run: |
+          cmake -S SDL -B "$BUILD_DIR/SDL" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DSDL_INSTALL=ON \
+            ${{ steps.prep.outputs.extra }}
+          cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+          cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Configure SDL_shadercross
+        shell: bash
+        run: |
+          set -eux
+          EXTRA_CMAKE=""
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            if [[ "${{ matrix.os }}" == "windows-11-arm" ]]; then TRIPLET=arm64-windows; else TRIPLET=x64-windows; fi
+            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${TRIPLET}"
+          fi
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            if [[ "$(uname -m)" == "aarch64" ]]; then TRIPLET=arm64-linux; else TRIPLET=x64-linux; fi
+            EXTRA_CMAKE="$EXTRA_CMAKE -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${TRIPLET}"
+          fi
+          SPVC_HINT=""
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            CANDIDATE_WIN="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
+            [[ -d "$CANDIDATE_WIN" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE_WIN"
+          fi
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            CANDIDATE_LIN="/usr/local/lib/cmake/spirv_cross_c_shared"
+            [[ -d "$CANDIDATE_LIN" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE_LIN"
+          fi
+          ARCH_FLAGS=""
+          if [[ "$RUNNER_OS" != "macOS" ]]; then
+            ARCH_FLAGS='${{ steps.prep.outputs.extra }}'
+          fi
+          cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX};/usr/local" \
+            ${EXTRA_CMAKE} \
+            ${SPVC_HINT} \
+            ${ARCH_FLAGS}
+
+      - name: Build & Install SDL_shadercross
+        shell: bash
+        run: |
+          cmake --build "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE} --parallel
+          cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Collect & Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL_shadercross-${{ matrix.os }}
+          path: |
+            ${{ env.BUILD_DIR }}/SDL_shadercross/**/*.dll
+            ${{ env.BUILD_DIR }}/SDL_shadercross/**/*.so*
+            ${{ env.BUILD_DIR }}/SDL_shadercross/**/*.dylib
+            ${{ env.INSTALL_PREFIX }}/
