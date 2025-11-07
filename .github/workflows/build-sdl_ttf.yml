@@ -63,7 +63,7 @@ jobs:
           path: SDL_ttf
 
       # ---------- Linux deps ----------
-      - name: Install Linux deps (TTF + X11 + Wayland + Renderer)
+      - name: Install Linux deps (X11 + Wayland + GL)
         if: matrix.host_os == 'Linux'
         shell: bash
         run: |
@@ -72,13 +72,9 @@ jobs:
           sudo apt-get install -y \
             build-essential cmake make ninja-build pkg-config \
             libfreetype6-dev libharfbuzz-dev \
-            # X11
             libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxrender-dev \
-            # Wayland
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
-            # GL / EGL / GLES2
             libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
-            # полезно для hidapi и др.
             libudev-dev libvulkan-dev
 
       # ---------- macOS flags ----------
