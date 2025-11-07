@@ -20,6 +20,7 @@ jobs:
             host_os: Windows
             arch_label: arm64
             vs_arch: ARM64
+
           # macOS
           - os: macos-15-intel
             host_os: macOS
@@ -29,6 +30,7 @@ jobs:
             host_os: macOS
             arch_label: arm64
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+
           # Linux
           - os: ubuntu-latest
             host_os: Linux
@@ -60,7 +62,7 @@ jobs:
           submodules: recursive
           path: SDL_shadercross
 
-      # ---------- Linux deps (full windowed) ----------
+      # ---------- Linux deps (полный windowed стек) ----------
       - name: Install Linux deps (X11/Wayland/GL/Vulkan + tools)
         if: matrix.host_os == 'Linux'
         shell: bash
@@ -69,10 +71,14 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y \
             build-essential cmake make ninja-build pkg-config \
+            # X11
             libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
             libxi-dev libxrender-dev libxss-dev libxtst-dev \
+            # Wayland
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            # GL / EGL / GLES / Vulkan
             libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
+            # misc (udev/gbm/drm для input/render путей)
             libudev-dev libdrm-dev libgbm-dev
 
       # ---------- SPIRV-Cross (Linux) ----------
@@ -97,7 +103,7 @@ jobs:
             sudo cmake --install build_spvc --config Release
           fi
 
-      # ---------- vcpkg (Linux: DXC) ----------
+      # ---------- vcpkg (Linux: DXC только на x64) ----------
       - name: Cache vcpkg (Linux)
         if: matrix.host_os == 'Linux'
         uses: actions/cache@v4
@@ -125,9 +131,15 @@ jobs:
         shell: bash
         run: |
           set -eux
-          TRIPLET=x64-linux
-          if [[ "$(uname -m)" == "aarch64" ]]; then TRIPLET=arm64-linux; fi
-          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:$TRIPLET"
+          arch="$(uname -m)"
+          if [[ "$arch" == "x86_64" ]]; then
+            TRIPLET=x64-linux
+            "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:$TRIPLET"
+            echo "SC_WITH_DXC=ON" >> "$GITHUB_ENV"
+          else
+            echo "DXC is unsupported on $arch (arm64-linux). Skipping."
+            echo "SC_WITH_DXC=OFF" >> "$GITHUB_ENV"
+          fi
 
       # ---------- vcpkg (Windows: DXC) ----------
       - name: Cache vcpkg (Windows)
@@ -159,6 +171,7 @@ jobs:
           $env:VCPKG_DEFAULT_TRIPLET = $triplet
           $env:VCPKG_FEATURE_FLAGS   = "manifests,versions,binarycaching"
           & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "directx-dxc:$triplet" --clean-after-build
+          "SC_WITH_DXC=ON" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       # ---------- SPIRV-Cross (Windows) ----------
       - name: Build & Install SPIRV-Cross from source (Windows)
@@ -229,6 +242,7 @@ jobs:
         if: matrix.host_os != 'Windows'
         shell: bash
         run: |
+          set -eux
           EXTRA_SDL_FLAGS="-DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
                            -DSDL_VIDEO=ON -DSDL_RENDER=ON \
                            -DSDL_X11=ON -DSDL_WAYLAND=ON \
@@ -238,7 +252,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DSDL_INSTALL=ON \
             ${EXTRA_SDL_FLAGS} \
-            ${{ steps.prep.outputs.extra }}
+            ${{ steps.prep.outputs.extra || '' }}
 
       # ---------- SDL (Build/Install) ----------
       - name: Build SDL
@@ -270,7 +284,7 @@ jobs:
             CANDIDATE_WIN="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
             [[ -d "$CANDIDATE_WIN" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE_WIN"
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            for d in "/usr/local/lib/cmake/spirv_cross_c_shared" "/usr/lib/cmake/spirv_cross_c_shared" "${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"; do
+            for d in /usr/local/lib/cmake/spirv_cross_c_shared /usr/lib/cmake/spirv_cross_c_shared "${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"; do
               [[ -d "$d" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$d"
             done
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
@@ -282,6 +296,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DCMAKE_PREFIX_PATH="${EXTRA_PREFIX_PATH}" \
+            -DSC_WITH_DXC=${SC_WITH_DXC:-ON} \
             ${EXTRA_CMAKE} \
             ${SPVC_HINT} \
             ${{ steps.prep.outputs.extra }}
