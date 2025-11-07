@@ -116,6 +116,8 @@ jobs:
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
+      # DXC/vcpkg шаги удалены (собираем без DXC)
+
       - name: Build & Install SPIRV-Cross
         shell: bash
         run: |
@@ -135,4 +137,65 @@ jobs:
         shell: bash
         run: |
           set -eux
+
+          # Подсказка для SDL3 (если найдётся config)
           SDL3_DIR_CANDIDATES=("${INSTALL_PREFIX}/lib/cmake/SDL3" "${INSTALL_PREFIX}/share/SDL3")
+          SDL_HINT=""
+          for d in "${SDL3_DIR_CANDIDATES[@]}"; do
+            if [[ -f "$d/SDL3Config.cmake" ]]; then SDL_HINT="-DSDL3_DIR=$d"; break; fi
+          done
+
+          cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON \
+            -DSDLSHADERCROSS_INSTALL=ON \
+            -DSDLSHADERCROSS_SHARED=ON \
+            -DSDLSHADERCROSS_STATIC=ON \
+            -DSDLSHADERCROSS_CLI=OFF \
+            -DSDLSHADERCROSS_SPIRVCROSS_SHARED=ON \
+            -DSDLSHADERCROSS_DXC=OFF \
+            ${SDL_HINT} \
+            ${{ matrix.cmake_osx_arch || '' }}
+
+      - name: Build SDL_shadercross
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_shadercross
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Assert SDL3_shadercross is installed
+        shell: bash
+        run: |
+          set -eux
+          shopt -s nullglob
+          found=0
+          for f in \
+            "${INSTALL_PREFIX}/lib/libSDL3_shadercross.so"* \
+            "${INSTALL_PREFIX}/lib/libSDL3_shadercross.dylib" \
+            "${INSTALL_PREFIX}/lib/libSDL3_shadercross.a" \
+            "${INSTALL_PREFIX}/bin/SDL3_shadercross.dll" \
+            "${INSTALL_PREFIX}/lib/SDL3_shadercross.lib" \
+            "${INSTALL_PREFIX}/lib/SDL3_shadercross-static.lib"
+          do
+            if [[ -f "$f" ]]; then echo "Found: $f"; found=1; fi
+          done
+          if [[ $found -eq 0 ]]; then
+            echo "SDL3_shadercross not found in ${INSTALL_PREFIX}"
+            ls -R "${INSTALL_PREFIX}" || true
+            exit 1
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL_shadercross-${{ matrix.os }}-${{ matrix.arch_label }}
+          path: |
+            ${{ env.INSTALL_PREFIX }}/include/**
+            ${{ env.INSTALL_PREFIX }}/lib/**
+            ${{ env.INSTALL_PREFIX }}/bin/**
+            ${{ env.INSTALL_PREFIX }}/lib/cmake/SDL3_shadercross/**
+
