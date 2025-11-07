@@ -1,0 +1,96 @@
+name: Build SDL_image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build SDL_image for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
+
+    env:
+      INSTALL_PREFIX: ${{ github.workspace }}/install
+      BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_TYPE: Release
+
+    steps:
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL
+
+      - name: Clone SDL_image
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_image
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL_image
+
+      - name: Install Linux deps (base + image codecs via vendored)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          sudo apt-get update -y
+          sudo apt-get install -y build-essential cmake make ninja-build pkg-config
+
+      - name: Prepare CMake extra flags (macOS universal)
+        id: prep
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            echo 'extra=-DCMAKE_OSX_ARCHITECTURES=arm64\;x86_64' >> "$GITHUB_OUTPUT"
+          else
+            echo "extra=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cache install prefix
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.INSTALL_PREFIX }}
+          key: install-prefix-image-${{ runner.os }}-${{ matrix.os }}-v1
+
+      - name: Configure & Install SDL (base)
+        shell: bash
+        run: |
+          cmake -S SDL -B "$BUILD_DIR/SDL" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DSDL_INSTALL=ON \
+            ${{ steps.prep.outputs.extra }}
+          cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+          cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Configure SDL_image
+        shell: bash
+        run: |
+          cmake -S SDL_image -B "$BUILD_DIR/SDL_image" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DSDL3IMAGE_VENDORED=ON \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build & Install SDL_image
+        shell: bash
+        run: |
+          cmake --build "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE} --parallel
+          cmake --install "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Collect & Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL_image-${{ matrix.os }}
+          path: |
+            ${{ env.BUILD_DIR }}/SDL_image/**/*.dll
+            ${{ env.BUILD_DIR }}/SDL_image/**/*.so*
+            ${{ env.BUILD_DIR }}/SDL_image/**/*.dylib
+            ${{ env.INSTALL_PREFIX }}/
