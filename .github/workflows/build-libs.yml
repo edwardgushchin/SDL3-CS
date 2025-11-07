@@ -45,9 +45,28 @@ jobs:
             libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev
             libpipewire-0.3-dev
             libfreetype6-dev libharfbuzz-dev
-            libspirv-cross-dev                  # <-- нужен для SDL_shadercross
           )
           sudo apt-get install -y "${packages[@]}"
+
+      - name: Ensure SPIRV-Cross on Linux (apt or source)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          if apt-cache show libspirv-cross-c-shared-dev >/dev/null 2>&1; then
+            sudo apt-get install -y libspirv-cross-c-shared-dev
+          elif apt-cache show spirv-cross-dev >/dev/null 2>&1; then
+            sudo apt-get install -y spirv-cross-dev
+          else
+            git clone --depth=1 https://github.com/KhronosGroup/SPIRV-Cross.git
+            cmake -S SPIRV-Cross -B build_spvc \
+              -DSPIRV_CROSS_ENABLE_C_API=ON \
+              -DSPIRV_CROSS_SHARED=ON \
+              -DBUILD_SHARED_LIBS=ON \
+              -DCMAKE_BUILD_TYPE=Release
+            cmake --build build_spvc --config Release --parallel
+            sudo cmake --install build_spvc --config Release
+          fi
 
 
       # ---------- macOS flags with escaped semicolon ----------
@@ -226,7 +245,7 @@ jobs:
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
-            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX};/usr/local" \
             ${EXTRA_CMAKE} \
             ${ARCH_FLAGS}
 
