@@ -5,29 +5,33 @@ on:
 
 jobs:
   build:
-    name: Build SDL for ${{ matrix.os }} (${{ matrix.arch }})
+    name: Build SDL for ${{ matrix.os }} (${{ matrix.arch_label }})
     runs-on: ${{ matrix.os }}
+
     strategy:
+      fail-fast: false
       matrix:
         include:
           # Windows
           - os: windows-2025
             host_os: Windows
-            arch_label: x64          # для артефактов
-            vs_arch: x64             # для MSVC -A
+            arch_label: x64
+            vs_arch: x64
           - os: windows-11-arm
             host_os: Windows
             arch_label: arm64
             vs_arch: ARM64
+
           # macOS
           - os: macos-15-intel
             host_os: macOS
             arch_label: x64
-            cmake_osx_arch: "-DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0"
+            cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
           - os: macos-latest
             host_os: macOS
             arch_label: arm64
-            cmake_osx_arch: "-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0"
+            cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+
           # Linux
           - os: ubuntu-latest
             host_os: Linux
@@ -36,14 +40,13 @@ jobs:
             host_os: Linux
             arch_label: arm64
 
-
     env:
       INSTALL_PREFIX: ${{ github.workspace }}/install
       BUILD_DIR: ${{ github.workspace }}/build
       CMAKE_BUILD_TYPE: Release
 
     steps:
-      - name: Clone SDL
+      - name: Checkout SDL
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL
@@ -51,7 +54,7 @@ jobs:
           submodules: recursive
           path: SDL
 
-      # Linux deps (без проблемного libibus-1.0-1)
+      # ---------- Linux deps ----------
       - name: Install Linux deps
         if: matrix.host_os == 'Linux'
         shell: bash
@@ -68,38 +71,62 @@ jobs:
             libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
             libpipewire-0.3-dev
 
+      # ---------- macOS flags ----------
       - name: Prepare CMake flags (macOS)
         if: matrix.host_os == 'macOS'
         id: prep
         shell: bash
         run: echo "extra=${{ matrix.cmake_osx_arch }}" >> "$GITHUB_OUTPUT"
 
-      - name: Configure SDL
+      # ---------- Configure ----------
+      - name: Configure (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: >
+          cmake -S SDL -B "$env:BUILD_DIR/SDL"
+          -G "Visual Studio 17 2022"
+          -A ${{ matrix.vs_arch }}
+          -DCMAKE_BUILD_TYPE=${env:CMAKE_BUILD_TYPE}
+          -DCMAKE_INSTALL_PREFIX="${env:INSTALL_PREFIX}"
+          -DSDL_INSTALL=ON
+
+      - name: Configure (Unix)
+        if: matrix.host_os != 'Windows'
         shell: bash
         run: |
-          GEN=""
-          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
-            GEN='-G "Visual Studio 17 2022" -A ${{ matrix.vs_arch }}'
-          fi
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DSDL_INSTALL=ON \
-            ${GEN} \
             ${{ steps.prep.outputs.extra }}
 
-      - name: Build SDL
+      # ---------- Build ----------
+      - name: Build (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: cmake --build "$env:BUILD_DIR/SDL" --config ${env:CMAKE_BUILD_TYPE} --parallel
+
+      - name: Build (Unix)
+        if: matrix.host_os != 'Windows'
         shell: bash
         run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
 
-      - name: Install SDL
+      # ---------- Install ----------
+      - name: Install (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: cmake --install "$env:BUILD_DIR/SDL" --config ${env:CMAKE_BUILD_TYPE}
+
+      - name: Install (Unix)
+        if: matrix.host_os != 'Windows'
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
+      # ---------- Artifacts ----------
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL_image-${{ matrix.os }}-${{ matrix.arch_label }}
+          name: SDL-${{ matrix.os }}-${{ matrix.arch_label }}
           path: |
             ${{ env.BUILD_DIR }}/SDL/**/*.dll
             ${{ env.BUILD_DIR }}/SDL/**/*.so*
