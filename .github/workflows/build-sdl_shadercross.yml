@@ -66,15 +66,14 @@ jobs:
         shell: bash
         run: |
           set -eux
-            sudo apt-get update -y
-            sudo apt-get install -y \
-              build-essential cmake make ninja-build pkg-config \
-              libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
-              libxi-dev libxrender-dev libxss-dev \
-              libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
-              libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
-              libudev-dev libdrm-dev libgbm-dev
-
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            build-essential cmake make ninja-build pkg-config \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+            libxi-dev libxrender-dev libxss-dev \
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
+            libudev-dev libdrm-dev libgbm-dev
 
       # ---------- SPIRV-Cross (Linux) ----------
       - name: Ensure SPIRV-Cross on Linux (apt or source)
@@ -128,7 +127,7 @@ jobs:
           set -eux
           TRIPLET=x64-linux
           if [[ "$(uname -m)" == "aarch64" ]]; then TRIPLET=arm64-linux; fi
-          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "dxcompiler:$TRIPLET"
+          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:$TRIPLET"
 
       # ---------- vcpkg (Windows: DXC) ----------
       - name: Cache vcpkg (Windows)
@@ -159,7 +158,7 @@ jobs:
           if ("${{ matrix.os }}" -eq "windows-11-arm") { $triplet = "arm64-windows" } else { $triplet = "x64-windows" }
           $env:VCPKG_DEFAULT_TRIPLET = $triplet
           $env:VCPKG_FEATURE_FLAGS   = "manifests,versions,binarycaching"
-          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "dxcompiler:$triplet" --clean-after-build
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "directx-dxc:$triplet" --clean-after-build
 
       # ---------- SPIRV-Cross (Windows) ----------
       - name: Build & Install SPIRV-Cross from source (Windows)
@@ -271,7 +270,7 @@ jobs:
             CANDIDATE_WIN="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
             [[ -d "$CANDIDATE_WIN" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE_WIN"
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            for d in /usr/local/lib/cmake/spirv_cross_c_shared /usr/lib/cmake/spirv_cross_c_shared "${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"; do
+            for d in "/usr/local/lib/cmake/spirv_cross_c_shared" "/usr/lib/cmake/spirv_cross_c_shared" "${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"; do
               [[ -d "$d" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$d"
             done
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
