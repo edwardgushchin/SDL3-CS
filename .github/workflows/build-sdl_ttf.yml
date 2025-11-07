@@ -110,14 +110,22 @@ jobs:
         run: |
           EXTRA_SDL_FLAGS="-DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF"
           if [[ "$RUNNER_OS" == "Linux" && "$HEADLESS" == "1" ]]; then
-            EXTRA_SDL_FLAGS="$EXTRA_SDL_FLAGS -DSDL_X11=OFF -DSDL_WAYLAND=OFF -DSDL_OFFSCREEN=ON"
+            EXTRA_SDL_FLAGS="$EXTRA_SDL_FLAGS \
+              -DSDL_VIDEO=OFF \
+              -DSDL_RENDER=OFF \
+              -DSDL_GPU=OFF \
+              -DSDL_VULKAN=OFF \
+              -DSDL_OPENGL=OFF \
+              -DSDL_OPENGLES=OFF"
           fi
+          
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DSDL_INSTALL=ON \
             ${EXTRA_SDL_FLAGS} \
             ${{ steps.prep.outputs.extra }}
+
 
       # ---------- SDL base: Build/Install ----------
       - name: Build SDL
