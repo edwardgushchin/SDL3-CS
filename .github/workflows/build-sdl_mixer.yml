@@ -40,16 +40,17 @@ jobs:
         shell: bash
         run: |
           set -eux
-          sudo apt-get update -y
-          sudo apt-get install -y \
-            build-essential cmake make ninja-build pkg-config \
-            libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
-            libusb-1.0-0-dev libdbus-1-dev libibus-1.0-1 libudev-dev \
-            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
-            libxi-dev libxss-dev libxtst-dev \
-            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
-            libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
-            libpipewire-0.3-dev
+            sudo apt-get update -y
+            sudo apt-get install -y \
+              build-essential cmake make ninja-build pkg-config \
+              libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
+              libusb-1.0-0-dev libdbus-1-dev libibus-1.0-dev libudev-dev \
+              libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+              libxi-dev libxss-dev libxtst-dev libxrender-dev \
+              libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+              libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
+              libpipewire-0.3-dev \
+              libogg-dev libvorbis-dev libmpg123-dev libopusfile-dev libflac-dev
 
       - name: Prepare CMake extra flags (macOS universal)
         id: prep
