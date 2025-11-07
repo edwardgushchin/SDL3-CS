@@ -70,7 +70,7 @@ jobs:
           sudo apt-get install -y \
             build-essential cmake make ninja-build pkg-config \
             libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
-            libxi-dev libxrender-dev libxss-dev \
+            libxi-dev libxrender-dev libxss-dev libxtst-dev \
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
             libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
             libudev-dev libdrm-dev libgbm-dev
