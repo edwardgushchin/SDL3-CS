@@ -5,12 +5,37 @@ on:
 
 jobs:
   build:
-    name: Build SDL_ttf for ${{ matrix.os }}
+    name: Build SDL_ttf for ${{ matrix.os }} (${{ matrix.arch_label }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
+        include:
+          # Windows
+          - os: windows-2025
+            host_os: Windows
+            arch_label: x64
+            vs_arch: x64
+          - os: windows-11-arm
+            host_os: Windows
+            arch_label: arm64
+            vs_arch: ARM64
+          # macOS
+          - os: macos-15-intel
+            host_os: macOS
+            arch_label: x64
+            cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          - os: macos-latest
+            host_os: macOS
+            arch_label: arm64
+            cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          # Linux
+          - os: ubuntu-latest
+            host_os: Linux
+            arch_label: x64
+          - os: ubuntu-24.04-arm
+            host_os: Linux
+            arch_label: arm64
 
     env:
       INSTALL_PREFIX: ${{ github.workspace }}/install
@@ -18,7 +43,8 @@ jobs:
       CMAKE_BUILD_TYPE: Release
 
     steps:
-      - name: Clone SDL
+      # ---------- Sources ----------
+      - name: Checkout SDL
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL
@@ -26,7 +52,7 @@ jobs:
           submodules: recursive
           path: SDL
 
-      - name: Clone SDL_ttf
+      - name: Checkout SDL_ttf
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL_ttf
@@ -34,8 +60,9 @@ jobs:
           submodules: recursive
           path: SDL_ttf
 
-      - name: Install Linux deps (incl. Freetype/HarfBuzz)
-        if: runner.os == 'Linux'
+      # ---------- Linux deps ----------
+      - name: Install Linux deps (FreeType/HarfBuzz)
+        if: matrix.host_os == 'Linux'
         shell: bash
         run: |
           set -eux
@@ -44,36 +71,89 @@ jobs:
             build-essential cmake make ninja-build pkg-config \
             libfreetype6-dev libharfbuzz-dev
 
-      - name: Prepare CMake extra flags (macOS universal)
+      # ---------- macOS flags ----------
+      - name: Prepare CMake flags (macOS)
+        if: matrix.host_os == 'macOS'
         id: prep
         shell: bash
-        run: |
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            echo 'extra=-DCMAKE_OSX_ARCHITECTURES=arm64\;x86_64' >> "$GITHUB_OUTPUT"
-          else
-            echo "extra=" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "extra=${{ matrix.cmake_osx_arch }}" >> "$GITHUB_OUTPUT"
 
+      # ---------- Cache (optional) ----------
       - name: Cache install prefix
         uses: actions/cache@v4
         with:
           path: ${{ env.INSTALL_PREFIX }}
-          key: install-prefix-ttf-${{ runner.os }}-${{ matrix.os }}-v1
+          key: install-prefix-ttf-${{ matrix.os }}-${{ matrix.arch_label }}-v1
 
-      - name: Configure & Install SDL (base)
+      # ---------- SDL base: Configure ----------
+      - name: Configure SDL (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $args = @(
+            "-S","SDL",
+            "-B","$env:BUILD_DIR/SDL",
+            "-G","Visual Studio 17 2022",
+            "-A","${{ matrix.vs_arch }}",
+            "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
+            "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
+            "-DSDL_INSTALL=ON",
+            "-DSDL_TESTS=OFF",
+            "-DSDL_EXAMPLES=OFF"
+          )
+          & cmake @args
+
+      - name: Configure SDL (Unix)
+        if: matrix.host_os != 'Windows'
         shell: bash
         run: |
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DSDL_INSTALL=ON \
+            -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
             ${{ steps.prep.outputs.extra }}
-          cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
-          cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
-      - name: Configure SDL_ttf
+      # ---------- SDL base: Build/Install ----------
+      - name: Build SDL (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: cmake --build "$env:BUILD_DIR/SDL" --config $env:CMAKE_BUILD_TYPE --parallel
+
+      - name: Build SDL (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- SDL_ttf: Configure ----------
+      - name: Configure SDL_ttf (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          # На Windows используем вендорные зависимости.
+          $args = @(
+            "-S","SDL_ttf",
+            "-B","$env:BUILD_DIR/SDL_ttf",
+            "-G","Visual Studio 17 2022",
+            "-A","${{ matrix.vs_arch }}",
+            "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
+            "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
+            "-DCMAKE_PREFIX_PATH=$env:INSTALL_PREFIX",
+            "-DSDL3TTF_VENDORED=ON",
+            "-DSDL3TTF_HARFBUZZ=ON",
+            "-DCMAKE_DISABLE_FIND_PACKAGE_Freetype=OFF"
+          )
+          & cmake @args
+
+      - name: Configure SDL_ttf (Unix)
+        if: matrix.host_os != 'Windows'
         shell: bash
         run: |
+          # На macOS глушим pkg-config, чтобы не тянулась системная сборка.
           if [[ "$RUNNER_OS" == "macOS" ]]; then
             export PKG_CONFIG="" PKG_CONFIG_PATH="" PKG_CONFIG_LIBDIR=""
           fi
@@ -83,18 +163,29 @@ jobs:
             -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
             -DSDL3TTF_VENDORED=ON \
             -DSDL3TTF_HARFBUZZ=ON \
+            -DCMAKE_DISABLE_FIND_PACKAGE_Freetype=OFF \
             ${{ steps.prep.outputs.extra }}
 
-      - name: Build & Install SDL_ttf
-        shell: bash
-        run: |
-          cmake --build "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE} --parallel
-          cmake --install "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE}
+      # ---------- SDL_ttf: Build/Install ----------
+      - name: Build SDL_ttf (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: cmake --build "$env:BUILD_DIR/SDL_ttf" --config $env:CMAKE_BUILD_TYPE --parallel
 
-      - name: Collect & Upload artifacts
+      - name: Build SDL_ttf (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_ttf
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- Artifacts ----------
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL_ttf-${{ matrix.os }}
+          name: SDL_ttf-${{ matrix.os }}-${{ matrix.arch_label }}
           path: |
             ${{ env.BUILD_DIR }}/SDL_ttf/**/*.dll
             ${{ env.BUILD_DIR }}/SDL_ttf/**/*.so*
