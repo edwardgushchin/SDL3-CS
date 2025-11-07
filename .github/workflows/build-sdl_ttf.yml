@@ -41,6 +41,8 @@ jobs:
       INSTALL_PREFIX: ${{ github.workspace }}/install
       BUILD_DIR: ${{ github.workspace }}/build
       CMAKE_BUILD_TYPE: Release
+      # Headless для Linux, чтобы не тащить X11/Wayland
+      HEADLESS: "1"
 
     steps:
       # ---------- Sources ----------
@@ -61,7 +63,7 @@ jobs:
           path: SDL_ttf
 
       # ---------- Linux deps ----------
-      - name: Install Linux deps (FreeType/HarfBuzz)
+      - name: Install Linux deps (FreeType/HarfBuzz only)
         if: matrix.host_os == 'Linux'
         shell: bash
         run: |
@@ -78,12 +80,12 @@ jobs:
         shell: bash
         run: echo "extra=${{ matrix.cmake_osx_arch }}" >> "$GITHUB_OUTPUT"
 
-      # ---------- Cache (optional) ----------
+      # ---------- Cache ----------
       - name: Cache install prefix
         uses: actions/cache@v4
         with:
           path: ${{ env.INSTALL_PREFIX }}
-          key: install-prefix-ttf-${{ matrix.os }}-${{ matrix.arch_label }}-v1
+          key: install-prefix-ttf-${{ matrix.os }}-${{ matrix.arch_label }}-v2
 
       # ---------- SDL base: Configure ----------
       - name: Configure SDL (Windows)
@@ -98,30 +100,27 @@ jobs:
             "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
             "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
             "-DSDL_INSTALL=ON",
-            "-DSDL_TESTS=OFF",
-            "-DSDL_EXAMPLES=OFF"
+            "-DSDL_TESTS=OFF","-DSDL_EXAMPLES=OFF"
           )
-          & cmake @args
+          cmake @args
 
       - name: Configure SDL (Unix)
         if: matrix.host_os != 'Windows'
         shell: bash
         run: |
+          EXTRA_SDL_FLAGS="-DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF"
+          if [[ "$RUNNER_OS" == "Linux" && "$HEADLESS" == "1" ]]; then
+            EXTRA_SDL_FLAGS="$EXTRA_SDL_FLAGS -DSDL_X11=OFF -DSDL_WAYLAND=OFF -DSDL_OFFSCREEN=ON"
+          fi
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DSDL_INSTALL=ON \
-            -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
+            ${EXTRA_SDL_FLAGS} \
             ${{ steps.prep.outputs.extra }}
 
       # ---------- SDL base: Build/Install ----------
-      - name: Build SDL (Windows)
-        if: matrix.host_os == 'Windows'
-        shell: pwsh
-        run: cmake --build "$env:BUILD_DIR/SDL" --config $env:CMAKE_BUILD_TYPE --parallel
-
-      - name: Build SDL (Unix)
-        if: matrix.host_os != 'Windows'
+      - name: Build SDL
         shell: bash
         run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
 
@@ -134,7 +133,6 @@ jobs:
         if: matrix.host_os == 'Windows'
         shell: pwsh
         run: |
-          # На Windows используем вендорные зависимости.
           $args = @(
             "-S","SDL_ttf",
             "-B","$env:BUILD_DIR/SDL_ttf",
@@ -147,7 +145,7 @@ jobs:
             "-DSDL3TTF_HARFBUZZ=ON",
             "-DCMAKE_DISABLE_FIND_PACKAGE_Freetype=OFF"
           )
-          & cmake @args
+          cmake @args
 
       - name: Configure SDL_ttf (Unix)
         if: matrix.host_os != 'Windows'
@@ -167,13 +165,7 @@ jobs:
             ${{ steps.prep.outputs.extra }}
 
       # ---------- SDL_ttf: Build/Install ----------
-      - name: Build SDL_ttf (Windows)
-        if: matrix.host_os == 'Windows'
-        shell: pwsh
-        run: cmake --build "$env:BUILD_DIR/SDL_ttf" --config $env:CMAKE_BUILD_TYPE --parallel
-
-      - name: Build SDL_ttf (Unix)
-        if: matrix.host_os != 'Windows'
+      - name: Build SDL_ttf
         shell: bash
         run: cmake --build "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE} --parallel
 
