@@ -16,28 +16,34 @@ jobs:
             host_os: Windows
             arch_label: x64
             vs_arch: x64
+            triplet: x64-windows
           - os: windows-11-arm
             host_os: Windows
             arch_label: arm64
             vs_arch: ARM64
+            triplet: arm64-windows
 
           # macOS
           - os: macos-15-intel
             host_os: macOS
             arch_label: x64
+            triplet: x64-osx
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
           - os: macos-latest
             host_os: macOS
             arch_label: arm64
+            triplet: arm64-osx
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
 
           # Linux
           - os: ubuntu-latest
             host_os: Linux
             arch_label: x64
+            triplet: x64-linux
           - os: ubuntu-24.04-arm
             host_os: Linux
             arch_label: arm64
+            triplet: arm64-linux
 
     env:
       INSTALL_PREFIX: ${{ github.workspace }}/install
@@ -63,8 +69,57 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y build-essential cmake ninja-build pkg-config git
 
-      # ---------- SPIRV-Cross (build from source everywhere) ----------
-      - name: Build & Install SPIRV-Cross (all OS)
+      # ---------- vcpkg on all OS (we use it for SDL3 everywhere; DXC on Win + Linux x64) ----------
+      - name: Cache vcpkg
+        uses: actions/cache@v4
+        with:
+          path: ${{ (matrix.host_os == 'Windows') && format('{0}\\vcpkg', env.USERPROFILE) || format('{0}/vcpkg', env.HOME) }}
+          key: vcpkg-${{ matrix.os }}-${{ matrix.triplet }}-v1
+
+      - name: Bootstrap vcpkg
+        shell: bash
+        run: |
+          set -eux
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+            VCPKG_ROOT="$(cygpath -u "$USERPROFILE")/vcpkg"
+          else
+            VCPKG_ROOT="$HOME/vcpkg"
+          fi
+          if [[ ! -d "$VCPKG_ROOT/.git" ]]; then
+            git clone https://github.com/microsoft/vcpkg "$VCPKG_ROOT"
+          else
+            git -C "$VCPKG_ROOT" fetch --depth=1 origin
+            git -C "$VCPKG_ROOT" reset --hard origin/master
+          fi
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+            "$VCPKG_ROOT/bootstrap-vcpkg.bat" -disableMetrics
+          else
+            "$VCPKG_ROOT/bootstrap-vcpkg.sh" -disableMetrics
+          fi
+          echo "VCPKG_INSTALLATION_ROOT=$VCPKG_ROOT" >> "$GITHUB_ENV"
+
+      # ---------- Install SDL3 via vcpkg (all platforms) ----------
+      - name: Install SDL3 via vcpkg
+        shell: bash
+        run: |
+          set -eux
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+            "$VCPKG_INSTALLATION_ROOT/vcpkg" install "sdl3:${{ matrix.triplet }}" --clean-after-build
+          else
+            "$VCPKG_INSTALLATION_ROOT/vcpkg" install "sdl3:${{ matrix.triplet }}"
+          fi
+
+      # ---------- Install DXC via vcpkg (Windows + Linux x64 only) ----------
+      - name: Install DXC via vcpkg (Win + Linux x64)
+        if: (matrix.host_os == 'Windows') || (matrix.host_os == 'Linux' && matrix.arch_label == 'x64')
+        shell: bash
+        run: |
+          set -eux
+          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:${{ matrix.triplet }}" || \
+          "$VCPKG_INSTALLATION_ROOT/vcpkg" install "dxcompiler:${{ matrix.triplet }}" || true
+
+      # ---------- SPIRV-Cross (build from source; provides C API shared) ----------
+      - name: Build & Install SPIRV-Cross
         shell: bash
         run: |
           set -eux
@@ -79,85 +134,12 @@ jobs:
           cmake --build build_spvc --config ${CMAKE_BUILD_TYPE} --parallel
           cmake --install build_spvc --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- vcpkg (DXC) ----------
-      # Windows: всегда ставим DXC
-      - name: Cache vcpkg (Windows)
-        if: matrix.host_os == 'Windows'
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.USERPROFILE }}\vcpkg
-          key: vcpkg-${{ matrix.os }}-dxc-v3
-
-      - name: Setup vcpkg (Windows)
-        if: matrix.host_os == 'Windows'
-        shell: pwsh
-        run: |
-          $env:VCPKG_INSTALLATION_ROOT = "$env:USERPROFILE\vcpkg"
-          if (-not (Test-Path "$env:VCPKG_INSTALLATION_ROOT\.git")) {
-            git clone https://github.com/microsoft/vcpkg $env:VCPKG_INSTALLATION_ROOT
-          } else {
-            git -C "$env:VCPKG_INSTALLATION_ROOT" fetch --depth=1 origin
-            git -C "$env:VCPKG_INSTALLATION_ROOT" reset --hard origin/master
-          }
-          & "$env:VCPKG_INSTALLATION_ROOT\bootstrap-vcpkg.bat" -disableMetrics
-          "VCPKG_INSTALLATION_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Install DXC (Windows)
-        if: matrix.host_os == 'Windows'
-        shell: pwsh
-        run: |
-          if ("${{ matrix.os }}" -eq "windows-11-arm") { $triplet = "arm64-windows" } else { $triplet = "x64-windows" }
-          $env:VCPKG_DEFAULT_TRIPLET = $triplet
-          $env:VCPKG_FEATURE_FLAGS   = "manifests,versions,binarycaching"
-          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "directx-dxc:$triplet" --clean-after-build
-          "SC_WITH_DXC=ON" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      # Linux: DXC только на x64
-      - name: Cache vcpkg (Linux)
-        if: matrix.host_os == 'Linux'
-        uses: actions/cache@v4
-        with:
-          path: $HOME/vcpkg
-          key: vcpkg-${{ matrix.os }}-dxc-v3
-
-      - name: Setup vcpkg (Linux)
-        if: matrix.host_os == 'Linux'
-        shell: bash
-        run: |
-          set -eux
-          export VCPKG_INSTALLATION_ROOT="$HOME/vcpkg"
-          if [[ ! -d "$VCPKG_INSTALLATION_ROOT/.git" ]]; then
-            git clone https://github.com/microsoft/vcpkg "$VCPKG_INSTALLATION_ROOT"
-          else
-            git -C "$VCPKG_INSTALLATION_ROOT" fetch --depth=1 origin
-            git -C "$VCPKG_INSTALLATION_ROOT" reset --hard origin/master
-          fi
-          "$VCPKG_INSTALLATION_ROOT/bootstrap-vcpkg.sh" -disableMetrics
-          echo "VCPKG_INSTALLATION_ROOT=$VCPKG_INSTALLATION_ROOT" >> "$GITHUB_ENV"
-
-      - name: Install DXC (Linux x64 only)
-        if: matrix.host_os == 'Linux'
-        shell: bash
-        run: |
-          set -eux
-          if [[ "$(uname -m)" == "x86_64" ]]; then
-            "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:x64-linux"
-            echo "SC_WITH_DXC=ON" >> "$GITHUB_ENV"
-          else
-            echo "SC_WITH_DXC=OFF" >> "$GITHUB_ENV"
-          fi
-
-      # macOS: DXC не используем
-      - name: Disable DXC (macOS)
-        if: matrix.host_os == 'macOS'
-        run: echo "SC_WITH_DXC=OFF" >> "$GITHUB_ENV"
-
       # ---------- Cache install prefix ----------
       - name: Cache install prefix
         uses: actions/cache@v4
         with:
           path: ${{ env.INSTALL_PREFIX }}
-          key: install-prefix-shadercross-${{ matrix.os }}-${{ matrix.arch_label }}-v3
+          key: install-prefix-shadercross-${{ matrix.os }}-${{ matrix.arch_label }}-v1
 
       # ---------- Configure SDL_shadercross ----------
       - name: Configure SDL_shadercross
@@ -165,35 +147,63 @@ jobs:
         run: |
           set -eux
 
+          # Where vcpkg installs things
+          VCPKG_TRIPLET="${{ matrix.triplet }}"
+          VCPKG_ROOT="$VCPKG_INSTALLATION_ROOT"
+          VCPKG_PREFIX="$VCPKG_ROOT/installed/$VCPKG_TRIPLET"
+
+          # Toolchain + triplet only where we really need it (Win always; Linux x64 for DXC; others optional)
           EXTRA_CMAKE=""
-          DXC_FLAGS=""
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            if [[ "${{ matrix.os }}" == "windows-11-arm" ]]; then TRIPLET=arm64-windows; else TRIPLET=x64-windows; fi
-            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${TRIPLET}"
-          elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            if [[ "$(uname -m)" == "x86_64" ]]; then
-              EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux"
-            else
-              # На arm64 DXC нет — не подключаем vcpkg и глушим поиск DXC
-              DXC_FLAGS="-DSC_WITH_DXC=OFF -DCMAKE_DISABLE_FIND_PACKAGE_DirectXShaderCompiler=ON"
-            fi
-          else
-            # macOS — DXC off
-            DXC_FLAGS="-DSC_WITH_DXC=OFF -DCMAKE_DISABLE_FIND_PACKAGE_DirectXShaderCompiler=ON"
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=$VCPKG_TRIPLET"
+          elif [[ "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ]]; then
+            EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=$VCPKG_TRIPLET"
           fi
 
-          # Подсказка для SPIRV-Cross из INSTALL_PREFIX
+          # SDL3 hint (find_package(SDL3 ...))
+          SDL3_DIR_HINT="$VCPKG_PREFIX/share/SDL3"
+          SDL_HINT=""
+          [[ -d "$SDL3_DIR_HINT" ]] && SDL_HINT="-DSDL3_DIR=$SDL3_DIR_HINT"
+
+          # SPIRV-Cross hint
           SPVC_HINT=""
           CANDIDATE="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
           [[ -d "$CANDIDATE" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE"
 
+          # DXC hints (only where installed)
+          DXC_HINTS=""
+          if [[ ( "${{ matrix.host_os }}" == "Windows" ) || ( "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ) ]]; then
+            DXC_INC="$VCPKG_PREFIX/include"
+            if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+              DXC_LIBC="$VCPKG_PREFIX/lib/dxcompiler.lib"
+              DXC_LIBL="$VCPKG_PREFIX/lib/dxil.lib"
+            else
+              DXC_LIBC="$VCPKG_PREFIX/lib/libdxcompiler.so"
+              DXC_LIBL="$VCPKG_PREFIX/lib/libdxil.so"
+            fi
+            if [[ -f "$DXC_LIBC" && -f "$DXC_LIBL" ]]; then
+              DXC_HINTS="-DDirectXShaderCompiler_INCLUDE_PATH=$DXC_INC -DDirectXShaderCompiler_dxcompiler_LIBRARY=$DXC_LIBC -DDirectXShaderCompiler_dxil_LIBRARY=$DXC_LIBL"
+            fi
+          fi
+
+          # On platforms without DXC we must explicitly disable its REQUIRED find
+          DXC_OFF_FLAGS=""
+          if [[ ( "${{ matrix.host_os }}" == "macOS" ) || ( "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" != "x64" ) ]]; then
+            DXC_OFF_FLAGS="-DSC_WITH_DXC=OFF -DCMAKE_DISABLE_FIND_PACKAGE_DirectXShaderCompiler=ON"
+          fi
+
+          # Prefix path: our local install + vcpkg prefix
+          CMAKE_PREFIX="${INSTALL_PREFIX};${VCPKG_PREFIX}"
+
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
-            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${CMAKE_PREFIX}" \
             ${EXTRA_CMAKE} \
-            ${DXC_FLAGS} \
+            ${SDL_HINT} \
             ${SPVC_HINT} \
+            ${DXC_HINTS} \
+            ${DXC_OFF_FLAGS} \
             ${{ matrix.cmake_osx_arch || '' }}
 
       # ---------- Build / Install ----------
