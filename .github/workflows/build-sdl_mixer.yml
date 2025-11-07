@@ -1,0 +1,185 @@
+name: Build SDL_mixer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build SDL_mixer for ${{ matrix.os }} (${{ matrix.arch_label }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows
+          - os: windows-2025
+            host_os: Windows
+            arch_label: x64
+            vs_arch: x64
+          - os: windows-11-arm
+            host_os: Windows
+            arch_label: arm64
+            vs_arch: ARM64
+          # macOS
+          - os: macos-15-intel
+            host_os: macOS
+            arch_label: x64
+            cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          - os: macos-latest
+            host_os: macOS
+            arch_label: arm64
+            cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          # Linux
+          - os: ubuntu-latest
+            host_os: Linux
+            arch_label: x64
+          - os: ubuntu-24.04-arm
+            host_os: Linux
+            arch_label: arm64
+
+    env:
+      INSTALL_PREFIX: ${{ github.workspace }}/install
+      BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_TYPE: Release
+
+    steps:
+      # ---------- Sources ----------
+      - name: Checkout SDL
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL
+
+      - name: Checkout SDL_mixer
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL_mixer
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL_mixer
+
+      # ---------- Linux deps (без libibus-1.0-*) ----------
+      - name: Install Linux deps
+        if: matrix.host_os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            build-essential cmake make ninja-build pkg-config \
+            libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
+            libusb-1.0-0-dev libdbus-1-dev libudev-dev \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+            libxi-dev libxss-dev libxtst-dev libxrender-dev \
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
+            libpipewire-0.3-dev \
+            libogg-dev libvorbis-dev libmpg123-dev libopusfile-dev libflac-dev
+
+      # ---------- macOS flags ----------
+      - name: Prepare CMake flags (macOS)
+        if: matrix.host_os == 'macOS'
+        id: prep
+        shell: bash
+        run: echo "extra=${{ matrix.cmake_osx_arch }}" >> "$GITHUB_OUTPUT"
+
+      # ---------- SDL base: Configure ----------
+      - name: Configure SDL (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $args = @(
+            "-S","SDL",
+            "-B","$env:BUILD_DIR/SDL",
+            "-G","Visual Studio 17 2022",
+            "-A","${{ matrix.vs_arch }}",
+            "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
+            "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
+            "-DSDL_INSTALL=ON",
+            "-DSDL_TESTS=OFF",
+            "-DSDL_EXAMPLES=OFF"
+          )
+          & cmake @args
+
+      - name: Configure SDL (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: |
+          cmake -S SDL -B "$BUILD_DIR/SDL" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DSDL_INSTALL=ON \
+            -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
+            ${{ steps.prep.outputs.extra }}
+
+      # ---------- SDL base: Build/Install ----------
+      - name: Build SDL (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: cmake --build "$env:BUILD_DIR/SDL" --config $env:CMAKE_BUILD_TYPE --parallel
+
+      - name: Build SDL (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- SDL_mixer: Configure ----------
+      - name: Configure SDL_mixer (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $args = @(
+            "-S","SDL_mixer",
+            "-B","$env:BUILD_DIR/SDL_mixer",
+            "-G","Visual Studio 17 2022",
+            "-A","${{ matrix.vs_arch }}",
+            "-DCMAKE_BUILD_TYPE=$env:CMAKE_BUILD_TYPE",
+            "-DCMAKE_INSTALL_PREFIX=$env:INSTALL_PREFIX",
+            "-DCMAKE_PREFIX_PATH=$env:INSTALL_PREFIX",
+            "-DSDL3MIXER_VENDORED=ON"
+          )
+          & cmake @args
+
+      - name: Configure SDL_mixer (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: |
+          cmake -S SDL_mixer -B "$BUILD_DIR/SDL_mixer" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
+            -DSDL3MIXER_VENDORED=ON \
+            ${{ steps.prep.outputs.extra }}
+
+      # ---------- SDL_mixer: Build/Install ----------
+      - name: Build SDL_mixer (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: cmake --build "$env:BUILD_DIR/SDL_mixer" --config $env:CMAKE_BUILD_TYPE --parallel
+
+      - name: Build SDL_mixer (Unix)
+        if: matrix.host_os != 'Windows'
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL_mixer
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL_mixer" --config ${CMAKE_BUILD_TYPE}
+
+      # ---------- Artifacts ----------
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL_mixer-${{ matrix.os }}-${{ matrix.arch_label }}
+          path: |
+            ${{ env.BUILD_DIR }}/SDL_mixer/**/*.dll
+            ${{ env.BUILD_DIR }}/SDL_mixer/**/*.so*
+            ${{ env.BUILD_DIR }}/SDL_mixer/**/*.dylib
+            ${{ env.INSTALL_PREFIX }}/
+
