@@ -1,0 +1,86 @@
+name: Build SDL (core)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build SDL for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
+
+    env:
+      INSTALL_PREFIX: ${{ github.workspace }}/install
+      BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_TYPE: Release
+
+    steps:
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: edwardgushchin/SDL
+          fetch-depth: 1
+          submodules: recursive
+          path: SDL
+
+      - name: Install Linux deps
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            build-essential cmake make ninja-build pkg-config \
+            libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
+            libusb-1.0-0-dev libdbus-1-dev libibus-1.0-1 libudev-dev \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+            libxi-dev libxss-dev libxtst-dev \
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
+            libpipewire-0.3-dev
+
+      - name: Prepare CMake extra flags (macOS universal)
+        id: prep
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            echo 'extra=-DCMAKE_OSX_ARCHITECTURES=arm64\;x86_64' >> "$GITHUB_OUTPUT"
+          else
+            echo "extra=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cache install prefix
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.INSTALL_PREFIX }}
+          key: install-prefix-sdl-${{ runner.os }}-${{ matrix.os }}-v1
+
+      - name: Configure SDL
+        shell: bash
+        run: |
+          cmake -S SDL -B "$BUILD_DIR/SDL" \
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+            -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
+            -DSDL_INSTALL=ON \
+            ${{ steps.prep.outputs.extra }}
+
+      - name: Build SDL
+        shell: bash
+        run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
+
+      - name: Install SDL
+        shell: bash
+        run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Collect & Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL-core-${{ matrix.os }}
+          path: |
+            ${{ env.BUILD_DIR }}/SDL/**/*.dll
+            ${{ env.BUILD_DIR }}/SDL/**/*.so*
+            ${{ env.BUILD_DIR }}/SDL/**/*.dylib
+            ${{ env.INSTALL_PREFIX }}/
