@@ -44,9 +44,11 @@ jobs:
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev
             libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev
             libpipewire-0.3-dev
-            libfreetype6-dev libharfbuzz-dev   # <-- нужно для SDL_ttf
+            libfreetype6-dev libharfbuzz-dev
+            libspirv-cross-dev                  # <-- нужен для SDL_shadercross
           )
           sudo apt-get install -y "${packages[@]}"
+
 
       # ---------- macOS flags with escaped semicolon ----------
       - name: Prepare CMake extra flags
@@ -117,13 +119,22 @@ jobs:
       - name: Configure SDL_ttf
         shell: bash
         run: |
+          # На macOS глушим поиск системных Freetype/HarfBuzz, чтобы использовать вендорные
+          EXTRA_MACOS=""
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            EXTRA_MACOS="-DCMAKE_DISABLE_FIND_PACKAGE_Freetype=ON -DCMAKE_DISABLE_FIND_PACKAGE_harfbuzz=ON"
+            # На всякий случай отключим влияние pkg-config
+            export PKG_CONFIG="" PKG_CONFIG_PATH=""
+          fi
           cmake -S SDL_ttf -B "$BUILD_DIR/SDL_ttf" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
             -DSDL3TTF_VENDORED=ON \
             -DSDL3TTF_HARFBUZZ=ON \
+            ${EXTRA_MACOS} \
             ${{ steps.prep.outputs.extra }}
+
 
       - name: Build SDL_ttf
         shell: bash
@@ -173,8 +184,12 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
+          $env:VCPKG_INSTALLATION_ROOT = "$env:USERPROFILE\vcpkg"
           git clone https://github.com/microsoft/vcpkg $env:VCPKG_INSTALLATION_ROOT
           & "$env:VCPKG_INSTALLATION_ROOT\bootstrap-vcpkg.bat" -disableMetrics
+          # экспортируем для следующих шагов (bash/pwsh)
+          "VCPKG_INSTALLATION_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       
       - name: Install SPIRV-Cross via vcpkg
         if: runner.os == 'Windows'
@@ -185,10 +200,10 @@ jobs:
           } else {
             $triplet = "x64-windows"
           }
-          # core + C API; shared чтобы find_package нашёл *-shared config
           $env:VCPKG_DEFAULT_TRIPLET = $triplet
           $env:VCPKG_FEATURE_FLAGS = "manifests,versions,binarycaching"
-          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "spirv-cross[core,c]:$triplet" --clean-after-build
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install "spirv-cross-c-shared:$triplet" --clean-after-build
+
 
       - name: Configure SDL_shadercross
         shell: bash
@@ -202,12 +217,19 @@ jobs:
             fi
             EXTRA_CMAKE="-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${TRIPLET}"
           fi
+      
+          ARCH_FLAGS=""
+          if [[ "$RUNNER_OS" != "macOS" ]]; then
+            ARCH_FLAGS='${{ steps.prep.outputs.extra }}'
+          fi
+      
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}" \
             ${EXTRA_CMAKE} \
-            ${{ steps.prep.outputs.extra }}
+            ${ARCH_FLAGS}
+
 
 
       - name: Build SDL_shadercross
