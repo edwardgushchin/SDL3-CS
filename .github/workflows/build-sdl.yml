@@ -1,16 +1,43 @@
-name: Build SDL (core)
+name: Build SDL
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build SDL for ${{ matrix.os }}
+    name: Build SDL for ${{ matrix.os }} (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-2025, windows-11-arm, macos-13, macos-latest]
+        include:
+          # macOS
+          - os: macos-15-intel
+            host_os: macOS
+            arch: x86_64
+            cmake_osx_arch: "-DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0"
+          - os: macos-latest      # macOS 15 arm64
+            host_os: macOS
+            arch: arm64
+            cmake_osx_arch: "-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0"
+
+          # Windows
+          - os: windows-2025
+            host_os: Windows
+            arch: x64
+            vs_arch: x64
+          - os: windows-11-arm
+            host_os: Windows
+            arch: arm64
+            vs_arch: ARM64
+
+          # Linux
+          - os: ubuntu-latest
+            host_os: Linux
+            arch: x64
+          - os: ubuntu-24.04-arm
+            host_os: Linux
+            arch: arm64
 
     env:
       INSTALL_PREFIX: ${{ github.workspace }}/install
@@ -26,8 +53,9 @@ jobs:
           submodules: recursive
           path: SDL
 
+      # Linux deps (без проблемного libibus-1.0-1)
       - name: Install Linux deps
-        if: runner.os == 'Linux'
+        if: matrix.host_os == 'Linux'
         shell: bash
         run: |
           set -eux
@@ -35,37 +63,31 @@ jobs:
           sudo apt-get install -y \
             build-essential cmake make ninja-build pkg-config \
             libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
-            libusb-1.0-0-dev libdbus-1-dev libibus-1.0-dev libudev-dev \
+            libusb-1.0-0-dev libdbus-1-dev libudev-dev \
             libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
             libxi-dev libxss-dev libxtst-dev \
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
             libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
             libpipewire-0.3-dev
 
-
-      - name: Prepare CMake extra flags (macOS universal)
+      - name: Prepare CMake flags (macOS)
+        if: matrix.host_os == 'macOS'
         id: prep
         shell: bash
-        run: |
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            echo 'extra=-DCMAKE_OSX_ARCHITECTURES=arm64\;x86_64' >> "$GITHUB_OUTPUT"
-          else
-            echo "extra=" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Cache install prefix
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.INSTALL_PREFIX }}
-          key: install-prefix-sdl-${{ runner.os }}-${{ matrix.os }}-v1
+        run: echo "extra=${{ matrix.cmake_osx_arch }}" >> "$GITHUB_OUTPUT"
 
       - name: Configure SDL
         shell: bash
         run: |
+          GEN=""
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+            GEN='-G "Visual Studio 17 2022" -A ${{ matrix.vs_arch }}'
+          fi
           cmake -S SDL -B "$BUILD_DIR/SDL" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
             -DSDL_INSTALL=ON \
+            ${GEN} \
             ${{ steps.prep.outputs.extra }}
 
       - name: Build SDL
@@ -76,10 +98,10 @@ jobs:
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
-      - name: Collect & Upload artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SDL-core-${{ matrix.os }}
+          name: SDL-${{ matrix.os }}-${{ matrix.arch }}
           path: |
             ${{ env.BUILD_DIR }}/SDL/**/*.dll
             ${{ env.BUILD_DIR }}/SDL/**/*.so*
