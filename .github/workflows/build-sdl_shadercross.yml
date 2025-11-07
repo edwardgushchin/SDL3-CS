@@ -11,7 +11,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Windows
           - os: windows-2025
             host_os: Windows
             arch_label: x64
@@ -22,8 +21,6 @@ jobs:
             arch_label: arm64
             vs_arch: ARM64
             triplet: arm64-windows
-
-          # macOS
           - os: macos-15-intel
             host_os: macOS
             arch_label: x64
@@ -34,8 +31,6 @@ jobs:
             arch_label: arm64
             triplet: arm64-osx
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
-
-          # Linux
           - os: ubuntu-latest
             host_os: Linux
             arch_label: x64
@@ -51,7 +46,6 @@ jobs:
       CMAKE_BUILD_TYPE: Release
 
     steps:
-      # ---------- Sources ----------
       - name: Checkout SDL (your fork)
         uses: actions/checkout@v4
         with:
@@ -68,7 +62,6 @@ jobs:
           submodules: recursive
           path: SDL_shadercross
 
-      # ---------- Linux deps for SDL full windowed stack ----------
       - name: Install Linux deps
         if: matrix.host_os == 'Linux'
         shell: bash
@@ -81,9 +74,8 @@ jobs:
             libxi-dev libxrender-dev libxss-dev libxtst-dev \
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
             libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libvulkan-dev \
-            libudev-dev libdrm-dev libgbm-dev
+            libudev-dev libdrm-dev libgbm-dev autoconf autoconf-archive automake libtool
 
-      # ---------- Build & Install SDL from your repo ----------
       - name: Configure SDL (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
@@ -124,7 +116,6 @@ jobs:
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- vcpkg only for DXC (Win + Linux x64) ----------
       - name: Cache vcpkg
         if: (matrix.host_os == 'Windows') || (matrix.host_os == 'Linux' && matrix.arch_label == 'x64')
         uses: actions/cache@v4
@@ -155,7 +146,7 @@ jobs:
           fi
           echo "VCPKG_INSTALLATION_ROOT=$VCPKG_ROOT" >> "$GITHUB_ENV"
 
-      - name: Install DXC via vcpkg (Win + Linux x64)
+      - name: Install DXC via vcpkg
         if: (matrix.host_os == 'Windows') || (matrix.host_os == 'Linux' && matrix.arch_label == 'x64')
         shell: bash
         run: |
@@ -163,7 +154,6 @@ jobs:
           "$VCPKG_INSTALLATION_ROOT/vcpkg" install "directx-dxc:${{ matrix.triplet }}" || \
           "$VCPKG_INSTALLATION_ROOT/vcpkg" install "dxcompiler:${{ matrix.triplet }}" || true
 
-      # ---------- SPIRV-Cross (from source, C API shared) ----------
       - name: Build & Install SPIRV-Cross
         shell: bash
         run: |
@@ -179,45 +169,47 @@ jobs:
           cmake --build build_spvc --config ${CMAKE_BUILD_TYPE} --parallel
           cmake --install build_spvc --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- Configure Shadercross ----------
+      - name: Make DXC optional in CMake
+        shell: bash
+        run: |
+          set -eux
+          perl -0777 -pe 's/find_package\(\s*DirectXShaderCompiler\s+REQUIRED\s*\)/if(SC_WITH_DXC)\n  find_package(DirectXShaderCompiler REQUIRED)\nendif()/s' -i SDL_shadercross/CMakeLists.txt
+
       - name: Configure SDL_shadercross
         shell: bash
         run: |
           set -eux
-          SDL3_DIR_CANDIDATES=(
-            "${INSTALL_PREFIX}/lib/cmake/SDL3"
-            "${INSTALL_PREFIX}/share/SDL3"
-          )
+          SDL3_DIR_CANDIDATES=("${INSTALL_PREFIX}/lib/cmake/SDL3" "${INSTALL_PREFIX}/share/SDL3")
           SDL_HINT=""
           for d in "${SDL3_DIR_CANDIDATES[@]}"; do
             if [[ -f "$d/SDL3Config.cmake" ]]; then SDL_HINT="-DSDL3_DIR=$d"; break; fi
           done
-
           SPVC_HINT=""
           CANDIDATE="${INSTALL_PREFIX}/lib/cmake/spirv_cross_c_shared"
           [[ -d "$CANDIDATE" ]] && SPVC_HINT="-Dspirv_cross_c_shared_DIR=$CANDIDATE"
-
           DXC_HINTS=""
-          if [[ ( "${{ matrix.host_os }}" == "Windows" ) || ( "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ) ]]; then
+          DXC_OFF_FLAGS=""
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
             VCPKG_PREFIX="$VCPKG_INSTALLATION_ROOT/installed/${{ matrix.triplet }}"
             DXC_INC="$VCPKG_PREFIX/include"
-            if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
-              DXC_LIBC="$VCPKG_PREFIX/lib/dxcompiler.lib"
-              DXC_LIBL="$VCPKG_PREFIX/lib/dxil.lib"
-            else
-              DXC_LIBC="$VCPKG_PREFIX/lib/libdxcompiler.so"
-              DXC_LIBL="$VCPKG_PREFIX/lib/libdxil.so"
+            DXC_LIBC="$VCPKG_PREFIX/lib/dxcompiler.lib"
+            DXC_LIBL="$VCPKG_PREFIX/lib/dxil.lib"
+            DXC_BIN_COMP="$VCPKG_PREFIX/bin/dxcompiler.dll"
+            DXC_BIN_XIL="$VCPKG_PREFIX/bin/dxil.dll"
+            if [[ -f "$DXC_INC/dxcapi.h" && -f "$DXC_LIBC" && -f "$DXC_LIBL" && -f "$DXC_BIN_COMP" && -f "$DXC_BIN_XIL" ]]; then
+              DXC_HINTS="-DDirectXShaderCompiler_INCLUDE_PATH=$DXC_INC -DDirectXShaderCompiler_dxcompiler_LIBRARY=$DXC_LIBC -DDirectXShaderCompiler_dxil_LIBRARY=$DXC_LIBL -DDirectXShaderCompiler_dxcompiler_BINARY=$DXC_BIN_COMP -DDirectXShaderCompiler_dxil_BINARY=$DXC_BIN_XIL"
             fi
-            if [[ -f "$DXC_LIBC" && -f "$DXC_LIBL" ]]; then
+          elif [[ "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" == "x64" ]]; then
+            VCPKG_PREFIX="$VCPKG_INSTALLATION_ROOT/installed/${{ matrix.triplet }}"
+            DXC_INC="$VCPKG_PREFIX/include"
+            DXC_LIBC="$VCPKG_PREFIX/lib/libdxcompiler.so"
+            DXC_LIBL="$VCPKG_PREFIX/lib/libdxil.so"
+            if [[ -f "$DXC_INC/dxcapi.h" && -f "$DXC_LIBC" && -f "$DXC_LIBL" ]]; then
               DXC_HINTS="-DDirectXShaderCompiler_INCLUDE_PATH=$DXC_INC -DDirectXShaderCompiler_dxcompiler_LIBRARY=$DXC_LIBC -DDirectXShaderCompiler_dxil_LIBRARY=$DXC_LIBL"
             fi
+          else
+            DXC_OFF_FLAGS="-DSC_WITH_DXC=OFF"
           fi
-
-          DXC_OFF_FLAGS=""
-          if [[ ( "${{ matrix.host_os }}" == "macOS" ) || ( "${{ matrix.host_os }}" == "Linux" && "${{ matrix.arch_label }}" != "x64" ) ]]; then
-            DXC_OFF_FLAGS="-DSC_WITH_DXC=OFF -DCMAKE_DISABLE_FIND_PACKAGE_DirectXShaderCompiler=ON"
-          fi
-
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
@@ -228,7 +220,6 @@ jobs:
             ${DXC_OFF_FLAGS} \
             ${{ matrix.cmake_osx_arch || '' }}
 
-      # ---------- Build / Install ----------
       - name: Build SDL_shadercross
         shell: bash
         run: cmake --build "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE} --parallel
@@ -237,7 +228,6 @@ jobs:
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- Artifacts ----------
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
