@@ -122,5 +122,17 @@ public static partial class SDL
         private Byte _padding1;
         
         private Byte _padding2;
+        
+        public bool Cycle
+        {
+            get => _cycle != 0;
+            set => _cycle = value ? (byte)1 : (byte)0;
+        }
+        
+        public bool CycleResolveTexture
+        {
+            get => _cycleResolveTexture != 0;
+            set => _cycleResolveTexture = value ? (byte)1 : (byte)0;
+        }
     }
 }
