@@ -133,6 +133,11 @@ internal static class Program
                     
                         ApplyVHSEffectNV12(pixels, frame.Width, frame.Height, frame.Pitch);
                     }
+                    else
+                    {
+                        Console.WriteLine($"Your camera's format ({frame.Format}) is not supported for VHS mode.");
+                        vhs = false;
+                    }
                     
                     if(pixels != null) SDL.UpdateTexture(texture, IntPtr.Zero, pixels, frame.Pitch);
                     else SDL.UpdateTexture(texture, IntPtr.Zero, frame.Pixels, frame.Pitch);
