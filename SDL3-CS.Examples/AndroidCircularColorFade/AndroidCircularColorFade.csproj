@@ -13,6 +13,8 @@
           To learn more, see: https://learn.microsoft.com/dotnet/core/deploying/trimming/trimming-options#trimming-granularity
         -->
         <TrimMode>full</TrimMode>
+        <Configurations>Debug;Release;Prerelease</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     <PropertyGroup>
         <AndroidSdkDirectory>C:\android-sdk</AndroidSdkDirectory>

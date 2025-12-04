@@ -63,24 +63,33 @@
             PlayStation 2:
 
             - Added the following hints to control the display parameters: SDL_HINT_PS2_GS_WIDTH, SDL_HINT_PS2_GS_HEIGHT, SDL_HINT_PS2_GS_PROGRESSIVE, SDL_HINT_PS2_GS_MODE</PackageReleaseNotes>
+        <Configurations>Debug;Release;Prerelease</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.3.3.0</Version>
+        <PackageId>SDL3-CS</PackageId>
+        <VersionPrefix>3.3.3</VersionPrefix>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL 3.3.3</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL $(VersionPrefix).x</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
+        <PackageTags>SDL;SDL3;SDL3-CS</PackageTags>
         <PackageReadmeFile>README-nuget.md</PackageReadmeFile>
         <PackageIcon>logo.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591</NoWarn>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsPrerelease)'=='true'">
+        <VersionSuffix>preview.$([System.DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))</VersionSuffix>
+        <Description>This is SDL3#, a C# wrapper for SDL — PREVIEW CI build (preview builds supported)</Description>
+        <PackageReleaseNotes>Preview CI build at $([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC; Version $(VersionPrefix)-$(VersionSuffix)</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">

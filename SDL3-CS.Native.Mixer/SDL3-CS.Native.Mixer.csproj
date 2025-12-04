@@ -6,10 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Configurations>Debug;Release;Prerelease</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>3.1.0.0</Version>
+        <PackageId>SDL3-CS.Native.Mixer</PackageId>
+        <VersionPrefix>3.1.0</VersionPrefix>
         <Title>SDL3 C# Native mixer libraries</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
@@ -18,12 +21,18 @@
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>SDL, SDL3, SDL3-CS</PackageTags>
+        <PackageTags>SDL;SDL3;SDL3-CS</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>logo.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591</NoWarn>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsPrerelease)'=='true'">
+        <VersionSuffix>preview.$([System.DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))</VersionSuffix>
+        <Description>This package contains native SDL_mixer libraries for SDL3-CS — PREVIEW CI build (preview builds supported)</Description>
+        <PackageReleaseNotes>Preview CI build at $([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC; Version $(VersionPrefix)-$(VersionSuffix)</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
@@ -55,5 +64,9 @@
             <Pack>True</Pack>
             <PackagePath>runtimes\osx-arm64\native\</PackagePath>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SDL3-CS\SDL3-CS.csproj" />
     </ItemGroup>
 </Project>
