@@ -29,7 +29,7 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(IsPrerelease)'=='true'">
+    <PropertyGroup Condition="'$(Configuration)' == 'Prerelease'">
         <VersionSuffix>preview.$([System.DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))</VersionSuffix>
         <Description>This package contains native SDL_shadercross libraries for SDL3-CS — PREVIEW CI build (preview builds supported)</Description>
         <PackageReleaseNotes>Preview CI build at $([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC; Version $(VersionPrefix)-$(VersionSuffix)</PackageReleaseNotes>
