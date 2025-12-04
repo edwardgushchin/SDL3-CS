@@ -2146,6 +2146,19 @@ public static partial class SDL
         public const string MacScrollMomentum = "SDL_MAC_SCROLL_MOMENTUM";
         
         /// <summary>
+        /// A variable controlling whether holding down a key will repeat the pressed
+        /// key or open the accents menu on macOS.
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Holding a key will open the accents menu for that key.</item>
+        /// <item><c>"1"</c>: Holding a key will repeat the pressed key. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint needs to be set before <see cref="Init"/>.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string MacPressAndHold = "SDL_MAC_PRESS_AND_HOLD";
+        
+        /// <summary>
         /// <para>Request <see cref="AppIterate"/> be called at a specific rate.</para>
         /// <para>If this is set to a number, it represents Hz, so "60" means try to iterate
         /// 60 times per second. "0" means to iterate as fast as possible. Negative

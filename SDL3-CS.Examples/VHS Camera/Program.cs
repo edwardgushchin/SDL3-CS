@@ -60,7 +60,7 @@ internal static class Program
             return;
         }
         
-        var camera = SDL.OpenCamera(devices[0], default);
+        var camera = SDL.OpenCamera(devices[0], 0);
         
         if (camera == IntPtr.Zero) {
             Console.WriteLine($"Couldn't open camera: {SDL.GetError()}");

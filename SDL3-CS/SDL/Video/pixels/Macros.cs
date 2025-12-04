@@ -201,7 +201,7 @@ public static partial class SDL
 	/// expressions with side-effects here.</para>
 	/// </summary>
 	/// <param name="x">an <see cref="PixelFormat"/> to check.</param>
-	/// <returns><c>true</c> if the format is 10-bit, <c>false</c> otherwise.</returns>
+	/// <returns><c>true</c> if the format is a floating point, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
 	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]

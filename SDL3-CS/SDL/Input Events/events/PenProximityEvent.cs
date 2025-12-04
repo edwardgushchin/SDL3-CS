@@ -37,6 +37,8 @@ public static partial class SDL
     /// <para>Note that "proximity" means "close enough for the tablet to know the tool
     /// is there." The pen touching and lifting off from the tablet while not
     /// leaving the area are handled by <see cref="EventType.PenDown"/> and <see cref="EventType.PenUp"/>.</para>
+    /// <para>Not all platforms have a window associated with the pen during proximity
+    /// events. Some wait until motion/button/etc events to offer this info.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     [StructLayout(LayoutKind.Sequential)]

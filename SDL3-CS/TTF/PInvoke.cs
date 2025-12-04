@@ -789,7 +789,7 @@ public static partial class TTF
     /// <para>This updates any TTF_Text objects using this font.</para>
     /// </summary>
     /// <param name="font">the font to specify a direction for.</param>
-    /// <param name="spacing"></param>
+    /// <param name="spacing">the new additional glyph spacing for the font.</param>
     /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
@@ -2010,7 +2010,8 @@ public static partial class TTF
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="x">the x offset of the upper left corner of this text in pixels.</param>
     /// <param name="y">the y offset of the upper left corner of this text in pixels.</param>
-    /// <returns></returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// text.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
@@ -2029,7 +2030,8 @@ public static partial class TTF
     /// this text in pixels, may be <c>null</c>.</param>
     /// <param name="y">a pointer filled in with the y offset of the upper left corner of
     /// this text in pixels, may be <c>null</c>.</param>
-    /// <returns></returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// text.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>

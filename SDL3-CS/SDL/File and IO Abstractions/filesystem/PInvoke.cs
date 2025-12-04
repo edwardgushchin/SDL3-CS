@@ -51,6 +51,8 @@ public static partial class SDL
     /// <item><c>parent</c>: the containing directory of the bundle. For example:
     /// <c>/Applications/SDLApp/</c></item>
     /// </list>
+    /// <para><b>Android Specific Functionality</b>: This function returns <c>"./"</c>, which
+    /// allows filesystem operations to use internal storage and the asset system.</para>
     /// <para><b>Nintendo 3DS Specific Functionality</b>: This function returns "romfs"
     /// directory of the application as it is uncommon to store resources outside
     /// the executable. As such it is not a writable directory.</para>

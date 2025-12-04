@@ -135,29 +135,32 @@ public partial class SDL
     /// <item><see cref="Props.GPUDeviceCreateShadersMetalLibBoolean"/>: The app is able to
     /// provide Metal shader libraries if applicable.</item>
     /// </list>
-    /// <para>With the D3D12 renderer:</para>
+    /// <para>With the D3D12 backend:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.GPUDeviceCreateD3D12SemanticNameString"/>: the prefix to
     /// use for all vertex semantics, default is "TEXCOORD".</item>
+    /// <item><see cref="Props.GPUDeviceCreateD3D12AllowFewerResourceSlotsBoolean"/>: By
+    /// default, Resourcing Binding Tier 2 is required for D3D12 support.
+    /// However, an application can set this property to true to enable Tier 1
+    /// support, if (and only if) the application uses 8 or fewer storage
+    /// resources across all shader stages. As of writing, this property is
+    /// useful for targeting Intel Haswell and Broadwell GPUs; other hardware
+    /// either supports Tier 2 Resource Binding or does not support D3D12 in any
+    /// capacity. Defaults to false.</item>
     /// </list>
-    /// <para>With the Vulkan renderer:</para>
+    /// <para>With the Vulkan backend:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.GPUDeviceCreateVulkanShaderClipDistanceBoolean"/>: Enable
-    /// device feature shaderClipDistance. If disabled, clip distances are not
-    /// supported in shader code: gl_ClipDistance[] built-ins of GLSL,
-    /// SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
-    /// Metal. Defaults to true.</item>
-    /// <item><see cref="Props.GPUDeviceCreateVulkanDepthClampBoolean"/>: Enable device
-    /// feature depthClamp. If disabled, there is no depth clamp support and
-    /// enable_depth_clip in <see cref="GPURasterizerState"/> must always be set to true.
-    /// Defaults to true.</item>
-    /// <item><see cref="Props.GPUDeviceCreateVulkanDrawInDirectFirstBoolean"/>: Enable device
-    /// feature drawIndirectFirstInstance. If disabled, the argument
-    /// first_instance of <see cref="GPUIndirectDrawCommand"/> must be set to zero.
-    /// Defaults to true.</item>
-    /// <item><see cref="Props.GPUDeviceCreateVulkanSamplerAnisotropyBoolean"/>: Enable device
-    /// feature samplerAnisotropy. If disabled, enable_anisotropy of 
-    /// <see cref="GPUSamplerCreateInfo"/> must be set to false. Defaults to true.</item>
+    /// <item><see cref="Props.GPUDeviceCreateVulkanRequireHardwareAccelerationBoolean"/>:
+    /// By default, Vulkan device enumeration includes drivers of all types,
+    /// including software renderers (for example, the Lavapipe Mesa driver).
+    /// This can be useful if your application _requires_ SDL_GPU, but if you can
+    /// provide your own fallback renderer (for example, an OpenGL renderer) this
+    /// property can be set to true. Defaults to false.</item>
+    /// <item><see cref="Props.GPUDeviceCreateVulkanOptionsPointer"/>: a pointer to an
+    /// SDL_GPUVulkanOptions structure to be processed during device creation.
+    /// This allows configuring a variety of Vulkan-specific options such as
+    /// increasing the API version and opting into extensions aside from the
+    /// minimal set SDL requires.</item>
     /// </list>
     /// </summary>
     /// <param name="props">the properties to use.</param>
@@ -644,6 +647,10 @@ public partial class SDL
     /// <summary>
     /// <para>Inserts an arbitrary string label into the command buffer callstream.</para>
     /// <para>Useful for debugging.</para>
+    /// <para>On Direct3D 12, using <see cref="InsertGPUDebugLabel"/> will cause validation errors
+    /// unless you have WinPixEventRuntime.dll in your PATH. See
+    /// [here](https://devblogs.microsoft.com/pix/winpixeventruntime/)
+    /// for instructions on how to obtain it.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="text">a UTF-8 string constant to insert as the label.</param>
@@ -659,6 +666,10 @@ public partial class SDL
     /// callstream in a graphics debugging tool.</para>
     /// <para>Each call to <see cref="PushGPUDebugGroup"/> must have a corresponding call to
     /// <see cref="PopGPUDebugGroup"/>.</para>
+    /// <para>On Direct3D 12, using <see cref="PushGPUDebugGroup"/> will cause validation errors
+    /// unless you have WinPixEventRuntime.dll in your PATH. See
+    /// [here](https://devblogs.microsoft.com/pix/winpixeventruntime/)
+    /// for instructions on how to obtain it.</para>
     /// <para>On some backends (e.g. Metal), pushing a debug group during a
     /// render/blit/compute pass will create a group that is scoped to the native
     /// pass rather than the command buffer. For best results, if you push a debug

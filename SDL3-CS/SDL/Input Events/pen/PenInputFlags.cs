@@ -70,6 +70,11 @@ public static partial class SDL
         /// <summary>
         /// eraser tip is used
         /// </summary>
-        EraserTip = 1u << 30
+        EraserTip = 1u << 30,
+            
+        /// <summary>
+        /// pen is in proximity (since SDL 3.4.n)
+        /// </summary>
+        InProximity = (1u << 31)
     }
 }

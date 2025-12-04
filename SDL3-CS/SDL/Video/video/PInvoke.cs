@@ -161,6 +161,11 @@ public static partial class SDL
     /// <item><see cref="Props.DisplayWaylandWLOutputPointer"/>: the wl_output associated
     /// with the display</item>
     /// </list>
+    /// <para>On Windows:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.DisplayWindowsHMonitorPointer"/>: the monitor handle
+    /// (HMONITOR) associated with the display</item>
+    /// </list>
     /// </summary>
     /// <param name="displayID">displayID the instance ID of the display to query.</param>
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
@@ -834,6 +839,12 @@ public static partial class SDL
     /// <item><see cref="Props.WindowCreateCocoaViewPointer"/>: the <c>(__unsafe_unretained)</c>
     /// NSView associated with the window, defaults to <c>[window contentView]</c></item>
     /// </list>
+    /// <para>These are additional supported properties on iOS, tvOS, and visionOS:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.WindowCreateWindowScenePointer"/>: the <c>(__unsafe_unretained)</c>
+    /// UIWindowScene associated with the window, defaults to the active window
+    /// scene.</item>
+    /// </list>
     /// <para>These are additional supported properties on Wayland:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - true if
@@ -1271,6 +1282,7 @@ public static partial class SDL
     /// <seealso cref="GetRenderOutputSize"/>
     /// <seealso cref="GetWindowSizeInPixels"/>
     /// <seealso cref="SetWindowSize"/>
+    /// <seealso cref="EventType.WindowResized"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetWindowSize(IntPtr window, out int w, out int h);

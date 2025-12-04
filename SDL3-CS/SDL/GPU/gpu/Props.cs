@@ -52,6 +52,8 @@ public static partial class SDL
         public const string GPUDeviceCreateShadersMetalLibBoolean = "SDL.gpu.device.create.shaders.metallib";
         public const string GPUDeviceCreateD3D12AllowFewerResourceSlotsBoolean = "SDL.gpu.device.create.d3d12.allowtier1resourcebinding";
         public const string GPUDeviceCreateD3D12SemanticNameString = "SDL.gpu.device.create.d3d12.semantic";
+        public const string GPUDeviceCreateVulkanRequireHardwareAccelerationBoolean = "SDL.gpu.device.create.vulkan.requirehardwareacceleration";
+        public const string GPUDeviceCreateVulkanOptionsPointer = "SDL.gpu.device.create.vulkan.options";
         public const string GPUDeviceCreateVulkanShaderClipDistanceBoolean = "SDL.gpu.device.create.vulkan.shaderclipdistance";
         public const string GPUDeviceCreateVulkanDepthClampBoolean = "SDL.gpu.device.create.vulkan.depthclamp";
         public const string GPUDeviceCreateVulkanDrawInDirectFirstBoolean =  "SDL.gpu.device.create.vulkan.drawindirectfirstinstance";

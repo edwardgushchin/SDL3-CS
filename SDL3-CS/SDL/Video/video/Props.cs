@@ -45,6 +45,7 @@ public static partial class SDL
 		public const string DisplayHDREnabledBoolean = "SDL.display.HDR_enabled";
 	    public const string DisplayKMSDRMPanelOrientationNumber = "SDL.display.KMSDRM.panel_orientation";
 		public const string DisplayWaylandWLOutputPointer = "SDL.display.wayland.wl_output";
+		public const string DisplayWindowsHMonitorPointer = "SDL.display.windows.hmonitor";
 	    
 	    public const string WindowCreateAlwaysOnTopBoolean = "SDL.window.create.always_on_top";
 		public const string WindowCreateBorderlessBoolean = "SDL.window.create.borderless";
@@ -75,6 +76,7 @@ public static partial class SDL
 		public const string WindowCreateYNumber = "SDL.window.create.y";
 		public const string WindowCreateCocoaWindowPointer = "SDL.window.create.cocoa.window";
 		public const string WindowCreateCocoaViewPointer = "SDL.window.create.cocoa.view";
+		public const string WindowCreateWindowScenePointer = "SDL.window.create.uikit.windowscene";
 		public const string WindowCreateWaylandSurfaceRoleCustomBoolean = "SDL.window.create.wayland.surface_role_custom";
 		public const string WindowCreateWaylandCreateEGLWindowBoolean = "SDL.window.create.wayland.create_egl_window";
 		public const string WindowCreateWaylandWLSurfacePointer = "SDL.window.create.wayland.wl_surface";

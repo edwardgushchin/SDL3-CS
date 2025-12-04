@@ -152,7 +152,7 @@ public static partial class SDL
         
         
         /// <summary>
-        /// requests sRGB capable visual; defaults to 0.
+        /// requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a request; GL drivers might not comply!
         /// </summary>
         FrameBufferSRGBCapable,
         

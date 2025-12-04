@@ -360,6 +360,40 @@ public static partial class SDL
     public static partial void UnlockSurface(IntPtr surface);
     
     
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadSurface_IO(SDL_IOStream *src, bool closeio);</code>
+    /// <summary>
+    /// <para>Load a BMP or PNG image from a seekable SDL data stream.</para>
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="src">the data stream for the surface.</param>
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
+    /// in the case of an error.</param>
+    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadSurface"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadSurface_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadSurfaceIO(IntPtr src, [MarshalAs(UnmanagedType.I1)]bool closeio);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadSurface(const char *file);</code>
+    /// <summary>
+    /// Load a BMP or PNG image from a file.
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="file">the file to load.</param>
+    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadSurface([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+    
+    
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadBMP_IO(SDL_IOStream *src, bool closeio);</code>
     /// <summary>
     /// <para>Load a BMP image from a seekable SDL data stream.</para>
