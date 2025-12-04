@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Buffers;
 using SDL3;
 
 namespace VHS_Camera;
@@ -116,11 +117,25 @@ internal static class Program
                 
                 if (vhs)
                 {
-                    var pixels = SDL.PointerToStructureArray<byte>(frame.Pixels, frame.Pitch * frame.Height)!;
+                    byte[]? pixels = null;
                     
-                    ApplyVHSEffectYUY22(pixels, frame.Width, frame.Height);
+                    if (frame.Format == SDL.PixelFormat.YUY2)
+                    {
+                        pixels = SDL.PointerToStructureArray<byte>(frame.Pixels, frame.Pitch * frame.Height)!;
                     
-                    SDL.UpdateTexture(texture, IntPtr.Zero, pixels, frame.Pitch);
+                        ApplyVHSEffectYUY22(pixels, frame.Width, frame.Height);
+                    }
+                    else if (frame.Format == SDL.PixelFormat.NV12)
+                    {
+                        var bufferSize = (frame.Pitch * frame.Height) + (frame.Pitch * (frame.Height / 2));
+                        
+                        pixels = SDL.PointerToStructureArray<byte>(frame.Pixels, bufferSize)!;
+                    
+                        ApplyVHSEffectNV12(pixels, frame.Width, frame.Height, frame.Pitch);
+                    }
+                    
+                    if(pixels != null) SDL.UpdateTexture(texture, IntPtr.Zero, pixels, frame.Pitch);
+                    else SDL.UpdateTexture(texture, IntPtr.Zero, frame.Pixels, frame.Pitch);
                 }
                 else
                 {
@@ -148,8 +163,8 @@ internal static class Program
         SDL.DestroyWindow(_window);
         SDL.Quit();
     }
-    
-    public static void ApplyVHSEffectYUY22(byte[] buffer, int width, int height)
+
+    private static void ApplyVHSEffectYUY22(byte[] buffer, int width, int height)
     {
         var rowStride = width * 2; // Number of bytes in one row (YUY2: 2 bytes per pixel)
 
@@ -222,5 +237,252 @@ internal static class Program
                 buffer[index + 2] = (byte)localRng.Next(0, 256); // Y1
             }
         });
+    }
+
+    private static unsafe void ApplyVHSEffectNV12(byte[] buffer, int width, int height, int pitch)
+    {
+        if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+        if (width <= 0 || height <= 0) throw new ArgumentException("Invalid width/height");
+        if (pitch < width) throw new ArgumentException("Pitch must be >= width");
+
+        var ySize = pitch * height;
+        var uvSize = pitch * (height / 2);
+        if (buffer.Length < ySize + uvSize)
+            throw new ArgumentException("Buffer too small for NV12 (using provided pitch/height)");
+
+        // Tunable params (меняй, если хочешь сильнее/слабее эффект)
+        const int blurRadius = 3; // радиус blur (раньше был 5) — 3 даёт хорошее сглаживание при меньшей цене
+        const int noiseRangeY = 10; // ± для Y шум
+        const int noiseRangeUV = 10; // ± для UV шум
+        const double scanlineFactor = 0.8; // затемнение каждой второй строки
+
+        var threadRng = new ThreadLocal<Random>(() =>
+            new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId)));
+
+        // Rented buffers (we'll rent per-row inside loop to avoid huge allocation)
+
+        fixed (byte* basePtr = buffer)
+        {
+            var yPlane = basePtr; // Y starts at 0
+            var uvPlane = basePtr + ySize; // UV starts after Y plane
+
+            var mainRng = threadRng.Value; // only for frame-level decisions
+
+            // Precompute window width for box blur
+
+            // Parallel over rows — keep per-row temp buffers from ArrayPool inside each iteration
+            Parallel.For(0, height, y =>
+            {
+                var rng = threadRng.Value!;
+
+                // Rent working buffers per thread/iteration (small overhead, pooled)
+                var rowTemp = ArrayPool<byte>.Shared.Rent(width); // blurred Y -> final row values before writing
+                var noise = ArrayPool<byte>.Shared.Rent(width); // random bytes to map to noise offsets
+                // UV noise length = pitch (we will use first width bytes, step 2)
+                var uvNoise = ArrayPool<byte>.Shared.Rent(pitch);
+
+                try
+                {
+                    var yRowPtr = yPlane + (long)y * pitch;
+
+                    // --- Horizontal box blur using running sum (O(width)) ---
+                    // Compute initial sum for x=0
+                    var sum = 0;
+                    var left = 0;
+                    var right = Math.Min(blurRadius, width - 1);
+
+                    for (var k = left; k <= right; k++)
+                    {
+                        sum += yRowPtr[k];
+                    }
+
+                    for (var x = 0; x < width; x++)
+                    {
+                        // expand right edge if needed
+                        var nextRight = x + blurRadius;
+                        if (nextRight <= width - 1 && nextRight > right)
+                        {
+                            // add newly included sample(s)
+                            for (var t = right + 1; t <= nextRight; t++)
+                                sum += yRowPtr[t];
+                            right = nextRight;
+                        }
+
+                        // shrink left edge if needed
+                        var nextLeft = x - blurRadius - 1;
+                        if (nextLeft >= 0)
+                        {
+                            sum -= yRowPtr[nextLeft];
+                        }
+
+                        var actualWindow = Math.Min(width - 1, x + blurRadius) - Math.Max(0, x - blurRadius) + 1;
+                        var blurred = (byte)(sum / actualWindow);
+                        rowTemp[x] = blurred;
+                    }
+
+                    // --- Generate noise bytes for this row (map to +/- noiseRangeY) ---
+                    rng.NextBytes(noise);
+                    // Map noise[] (0..255) -> [-noiseRangeY..noiseRangeY]
+                    for (var i = 0; i < width; i++)
+                    {
+                        // Using modulo is cheap; distribution not perfect but fine for visual noise
+                        var off = (noise[i] % (noiseRangeY * 2 + 1)) - noiseRangeY;
+                        var val = rowTemp[i] + off;
+
+                        // Scanline dimming (every second Y row)
+                        if ((y % 2) == 0)
+                        {
+                            val = (int)(val * scanlineFactor);
+                        }
+
+                        val = val switch
+                        {
+                            // Clamp and write back to temp
+                            < 0 => 0,
+                            > 255 => 255,
+                            _ => val
+                        };
+                        rowTemp[i] = (byte)val;
+                    }
+
+                    // --- Row shift / glitch: perform copy into target region safely using a second temp buffer ---
+                    var rowOffset = rng.Next(-2, 3); // small shift in pixels (-2..2)
+                    if (rowOffset != 0)
+                    {
+                        // Create shifted row buffer and then copy valid bytes into actual yRowPtr
+                        var shifted = ArrayPool<byte>.Shared.Rent(width);
+                        try
+                        {
+                            // fill with original values to avoid garbage
+                            // Note: we want glitchy overwrite; here we do safe bounded copy
+                            for (var i = 0; i < width; i++) shifted[i] = yRowPtr[i];
+
+                            var srcStart = 0;
+                            var dstStart = rowOffset;
+                            if (dstStart < 0)
+                            {
+                                srcStart = -dstStart;
+                                dstStart = 0;
+                            }
+
+                            var len = Math.Min(width - srcStart, width - dstStart);
+                            if (len > 0)
+                            {
+                                // copy from rowTemp[srcStart .. srcStart+len) to shifted[dstStart .. dstStart+len)
+                                Buffer.BlockCopy(rowTemp, srcStart, shifted, dstStart, len);
+                            }
+
+                            // finally write shifted into yRowPtr (only width bytes)
+                            for (var i = 0; i < width; i++)
+                            {
+                                yRowPtr[i] = shifted[i];
+                            }
+                        }
+                        finally
+                        {
+                            ArrayPool<byte>.Shared.Return(shifted);
+                        }
+                    }
+                    else
+                    {
+                        // no shift: write rowTemp directly back
+                        for (var i = 0; i < width; i++) yRowPtr[i] = rowTemp[i];
+                    }
+
+                    // --- UV processing: only once per UV row (y even -> process the UV row shared by y and y+1) ---
+                    if ((y & 1) != 0) return;
+                    {
+                        var uvRow = y / 2;
+                        var uvRowPtr = uvPlane + (long)uvRow * pitch;
+
+                        // Generate uvNoise
+                        rng.NextBytes(uvNoise);
+
+                        // Step through pairs (U,V) for the valid width range (each pair represents 2 pixels horizontally)
+                        var uvPairs = (width + 1) / 2; // number of UV pairs covering the width
+                        var uvWriteLimit = uvPairs * 2; // number of bytes to touch (<= pitch)
+
+                        for (var i = 0; i < uvWriteLimit; i += 2)
+                        {
+                            var mapIdx = i; // using uvNoise[i] to derive offset
+                            var offU = (uvNoise[mapIdx] % (noiseRangeUV * 2 + 1)) - noiseRangeUV;
+                            // use next noise byte for V (or same distribution)
+                            var offV = (uvNoise[mapIdx + 1] % (noiseRangeUV * 2 + 1)) - noiseRangeUV;
+
+                            var u = uvRowPtr[i] + offU;
+                            var v = uvRowPtr[i + 1] + offV;
+                            
+                            u = u switch
+                            {
+                                < 0 => 0,
+                                > 255 => 255,
+                                _ => u
+                            };
+                            
+                            v = v switch
+                            {
+                                < 0 => 0,
+                                > 255 => 255,
+                                _ => v
+                            };
+                            
+                            uvRowPtr[i] = (byte)u;
+                            uvRowPtr[i + 1] = (byte)v;
+                        }
+                    }
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(rowTemp);
+                    ArrayPool<byte>.Shared.Return(noise);
+                    ArrayPool<byte>.Shared.Return(uvNoise);
+                }
+            }); // end Parallel.For
+
+            // --- Frame-level glitches (random bands) ---
+            if (mainRng == null || !(mainRng.NextDouble() < 0.07)) return; // slightly lower probability than original to keep quality
+            {
+                var glitchHeight = Math.Max(1, mainRng.Next(1, Math.Max(2, height / 12)));
+                var startY = mainRng.Next(0, Math.Max(1, height - glitchHeight + 1));
+                Parallel.For(startY, startY + glitchHeight, y =>
+                {
+                    var rng = threadRng.Value!;
+                    var yRowPtr = yPlane + (long)y * pitch;
+                    // randomize Y across width quickly using NextBytes
+                    var rand = ArrayPool<byte>.Shared.Rent(width);
+                    try
+                    {
+                        rng.NextBytes(rand);
+                        for (var x = 0; x < width; x++)
+                        {
+                            yRowPtr[x] = rand[x];
+                        }
+                    }
+                    finally
+                    {
+                        ArrayPool<byte>.Shared.Return(rand);
+                    }
+
+                    // randomize UV row corresponding
+                    if ((y & 1) != 0) return;
+                    var uvRow = y / 2;
+                    var uvRowPtr = uvPlane + (long)uvRow * pitch;
+                    var randUv = ArrayPool<byte>.Shared.Rent(pitch);
+                    try
+                    {
+                        rng.NextBytes(randUv);
+                        // write first uvPairs*2 bytes
+                        var uvPairs = (width + 1) / 2;
+                        var uvBytes = uvPairs * 2;
+                        for (var i = 0; i < uvBytes; i++)
+                            uvRowPtr[i] = randUv[i];
+                    }
+                    finally
+                    {
+                        ArrayPool<byte>.Shared.Return(randUv);
+                    }
+                });
+            }
+        }
     }
 }

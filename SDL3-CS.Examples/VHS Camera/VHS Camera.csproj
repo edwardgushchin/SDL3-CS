@@ -8,6 +8,7 @@
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;Prerelease</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
