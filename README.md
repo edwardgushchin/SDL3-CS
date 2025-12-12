@@ -13,7 +13,7 @@
 <p align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0,_9.0-512BD4">
     <img alt="Static Badge" src="https://img.shields.io/badge/Language-C%23_12-239120">
-    <img alt="Static Badge" src="https://img.shields.io/badge/SDL3-3.3.3-239120">
+    <img alt="Static Badge" src="https://img.shields.io/badge/SDL3-3.3.5_preview-239120">
 </p>
 
 <p align="center">
