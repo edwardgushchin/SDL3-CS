@@ -65,8 +65,4 @@
             <PackagePath>runtimes\osx-arm64\native\</PackagePath>
         </None>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\SDL3-CS\SDL3-CS.csproj" />
-    </ItemGroup>
 </Project>
