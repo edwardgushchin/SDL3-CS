@@ -25,7 +25,7 @@
 
     <PropertyGroup Label="NuGet">
         <PackageId>SDL3-CS</PackageId>
-        <VersionPrefix>3.3.3</VersionPrefix>
+        <VersionPrefix>3.3.5</VersionPrefix>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
