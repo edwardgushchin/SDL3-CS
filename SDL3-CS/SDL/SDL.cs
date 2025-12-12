@@ -22,6 +22,7 @@
 #endregion
 
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
@@ -55,7 +56,7 @@ public static partial class SDL
     /// <seealso cref="PointerToStringArray(nint)"/>
     /// <seealso cref="PointerToStringArray(nint, int)"/>
     /// <seealso cref="PointerToStructureArray{T}"/>
-    public static T? PointerToStructure<T>(IntPtr pointer) where T : struct
+    public static T? PointerToStructure<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T>(IntPtr pointer) where T : struct
     {
         return pointer == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(pointer);
     }
@@ -387,7 +388,7 @@ public static partial class SDL
     /// <seealso cref="PointerToPointerArray"/>
     /// <seealso cref="PointerToStringArray(nint)"/>
     /// <seealso cref="PointerToStringArray(nint, int)"/>
-    public static unsafe T[]? PointerToStructureArray<T>(IntPtr pointer, int count) where T : struct
+    public static unsafe T[]? PointerToStructureArray<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T>(IntPtr pointer, int count) where T : struct
     {
         if (pointer == IntPtr.Zero || count < 0) return null;
 
