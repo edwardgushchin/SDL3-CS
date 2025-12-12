@@ -11,28 +11,34 @@ jobs:
       fail-fast: false
       matrix:
         include:
+
           # Windows
           - os: windows-2025
             host_os: Windows
             arch_label: x64
             vs_arch: x64
+
           - os: windows-11-arm
             host_os: Windows
             arch_label: arm64
             vs_arch: ARM64
+
           # macOS
           - os: macos-15-intel
             host_os: macOS
             arch_label: x64
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+
           - os: macos-latest
             host_os: macOS
             arch_label: arm64
             cmake_osx_arch: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+
           # Linux
           - os: ubuntu-latest
             host_os: Linux
             arch_label: x64
+
           - os: ubuntu-24.04-arm
             host_os: Linux
             arch_label: arm64
@@ -41,11 +47,9 @@ jobs:
       INSTALL_PREFIX: ${{ github.workspace }}/install
       BUILD_DIR: ${{ github.workspace }}/build
       CMAKE_BUILD_TYPE: Release
-      # Headless для Linux, чтобы не тащить X11/Wayland
       HEADLESS: "1"
 
     steps:
-      # ---------- Sources ----------
       - name: Checkout SDL
         uses: actions/checkout@v4
         with:
@@ -77,7 +81,6 @@ jobs:
             libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
             libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
             libudev-dev libvulkan-dev
-
 
       # ---------- macOS flags ----------
       - name: Prepare CMake flags (macOS)
@@ -131,9 +134,6 @@ jobs:
             ${EXTRA_SDL_FLAGS} \
             ${{ steps.prep.outputs.extra }}
 
-
-
-
       # ---------- SDL base: Build/Install ----------
       - name: Build SDL
         shell: bash
@@ -166,7 +166,6 @@ jobs:
         if: matrix.host_os != 'Windows'
         shell: bash
         run: |
-          # На macOS глушим pkg-config, чтобы не тянулась системная сборка.
           if [[ "$RUNNER_OS" == "macOS" ]]; then
             export PKG_CONFIG="" PKG_CONFIG_PATH="" PKG_CONFIG_LIBDIR=""
           fi
@@ -188,8 +187,8 @@ jobs:
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL_ttf" --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- Artifacts ----------
-      - name: Upload artifacts
+      # ---------- Artifacts (raw) ----------
+      - name: Upload raw artifacts
         uses: actions/upload-artifact@v4
         with:
           name: SDL_ttf-${{ matrix.os }}-${{ matrix.arch_label }}
@@ -198,3 +197,55 @@ jobs:
             ${{ env.BUILD_DIR }}/SDL_ttf/**/*.so*
             ${{ env.BUILD_DIR }}/SDL_ttf/**/*.dylib
             ${{ env.INSTALL_PREFIX }}/
+
+
+  # ========= PACK JOB ===========
+  pack:
+    name: Pack final cross-platform /lib directory
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Prepare directory structure
+        run: |
+          mkdir -p lib/win-x64
+          mkdir -p lib/win-arm64
+          mkdir -p lib/linux-x64
+          mkdir -p lib/linux-arm64
+          mkdir -p lib/osx-x64
+          mkdir -p lib/osx-arm64
+
+      - name: Move files to proper folders
+        shell: bash
+        run: |
+          shopt -s globstar
+
+          # Windows x64
+          for f in **/windows-2025*x64*/*.dll; do cp "$f" lib/win-x64/ || true; done
+
+          # Windows ARM64
+          for f in **/windows-11-arm*/*.dll; do cp "$f" lib/win-arm64/ || true; done
+
+          # Linux x64
+          for f in **/ubuntu-latest*x64*/*.so*; do cp "$f" lib/linux-x64/ || true; done
+
+          # Linux ARM64
+          for f in **/ubuntu-24.04-arm*/*.so*; do cp "$f" lib/linux-arm64/ || true; done
+
+          # macOS x64
+          for f in **/macos-15-intel*/*.dylib; do cp "$f" lib/osx-x64/ || true; done
+
+          # macOS ARM64
+          for f in **/macos-latest*/*.dylib; do cp "$f" lib/osx-arm64/ || true; done
+
+      - name: Pack to SDL_ttf-libs.zip
+        run: zip -r SDL_ttf-libs.zip lib
+
+      - name: Upload final packed archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: SDL_ttf-libs
+          path: SDL_ttf-libs.zip
