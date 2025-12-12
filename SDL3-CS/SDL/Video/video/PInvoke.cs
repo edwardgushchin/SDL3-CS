@@ -1075,9 +1075,6 @@ public static partial class SDL
     /// <list type="bullet">
     /// <item><see cref="Props.WindowEMScriptenCanvasIdString"/>: the id the canvas element
     /// will have</item>
-    /// <item><see cref="Props.WindowEMScriptenFillDocumentBoolean"/>: true if the canvas is
-    /// set to consume the entire browser window, bypassing some SDL window 
-    /// functionality.</item>
     /// <item><see cref="Props.WindowEMScriptenKeyboardElementString"/>: the keyboard
     /// element that associates keyboard events to this window</item>
     /// </list>
@@ -1105,6 +1102,7 @@ public static partial class SDL
     /// <seealso cref="MinimizeWindow"/>
     /// <seealso cref="SetWindowFullscreen"/>
     /// <seealso cref="SetWindowMouseGrab"/>
+    /// <seealso cref="SetWindowFillDocument"/>
     /// <seealso cref="ShowWindow"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFlags"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial WindowFlags GetWindowFlags(IntPtr window);
@@ -1552,6 +1550,32 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAlwaysOnTop"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool onTop);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFillDocument(SDL_Window *window, bool fill);</code>
+    /// <summary>
+    /// <para>Set the window to fill the current document space (Emscripten only).</para>
+    /// <para>This will add or remove the window's <see cref="WindowFlags.WindowFillDocument"/> flag.</para>
+    /// <para>Currently this flag only applies to the Emscripten target.</para>
+    /// <para>When enabled, the canvas element fills the entire document. Resize events 
+    /// will be generated as the browser window is resized, as that will adjust the
+    /// canvas size as well. The canvas will cover anything else on the page,
+    /// including any controls provided by Emscripten in its generated HTML file
+    /// (in fact, any elements on the page that aren't the canvas will be moved
+    /// into a hidden <c>div</c> element).</para>
+    /// /// <para>Often times this is desirable for a browser-based game, but it means
+    /// several things that we expect of an SDL window on other platforms might not
+    /// work as expected, such as minimum window sizes and aspect ratios.</para>
+    /// </summary>
+    /// <param name="window">the window of which to change the fill-document state.</param>
+    /// <param name="fill">true to set the window to fill the document, false to disable.</param>
+    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFillDocument"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetWindowFillDocument(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fill);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowWindow(SDL_Window *window);</code>
