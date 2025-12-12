@@ -143,6 +143,11 @@ public static partial class SDL
         PopupMenu = 0x0000000000080000,
         
         /// <summary>
+        /// window is in fill-document mode (Emscripten only), since SDL 3.4.0
+        /// </summary>
+        WindowFillDocument = 0x0000000000200000,
+        
+        /// <summary>
         /// window has grabbed keyboard input
         /// </summary>
         KeyboardGrabbed     = 0x0000000000100000,

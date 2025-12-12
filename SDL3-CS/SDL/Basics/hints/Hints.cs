@@ -641,21 +641,6 @@ public static partial class SDL
         /// <remarks>This hint should be set before creating a window.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string EmscriptenKeyboardElement = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
-
-
-        /// <summary>
-        /// Dictate that newly-created windows will fill the whole browser window.
-        /// <para>The canvas element fills the entire document. Resize events will be
-        /// generated as the browser window is resized, as that will adjust the canvas
-        /// size as well. The canvas will cover anything else on the page, including
-        /// any controls provided by Emscripten in its generated HTML file. Often times
-        /// this is desirable for a browser-based game, but it means several things
-        /// that we expect of an SDL window on other platforms might not work as
-        /// expected, such as minimum window sizes and aspect ratios.</para>
-        /// <para>This hint overrides <see cref="Props.WindowCreateEMScriptenFillDocumentBoolean"/>
-        /// properties when creating an SDL window.</para>
-        /// </summary>
-        public const string EmscriptenFillDocument = "SDL_EMSCRIPTEN_FILL_DOCUMENT";
         
         /// <summary>
         /// <para>A variable that controls whether the on-screen keyboard should be shown
@@ -2221,6 +2206,21 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string MouseDefaultSystemCursor = "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR";
         
+        /// <summary>
+        /// <para>A variable setting whether we should scale cursors by the current display
+        /// scale.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Cursors will not change size based on the display content scale.
+        /// (default)</item>
+        /// <item><c>"1"</c>: Cursors will automatically match the display content scale (e.g. a
+        /// 2x sized cursor will be used when the window is on a monitor with 200%
+        /// scale). This is currently implemented on Windows and Wayland.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint needs to be set before creating cursors.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string MouseDPIScaleCursors = "SDL_MOUSE_DPI_SCALE_CURSORS";
         
         /// <summary>
         /// <para>A variable controlling whether warping a hidden mouse cursor will activate
