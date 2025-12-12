@@ -41,8 +41,7 @@ jobs:
       INSTALL_PREFIX: ${{ github.workspace }}/install
       BUILD_DIR: ${{ github.workspace }}/build
       CMAKE_BUILD_TYPE: Release
-      # Поставь "1", если нужна headless-сборка на Linux без X11/Wayland
-      HEADLESS: "0"
+      HEADLESS: "0"  # Для Linux headless-режима
 
     steps:
       - name: Checkout SDL
@@ -61,7 +60,7 @@ jobs:
           submodules: recursive
           path: SDL_image
 
-      # ---------- Linux deps (без проблемного libibus-1.0-*) ----------
+      # ---------- Linux deps ----------
       - name: Install Linux deps
         if: matrix.host_os == 'Linux'
         shell: bash
@@ -85,7 +84,7 @@ jobs:
         shell: bash
         run: echo "extra=${{ matrix.cmake_osx_arch }}" >> "$GITHUB_OUTPUT"
 
-      # ---------- Базовый SDL: Configure ----------
+      # ---------- Configure SDL ----------
       - name: Configure SDL (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
@@ -122,7 +121,7 @@ jobs:
             ${EXTRA_SDL_FLAGS} \
             ${{ steps.prep.outputs.extra }}
 
-      # ---------- Базовый SDL: Build/Install ----------
+      # ---------- Build/Install SDL ----------
       - name: Build SDL (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
@@ -133,11 +132,25 @@ jobs:
         shell: bash
         run: cmake --build "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE} --parallel
 
-      - name: Install SDL (Windows/Unix)
+      - name: Install SDL
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
-      # ---------- SDL_image: Configure ----------
+      # ---------- PATCH AOM (Windows only) ----------
+      - name: Patch AOM generator expressions (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $aom = "SDL_image/external/aom/build/cmake/compiler_flags.cmake"
+          if (Test-Path $aom) {
+              Write-Host "Patching AOM compiler flags..."
+              (Get-Content $aom | Where-Object {$_ -notmatch '\$<CONFIG:'}) |
+                Set-Content $aom
+          } else {
+              Write-Host "AOM file not found: $aom (this is normal if vendored AOM has changed)"
+          }
+
+      # ---------- Configure SDL_image ----------
       - name: Configure SDL_image (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
@@ -167,7 +180,7 @@ jobs:
             -DSDL_TESTS=OFF \
             ${{ steps.prep.outputs.extra }}
 
-      # ---------- SDL_image: Build/Install ----------
+      # ---------- Build/Install SDL_image ----------
       - name: Build SDL_image (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
@@ -178,7 +191,7 @@ jobs:
         shell: bash
         run: cmake --build "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE} --parallel
 
-      - name: Install SDL_image (Windows/Unix)
+      - name: Install SDL_image
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL_image" --config ${CMAKE_BUILD_TYPE}
 
