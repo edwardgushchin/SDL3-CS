@@ -42,6 +42,8 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.4.0.</since>
     /// <seealso cref="SetGPUViewport"/>
+    /// <seealso cref="SDL.PointerToStringArray(System.IntPtr)"/>
+    /// <seealso cref="SDL.StringArrayToPointer"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUVulkanOptions
     {
@@ -65,23 +67,19 @@ public static partial class SDL
         /// </summary>
         public uint DeviceExtensionCount;
         
-        private IntPtr device_extension_names;
+        /// <summary>
+        /// Pointer to a list of additional device extensions to require.
+        /// </summary>
+        public IntPtr DeviceExtensionNames;
         
         /// <summary>
         /// Number of additional instance extensions to require.
         /// </summary>
         public uint InstanceExtensionCount;
         
-        private IntPtr instance_extension_names;
-
-        /// <summary>
-        /// Pointer to a list of additional device extensions to require.
-        /// </summary>
-        public string[] DeviceExtensionNames => PointerToStringArray(device_extension_names)!;
-        
         /// <summary>
         /// Pointer to a list of additional instance extensions to require.
         /// </summary>
-        public string[] InstanceExtensionNames => PointerToStringArray(instance_extension_names)!;
+        public IntPtr InstanceExtensionNames;
     }
 }
