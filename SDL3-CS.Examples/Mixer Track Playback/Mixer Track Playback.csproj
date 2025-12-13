@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Mixer_Track_Playback</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SDL3-CS" Version="3.3.5-preview.20251213-114652" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.3.3" />
+      <PackageReference Include="SDL3-CS.Native.Mixer" Version="3.1.0-preview.20251213-114529" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="test.mp3" />
+      <AdditionalFiles Include="test.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AdditionalFiles>
+    </ItemGroup>
+
+</Project>

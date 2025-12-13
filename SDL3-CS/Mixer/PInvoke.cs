@@ -1171,7 +1171,7 @@ public partial class Mixer
     /// play an intro at the start of a track on the first iteration, but have a
     /// loop point somewhere in the middle thereafter. A value &lt;= 0 will begin
     /// the loop from the start of the track's input. Default 0.</item>
-    /// <item>`MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER`: The same as using the
+    /// <item><see cref="Props.PlayLoopStartMillisecondNumber"/>: The same as using the
     /// <see cref="Props.PlayLoopStartFrameNumber"/> property, but the value is
     /// specified in milliseconds instead of sample frames. If both properties
     /// are specified, the sample frames value is favored. Default 0.</item>
