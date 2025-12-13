@@ -39,7 +39,7 @@ public partial class Mixer
     /// <remarks>This function may be called safely at any time, even before <see cref="Init"/>.</remarks>
     /// <returns>the version of the linked library.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_Version"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_Version"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int Version();
     
     
@@ -56,7 +56,7 @@ public partial class Mixer
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="Quit"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool Init();
     
@@ -89,7 +89,7 @@ public partial class Mixer
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="Init"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "Mix_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Quit();
     
     
