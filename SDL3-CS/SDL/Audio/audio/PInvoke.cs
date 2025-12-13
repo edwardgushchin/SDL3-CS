@@ -175,6 +175,14 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAudioDeviceName(SDL_AudioDeviceID devid);</code>
     /// <summary>
     /// Get the human-readable name of a specific audio device.
+    /// <para><b>WARNING</b>: this function will work with <see cref="AudioDeviceDefaultPlayback"/>
+    /// and <see cref="AudioDeviceDefaultRecording"/>, returning the current default
+    /// physical devices' names. However, as the default device may change at any
+    /// time, it is likely better to show a generic name to the user, like "System
+    /// default audio device" or perhaps "default [currently %s]". Do not store
+    /// this name to disk to reidentify the device in a later run of the program,
+    /// as the default might change in general, and the string will be the name of
+    /// a specific device and not the abstract system default.</para>
     /// </summary>
     /// <param name="devid">the instance ID of the device to query.</param>
     /// <returns>the name of the audio device, or <c>null</c> on failure; call

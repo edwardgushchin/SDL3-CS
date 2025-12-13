@@ -157,7 +157,7 @@ public partial class SDL
     /// provide your own fallback renderer (for example, an OpenGL renderer) this
     /// property can be set to true. Defaults to false.</item>
     /// <item><see cref="Props.GPUDeviceCreateVulkanOptionsPointer"/>: a pointer to an
-    /// SDL_GPUVulkanOptions structure to be processed during device creation.
+    /// <see cref="GPUVulkanOptions"/> structure to be processed during device creation.
     /// This allows configuring a variety of Vulkan-specific options such as
     /// increasing the API version and opting into extensions aside from the
     /// minimal set SDL requires.</item>
@@ -647,8 +647,9 @@ public partial class SDL
     /// <summary>
     /// <para>Inserts an arbitrary string label into the command buffer callstream.</para>
     /// <para>Useful for debugging.</para>
-    /// <para>On Direct3D 12, using <see cref="InsertGPUDebugLabel"/> will cause validation errors
-    /// unless you have WinPixEventRuntime.dll in your PATH. See
+    /// <para>On Direct3D 12, using <see cref="InsertGPUDebugLabel"/> requires
+    /// WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+    /// executable. See
     /// [here](https://devblogs.microsoft.com/pix/winpixeventruntime/)
     /// for instructions on how to obtain it.</para>
     /// </summary>
@@ -666,8 +667,8 @@ public partial class SDL
     /// callstream in a graphics debugging tool.</para>
     /// <para>Each call to <see cref="PushGPUDebugGroup"/> must have a corresponding call to
     /// <see cref="PopGPUDebugGroup"/>.</para>
-    /// <para>On Direct3D 12, using <see cref="PushGPUDebugGroup"/> will cause validation errors
-    /// unless you have WinPixEventRuntime.dll in your PATH. See
+    /// <para>On Direct3D 12, using <see cref="PushGPUDebugGroup"/> requires WinPixEventRuntime.dll
+    /// to be in your PATH or in the same directory as your executable. See
     /// [here](https://devblogs.microsoft.com/pix/winpixeventruntime/)
     /// for instructions on how to obtain it.</para>
     /// <para>On some backends (e.g. Metal), pushing a debug group during a
@@ -686,6 +687,10 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PopGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer);</code>
     /// <summary>
     /// Ends the most-recently pushed debug group.
+    /// <para>On Direct3D 12, using <see cref="PopGPUDebugGroup"/> requires WinPixEventRuntime.dll
+    /// to be in your PATH or in the same directory as your executable. See
+    /// [here](https://devblogs.microsoft.com/pix/winpixeventruntime/)
+    /// for instructions on how to obtain it.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <since>This function is available since SDL 3.2.0</since>

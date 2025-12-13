@@ -32,5 +32,6 @@ public static partial class SDL
         public const string SurfaceTonemapOperatorString = "SDL.surface.tonemap";
         public const string SurfaceHotspotXNumber = "SDL.surface.hotspot.x";
         public const string SurfaceHotspotYNumber = "SDL.surface.hotspot.y";
+        public const string SurfaceRotationFloat = "SDL.surface.rotation";
     }
 }
