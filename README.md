@@ -60,6 +60,7 @@ dotnet add package SDL3-CS.Native
 dotnet add package SDL3-CS.Native.Image
 dotnet add package SDL3-CS.Native.TTF
 dotnet add package SDL3-CS.Native.Mixer
+dotnet add package SDL3-CS.Native.Shadercross
 ```
 
 ## 🎓 Examples
