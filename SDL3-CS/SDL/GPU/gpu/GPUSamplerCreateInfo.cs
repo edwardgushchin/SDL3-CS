@@ -96,18 +96,23 @@ public static partial class SDL
         /// </summary>
         public float MaxLod;
         
-        /// <summary>
-        /// true to enable anisotropic filtering.
-        /// </summary>
-        public Byte EnableAnisotropy;
+        private Byte _enableAnisotropy;
         
-        /// <summary>
-        /// true to enable comparison against a reference value during lookups.
-        /// </summary>
-        public Byte EnableCompare;
+        
+        private Byte _enableCompare;
         
         private byte padding1;
         
         private byte padding2;
+
+        /// <summary>
+        /// true to enable anisotropic filtering.
+        /// </summary>
+        public bool EnableAnisotropy => _enableAnisotropy > 0;
+        
+        /// <summary>
+        /// true to enable comparison against a reference value during lookups.
+        /// </summary>
+        public bool EnableCompare => _enableCompare > 0;
     }
 }

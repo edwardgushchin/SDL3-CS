@@ -75,7 +75,7 @@ public static partial class SDL
         
         private Byte _enableBlend;
         
-        public Byte _enableColorWriteMask;
+        private Byte _enableColorWriteMask;
         
         private Byte _padding1;
         
