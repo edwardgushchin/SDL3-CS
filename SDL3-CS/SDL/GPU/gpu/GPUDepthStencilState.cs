@@ -61,19 +61,13 @@ public static partial class SDL
         /// </summary>
         public Byte WriteMask;
         
-        /// <summary>
-        /// true enables the depth test.
-        /// </summary>
-        public Byte EnableDepthTest;
+        private Byte _enableDepthTest;
         
         /// <summary>
         /// true enables depth writes. Depth writes are always disabled when enable_depth_test is false.
         /// </summary>
-        public Byte EnableDepthWrite;
+        private Byte _enableDepthWrite;
         
-        /// <summary>
-        /// true enables the stencil test.
-        /// </summary>
         public Byte EnableStencilTest;
         
         private Byte _padding1;
@@ -81,5 +75,15 @@ public static partial class SDL
         private Byte _padding2;
         
         private Byte _padding3;
+
+        /// <summary>
+        /// true enables the depth test.
+        /// </summary>
+        public bool EnableDepthTest => _enableDepthTest > 0;
+        
+        /// <summary>
+        /// true enables the stencil test.
+        /// </summary>
+        public bool EnableDepthWrite => _enableDepthWrite > 0;
     }
 }
