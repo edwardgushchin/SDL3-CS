@@ -2,34 +2,25 @@
 
     <PropertyGroup>
         <RootNamespace>SDL3</RootNamespace>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>14</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <TargetFrameworks>net8.0;net9.0;net7.0</TargetFrameworks>
-        <PackageReleaseNotes>This is a stable bugfix release, with the following changes:
-
-            - Fixed a divide by zero with a zero sized blit in some cases
-            - Fixed blitting bitmaps with a non-zero x offset
-            - Fixed a crash in the vulkan renderer when the window is minimized
-            - Fixed the initial X11 window position in some environments
-            - Fixed the channel mapping for surround sound on PulseAudio
-            - Fixed the sensor axis ordering with the Linux Nintendo driver
-            - Fixed Xbox 360 controller mappings on newer Linux kernels
-            - Made Nintendo Switch controller initialization more robust
-            - Fixed the paddle mapping for Steam Controllers</PackageReleaseNotes>
+        <TargetFrameworks>net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
+        <PackageReleaseNotes></PackageReleaseNotes>
         <Configurations>Debug;Release;Prerelease</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <Version>3.3.6</Version>
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
         <PackageId>SDL3-CS</PackageId>
-        <VersionPrefix>3.3.5</VersionPrefix>
+        <VersionPrefix>3.3.6</VersionPrefix>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL $(VersionPrefix).x</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.3.6.x</Description>
         <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>

@@ -19,6 +19,9 @@
     <PropertyGroup>
         <AndroidSdkDirectory>C:\android-sdk</AndroidSdkDirectory>
     </PropertyGroup>
+    <PropertyGroup>
+        <LangVersion>14.0</LangVersion>
+    </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
     </ItemGroup>

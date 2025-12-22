@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
         <RootNamespace>SDL3_CS.Native.TTF</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -33,6 +33,10 @@
         <VersionSuffix>preview.$([System.DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))</VersionSuffix>
         <Description>This package contains native SDL_ttf libraries for SDL3-CS — PREVIEW CI build (preview builds supported)</Description>
         <PackageReleaseNotes>Preview CI build at $([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC; Version $(VersionPrefix)-$(VersionSuffix)</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <LangVersion>14.0</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
