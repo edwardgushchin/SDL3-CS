@@ -11,12 +11,12 @@
         <PackageReleaseNotes></PackageReleaseNotes>
         <Configurations>Debug;Release;Prerelease</Configurations>
         <Platforms>AnyCPU</Platforms>
-        <Version>3.3.6</Version>
+        
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
         <PackageId>SDL3-CS</PackageId>
-        <VersionPrefix>3.3.6</VersionPrefix>
+        <VersionPrefix>3.3.7</VersionPrefix>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
