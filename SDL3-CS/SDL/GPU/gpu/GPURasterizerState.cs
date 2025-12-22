@@ -72,18 +72,22 @@ public static partial class SDL
         /// </summary>
         public float DepthBiasSlopeFactor;
         
-        /// <summary>
-        /// true to bias fragment depth values.
-        /// </summary>
-        public Byte EnableDepthBias;
+        private Byte _enableDepthBias;
         
-        /// <summary>
-        /// true to enable depth clip, false to enable depth clamp.
-        /// </summary>
-        public Byte EnableDepthClip;
+        private Byte _enableDepthClip;
         
         private Byte _padding1;
         
         private Byte _padding2;
+
+        /// <summary>
+        /// true to bias fragment depth values.
+        /// </summary>
+        public bool EnableDepthBias => _enableDepthBias > 0;
+
+        /// <summary>
+        /// true to enable depth clip, false to enable depth clamp.
+        /// </summary>
+        public bool EnableDepthClip => _enableDepthClip > 0;
     }
 }
