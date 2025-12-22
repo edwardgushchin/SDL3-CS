@@ -47,10 +47,7 @@ public static partial class SDL
         /// </summary>
         public IntPtr Code;
         
-        /// <summary>
-        /// A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
-        /// </summary>
-        public IntPtr Entrypoint;
+        public IntPtr _entrypoint;
         
         /// <summary>
         /// The format of the shader code.
@@ -86,5 +83,14 @@ public static partial class SDL
         /// A properties ID for extensions. Should be 0 if no extensions are needed.
         /// </summary>
         public UInt32 Props;
+
+        /// <summary>
+        /// A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
+        /// </summary>
+        public string Entrypoint
+        {
+            get => PointerToString(_entrypoint)!;
+            set => StringToPointer(value);
+        }
     }
 }
