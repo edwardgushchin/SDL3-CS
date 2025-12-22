@@ -56,7 +56,7 @@ public static partial class SDL
 	/// <seealso cref="CreateThreadWithProperties"/>
 	/// <seealso cref="WaitThread"/>
 	public static IntPtr CreateThread(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data) => 
-		CreateThreadRuntime(fn, name, data, null, null);
+		CreateThreadRuntime(fn, name, data, IntPtr.Zero, IntPtr.Zero);
 
 
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadWithProperties(SDL_PropertiesID props);</code>
@@ -114,7 +114,7 @@ public static partial class SDL
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
 	public static IntPtr CreateThreadWithProperties(uint props) =>
-		CreateThreadWithPropertiesRuntime(props, null, null);
+		CreateThreadWithPropertiesRuntime(props, IntPtr.Zero, IntPtr.Zero);
 	
 	
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadRuntime(SDL_ThreadFunction fn, const char *name, void *data, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);</code>
@@ -131,7 +131,7 @@ public static partial class SDL
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial IntPtr CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, FunctionPointer? pfnBeginThread, FunctionPointer? pfnEndThread);
+	public static partial IntPtr CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread);
 	
 	
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);</code>
@@ -146,7 +146,7 @@ public static partial class SDL
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadWithPropertiesRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	public static partial IntPtr CreateThreadWithPropertiesRuntime(uint props, FunctionPointer? pfnBeginThread, FunctionPointer? pfnEndThread);
+	public static partial IntPtr CreateThreadWithPropertiesRuntime(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread);
 	
 	
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

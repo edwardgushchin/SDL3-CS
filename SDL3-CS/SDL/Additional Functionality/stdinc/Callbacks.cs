@@ -98,6 +98,7 @@ public static partial class SDL
     public delegate void FreeFunc(IntPtr mem);
     
     
+    /// <code>typedef void (*SDL_FunctionPointer)(void);</code>
     /// <summary>
     /// <para>A generic function pointer.</para>
     /// <para>In theory, generic function pointers should use this, instead of <c>void *</c>,
@@ -110,6 +111,6 @@ public static partial class SDL
     /// <c>SDL_FUNCTION_POINTER_IS_VOID_POINTER</c> before including any SDL headers.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void FunctionPointer();
+    //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    //public delegate void FunctionPointer();
 }

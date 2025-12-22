@@ -89,7 +89,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetVkGetInstanceProcAddr"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial FunctionPointer? VulkanGetVkGetInstanceProcAddr();
+    public static partial IntPtr VulkanGetVkGetInstanceProcAddr();
     
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Vulkan_UnloadLibrary(void);</code>

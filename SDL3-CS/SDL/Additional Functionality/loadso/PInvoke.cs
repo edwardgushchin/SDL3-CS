@@ -63,7 +63,8 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LoadObject"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial FunctionPointer? LoadFunction(IntPtr handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    //public static partial FunctionPointer? LoadFunction(IntPtr handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static partial IntPtr LoadFunction(IntPtr handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
 
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnloadObject(SDL_SharedObject *handle);</code>
