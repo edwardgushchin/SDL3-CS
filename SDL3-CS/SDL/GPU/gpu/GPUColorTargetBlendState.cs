@@ -41,12 +41,12 @@ public static partial class SDL
         /// <summary>
         /// The value to be multiplied by the source RGB value.
         /// </summary>
-        public GPUBlendFactor SrcColorBlendfactor;
+        public GPUBlendFactor SrcColorBlendFactor;
         
         /// <summary>
         /// The value to be multiplied by the destination RGB value.
         /// </summary>
-        public GPUBlendFactor DstColorBlendfactor;
+        public GPUBlendFactor DstColorBlendFactor;
         
         /// <summary>
         /// The blend operation for the RGB components.
@@ -56,12 +56,12 @@ public static partial class SDL
         /// <summary>
         /// The value to be multiplied by the source alpha.
         /// </summary>
-        public GPUBlendFactor SrcAlphaBlendfactor;
+        public GPUBlendFactor SrcAlphaBlendFactor;
         
         /// <summary>
         /// The value to be multiplied by the destination alpha.
         /// </summary>
-        public GPUBlendFactor DstAlphaBlendfactor;
+        public GPUBlendFactor DstAlphaBlendFactor;
         
         /// <summary>
         /// The blend operation for the alpha component.
@@ -73,18 +73,22 @@ public static partial class SDL
         /// </summary>
         public GPUColorComponentFlags ColorWriteMask;
         
-        /// <summary>
-        /// Whether blending is enabled for the color target.
-        /// </summary>
-        public Byte EnableBlend;
+        private Byte _enableBlend;
         
-        /// <summary>
-        /// Whether the color write mask is enabled.
-        /// </summary>
-        public Byte EnableColorWriteMask;
+        public Byte _enableColorWriteMask;
         
         private Byte _padding1;
         
         private Byte _padding2;
+
+        /// <summary>
+        /// Whether blending is enabled for the color target.
+        /// </summary>
+        public bool EnableBlend => _enableBlend > 0;
+        
+        /// <summary>
+        /// Whether the color write mask is enabled.
+        /// </summary>
+        public bool EnableColorWriteMask => _enableColorWriteMask > 0;
     }
 }
