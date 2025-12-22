@@ -39,9 +39,7 @@ public static partial class SDL
     /// <para>A special exception is the number keys at the top of the keyboard which map
     /// to SDLK_0...SDLK_9 on AZERTY layouts.</para>
     /// <para>Keys with the <see cref="ExtendedMask"/> bit set do not map to a scancode or
-    /// unicode code point.</para>
-    /// <para>Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
-    /// unicode code point.</para>
+    /// Unicode code point</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="Hints.KeycodeOptions"/>

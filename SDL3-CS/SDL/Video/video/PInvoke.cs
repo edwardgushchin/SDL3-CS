@@ -514,7 +514,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFullscreenMode"/>
-    /// <seealso cref="SetWindowFullscreen"/>
+    /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SyncWindow"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1294,7 +1294,7 @@ public static partial class SDL
     /// notches, TV overscan, etc. This function provides the area of the window
     /// which is safe to have interactable content. You should continue rendering
     /// into the rest of the window, but it should not contain visually important
-    /// or interactible content.</para>
+    /// or interactable content.</para>
     /// </summary>
     /// <param name="window">the window to query.</param>
     /// <param name="rect">a pointer filled in with the client area that is safe for

@@ -508,7 +508,7 @@ public static partial class SDL
     /// <para>You do not have to call <see cref="DestroyCursor"/> on the return value, but it is
     /// safe to do so.</para>
     /// </summary>
-    /// <returns>the default cursor on success or <c>null</c> on failuree; call
+    /// <returns>the default cursor on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>

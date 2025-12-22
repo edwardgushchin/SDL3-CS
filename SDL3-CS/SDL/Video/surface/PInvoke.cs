@@ -1332,7 +1332,7 @@ public static partial class SDL
     /// <para>Clear a surface with a specific color, with floating point precision.</para>
     /// <para>This function handles all surface formats, and ignores any clip rectangle.</para>
     /// <para>If the surface is YUV, the color is assumed to be in the sRGB colorspace,
-    /// otherwise the color is assumed to be in the colorspace of the suface.</para>
+    /// otherwise the color is assumed to be in the colorspace of the surface.</para>
     /// </summary>
     /// <param name="surface">the <see cref="Surface"/> to clear.</param>
     /// <param name="r">the red component of the pixel, normally in the range 0-1.</param>

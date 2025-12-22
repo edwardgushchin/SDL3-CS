@@ -1220,7 +1220,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the current state of a gamepad sensor.</para>
     /// <para>The number of values and interpretation of the data is sensor dependent.
-    /// See SDL_sensor.h for the details for each type of sensor.</para>
+    /// See the remarks in <see cref="SensorType"/> for details for each type of sensor.</para>
     /// </summary>
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="type">the type of sensor to query.</param>

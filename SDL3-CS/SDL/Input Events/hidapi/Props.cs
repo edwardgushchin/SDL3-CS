@@ -27,6 +27,6 @@ public static partial class SDL
 {
     public static partial class Props
     {
-        public const string HIDAPILIBUSBDeviceHandlePointer = "SDL.hidapi.libusb.device.handle";
+        public const string HIDAPILibUSBDeviceHandlePointer = "SDL.hidapi.libusb.device.handle";
     }
 }

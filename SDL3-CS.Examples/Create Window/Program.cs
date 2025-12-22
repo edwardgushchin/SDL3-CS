@@ -42,8 +42,6 @@ internal static class Program
             return;
         }
 
-        var s = new SDL.HapticEffect();
-
         SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
         
         var loop = true;

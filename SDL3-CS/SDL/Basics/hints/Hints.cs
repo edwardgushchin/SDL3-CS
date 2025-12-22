@@ -3074,9 +3074,11 @@ public static partial class SDL
         /// lose focus.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: Fullscreen windows will not be minimized when they lose focus.
-        /// (default)</item>
+        /// <item><c>"0"</c>: Fullscreen windows will not be minimized when they lose focus.</item>
         /// <item><c>"1"</c>: Fullscreen windows are minimized when they lose focus.</item>
+        /// <item><c>"auto"</c>: Fullscreen windows are minimized when they lose focus if they use
+        /// exclusive fullscreen modes, so the desktop video mode is restored.
+        /// (default)</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint can be set anytime.</remarks>

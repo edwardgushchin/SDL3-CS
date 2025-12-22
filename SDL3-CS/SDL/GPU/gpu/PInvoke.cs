@@ -829,7 +829,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);</code>
     /// <summary>
     /// <para>Pushes data to a vertex uniform slot on the command buffer.</para>
-    /// <para>Subsequent draw calls will use this uniform data.</para>
+    /// <para>Subsequent draw calls in this command buffer will use this uniform data.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="slotIndex">the vertex uniform slot to push data to.</param>
@@ -843,7 +843,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PushGPUFragmentUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);</code>
     /// <summary>
     /// <para>Pushes data to a fragment uniform slot on the command buffer.</para>
-    /// <para>Subsequent draw calls will use this uniform data.</para>
+    /// <para>Subsequent draw calls in this command buffer will use this uniform data.</para>
     /// <para>The data being pushed must respect std140 layout conventions. In practical
     /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
     /// aligned.</para>
@@ -874,7 +874,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PushGPUComputeUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);</code>
     /// <summary>
     /// <para>Pushes data to a uniform slot on the command buffer.</para>
-    /// <para>Subsequent draw calls will use this uniform data.</para>
+    /// <para>Subsequent draw calls in this command buffer will use this uniform data.</para>
     /// <para>The data being pushed must respect std140 layout conventions. In practical
     /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
     /// aligned.</para>
@@ -1482,7 +1482,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute sampler slot to begin binding from.</param>
@@ -1491,7 +1491,7 @@ public partial class SDL
     /// <param name="numBindings">the number of texture-sampler bindings to bind from the
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeSamplers(IntPtr computePass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
     
@@ -1500,7 +1500,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute sampler slot to begin binding from.</param>
@@ -1509,7 +1509,7 @@ public partial class SDL
     /// <param name="numBindings">the number of texture-sampler bindings to bind from the
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeSamplers(IntPtr computePass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings);
     #endregion
@@ -1521,14 +1521,14 @@ public partial class SDL
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeStorageTextures(IntPtr computePass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     
@@ -1538,14 +1538,14 @@ public partial class SDL
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
     public static partial void BindGPUComputeStorageTextures(IntPtr computePass, uint firstSlot, IntPtr storageTextures, uint numBindings);
     #endregion
@@ -1557,14 +1557,14 @@ public partial class SDL
     /// <para>Binds storage buffers as readonly for use on the compute pipeline.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.ComputeStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of storage buffer binding structs.</param>
     /// <param name="numBindings">the number of storage buffers to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BindGPUComputeStorageBuffers(IntPtr computePass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings);
     
@@ -1574,14 +1574,14 @@ public partial class SDL
     /// <para>Binds storage buffers as readonly for use on the compute pipeline.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.ComputeStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of storage buffer binding structs.</param>
     /// <param name="numBindings">the number of storage buffers to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUComputePipeline"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputeStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
     public static partial void BindGPUComputeStorageBuffers(IntPtr computePass, uint firstSlot, IntPtr storageBuffers, uint numBindings);
     #endregion

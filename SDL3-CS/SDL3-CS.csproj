@@ -74,10 +74,4 @@
         <None Include="bin\Debug\SDL3-CS.xml" Visible="false" Pack="true" PackagePath="\" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="SDL3-CS.Native.Mixer">
-        <HintPath>..\SDL3-CS.Native.Mixer\bin\Prerelease\net8.0\SDL3-CS.Native.Mixer.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

@@ -253,7 +253,7 @@ public static partial class SDL
     /// <para><b>Warning</b>: The returned name is by design not stable across platforms,
     /// e.g. the name for <see cref="Scancode.LGUI"/> is "Left GUI" under Linux but "Left
     /// Windows" under Microsoft Windows, and some scancodes like
-    /// <see cref="Scancode.NonUsbackslash"/> don't have any name at all. There are even
+    /// <see cref="Scancode.NonUsBackSlash"/> don't have any name at all. There are even
     /// scancodes that share names, e.g. <see cref="Scancode.Return"/> and
     /// <see cref="Scancode.Return2"/> (both called "Return"). This function is therefore
     /// unsuitable for creating a stable cross-platform two-way mapping between

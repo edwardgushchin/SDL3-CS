@@ -55,5 +55,7 @@ public static partial class Mixer
         public const string PlayFadeInMillisecondsNumber = "SDL_mixer.play.fade_in_milliseconds";
         public const string PlayAppendSilenceFramesNumber = "SDL_mixer.play.append_silence_frames";
         public const string PlayAppendSilenceMillisecondsNumber = "SDL_mixer.play.append_silence_milliseconds";
+        
+        public const string MixerDeviceNumber = "SDL_mixer.mixer.device";
     }
 }

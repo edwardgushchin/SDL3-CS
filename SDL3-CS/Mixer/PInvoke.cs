@@ -223,10 +223,10 @@ public partial class Mixer
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL MIX_GetMixerProperties(MIX_Mixer *mixer);</code>
     /// <summary>
     /// Get the properties associated with a mixer.
-    /// <para>Currently SDL_mixer assigns no properties of its own to a mixer, but this
-    /// can be a convenient place to store app-specific data.</para>
-    /// <para> A SDL_PropertiesID is created the first time this function is called for a
-    /// given mixer.</para>
+    /// <para>The following read-only properties are provided by SDL_mixer:</para>
+    /// <para>`MIX_PROP_MIXER_DEVICE_NUMBER`<see cref="Props.MixerDeviceNumber"/>: the SDL_AudioDeviceID that this mixer has
+    /// opened for playback. This will be zero (no device) if the mixer was
+    /// created with <see cref="CreateMixer"/> instead of <see cref="CreateMixerDevice"/>.</para>
     /// </summary>
     /// <param name="mixer">the mixer to query.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
@@ -344,6 +344,9 @@ public partial class Mixer
     /// <para> Please see <see cref="LoadAudioIO"/> for a description of what the various
     /// LoadAudio functions do. This function uses properties to dictate how it
     /// operates, and exposes functionality the other functions don't provide.</para>
+    /// <para>SDL_PropertiesID are discussed in
+    /// [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties)
+    /// .</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.AudioLoadIOStreamPointer"/>: a pointer to an SDL_IOStream to
@@ -909,6 +912,27 @@ public partial class Mixer
     public static partial bool SetTrackPlaybackPosition(IntPtr track, long frames);
     
     
+    /// <code>extern SDL_DECLSPEC Sint64 SDLCALL MIX_GetTrackFadeFrames(MIX_Track *track);</code>
+    /// <summary>
+    /// Query whether a given track is fading.
+    /// <para>This specifically checks if the track is _not stopped_ (paused or playing),
+    /// and it is fading in or out, and returns the number of frames remaining in
+    /// the fade.</para>
+    /// <para>If fading out, the returned value will be negative. When fading in, the
+    /// returned value will be positive. If not fading, this function returns zero.</para>
+    /// <para>On various errors (<see cref="Init"/> was not called, the track is NULL), this
+    /// returns 0, but there is no mechanism to distinguish errors from tracks that
+    /// aren't fading.</para>
+    /// </summary>
+    /// <param name="track">the track to query.</param>
+    /// <returns>less than 0 if the track is fading out, greater than 0 if fading
+    /// in, zero otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetTrackFadeFrames"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial long GetTrackFadeFrames(IntPtr track);
+    
+    
     /// <code>extern SDL_DECLSPEC Sint64 SDLCALL MIX_GetTrackPlaybackPosition(MIX_Track *track);</code>
     /// <summary>
     /// Get the current input position of a playing track.
@@ -946,6 +970,34 @@ public partial class Mixer
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_TrackLooping"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool TrackLooping(IntPtr track);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackLoops(MIX_Track *track, int num_loops);</code>
+    /// <summary>
+    /// Change the number of times a currently-playing track will loop.
+    /// <para>This replaces any previously-set remaining loops. A value of 1 will loop to
+    /// the start of playback one time. Zero will not loop at all. A value of -1
+    /// requests infinite loops. If the input is not seekable and <c>numLoops</c> isn't
+    /// zero, this function will report success but the track will stop at the
+    /// point it should loop.</para>
+    /// <para>The new loop count replaces any previous state, even if the track has
+    /// already looped.</para>
+    /// <para>This has no effect on a track that is stopped, or rather, starting a
+    /// stopped track later will set a new loop count, replacing this value.
+    /// Stopped tracks can specify a loop count while starting via
+    /// <see cref="Props.PlayLoopsNumber"/>. This function is intended to alter that count
+    /// in the middle of playback.</para>
+    /// </summary>
+    /// <param name="track">the track to configure.</param>
+    /// <param name="numLoops">new number of times to loop. Zero to disable looping, -1
+    /// to loop infinitely.</param>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <see cref="TrackLooping"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackLoops"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetTrackLoops(IntPtr track,  int numLoops);
     
     
     /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_GetTrackAudio(MIX_Track *track);</code>
@@ -1143,6 +1195,9 @@ public partial class Mixer
     /// are specified with an SDL_PropertiesID. The parameters have reasonable
     /// defaults, and specifying a 0 for <c>options</c> will choose defaults for
     /// everything.</para>
+    /// <para>SDL_PropertiesID are discussed in
+    /// [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties)
+    /// .</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.PlayLoopsNumber"/>: The number of times to loop the track when
@@ -2081,6 +2136,9 @@ public partial class Mixer
     /// file-specific settings, such as where to find SoundFonts for a MIDI file,
     /// etc. In most cases, the caller should pass a zero to specify no extra
     /// properties.</para>
+    /// <para>SDL_PropertiesID are discussed in
+    /// [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties)
+    /// .</para>
     /// <para>When done with the audio decoder, it can be destroyed with
     /// <see cref="DestroyAudioDecoder"/>.</para>
     /// <para>This function requires SDL_mixer to have been initialized with a successful
