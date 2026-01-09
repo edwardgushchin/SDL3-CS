@@ -93,6 +93,10 @@ public static partial class SDL
         /// <summary>
         /// Whether the color write mask is enabled.
         /// </summary>
-        public bool EnableColorWriteMask => _enableColorWriteMask > 0;
+        public bool EnableColorWriteMask
+        {
+            get => _enableColorWriteMask > 0;
+            set => _enableColorWriteMask = (byte)(value ? 1 : 0);
+        }
     }
 }
