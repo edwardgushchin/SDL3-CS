@@ -84,7 +84,11 @@ public static partial class SDL
         /// <summary>
         /// Whether blending is enabled for the color target.
         /// </summary>
-        public bool EnableBlend => _enableBlend > 0;
+        public bool EnableBlend
+        { 
+            get => _enableBlend > 0;
+            set => _enableBlend = (byte)(value ? 1 : 0);
+        }
         
         /// <summary>
         /// Whether the color write mask is enabled.
