@@ -90,7 +90,7 @@ public static partial class SDL
         public string Entrypoint
         {
             get => PointerToString(_entrypoint)!;
-            set => StringToPointer(value);
+            set => _entrypoint = StringToPointer(value);
         }
     }
 }
