@@ -255,6 +255,49 @@ public static partial class SDL
     [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static extern bool PollEvent(out Event @event);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
+    /// <summary>
+    /// <para>Poll for currently pending events.</para>
+    /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
+    /// in the SDL_Event structure pointed to by `event`. The 1 returned refers to
+    /// this event, immediately stored in the SDL Event structure -- not an event
+    /// to follow.</para>
+    /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
+    /// this function in the thread that set the video mode.</para>
+    /// <para><see cref="PollEvent"/> is the favored way of receiving system events since it can
+    /// be done from the main loop and does not suspend the main loop while waiting
+    /// on an event to be posted.</para>
+    /// <para>The common practice is to fully process the event queue once every frame,
+    /// usually as a first step before updating the game's state:</para>
+    /// <code>
+    /// while (game_is_still_running) {
+    ///     while (SDL.PollEvent(out var e)) {  // poll until all events are handled!
+    ///         // decide what to do with this event.
+    ///     }
+    ///
+    /// // update game state, draw the current frame
+    /// }
+    /// </code>
+    /// <para>Note that Windows (and possibly other platforms) has a quirk about how it 
+    /// handles events while dragging/resizing a window, which can cause this 
+    /// function to block for significant amounts of time. Technical explanations 
+    /// and solutions are discussed on the wiki:
+    /// 
+    /// https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag</para>
+    /// </summary>
+    /// <param name="event">the <see cref="Event"/> structure to be filled with the next event from
+    /// the queue, or <c>null</c>.</param>
+    /// <returns><c>true</c> if this got an event or <c>false</c> if there are none available.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="PushEvent"/>
+    /// <seealso cref="WaitEvent"/>
+    /// <seealso cref="WaitEventTimeout"/>
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static extern bool PollEvent(IntPtr @event);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
