@@ -83,11 +83,19 @@ public static partial class SDL
         /// <summary>
         /// true to bias fragment depth values.
         /// </summary>
-        public bool EnableDepthBias => _enableDepthBias > 0;
+        public bool EnableDepthBias
+        {
+            get => _enableDepthBias > 0;
+            set => _enableDepthBias = (byte)(value ? 1 : 0);
+        }
 
         /// <summary>
         /// true to enable depth clip, false to enable depth clamp.
         /// </summary>
-        public bool EnableDepthClip => _enableDepthClip > 0;
+        public bool EnableDepthClip
+        {
+            get => _enableDepthClip > 0;
+            set => _enableDepthClip = (byte)(value ? 1 : 0);
+        }
     }
 }
