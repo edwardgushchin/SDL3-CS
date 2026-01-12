@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SDL3-CS.Native" Version="3.3.5-preview.20251212-135925" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.3.7-preview.20260112-105905" />
     </ItemGroup>
 
     <ItemGroup>

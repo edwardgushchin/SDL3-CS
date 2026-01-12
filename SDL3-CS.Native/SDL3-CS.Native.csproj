@@ -16,7 +16,7 @@
         <Title>SDL3 C# Native library</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is native library for SDL3-CS 3.3.6.x</Description>
+        <Description>This is native library for SDL3-CS 3.3.7.x</Description>
         <Copyright>Copyright (c) 2024-2026 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
