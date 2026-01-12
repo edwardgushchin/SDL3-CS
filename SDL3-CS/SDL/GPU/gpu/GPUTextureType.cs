@@ -35,26 +35,26 @@ public static partial class SDL
         /// <summary>
         /// The texture is a 2-dimensional image.
         /// </summary>
-        Texturetype2D,
+        TextureType2D,
         
         /// <summary>
         /// The texture is a 2-dimensional array image.
         /// </summary>
-        Texturetype2DArray,
+        TextureType2DArray,
         
         /// <summary>
         /// The texture is a 3-dimensional image.
         /// </summary>
-        Texturetype3D,
+        TextureType3D,
         
         /// <summary>
         /// The texture is a cube image.
         /// </summary>
-        TexturetypeCube,
+        TextureTypeCube,
         
         /// <summary>
         /// The texture is a cube array image.
         /// </summary>
-        TexturetypeCubeArray
+        TextureTypeCubeArray
     }
 }
