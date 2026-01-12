@@ -1,7 +1,7 @@
 ﻿#region License
 /* SDL3# - C# Wrapper for SDL3
  *
- * Copyright (c) 2024-2025 Eduard Gushchin.
+ * Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
  * In no event will the authors be held liable for any damages arising from

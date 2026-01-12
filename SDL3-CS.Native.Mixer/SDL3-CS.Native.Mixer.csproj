@@ -17,7 +17,7 @@
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
         <Description>This package contains native SDL_mixer libraries for SDL3-CS</Description>
-        <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
+        <Copyright>Copyright (c) 2024-2026 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
         <RepositoryType>git</RepositoryType>

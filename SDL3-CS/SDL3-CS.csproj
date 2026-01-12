@@ -21,7 +21,7 @@
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
         <Description>This is SDL3#, a C# wrapper for SDL 3.3.6.x</Description>
-        <Copyright>Copyright (c) 2024-2025 Eduard Gushchin.</Copyright>
+        <Copyright>Copyright (c) 2024-2026 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
