@@ -645,8 +645,10 @@ public static partial class SDL
     /// </list>
     /// <para>With the vulkan renderer:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.TextureVulkanTextureNumber"/>: the VkImage associated with the
-    /// texture</item>
+    /// <item><see cref="Props.TextureVulkanTextureNumber"/>: the VkImage associated
+    /// with the texture, if you want to wrap an existing texture.</item>
+    /// <item><see cref="Props.TextureCreateVulkanLayoutNumber"/>: the VkImageLayout for the
+    /// VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.</item>
     /// </list>
     /// <para>With the opengl renderer:</para>
     /// <list type="bullet">

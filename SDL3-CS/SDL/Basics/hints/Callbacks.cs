@@ -31,7 +31,8 @@ public static partial class SDL
     /// <summary>
     /// <para>A callback used to send notifications of hint value changes.</para>
     /// <para>This is called an initial time during <see cref="AddHintCallback"/> with the hint's
-    /// current value, and then again each time the hint's value changes.</para>
+    /// current value, and then again each time the hint's value changes. In the
+    /// initial call, the current value is in both <c>oldValue</c> and <c>newValue</c>.</para>
     /// </summary>
     /// <param name="userdata">what was passed as <c>userdata</c> to <see cref="AddHintCallback"/>.</param>
     /// <param name="name">what was passed as <c>name</c> to <see cref="AddHintCallback"/>.</param>

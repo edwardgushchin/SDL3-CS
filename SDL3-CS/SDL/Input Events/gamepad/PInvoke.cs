@@ -1032,7 +1032,7 @@ public static partial class SDL
     /// You do not normally need to call this function unless you are parsing
     /// SDL_Gamepad mappings in your own code.</para>
     /// </summary>
-    /// <param name="str">string representing a SDL_Gamepad axis.</param>
+    /// <param name="str">string representing a SDL_Gamepad button.</param>
     /// <returns>the <see cref="GamepadButton"/> enum corresponding to the input string, or
     /// <see cref="GamepadButton.Invalid"/> if no match was found.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>

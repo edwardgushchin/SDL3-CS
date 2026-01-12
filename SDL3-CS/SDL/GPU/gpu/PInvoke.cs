@@ -1764,6 +1764,9 @@ public partial class SDL
     /// <para>Performs a buffer-to-buffer copy.</para>
     /// <para>This copy occurs on the GPU timeline. You may assume the copy has finished
     /// in subsequent commands.</para>
+    /// <para>This function does not support copying between depth and color textures.
+    /// For those, copy the texture to a buffer and then to the destination
+    /// texture.</para>
     /// </summary>
     /// <param name="copyPass">a copy pass handle.</param>
     /// <param name="source">the buffer and offset to copy from.</param>

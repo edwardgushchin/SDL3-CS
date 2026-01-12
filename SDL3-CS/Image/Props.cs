@@ -35,6 +35,10 @@ public partial class Image
         public const string AnimationEncoderCreateTimebaseNumeratorNumber = "SDL_image.animation_encoder.create.timebase.numerator";
         public const string AnimationEncoderCreateTimebaseDenominatorNumber = "SDL_image.animation_encoder.create.timebase.denominator";
 
+        public const string AnimationEncoderCreateAVIFMaxThreadsNumber = "SDL_image.animation_encoder.create.avif.max_threads";
+        public const string AnimationEncoderCreateAVIFKeyFrameIntervalNumber = "SDL_image.animation_encoder.create.avif.keyframe_interval";
+        public const string AnimationEncoderCreateGIFUseLutBoolean = "SDL_image.animation_encoder.create.gif.use_lut";
+
         public const string AnimationDecoderCreateFilenameString = "SDL_image.animation_decoder.create.filename";
         public const string AnimationDecoderCreateIOStreamPointer = "SDL_image.animation_decoder.create.iostream";
         public const string AnimationDecoderCreateIOStreamAutoCloseBoolean = "SDL_image.animation_decoder.create.iostream.autoclose";
@@ -42,12 +46,19 @@ public partial class Image
         public const string AnimationDecoderCreateTimebaseNumeratorNumber = "SDL_image.animation_decoder.create.timebase.numerator";
         public const string AnimationDecoderCreateTimebaseDenominatorNumber = "SDL_image.animation_decoder.create.timebase.denominator";
 
+        public const string AnimationDecoderCreateAVIFMaxThreadsNumber = "SDL_image.animation_decoder.create.avif.max_threads";
+        public const string AnimationDecoderCreateAVIFAllowIncrementalBoolean = "SDL_image.animation_decoder.create.avif.allow_incremental";
+        public const string AnimationDecoderCreateAVIFAllowProgressiveBoolean = "SDL_image.animation_decoder.create.avif.allow_progressive";
+        public const string AnimationDecoderCreateGIFTransparentColorIndexNumber = "SDL_image.animation_encoder.create.gif.transparent_color_index"; 
+        public const string AnimationDecoderCreateGIFNumColorsNumber = "SDL_image.animation_encoder.create.gif.num_colors";
+
         public const string MetadataIgnorePropsBoolean = "SDL_image.metadata.ignore_props";
         public const string MetadataDescriptionString = "SDL_image.metadata.description";
         public const string MetadataCopyrightString = "SDL_image.metadata.copyright";
         public const string MetadataTitleString = "SDL_image.metadata.title";
         public const string MetadataAuthorStringG = "SDL_image.metadata.author";
         public const string MetadataCreationTimeString = "SDL_image.metadata.creation_time";
+        public const string MetadataFrameCountNumber = "SDL_image.metadata.frame_count";
         public const string MetadataLoopCountNumber = "SDL_image.metadata.loop_count";
     }
 }

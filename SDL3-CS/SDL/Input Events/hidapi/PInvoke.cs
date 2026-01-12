@@ -33,9 +33,9 @@ public static partial class SDL
     /// <summary>
     /// <para>Initialize the HIDAPI library.</para>
     /// <para>This function initializes the HIDAPI library. Calling it is not strictly
-    /// necessary, as it will be called automatically by <see cref="HIDEnumerate"/> and
-    /// any of the HIDOpen_*() functions if it is needed. This function should
-    /// be called at the beginning of execution however, if there is a chance of
+    /// necessary, as it will be called automatically by <see cref="HIDEnumerate"/>,
+    /// <see cref="HIDOpen"/>, and <see cref="HIDOpenPath"/> if needed. This function should be
+    /// called at the beginning of execution however, if there is a chance of
     /// HIDAPI handles being opened by different threads simultaneously.</para>
     /// <para>Each call to this function should have a matching call to <see cref="HIDExit"/></para>
     /// </summary>

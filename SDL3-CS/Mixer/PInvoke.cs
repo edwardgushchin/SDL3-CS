@@ -871,13 +871,76 @@ public partial class Mixer
     /// and menu sound effects running.</para>
     /// <para>It's legal to remove a tag that the track doesn't have; this function
     /// doesn't report errors, so this simply does nothing.</para>
+    /// <para>Specifying a <c>null</c> tag will remove all tags on a track.</para>
     /// </summary>
     /// <param name="track">the track from which to remove a tag.</param>
-    /// <param name="tag">the tag to remove.</param>
+    /// <param name="tag">the tag to remove, or <c>null</c> to remove all current tags.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <seealso cref="TagTrack"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_UntagTrack"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UntagTrack(IntPtr track, [MarshalAs(UnmanagedType.LPUTF8Str)] string tag);
+    
+    
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetTrackTags"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr MIX_GetTrackTags(IntPtr track, out int count);
+    /// <code>extern SDL_DECLSPEC char ** SDLCALL MIX_GetTrackTags(MIX_Track *track, int *count);</code>
+    /// <summary>
+    /// <para>Get the tags currently associated with a track.</para>
+    /// <para>Tags are not provided in any guaranteed order.</para>
+    /// </summary>
+    /// <param name="track">track the track to query.</param>
+    /// <param name="count">count a pointer filled in with the number of tags returned, can be
+    /// <c>null</c>.</param>
+    /// <returns>an array of the tags, NULL-terminated, or <c>null</c> on failure; call
+    /// <see cref="SDL.GetError"/> for more information. This is a single allocation
+    /// that should be freed with <see cref="SDL.Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    public static string[]? GetTrackTags(IntPtr track, out int count)
+    {
+        var ptr = MIX_GetTrackTags(track, out count);
+
+        try
+        {
+            return SDL.PointerToStringArray(ptr);
+        }
+        finally
+        {
+            SDL.Free(ptr);
+        }
+    }
+    
+    
+    
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetTaggedTracks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr MIX_GetTaggedTracks(IntPtr mixer, [MarshalAs(UnmanagedType.LPUTF8Str)]string tag, out int count);
+    /// extern SDL_DECLSPEC MIX_Track ** SDLCALL MIX_GetTaggedTracks(MIX_Mixer *mixer, const char *tag, int *count);
+    /// <summary>
+    /// <para>Get all tracks with a specific tag.</para>
+    /// <para>Tracks are not provided in any guaranteed order.</para>
+    /// </summary>
+    /// <param name="mixer">mixer the mixer to query.</param>
+    /// <param name="tag">tag the tag to search.</param>
+    /// <param name="count">count a pointer filled in with the number of tracks returned, can be
+    /// <c>null</c>.</param>
+    /// <returns>an array of the tracks, NULL-terminated, or <c>null</c> on failure; call
+    /// <see cref="SDL.GetError"/> for more information. The returned pointer hould be
+    /// freed with <see cref="SDL.Free"/> when it is no longer needed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    public static IntPtr[]? GetTaggedTracks(IntPtr mixer, string tag, out int count)
+    {
+        var ptr = MIX_GetTaggedTracks(mixer, tag, out count);
+
+        try
+        {
+            return SDL.PointerToPointerArray(ptr, count);
+        }
+        finally
+        {
+            SDL.Free(ptr);
+        }
+    }
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackPlaybackPosition(MIX_Track *track, Sint64 frames);</code>

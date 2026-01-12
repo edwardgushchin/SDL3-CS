@@ -872,7 +872,19 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
-        public const string HIDAPILibusb = "SDL_HIDAPI_LIBUSB";
+        public const string HIDAPILibUSB = "SDL_HIDAPI_LIBUSB";
+        
+        /// <summary>
+        /// <para>A variable to control whether HIDAPI uses libusb for GameCube adapters.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: HIDAPI will not use libusb for GameCube adapters.</item>
+        /// <item><c>"1"</c>: HIDAPI will use libusb for GameCube adapters if available. (default)</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before SDL is initialized.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
+        public const string HIDAPILibUSBGameCube = "SDL_HIDAPI_LIBUSB_GAMECUBE";
         
         /// <summary>
         /// <para>A variable to control whether HIDAPI uses libusb only for whitelisted
@@ -887,7 +899,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
-        public const string HIDAPILibusbWhitelist = "SDL_HIDAPI_LIBUSB_WHITELIST";
+        public const string HIDAPILibUSBWhitelist = "SDL_HIDAPI_LIBUSB_WHITELIST";
         
         /// <summary>
         /// <para>A variable to control whether HIDAPI uses udev for device detection.</para>
@@ -899,7 +911,7 @@ public static partial class SDL
         /// </summary>
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
-        public const string HIDAPIUdev = "SDL_HIDAPI_UDEV";
+        public const string HIDAPIUDev = "SDL_HIDAPI_UDEV";
         
         /// <summary>
         /// <para>A variable that specifies a GPU backend to use.</para>
@@ -1427,35 +1439,44 @@ public static partial class SDL
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for HORI licensed Steam
         /// controllers should be used.</para>
-        /// <para>This variable can be set to the following values: <c>"0"</c> - HIDAPI driver is
-        /// not used <c>"1"</c> - HIDAPI driver is used</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c>: HIDAPI driver is used.</item>
+        /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
-        /// <since>This hint is available since SDL 3.2.0</since>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.2.0.</since>
         public const string JoystickHIDAPISteamHORI = "SDL_JOYSTICK_HIDAPI_STEAM_HORI";
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for some Logitech wheels
         /// should be used.</para>
-        /// <para>This variable can be set to the following values:</para>
+        /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: HIDAPI driver is not used</item>
-        /// <item><c>"1"</c>: HIDAPI driver is used</item>
+        /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c>: HIDAPI driver is used.</item>
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string JoystickHIDAPILG4FF = "SDL_JOYSTICK_HIDAPI_LG4FF";
         
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for 8BitDo controllers
         /// should be used.</para>
-        /// <para>This variable can be set to the following values:</para>
+        /// <para>TThe variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c> - HIDAPI driver is not used.</item>
         /// <item><c>"1"</c> - HIDAPI driver is used.</item>
         /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string JoystickHIDAPI8BITDO = "SDL_JOYSTICK_HIDAPI_8BITDO";
 
 
@@ -1463,38 +1484,45 @@ public static partial class SDL
         /// <para>A variable controlling whether the HIDAPI driver for SInput controllers
         /// should be used.</para>
         /// <para>More info - https://github.com/HandHeldLegend/SInput-HID</para>
-        /// <para>This variable can be set to the following values:</para>
+        /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c> - HIDAPI driver is not used.</item>
         /// <item><c>"1"</c> - HIDAPI driver is used.</item>
         /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
-        /// <remarks>The default is the value of <see cref="JoystickHIDAPI"/></remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string JoystickHIDAPISInput = "SDL_JOYSTICK_HIDAPI_SINPUT";
 
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for ZUIKI controllers
         /// should be used.</para>
-        /// <para>This variable can be set to the following values:</para>
+        /// <para>Thi variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c> - HIDAPI driver is not used.</item>
         /// <item><c>"1"</c> - HIDAPI driver is used.</item>
         /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/></para>
         /// </summary>
-        /// <remarks>The default is the value of <see cref="JoystickHIDAPI"/></remarks>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string JoystickHIDAPIZUIKI = "SDL_JOYSTICK_HIDAPI_ZUIKI";
         
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for Flydigi controller
         /// should be used.</para>
-        /// <para>This variable can be set to the following values:</para>
+        /// <para>Thi variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><b>"0"</b> - HIDAPI driver is not used.</item>
         /// <item><b>"1"</b> - HIDAPI driver is used.</item>
         /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string JoystickHIDAPIFLYDIGI  = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
         
         
@@ -2702,31 +2730,37 @@ public static partial class SDL
         /// <para>Variable controlling the width of the PS2's framebuffer in pixels</para>
         /// <para>By default, this variable is <c>"640"</c></para>
         /// </summary>
+        /// <since>his hint is available since SDL 3.4.0.</since>
         public const string PS2GSWidth = "SDL_PS2_GS_WIDTH";
         
         /// <summary>
-        /// <para>Variable controlling the height of the PS2's framebuffer in pixels</para>
-        /// <para>By default, this variable is "448"</para>
+        /// <para>A variable controlling the height of the PS2's framebuffer in pixels.</para>
+        /// <para>By default, the variable is "448".</para>
         /// </summary>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string PS2GSHeight = "SDL_PS2_GS_HEIGHT";
 
         /// <summary>
-        /// <para>Variable controlling whether the signal is interlaced or progressive</para>
+        /// <para>A variable controlling whether the signal is interlaced or progressive.</para>
+        /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c>: Image is interlaced. (default)</item>
-        /// <item><c>"1"</c>: Image is progressive</item>
+        /// <item><c>"1"</c>: Image is progressive.</item>
         /// </list>
         /// </summary>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string PS2GSProgressive = "SDL_PS2_GS_PROGRESSIVE";
         
         /// <summary>
-        /// <para>Variable controlling the video mode of the console</para>
+        /// <para>A variable controlling the video mode of the console.</para>
+        /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>""</c>: Console-native. (default)</item>
-        /// <item><c>"NTSC"</c>: 60hz region</item>
-        /// <item><c>"PAL"</c>: 50hz region</item>
+        /// <item><c>"NTSC"</c>: 60hz region.</item>
+        /// <item><c>"PAL"</c>: 50hz region.</item>
         /// </list>
         /// </summary>
+        /// <since>This hint is available since SDL 3.4.0.</since>
         public const string PS2GSMode = "SDL_PS2_GS_MODE";
         
         /// <summary>
@@ -2914,9 +2948,11 @@ public static partial class SDL
         /// prioritized in the list of displays, as exposed by calling
         /// <see cref="GetDisplays"/>, with the first listed becoming the primary display. The
         /// naming convention can vary depending on the environment, but it is usually
-        /// a connector name (e.g. <c>'DP-1'</c>, <c>'DP-2'</c>, <c>'HDMI-A-1'</c>,etc...).</para>
-        /// <para>On Wayland and X11 desktops, the connector names associated with displays
-        /// can typically be found by using the <c>`xrandr`</c> utility.</para>
+        /// a connector name (e.g. <c>DP-1</c>, <c>DP-2</c>, <c>HDMI-A-1</c>, etc...).</para>
+        /// <para>On Wayland desktops, the connector names associated with displays can be
+        /// found in the <c>name</c> property of the info output from <c>wayland-info -i
+        /// wl_output</c>. On X11 desktops, the <c>xrandr</c> utility can be used to retrieve
+        /// the connector names associated with displays.</para>
         /// <para>This hint is currently supported on the following drivers:</para>
         /// <list type="bullet">
         /// <item>KMSDRM (kmsdrm)</item>

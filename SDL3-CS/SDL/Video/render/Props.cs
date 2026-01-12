@@ -93,6 +93,7 @@ public static partial class SDL
 		public const string TextureCreateOpenGLES2TextureUNumber = "SDL.texture.create.opengles2.texture_u";
 		public const string TextureCreateOpenGLES2TextureVNumber = "SDL.texture.create.opengles2.texture_v";
 		public const string TextureCreateVulkanTextureNumber = "SDL.texture.create.vulkan.texture";
+		public const string TextureCreateVulkanLayoutNumber = "SDL.texture.create.vulkan.layout";
 		public const string TextureCreateGPUTexturePointer = "SDL.texture.create.gpu.texture";
 		public const string TextureCreateGPUTextureUVNumber = "SDL.texture.create.gpu.texture_uv";
 		public const string TextureCreateGPUTextureUNumber = "SDL.texture.create.gpu.texture_u";

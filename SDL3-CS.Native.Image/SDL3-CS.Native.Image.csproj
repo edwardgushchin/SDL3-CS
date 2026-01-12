@@ -12,7 +12,7 @@
 
     <PropertyGroup Label="NuGet">
         <PackageId>SDL3-CS.Native.Image</PackageId>
-        <VersionPrefix>3.3.0</VersionPrefix>
+        <VersionPrefix>3.3.2</VersionPrefix>
         <Title>SDL3 C# Native image libraries</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>

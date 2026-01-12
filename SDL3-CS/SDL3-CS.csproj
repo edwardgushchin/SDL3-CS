@@ -16,11 +16,11 @@
 
     <PropertyGroup Label="NuGet">
         <PackageId>SDL3-CS</PackageId>
-        <VersionPrefix>3.3.7</VersionPrefix>
+        <VersionPrefix>3.5.0</VersionPrefix>
         <Title>SDL3 C#</Title>
         <Authors>Eduard Gushchin</Authors>
         <Company>Eduard Gushchin</Company>
-        <Description>This is SDL3#, a C# wrapper for SDL 3.3.6.x</Description>
+        <Description>This is SDL3#, a C# wrapper for SDL 3.5.0.x</Description>
         <Copyright>Copyright (c) 2024-2026 Eduard Gushchin.</Copyright>
         <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
         <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
@@ -55,6 +55,7 @@
         <None Include="../LICENSE" Pack="true" PackagePath="\"/>
         <None Include="../CODE_OF_CONDUCT.md" Pack="true" PackagePath="\"/>
         <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
+        <None Remove="SDL3-CS.csproj.DotSettings" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Release'">
