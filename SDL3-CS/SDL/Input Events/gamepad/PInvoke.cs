@@ -882,7 +882,7 @@ public static partial class SDL
         
         try
         {
-            return PointerToStructureArray<GamepadBinding>(gamepad, count);
+            return PointerToStructureArray<GamepadBinding>(ptr, count);
         }
         finally
         {
