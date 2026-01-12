@@ -53,15 +53,21 @@ public static partial class SDL
         /// </summary>
         public GPUTextureFormat DepthStencilFormat;
         
-        /// <summary>
-        /// true specifies that the pipeline uses a depth-stencil target.
-        /// </summary>
-        public  Byte HasDepthStencilTarget;
+        private Byte _hasDepthStencilTarget;
         
         private Byte _padding1;
         
         private Byte _padding2;
         
         private Byte _padding3;
+        
+        /// <summary>
+        /// true specifies that the pipeline uses a depth-stencil target.
+        /// </summary>
+        public bool HasDepthStencilTarget
+        {
+            get => _hasDepthStencilTarget > 0;
+            set => _hasDepthStencilTarget = (byte)(value ? 1 : 0);
+        }
     }
 }
