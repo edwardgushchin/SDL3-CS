@@ -43,7 +43,7 @@ public static partial class SDL
         /// <summary>
         /// an array of colors, <c>ncolors</c> long.
         /// </summary>
-        public Color[] Colors;
+        public IntPtr Colors;
         
         /// <summary>
         /// internal use only, do not touch.
