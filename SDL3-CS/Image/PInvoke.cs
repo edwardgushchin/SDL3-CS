@@ -2677,7 +2677,7 @@ public partial class Image
     /// <seealso cref="CreateAnimationEncoderIO"/>
     /// <seealso cref="AddAnimationEncoderFrame"/>
     /// <seealso cref="CloseAnimationEncoder"/>
-    [LibraryImport(ImageLibrary, EntryPoint = "CreateAnimationEncoderWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(ImageLibrary, EntryPoint = "IMG_CreateAnimationEncoderWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateAnimationEncoderWithProperties(uint props);
     
     
