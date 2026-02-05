@@ -65,10 +65,16 @@ public static partial class SDL
         /// </summary>
         public GPUFilter Filter;
         
+        private Byte _cycle;
+        
         /// <summary>
         /// true cycles the destination texture if it is already bound.
         /// </summary>
-        public Byte Cycle;
+        public bool Cycle
+        {
+            get => _cycle > 0;
+            set => _cycle = (byte)(value ? 1 : 0);
+        }
         
         private Byte _padding1;
         
