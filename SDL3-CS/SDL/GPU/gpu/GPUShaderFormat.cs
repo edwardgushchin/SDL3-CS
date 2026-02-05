@@ -31,6 +31,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="CreateGPUShader"/>
+    [Flags]
     public enum GPUShaderFormat : uint
     {
         Invalid = 0,
