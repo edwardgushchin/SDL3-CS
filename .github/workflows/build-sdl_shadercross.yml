@@ -122,9 +122,13 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $dxcVersion = "v1.8.2505.1"
-          $dxcZip = "dxc_2025_07_14.zip"
-          $dxcUrl = "https://github.com/microsoft/DirectXShaderCompiler/releases/download/$dxcVersion/$dxcZip"
+          $release = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest" -Headers @{ "User-Agent" = "SDL3-CS-CI" }
+          $asset = $release.assets | Where-Object { $_.name -match '^dxc_.*\\.zip$' -and $_.name -notmatch 'pdb' } | Select-Object -First 1
+          if (-not $asset) {
+            throw "DXC release asset not found in latest release."
+          }
+          $dxcZip = $asset.name
+          $dxcUrl = $asset.browser_download_url
           $destRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
           $zipPath = Join-Path $env:RUNNER_TEMP $dxcZip
           New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
