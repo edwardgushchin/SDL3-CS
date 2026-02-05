@@ -122,8 +122,8 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $dxcVersion = "v1.8.2407.1"
-          $dxcZip = "dxc_2024_07_26.zip"
+          $dxcVersion = "v1.8.2505.1"
+          $dxcZip = "dxc_2025_07_14.zip"
           $dxcUrl = "https://github.com/microsoft/DirectXShaderCompiler/releases/download/$dxcVersion/$dxcZip"
           $destRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
           $zipPath = Join-Path $env:RUNNER_TEMP $dxcZip
