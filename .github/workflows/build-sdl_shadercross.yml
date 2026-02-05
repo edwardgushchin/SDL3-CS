@@ -230,36 +230,33 @@ jobs:
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
 
-      - name: Stage DXC runtime binaries (Windows)
+      - name: Download DXC binaries (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $installBin = Join-Path $env:INSTALL_PREFIX "bin"
-          $dxcRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
-          if (!(Test-Path $installBin)) {
-            New-Item -ItemType Directory -Force -Path $installBin | Out-Null
-          }
-          $binCandidates = @(
-            Join-Path $dxcRoot "bin/${{ matrix.arch_label }}",
-            Join-Path $dxcRoot "bin/${{ matrix.vs_arch }}",
-            Join-Path $dxcRoot "bin/x64",
-            Join-Path $dxcRoot "windows/bin/${{ matrix.arch_label }}",
-            Join-Path $dxcRoot "windows/bin/${{ matrix.vs_arch }}",
-            Join-Path $dxcRoot "windows/bin/x64"
-          )
-          $found = $false
-          foreach ($binDir in $binCandidates) {
-            if (Test-Path $binDir) {
-              Copy-Item -Path (Join-Path $binDir "dxcompiler.dll") -Destination $installBin -Force
-              Copy-Item -Path (Join-Path $binDir "dxil.dll") -Destination $installBin -Force
-              $found = $true
-              break
+
+          $dxcVersion = "v1.8.2505.1"
+          $dxcZip = "dxc_2025_07_14.zip"
+          $dxcUrl = "https://github.com/microsoft/DirectXShaderCompiler/releases/download/$dxcVersion/$dxcZip"
+
+          $destRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
+          $zipPath  = Join-Path $env:RUNNER_TEMP $dxcZip
+
+          New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
+          Invoke-WebRequest -Uri $dxcUrl -OutFile $zipPath
+          Expand-Archive -Path $zipPath -DestinationPath $destRoot -Force
+
+          # Flatten: если внутри появилась папка dxc_YYYY_MM_DD, переносим её содержимое вверх
+          $top = Get-ChildItem -Path $destRoot -Directory -Filter "dxc_*" | Select-Object -First 1
+          if ($top -and (Test-Path (Join-Path $top.FullName "bin"))) {
+            Get-ChildItem -Path $top.FullName -Force | ForEach-Object {
+              Move-Item -Path $_.FullName -Destination $destRoot -Force
             }
+            Remove-Item -Path $top.FullName -Recurse -Force
           }
-          if (-not $found) {
-            Write-Error "DXC binaries not found under $dxcRoot"
-          }
+
+          if (!(Test-Path (Join-Path $destRoot "bin"))) { throw "DXC bin/ not found after extraction" }
 
       - name: Assert SDL3_shadercross is installed
         shell: bash
