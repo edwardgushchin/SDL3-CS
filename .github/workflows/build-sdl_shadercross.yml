@@ -117,6 +117,23 @@ jobs:
         run: cmake --install "$BUILD_DIR/SDL" --config ${CMAKE_BUILD_TYPE}
 
       # DXC/vcpkg шаги удалены (собираем без DXC)
+      - name: Download DXC binaries (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $release = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest" -Headers @{ "User-Agent" = "SDL3-CS-CI" }
+          $asset = $release.assets | Where-Object { $_.name -match '^dxc_.*\\.zip$' -and $_.name -notmatch 'pdb' } | Select-Object -First 1
+          if (-not $asset) {
+            throw "DXC release asset not found in latest release."
+          }
+          $dxcZip = $asset.name
+          $dxcUrl = $asset.browser_download_url
+          $destRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
+          $zipPath = Join-Path $env:RUNNER_TEMP $dxcZip
+          New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
+          Invoke-WebRequest -Uri $dxcUrl -OutFile $zipPath
+          Expand-Archive -Path $zipPath -DestinationPath $destRoot -Force
 
       - name: Build & Install SPIRV-Cross
         shell: bash
@@ -145,6 +162,13 @@ jobs:
             if [[ -f "$d/SDL3Config.cmake" ]]; then SDL_HINT="-DSDL3_DIR=$d"; break; fi
           done
 
+          DXC_FLAG=""
+          if [[ "${{ matrix.host_os }}" == "Windows" ]]; then
+            DXC_FLAG="-DSDLSHADERCROSS_DXC=ON"
+          else
+            DXC_FLAG="-DSDLSHADERCROSS_DXC=OFF"
+          fi
+
           cmake -S SDL_shadercross -B "$BUILD_DIR/SDL_shadercross" \
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
             -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" \
@@ -155,7 +179,7 @@ jobs:
             -DSDLSHADERCROSS_STATIC=ON \
             -DSDLSHADERCROSS_CLI=OFF \
             -DSDLSHADERCROSS_SPIRVCROSS_SHARED=ON \
-            -DSDLSHADERCROSS_DXC=OFF \
+            ${DXC_FLAG} \
             ${SDL_HINT} \
             ${{ matrix.cmake_osx_arch || '' }}
 
@@ -166,6 +190,37 @@ jobs:
       - name: Install SDL_shadercross
         shell: bash
         run: cmake --install "$BUILD_DIR/SDL_shadercross" --config ${CMAKE_BUILD_TYPE}
+
+      - name: Stage DXC runtime binaries (Windows)
+        if: matrix.host_os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $installBin = Join-Path $env:INSTALL_PREFIX "bin"
+          $dxcRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
+          if (!(Test-Path $installBin)) {
+            New-Item -ItemType Directory -Force -Path $installBin | Out-Null
+          }
+          $binCandidates = @(
+            Join-Path $dxcRoot "bin/${{ matrix.arch_label }}",
+            Join-Path $dxcRoot "bin/${{ matrix.vs_arch }}",
+            Join-Path $dxcRoot "bin/x64",
+            Join-Path $dxcRoot "windows/bin/${{ matrix.arch_label }}",
+            Join-Path $dxcRoot "windows/bin/${{ matrix.vs_arch }}",
+            Join-Path $dxcRoot "windows/bin/x64"
+          )
+          $found = $false
+          foreach ($binDir in $binCandidates) {
+            if (Test-Path $binDir) {
+              Copy-Item -Path (Join-Path $binDir "dxcompiler.dll") -Destination $installBin -Force
+              Copy-Item -Path (Join-Path $binDir "dxil.dll") -Destination $installBin -Force
+              $found = $true
+              break
+            }
+          }
+          if (-not $found) {
+            Write-Error "DXC binaries not found under $dxcRoot"
+          }
 
       - name: Assert SDL3_shadercross is installed
         shell: bash
@@ -198,4 +253,3 @@ jobs:
             ${{ env.INSTALL_PREFIX }}/lib/**
             ${{ env.INSTALL_PREFIX }}/bin/**
             ${{ env.INSTALL_PREFIX }}/lib/cmake/SDL3_shadercross/**
-
