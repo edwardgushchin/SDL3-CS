@@ -120,20 +120,59 @@ jobs:
       - name: Download DXC binaries (Windows)
         if: matrix.host_os == 'Windows'
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           $ErrorActionPreference = "Stop"
-          $release = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest" -Headers @{ "User-Agent" = "SDL3-CS-CI" }
-          $asset = $release.assets | Where-Object { $_.name -match '^dxc_.*\\.zip$' -and $_.name -notmatch 'pdb' } | Select-Object -First 1
-          if (-not $asset) {
-            throw "DXC release asset not found in latest release."
+
+          $headers = @{
+            "User-Agent" = "SDL3-CS-CI"
+            "Accept" = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
           }
+          if ($env:GITHUB_TOKEN) {
+            $headers["Authorization"] = "Bearer $env:GITHUB_TOKEN"
+          }
+
+          $release = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest" -Headers $headers
+          $asset = $release.assets |
+            Where-Object { $_.name -like 'dxc_*.zip' -and $_.name -notlike 'pdb_*' } |
+            Select-Object -First 1
+
+          if (-not $asset) {
+            throw "DXC .zip asset not found in latest release."
+          }
+
           $dxcZip = $asset.name
           $dxcUrl = $asset.browser_download_url
+
           $destRoot = Join-Path $env:GITHUB_WORKSPACE "SDL_shadercross/external/DirectXShaderCompiler-binaries"
-          $zipPath = Join-Path $env:RUNNER_TEMP $dxcZip
+          $zipPath  = Join-Path $env:RUNNER_TEMP $dxcZip
+
           New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
+          Write-Host "Downloading: $dxcUrl"
           Invoke-WebRequest -Uri $dxcUrl -OutFile $zipPath
+
+          # Extract
           Expand-Archive -Path $zipPath -DestinationPath $destRoot -Force
+
+          # Flatten: GitHub zip обычно содержит верхнюю папку dxc_YYYY_MM_DD/...
+          $top = Get-ChildItem -Path $destRoot -Directory -Filter "dxc_*" | Select-Object -First 1
+          if ($top -and (Test-Path (Join-Path $top.FullName "bin"))) {
+            Write-Host "Flattening DXC folder: $($top.Name)"
+            Get-ChildItem -Path $top.FullName -Force | ForEach-Object {
+              Move-Item -Path $_.FullName -Destination $destRoot -Force
+            }
+            Remove-Item -Path $top.FullName -Recurse -Force
+          }
+
+          # Quick sanity check
+          Write-Host "DXC root contents:"
+          Get-ChildItem -Path $destRoot -Force | Format-Table -AutoSize
+          if (!(Test-Path (Join-Path $destRoot "bin"))) { throw "DXC bin/ not found after extraction." }
+          if (!(Test-Path (Join-Path $destRoot "lib"))) { throw "DXC lib/ not found after extraction." }
+          if (!(Test-Path (Join-Path $destRoot "inc"))) { throw "DXC inc/ not found after extraction." }
+
 
       - name: Build & Install SPIRV-Cross
         shell: bash
