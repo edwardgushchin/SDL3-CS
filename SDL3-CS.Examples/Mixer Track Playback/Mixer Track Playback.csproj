@@ -10,9 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SDL3-CS" Version="3.5.0-preview.20260112-122507" />
-      <PackageReference Include="SDL3-CS.Native" Version="3.5.0-preview.20260112-123234" />
-      <PackageReference Include="SDL3-CS.Native.Mixer" Version="3.1.0-preview.20260112-124039" />
+      <PackageReference Include="SDL3-CS" Version="3.5.0-preview.20260205-174352" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.5.0-preview.20260205-174353" />
+      <PackageReference Include="SDL3-CS.Native.Mixer" Version="3.1.3-preview.20260205-174355" />
     </ItemGroup>
 
     <ItemGroup>
