@@ -103,6 +103,8 @@ public static partial class SDL
 		public const string WindowCocoaWindowPointer = "SDL.window.cocoa.window";
 		public const string WindowCocoaMetalViewTagNumber = "SDL.window.cocoa.metal_view_tag";
 		public const string WindowOpenVROverlayIdNumber = "SDL.window.openvr.overlay_id";
+		public const string WindowQNXWindowPointer = "SDL.window.qnx.window";
+		public const string WindowQNXSurfacePointer = "SDL.window.qnx.surface";
 		public const string WindowVivanteDisplayPointer = "SDL.window.vivante.display";
 		public const string WindowVivanteWindowPointer = "SDL.window.vivante.window";
 		public const string WindowVivanteSurfacePointer = "SDL.window.vivante.surface";

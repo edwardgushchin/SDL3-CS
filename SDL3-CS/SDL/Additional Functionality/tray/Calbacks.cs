@@ -38,4 +38,21 @@ public partial class SDL
     /// <seealso cref="SetTrayEntryCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void TrayCallback(IntPtr userdata, IntPtr entry);
+    
+    
+    /// <code>typedef bool (SDLCALL *SDL_TrayClickCallback)(void *userdata, SDL_Tray *tray);</code>
+    /// <summary>
+    /// <para>A callback that is invoked when the tray icon is clicked.</para>
+    /// </summary>
+    /// <param name="userdata">userdata an optional pointer to pass extra data to the callback when
+    /// it will be invoked. May be <c>null</c>.</param>
+    /// <param name="tray">the tray that was clicked.</param>
+    /// <returns>true to show the tray menu after the callback returns, false to
+    /// skip showing the menu. This return value is only used for left and
+    /// right click callbacks; other mouse events ignore the return value.</returns>
+    /// <since>This datatype is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateTrayWithProperties"/>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public delegate bool TrayClickCallback(IntPtr userdata, IntPtr tray);
 }

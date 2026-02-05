@@ -166,7 +166,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="devid">the device to open for playback, or
     /// <see cref="SDL.AudioDeviceDefaultPlayback"/> for the default.</param>
-    /// <param name="spec">the audio format request from the device. May be <c>null</c>.</param>
+    /// <param name="spec">spec the audio format to request from the device. May be <c>null</c>.</param>
     /// <returns>a mixer that can be used to play audio, or <c>null</c> on failure; call
     /// <see cref="SDL.GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -493,6 +493,9 @@ public partial class Mixer
     /// <para>You specify its frequency in Hz (determines the pitch of the sinewave's
     /// audio) and amplitude (determines the volume of the sinewave: 1.0f is very
     /// loud, 0.0f is silent).</para>
+    /// <para>A number of milliseconds of audio to generate can be specified. Specifying
+    /// a value less than zero will generate infinite audio (when assigned to a
+    /// MIX_Track, the sinewave will play forever).</para>
     /// <para>MIX_Audio objects can be shared between multiple mixers. The <c>mixer</c>
     /// parameter just suggests the most likely mixer to use this audio, in case
     /// some optimization might be applied, but this is not required, and a NULL
@@ -500,7 +503,8 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
     /// <param name="hz">the sinewave's frequency in Hz.</param>
-    /// <param name="amplitude">the sinewave's amplitude from 0.0f to 1.0f.</param>
+    /// <param name="amplitude">the maximum number of milliseconds of audio to generate, or less
+    /// than zero to generate infinite audio.</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -923,9 +927,8 @@ public partial class Mixer
     /// <param name="tag">tag the tag to search.</param>
     /// <param name="count">count a pointer filled in with the number of tracks returned, can be
     /// <c>null</c>.</param>
-    /// <returns>an array of the tracks, NULL-terminated, or <c>null</c> on failure; call
-    /// <see cref="SDL.GetError"/> for more information. The returned pointer hould be
-    /// freed with <see cref="SDL.Free"/> when it is no longer needed.</returns>
+    /// <returns><see cref="SDL.GetError"/> for more information. The returned pointer should
+    /// be freed with <see cref="SDL.Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     public static IntPtr[]? GetTaggedTracks(IntPtr mixer, string tag, out int count)
@@ -1016,23 +1019,31 @@ public partial class Mixer
     public static partial long GetTrackPlaybackPosition(IntPtr track);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_TrackLooping(MIX_Track *track);</code>
+    /// <code>extern SDL_DECLSPEC int SDLCALL MIX_GetTrackLoops(MIX_Track *track);</code>
     /// <summary>
-    /// Query whether a given track is looping.
-    /// <para>This specifically checks if the track is _not stopped_ (paused or playing),
-    /// and there is at least one loop remaining. If a track _was_ looping but is
-    /// on its final iteration of the loop, this will return false.</para>
+    /// Query how many loops remain for a given track.
+    /// <para>This returns the number of loops still pending; if a track will eventually
+    /// complete and loop to play again one more time, this will return 1. If a
+    /// track _was_ looping but is on its final iteration of the loop (will stop
+    /// when this iteration completes), this will return zero.</para>
     /// <para>On various errors (<see cref="Init"/> was not called, the track is <c>null</c>), this
     /// returns false, but there is no mechanism to distinguish errors from
     /// non-looping tracks.</para>
+    /// <para>A track that is looping infinitely will return -1. This value does not
+    /// report an error in this case.</para>
+    /// <para>A track that is stopped (not playing and not paused) will have zero loops
+    /// remaining.</para>
+    /// <para>On various errors <see cref="Init"/> was not called, the track is <c>null</c>), this
+    /// returns zero, but there is no mechanism to distinguish errors from
+    /// non-looping tracks.</para>
     /// </summary>
     /// <param name="track">the track to query.</param>
-    /// <returns>true if looping, false otherwise.</returns>
+    /// <returns>the number of pending loops, zero if not looping, and -1 if
+    /// looping infinitely.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    [LibraryImport(MixerLibrary, EntryPoint = "MIX_TrackLooping"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool TrackLooping(IntPtr track);
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetTrackLoops"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetTrackLoops(IntPtr track);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackLoops(MIX_Track *track, int num_loops);</code>
@@ -1057,7 +1068,7 @@ public partial class Mixer
     /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    /// <see cref="TrackLooping"/>
+    /// <see cref="GetTrackLoops"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackLoops"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetTrackLoops(IntPtr track,  int numLoops);
@@ -1303,6 +1314,10 @@ public partial class Mixer
     /// <see cref="Props.PlayFadeInFramesNumber"/> property, but the value is specified
     /// in milliseconds instead of sample frames. If both properties are
     /// specified, the sample frames value is favored. Default 0.</item>
+    /// <item><see cref="Props.PlayFadeInStartGainFloat"/>: If fading in, start fading from
+    /// this volume level. 0.0f is silence and 1.0f is full volume, every in
+    /// between is a linear change in gain. The specified value will be clamped
+    /// between 0.0f and 1.0f. Default 0.0f.</item>
     /// <item><see cref="Props.PlayAppendSilenceFramesNumber"/>: At the end of mixing this
     /// track, after all loops are complete, append this many sample frames of
     /// silence as if it were part of the audio file. This allows for apps to
@@ -1665,7 +1680,7 @@ public partial class Mixer
     public static partial bool TrackPaused(IntPtr track);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetMasterGain(MIX_Mixer *mixer, float gain);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetMixerGain(MIX_Mixer *mixer, float gain);</code>
     /// <summary>
     /// Set a mixer's master gain control.
     /// <para>Each mixer has a master gain, to adjust the volume of the entire mix. Each
@@ -1683,27 +1698,27 @@ public partial class Mixer
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    /// <seealso cref="GetMasterGain"/>
+    /// <seealso cref="GetMixerGain"/>
     /// <seealso cref="SetTrackGain"/>
-    [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetMasterGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetMixerGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetMasterGain(IntPtr mixer, float gain);
+    public static partial bool SetMixerGain(IntPtr mixer, float gain);
     
     
-    /// <code>extern SDL_DECLSPEC float SDLCALL MIX_GetMasterGain(MIX_Mixer *mixer);</code>
+    /// <code>extern SDL_DECLSPEC float SDLCALL MIX_GetMixerGain(MIX_Mixer *mixer);</code>
     /// <summary>
     /// Get a mixer's master gain control.
-    /// <para>This returns the last value set through <see cref="SetMasterGain"/>, or 1.0f if no
+    /// <para>This returns the last value set through <see cref="SetMixerGain"/>, or 1.0f if no
     /// value has ever been explicitly set.</para>
     /// </summary>
     /// <param name="mixer">the mixer to query.</param>
     /// <returns>the mixer's current master gain.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    /// <seealso cref="SetMasterGain"/>
+    /// <seealso cref="SetMixerGain"/>
     /// <seealso cref="GetTrackGain"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetMasterGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial float GetMasterGain(IntPtr mixer);
+    public static partial float GetMixerGain(IntPtr mixer);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackGain(MIX_Track *track, float gain);</code>
@@ -1725,7 +1740,7 @@ public partial class Mixer
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="GetTrackGain"/>
-    /// <seealso cref="SetMasterGain"/>
+    /// <seealso cref="SetMixerGain"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetTrackGain(IntPtr track, float gain);
@@ -1742,7 +1757,7 @@ public partial class Mixer
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="SetTrackGain"/>
-    /// <seealso cref="GetMasterGain"/>
+    /// <seealso cref="GetMixerGain"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetTrackGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetTrackGain(IntPtr track);
     
@@ -1772,11 +1787,54 @@ public partial class Mixer
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="GetTrackGain"/>
     /// <seealso cref="SetTrackGain"/>
-    /// <seealso cref="SetMasterGain"/>
+    /// <seealso cref="SetMixerGain"/>
     /// <seealso cref="TagTrack"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTagGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetTagGain(IntPtr mixer, [MarshalAs(UnmanagedType.LPUTF8Str)] string tag, float gain);
+    
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetMixerFrequencyRatio(MIX_Mixer *mixer, float ratio);</code>
+    /// <summary>
+    /// Set a mixer's master frequency ratio.
+    /// <para>Each mixer has a master frequency ratio, that affects the entire mix. This
+    /// can cause the final output to change speed and pitch. A value greater than
+    /// 1.0f will play the audio faster, and at a higher pitch. A value less than
+    /// 1.0f will play the audio slower, and at a lower pitch. 1.0f is normal
+    /// speed.</para>
+    /// <para>Each track _also_ has a frequency ratio; it will be applied when mixing
+    /// that track's audio regardless of the master setting. The master setting
+    /// affects the final output after all mixing has been completed.</para>
+    /// <para>A mixer's master frequency ratio defaults to 1.0f.</para>
+    /// <para>This value can be changed at any time to adjust the future mix.</para>
+    /// </summary>
+    /// <param name="mixer">the mixer to adjust.</param>
+    /// <param name="ratio">the frequency ratio. Must be between 0.01f and 100.0f.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="GetMixerFrequencyRatio"/>
+    /// <seealso cref="SetTrackFrequencyRatio"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetMixerFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetMixerFrequencyRatio(IntPtr mixer, float ratio);
+    
+    
+    /// <code>extern SDL_DECLSPEC float SDLCALL MIX_GetMixerFrequencyRatio(MIX_Mixer *mixer);</code>
+    /// <summary>
+    /// Get a mixer's master frequency ratio.
+    /// <para>This returns the last value set through <see cref="SetMixerFrequencyRatio"/>, or
+    /// 1.0f if no value has ever been explicitly set.</para>
+    /// </summary>
+    /// <param name="mixer">the mixer to query.</param>
+    /// <returns>the mixer's current master frequency ratio.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="SetMixerFrequencyRatio"/>
+    /// <seealso cref="GetTrackFrequencyRatio"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetMixerFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetMixerFrequencyRatio(IntPtr mixer);
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackFrequencyRatio(MIX_Track *track, float ratio);</code>

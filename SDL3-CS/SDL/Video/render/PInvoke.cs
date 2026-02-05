@@ -4067,7 +4067,7 @@ public static partial class SDL
     public static partial bool GetDefaultTextureScaleMode(IntPtr renderer, out ScaleMode scaleMode); 
     
     
-    /// <code>extern SDL_DECLSPEC SDL_GPURenderState * SDLCALL SDL_CreateGPURenderState(SDL_Renderer *renderer, SDL_GPURenderStateDesc *desc);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPURenderState * SDLCALL SDL_CreateGPURenderState(SDL_Renderer *renderer, const SDL_GPURenderStateCreateInfo *createinfo);</code>
     /// <summary>
     /// <para>Create custom GPU render state.</para>
     /// </summary>

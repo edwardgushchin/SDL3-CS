@@ -147,6 +147,21 @@ public partial class SDL
     /// useful for targeting Intel Haswell and Broadwell GPUs; other hardware
     /// either supports Tier 2 Resource Binding or does not support D3D12 in any
     /// capacity. Defaults to false.</item>
+    /// <item><see cref="Props.GPUDeviceCreateD3D12AgilitySDKVersionNumber"/>: Certain
+    /// feature checks are only possible on Windows 11 by default. By setting
+    /// this alongside `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING`
+    /// and vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make
+    /// those feature checks possible on older platforms. The version you provide
+    /// must match the one given in the DLL.</item>
+    /// <item><see cref="Props.GPUDeviceCreateD3D12AgilitySDKPathString"/>: Certain
+    /// feature checks are only possible on Windows 11 by default. By setting
+    /// this alongside
+    /// <see cref="Props.GPUDeviceCreateD3D12AgilitySDKVersionNumber"/> and
+    /// vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+    /// feature checks possible on older platforms. The path you provide must be
+    /// relative to the executable path of your app. Be sure not to put the DLL
+    /// in the same directory as the exe; Microsoft strongly advises against
+    /// this!</item>
     /// </list>
     /// <para>With the Vulkan backend:</para>
     /// <list type="bullet">
@@ -161,6 +176,16 @@ public partial class SDL
     /// This allows configuring a variety of Vulkan-specific options such as
     /// increasing the API version and opting into extensions aside from the
     /// minimal set SDL requires.</item>
+    /// </list>
+    /// <para>With the Metal backend:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.GPUDeviceCreateMetalAllowMacFamily1Boolean"/>: By default,
+    /// macOS support requires what Apple calls <c>"MTLGPUFamilyMac2"</c> hardware or
+    /// newer. However, an application can set this property to true to enable
+    /// support for <c>"MTLGPUFamilyMac1"</c> hardware, if (and only if) the application
+    /// does not write to sRGB textures. (For history's sake: MacFamily1 also does
+    /// not support indirect command buffers, MSAA depth resolve, and stencil
+    /// resolve/feedback, but these are not exposed features in SDL_GPU.)</item>
     /// </list>
     /// </summary>
     /// <param name="props">the properties to use.</param>

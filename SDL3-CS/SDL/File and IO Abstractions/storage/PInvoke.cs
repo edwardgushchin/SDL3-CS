@@ -264,7 +264,7 @@ public static partial class SDL
     /// Remove a file or an empty directory in a writable storage container.
     /// </summary>
     /// <param name="storage">a storage container.</param>
-    /// <param name="path">the path of the directory to enumerate.</param>
+    /// <param name="path">the path to remove from the filesystem.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>

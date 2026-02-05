@@ -53,6 +53,7 @@ public static partial class Mixer
         public const string PlayLoopStartMillisecondNumber = "SDL_mixer.play.Loopstart_millisecond";
         public const string PlayFadeInFramesNumber = "SDL_mixer.play.fade_in_frames";
         public const string PlayFadeInMillisecondsNumber = "SDL_mixer.play.fade_in_milliseconds";
+        public const string PlayFadeInStartGainFloat = "SDL_mixer.play.fade_in_start_gain";
         public const string PlayAppendSilenceFramesNumber = "SDL_mixer.play.append_silence_frames";
         public const string PlayAppendSilenceMillisecondsNumber = "SDL_mixer.play.append_silence_milliseconds";
         

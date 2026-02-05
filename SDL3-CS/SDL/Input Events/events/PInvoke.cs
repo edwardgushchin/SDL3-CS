@@ -218,11 +218,11 @@ public static partial class SDL
     /// <summary>
     /// <para>Poll for currently pending events.</para>
     /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
-    /// in the SDL_Event structure pointed to by `event`. The 1 returned refers to
-    /// this event, immediately stored in the SDL Event structure -- not an event
-    /// to follow.</para>
+    /// in the <see cref="Event"/> structure pointed to by <c>event</c>.</para>
+    /// <para>If <c>event</c> is <c>null</c>, it simply returns true if there is an event in the
+    /// queue, but will not remove it from the queue.</para>
     /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
-    /// this function in the thread that set the video mode.</para>
+    /// this function in the thread that initialized the video subsystem.</para>
     /// <para><see cref="PollEvent"/> is the favored way of receiving system events since it can
     /// be done from the main loop and does not suspend the main loop while waiting
     /// on an event to be posted.</para>

@@ -923,6 +923,19 @@ public static partial class SDL
         /// <remarks>This hint should be set before any GPU functions are called.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string GPUDriver = "SDL_GPU_DRIVER";
+
+        /// <summary>
+        /// <para>A variable that specifies the library name to use when loading the OpenXR
+        /// loader.</para>
+        /// <para>By default, SDL will try the system default name, but on some platforms
+        /// like Windows, debug builds of the OpenXR loader have a different name, and
+        /// are not always directly compatible with release applications. Setting this
+        /// hint allows you to compensate for this difference in your app when
+        /// applicable.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before the OpenXR loader is loaded. For example,
+        /// creating an OpenXR GPU device will load the OpenXR loader.</remarks>
+        public const string OpenXRLibrary = "SDL_OPENXR_LIBRARY";
         
         /// <summary>
         /// <para>A variable to control whether SDL_hid_enumerate() enumerates all HID
@@ -1524,7 +1537,20 @@ public static partial class SDL
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.4.0.</since>
         public const string JoystickHIDAPIFLYDIGI  = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
-        
+
+        /// <summary>
+        /// <para>A variable controlling whether the HIDAPI driver for GameSir controllers
+        /// should be used.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
+        /// <item><c>"1"</c>: HIDAPI driver is used.</c>
+        /// </list>
+        /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
+        /// <since>This hint is available since SDL 3.5.0.</since>
+        public const string JoystickHIDAPIGameSir = "SDL_JOYSTICK_HIDAPI_GAMESIR";
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for Nintendo Switch
@@ -2163,8 +2189,8 @@ public static partial class SDL
         /// key or open the accents menu on macOS.
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>"0"</c>: Holding a key will open the accents menu for that key.</item>
-        /// <item><c>"1"</c>: Holding a key will repeat the pressed key. (default)</item>
+        /// <item><c>"0"</c>: Holding a key will repeat the pressed key.</item>
+        /// <item><c>"1"</c>: Holding a key will open the accents menu for that key. (default)</item>
         /// </list>
         /// </summary>
         /// <remarks>This hint needs to be set before <see cref="Init"/>.</remarks>
@@ -2440,11 +2466,14 @@ public static partial class SDL
         /// library, e.g. that provided by the ANGLE project. This variable controls
         /// whether SDL follows this default behaviour or will always load an OpenGL ES
         /// library.</para>
-        /// <para>Circumstances where this is useful include - Testing an app with a
-        /// particular OpenGL ES implementation, e.g ANGLE, or emulator, e.g. those
-        /// from ARM, Imagination or Qualcomm. - Resolving OpenGL ES function addresses
-        /// at link time by linking with the OpenGL ES library instead of querying them
-        /// at run time with <see cref="GLGetProcAddress"/>.</para>
+        /// <para>Circumstances where this is useful include:</para>
+        /// <list type="bullet">
+        /// <item>Testing an app with a particular OpenGL ES implementation, e.g ANGLE, or
+        /// emulator, e.g. those from ARM, Imagination or Qualcomm.</item>
+        /// <item>Resolving OpenGL ES function addresses at link time by linking with the
+        /// OpenGL ES library instead of querying them at run time with
+        /// <see cref="GLGetProcAddress"/>.</item>
+        /// </list>
         /// <para>Caution: for an application to work with the default behaviour across
         /// different OpenGL drivers it must query the OpenGL ES function addresses at
         /// run time using <see cref="GLGetProcAddress"/>.</para>

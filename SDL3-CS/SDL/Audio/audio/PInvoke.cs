@@ -970,7 +970,7 @@ public static partial class SDL
     /// stream's format to have a different number of channels from a
     /// different thread at the same time, though!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamInputChannelMap"/>
+    /// <seealso cref="SetAudioStreamOutputChannelMap"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamInputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr SetAudioStreamInputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
 

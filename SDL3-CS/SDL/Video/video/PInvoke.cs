@@ -1022,6 +1022,13 @@ public static partial class SDL
     /// <item><see cref="Props.WindowOpenVROverlayIdNumber"/>: the OpenVR Overlay Handle ID for the
     /// associated overlay window.</item>
     /// </list>
+    /// <para>On QNX:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.WindowQNXWindowPointer"/>: the screen_window_t associated with
+    /// the window.</item>
+    /// <item><see cref="Props.WindowQNXSurfacePointer"/>: the EGLSurface associated with the
+    /// window</item>
+    /// </list>
     /// <para>On Vivante:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.WindowVivanteDisplayPointer"/>: the EGLNativeDisplayType

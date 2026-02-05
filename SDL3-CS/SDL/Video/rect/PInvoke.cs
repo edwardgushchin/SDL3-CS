@@ -340,7 +340,7 @@ public static partial class SDL
     /// <param name="b">an <see cref="FRect"/> structure representing the second rectangle.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRectIntersection"/>
+    /// <seealso cref="GetRectIntersectionFloat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool HasRectIntersectionFloat(in FRect a, in FRect b);

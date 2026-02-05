@@ -177,7 +177,7 @@ public partial class Image
     
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL IMG_LoadTexture(SDL_Renderer *renderer, const char *file);</code>
     /// <summary>
-    /// <para>Load an image from a filesystem path into a GPU texture.</para>
+    /// <para>Load an image from a filesystem path into a texture.</para>
     /// <para>An SDL_Texture represents an image in GPU memory, usable by SDL's 2D Render
     /// API. This can be significantly more efficient than using a CPU-bound
     /// <see cref="SDL.Surface"/>  if you don't need to manipulate the image directly after
@@ -195,7 +195,7 @@ public partial class Image
     /// <para>When done with the returned texture, the app should dispose of it with a
     /// call to <see cref="SDL.DestroyTexture"/>.</para>
     /// </summary>
-    /// <param name="renderer">the SDL_Renderer to use to create the GPU texture.</param>
+    /// <param name="renderer">the SDL_Renderer to use to create the texture.</param>
     /// <param name="file">a path on the filesystem to load an image from.</param>
     /// <returns>a new texture, or <c>null</c>on error.</returns>
     /// <since>This function is available since SDL_image 3.0.0.</since>
@@ -207,7 +207,7 @@ public partial class Image
     
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL IMG_LoadTexture_IO(SDL_Renderer *renderer, SDL_IOStream *src, bool closeio);</code>
     /// <summary>
-    /// <para>Load an image from an SDL data source into a GPU texture.</para>
+    /// <para>Load an image from an SDL data source into a texture.</para>
     /// <para>An SDL_Texture represents an image in GPU memory, usable by SDL's 2D Render
     /// API. This can be significantly more efficient than using a CPU-bound
     /// <see cref="SDL.Surface"/> if you don't need to manipulate the image directly after
@@ -232,7 +232,7 @@ public partial class Image
     /// <para>When done with the returned texture, the app should dispose of it with a
     /// call to <see cref="SDL.DestroyTexture"/>.</para>
     /// </summary>
-    /// <param name="renderer">the SDL_Renderer to use to create the GPU texture.</param>
+    /// <param name="renderer">the SDL_Renderer to use to create the texture.</param>
     /// <param name="src">an SDL_IOStream that data will be read from.</param>
     /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
     /// to leave it open.</param>
@@ -246,7 +246,7 @@ public partial class Image
     
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL IMG_LoadTextureTyped_IO(SDL_Renderer *renderer, SDL_IOStream *src, bool closeio, const char *type);</code>
     /// <summary>
-    /// <para>Load an image from an SDL data source into a GPU texture.</para>
+    /// <para>Load an image from an SDL data source into a texture.</para>
     /// <para>An SDL_Texture represents an image in GPU memory, usable by SDL's 2D Render
     /// API. This can be significantly more efficient than using a CPU-bound
     /// <see cref="SDL.Surface"/> if you don't need to manipulate the image directly after
@@ -276,7 +276,7 @@ public partial class Image
     /// <para>When done with the returned texture, the app should dispose of it with a
     /// call to <see cref="SDL.DestroyTexture"/>.</para>
     /// </summary>
-    /// <param name="renderer">the SDL_Renderer to use to create the GPU texture.</param>
+    /// <param name="renderer">the SDL_Renderer to use to create the texture.</param>
     /// <param name="src">an SDL_IOStream that data will be read from.</param>
     /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
     /// to leave it open.</param>
@@ -288,6 +288,121 @@ public partial class Image
     /// <seealso cref="LoadTextureIO"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_LoadTextureTyped_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr LoadTextureTypedIO(IntPtr renderer, IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio, [MarshalAs(UnmanagedType.LPUTF8Str)] string type);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPUTexture * SDLCALL IMG_LoadGPUTexture(SDL_GPUDevice *device, SDL_GPUCopyPass *copyPass, const char *file, int *width, int *height);</code>
+    /// <summary>
+    /// Load an image from a filesystem path into a GPU texture.
+    /// <para>An SDL_GPUTexture represents an image in GPU memory, usable by SDL's GPU
+    /// API. Regardless of the source format of the image, this function will
+    /// create a GPU texture with the format <see cref="SDL.GPUTextureFormat.R8G8B8A8Unorm"/>
+    /// with no mip levels. It can be bound as a sampled texture from a graphics or
+    /// compute pipeline and as a a readonly storage texture in a compute pipeline.</para>
+    /// <para>There is a separate function to read files from an SDL_IOStream, if you
+    /// need an i/o abstraction to provide data from anywhere instead of a simple
+    /// filesystem read; that function is <see cref="LoadGPUTextureIO"/>.</para>
+    /// <para>When done with the returned texture, the app should dispose of it with a
+    /// call to <see cref="SDL.ReleaseGPUTexture"/>.</para>
+    /// </summary>
+    /// <param name="device">the SDL_GPUDevice to use to create the GPU texture.</param>
+    /// <param name="copyPass">the SDL_GPUCopyPass to use to upload the loaded image to
+    /// the GPU texture.</param>
+    /// <param name="file">a path on the filesystem to load an image from.</param>
+    /// <param name="width">a pointer filled in with the width of the GPU texture. may be
+    /// <c>null</c>.</param>
+    /// <param name="height">a pointer filled in with the width of the GPU texture. may be
+    /// <c>null</c>.</param>
+    /// <returns>a new GPU texture, or <c>null</c> on error.</returns>
+    /// <since>This function is available since SDL_image 3.4.0.</since>
+    /// <seealso cref="LoadGPUTextureTypedIO"/>
+    /// <seealso cref="LoadGPUTextureIO"/>
+    [LibraryImport(ImageLibrary, EntryPoint = "IMG_LoadGPUTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadGPUTexture(IntPtr device, IntPtr copyPass, [MarshalAs(UnmanagedType.LPUTF8Str)] string file, out int width, out int height);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPUTexture * SDLCALL IMG_LoadGPUTexture_IO(SDL_GPUDevice *device, SDL_GPUCopyPass *copy_pass, SDL_IOStream *src, bool closeio, int *width, int *height);</code>
+    /// <summary>
+    /// Load an image from an SDL data source into a GPU texture.
+    /// <para>An SDL_GPUTexture represents an image in GPU memory, usable by SDL's GPU
+    /// API. Regardless of the source format of the image, this function will
+    /// create a GPU texture with the format <see cref="SDL.GPUTextureFormat.R8G8B8A8Unorm"/>
+    /// with no mip levels. It can be bound as a sampled texture from a graphics or
+    /// compute pipeline and as a a readonly storage texture in a compute pipeline.</para>
+    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
+    /// during this call in any case.</para>
+    /// <para>There is a separate function to read files from disk without having to deal
+    /// with SDL_IOStream: `IMG_LoadGPUTexture(device, copy_pass, "filename.jpg",
+    /// width, height) will call this function and manage those details for you,
+    /// determining the file type from the filename's extension.</para>
+    /// <para>There is also IMG_LoadGPUTextureTyped_IO(), which is equivalent to this
+    /// function except a file extension (like "BMP", "JPG", etc) can be specified,
+    /// in case SDL_image cannot autodetect the file format.</para>
+    /// <para>When done with the returned texture, the app should dispose of it with a
+    /// call to <see cref="SDL.ReleaseGPUTexture"/>.</para>
+    /// </summary>
+    /// <param name="device">the SDL_GPUDevice to use to create the GPU texture.</param>
+    /// <param name="copyPass">the SDL_GPUCopyPass to use to upload the loaded image to
+    /// the GPU texture.</param>
+    /// <param name="src">an SDL_IOStream that data will be read from.</param>
+    /// <param name="closeio">true to close/free the SDL_IOStream before returning, false
+    /// to leave it open.</param>
+    /// <param name="width">a pointer filled in with the width of the GPU texture. may be
+    /// <c>null</c>.</param>
+    /// <param name="height">a pointer filled in with the width of the GPU texture. may be
+    /// <c>null</c>.</param>
+    /// <returns>a new GPU texture, or <c>null</c> on error.</returns>
+    /// <since>This function is available since SDL_image 3.4.0.</since>
+    /// <seealso cref="LoadGPUTexture"/>
+    /// <seealso cref="LoadGPUTextureTypedIO"/>
+    [LibraryImport(ImageLibrary, EntryPoint = "IMG_LoadGPUTexture_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadGPUTextureIO(IntPtr device, IntPtr copyPass, IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio, out int width, out int height);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_GPUTexture * SDLCALL IMG_LoadGPUTextureTyped_IO(SDL_GPUDevice *device, SDL_GPUCopyPass *copy_pass, SDL_IOStream *src, bool closeio, const char *type, int *width, int *height);</code>
+    /// <summary>
+    /// <para>Load an image from an SDL data source into a GPU texture.</para>
+    /// <para>An SDL_GPUTexture represents an image in GPU memory, usable by SDL's GPU
+    /// API. Regardless of the source format of the image, this function will
+    /// create a GPU texture with the format <see cref="SDL.GPUTextureFormat.R8G8B8A8Unorm"/>
+    /// with no mip levels. It can be bound as a sampled texture from a graphics or
+    /// compute pipeline and as a a readonly storage texture in a compute pipeline.</para>
+    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
+    /// during this call in any case.</para>
+    /// <para>Even though this function accepts a file type, SDL_image may still try
+    /// other decoders that are capable of detecting file type from the contents of
+    /// the image data, but may rely on the caller-provided type string for formats
+    /// that it cannot autodetect. If <c>type</c> is <c>null</c>, SDL_image will rely solely on
+    /// its ability to guess the format.</para>
+    /// <para>There is a separate function to read files from disk without having to deal
+    /// with SDL_IOStream: `IMG_LoadGPUTexture(device, copy_pass, "filename.jpg",
+    /// width, height) will call this function and manage those details for you,
+    /// determining the file type from the filename's extension.</para>
+    /// <para>There is also <see cref="LoadGPUTextureIO"/>, which is equivalent to this function
+    /// except that it will rely on SDL_image to determine what type of data it is
+    /// loading, much like passing a <c>null</c> for type.</para>
+    /// <para>When done with the returned texture, the app should dispose of it with a
+    /// call to <see cref="SDL.ReleaseGPUTexture"/>.</para>
+    /// </summary>
+    /// <param name="device">the SDL_GPUDevice to use to create the GPU texture.</param>
+    /// <param name="copyPass">the SDL_GPUCopyPass to use to upload the loaded image to
+    /// the GPU texture.</param>
+    /// <param name="src">an SDL_IOStream that data will be read from.</param>
+    /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
+    /// to leave it open.</param>
+    /// <param name="file">a filename extension that represent this data ("BMP", "GIF",
+    /// "PNG", etc).</param>
+    /// <param name="width">a pointer filled in with the width of the GPU texture. may be
+    /// <c>null</c>.</param>
+    /// <param name="height">height a pointer filled in with the width of the GPU texture. may be
+    /// <c>null</c>.</param>
+    /// <returns>a new GPU texture, or ><c>null</c> on error.</returns>
+    /// <since>This function is available since SDL_image 3.4.0.</since>
+    /// <seealso cref="LoadGPUTexture"/>
+    /// <seealso cref="LoadGPUTextureIO"/>
+    [LibraryImport(ImageLibrary, EntryPoint = "IMG_LoadGPUTextureTyped_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadGPUTextureTypedIO(IntPtr device, IntPtr copyPass, IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio, [MarshalAs(UnmanagedType.LPUTF8Str)] string file, out int width, out int height);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL IMG_GetClipboardImage(void);</code>

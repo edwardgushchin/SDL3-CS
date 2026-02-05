@@ -1051,8 +1051,9 @@ public static partial class TTF
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphKerning"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetGlyphKerning(IntPtr font, uint previousCh, uint ch, out int kerning);
-    
-    
+
+    #region  GetStringSize
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);</code>
     /// <summary>
     /// <para>Calculate the dimensions of a rendered string of UTF-8 text.</para>
@@ -1073,6 +1074,50 @@ public static partial class TTF
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetStringSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetStringSize(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, out int w, out int h);
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);</code>
+    /// <summary>
+    /// <para>Calculate the dimensions of a rendered string of UTF-8 text.</para>
+    /// <para>This will report the width and height, in pixels, of the space that the
+    /// specified string will take to fully render.</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <param name="text">text to calculate, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="w">will be filled with width, in pixels, on return.</param>
+    /// <param name="h">will be filled with height, in pixels, on return.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport("SDL3_ttf", EntryPoint = "TTF_GetStringSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static unsafe partial bool GetStringSize(IntPtr font, byte* text, UIntPtr length, out int w, out int h);
+    
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);</code>
+    /// <summary>
+    /// <para>Calculate the dimensions of a rendered string of UTF-8 text.</para>
+    /// <para>This will report the width and height, in pixels, of the space that the
+    /// specified string will take to fully render.</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <param name="text">text to calculate, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="w">will be filled with width, in pixels, on return.</param>
+    /// <param name="h">will be filled with height, in pixels, on return.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    [LibraryImport("SDL3_ttf", EntryPoint = "TTF_GetStringSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool GetStringSize(IntPtr font, IntPtr text, UIntPtr length, out int w, out int h);
+    
+    #endregion
     
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetStringSizeWrapped(TTF_Font *font, const char *text, size_t length, int wrap_width, int *w, int *h);</code>
