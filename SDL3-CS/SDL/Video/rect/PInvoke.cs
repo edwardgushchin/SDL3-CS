@@ -145,6 +145,7 @@ public static partial class SDL
     /// <param name="result">an <see cref="Rect"/> structure filled in with the intersection of
     /// rectangles <c>a</c> and <c>b</c>.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasRectIntersection"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -162,6 +163,7 @@ public static partial class SDL
     /// <c>A</c> and <c>B</c>.</param>
     /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -182,6 +184,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -202,6 +205,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -217,12 +221,13 @@ public static partial class SDL
     /// both ends will be clipped to the boundary of the rectangle and the new
     /// coordinates saved in <c>X1</c>, <c>Y1</c>, <c>X2</c>, and/or <c>Y2</c> as necessary.</para>
     /// </summary>
-    /// <param name="rect">an <seealso cref="Rect"/> structure representing the rectangle to intersect.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the rectangle to intersect.</param>
     /// <param name="x1">a pointer to the starting X-coordinate of the line.</param>
     /// <param name="y1">a pointer to the starting Y-coordinate of the line.</param>
     /// <param name="x2">a pointer to the ending X-coordinate of the line.</param>
     /// <param name="y2">a pointer to the ending Y-coordinate of the line.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -339,6 +344,7 @@ public static partial class SDL
     /// <param name="a">an <see cref="FRect"/> structure representing the first rectangle.</param>
     /// <param name="b">an <see cref="FRect"/> structure representing the second rectangle.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRectIntersectionFloat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -356,6 +362,7 @@ public static partial class SDL
     /// <param name="result">an <see cref="FRect"/> structure filled in with the intersection of
     /// rectangles <c>a</c> and <c>b</c>.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasRectIntersectionFloat"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -373,6 +380,7 @@ public static partial class SDL
     /// <c>A</c> and <c>B</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -394,6 +402,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -415,6 +424,7 @@ public static partial class SDL
     /// rectangle.</param>
     /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
     /// outside of the clipping rectangle.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -430,13 +440,14 @@ public static partial class SDL
     /// both ends will be clipped to the boundary of the rectangle and the new
     /// coordinates saved in <c>X1</c>, <c>Y1</c>, <c>X2</c>, and/or <c>Y2</c> as necessary.</para>
     /// </summary>
-    /// <param name="rect">an <seealso cref="FRect"/> structure representing the rectangle to intersect.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure representing the rectangle to intersect.</param>
     /// <param name="x1">a pointer to the starting X-coordinate of the line.</param>
     /// <param name="y1">a pointer to the starting Y-coordinate of the line.</param>
     /// <param name="x2">a pointer to the ending X-coordinate of the line.</param>
     /// <param name="y2">a pointer to the ending Y-coordinate of the line.</param>
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
-    /// <since></since>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetRectAndLineIntersectionFloat(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
