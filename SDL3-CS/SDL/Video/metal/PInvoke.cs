@@ -39,6 +39,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="window">the window.</param>
     /// <returns>handle NSView or UIView.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalDestroyView"/>
     /// <seealso cref="MetalGetLayer"/>
@@ -53,6 +54,7 @@ public static partial class SDL
     /// called after <see cref="CreateWindow"/>.</para>
     /// </summary>
     /// <param name="view">the SDL_MetalView object.</param>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalCreateView"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_DestroyView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -65,6 +67,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="view">the SDL_MetalView object.</param>
     /// <returns>a pointer.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_GetLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr MetalGetLayer(IntPtr view);
