@@ -34,6 +34,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>a valid property ID on success or <c>0</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGlobalProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetGlobalProperties();
