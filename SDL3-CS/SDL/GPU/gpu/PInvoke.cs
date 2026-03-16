@@ -2308,10 +2308,11 @@ public partial class SDL
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendGPU(SDL_GPUDevice *device);</code>
     /// <summary>
-    /// <para>Call this to suspend GPU operation on Xbox when you receive the
+    /// <para>Call this to suspend GPU operation on Xbox after receiving the
     /// <see cref="EventType.DidEnterBackground"/> event.</para>
     /// <para>Do NOT call any SDL_GPU functions after calling this function! This must
     /// also be called before calling <see cref="GDKSuspendComplete"/>.</para>
+    /// <para>This function MUST be called from the application's render thread.</para>
     /// </summary>
     /// <param name="device">device a GPU context.</param>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -2322,10 +2323,11 @@ public partial class SDL
     
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKResumeGPU(SDL_GPUDevice *device);</code>
     /// <summary>
-    /// <para>Call this to resume GPU operation on Xbox when you receive the
+    /// <para>Call this to resume GPU operation on Xbox after receiving the
     /// <see cref="EventType.WillEnterForeground"/> event.</para>
     /// <para>When resuming, this function MUST be called before calling any other
     /// SDL_GPU functions.</para>
+    /// <para>This function MUST be called from the application's render thread.</para>
     /// </summary>
     /// <param name="device">device a GPU context.</param>
     /// <since>This function is available since SDL 3.2.0</since>

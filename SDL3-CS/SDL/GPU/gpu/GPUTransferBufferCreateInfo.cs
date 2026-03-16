@@ -31,6 +31,7 @@ public static partial class SDL
     /// <para>A structure specifying the parameters of a transfer buffer.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
+    /// <seealso cref="GPUTransferBufferUsage"/>
     /// <seealso cref="CreateGPUTransferBuffer"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUTransferBufferCreateInfo
