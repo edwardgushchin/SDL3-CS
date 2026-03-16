@@ -32,7 +32,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Initialize the SDL library.</para>
     /// <para><see cref="Init"/> simply forwards to calling <see cref="InitSubSystem"/>. Therefore, the
-    /// two may be used interchangeably. Though for readability of your cod
+    /// two may be used interchangeably. Though for readability of your code
     /// <see cref="InitSubSystem"/> might be preferred.</para>
     /// <para>The file I/O (for example: <see cref="IOFromFile"/>) and threading (CreateThread)
     /// subsystems are initialized by default. Message boxes
@@ -52,7 +52,7 @@ public static partial class SDL
     /// <item><see cref="InitFlags.Haptic"/>: haptic (force feedback) subsystem</item>
     /// <item><see cref="InitFlags.Gamepad"/>: gamepad subsystem; automatically initializes the
     /// joystick subsystem</item>
-    /// <item><seealso cref="InitFlags.Events"/>: events subsystem</item>
+    /// <item><see cref="InitFlags.Events"/>: events subsystem</item>
     /// <item><see cref="InitFlags.Sensor"/>: sensor subsystem; automatically initializes the events
     /// subsystem</item>
     /// <item><see cref="InitFlags.Camera"/>: camera subsystem; automatically initializes the events
@@ -69,6 +69,7 @@ public static partial class SDL
     /// <param name="flags">subsystem initialization flags.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAppMetadata"/>
     /// <seealso cref="SetAppMetadataProperty"/>
@@ -78,8 +79,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool Init(InitFlags flags);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_InitSubSystem(SDL_InitFlags flags);</code>
     /// <summary>
     /// Compatibility function to initialize the SDL library.
@@ -88,6 +89,7 @@ public static partial class SDL
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="Quit"/>
@@ -95,8 +97,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_InitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool InitSubSystem(InitFlags flags);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_QuitSubSystem(SDL_InitFlags flags);</code>
     /// <summary>
     /// Shut down specific SDL subsystems.
@@ -104,13 +106,14 @@ public static partial class SDL
     /// <remarks>You still need to call <see cref="Quit"/> even if you close all open subsystems
     /// with <see cref="QuitSubSystem"/>.</remarks>
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
+    /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_QuitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void QuitSubSystem(InitFlags flags);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC SDL_InitFlags SDLCALL SDL_WasInit(SDL_InitFlags flags);</code>
     /// <summary>
     /// Get a mask of the specified subsystems which are currently initialized.
@@ -118,30 +121,32 @@ public static partial class SDL
     /// <param name="flags">any of the flags used by <see cref="Init"/>; see <see cref="Init"/> for details.</param>
     /// <returns>a mask of all initialized subsystems if <c>flags</c> is <c>0</c>, otherwise it
     /// returns the initialization status of the specified subsystems.</returns>
+    /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="InitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WasInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial InitFlags WasInit(InitFlags flags);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Quit(void);</code>
     /// <summary>
     /// <para>Clean up all initialized subsystems.</para>
     /// <para>You should call this function even if you have already shutdown each
-    /// initialized subsystem with <seealso cref="QuitSubSystem"/>. It is safe to call this
+    /// initialized subsystem with <see cref="QuitSubSystem"/>. It is safe to call this
     /// function even in the case of errors in initialization.</para>
     /// <para>You can use this function with atexit() to ensure that it is run when your
     /// application is shutdown, but it is not wise to do this from a library or
     /// other dynamically loaded code.</para>
     /// </summary>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="QuitSubSystem"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Quit();
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsMainThread(void);</code>
     /// <summary>
     /// <para>Return whether this is the main thread.</para>
@@ -159,8 +164,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsMainThread();
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);</code>
     /// <summary>
     /// <para>Call a function on the main thread during event processing.</para>
@@ -183,8 +188,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunOnMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RunOnMainThread(MainThreadCallback callback, IntPtr userdata, [MarshalAs(UnmanagedType.I1)] bool waitComplete);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAppMetadata(const char *appname, const char *appversion, const char *appidentifier);</code>
     /// <summary>
     /// <para>Specify basic metadata about your app.</para>
@@ -219,8 +224,8 @@ public static partial class SDL
         [MarshalAs(UnmanagedType.LPUTF8Str)] string appname,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string appversion,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string appidentifier);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAppMetadataProperty(const char *name, const char *value);</code>
     /// <summary>
     /// <para>Specify metadata about your app through a set of properties.</para>
@@ -278,8 +283,11 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
-    
-    
+
+
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAppMetadataProperty(const char *name);</code>
     /// <summary>
     /// <para>Get metadata about your app.</para>
@@ -297,7 +305,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAppMetadata"/>
     /// <seealso cref="SetAppMetadataProperty"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    public static string? GetAppMetadataProperty(string name)
+    {
+        var value = SDL_GetAppMetadataProperty(name);
+        return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+    }
 }
