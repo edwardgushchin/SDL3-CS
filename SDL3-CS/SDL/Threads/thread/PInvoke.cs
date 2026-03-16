@@ -53,6 +53,7 @@ public static partial class SDL
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="CreateThreadWithProperties"/>
 	/// <seealso cref="WaitThread"/>
 	public static IntPtr CreateThread(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data) => 
@@ -111,6 +112,7 @@ public static partial class SDL
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
 	public static IntPtr CreateThreadWithProperties(uint props) =>
@@ -130,6 +132,7 @@ public static partial class SDL
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread);
 	
@@ -145,6 +148,7 @@ public static partial class SDL
 	/// new thread could not be created; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadWithPropertiesRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial IntPtr CreateThreadWithPropertiesRuntime(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread);
 	
@@ -177,6 +181,7 @@ public static partial class SDL
 	/// </summary>
 	/// <returns>the ID of the current thread.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="GetThreadID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ulong GetCurrentThreadID();
@@ -193,6 +198,7 @@ public static partial class SDL
 	/// <returns>the ID of the specified thread, or the ID of the current thread if
 	/// <c>thread</c> is <c>null</c>.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="GetCurrentThreadID"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ulong GetThreadID(IntPtr thread);
@@ -209,6 +215,7 @@ public static partial class SDL
 	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCurrentThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetCurrentThreadPriority(ThreadPriority priority);
@@ -237,6 +244,8 @@ public static partial class SDL
 	/// function by its <c>return</c>, or -1 if the thread has been
 	/// detached or isn't valid, may be <c>null</c>.</param>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread, but only a
+	/// single thread can wait any specific thread to finish.</threadsafety>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="DetachThread"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -251,6 +260,7 @@ public static partial class SDL
 	/// <returns>the current state of a thread, or <see cref="ThreadState.Unknown"/> if the thread
 	/// isn't valid.</returns>
 	/// <since>This function is available since SDL 3.1.8.</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="ThreadState"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial ThreadState GetThreadState(IntPtr thread);
@@ -280,6 +290,7 @@ public static partial class SDL
 	/// <param name="thread">the SDL_Thread pointer that was returned from the
 	/// <see cref="CreateThread"/> call that started this thread.</param>
 	/// <since>This function is available since SDL 3.2.0</since>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
