@@ -410,7 +410,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseCameraFrame(SDL_Camera *camera, SDL_Surface *frame);</code>
     /// <summary>
     /// <para>Release a frame of video acquired from a camera.</para>
-    /// <para>Let the back-end re-use the internal buffer for camera.</para>
+    /// <para>Let the back-end reuse the internal buffer for camera.</para>
     /// <para>This function _must_ be called only on surface objects returned by
     /// <see cref="AcquireCameraFrame"/>. This function should be called as quickly as
     /// possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
