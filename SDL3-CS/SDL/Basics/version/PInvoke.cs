@@ -38,6 +38,7 @@ public static partial class SDL
     /// </summary>
     /// <remarks>This function may be called safely at any time, even before <see cref="Init"/>.</remarks>
     /// <returns>the version of the linked library.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRevision"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -63,6 +64,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>an arbitrary string, uniquely identifying the exact revision of
     /// the SDL library in use.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetVersion"/>
     public static string GetRevision()

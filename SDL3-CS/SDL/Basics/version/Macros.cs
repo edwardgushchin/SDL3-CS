@@ -44,6 +44,7 @@ public partial class SDL
     /// <para>1002003 becomes 1.</para>
     /// </summary>
     /// <param name="version">the version number.</param>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
     /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static int VersionNumMajor(int version) => ((version) / 1000000);
@@ -55,6 +56,7 @@ public partial class SDL
     /// <para>1002003 becomes 2.</para>
     /// </summary>
     /// <param name="version">version the version number.</param>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
     /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static int VersionNumMinor(int version) => (((version) / 1000) % 1000);
@@ -66,6 +68,7 @@ public partial class SDL
     /// <para>1002003 becomes 3.</para>
     /// </summary>
     /// <param name="version">the version number.</param>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
     /// <since>This macro is available since SDL 3.2.0</since>
     [Macro]
     public static int VersionNumMicro(int version) => ((version) % 1000);
