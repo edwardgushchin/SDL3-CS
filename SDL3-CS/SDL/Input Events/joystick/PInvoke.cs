@@ -879,7 +879,7 @@ public static partial class SDL
 	/// <summary>
 	/// <para>Update the current state of the open joysticks.</para>
 	/// <para>This is called automatically by the event loop if any joystick events are
-	/// enabled.</para>
+	/// enabled and <see cref="Hints.AutoUpdateJoysticks"/> hasn't been set to "0".</para>
 	/// </summary>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
