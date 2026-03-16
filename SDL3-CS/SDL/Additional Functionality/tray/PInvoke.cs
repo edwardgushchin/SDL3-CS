@@ -94,9 +94,6 @@ public partial class SDL
     /// <item><see cref="Props.TrayCreateMiddleClickCallbackPointer"/>: an
     /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is middle-clicked.
     /// Not supported on all platforms. May be <c>null</c>.</item>
-    /// <item><see cref="Props.TrayCreateDoubleClickCallbackPointer"/>: an
-    /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is double-clicked.
-    /// Not supported on all platforms. May be <c>null</c>.</item>
     /// </list>
     /// </summary>
     /// <param name="props">the properties to use.</param>

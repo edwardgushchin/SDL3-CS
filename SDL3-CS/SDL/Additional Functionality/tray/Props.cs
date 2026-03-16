@@ -33,7 +33,6 @@ public static partial class SDL
         public const string TrayCreateLeftClickCallbackPointer     = "SDL.tray.create.leftclick_callback";
         public const string TrayCreateRightClickCallbackPointer    = "SDL.tray.create.rightclick_callback";
         public const string TrayCreateMiddleClickCallbackPointer   = "SDL.tray.create.middleclick_callback";
-        public const string TrayCreateDoubleClickCallbackPointer   = "SDL.tray.create.doubleclick_callback";
-        
+
     }
 }
