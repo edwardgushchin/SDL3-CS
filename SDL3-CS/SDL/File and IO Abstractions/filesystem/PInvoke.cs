@@ -285,7 +285,10 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetPathInfo(const char *path, SDL_PathInfo *info);</code>
     /// <summary>
-    /// Get information about a filesystem path.
+    /// <para>Get information about a filesystem path.</para>
+    /// <para>Symlinks, on filesystems that support them, are always followed, so you
+    /// will always get information on what the symlink eventually points to, and
+    /// not the symlink itself.</para>
     /// </summary>
     /// <param name="path">the path to query.</param>
     /// <param name="info">a pointer filled in with information about the path, or <c>null</c> to

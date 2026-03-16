@@ -27,9 +27,8 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>Types of filesystem entries.</para>
-    /// <para>Note that there may be other sorts of items on a filesystem: devices,
-    /// symlinks, named pipes, etc. They are currently reported as
-    /// <see cref="Other"/>.</para>
+    /// <para>Note that there may be other sorts of items on a filesystem: devices, named
+    /// pipes, etc. They are currently reported as <see cref="Other"/>.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
     /// <seealso cref="PathInfo"/>
