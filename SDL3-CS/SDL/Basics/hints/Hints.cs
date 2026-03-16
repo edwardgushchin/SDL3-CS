@@ -1544,7 +1544,7 @@ public static partial class SDL
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
-        /// <item><c>"1"</c>: HIDAPI driver is used.</c>
+        /// <item><c>"1"</c>: HIDAPI driver is used.</item>
         /// </list>
         /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
         /// </summary>
@@ -2488,7 +2488,39 @@ public static partial class SDL
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string OpenGLESDriver = "SDL_OPENGL_ES_DRIVER";
-        
+
+        /// <summary>
+        /// <para>A variable controlling whether to force an sRGB-capable OpenGL context.</para>
+        /// <para>At OpenGL context creation time, some platforms can request an sRGB-capable
+        /// context. However, sometimes any form of the request can cause surprising
+        /// results on some drivers, platforms, and hardware. Usually the surprise is
+        /// in the form of rendering that is either a little darker or a little
+        /// brighter than intended.</para>
+        /// <para>This hint allows the user to override the app's sRGB requests and either
+        /// force a specific value, or avoid requesting anything at all, depending on
+        /// what makes things work correctly for their system.</para>
+        /// <para>This is meant as a fail-safe; apps should probably not explicitly set this,
+        /// and most users should not, either.</para>
+        /// <para>Note that some platforms cannot make this request at all, and on all
+        /// platforms this request can be denied by the operating system.</para>
+        /// <para>In addition to attempting to obtain the type of sRGB-capable OpenGL context
+        /// requested by this hint, SDL will try to force the state of
+        /// GL_FRAMEBUFFER_SRGB on the new context, if appropriate.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Force a request for an OpenGL context that is <i>not</i> sRGB-capable.</item>
+        /// <item><c>"1"</c>: Force a request for an OpenGL context that <i>is</i> sRGB-capable.</item>
+        /// <item><c>"skip"</c>: Don't make any request for an sRGB-capable context (don't specify
+        /// the attribute at all during context creation time).</item>
+        /// <item>any other string is undefined behavior.</item>
+        /// </list>
+        /// <para>If unset, or set to an empty string, SDL will make a request using the
+        /// value the app specified with the <see cref="GLAttr.FrameBufferSRGBCapable"/> attribute.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before an OpenGL context is created.</remarks>
+        /// <since>This hint is available since SDL 3.4.2.</since>
+        public const string OpenGLForceSrgbFramebuffer = "SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER";
+
         /// <summary>
         /// <para>Mechanism to specify openvr_api library location</para>
         /// <para>By default, when using the OpenVR driver, it will search for the API
@@ -3730,7 +3762,23 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.4.0.</since>
         public const string WindowsRawKeyboardExcludeHotkeys = "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS";
-        
+
+        /// <summary>
+        /// <para>A variable controlling whether the RIDEV_INPUTSINK flag is set when
+        /// enabling Windows raw keyboard events.</para>
+        /// <para>This enables the window to still receive input even if not in foreground.</para>
+        /// <para>Focused windows that receive text input will still prevent input events
+        /// from triggering.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Input is not received when not in focus or foreground. (default)</item>
+        /// <item><c>"1"</c>: Input will be received even when not in focus or foreground.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.4.4.</since>
+        public const string WindowsRawKeyboardInputsink = "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK";
+
         /// <summary>
         /// <para>A variable controlling whether SDL uses Kernel Semaphores on Windows.</para>
         /// <para>Kernel Semaphores are inter-process and require a context switch on every
