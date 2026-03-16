@@ -29,7 +29,7 @@ public static partial class SDL
     /// <para>The SDL keyboard scancode representation.</para>
     /// <para>An SDL scancode is the physical representation of a key on the keyboard,
     /// independent of language and keyboard mapping.</para>
-    /// <para>VValues of this type are used to represent keyboard keys, among other places
+    /// <para>Values of this type are used to represent keyboard keys, among other places
     /// in the <c>scancode</c> field of the <see cref="KeyboardEvent"/> structure.</para>
     /// <para>The values in this enumeration are based on the USB usage page standard:
     /// https://usb.org/sites/default/files/hut1_5.pdf</para>
@@ -109,7 +109,7 @@ public static partial class SDL
         /// ISO USB keyboards actually use this code
         /// instead of 49 for the same key, but all
         /// OSes I've seen treat the two codes
-        /// identically. So, as an implementor, unless
+        /// identically. So, as an implementer, unless
         /// your keyboard generates both of those
         /// codes and your OS treats them differently,
         /// you should generate BACKSLASH
@@ -118,7 +118,7 @@ public static partial class SDL
         /// will never generate it with most (all?)
         /// keyboards.
         /// </summary>
-        NonUshash = 50,
+        NonUsHash = 50,
         Semicolon = 51,
         Apostrophe = 52,
         
