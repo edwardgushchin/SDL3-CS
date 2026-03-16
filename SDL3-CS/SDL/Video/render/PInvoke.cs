@@ -3483,12 +3483,13 @@ public static partial class SDL
     
     
     #region RenderGeometry
-    
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
     /// <summary>
-    /// Render a list of triangles, optionally using a texture and indices into the
-    /// vertex array Color and alpha modulation is done per vertex
-    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex array.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -3507,13 +3508,14 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, IntPtr indices, int numIndices);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
     /// <summary>
-    /// Render a list of triangles, optionally using a texture and indices into the
-    /// vertex array Color and alpha modulation is done per vertex
-    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex array.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -3532,17 +3534,18 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
-    
+
     #endregion
     
     
     #region RenderGeometryRaw
-    
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
     /// <summary>
-    /// Render a list of triangles, optionally using a texture and indices into the
-    /// vertex arrays Color and alpha modulation is done per vertex
-    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -3565,15 +3568,16 @@ public static partial class SDL
     /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color, 
+    public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color,
         int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
     /// <summary>
-    /// Render a list of triangles, optionally using a texture and indices into the
-    /// vertex arrays Color and alpha modulation is done per vertex
-    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -3597,13 +3601,14 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
     /// <summary>
-    /// Render a list of triangles, optionally using a texture and indices into the
-    /// vertex arrays Color and alpha modulation is done per vertex
-    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -3627,13 +3632,14 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
     /// <summary>
-    /// Render a list of triangles, optionally using a texture and indices into the
-    /// vertex arrays Color and alpha modulation is done per vertex
-    /// (<see cref="SetTextureColorMod"/> and <see cref="SetTextureAlphaMod"/> are ignored).
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -3654,7 +3660,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
     /// <seealso cref="SetRenderTextureAddressMode"/>
-    public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, Span<float> xy, 
+    public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, Span<float> xy,
         int xyStride, Span<FColor> color, int colorStride, Span<float> uv, int uvStride,
         int numVertices, Span<TIndex> indices, int numIndices, int sizeIndices) where TIndex : unmanaged
     {
@@ -3681,7 +3687,7 @@ public static partial class SDL
     
     
     #region SetRenderTextureAddressMode
-    
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode);</code>
     /// <summary>
     /// <para>Set the texture addressing mode used in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</para>
@@ -3690,9 +3696,10 @@ public static partial class SDL
     /// <param name="umode">the <see cref="TextureAddressMode"/> to use for horizontal texture
     /// coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</param>
     /// <param name="vmode">the <see cref="TextureAddressMode"/> to use for vertical texture
-    /// coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/></param>
+    /// coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
@@ -3713,8 +3720,9 @@ public static partial class SDL
     /// <param name="vmode">a pointer filled in with the <see cref="TextureAddressMode"/> to use
     /// for vertical texture coordinates in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>, may
     /// be <c>null</c>.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="SetRenderTextureAddressMode"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -4082,9 +4090,149 @@ public static partial class SDL
     /// <seealso cref="SetGPURenderState"/>
     /// <seealso cref="DestroyGPURenderState"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateGPURenderState(IntPtr renderer, IntPtr createinfo); 
-    
-    
+    public static partial IntPtr CreateGPURenderState(IntPtr renderer, IntPtr createinfo);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateSamplerBindings(SDL_GPURenderState *state, int num_sampler_bindings, const SDL_GPUTextureSamplerBinding *sampler_bindings);</code>
+    /// <summary>
+    /// <para>Set sampler bindings variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numSamplerBindings">the number of additional fragment samplers to
+    /// bind.</param>
+    /// <param name="samplerBindings">additional fragment samplers to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetGPURenderState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    /// <seealso cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateSamplerBindings"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateSamplerBindings(IntPtr state, int numSamplerBindings, IntPtr samplerBindings);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateSamplerBindings(SDL_GPURenderState *state, int num_sampler_bindings, const SDL_GPUTextureSamplerBinding *sampler_bindings);</code>
+    /// <summary>
+    /// <para>Set sampler bindings variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numSamplerBindings">the number of additional fragment samplers to
+    /// bind.</param>
+    /// <param name="samplerBindings">additional fragment samplers to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetGPURenderState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    /// <seealso cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateSamplerBindings"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateSamplerBindings(IntPtr state, int numSamplerBindings, GPUTextureSamplerBinding[] samplerBindings);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageTextures(SDL_GPURenderState *state, int num_storage_textures, SDL_GPUTexture *const *storage_textures);</code>
+    /// <summary>
+    /// <para>Set storage textures variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numStorageTextures">the number of storage textures to bind.</param>
+    /// <param name="storageTextures">storage textures to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetGPURenderState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    /// <seealso cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateStorageTextures(IntPtr state, int numStorageTextures, IntPtr storageTextures);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageTextures(SDL_GPURenderState *state, int num_storage_textures, SDL_GPUTexture *const *storage_textures);</code>
+    /// <summary>
+    /// <para>Set storage textures variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numStorageTextures">the number of storage textures to bind.</param>
+    /// <param name="storageTextures">storage textures to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetGPURenderState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    /// <seealso cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateStorageTextures(IntPtr state, int numStorageTextures, IntPtr[] storageTextures);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageBuffers(SDL_GPURenderState *state, int num_storage_buffers, SDL_GPUBuffer *const *storage_buffers);</code>
+    /// <summary>
+    /// <para>Set storage buffers variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numStorageBuffers">the number of storage buffers to bind.</param>
+    /// <param name="storageBuffers">storage buffers to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetGPURenderState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    /// <seealso cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateStorageBuffers(IntPtr state, int numStorageBuffers, IntPtr storageBuffers);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageBuffers(SDL_GPURenderState *state, int num_storage_buffers, SDL_GPUBuffer *const *storage_buffers);</code>
+    /// <summary>
+    /// <para>Set storage buffers variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numStorageBuffers">the number of storage buffers to bind.</param>
+    /// <param name="storageBuffers">storage buffers to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="SetGPURenderState"/>
+    /// <seealso cref="DestroyGPURenderState"/>
+    /// <seealso cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetGPURenderStateStorageBuffers(IntPtr state, int numStorageBuffers, IntPtr[] storageBuffers);
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);</code>
     /// <summary>
     /// <para>Set fragment shader uniform variables in a custom GPU render state.</para>
@@ -4132,5 +4280,35 @@ public static partial class SDL
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void DestroyGPURenderState(IntPtr state); 
+    public static partial void DestroyGPURenderState(IntPtr state);
+
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendRenderer(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// <para>Call this to suspend Render operations on Xbox after receiving the
+    /// <see cref="EventType.DidEnterBackground"/> event.</para>
+    /// <para>Do NOT call any SDL_Render functions after calling this function! This must
+    /// also be called before calling <see cref="GDKSuspendComplete"/>.</para>
+    /// <para>This function MUST be called on the application's render thread.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should suspend operation.</param>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AddEventWatch"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GDKSuspendRenderer(IntPtr renderer);
+
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKResumeRenderer(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// <para>Call this to resume Render operations on Xbox after receiving the
+    /// <see cref="EventType.WillEnterForeground"/> event.</para>
+    /// <para>When resuming, this function MUST be called before calling any other
+    /// SDL_Render functions.</para>
+    /// <para>This function MUST be called on the application's render thread.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should resume operation.</param>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AddEventWatch"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKResumeRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GDKResumeRenderer(IntPtr renderer);
 }
