@@ -61,6 +61,7 @@ public static partial class SDL
     /// sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has AltiVec features or <c>false</c> if not.</returns>
+    /// 
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAltiVec"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

@@ -108,11 +108,19 @@ public static partial class SDL
         /// <summary>
         /// true to enable anisotropic filtering.
         /// </summary>
-        public bool EnableAnisotropy => _enableAnisotropy > 0;
+        public bool EnableAnisotropy
+        {
+            get => _enableAnisotropy != 0;
+            set => _enableAnisotropy = value ? (byte)1 : (byte)0;
+        }
         
         /// <summary>
         /// true to enable comparison against a reference value during lookups.
         /// </summary>
-        public bool EnableCompare => _enableCompare > 0;
+        public bool EnableCompare
+        {
+            get => _enableCompare != 0;
+            set => _enableCompare = value ? (byte)1 : (byte)0;
+        }
     }
 }

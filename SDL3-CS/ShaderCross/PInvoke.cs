@@ -123,7 +123,7 @@ public partial class ShaderCross
     /// <returns>a compiled SDL_GPUShader</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileGraphicsShaderFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileGraphicsShaderFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderResourceInfo resourceInfo, uint props);
+    public static partial IntPtr CompileGraphicsShaderFromSPIRV(IntPtr device, ref SPIRVInfo info, ref GraphicsShaderResourceInfo resourceInfo, uint props);
     
     
     /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_ShaderCross_CompileComputePipelineFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, const SDL_ShaderCross_ComputePipelineMetadata *metadata, SDL_PropertiesID props);</code>
@@ -229,5 +229,5 @@ public partial class ShaderCross
     /// <returns>an SDL_malloc'd buffer containing SPIRV bytecode.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileSPIRVFromHLSL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CompileSPIRVFromHLSL(in HLSLInfo info, out UIntPtr size);
+    public static partial IntPtr CompileSPIRVFromHLSL(ref HLSLInfo info, out UIntPtr size);
 }

@@ -30,38 +30,25 @@ public partial class ShaderCross
     [StructLayout(LayoutKind.Sequential)]
     public struct HLSLDefine
     {
-        private IntPtr name;
-        private IntPtr _value;
+        public IntPtr Name;
+        public IntPtr Value;
 
         /// <summary>
         /// The define name.
         /// </summary>
-        public string Name
+        public string ManagedName
         {
-            get => Marshal.PtrToStringUTF8(name)!;
-            set => name = SDL.StringToPointer(value);
+            get => Marshal.PtrToStringUTF8(Name)!;
+            set => Name = SDL.StringToPointer(value);
         }
 
         /// <summary>
         /// An optional value for the define. Can be NULL.
         /// </summary>
-        public string? Value
+        public string? ManagedValue
         {
-            get => Marshal.PtrToStringUTF8(_value);
-            set => _value = SDL.StringToPointer(value);
-        }
-        
-        public void Dispose()
-        {
-            if (name != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(name);
-                name = IntPtr.Zero;
-            }
-
-            if (_value == IntPtr.Zero) return;
-            Marshal.FreeHGlobal(_value);
-            _value = IntPtr.Zero;
+            get => Marshal.PtrToStringUTF8(Value);
+            set => Value = SDL.StringToPointer(value);
         }
     }
 }

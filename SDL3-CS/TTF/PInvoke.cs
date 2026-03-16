@@ -1172,6 +1172,7 @@ public static partial class TTF
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool MeasureString(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, int maxWidth, out int measuredWidth, out ulong measuredLength);
     
+    #region RenderTextSolid
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
     /// <summary>
@@ -1204,6 +1205,69 @@ public static partial class TTF
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextSolid(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg);
     
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
+    /// <summary>
+    /// <para>Render UTF-8 text at fast quality to a new 8-bit surface.</para>
+    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
+    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
+    /// will be set to the text color.</para>
+    /// <para>This will not word-wrap the string; you'll get a surface with a single line
+    /// of text, as long as the string requires. You can use
+    /// <see cref="RenderTextSolidWrapped"/> instead if you need to wrap the output to
+    /// multiple lines.</para>
+    /// <para>This will not wrap on newline characters.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextShaded"/>,
+    /// TTF_RenderText_Blended, and <see cref="RenderTextLCD"/>.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="text">text to render, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextLCD"/>
+    /// <seealso cref="RenderTextShaded"/>
+    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolidWrapped"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr RenderTextSolid(IntPtr font, IntPtr text, UIntPtr length, SDL.Color fg);
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
+    /// <summary>
+    /// <para>Render UTF-8 text at fast quality to a new 8-bit surface.</para>
+    /// <para>This function will allocate a new 8-bit, palettized surface. The surface's
+    /// 0 pixel will be the colorkey, giving a transparent background. The 1 pixel
+    /// will be set to the text color.</para>
+    /// <para>This will not word-wrap the string; you'll get a surface with a single line
+    /// of text, as long as the string requires. You can use
+    /// <see cref="RenderTextSolidWrapped"/> instead if you need to wrap the output to
+    /// multiple lines.</para>
+    /// <para>This will not wrap on newline characters.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextShaded"/>,
+    /// TTF_RenderText_Blended, and <see cref="RenderTextLCD"/>.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="text">text to render, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextLCD"/>
+    /// <seealso cref="RenderTextShaded"/>
+    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolidWrapped"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static unsafe partial IntPtr RenderTextSolid(IntPtr font, byte* text, UIntPtr length, SDL.Color fg);
+    
+    #endregion
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Solid_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrapLength);</code>
     /// <summary>
@@ -1378,6 +1442,66 @@ public static partial class TTF
     /// <seealso cref="RenderTextSolid"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextBlended(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg);
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Blended(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
+    /// <summary>
+    /// <para>Render UTF-8 text at high quality to a new ARGB surface.</para>
+    /// <para>This function will allocate a new 32-bit, ARGB surface, using alpha
+    /// blending to dither the font with the given color. This function returns the
+    /// new surface, or <c>null</c> if there was an error.</para>
+    /// <para>This will not word-wrap the string; you'll get a surface with a single line
+    /// of text, as long as the string requires. You can use
+    /// <see cref="RenderTextBlendedWrapped"/> instead if you need to wrap the output to
+    /// multiple lines.</para>
+    /// <para>This will not wrap on newline characters.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
+    /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextLCD"/>.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="text">text to render, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <returns>a new 32-bit, ARGB surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderTextBlendedWrapped"/>
+    /// <seealso cref="RenderTextLCD"/>
+    /// <seealso cref="RenderTextShaded"/>
+    /// <seealso cref="RenderTextSolid"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr RenderTextBlended(IntPtr font, IntPtr text, UIntPtr length, SDL.Color fg);
+    
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Blended(TTF_Font *font, const char *text, size_t length, SDL_Color fg);</code>
+    /// <summary>
+    /// <para>Render UTF-8 text at high quality to a new ARGB surface.</para>
+    /// <para>This function will allocate a new 32-bit, ARGB surface, using alpha
+    /// blending to dither the font with the given color. This function returns the
+    /// new surface, or <c>null</c> if there was an error.</para>
+    /// <para>This will not word-wrap the string; you'll get a surface with a single line
+    /// of text, as long as the string requires. You can use
+    /// <see cref="RenderTextBlendedWrapped"/> instead if you need to wrap the output to
+    /// multiple lines.</para>
+    /// <para>This will not wrap on newline characters.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
+    /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextLCD"/>.</para>
+    /// </summary>
+    /// <param name="font">the font to render with.</param>
+    /// <param name="text">text to render, in UTF-8 encoding.</param>
+    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// text.</param>
+    /// <param name="fg">the foreground color for the text.</param>
+    /// <returns>a new 32-bit, ARGB surface, or <c>null</c> if there was an error.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    /// <seealso cref="RenderTextBlendedWrapped"/>
+    /// <seealso cref="RenderTextLCD"/>
+    /// <seealso cref="RenderTextShaded"/>
+    /// <seealso cref="RenderTextSolid"/>
+    [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static unsafe partial IntPtr RenderTextBlended(IntPtr font, byte* text, UIntPtr length, SDL.Color fg);
     
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL TTF_RenderText_Blended_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrap_width);</code>

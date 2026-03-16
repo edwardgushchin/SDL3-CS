@@ -28,39 +28,39 @@ namespace SDL3;
 public partial class ShaderCross
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct HLSLInfo : IDisposable
+    public struct HLSLInfo
     {
-        private IntPtr source;
+        public IntPtr Source;
         
         /// <summary>
         /// The HLSL source code for the shader.
         /// </summary>
-        public string Source
+        public string ManagedSource
         {
-            get => Marshal.PtrToStringUTF8(source)!;
-            set => source = SDL.StringToPointer(value);
+            get => Marshal.PtrToStringUTF8(Source)!;
+            set => Source = SDL.StringToPointer(value);
         }
         
-        private IntPtr entrypoint;
+        public IntPtr Entrypoint;
         
         /// <summary>
         /// The entry point function name for the shader in UTF-8.
         /// </summary>
-        public string Entrypoint
+        public string ManagedEntrypoint
         {
-            get => Marshal.PtrToStringUTF8(entrypoint)!;
-            set => entrypoint = SDL.StringToPointer(value);
+            get => Marshal.PtrToStringUTF8(Entrypoint)!;
+            set => Entrypoint = SDL.StringToPointer(value);
         }
         
-        private IntPtr include_dir;
+        public IntPtr IncludeDir;
         
         /// <summary>
         /// The include directory for shader code. Optional, can be NULL.
         /// </summary>
-        public string? IncludeDir
+        public string? ManagedIncludeDir
         {
-            get => Marshal.PtrToStringUTF8(include_dir);
-            set => include_dir = SDL.StringToPointer(value);
+            get => Marshal.PtrToStringUTF8(IncludeDir);
+            set => IncludeDir = SDL.StringToPointer(value);
         }
         
         /// <summary>
@@ -77,12 +77,5 @@ public partial class ShaderCross
         /// A properties ID for extensions. Should be 0 if no extensions are needed.
         /// </summary>
         public uint Props;
-
-        public void Dispose()
-        {
-            Marshal.FreeHGlobal(source);
-            Marshal.FreeHGlobal(entrypoint);
-            Marshal.FreeHGlobal(include_dir);
-        }
     }
 }
