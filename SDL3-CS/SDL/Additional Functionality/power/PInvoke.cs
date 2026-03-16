@@ -51,9 +51,10 @@ public static partial class SDL
 	/// <param name="percent">a pointer filled in with the percentage of battery life
 	/// left, between 0 and 100, or <c>null</c> to ignore. This will be
 	/// filled in with -1 when we can't determine a value or there
-	/// is no batter</param>
+	/// is no battery</param>
 	/// <returns>the current battery state or <see cref="PowerState.Error"/> on failure;
 	/// call <see cref="GetError"/> for more information.</returns>
+	/// <threadsafety>This function is not thread safe.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPowerInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static partial PowerState GetPowerInfo(out int seconds, out int percent);
