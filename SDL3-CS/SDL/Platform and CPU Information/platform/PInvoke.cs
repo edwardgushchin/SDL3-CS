@@ -44,7 +44,8 @@ public static partial class SDL
     /// </summary>
     /// <returns>the name of the platform. If the correct platform name is not
     /// available, returns a string beginning with the text "Unknown".</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static string GetPlatform()
     {
         var value = SDL_GetPlatform(); 
