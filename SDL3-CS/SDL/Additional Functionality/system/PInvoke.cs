@@ -36,6 +36,7 @@ public partial class SDL
     /// </summary>
     /// <param name="callback">the <see cref="WindowsMessageHook"/> function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
@@ -83,6 +84,7 @@ public partial class SDL
     /// </summary>
     /// <param name="callback">the <see cref="X11EventHook"/> function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetX11EventHook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetX11EventHook(X11EventHook callback, IntPtr userdata);
@@ -97,6 +99,7 @@ public partial class SDL
     /// <param name="priority">the new, Unix-specific, priority value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLinuxThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -114,6 +117,7 @@ public partial class SDL
     /// SCHED_OTHER, etc...).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLinuxThreadPriorityAndPolicy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -142,6 +146,7 @@ public partial class SDL
     /// <param name="callbackParam">a pointer that is passed to <c>callback</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetiOSEventPump"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSAnimationCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -154,7 +159,10 @@ public partial class SDL
     /// <para>Use this function to enable or disable the SDL event pump on Apple iOS.</para>
     /// <para>This function is only available on Apple iOS.</para>
     /// </summary>
-    /// <param name="enabled"></param>
+    /// <param name="enabled"><c>true</c> to enable the event pump, <c>false</c> to disable it.</param>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="SetiOSAnimationCallback"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSEventPump"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetiOSEventPump([MarshalAs(UnmanagedType.I1)] bool enabled);
     
@@ -232,6 +240,7 @@ public partial class SDL
     /// </list>
     /// </summary>
     /// <returns>the Android API level.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidSDKVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAndroidSDKVersion();
@@ -242,6 +251,7 @@ public partial class SDL
     /// Query if the application is running on a Chromebook.
     /// </summary>
     /// <returns><c>true</c> if this is a Chromebook, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsChromebook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -253,6 +263,7 @@ public partial class SDL
     /// Query if the application is running on a Samsung DeX docking station.
     /// </summary>
     /// <returns><c>true</c> if this is a DeX docking station, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsDeXMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -368,10 +379,10 @@ public partial class SDL
     /// respond to a system dialog. If permission has already been granted for a
     /// specific entitlement, the callback will still fire, probably on the current
     /// thread and before this function returns.</para>
-    /// <para>If the request submission fails, this function returns -1 and the callback
-    /// will NOT be called, but this should only happen in catastrophic conditions,
-    /// like memory running out. Normally there will be a yes or no to the request
-    /// through the callback.</para>
+    /// <para>If the request submission fails, this function returns <c>false</c> and the
+    /// <c>callback</c> will NOT be called, but this should only happen in catastrophic
+    /// <c>conditions</c>, like memory running out. Normally there will be a yes or no to
+    /// <c>the request</c> through the callback.</para>
     /// <para>For the <c>permission</c> parameter, choose a value from here:</para>
     /// <para>https://developer.android.com/reference/android/Manifest.permission</para>
     /// </summary>
@@ -433,6 +444,7 @@ public partial class SDL
     /// <para>If SDL can't determine this, it will return false.</para>
     /// </summary>
     /// <returns><c>true</c> if the device is a tablet, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTablet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -445,6 +457,7 @@ public partial class SDL
     /// <para>If SDL can't determine this, it will return false.</para>
     /// </summary>
     /// <returns><c>true</c> if the <c>device</c> is a TV, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
