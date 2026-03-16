@@ -478,7 +478,7 @@ public static partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RunHapticEffect"/>
-    /// <seealso cref="StopHapticEffects"/>
+    /// <seealso cref="StopHapticEffect"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopHapticEffects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool StopHapticEffects(IntPtr haptic);
