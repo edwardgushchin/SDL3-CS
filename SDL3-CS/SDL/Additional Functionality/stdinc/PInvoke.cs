@@ -278,13 +278,15 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);</code>
     /// <summary>
     /// <para>Get the value of a variable in the environment.</para>
+    /// <para>The name of the variable is case sensitive on all platforms.</para>
+    /// <para>This function uses SDL's cached copy of the environment and is thread-safe.</para>
     /// </summary>
     /// <param name="env">the environment to query.</param>
     /// <param name="name">the name of the variable to get.</param>
     /// <returns>a pointer to the value of the variable or <c>null</c> if it can't be
     /// found.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetEnvironment"/>
     /// <seealso cref="CreateEnvironment"/>
     /// <seealso cref="GetEnvironmentVariables"/>
@@ -458,7 +460,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_rand_bits(void);</code>
     /// <summary>
     /// <para>Generate 32 pseudo-random bits.</para>
-    /// <para>You likely want to use <see cref="Rand"/> to get a psuedo-random number instead.</para>
+    /// <para>You likely want to use <see cref="Rand"/> to get a pseudo-random number instead.</para>
     /// <para>There are no guarantees as to the quality of the random sequence produced,
     /// and this should not be used for security (cryptography, passwords) or where
     /// money is on the line (loot-boxes, casinos). There are many random number
@@ -532,7 +534,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_rand_bits_r(Uint64 *state);</code>
     /// <summary>
     /// <para>Generate 32 pseudo-random bits.</para>
-    /// <para>You likely want to use <see cref="RandR"/> to get a psuedo-random number instead.</para>
+    /// <para>You likely want to use <see cref="RandR"/> to get a pseudo-random number instead.</para>
     /// <para>There are no guarantees as to the quality of the random sequence produced,
     /// and this should not be used for security (cryptography, passwords) or where
     /// money is on the line (loot-boxes, casinos). There are many random number
