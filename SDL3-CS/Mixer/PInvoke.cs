@@ -381,8 +381,59 @@ public partial class Mixer
     /// <seealso cref="LoadAudioIO"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_LoadAudioWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr LoadAudioWithProperties(uint props);
-    
-    
+
+
+    /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadAudioNoCopy(MIX_Mixer *mixer, const void *data, size_t datalen, bool free_when_done);</code>
+    /// <summary>
+    /// Load audio for playback from a memory buffer without making a copy.
+    /// <para>When loading audio through most other LoadAudio functions, the data will be
+    /// cached fully in RAM in its original data format, for decoding on-demand.
+    /// This function does most of the same work as those functions, but instead
+    /// uses a buffer of memory provided by the app that it does not make a copy
+    /// of.</para>
+    /// <para>This buffer must live for the entire time the returned MIX_Audio lives, as
+    /// the mixer will access the buffer whenever it needs to mix more data.</para>
+    /// <para>This function is meant to maximize efficiency: if the data is already in
+    /// memory and can remain there, don't copy it. This data can be in any
+    /// supported audio file format (WAV, MP3, etc); it will be decoded on the fly
+    /// while mixing. Unlike <see cref="LoadAudio"/>, there is no 'predecode' option
+    /// offered here, as this is meant to optimize for data that's already in
+    /// memory and intends to exist there for significant time; since predecoding
+    /// would only need the file format data once, upfront, one could simply wrap
+    /// it in <see cref="SDL.CreateIOFromConstMem"/> and pass that to <see cref="LoadAudioIO"/>.</para>
+    /// <para>MIX_Audio objects can be shared between multiple mixers. The <c>mixer</c>
+    /// parameter just suggests the most likely mixer to use this audio in, in case
+    /// some optimization might be applied, but this is not required, and a <c>null</c>
+    /// mixer may be specified.</para>
+    /// <para>If <c>free_when_done</c> is true, SDL_mixer will call <see cref="SDL.Free"/>(<c>data</c>) when the
+    /// returned MIX_Audio is eventually destroyed. This can be useful when the
+    /// data is not static, but rather loaded elsewhere for this specific MIX_Audio
+    /// and simply wants to avoid the extra copy.</para>
+    /// <para>As audio format information is obtained from the file format metadata, this
+    /// isn't useful for raw PCM data; in that case, use <see cref="LoadRawAudioNoCopy"/>
+    /// instead, which offers an SDL_Audiospec.</para>
+    /// <para>Once a MIX_Audio is created, it can be assigned to a MIX_Track with
+    /// <see cref="SetTrackAudio"/>, or played without any management with <see cref="PlayAudio"/>.</para>
+    /// <para>When done with a MIX_Audio, it can be freed with <see cref="DestroyAudio"/>.</para>
+    /// </summary>
+    /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
+    /// <param name="data">the buffer where the audio data lives.</param>
+    /// <param name="datalen">the size, in bytes, of the buffer.</param>
+    /// <param name="free_when_done">if true, <c>data</c> will be given to <see cref="SDL.Free"/> when the
+    /// MIX_Audio is destroyed.</param>
+    /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
+    /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="DestroyAudio"/>
+    /// <seealso cref="SetTrackAudio"/>
+    /// <seealso cref="LoadRawAudioNoCopy"/>
+    /// <seealso cref="LoadAudio"/>
+    /// <seealso cref="LoadAudioIO"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_LoadAudioNoCopy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadAudioNoCopy(IntPtr mixer, IntPtr data, nuint datalen, [MarshalAs(UnmanagedType.I1)] bool free_when_done);
+
+
     /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadRawAudio_IO(MIX_Mixer *mixer, SDL_IOStream *io, const SDL_AudioSpec *spec, bool closeio);</code>
     /// <summary>
     /// Load raw PCM data from an SDL_IOStream.
@@ -457,9 +508,9 @@ public partial class Mixer
     /// playing tracks at once. (But, of course, be careful when being too clever.)</para>
     /// <para> MIX_Audio objects can be shared between multiple mixers. The <c>mixer</c>
     /// parameter just suggests the most likely mixer to use this audio, in case
-    /// some optimization might be applied, but this is not required, and a NULL
+    /// some optimization might be applied, but this is not required, and a <c>null</c>
     /// mixer may be specified.</para>
-    /// <para>If <c>freeWhenDone</c> is true, SDL_mixer will call <c>SDL.Free(data)</c> when the
+    /// <para>If <c>freeWhenDone</c> is true, SDL_mixer will call <see cref="SDL.Free"/>(<c>data</c>) when the
     /// returned MIX_Audio is eventually destroyed. This can be useful when the
     /// data is not static, but rather composed dynamically for this specific
     /// MIX_Audio and simply wants to avoid the extra copy.</para>
