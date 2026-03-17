@@ -47,6 +47,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: edwardgushchin/SDL
+          ref: release-3.4.2
           fetch-depth: 1
           submodules: recursive
           path: SDL
