@@ -49,6 +49,7 @@ public static partial class Mixer
         public const string PlayMaxMillisecondsNumber = "SDL_mixer.play.max_milliseconds";
         public const string PlayStartFrameNumber = "SDL_mixer.play.start_frame";
         public const string PlayStartMillisecondNumber = "SDL_mixer.play.start_millisecond";
+        public const string PlayStartOrderNumber = "SDL_mixer.play.start_order";
         public const string PlayLoopStartFrameNumber = "SDL_mixer.play.Loopstart_frame";
         public const string PlayLoopStartMillisecondNumber = "SDL_mixer.play.Loopstart_millisecond";
         public const string PlayFadeInFramesNumber = "SDL_mixer.play.fade_in_frames";
@@ -56,7 +57,8 @@ public static partial class Mixer
         public const string PlayFadeInStartGainFloat = "SDL_mixer.play.fade_in_start_gain";
         public const string PlayAppendSilenceFramesNumber = "SDL_mixer.play.append_silence_frames";
         public const string PlayAppendSilenceMillisecondsNumber = "SDL_mixer.play.append_silence_milliseconds";
-        
+        public const string PlayHaltWhenExhaustedBoolean = "SDL_mixer.play.halt_when-exhausted";
+
         public const string MixerDeviceNumber = "SDL_mixer.mixer.device";
     }
 }

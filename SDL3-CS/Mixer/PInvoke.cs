@@ -501,7 +501,7 @@ public partial class Mixer
     /// <summary>
     /// Load raw PCM data from a memory buffer without making a copy.
     /// <para>This buffer must live for the entire time the returned MIX_Audio lives, as
-    /// it will access it whenever it needs to mix more data.</para>
+    /// the mixer will access the buffer whenever it needs to mix more data.</para>
     /// <para>This function is meant to maximize efficiency: if the data is already in
     /// memory and can remain there, don't copy it. But it can also lead to some
     /// interesting tricks, like changing the buffer's contents to alter multiple
@@ -678,7 +678,7 @@ public partial class Mixer
     /// <para>A track provides a single source of audio. All currently-playing tracks
     /// will be processed and mixed together to form the final output from the
     /// mixer.</para>
-    /// <para>There are no limits to the number of tracks on may create, beyond running
+    /// <para>There are no limits to the number of tracks one may create, beyond running
     /// out of memory, but in normal practice there are a small number of tracks
     /// that are reused between all loaded audio as appropriate.</para>
     /// <para>Tracks are unique to a specific MIX_Mixer and can't be transferred between
@@ -1381,6 +1381,32 @@ public partial class Mixer
     /// <see cref="Props.PlayAppendSilenceFramesNumber"/> property, but the value is
     /// specified in milliseconds instead of sample frames. If both properties
     /// are specified, the sample frames value is favored. Default 0.</item>
+    /// <item><see cref="Props.PlayHaltWhenExhaustedBoolean"/>: If true, when input is
+    /// completely consumed for the track, the mixer will mark the track as
+    /// stopped (and call any appropriate MIX_TrackStoppedCallback, etc); to play
+    /// more, the track will need to be restarted. If false, the track will just
+    /// not contribute to the mix, but it will not be marked as stopped. There
+    /// may be clever logic tricks this exposes generally, but this property is
+    /// specifically useful when the track's input is an SDL_AudioStream assigned
+    /// via <see cref="SetTrackAudioStream"/>(). Setting this property to true can be
+    /// useful when pushing a complete piece of audio to the stream that has a
+    /// definite ending, as the track will operate like any other audio was
+    /// applied. Setting to false means as new data is added to the stream, the
+    /// mixer will start using it as soon as possible, which is useful when audio
+    /// should play immediately as it drips in: new VoIP packets, etc. Note that
+    /// in this situation, if the audio runs out when needed, there _will_ be
+    /// gaps in the mixed output, so try to buffer enough data to avoid this when
+    /// possible. Note that a track is not consider exhausted until all its loops
+    /// and appended silence have been mixed (and also, that loops don't mean
+    /// anything when the input is an AudioStream). Default true.</item>
+    /// <item><see cref="Props.PlayStartOrderNumber"/>: This is a special-case property that
+    /// most apps can ignore. For mod file formats, start mixing from a specific
+    /// "order" index instead of the start of the file. A value &lt; 0 will cause
+    /// this property to be ignored. If the decoder doesn't support this
+    /// property, it will also be ignored. If this property is _not_ ignored, the
+    /// <see cref="Props.PlayStartFrameNumber"/> and
+    /// <see cref="Props.PlayStartMillisecondNumber"/> properties will be ignored
+    /// instead. Default -1. Since SDL_mixer 3.2.2.</item>
     /// </list>
     /// <para>If this function fails, mixing of this track will not start (or restart, if
     /// it was already started).</para>
@@ -1505,8 +1531,11 @@ public partial class Mixer
     /// than the audio remaining.</para>
     /// <para>Once a track has completed any fadeout and come to a stop, it will call its
     /// <see cref="TrackStoppedCallback"/>, if any. It is legal to assign the track a new
-    /// input and/or restart it during this callback. This function does not
-    /// prevent new play requests from being made.</para>
+    /// input and/or restart it during this callback.</para>
+    /// <para>This function does not prevent new play requests from being made; it's
+    /// legal to use this function to begin fading all playing tracks but then
+    /// start other tracks playing normally while those fade-outs are still in
+    /// progress.</para>
     /// </summary>
     /// <param name="mixer">the mixer on which to stop all tracks.</param>
     /// <param name="fadeOutMs">the number of milliseconds to spend fading out to
@@ -2259,7 +2288,7 @@ public partial class Mixer
     public static partial bool SetPostMixCallback(IntPtr mixer, PostMixCallback cb, IntPtr userdata);
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_Generate(MIX_Mixer *mixer, void *buffer, int buflen);</code>
+    /// <code>extern SDL_DECLSPEC int SDLCALL MIX_Generate(MIX_Mixer *mixer, void *buffer, int buflen);</code>
     /// <summary>
     /// <para>Generate mixer output when not driving an audio device.</para>
     /// <para>SDL_mixer allows the creation of MIX_Mixer objects that are not connected
@@ -2284,18 +2313,26 @@ public partial class Mixer
     /// more audio to play.</para>
     /// <para>This function can not be used with mixers from <see cref="CreateMixerDevice"/>;
     /// those generate audio as needed internally.</para>
+    /// <para>This function returns the number of <c>bytes</c> of real audio mixed, which
+    /// might be less than <c>buflen</c>. While all <c>buflen</c> bytes of <c>buffer</c> will be
+    /// initialized, if available tracks to mix run out, the end of the buffer will
+    /// be initialized with silence; this silence will not be counted in the return
+    /// value, so the caller has the option to identify how much of the buffer has
+    /// legitimate contents vs appended silence. As such, any value &gt;= 0 signifies
+    /// success. A return value of -1 means failure (out of memory, invalid
+    /// parameters, etc).</para>
     /// </summary>
     /// <param name="mixer">the mixer for which to generate more audio.</param>
     /// <param name="buffer">a pointer to a buffer to store audio in.</param>
     /// <param name="buflen">the number of bytes to store in buffer.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns>the number of bytes of mixed audio, discounting appended silence,
+    /// on success, or -1 on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="CreateMixer"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_Generate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool Generate(IntPtr mixer, IntPtr buffer, int buflen);
+    public static partial int Generate(IntPtr mixer, IntPtr buffer, int buflen);
     
     
     /// <code>extern SDL_DECLSPEC MIX_AudioDecoder * SDLCALL MIX_CreateAudioDecoder(const char *path, SDL_PropertiesID props);</code>
