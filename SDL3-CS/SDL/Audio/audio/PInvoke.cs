@@ -642,7 +642,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStreams"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
     public static partial void UnbindAudioStreams([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? streams, int numStreams);
 
 
@@ -657,7 +656,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
     public static partial void UnbindAudioStream(IntPtr stream);
 
 
@@ -972,7 +970,8 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamOutputChannelMap"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamInputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr SetAudioStreamInputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetAudioStreamInputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);</code>
@@ -1019,8 +1018,9 @@ public static partial class SDL
     /// a different thread at the same time, though!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamOutputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr SetAudioStreamOutputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamOutputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])] 
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetAudioStreamOutputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);</code>
