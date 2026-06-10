@@ -510,8 +510,6 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_randf_r(Uint64 *state);</code>
     /// <summary>
     /// <para>Generate a uniform pseudo-random floating point number less than 1.0</para>
-    /// <para>If you want reproducible output, be sure to initialize with <see cref="SRand"/>
-    /// first.</para>
     /// <para>There are no guarantees as to the quality of the random sequence produced,
     /// and this should not be used for security (cryptography, passwords) or where
     /// money is on the line (loot-boxes, casinos). There are many random number
