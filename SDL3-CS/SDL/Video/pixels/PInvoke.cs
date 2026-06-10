@@ -265,7 +265,7 @@ public static partial class SDL
     /// components from pixel formats with less than 8-bits per RGB component
     /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
     /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
-    /// <para>If the surface has no alpha component, the alpha will be returned as 0xff
+    /// <para>If the format has no alpha component, the alpha will be returned as 0xff
     /// (100% opaque).</para>
     /// </summary>
     /// <param name="pixelvalue">a pixel value.</param>
@@ -295,7 +295,7 @@ public static partial class SDL
     /// components from pixel formats with less than 8-bits per RGB component
     /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
     /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
-    /// <para>If the surface has no alpha component, the alpha will be returned as 0xff
+    /// <para>If the format has no alpha component, the alpha will be returned as 0xff
     /// (100% opaque).</para>
     /// </summary>
     /// <param name="pixelvalue">a pixel value.</param>
