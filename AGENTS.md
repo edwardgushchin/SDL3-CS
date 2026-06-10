@@ -4,11 +4,11 @@ These instructions are global defaults for Codex agents across projects. They ap
 
 ## Project-Local Storage Override
 
-For this repository, agent operational materials live inside the worktree and are tracked in Git.
+For this repository, agent operational materials live inside the worktree but must stay ignored by Git.
 
 - Keep `TASKS.md`, `dev-diary/`, `docs/`, and `completed-tasks/` in `G:\Projects\2025\SDL3-CS`.
-- Do not list these paths in `.gitignore`.
-- Stage and commit agent context when it is related to the task being completed.
+- Keep these paths listed in `.gitignore`.
+- Do not stage or commit these operational materials unless the user explicitly asks to change that policy.
 
 ## Precedence
 - A project-local `AGENTS.md` is authoritative for project-specific structure, commands, safety constraints, naming, and documentation rules.
