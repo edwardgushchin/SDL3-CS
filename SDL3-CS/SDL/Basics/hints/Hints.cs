@@ -1082,6 +1082,18 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickDevice = "SDL_JOYSTICK_DEVICE";
         
+        /// <summary>
+        /// <para>A variable containing a list of drum style controllers.</para>
+        /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
+        /// hexadecimal form, e.g.</para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
+        /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
+        /// file will be loaded and interpreted as the value of the variable.</para>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.4.4.</since>
+        public const string JoystickDrumDevices = "SDL_JOYSTICK_DRUM_DEVICES";
+        
         
         /// <summary>
         /// <para>A variable controlling whether enhanced reports should be used for
@@ -1173,6 +1185,18 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string JoystickGameCubeDevicesExcluded = "SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED";
+        
+        /// <summary>
+        /// <para>A variable containing a list of guitar style controllers.</para>
+        /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
+        /// hexadecimal form, e.g.</para>
+        /// <para><c>0xAAAA/0xBBBB,0xCCCC/0xDDDD</c></para>
+        /// <para>The variable can also take the form of <c>"@file"</c>, in which case the named
+        /// file will be loaded and interpreted as the value of the variable.</para>
+        /// </summary>
+        /// <remarks>This hint can be set anytime.</remarks>
+        /// <since>This hint is available since SDL 3.4.4.</since>
+        public const string JoystickGuitarDevices = "SDL_JOYSTICK_GUITAR_DEVICES";
         
         /// <summary>
         /// <para>A variable controlling whether the HIDAPI joystick drivers should be used.</para>
