@@ -1163,6 +1163,22 @@ public static partial class SDL
         public const string JoystickGameInput = "SDL_JOYSTICK_GAMEINPUT";
         
         /// <summary>
+        /// <para>A variable controlling whether GameInput should be used for handling GIP
+        /// devices that require raw report processing, but aren't supported by HIDRAW,
+        /// such as Xbox One Guitars.</para>
+        /// <para>Note that this is only supported with GameInput 3 or newer.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: GameInput is not used to handle raw GIP devices.</item>
+        /// <item><c>"1"</c>: GameInput is used.</item>
+        /// </list>
+        /// <para>The default is <c>"1"</c> when using GameInput 3 or newer, and is <c>"0"</c> otherwise.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before SDL is initialized.</remarks>
+        /// <since>This hint is available since SDL 3.4.4.</since>
+        public const string JoystickGameInputRaw = "SDL_JOYSTICK_GAMEINPUT_RAW";
+        
+        /// <summary>
         /// <para>A variable containing a list of devices known to have a GameCube form
         /// factor.</para>
         /// <para>The format of the string is a comma separated list of USB VID/PID pairs in
