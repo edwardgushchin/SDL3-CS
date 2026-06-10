@@ -2,9 +2,11 @@ using SDL3;
 
 CreateAudioStreamWithNullSpecs nullSpecOverload = SDL.CreateAudioStream;
 CreateAudioStreamWithTypedSpecs typedSpecOverload = SDL.CreateAudioStream;
+IsPhoneDelegate isPhone = SDL.IsPhone;
 
 GC.KeepAlive(nullSpecOverload);
 GC.KeepAlive(typedSpecOverload);
+GC.KeepAlive(isPhone);
 
 if (SDL.Hints.JoystickDrumDevices != "SDL_JOYSTICK_DRUM_DEVICES")
 {
@@ -18,7 +20,10 @@ if (SDL.Hints.JoystickGuitarDevices != "SDL_JOYSTICK_GUITAR_DEVICES")
 
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
+Console.WriteLine("IsPhone binding smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);
 
 delegate IntPtr CreateAudioStreamWithTypedSpecs(in SDL.AudioSpec srcSpec, in SDL.AudioSpec dstSpec);
+
+delegate bool IsPhoneDelegate();

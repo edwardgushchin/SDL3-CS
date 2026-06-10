@@ -438,6 +438,19 @@ public partial class SDL
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SendAndroidMessage(uint command, int param);
     
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsPhone(void);</code>
+    /// <summary>
+    /// <para>Query if the current device is a phone.</para>
+    /// <para>If SDL can't determine this, it will return false.</para>
+    /// </summary>
+    /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsPhone"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool IsPhone();
+    
+    
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTablet(void);</code>
     /// <summary>
     /// <para>Query if the current device is a tablet.</para>
