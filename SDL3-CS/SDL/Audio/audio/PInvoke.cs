@@ -679,14 +679,43 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
-    /// Create a new audio stream.
+    /// <para>Create a new audio stream.</para>
+    /// <para>Note that <c>src_spec</c> or <c>dst_spec</c> may be <c>null</c>, but any attempts to put or
+    /// get data from an audio stream will fail until it has valid specs assigned
+    /// to both ends of the stream. Specs can be assigned later through
+    /// <see cref="SetAudioStreamFormat"/>, or binding the stream to an audio device (which
+    /// will set the format of only the input or output, depending on what kind of
+    /// device the stream was bound to).</para>
+    /// </summary>
+    /// <param name="srcSpec">the format details of the input audio. May be <c>null</c>.</param>
+    /// <param name="dstSpec">the format details of the output audio. May be <c>null</c>.</param>
+    /// <returns>a new audio stream on success or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
+    /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
+    /// <seealso cref="GetAudioStreamAvailable"/>
+    /// <seealso cref="FlushAudioStream"/>
+    /// <seealso cref="ClearAudioStream"/>
+    /// <seealso cref="SetAudioStreamFormat"/>
+    /// <seealso cref="DestroyAudioStream"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr CreateAudioStream(IntPtr srcSpec, IntPtr dstSpec);
+    
+    
+    /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
+    /// <summary>
+    /// <para>Create a new audio stream.</para>
+    /// <para>Use <see cref="CreateAudioStream(nint, nint)"/> when either audio spec should be <c>null</c>.</para>
     /// </summary>
     /// <param name="srcSpec">the format details of the input audio.</param>
     /// <param name="dstSpec">the format details of the output audio.</param>
     /// <returns>a new audio stream on success or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateAudioStream(nint, nint)"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
@@ -1515,7 +1544,7 @@ public static partial class SDL
     /// <param name="stream">the audio stream to destroy.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateAudioStream"/>
+    /// <seealso cref="CreateAudioStream(nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyAudioStream(IntPtr stream);
 
