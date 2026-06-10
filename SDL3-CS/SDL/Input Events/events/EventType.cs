@@ -223,7 +223,7 @@ public static partial class SDL
         WindowHitTest,
         
         /// <summary>
-        /// The ICC profile of the window's display has changed
+        /// The window's ICC profile has changed
         /// </summary>
         WindowICCProfChanged,
         
