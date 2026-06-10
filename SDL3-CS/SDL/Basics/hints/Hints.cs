@@ -324,6 +324,10 @@ public static partial class SDL
         /// <item>"Movie" - Music or sound with dialog</item>
         /// <item>"Media" - Music or sound without dialog</item>
         /// </list>
+        /// <para>Android's AAudio target supports this hint as of SDL 3.4.4. Android does
+        /// not support the exact same options as WASAPI, but for portability, will
+        /// attempt to map these same strings to the <c>aaudio_usage_t</c> constants. For
+        /// example, <c>"Movie"</c> and <c>"Media"</c> will both map to <c>AAUDIO_USAGE_MEDIA</c>, etc.</para>
         /// <para>If your application applies its own echo cancellation, gain control, and
         /// noise reduction it should also set <see cref="Hints.AudioDeviceRawStream"/>.</para>
         /// </summary>
