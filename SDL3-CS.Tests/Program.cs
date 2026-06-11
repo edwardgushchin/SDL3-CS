@@ -140,6 +140,16 @@ if (capSenseUnion.GCapSense.Type != SDL.EventType.GamepadCapSenseTouch)
     throw new InvalidOperationException("Unexpected gamepad cap sense union field behavior.");
 }
 
+if ((int)SDL.GamepadType.Steam != (int)SDL.GamepadType.GameCube + 1)
+{
+    throw new InvalidOperationException("Unexpected Steam gamepad type value.");
+}
+
+if ((int)SDL.GamepadType.Count != (int)SDL.GamepadType.Steam + 1)
+{
+    throw new InvalidOperationException("Unexpected gamepad type count after Steam insertion.");
+}
+
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
@@ -154,6 +164,7 @@ Console.WriteLine("SVE2 CPU binding smoke test passed.");
 Console.WriteLine("JPEG surface loader binding smoke test passed.");
 Console.WriteLine("CSS system cursor enum smoke test passed.");
 Console.WriteLine("Gamepad cap sense API smoke test passed.");
+Console.WriteLine("Steam gamepad type smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);
 
