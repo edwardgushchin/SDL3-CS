@@ -2007,10 +2007,12 @@ public partial class SDL
     /// automatically be submitted for presentation when the command buffer is
     /// submitted. The swapchain texture should only be referenced by the command
     /// buffer used to acquire it.</para>
-    /// <para>This function will fill the swapchain texture handle with NULL if too many
-    /// frames are in flight. This is not an error. This NULL pointer should not be
-    /// passed back into SDL. Instead, it should be considered as an indication to
-    /// wait until the swapchain is available.</para>
+    /// <para>If too many frames are in flight, this function will fill the swapchain
+    /// texture handle with <c>null</c> and return <c>true</c>. This is not an error. This <c>null</c>
+    /// pointer should not be passed back into SDL. Instead, it should be
+    /// considered as an indication to wait.</para>
+    /// <para>In VSYNC present mode (which is the default) this function may block on
+    /// vblank.</para>
     /// <para>If you use this function, it is possible to create a situation where many
     /// command buffers are allocated while the rendering context waits for the GPU
     /// to catch up, which will cause memory usage to grow. You should use
@@ -2048,7 +2050,8 @@ public partial class SDL
     
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitForGPUSwapchain(SDL_GPUDevice *device, SDL_Window *window);</code>
     /// <summary>
-    /// <para>Blocks the thread until a swapchain texture is available to be acquired.</para>
+    /// <para>Blocks the thread until all presenting command buffers are finished
+    /// executing.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="window">a window that has been claimed.</param>
