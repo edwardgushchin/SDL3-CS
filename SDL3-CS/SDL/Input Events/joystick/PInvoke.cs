@@ -28,7 +28,7 @@ namespace SDL3;
 
 public static partial class SDL
 {
-	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_LockJoysticks(void) SDL_ACQUIRE(SDL_joystick_lock);</code>
+	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_LockJoysticks(void) SDL_ACQUIRE(SDL_event_lock);</code>
 	/// <summary>
 	/// <para>Locking for atomic access to the joystick API.</para>
 	/// <para>The SDL joystick functions are thread-safe, however you can lock the
@@ -42,7 +42,7 @@ public static partial class SDL
 	public static partial void LockJoysticks();
 	
 	
-	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockJoysticks(void) SDL_ACQUIRE(SDL_joystick_lock);</code>
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockJoysticks(void) SDL_TRY_ACQUIRE(true, SDL_event_lock);</code>
 	/// <summary>
 	/// <para>Locking for atomic access to the joystick API.</para>
 	/// <para>The SDL joystick functions are thread-safe, however you can lock the
@@ -57,7 +57,7 @@ public static partial class SDL
 	public static partial bool TryLockJoysticks();
 	
 	
-	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockJoysticks(void) SDL_RELEASE(SDL_joystick_lock);</code>
+	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockJoysticks(void) SDL_RELEASE(SDL_event_lock);</code>
 	/// <summary>
 	/// Unlocking for atomic access to the joystick API.
 	/// </summary>
