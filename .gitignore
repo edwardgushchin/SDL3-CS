@@ -3,14 +3,11 @@
 bin/
 obj/
 runtimes/
+native-forks/
+artifacts/
 .agents/
 TASKS.md
 dev-diary/
 docs/
 completed-tasks/
 SDL3-CS.sln.DotSettings.user
-
-# Qwen Code agent files
-.agentic/
-.qwen/
-QWEN.md
