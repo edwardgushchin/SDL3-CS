@@ -3,12 +3,14 @@ using SDL3;
 CreateAudioStreamWithNullSpecs nullSpecOverload = SDL.CreateAudioStream;
 CreateAudioStreamWithTypedSpecs typedSpecOverload = SDL.CreateAudioStream;
 IsPhoneDelegate isPhone = SDL.IsPhone;
+HasSVE2Delegate hasSVE2 = SDL.HasSVE2;
 LoadJPGIODelegate loadJPGIO = SDL.LoadJPGIO;
 LoadJPGDelegate loadJPG = SDL.LoadJPG;
 
 GC.KeepAlive(nullSpecOverload);
 GC.KeepAlive(typedSpecOverload);
 GC.KeepAlive(isPhone);
+GC.KeepAlive(hasSVE2);
 GC.KeepAlive(loadJPGIO);
 GC.KeepAlive(loadJPG);
 
@@ -100,6 +102,7 @@ Console.WriteLine("X11 XSync hint constant smoke test passed.");
 Console.WriteLine("visionOS curvature window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
+Console.WriteLine("SVE2 CPU binding smoke test passed.");
 Console.WriteLine("JPEG surface loader binding smoke test passed.");
 Console.WriteLine("CSS system cursor enum smoke test passed.");
 
@@ -108,6 +111,8 @@ delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);
 delegate IntPtr CreateAudioStreamWithTypedSpecs(in SDL.AudioSpec srcSpec, in SDL.AudioSpec dstSpec);
 
 delegate bool IsPhoneDelegate();
+
+delegate bool HasSVE2Delegate();
 
 delegate IntPtr LoadJPGIODelegate(IntPtr src, bool closeio);
 
