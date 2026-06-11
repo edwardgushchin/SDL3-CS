@@ -3318,9 +3318,8 @@ public static partial class SDL
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
         /// <item><c>"aspect"</c> - Video modes will be displayed scaled, in their proper aspect
-        /// ratio, with black bars.</item>
-        /// <item><c>"stretch"</c> - Video modes will be scaled to fill the entire display.
-        /// (default)</item>
+        /// ratio, with black bars. (default)</item>
+        /// <item><c>"stretch"</c> - Video modes will be scaled to fill the entire display.</item>
         /// <item><c>"none"</c> - Video modes will be displayed as 1:1 with no scaling.</item>
         /// </list>
         /// </summary>
