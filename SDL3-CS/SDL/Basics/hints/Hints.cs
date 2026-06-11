@@ -3398,6 +3398,30 @@ public static partial class SDL
         public const string VideoWinD3Dcompiler = "SDL_VIDEO_WIN_D3DCOMPILER";
         
         /// <summary>
+        /// <para>A variable controlling whether the X Synchronization Extension is enabled.</para>
+        /// <para>If set, this can result in smoother window resizing when rendering using
+        /// OpenGL, however, there are some conditions:</para>
+        /// <list type="bullet">
+        /// <item>It is only activated on windows created with the <c>SDL_WINDOW_OPENGL</c> flag
+        /// (windows using an SDL OpenGL renderer have this automatically set).</item>
+        /// <item>When activated, presentation must be done with <c>SDL_GL_SwapWindow()</c>
+        /// (<c>SDL_RenderPresent()</c> calls this internally for OpenGL renderers as
+        /// well).</item>
+        /// </list>
+        /// <para>Enabling this and presenting via an external mechanism will result in sync
+        /// requests not being acked, and hangs and other odd window behavior may
+        /// result.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: The X Synchronization Extension is disabled. (default)</item>
+        /// <item><c>"1"</c>: The X Synchronization Extension is enabled.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before creating a window.</remarks>
+        /// <since>This hint is available since SDL 3.4.10.</since>
+        public const string VideoX11EnableXsyncExt = "SDL_VIDEO_X11_ENABLE_XSYNC_EXT";
+
+        /// <summary>
         /// A variable controlling whether SDL should call XSelectInput() to enable
         /// input events on X11 windows wrapped by SDL windows.
         /// <para>The variable can be set to the following values:</para>
