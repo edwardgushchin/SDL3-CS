@@ -3,10 +3,14 @@ using SDL3;
 CreateAudioStreamWithNullSpecs nullSpecOverload = SDL.CreateAudioStream;
 CreateAudioStreamWithTypedSpecs typedSpecOverload = SDL.CreateAudioStream;
 IsPhoneDelegate isPhone = SDL.IsPhone;
+LoadJPGIODelegate loadJPGIO = SDL.LoadJPGIO;
+LoadJPGDelegate loadJPG = SDL.LoadJPG;
 
 GC.KeepAlive(nullSpecOverload);
 GC.KeepAlive(typedSpecOverload);
 GC.KeepAlive(isPhone);
+GC.KeepAlive(loadJPGIO);
+GC.KeepAlive(loadJPG);
 
 if (SDL.Hints.JoystickDrumDevices != "SDL_JOYSTICK_DRUM_DEVICES")
 {
@@ -81,9 +85,14 @@ Console.WriteLine("X11 XSync hint constant smoke test passed.");
 Console.WriteLine("visionOS curvature window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
+Console.WriteLine("JPEG surface loader binding smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);
 
 delegate IntPtr CreateAudioStreamWithTypedSpecs(in SDL.AudioSpec srcSpec, in SDL.AudioSpec dstSpec);
 
 delegate bool IsPhoneDelegate();
+
+delegate IntPtr LoadJPGIODelegate(IntPtr src, bool closeio);
+
+delegate IntPtr LoadJPGDelegate(string file);

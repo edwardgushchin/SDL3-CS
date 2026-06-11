@@ -368,7 +368,7 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadSurface_IO(SDL_IOStream *src, bool closeio);</code>
     /// <summary>
-    /// <para>Load a BMP or PNG image from a seekable SDL data stream.</para>
+    /// <para>Load a BMP, PNG or JPEG image from a seekable SDL data stream.</para>
     /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
@@ -387,7 +387,7 @@ public static partial class SDL
     
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadSurface(const char *file);</code>
     /// <summary>
-    /// Load a BMP or PNG image from a file.
+    /// Load a BMP, PNG or JPEG image from a file.
     /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
@@ -568,6 +568,48 @@ public static partial class SDL
     public static partial bool SavePNG(IntPtr surface, [MarshalAs(UnmanagedType.LPUTF8Str)] string file);
     
     
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadJPG_IO(SDL_IOStream *src, bool closeio);</code>
+    /// <summary>
+    /// Load a JPEG image from a seekable SDL data stream.
+    /// <para>This is intended as a convenience function for loading images from trusted
+    /// sources. If you want to load arbitrary images you should use libjpeg or
+    /// another image loading library designed with security in mind.</para>
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="src">the data stream for the surface.</param>
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
+    /// in the case of an error.</param>
+    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadJPG"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadJPG_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadJPGIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
+
+
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadJPG(const char *file);</code>
+    /// <summary>
+    /// Load a JPEG image from a file.
+    /// <para>This is intended as a convenience function for loading images from trusted
+    /// sources. If you want to load arbitrary images you should use libjpeg or
+    /// another image loading library designed with security in mind.</para>
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="file">the JPG file to load.</param>
+    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadJPGIO"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadJPG"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr LoadJPG([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);</code>
     /// <summary>
     /// <para>Set the RLE acceleration hint for a surface.</para>
