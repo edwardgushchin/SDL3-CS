@@ -5,6 +5,9 @@ CreateAudioStreamWithTypedSpecs typedSpecOverload = SDL.CreateAudioStream;
 SetAudioStreamFormatWithNullSpecs setAudioStreamFormatNull = SDL.SetAudioStreamFormat;
 SetAudioStreamFormatWithTypedSpecs setAudioStreamFormatTyped = SDL.SetAudioStreamFormat;
 AlignedAllocZeroDelegate alignedAllocZero = SDL.AlignedAllocZero;
+WcstoulDelegate wcstoul = SDL.Wcstoul;
+WcstollDelegate wcstoll = SDL.Wcstoll;
+WcstoullDelegate wcstoull = SDL.Wcstoull;
 IsPhoneDelegate isPhone = SDL.IsPhone;
 HasSVE2Delegate hasSVE2 = SDL.HasSVE2;
 LoadJPGIODelegate loadJPGIO = SDL.LoadJPGIO;
@@ -17,6 +20,9 @@ GC.KeepAlive(typedSpecOverload);
 GC.KeepAlive(setAudioStreamFormatNull);
 GC.KeepAlive(setAudioStreamFormatTyped);
 GC.KeepAlive(alignedAllocZero);
+GC.KeepAlive(wcstoul);
+GC.KeepAlive(wcstoll);
+GC.KeepAlive(wcstoull);
 GC.KeepAlive(isPhone);
 GC.KeepAlive(hasSVE2);
 GC.KeepAlive(loadJPGIO);
@@ -159,6 +165,7 @@ if ((int)SDL.GamepadType.Count != (int)SDL.GamepadType.Steam + 1)
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("SetAudioStreamFormat overload smoke test passed.");
 Console.WriteLine("AlignedAllocZero binding smoke test passed.");
+Console.WriteLine("Wide-char conversion binding smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
 Console.WriteLine("DOS framebuffer hint constant smoke test passed.");
@@ -183,6 +190,12 @@ delegate bool SetAudioStreamFormatWithNullSpecs(IntPtr stream, IntPtr srcSpec, I
 delegate bool SetAudioStreamFormatWithTypedSpecs(IntPtr stream, in SDL.AudioSpec srcSpec, in SDL.AudioSpec dstSpec);
 
 delegate IntPtr AlignedAllocZeroDelegate(UIntPtr alignment, UIntPtr size);
+
+delegate System.Runtime.InteropServices.CULong WcstoulDelegate(string str, IntPtr endp, int @base);
+
+delegate long WcstollDelegate(string str, IntPtr endp, int @base);
+
+delegate ulong WcstoullDelegate(string str, IntPtr endp, int @base);
 
 delegate bool IsPhoneDelegate();
 
