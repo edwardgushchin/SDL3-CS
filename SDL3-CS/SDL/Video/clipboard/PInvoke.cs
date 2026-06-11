@@ -147,16 +147,16 @@ public static partial class SDL
     public static partial bool HasPrimarySelectionText();
     
     
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetClipboardData(SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char **mime_types, size_t num_mime_types);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetClipboardData(SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char *const *mime_types, size_t num_mime_types);</code>
     /// <summary>
     /// <para>Offer clipboard data to the OS.</para>
     /// <para>Tell the operating system that the application is offering clipboard data
-    /// for each of the proivded mime-types. Once another application requests the
-    /// data the callback function will be called allowing it to generate and
+    /// for each of the provided mime-types. Once another application requests the
+    /// data the callback function will be called, allowing it to generate and
     /// respond with the data for the requested mime-type.</para>
     /// <para>The size of text data does not include any terminator, and the text does
     /// not need to be null-terminated (e.g., you can directly copy a portion of a
-    /// document)</para>
+    /// document).</para>
     /// </summary>
     /// <param name="callback">a function pointer to the function that provides the
     /// clipboard data.</param>
