@@ -550,6 +550,7 @@ public static partial class SDL
         /// <item><c>"avx512f";</c></item>
         /// <item><c>"arm-simd";</c></item>
         /// <item><c>"neon";</c></item>
+        /// <item><c>"sve2"</c></item>
         /// <item><c>"lsx";</c></item>
         /// <item><c>"lasx";</c></item>
         /// </list>
