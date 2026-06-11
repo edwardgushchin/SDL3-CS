@@ -8,6 +8,10 @@ AlignedAllocZeroDelegate alignedAllocZero = SDL.AlignedAllocZero;
 WcstoulDelegate wcstoul = SDL.Wcstoul;
 WcstollDelegate wcstoll = SDL.Wcstoll;
 WcstoullDelegate wcstoull = SDL.Wcstoull;
+RequestNotificationPermissionDelegate requestNotificationPermission = SDL.RequestNotificationPermission;
+ShowNotificationWithPropertiesDelegate showNotificationWithProperties = SDL.ShowNotificationWithProperties;
+ShowNotificationDelegate showNotification = SDL.ShowNotification;
+RemoveNotificationDelegate removeNotification = SDL.RemoveNotification;
 IsPhoneDelegate isPhone = SDL.IsPhone;
 HasSVE2Delegate hasSVE2 = SDL.HasSVE2;
 LoadJPGIODelegate loadJPGIO = SDL.LoadJPGIO;
@@ -23,6 +27,10 @@ GC.KeepAlive(alignedAllocZero);
 GC.KeepAlive(wcstoul);
 GC.KeepAlive(wcstoll);
 GC.KeepAlive(wcstoull);
+GC.KeepAlive(requestNotificationPermission);
+GC.KeepAlive(showNotificationWithProperties);
+GC.KeepAlive(showNotification);
+GC.KeepAlive(removeNotification);
 GC.KeepAlive(isPhone);
 GC.KeepAlive(hasSVE2);
 GC.KeepAlive(loadJPGIO);
@@ -105,6 +113,84 @@ if (SDL.Props.TextInputMaxLengthNumber != "SDL.textinput.max_length")
     throw new InvalidOperationException("Unexpected TextInputMaxLengthNumber property value.");
 }
 
+if ((int)SDL.NotificationPriority.Low != -1)
+{
+    throw new InvalidOperationException("Unexpected Low notification priority value.");
+}
+
+if ((int)SDL.NotificationPriority.Critical != 2)
+{
+    throw new InvalidOperationException("Unexpected Critical notification priority value.");
+}
+
+if ((int)SDL.NotificationActionType.Button != 1)
+{
+    throw new InvalidOperationException("Unexpected Button notification action type value.");
+}
+
+if (System.Runtime.InteropServices.Marshal.SizeOf<SDL.NotificationAction>() != 128)
+{
+    throw new InvalidOperationException("Unexpected NotificationAction ABI size.");
+}
+
+SDL.NotificationAction notificationAction = default;
+notificationAction.Type = SDL.NotificationActionType.Button;
+notificationAction.Button.Type = SDL.NotificationActionType.Button;
+if (notificationAction.Button.Type != SDL.NotificationActionType.Button)
+{
+    throw new InvalidOperationException("Unexpected NotificationAction union field behavior.");
+}
+
+if (SDL.Props.GlobalNotificationHeaderIconString != "SDL.notification.header_icon")
+{
+    throw new InvalidOperationException("Unexpected GlobalNotificationHeaderIconString property value.");
+}
+
+if (SDL.Props.NotificationActionsPointer != "SDL.notification.actions")
+{
+    throw new InvalidOperationException("Unexpected NotificationActionsPointer property value.");
+}
+
+if (SDL.Props.NotificationActionCountNumber != "SDL.notification.action_count")
+{
+    throw new InvalidOperationException("Unexpected NotificationActionCountNumber property value.");
+}
+
+if (SDL.Props.NotificationImagePointer != "SDL.notification.image")
+{
+    throw new InvalidOperationException("Unexpected NotificationImagePointer property value.");
+}
+
+if (SDL.Props.NotificationMessageString != "SDL.notification.message")
+{
+    throw new InvalidOperationException("Unexpected NotificationMessageString property value.");
+}
+
+if (SDL.Props.NotificationPriorityNumber != "SDL.notification.priority")
+{
+    throw new InvalidOperationException("Unexpected NotificationPriorityNumber property value.");
+}
+
+if (SDL.Props.NotificationReplacesNumber != "SDL.notification.replaces")
+{
+    throw new InvalidOperationException("Unexpected NotificationReplacesNumber property value.");
+}
+
+if (SDL.Props.NotificationSoundString != "SDL.notification.sound")
+{
+    throw new InvalidOperationException("Unexpected NotificationSoundString property value.");
+}
+
+if (SDL.Props.NotificationTransientBoolean != "SDL.notification.transient")
+{
+    throw new InvalidOperationException("Unexpected NotificationTransientBoolean property value.");
+}
+
+if (SDL.Props.NotificationTitleString != "SDL.notification.title")
+{
+    throw new InvalidOperationException("Unexpected NotificationTitleString property value.");
+}
+
 if ((int)SDL.SystemCursor.ContextMenu != 20)
 {
     throw new InvalidOperationException("Unexpected ContextMenu cursor value.");
@@ -177,6 +263,7 @@ Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
 Console.WriteLine("SVE2 CPU binding smoke test passed.");
 Console.WriteLine("JPEG surface loader binding smoke test passed.");
+Console.WriteLine("Notification API binding smoke test passed.");
 Console.WriteLine("CSS system cursor enum smoke test passed.");
 Console.WriteLine("Gamepad cap sense API smoke test passed.");
 Console.WriteLine("Steam gamepad type smoke test passed.");
@@ -196,6 +283,14 @@ delegate System.Runtime.InteropServices.CULong WcstoulDelegate(string str, IntPt
 delegate long WcstollDelegate(string str, IntPtr endp, int @base);
 
 delegate ulong WcstoullDelegate(string str, IntPtr endp, int @base);
+
+delegate bool RequestNotificationPermissionDelegate();
+
+delegate uint ShowNotificationWithPropertiesDelegate(uint props);
+
+delegate uint ShowNotificationDelegate(string title, string? message, IntPtr image, IntPtr actions, int numActions);
+
+delegate bool RemoveNotificationDelegate(uint notification);
 
 delegate bool IsPhoneDelegate();
 
