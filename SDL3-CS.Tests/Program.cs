@@ -231,11 +231,49 @@ if ((uint)SDL.EventType.GamepadCapSenseRelease != (uint)SDL.EventType.GamepadCap
     throw new InvalidOperationException("Unexpected GamepadCapSenseRelease event value.");
 }
 
+if ((uint)SDL.EventType.NotificationActionInvoked != 0x1500)
+{
+    throw new InvalidOperationException("Unexpected NotificationActionInvoked event value.");
+}
+
+if (System.Runtime.InteropServices.Marshal.SizeOf<SDL.NotificationEvent>() != (IntPtr.Size == 8 ? 32 : 24))
+{
+    throw new InvalidOperationException("Unexpected NotificationEvent ABI size.");
+}
+
+if (System.Runtime.InteropServices.Marshal.OffsetOf<SDL.NotificationEvent>(nameof(SDL.NotificationEvent.Timestamp)).ToInt32() != 8)
+{
+    throw new InvalidOperationException("Unexpected NotificationEvent.Timestamp offset.");
+}
+
+if (System.Runtime.InteropServices.Marshal.OffsetOf<SDL.NotificationEvent>(nameof(SDL.NotificationEvent.Which)).ToInt32() != 16)
+{
+    throw new InvalidOperationException("Unexpected NotificationEvent.Which offset.");
+}
+
+if (System.Runtime.InteropServices.Marshal.OffsetOf<SDL.NotificationEvent>(nameof(SDL.NotificationEvent.ActionID)).ToInt32() != (IntPtr.Size == 8 ? 24 : 20))
+{
+    throw new InvalidOperationException("Unexpected NotificationEvent.ActionID offset.");
+}
+
 SDL.Event capSenseUnion = default;
 capSenseUnion.GCapSense.Type = SDL.EventType.GamepadCapSenseTouch;
 if (capSenseUnion.GCapSense.Type != SDL.EventType.GamepadCapSenseTouch)
 {
     throw new InvalidOperationException("Unexpected gamepad cap sense union field behavior.");
+}
+
+SDL.Event notificationUnion = default;
+notificationUnion.Notification.Type = SDL.EventType.NotificationActionInvoked;
+notificationUnion.Notification.Which = 42;
+if (notificationUnion.Type != (uint)SDL.EventType.NotificationActionInvoked)
+{
+    throw new InvalidOperationException("Unexpected notification union type field behavior.");
+}
+
+if (notificationUnion.Notification.Which != 42)
+{
+    throw new InvalidOperationException("Unexpected notification union data field behavior.");
 }
 
 if ((int)SDL.GamepadType.Steam != (int)SDL.GamepadType.GameCube + 1)
@@ -266,6 +304,7 @@ Console.WriteLine("JPEG surface loader binding smoke test passed.");
 Console.WriteLine("Notification API binding smoke test passed.");
 Console.WriteLine("CSS system cursor enum smoke test passed.");
 Console.WriteLine("Gamepad cap sense API smoke test passed.");
+Console.WriteLine("Notification event smoke test passed.");
 Console.WriteLine("Steam gamepad type smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);

@@ -237,6 +237,11 @@ public static partial class SDL
         /// Clipboard event data
         /// </summary>
         [FieldOffset(0)] public ClipboardEvent Clipboard;
+
+        /// <summary>
+        /// Notification event data
+        /// </summary>
+        [FieldOffset(0)] public NotificationEvent Notification;
         
         /// <summary>
         /// This is necessary for ABI compatibility between Visual C++ and GCC.

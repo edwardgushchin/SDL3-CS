@@ -628,6 +628,13 @@ public static partial class SDL
         CameraDeviceDenied,
         #endregion
 
+        #region Notification events
+        /// <summary>
+        /// A user response to a system notification was received.
+        /// </summary>
+        NotificationActionInvoked = 0x1500,
+        #endregion
+
         #region Render events
         /// <summary>
         /// The render targets have been reset and their contents need to be updated
