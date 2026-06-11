@@ -43,7 +43,12 @@
         <None Include="../LICENSE" Pack="true" PackagePath="\"/>
         <None Include="../logo.png" Pack="true" Visible="false" PackagePath="\"/>
         <None Include="README.md" Pack="true" Visible="true" PackagePath="\"/>
+        <None Include="buildTransitive\SDL3-CS.Native.Shadercross.targets" Pack="true" PackagePath="buildTransitive\"/>
 
+        <None Include="lib\win-x86\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\win-x86\native\</PackagePath>
+        </None>
         <None Include="lib\win-x64\*">
             <Pack>True</Pack>
             <PackagePath>runtimes\win-x64\native\</PackagePath>
@@ -67,6 +72,46 @@
         <None Include="lib\osx-arm64\*">
             <Pack>True</Pack>
             <PackagePath>runtimes\osx-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\android-arm\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\android-arm\native\</PackagePath>
+        </None>
+        <None Include="lib\android-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\android-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\android-x86\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\android-x86\native\</PackagePath>
+        </None>
+        <None Include="lib\android-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\android-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\ios-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\ios-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\iossimulator-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\iossimulator-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\iossimulator-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\iossimulator-x64\native\</PackagePath>
+        </None>
+        <None Include="lib\tvos-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\tvos-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\tvossimulator-arm64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\tvossimulator-arm64\native\</PackagePath>
+        </None>
+        <None Include="lib\tvossimulator-x64\*">
+            <Pack>True</Pack>
+            <PackagePath>runtimes\tvossimulator-x64\native\</PackagePath>
         </None>
     </ItemGroup>
 </Project>

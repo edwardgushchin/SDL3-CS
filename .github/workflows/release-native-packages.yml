@@ -1,0 +1,450 @@
+name: Release native packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_revision:
+        description: Numeric SDL3-CS package revision appended to native versions.
+        required: true
+        default: "1"
+      build_parallel_level:
+        description: CMake build parallel level for constrained hosted runners.
+        required: true
+        default: "2"
+      require_upstream_current:
+        description: Fail assembly when forks are not current with libsdl-org upstream main.
+        required: true
+        type: boolean
+        default: false
+      publish_github:
+        description: Create the GitHub release after package assembly.
+        required: true
+        type: boolean
+        default: false
+      publish_nuget:
+        description: Push packages to NuGet after package assembly.
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+
+jobs:
+  plan:
+    name: Plan native matrix
+    runs-on: ubuntu-latest
+    outputs:
+      native_matrix: ${{ steps.native-matrix.outputs.native_matrix }}
+      bundle_count: ${{ steps.native-matrix.outputs.bundle_count }}
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@v4
+
+      - name: Build matrix from release manifest
+        id: native-matrix
+        shell: pwsh
+        run: |
+          $manifest = Get-Content -LiteralPath 'eng/release/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
+          $include = @($manifest.rids | ForEach-Object {
+            [ordered]@{
+              rid = $_.rid
+              runner = $_.runner
+              allow_cross_compile = ($_.os -eq 'windows' -and $_.arch -eq 'x86')
+            }
+          })
+          $matrix = @{ include = $include } | ConvertTo-Json -Depth 8 -Compress
+          "native_matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "bundle_count=$($include.Count)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+  native:
+    name: Native ${{ matrix.rid }}
+    needs: plan
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.plan.outputs.native_matrix) }}
+
+    env:
+      SDL3CS_NATIVE_BUILD_PARALLEL_LEVEL: ${{ inputs.build_parallel_level }}
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+            8.0.x
+            7.0.x
+
+      - name: Install Windows native tools
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $missing = @()
+          if (-not (Get-Command nasm -ErrorAction SilentlyContinue)) { $missing += 'nasm' }
+          if (-not (Get-Command perl -ErrorAction SilentlyContinue)) { $missing += 'strawberryperl' }
+          if ($missing.Count -gt 0) {
+            if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
+              throw "Chocolatey is required to install missing Windows tools: $($missing -join ', ')"
+            }
+            choco install @missing -y --no-progress
+          }
+          foreach ($path in @('C:\Program Files\NASM', 'C:\Strawberry\perl\bin')) {
+            if (Test-Path -LiteralPath $path -PathType Container) {
+              Add-Content -LiteralPath $env:GITHUB_PATH -Value $path
+            }
+          }
+
+      - name: Install Linux native tools
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eux
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            build-essential cmake make ninja-build pkg-config nasm bison patchelf \
+            autoconf automake libtool \
+            libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev \
+            libusb-1.0-0-dev libdbus-1-dev libudev-dev \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+            libxi-dev libxss-dev libxtst-dev libxrender-dev \
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            libdrm-dev libgbm-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
+            libpipewire-0.3-dev
+
+      - name: Install Android NDK
+        if: startsWith(matrix.rid, 'android-')
+        shell: bash
+        run: |
+          set -eux
+          test -n "${ANDROID_HOME:-}"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$sdkmanager" ]; then
+            sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' -type f | sort | tail -n 1)"
+          fi
+          test -x "$sdkmanager"
+          ndk="$ANDROID_HOME/ndk/27.2.12479018"
+          if [ ! -f "$ndk/build/cmake/android.toolchain.cmake" ]; then
+            existing_ndk="$(find "$ANDROID_HOME/ndk" -mindepth 2 -maxdepth 2 -path '*/build/cmake/android.toolchain.cmake' -type f 2>/dev/null | sort | tail -n 1 || true)"
+            if [ -n "$existing_ndk" ]; then
+              ndk="$(dirname "$(dirname "$(dirname "$existing_ndk")")")"
+            else
+              yes | "$sdkmanager" --licenses >/dev/null || true
+              "$sdkmanager" "ndk;27.2.12479018"
+            fi
+          fi
+          echo "ANDROID_NDK_HOME=$ndk" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_ROOT=$ndk" >> "$GITHUB_ENV"
+
+      - name: Install macOS native tools
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -eux
+          brew update
+          brew install nasm bison
+          echo "$(brew --prefix bison)/bin" >> "$GITHUB_PATH"
+
+      - name: Initialize native forks
+        shell: pwsh
+        run: ./eng/release/Initialize-NativeForks.ps1 -Depth 1
+
+      - name: Build native bundle
+        shell: pwsh
+        run: |
+          $buildArgs = @(
+            '-Rids', '${{ matrix.rid }}',
+            '-Clean',
+            '-BuildParallelLevel', '${{ inputs.build_parallel_level }}'
+          )
+          if ('${{ matrix.allow_cross_compile }}' -eq 'true') {
+            $buildArgs += '-AllowCrossCompile'
+          }
+          ./eng/release/Invoke-NativeHostBuild.ps1 @buildArgs
+
+      - name: Upload native bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-bundle-${{ matrix.rid }}
+          path: artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip
+          if-no-files-found: error
+
+  assemble:
+    name: Assemble NuGet packages
+    needs:
+      - plan
+      - native
+    runs-on: windows-2025
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+            8.0.x
+            7.0.x
+
+      - name: Initialize native forks
+        shell: pwsh
+        run: ./eng/release/Initialize-NativeForks.ps1 -Depth 1
+
+      - name: Download native bundles
+        uses: actions/download-artifact@v4
+        with:
+          pattern: native-bundle-*
+          path: artifacts/release/bundles
+          merge-multiple: true
+
+      - name: Assemble packages
+        shell: pwsh
+        run: |
+          $bundles = @(Get-ChildItem -LiteralPath 'artifacts/release/bundles' -Filter '*.zip' -File | Sort-Object Name)
+          $expectedBundleCount = [int]'${{ needs.plan.outputs.bundle_count }}'
+          if ($bundles.Count -ne $expectedBundleCount) {
+            throw "Expected $expectedBundleCount native bundle(s), got $($bundles.Count)."
+          }
+
+          $params = @{
+            PackageRevision = [int]'${{ inputs.package_revision }}'
+            BundlePath = @($bundles | ForEach-Object { $_.FullName })
+          }
+          if ('${{ inputs.require_upstream_current }}' -eq 'true') {
+            $params.RequireForksUpToDate = $true
+            $params.CheckUpstream = $true
+            $params.RequireUpstreamCurrent = $true
+          }
+
+          ./eng/release/Invoke-ReleaseAssembly.ps1 @params
+
+      - name: Export release assembly state
+        shell: pwsh
+        run: |
+          $statePath = 'artifacts/release/release-assembly-state.zip'
+          $stateRoot = 'artifacts/release/assembly-state-root'
+          if (Test-Path -LiteralPath $statePath -PathType Leaf) {
+            Remove-Item -LiteralPath $statePath -Force
+          }
+          if (Test-Path -LiteralPath $stateRoot) {
+            Remove-Item -LiteralPath $stateRoot -Recurse -Force
+          }
+          $stateItems = @(
+            'artifacts/release/nuget',
+            'artifacts/release/receipts',
+            'SDL3-CS.Native/lib',
+            'SDL3-CS.Native.Image/lib',
+            'SDL3-CS.Native.Mixer/lib',
+            'SDL3-CS.Native.Shadercross/lib',
+            'SDL3-CS.Native.TTF/lib'
+          )
+          foreach ($item in $stateItems) {
+            if (-not (Test-Path -LiteralPath $item)) {
+              throw "Release assembly state path is missing: $item"
+            }
+          }
+          foreach ($item in $stateItems) {
+            $target = Join-Path $stateRoot $item
+            New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
+            Copy-Item -LiteralPath $item -Destination $target -Recurse -Force
+          }
+          Compress-Archive -Path (Join-Path $stateRoot '*') -DestinationPath $statePath -Force
+
+      - name: Validate release assembly state
+        shell: pwsh
+        run: |
+          ./eng/release/Test-ReleaseAssemblyState.ps1 `
+            -PackageRevision ([int]'${{ inputs.package_revision }}') `
+            -StatePath 'artifacts/release/release-assembly-state.zip'
+
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/release/nuget/*.nupkg
+          if-no-files-found: error
+
+      - name: Upload release assembly state
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assembly-state
+          path: artifacts/release/release-assembly-state.zip
+          if-no-files-found: error
+
+  apple-consumer:
+    name: Apple consumer ${{ matrix.name }}
+    needs: assemble
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: arm64 simulators
+            runner: macos-15
+            rids: iossimulator-arm64,tvossimulator-arm64
+          - name: x64 simulators
+            runner: macos-15-intel
+            rids: iossimulator-x64,tvossimulator-x64
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+            8.0.x
+            7.0.x
+
+      - name: Install Apple .NET workloads
+        shell: bash
+        run: |
+          set -eux
+          dotnet workload install ios tvos --source https://api.nuget.org/v3/index.json
+
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/release/nuget
+
+      - name: Build Apple consumer apps
+        shell: pwsh
+        run: |
+          $rids = '${{ matrix.rids }}' -split ','
+          ./eng/release/Test-AppleConsumerPackageBuild.ps1 `
+            -PackageRevision ([int]'${{ inputs.package_revision }}') `
+            -PackageDir 'artifacts/release/nuget' `
+            -Rids $rids
+
+  android-consumer:
+    name: Android consumer packages
+    needs: assemble
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+            8.0.x
+            7.0.x
+
+      - name: Install Android .NET workload
+        shell: bash
+        run: |
+          set -eux
+          dotnet workload install android --source https://api.nuget.org/v3/index.json
+
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/release/nuget
+
+      - name: Build Android consumer apps
+        shell: pwsh
+        run: |
+          $rids = 'android-arm,android-arm64,android-x86,android-x64' -split ','
+          ./eng/release/Test-AndroidConsumerPackageBuild.ps1 `
+            -PackageRevision ([int]'${{ inputs.package_revision }}') `
+            -PackageDir 'artifacts/release/nuget' `
+            -Rids $rids
+
+  publish:
+    name: Publish release
+    needs:
+      - assemble
+      - apple-consumer
+      - android-consumer
+    if: ${{ inputs.publish_github || inputs.publish_nuget }}
+    runs-on: windows-2025
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+            8.0.x
+            7.0.x
+
+      - name: Initialize native forks
+        shell: pwsh
+        run: ./eng/release/Initialize-NativeForks.ps1 -Depth 1
+
+      - name: Download release assembly state
+        uses: actions/download-artifact@v4
+        with:
+          name: release-assembly-state
+          path: artifacts/release/state
+
+      - name: Import release assembly state
+        shell: pwsh
+        run: |
+          $statePaths = @(
+            'artifacts/release/nuget',
+            'artifacts/release/receipts',
+            'SDL3-CS.Native/lib',
+            'SDL3-CS.Native.Image/lib',
+            'SDL3-CS.Native.Mixer/lib',
+            'SDL3-CS.Native.Shadercross/lib',
+            'SDL3-CS.Native.TTF/lib'
+          )
+          foreach ($path in $statePaths) {
+            if (Test-Path -LiteralPath $path) {
+              Remove-Item -LiteralPath $path -Recurse -Force
+            }
+          }
+          Expand-Archive -LiteralPath 'artifacts/release/state/release-assembly-state.zip' -DestinationPath . -Force
+
+      - name: Validate imported release assembly state
+        shell: pwsh
+        run: |
+          ./eng/release/Test-ReleaseAssemblyState.ps1 `
+            -PackageRevision ([int]'${{ inputs.package_revision }}') `
+            -StatePath '.'
+
+      - name: Publish selected targets
+        shell: pwsh
+        run: |
+          $params = @{
+            PackageRevision = [int]'${{ inputs.package_revision }}'
+          }
+          if ('${{ inputs.publish_github }}' -eq 'true') {
+            $params.GitHubRelease = $true
+          }
+          if ('${{ inputs.publish_nuget }}' -eq 'true') {
+            $params.NuGetPush = $true
+          }
+
+          ./eng/release/Publish-Release.ps1 @params
