@@ -6,7 +6,7 @@ These instructions are global defaults for Codex agents across projects. They ap
 
 For this repository, agent operational materials live inside the worktree but must stay ignored by Git.
 
-- Keep `TASKS.md`, `dev-diary/`, `docs/`, and `completed-tasks/` in `G:\Projects\2025\SDL3-CS`.
+- Keep `.agents/`, `TASKS.md`, `dev-diary/`, `docs/`, and `completed-tasks/` in `G:\Projects\2025\SDL3-CS`.
 - Keep these paths listed in `.gitignore`.
 - Do not stage or commit these operational materials unless the user explicitly asks to change that policy.
 

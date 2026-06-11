@@ -3,6 +3,7 @@
 bin/
 obj/
 runtimes/
+.agents/
 TASKS.md
 dev-diary/
 docs/
