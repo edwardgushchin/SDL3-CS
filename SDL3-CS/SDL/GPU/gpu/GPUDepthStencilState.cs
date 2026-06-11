@@ -33,6 +33,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GPUGraphicsPipelineCreateInfo"/>
+    /// <seealso cref="GPUStencilOpState"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUDepthStencilState
     {
