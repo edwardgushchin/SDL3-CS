@@ -23,6 +23,11 @@ if (SDL.Hints.JoystickGameInputRaw != "SDL_JOYSTICK_GAMEINPUT_RAW")
     throw new InvalidOperationException("Unexpected JoystickGameInputRaw hint value.");
 }
 
+if (SDL.Hints.DosAllowDirectFramebuffer != "SDL_DOS_ALLOW_DIRECT_FRAMEBUFFER")
+{
+    throw new InvalidOperationException("Unexpected DosAllowDirectFramebuffer hint value.");
+}
+
 if (SDL.Props.TextInputTitleString != "SDL.textinput.title")
 {
     throw new InvalidOperationException("Unexpected TextInputTitleString property value.");
@@ -46,6 +51,7 @@ if (SDL.Props.TextInputMaxLengthNumber != "SDL.textinput.max_length")
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
+Console.WriteLine("DOS framebuffer hint constant smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
 

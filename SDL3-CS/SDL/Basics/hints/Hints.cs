@@ -590,6 +590,20 @@ public static partial class SDL
         public const string DisplayUsableBounds = "SDL_DISPLAY_USABLE_BOUNDS";
 
         /// <summary>
+        /// <para>A variable that enables a fast framebuffer path on DOS.</para>
+        /// <para>When set to <c>"1"</c>, <see cref="UpdateWindowSurface"/> copies the system-RAM surface
+        /// directly to VRAM and skips software cursor compositing and vsync.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Use the normal path with cursor compositing and vsync. (default)</item>
+        /// <item><c>"1"</c>: Use the fast direct-to-VRAM path when available.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint must be set before the first call to <see cref="GetWindowSurface"/>.</remarks>
+        /// <since>This hint is available since SDL 3.6.0.</since>
+        public const string DosAllowDirectFramebuffer = "SDL_DOS_ALLOW_DIRECT_FRAMEBUFFER";
+
+        /// <summary>
         /// <para>Set the level of checking for invalid parameters passed to SDL functions.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
