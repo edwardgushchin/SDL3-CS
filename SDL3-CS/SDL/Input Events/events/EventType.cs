@@ -470,6 +470,16 @@ public static partial class SDL
         /// Gamepad Steam handle has changed 
         /// </summary>
         GamepadSteamHandleUpdated,
+
+        /// <summary>
+        /// Gamepad capsense was touched
+        /// </summary>
+        GamepadCapSenseTouch,
+
+        /// <summary>
+        /// Gamepad capsense was released
+        /// </summary>
+        GamepadCapSenseRelease,
         #endregion
 
         #region Touch events

@@ -6,6 +6,8 @@ IsPhoneDelegate isPhone = SDL.IsPhone;
 HasSVE2Delegate hasSVE2 = SDL.HasSVE2;
 LoadJPGIODelegate loadJPGIO = SDL.LoadJPGIO;
 LoadJPGDelegate loadJPG = SDL.LoadJPG;
+GamepadHasCapSenseDelegate gamepadHasCapSense = SDL.GamepadHasCapSense;
+GetGamepadCapSenseDelegate getGamepadCapSense = SDL.GetGamepadCapSense;
 
 GC.KeepAlive(nullSpecOverload);
 GC.KeepAlive(typedSpecOverload);
@@ -13,6 +15,8 @@ GC.KeepAlive(isPhone);
 GC.KeepAlive(hasSVE2);
 GC.KeepAlive(loadJPGIO);
 GC.KeepAlive(loadJPG);
+GC.KeepAlive(gamepadHasCapSense);
+GC.KeepAlive(getGamepadCapSense);
 
 if (SDL.Hints.JoystickDrumDevices != "SDL_JOYSTICK_DRUM_DEVICES")
 {
@@ -99,6 +103,38 @@ if ((int)SDL.SystemCursor.SDLNumSystemCursors != 34)
     throw new InvalidOperationException("Unexpected SDLNumSystemCursors value after CSS cursor sync.");
 }
 
+if ((int)SDL.GamepadCapSenseType.Invalid != -1)
+{
+    throw new InvalidOperationException("Unexpected Invalid gamepad cap sense value.");
+}
+
+if ((int)SDL.GamepadCapSenseType.LeftStick != 0)
+{
+    throw new InvalidOperationException("Unexpected LeftStick gamepad cap sense value.");
+}
+
+if ((int)SDL.GamepadCapSenseType.Count != 4)
+{
+    throw new InvalidOperationException("Unexpected Count gamepad cap sense value.");
+}
+
+if ((uint)SDL.EventType.GamepadCapSenseTouch != (uint)SDL.EventType.GamepadSteamHandleUpdated + 1)
+{
+    throw new InvalidOperationException("Unexpected GamepadCapSenseTouch event value.");
+}
+
+if ((uint)SDL.EventType.GamepadCapSenseRelease != (uint)SDL.EventType.GamepadCapSenseTouch + 1)
+{
+    throw new InvalidOperationException("Unexpected GamepadCapSenseRelease event value.");
+}
+
+SDL.Event capSenseUnion = default;
+capSenseUnion.GCapSense.Type = SDL.EventType.GamepadCapSenseTouch;
+if (capSenseUnion.GCapSense.Type != SDL.EventType.GamepadCapSenseTouch)
+{
+    throw new InvalidOperationException("Unexpected gamepad cap sense union field behavior.");
+}
+
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
@@ -111,6 +147,7 @@ Console.WriteLine("IsPhone binding smoke test passed.");
 Console.WriteLine("SVE2 CPU binding smoke test passed.");
 Console.WriteLine("JPEG surface loader binding smoke test passed.");
 Console.WriteLine("CSS system cursor enum smoke test passed.");
+Console.WriteLine("Gamepad cap sense API smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);
 
@@ -123,3 +160,7 @@ delegate bool HasSVE2Delegate();
 delegate IntPtr LoadJPGIODelegate(IntPtr src, bool closeio);
 
 delegate IntPtr LoadJPGDelegate(string file);
+
+delegate bool GamepadHasCapSenseDelegate(IntPtr gamepad, SDL.GamepadCapSenseType type);
+
+delegate bool GetGamepadCapSenseDelegate(IntPtr gamepad, SDL.GamepadCapSenseType type);

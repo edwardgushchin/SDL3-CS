@@ -155,7 +155,12 @@ public static partial class SDL
         /// Gamepad sensor event data
         /// </summary>
         [FieldOffset(0)] public GamepadSensorEvent GSensor;
-        
+
+        /// <summary>
+        /// Gamepad capsense event data
+        /// </summary>
+        [FieldOffset(0)] public GamepadCapSenseEvent GCapSense;
+
         /// <summary>
         /// Audio device event data
         /// </summary>
