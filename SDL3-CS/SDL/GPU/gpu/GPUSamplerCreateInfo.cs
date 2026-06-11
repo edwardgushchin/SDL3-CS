@@ -77,7 +77,7 @@ public static partial class SDL
         public float MipLodBias;
         
         /// <summary>
-        /// The anisotropy value clamp used by the sampler. If enable_anisotropy is false, this is ignored.
+        /// The anisotropy value clamp used by the sampler. If enable_anisotropy is <c>false</c>, this is ignored.
         /// </summary>
         public float MaxAnisotropy;
         
@@ -106,7 +106,7 @@ public static partial class SDL
         private byte padding2;
 
         /// <summary>
-        /// true to enable anisotropic filtering.
+        /// <c>true</c> to enable anisotropic filtering.
         /// </summary>
         public bool EnableAnisotropy
         {
@@ -115,7 +115,7 @@ public static partial class SDL
         }
         
         /// <summary>
-        /// true to enable comparison against a reference value during lookups.
+        /// <c>true</c> to enable comparison against a reference value during lookups.
         /// </summary>
         public bool EnableCompare
         {

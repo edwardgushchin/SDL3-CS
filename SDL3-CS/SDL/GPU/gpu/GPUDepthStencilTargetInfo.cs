@@ -104,7 +104,7 @@ public static partial class SDL
         public GPUStoreOp StencilStoreOp;
         
         /// <summary>
-        /// true cycles the texture if the texture is bound and any load ops are not LOAD 
+        /// <c>true</c> cycles the texture if the texture is bound and any load ops are not LOAD
         /// </summary>
         public Byte Cycle;
         

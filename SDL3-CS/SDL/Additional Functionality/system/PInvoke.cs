@@ -31,8 +31,8 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetWindowsMessageHook(SDL_WindowsMessageHook callback, void *userdata);</code>
     /// <summary>
     /// <para>Set a callback for every Windows message, run before TranslateMessage().</para>
-    /// <para>The callback may modify the message, and should return true if the message
-    /// should continue to be processed, or false to prevent further processing.</para>
+    /// <para>The callback may modify the message, and should return <c>true</c> if the message
+    /// should continue to be processed, or <c>false</c> to prevent further processing.</para>
     /// </summary>
     /// <param name="callback">the <see cref="WindowsMessageHook"/> function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
@@ -79,8 +79,8 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);</code>
     /// <summary>
     /// <para>Set a callback for every X11 event.</para>
-    /// <para>The callback may modify the event, and should return true if the event
-    /// should continue to be processed, or false to prevent further processing.</para>
+    /// <para>The callback may modify the event, and should return <c>true</c> if the event
+    /// should continue to be processed, or <c>false</c> to prevent further processing.</para>
     /// </summary>
     /// <param name="callback">the <see cref="X11EventHook"/> function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
@@ -441,7 +441,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsPhone(void);</code>
     /// <summary>
     /// <para>Query if the current device is a phone.</para>
-    /// <para>If SDL can't determine this, it will return false.</para>
+    /// <para>If SDL can't determine this, it will return <c>false</c>.</para>
     /// </summary>
     /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -454,7 +454,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTablet(void);</code>
     /// <summary>
     /// <para>Query if the current device is a tablet.</para>
-    /// <para>If SDL can't determine this, it will return false.</para>
+    /// <para>If SDL can't determine this, it will return <c>false</c>.</para>
     /// </summary>
     /// <returns><c>true</c> if the device is a tablet, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -467,7 +467,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTV(void);</code>
     /// <summary>
     /// <para>Query if the current device is a TV.</para>
-    /// <para>If SDL can't determine this, it will return false.</para>
+    /// <para>If SDL can't determine this, it will return <c>false</c>.</para>
     /// </summary>
     /// <returns><c>true</c> if the <c>device</c> is a TV, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>

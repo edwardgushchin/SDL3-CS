@@ -52,7 +52,7 @@ public partial class Mixer
     /// once, and won't deinitialize until <see cref="Quit"/> has been called a matching
     /// number of times. Extra attempts to init report success.</para>
     /// </summary>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="Quit"/>
@@ -256,7 +256,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">the mixer to query.</param>
     /// <param name="spec">where to store the mixer audio format.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -274,7 +274,7 @@ public partial class Mixer
     /// format. Each time it plays, the data will be decoded. For example, an MP3
     /// will be stored in memory in MP3 format and be decompressed on the fly
     /// during playback. This is a tradeoff between i/o overhead and memory usage.</para>
-    /// <para>If <c>predecode</c> is true, the data will be decompressed during load and
+    /// <para>If <c>predecode</c> is <c>true</c>, the data will be decompressed during load and
     /// stored as raw PCM data. This might dramatically increase loading time and
     /// memory usage, but there will be no need to decompress data during playback.</para>
     /// <para>(One could also use <see cref="SetTrackIOStream"/> to bypass loading the data into
@@ -299,8 +299,8 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
     /// <param name="io">the SDL_IOStream to load data from.</param>
-    /// <param name="predecode">if true, data will be fully uncompressed before returning.</param>
-    /// <param name="closeio">true if SDL_mixer should close <c>io</c> before returning
+    /// <param name="predecode">if <c>true</c>, data will be fully uncompressed before returning.</param>
+    /// <param name="closeio"><c>true</c> if SDL_mixer should close <c>io</c> before returning
     /// (success or failure).</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
@@ -325,7 +325,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
     /// <param name="path">the path on the filesystem to load data from.</param>
-    /// <param name="predecode">if true, data will be fully uncompressed before returning.</param>
+    /// <param name="predecode">if <c>true</c>, data will be fully uncompressed before returning.</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -351,17 +351,17 @@ public partial class Mixer
     /// <list type="bullet">
     /// <item><see cref="Props.AudioLoadIOStreamPointer"/>: a pointer to an SDL_IOStream to
     /// be used to load audio data. Required. This stream must be able to seek!</item>
-    /// <item><see cref="Props.AudioLoadCloseIOBoolean"/>: true if SDL_mixer should close the
+    /// <item><see cref="Props.AudioLoadCloseIOBoolean"/>: <c>true</c> if SDL_mixer should close the
     /// SDL_IOStream before returning (success or failure).</item>
-    /// <item><see cref="Props.AudioLoadPreDecodeBoolean"/>: true if SDL_mixer should fully
+    /// <item><see cref="Props.AudioLoadPreDecodeBoolean"/>: <c>true</c> if SDL_mixer should fully
     /// decode and decompress the data before returning. Otherwise it will be
     /// stored in its original state and decompressed on demand.</item>
     /// <item><see cref="Props.AudioLoadPreferredMixerPointer"/>: a pointer to a MIX_Mixer,
     /// in case steps can be made to match its format when decoding. Optional.</item>
-    /// <item><see cref="Props.AudioLoadSkipMetadataTagsBoolean"/>: true to skip parsing
+    /// <item><see cref="Props.AudioLoadSkipMetadataTagsBoolean"/>: <c>true</c> to skip parsing
     /// metadata tags, like ID3 and APE tags. This can be used to speed up
     /// loading _if the data definitely doesn't have these tags_. Some decoders
-    /// will fail if these tags are present when this property is true.</item>
+    /// will fail if these tags are present when this property is <c>true</c>.</item>
     /// <item><see cref="Props.AudioDecoderString"/>: the name of the decoder to use for this
     /// data. Optional. If not specified, SDL_mixer will examine the data and
     /// choose the best decoder. These names are the same returned from
@@ -400,12 +400,12 @@ public partial class Mixer
     /// offered here, as this is meant to optimize for data that's already in
     /// memory and intends to exist there for significant time; since predecoding
     /// would only need the file format data once, upfront, one could simply wrap
-    /// it in <see cref="SDL.CreateIOFromConstMem"/> and pass that to <see cref="LoadAudioIO"/>.</para>
+    /// it in <see cref="SDL.IOFromConstMem"/> and pass that to <see cref="LoadAudioIO"/>.</para>
     /// <para>MIX_Audio objects can be shared between multiple mixers. The <c>mixer</c>
     /// parameter just suggests the most likely mixer to use this audio in, in case
     /// some optimization might be applied, but this is not required, and a <c>null</c>
     /// mixer may be specified.</para>
-    /// <para>If <c>free_when_done</c> is true, SDL_mixer will call <see cref="SDL.Free"/>(<c>data</c>) when the
+    /// <para>If <c>freeWhenDone</c> is <c>true</c>, SDL_mixer will call <see cref="SDL.Free"/>(<c>data</c>) when the
     /// returned MIX_Audio is eventually destroyed. This can be useful when the
     /// data is not static, but rather loaded elsewhere for this specific MIX_Audio
     /// and simply wants to avoid the extra copy.</para>
@@ -419,7 +419,7 @@ public partial class Mixer
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
     /// <param name="data">the buffer where the audio data lives.</param>
     /// <param name="datalen">the size, in bytes, of the buffer.</param>
-    /// <param name="free_when_done">if true, <c>data</c> will be given to <see cref="SDL.Free"/> when the
+    /// <param name="freeWhenDone">if <c>true</c>, <c>data</c> will be given to <see cref="SDL.Free"/> when the
     /// MIX_Audio is destroyed.</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
@@ -431,7 +431,7 @@ public partial class Mixer
     /// <seealso cref="LoadAudio"/>
     /// <seealso cref="LoadAudioIO"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_LoadAudioNoCopy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr LoadAudioNoCopy(IntPtr mixer, IntPtr data, nuint datalen, [MarshalAs(UnmanagedType.I1)] bool free_when_done);
+    public static partial IntPtr LoadAudioNoCopy(IntPtr mixer, IntPtr data, nuint datalen, [MarshalAs(UnmanagedType.I1)] bool freeWhenDone);
 
 
     /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadRawAudio_IO(MIX_Mixer *mixer, SDL_IOStream *io, const SDL_AudioSpec *spec, bool closeio);</code>
@@ -444,13 +444,13 @@ public partial class Mixer
     /// <para>This function will load the raw data in its entirety and cache it in RAM.</para>
     /// <para> MIX_Audio objects can be shared between multiple mixers. The `mixer`
     /// parameter just suggests the most likely mixer to use this audio, in case
-    /// some optimization might be applied, but this is not required, and a NULL
+    /// some optimization might be applied, but this is not required, and a <c>null</c>
     /// mixer may be specified.</para>
     /// </summary>
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
     /// <param name="io">the SDL_IOStream to load data from.</param>
     /// <param name="spec">what format the raw data is in.</param>
-    /// <param name="closeio"> true if SDL_mixer should close <c>io</c> before returning
+    /// <param name="closeio"> <c>true</c> if SDL_mixer should close <c>io</c> before returning
     /// (success or failure).</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
@@ -510,7 +510,7 @@ public partial class Mixer
     /// parameter just suggests the most likely mixer to use this audio, in case
     /// some optimization might be applied, but this is not required, and a <c>null</c>
     /// mixer may be specified.</para>
-    /// <para>If <c>freeWhenDone</c> is true, SDL_mixer will call <see cref="SDL.Free"/>(<c>data</c>) when the
+    /// <para>If <c>freeWhenDone</c> is <c>true</c>, SDL_mixer will call <see cref="SDL.Free"/>(<c>data</c>) when the
     /// returned MIX_Audio is eventually destroyed. This can be useful when the
     /// data is not static, but rather composed dynamically for this specific
     /// MIX_Audio and simply wants to avoid the extra copy.</para>
@@ -519,7 +519,7 @@ public partial class Mixer
     /// <param name="data">the buffer where the raw PCM data lives.</param>
     /// <param name="datalen">the size, in bytes, of the buffer.</param>
     /// <param name="spec">what format the raw data is in.</param>
-    /// <param name="freeWhenDone">if true, <c>data</c> will be given to <see cref="SDL.Free"/> when the
+    /// <param name="freeWhenDone">if <c>true</c>, <c>data</c> will be given to <see cref="SDL.Free"/> when the
     /// MIX_Audio is destroyed.</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
@@ -549,7 +549,7 @@ public partial class Mixer
     /// MIX_Track, the sinewave will play forever).</para>
     /// <para>MIX_Audio objects can be shared between multiple mixers. The <c>mixer</c>
     /// parameter just suggests the most likely mixer to use this audio, in case
-    /// some optimization might be applied, but this is not required, and a NULL
+    /// some optimization might be applied, but this is not required, and a <c>null</c>
     /// mixer may be specified.</para>
     /// </summary>
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
@@ -585,7 +585,7 @@ public partial class Mixer
     /// <item><see cref="Props.MetadataDurationFramesNumber"/>: The sample frames worth of
     /// PCM data that comprise this audio. It might be off by a little if the
     /// decoder only knows the duration as a unit of time.</item>
-    /// <item><see cref="Props.MetadataDurationInfiniteBoolean"/>: if true, audio never runs
+    /// <item><see cref="Props.MetadataDurationInfiniteBoolean"/>: if <c>true</c>, audio never runs
     /// out of sound to generate. This isn't necessarily always known to
     /// SDL_mixer, though.</item>
     /// </list>
@@ -644,7 +644,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="audio">the audio to query.</param>
     /// <param name="spec">on success, audio format details will be stored here.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -749,7 +749,7 @@ public partial class Mixer
     /// form). One MIX_Audio can be assigned to multiple tracks at once.</para>
     /// <para>Once a track has a valid input, it can start mixing sound by calling
     /// <see cref="PlayTrack"/>, or possibly <seealso cref="PlayTag"/>.</para>
-    /// <para>Calling this function with a NULL audio input is legal, and removes any
+    /// <para>Calling this function with a <c>null</c> audio input is legal, and removes any
     /// input from the track. If the track was currently playing, the next time the
     /// mixer runs, it'll notice this and mark the track as stopped, calling any
     /// assigned <see cref="TrackStoppedCallback"/>.</para>
@@ -763,7 +763,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track on which to set a new audio input.</param>
     /// <param name="audio">the new audio input to set. May be <c>null</c>.</param>
-    /// <returns>on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns>on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackAudio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -799,7 +799,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track on which to set a new audio input.</param>
     /// <param name="stream">the audio stream to use as the track's input.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -839,8 +839,8 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track on which to set a new audio input.</param>
     /// <param name="io">the new i/o stream to use as the track's input.</param>
-    /// <param name="closeio">if true, close the stream when done with it.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <param name="closeio">if <c>true</c>, close the stream when done with it.</param>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="SetTrackRawIOStream"/>
@@ -880,8 +880,8 @@ public partial class Mixer
     /// <param name="track">the track on which to set a new audio input.</param>
     /// <param name="io">the new i/o stream to use as the track's input.</param>
     /// <param name="spec">the format of the PCM data that the SDL_IOStream will provide</param>
-    /// <param name="closeio">if true, close the stream when done with it.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <param name="closeio">if <c>true</c>, close the stream when done with it.</param>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="SetTrackAudioStream"/>
@@ -907,7 +907,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to add a tag to.</param>
     /// <param name="tag">the tag to add.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="UntagTrack"/>
@@ -946,7 +946,7 @@ public partial class Mixer
     /// <param name="track">track the track to query.</param>
     /// <param name="count">count a pointer filled in with the number of tags returned, can be
     /// <c>null</c>.</param>
-    /// <returns>an array of the tags, NULL-terminated, or <c>null</c> on failure; call
+    /// <returns>an array of the tags, <c>null</c>-terminated, or <c>null</c> on failure; call
     /// <see cref="SDL.GetError"/> for more information. This is a single allocation
     /// that should be freed with <see cref="SDL.Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -1020,7 +1020,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to change.</param>
     /// <param name="frames">the sample frame position to seek to.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <see cref="GetTrackPlaybackPosition"/>
@@ -1037,7 +1037,7 @@ public partial class Mixer
     /// the fade.</para>
     /// <para>If fading out, the returned value will be negative. When fading in, the
     /// returned value will be positive. If not fading, this function returns zero.</para>
-    /// <para>On various errors (<see cref="Init"/> was not called, the track is NULL), this
+    /// <para>On various errors (<see cref="Init"/> was not called, the track is <c>null</c>), this
     /// returns 0, but there is no mechanism to distinguish errors from tracks that
     /// aren't fading.</para>
     /// </summary>
@@ -1078,7 +1078,7 @@ public partial class Mixer
     /// track _was_ looping but is on its final iteration of the loop (will stop
     /// when this iteration completes), this will return zero.</para>
     /// <para>On various errors (<see cref="Init"/> was not called, the track is <c>null</c>), this
-    /// returns false, but there is no mechanism to distinguish errors from
+    /// returns <c>false</c>, but there is no mechanism to distinguish errors from
     /// non-looping tracks.</para>
     /// <para>A track that is looping infinitely will return -1. This value does not
     /// report an error in this case.</para>
@@ -1152,7 +1152,7 @@ public partial class Mixer
     /// through a call to <see cref="SetTrackAudioStream"/>. If there is none assigned, or
     /// the track has an input that isn't an SDL_AudioStream (such as a MIX_Audio
     /// or SDL_IOStream), this will return <c>null</c>.</para>
-    /// <para>On various errors (<see cref="Init"/> was not called, the track is NULL), this
+    /// <para>On various errors (<see cref="Init"/> was not called, the track is <c>null</c>), this
     /// returns <c>null</c>, but there is no mechanism to distinguish errors from tracks
     /// without a valid input.</para>
     /// </summary>
@@ -1381,24 +1381,24 @@ public partial class Mixer
     /// <see cref="Props.PlayAppendSilenceFramesNumber"/> property, but the value is
     /// specified in milliseconds instead of sample frames. If both properties
     /// are specified, the sample frames value is favored. Default 0.</item>
-    /// <item><see cref="Props.PlayHaltWhenExhaustedBoolean"/>: If true, when input is
+    /// <item><see cref="Props.PlayHaltWhenExhaustedBoolean"/>: If <c>true</c>, when input is
     /// completely consumed for the track, the mixer will mark the track as
     /// stopped (and call any appropriate MIX_TrackStoppedCallback, etc); to play
-    /// more, the track will need to be restarted. If false, the track will just
+    /// more, the track will need to be restarted. If <c>false</c>, the track will just
     /// not contribute to the mix, but it will not be marked as stopped. There
     /// may be clever logic tricks this exposes generally, but this property is
     /// specifically useful when the track's input is an SDL_AudioStream assigned
-    /// via <see cref="SetTrackAudioStream"/>(). Setting this property to true can be
+    /// via <see cref="SetTrackAudioStream"/>(). Setting this property to <c>true</c> can be
     /// useful when pushing a complete piece of audio to the stream that has a
     /// definite ending, as the track will operate like any other audio was
-    /// applied. Setting to false means as new data is added to the stream, the
+    /// applied. Setting to <c>false</c> means as new data is added to the stream, the
     /// mixer will start using it as soon as possible, which is useful when audio
     /// should play immediately as it drips in: new VoIP packets, etc. Note that
     /// in this situation, if the audio runs out when needed, there _will_ be
     /// gaps in the mixed output, so try to buffer enough data to avoid this when
     /// possible. Note that a track is not consider exhausted until all its loops
     /// and appended silence have been mixed (and also, that loops don't mean
-    /// anything when the input is an AudioStream). Default true.</item>
+    /// anything when the input is an AudioStream). Default <c>true</c>.</item>
     /// <item><see cref="Props.PlayStartOrderNumber"/>: This is a special-case property that
     /// most apps can ignore. For mod file formats, start mixing from a specific
     /// "order" index instead of the start of the file. A value &lt; 0 will cause
@@ -1413,7 +1413,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to start (or restart) mixing.</param>
     /// <param name="options">a set of properties that control playback. May be zero.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PlayTag"/>
@@ -1437,8 +1437,8 @@ public partial class Mixer
     /// sense to use the <c>*MillisecondsNumber</c> properties in your <c>options</c>,
     /// instead of <c>*FramesNumber</c>, and let SDL_mixer figure out how to apply it
     /// to each track.</para>
-    /// <para>This function returns true if all tagged tracks are started (or restarted).
-    /// If any track fails, this function returns false, but all tracks that could
+    /// <para>This function returns <c>true</c> if all tagged tracks are started (or restarted).
+    /// If any track fails, this function returns <c>false</c>, but all tracks that could
     /// start will still be started even when this function reports failure.</para>
     /// <para>From the point of view of the mixing process, all tracks that successfully
     /// (re)start will do so at the exact same moment.</para>
@@ -1446,7 +1446,7 @@ public partial class Mixer
     /// <param name="mixer">the mixer on which to look for tagged tracks.</param>
     /// <param name="tag">the tag to use when searching for tracks.</param>
     /// <param name="options">the set of options that will be applied to each track.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PlayTrack"/>
@@ -1477,7 +1477,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">the mixer on which to play this audio.</param>
     /// <param name="audio">the audio input to play.</param>
-    /// <returns>true if the track has begun mixing, false on error; call
+    /// <returns><c>true</c> if the track has begun mixing, <c>false</c> on error; call
     /// <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1503,12 +1503,12 @@ public partial class Mixer
     /// <see cref="TrackStoppedCallback"/>, if any. It is legal to assign the track a new
     /// input and/or restart it during this callback.</para>
     /// <para>It is legal to halt a track that's already stopped. It does nothing, and
-    /// returns true.</para>
+    /// returns <c>true</c>.</para>
     /// </summary>
     /// <param name="track">the track to halt.</param>
     /// <param name="fadeOutFrames">the number of sample frames to spend fading out to
     /// silence before halting. 0 to stop immediately.</param>
-    /// <returns>true if the track has stopped, false on error; call <see cref="SDL.GetError"/>
+    /// <returns><c>true</c> if the track has stopped, <c>false</c> on error; call <see cref="SDL.GetError"/>
     /// for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1540,7 +1540,7 @@ public partial class Mixer
     /// <param name="mixer">the mixer on which to stop all tracks.</param>
     /// <param name="fadeOutMs">the number of milliseconds to spend fading out to
     /// silence before halting. 0 to stop immediately.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="StopTrack"/>
@@ -1569,7 +1569,7 @@ public partial class Mixer
     /// <param name="tag">the tag to use when searching for tracks.</param>
     /// <param name="fadeOutMs">the number of milliseconds to spend fading out to
     /// silence before halting. 0 to stop immediately.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="StopTrack"/>
@@ -1587,11 +1587,11 @@ public partial class Mixer
     /// audio, or generally make progress, until it is resumed.</para>
     /// <para>It is legal to pause a track that's in any state (playing, already paused,
     /// or stopped). Unless the track is currently playing, pausing does nothing,
-    /// and returns true. A false return is only used to signal errors here (such
+    /// and returns <c>true</c>. A <c>false</c> return is only used to signal errors here (such
     /// as <see cref="Init"/> not being called or <c>track</c> being <c>null</c>).</para>
     /// </summary>
     /// <param name="track">the track to pause.</param>
-    /// <returns>true if the track has paused, false on error; call <see cref="SDL.GetError"/>
+    /// <returns><c>true</c> if the track has paused, <c>false</c> on error; call <see cref="SDL.GetError"/>
     /// for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1611,7 +1611,7 @@ public partial class Mixer
     /// playing move to a paused state. They can later be resumed.</para>
     /// </summary>
     /// <param name="mixer">the mixer on which to pause all tracks.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="ResumeTrack"/>
@@ -1634,7 +1634,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">the mixer on which to pause tracks.</param>
     /// <param name="tag">the tag to use when searching for tracks.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PauseTrack"/>
@@ -1654,11 +1654,11 @@ public partial class Mixer
     /// audio, or generally make progress, until it is resumed.</para>
     /// <para>It is legal to resume a track that's in any state (playing, paused, or
     /// stopped). Unless the track is currently paused, resuming does nothing, and
-    /// returns true. A false return is only used to signal errors here (such as
+    /// returns <c>true</c>. A <c>false</c> return is only used to signal errors here (such as
     /// <see cref="Init"/> not being called or <c>track</c> being <c>null</c>).</para>
     /// </summary>
     /// <param name="track">the track to resume.</param>
-    /// <returns>true if the track has resumed, false on error; call <see cref="SDL.GetError"/>
+    /// <returns><c>true</c> if the track has resumed, <c>false</c> on error; call <see cref="SDL.GetError"/>
     /// for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1678,7 +1678,7 @@ public partial class Mixer
     /// paused move to a playing state.</para>
     /// </summary>
     /// <param name="mixer">the mixer on which to resume all tracks.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PauseTrack"/>
@@ -1701,7 +1701,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">the mixer on which to resume tracks.</param>
     /// <param name="tag">the tag to use when searching for tracks.</param>
-    /// <returns>true on success, false on error; call <see cref="SDL.GetError"/> for details.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="SDL.GetError"/> for details.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="ResumeTrack"/>
@@ -1716,14 +1716,14 @@ public partial class Mixer
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_TrackPlaying(MIX_Track *track);</code>
     /// <summary>
     /// Query if a track is currently playing.
-    /// <para>If this returns true, the track is currently contributing to the mixer's
+    /// <para>If this returns <c>true</c>, the track is currently contributing to the mixer's
     /// output (it's "playing"). It is not stopped nor paused.</para>
-    /// <para>On various errors (MIX_Init() was not called, the track is NULL), this
-    /// returns false, but there is no mechanism to distinguish errors from
+    /// <para>On various errors (MIX_Init() was not called, the track is <c>null</c>), this
+    /// returns <c>false</c>, but there is no mechanism to distinguish errors from
     /// non-playing tracks.</para>
     /// </summary>
     /// <param name="track">the track to query.</param>
-    /// <returns>true if playing, false otherwise.</returns>
+    /// <returns><c>true</c> if playing, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PlayTrack"/>
@@ -1739,15 +1739,15 @@ public partial class Mixer
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_TrackPaused(MIX_Track *track);</code>
     /// <summary>
     /// Query if a track is currently paused.
-    /// <para>If this returns true, the track is not currently contributing to the
+    /// <para>If this returns <c>true</c>, the track is not currently contributing to the
     /// mixer's output but will when resumed (it's "paused"). It is not playing nor
     /// stopped.</para>
     /// <para>On various errors (<see cref="Init"/> was not called, the track is <c>null</c>), this
-    /// returns false, but there is no mechanism to distinguish errors from
+    /// returns <c>false</c>, but there is no mechanism to distinguish errors from
     /// non-playing tracks.</para>
     /// </summary>
     /// <param name="track">the track to query.</param>
-    /// <returns>true if paused, false otherwise.</returns>
+    /// <returns><c>true</c> if paused, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PlayTrack"/>
@@ -1774,7 +1774,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">the mixer to adjust.</param>
     /// <param name="gain">the new gain value.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1815,7 +1815,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to adjust.</param>
     /// <param name="gain">the new gain value.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1861,7 +1861,7 @@ public partial class Mixer
     /// <param name="mixer">the mixer on which to look for tagged tracks.</param>
     /// <param name="tag">the tag to use when searching for tracks.</param>
     /// <param name="gain">the new gain value.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1930,7 +1930,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track on which to change the frequency ratio.</param>
     /// <param name="ratio">the frequency ratio. Must be between 0.01f and 100.0f.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -1988,7 +1988,7 @@ public partial class Mixer
     /// <param name="track">the track to change.</param>
     /// <param name="chmap">the new channel map, <c>null</c> to reset to default.</param>
     /// <param name="count">The number of channels in the map.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -2016,7 +2016,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to adjust.</param>
     /// <param name="gains">the per-channel gains, or <c>null</c> to disable spatialization.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -2054,7 +2054,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track for which to set 3D position.</param>
     /// <param name="position">the new 3D position for the track. May be <c>null</c>.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -2073,7 +2073,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to query.</param>
     /// <param name="position">on successful return, will contain the track's position.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -2167,7 +2167,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="track">the track to set mixing group assignment.</param>
     /// <param name="group">the new mixing group to assign to. May be <c>null</c></param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
@@ -2197,7 +2197,7 @@ public partial class Mixer
     /// <param name="cb">the function to call when the track stops. May be <c>null</c>.</param>
     /// <param name="userdata">an opaque pointer provided to the callback for its own
     /// personal use.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="TrackStoppedCallback"/>
@@ -2227,7 +2227,7 @@ public partial class Mixer
     /// <param name="cb">the function to call when the track mixes. May be <c>null</c>.</param>
     /// <param name="userdata">an opaque pointer provided to the callback for its own
     /// personal use.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="TrackMixCallback"/>
@@ -2255,7 +2255,7 @@ public partial class Mixer
     /// <param name="cb">the function to call when the group mixes. May be <c>null</c>.</param>
     /// <param name="userdata">an opaque pointer provided to the callback for its own
     /// personal use.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="GroupMixCallback"/>
@@ -2279,7 +2279,7 @@ public partial class Mixer
     /// <param name="cb">the function to call when the mixer mixes. May be <c>null</c>.</param>
     /// <param name="userdata">an opaque pointer provided to the callback for its own
     /// personal use.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="PostMixCallback"/>
@@ -2376,8 +2376,8 @@ public partial class Mixer
     /// file-specific settings, such as where to find SoundFonts for a MIDI file,
     /// etc. In most cases, the caller should pass a zero to specify no extra
     /// properties.</para>
-    /// <para>If <c>closeio</c> is true, then <c>io</c> will be closed when this decoder is done
-    /// with it. If this function fails and <c>closeio</c> is true, then <c>io</c> will be
+    /// <para>If <c>closeio</c> is <c>true</c>, then <c>io</c> will be closed when this decoder is done
+    /// with it. If this function fails and <c>closeio</c> is <c>true</c>, then <c>io</c> will be
     /// closed before this function returns.</para>
     /// <para>When done with the audio decoder, it can be destroyed with
     /// <see cref="DestroyAudioDecoder"/>.</para>
@@ -2386,7 +2386,7 @@ public partial class Mixer
     /// created.</para>
     /// </summary>
     /// <param name="io">the i/o stream from which to load data.</param>
-    /// <param name="closeio">if true, close the i/o stream when done with it.</param>
+    /// <param name="closeio">if <c>true</c>, close the i/o stream when done with it.</param>
     /// <param name="props">decoder-specific properties. May be zero.</param>
     /// <returns>an audio decoder, ready to decode.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -2441,7 +2441,7 @@ public partial class Mixer
     /// </summary>
     /// <param name="audiodecoder">the audio decoder to query.</param>
     /// <param name="spec">on success, audio format details will be stored here.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>

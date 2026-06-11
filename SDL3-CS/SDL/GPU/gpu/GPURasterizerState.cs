@@ -33,7 +33,7 @@ public static partial class SDL
     /// <para>Note that <see cref="GPUFillMode.Line"/> is not supported on many Android devices.
     /// For those devices, the fill mode will automatically fall back to FILL.</para>
     /// <para>Also note that the D3D12 driver will enable depth clamping even if
-    /// enable_depth_clip is true. If you need this clamp+clip behavior, consider
+    /// enable_depth_clip is <c>true</c>. If you need this clamp+clip behavior, consider
     /// enabling depth clip and then manually clamping depth in your fragment
     /// shaders on Metal and Vulkan.</para>
     /// </summary>
@@ -81,7 +81,7 @@ public static partial class SDL
         private Byte _padding2;
 
         /// <summary>
-        /// true to bias fragment depth values.
+        /// <c>true</c> to bias fragment depth values.
         /// </summary>
         public bool EnableDepthBias
         {
@@ -90,7 +90,7 @@ public static partial class SDL
         }
 
         /// <summary>
-        /// true to enable depth clip, false to enable depth clamp.
+        /// <c>true</c> to enable depth clip, <c>false</c> to enable depth clamp.
         /// </summary>
         public bool EnableDepthClip
         {

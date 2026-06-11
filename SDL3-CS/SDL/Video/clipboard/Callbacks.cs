@@ -32,7 +32,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Callback function that will be called when data for the specified mime-type
     /// is requested by the OS.</para>
-    /// <para>The callback function is called with <c>null</c> as the mime_type when the
+    /// <para>The callback function is called with <c>null</c> as <c>mimeType</c> when the
     /// clipboard is cleared or new data is set. The clipboard is automatically
     /// cleared in <see cref="Quit()"/>.</para>
     /// </summary>

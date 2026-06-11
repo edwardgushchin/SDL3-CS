@@ -57,7 +57,7 @@ public static partial class SDL
         public Byte Button;
 
         /// <summary>
-        /// true if the button is pressed
+        /// <c>true</c> if the button is pressed
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Down;
         

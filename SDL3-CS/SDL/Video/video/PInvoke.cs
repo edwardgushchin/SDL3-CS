@@ -143,7 +143,7 @@ public static partial class SDL
     /// <para>Get the properties associated with a display.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.DisplayHDREnabledBoolean"/>: true if the display has HDR
+    /// <item><see cref="Props.DisplayHDREnabledBoolean"/>: <c>true</c> if the display has HDR
     /// headroom above the SDR white point. This is for informational and
     /// diagnostic purposes only, as not all platforms provide this information
     /// at the display level.</item>
@@ -338,7 +338,7 @@ public static partial class SDL
     /// refresh rate default to the desktop mode if they are set to 0. The modes
     /// are scanned with size being first priority, format being second priority,
     /// and finally checking the refresh rate. If all the available modes are too
-    /// small, then false is returned.</para>
+    /// small, then <c>false</c> is returned.</para>
     /// </summary>
     /// <param name="displayID">the instance ID of the display to query.</param>
     /// <param name="w">the width in pixels of the desired display mode.</param>
@@ -735,7 +735,7 @@ public static partial class SDL
     /// <item><see cref="WindowFlags.Utility"/></item>
     /// <item><see cref="WindowFlags.Modal"/></item>
     /// </list>
-    /// <para>The parent parameter <b>must</b> be non-null and a valid window. The parent of
+    /// <para>The parent parameter <b>must</b> be non-<c>null</c> and a valid window. The parent of
     /// a popup window can be either a regular, toplevel window, or another popup
     /// window.</para>
     /// <para>Popup windows cannot be minimized, maximized, made fullscreen, raised,
@@ -749,7 +749,7 @@ public static partial class SDL
     /// <para>By default, popup menus will automatically grab keyboard focus from the
     /// parent when shown. This behavior can be overridden by setting the
     /// <see cref="WindowFlags.NotFocusable"/> flag, setting the
-    /// <see cref="Props.WindowCreateFocusableBoolean"/> property to false, or toggling
+    /// <see cref="Props.WindowCreateFocusableBoolean"/> property to <c>false</c>, or toggling
     /// it after creation via the <see cref="SetWindowFocusable"/> function.</para>
     /// <para>If a parent window is hidden or destroyed, any child popup windows will be
     /// recursively hidden or destroyed as well. Child popup windows not explicitly
@@ -781,47 +781,47 @@ public static partial class SDL
     /// <para>Create a window with the specified properties.</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateAlwaysOnTopBoolean"/>: true if the window should
+    /// <item><see cref="Props.WindowCreateAlwaysOnTopBoolean"/>: <c>true</c> if the window should
     /// be always on top</item>
-    /// <item><see cref="Props.WindowCreateBorderlessBoolean"/>: true if the window has no
+    /// <item><see cref="Props.WindowCreateBorderlessBoolean"/>: <c>true</c> if the window has no
     /// window decoration</item>
-    /// <item><see cref="Props.WindowCreateExternalGraphicsContextBoolean"/>: true if the
+    /// <item><see cref="Props.WindowCreateExternalGraphicsContextBoolean"/>: <c>true</c> if the
     /// window will be used with an externally managed graphics context.</item>
-    /// <item><see cref="Props.WindowCreateFocusableBoolean"/>: true if the window should
-    /// accept keyboard input (defaults true)</item>
-    /// <item><see cref="Props.WindowCreateFullscreenBoolean"/>: true if the window should
+    /// <item><see cref="Props.WindowCreateFocusableBoolean"/>: <c>true</c> if the window should
+    /// accept keyboard input (defaults <c>true</c>)</item>
+    /// <item><see cref="Props.WindowCreateFullscreenBoolean"/>: <c>true</c> if the window should
     /// start in fullscreen mode at desktop resolution</item>
     /// <item><see cref="Props.WindowCreateHeightNumber"/>: the height of the window</item>
-    /// <item><see cref="Props.WindowCreateHiddenBoolean"/>: true if the window should start
+    /// <item><see cref="Props.WindowCreateHiddenBoolean"/>: <c>true</c> if the window should start
     /// hidden</item>
-    /// <item><see cref="Props.WindowCreateHighPixelDensityBoolean"/>: true if the window
+    /// <item><see cref="Props.WindowCreateHighPixelDensityBoolean"/>: <c>true</c> if the window
     /// uses a high pixel density buffer if possible</item>
-    /// <item><see cref="Props.WindowCreateMaximizedBoolean"/>: true if the window should
+    /// <item><see cref="Props.WindowCreateMaximizedBoolean"/>: <c>true</c> if the window should
     /// start maximized</item>
-    /// <item><see cref="Props.WindowCreateMenuBoolean"/>: true if the window is a popup menu</item>
-    /// <item><see cref="Props.WindowCreateMetalBoolean"/>: true if the window will be used
+    /// <item><see cref="Props.WindowCreateMenuBoolean"/>: <c>true</c> if the window is a popup menu</item>
+    /// <item><see cref="Props.WindowCreateMetalBoolean"/>: <c>true</c> if the window will be used
     /// with Metal rendering</item>
-    /// <item><see cref="Props.WindowCreateMinimizedBoolean"/>: true if the window should
+    /// <item><see cref="Props.WindowCreateMinimizedBoolean"/>: <c>true</c> if the window should
     /// start minimized</item>
-    /// <item><see cref="Props.WindowCreateModalBoolean"/>: true if the window is modal to
+    /// <item><see cref="Props.WindowCreateModalBoolean"/>: <c>true</c> if the window is modal to
     /// its parent</item>
-    /// <item><see cref="Props.WindowCreateMouseGrabbedBoolean"/>: true if the window starts
+    /// <item><see cref="Props.WindowCreateMouseGrabbedBoolean"/>: <c>true</c> if the window starts
     /// with grabbed mouse focus</item>
-    /// <item><see cref="Props.WindowCreateOpenGLBoolean"/>: true if the window will be used
+    /// <item><see cref="Props.WindowCreateOpenGLBoolean"/>: <c>true</c> if the window will be used
     /// with OpenGL rendering</item>
     /// <item><see cref="Props.WindowCreateParentPointer"/>: an SDL_Window that will be the
     /// parent of this window, required for windows with the <c>"tooltip,"</c> <c>"menu"</c>,
     /// and <c>"modal"</c> properties</item>
-    /// <item><see cref="Props.WindowCreateResizableBoolean"/>: true if the window should be
+    /// <item><see cref="Props.WindowCreateResizableBoolean"/>: <c>true</c> if the window should be
     /// resizable</item>
     /// <item><see cref="Props.WindowCreateTitleString"/>: the title of the window, in UTF-8
     /// encoding</item>
-    /// <item><see cref="Props.WindowCreateTransparentBoolean"/>: true if the window show
+    /// <item><see cref="Props.WindowCreateTransparentBoolean"/>: <c>true</c> if the window show
     /// transparent in the areas with alpha of 0</item>
-    /// <item><see cref="Props.WindowCreateTooltipBoolean"/>: true if the window is a tooltip</item>
-    /// <item><see cref="Props.WindowCreateUtilityBoolean"/>: true if the window is a utility
+    /// <item><see cref="Props.WindowCreateTooltipBoolean"/>: <c>true</c> if the window is a tooltip</item>
+    /// <item><see cref="Props.WindowCreateUtilityBoolean"/>: <c>true</c> if the window is a utility
     /// window, not showing in the task bar and window list</item>
-    /// <item><see cref="Props.WindowCreateVulkanBoolean"/>: true if the window will be used
+    /// <item><see cref="Props.WindowCreateVulkanBoolean"/>: <c>true</c> if the window will be used
     /// with Vulkan rendering</item>
     /// <item><see cref="Props.WindowCreateWidthNumber"/>: the width of the window</item>
     /// <item><see cref="Props.WindowCreateXNumber"/>: the x position of the window, or
@@ -857,12 +857,12 @@ public static partial class SDL
     /// </list>
     /// <para>These are additional supported properties on Wayland:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - true if
+    /// <item><see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - <c>true</c> if
     /// the application wants to use the Wayland surface for a custom role and
     /// does not want it attached to an XDG toplevel window. See
     /// [README-wayland](README-wayland) for more information on using custom
     /// surfaces.</item>
-    /// <item><see cref="Props.WindowCreateWaylandCreateEGLWindowBoolean"/> - true if the
+    /// <item><see cref="Props.WindowCreateWaylandCreateEGLWindowBoolean"/> - <c>true</c> if the
     /// application wants an associated <c>wl_egl_window</c> object to be created and
     /// attached to the window, even if the window does not have the OpenGL
     /// property or <see cref="WindowFlags.OpenGL"/> flag set.</item>
@@ -909,7 +909,7 @@ public static partial class SDL
     /// your window at that point, which may cause the window to appear briefly,
     /// and then flicker as it is recreated. The correct approach to this is to
     /// create the window with the <see cref="Props.WindowCreateHiddenBoolean"/> property
-    /// set to true, then create the renderer, then show the window with
+    /// set to <c>true</c>, then create the renderer, then show the window with
     /// <see cref="ShowWindow"/>.</para>
     /// </summary>
     /// <param name="props">the properties to use.</param>
@@ -977,7 +977,7 @@ public static partial class SDL
     /// <list type="bullet">
     /// <item><see cref="Props.WindowShapePointer"/>: the surface associated with a shaped
     /// window</item>
-    /// <item><see cref="Props.WindowHDREnabledBoolean"/>: true if the window has HDR
+    /// <item><see cref="Props.WindowHDREnabledBoolean"/>: <c>true</c> if the window has HDR
     /// headroom above the SDR white point. This property can change dynamically
     /// when <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
     /// <item><see cref="Props.WindowSDRWhiteLevelFloat"/>: the value of SDR white in the
@@ -1064,7 +1064,7 @@ public static partial class SDL
     /// </list>
     /// <para>On Wayland:</para>
     /// <para>Note: The <c>xdg_*</c> window objects do not internally persist across window
-    /// show/hide calls. They will be null if the window is hidden and must be
+    /// show/hide calls. They will be <c>null</c> if the window is hidden and must be
     /// queried each time it is shown.</para>
     /// <list type="bullet">
     /// <item><see cref="Props.WindowWaylandDisplayPointer"/>: the wl_display associated with
@@ -1391,15 +1391,15 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);</code>
     /// <summary>
     /// <para>Get the size of a window's borders (decorations) around the client area.</para>
-    /// <para>Note: If this function fails (returns false), the size values will be
-    /// initialized to 0, 0, 0, 0 (if a non-NULL pointer is provided), as if the
+    /// <para>Note: If this function fails (returns <c>false</c>), the size values will be
+    /// initialized to 0, 0, 0, 0 (if a non-<c>null</c> pointer is provided), as if the
     /// window in question was borderless.</para>
     /// <para>Note: This function may fail on systems where the window has not yet been
     /// decorated by the display server (for example, immediately after calling
     /// <see cref="CreateWindow"/>). It is recommended that you wait at least until the
     /// window has been presented and composited, so that the window system has a
     /// chance to decorate the window and provide the border dimensions to SDL.</para>
-    /// <para>This function also returns false if getting the information is not
+    /// <para>This function also returns <c>false</c> if getting the information is not
     /// supported.</para>
     /// </summary>
     /// <param name="window">the window to query the size values of the border
@@ -1412,7 +1412,7 @@ public static partial class SDL
     /// border; <c>null</c> is permitted.</param>
     /// <param name="right">pointer to variable for storing the size of the right border;
     /// <c>null</c> is permitted.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -1431,7 +1431,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <param name="h">a pointer to variable for storing the height in pixels, may be
     /// <c>null</c>.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -1581,7 +1581,7 @@ public static partial class SDL
     /// <para>Set the window to fill the current document space (Emscripten only).</para>
     /// <para>This will add or remove the window's <see cref="WindowFlags.WindowFillDocument"/> flag.</para>
     /// <para>Currently this flag only applies to the Emscripten target.</para>
-    /// <para>When enabled, the canvas element fills the entire document. Resize events 
+    /// <para>When enabled, the canvas element fills the entire document. Resize events
     /// will be generated as the browser window is resized, as that will adjust the
     /// canvas size as well. The canvas will cover anything else on the page,
     /// including any controls provided by Emscripten in its generated HTML file
@@ -1592,8 +1592,8 @@ public static partial class SDL
     /// work as expected, such as minimum window sizes and aspect ratios.</para>
     /// </summary>
     /// <param name="window">the window of which to change the fill-document state.</param>
-    /// <param name="fill">true to set the window to fill the document, false to disable.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <param name="fill"><c>true</c> to set the window to fill the document, <c>false</c> to disable.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
@@ -2092,7 +2092,7 @@ public static partial class SDL
     /// <para>The parameter <c>opacity</c> will be clamped internally between 0.0f
     /// (transparent) and 1.0f (opaque).</para>
     /// </summary>
-    /// <remarks>This function also returns false if setting the opacity isn't supported.</remarks>
+    /// <remarks>This function also returns <c>false</c> if setting the opacity isn't supported.</remarks>
     /// <param name="window">the window which will be made transparent or opaque.</param>
     /// <param name="opacity">the opacity value (0.0f - transparent, 1.0f - opaque).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
@@ -2225,7 +2225,7 @@ public static partial class SDL
     /// resizing the window and not deliver it to the application.</para>
     /// <para>Specifying <c>null</c> for a callback disables hit-testing. Hit-testing is
     /// disabled by default.</para>
-    /// <para>Platforms that don't support this functionality will return false
+    /// <para>Platforms that don't support this functionality will return <c>false</c>
     /// unconditionally, even if you're attempting to disable hit-testing.</para>
     /// <para>Your callback may fire at any time, and its firing does not indicate any
     /// specific behavior (for example, on Windows, this certainly might fire when
@@ -2324,7 +2324,7 @@ public static partial class SDL
     /// <param name="window">the window whose progress value is to be modified.</param>
     /// <param name="value">the progress value in the range of [0.0f - 1.0f]. If the value
     /// is outside the valid range, it gets clamped.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
@@ -2456,7 +2456,7 @@ public static partial class SDL
     /// <item>On X11, function pointers returned by this function are valid for any
     /// context, and can even be looked up before a context is created at all.
     /// This means that, for at least some common OpenGL implementations, if you
-    /// look up a function that doesn't exist, you'll get a non-NULL result that
+    /// look up a function that doesn't exist, you'll get a non-<c>null</c> result that
     /// is _NOT_ safe to call. You must always make sure the function is actually
     /// available for a given GL context before calling it, by checking for the
     /// existence of the appropriate extension with <see cref="GLExtensionSupported"/>,
@@ -2532,7 +2532,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="extension">the name of the extension to check.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <returns>true if the extension is supported, false otherwise.</returns>
+    /// <returns><c>true</c> if the extension is supported, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_ExtensionSupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2709,7 +2709,7 @@ public static partial class SDL
     /// <param name="surfaceAttribCallback">callback for attributes to pass to
     /// eglCreateSurface. May be <c>null</c>.</param>
     /// <param name="contextAttribCallback">callback for attributes to pass to
-    /// eglCreateContext. May be NULL.</param>
+    /// eglCreateContext. May be <c>null</c>.</param>
     /// <param name="userdata">a pointer that is passed to the callbacks.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -2726,7 +2726,7 @@ public static partial class SDL
     /// the vertical retrace for a given frame, it swaps buffers immediately, which
     /// might be less jarring for the user during occasional framerate drops. If an
     /// application requests adaptive vsync and the system does not support it,
-    /// this function will fail and return false. In such a case, you should
+    /// this function will fail and return <c>false</c>. In such a case, you should
     /// probably retry the call with 1 for the interval.</para>
     /// <para>Adaptive vsync is implemented for some glX drivers with
     /// GLX_EXT_swap_control_tear, and for some Windows drivers with
@@ -2736,7 +2736,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="interval">0 for immediate updates, 1 for updates synchronized with
     /// the vertical retrace, -1 for adaptive vsync.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>

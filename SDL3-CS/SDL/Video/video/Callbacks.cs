@@ -80,7 +80,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="win">the SDL_Window where hit-testing was set on.</param>
     /// <param name="area">an <see cref="Point"/> which should be hit-tested.</param>
-    /// <param name="data">what was passed as <c>callback_data</c> to <see cref="SetWindowHitTest"/>.</param>
+    /// <param name="data">what was passed as <c>callbackData</c> to <see cref="SetWindowHitTest"/>.</param>
     /// <returns>an <see cref="HitTestResult"/> value.</returns>
     /// <seealso cref="SetWindowHitTest"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

@@ -43,7 +43,7 @@ public partial class Image
     /// <para>Load an image from a filesystem path into a software surface.</para>
     /// <para>An <see cref="SDL.Surface"/> is a buffer of pixels in memory accessible by the CPU. Use
     /// this if you plan to hand the data to something else or manipulate it
-    /// by calling: SDL.SetSurfaceColorKey(image, SDL_RLEACCEL,
+    /// by calling: <see cref="SDL.SetSurfaceColorKey"/>(image, <c>SDL_RLEACCEL</c>,
     /// image.Format.Colorkey);</para>
     /// <para>There are no guarantees about what format the new <see cref="SDL.Surface"/> data will be;
     /// in many cases, SDL_image will attempt to supply a surface that exactly
@@ -55,7 +55,7 @@ public partial class Image
     /// format.</para>
     /// <para>If the image format supports a transparent pixel, SDL will set the colorkey
     /// for the surface. You can enable RLE acceleration on the surface afterwards
-    /// by calling: SDL.SetSurfaceColorKey(image, SDL_RLEACCEL,
+    /// by calling: <see cref="SDL.SetSurfaceColorKey"/>(image, <c>SDL_RLEACCEL</c>,
     /// image.Format.Colorkey);</para>
     /// <para>There is a separate function to read files from an SDL_IOStream, if you
     /// need an i/o abstraction to provide data from anywhere instead of a simple
@@ -93,9 +93,9 @@ public partial class Image
     /// format.</para>
     /// <para>If the image format supports a transparent pixel, SDL will set the colorkey
     /// for the surface. You can enable RLE acceleration on the surface afterwards
-    /// by calling: SDL.SetSurfaceColorKey(image, SDL_RLEACCEL,
+    /// by calling: <see cref="SDL.SetSurfaceColorKey"/>(image, <c>SDL_RLEACCEL</c>,
     /// image.Format.Colorkey);</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>There is a separate function to read files from disk without having to deal
@@ -139,9 +139,9 @@ public partial class Image
     /// format.</para>
     /// <para>If the image format supports a transparent pixel, SDL will set the colorkey
     /// for the surface. You can enable RLE acceleration on the surface afterwards
-    /// by calling: SDL.SetSurfaceColorKey(image, SDL_RLEACCEL,
+    /// by calling: <see cref="SDL.SetSurfaceColorKey"/>(image, <c>SDL_RLEACCEL</c>,
     /// image.Format.Colorkey);</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>Even though this function accepts a file type, SDL_image may still try
@@ -163,7 +163,7 @@ public partial class Image
     /// call to <see cref="SDL.DestroySurface"/>.</para>
     /// </summary>
     /// <param name="src">an SDL_IOStream that data will be read from.</param>
-    /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, false
+    /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
     /// to leave it open.</param>
     /// <param name="type">a filename extension that represent this data ("BMP", "GIF",
     /// "PNG", etc).</param>
@@ -217,7 +217,7 @@ public partial class Image
     /// SDL_Texture in the most format that most reasonably represents the image
     /// data (but in many cases, this will just end up being 32-bit RGB or 32-bit
     /// RGBA).</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>There is a separate function to read files from disk without having to deal
@@ -256,7 +256,7 @@ public partial class Image
     /// SDL_Texture in the most format that most reasonably represents the image
     /// data (but in many cases, this will just end up being 32-bit RGB or 32-bit
     /// RGBA).</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>Even though this function accepts a file type, SDL_image may still try
@@ -328,7 +328,7 @@ public partial class Image
     /// create a GPU texture with the format <see cref="SDL.GPUTextureFormat.R8G8B8A8Unorm"/>
     /// with no mip levels. It can be bound as a sampled texture from a graphics or
     /// compute pipeline and as a a readonly storage texture in a compute pipeline.</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>There is a separate function to read files from disk without having to deal
@@ -345,7 +345,7 @@ public partial class Image
     /// <param name="copyPass">the SDL_GPUCopyPass to use to upload the loaded image to
     /// the GPU texture.</param>
     /// <param name="src">an SDL_IOStream that data will be read from.</param>
-    /// <param name="closeio">true to close/free the SDL_IOStream before returning, false
+    /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
     /// to leave it open.</param>
     /// <param name="width">a pointer filled in with the width of the GPU texture. may be
     /// <c>null</c>.</param>
@@ -367,7 +367,7 @@ public partial class Image
     /// create a GPU texture with the format <see cref="SDL.GPUTextureFormat.R8G8B8A8Unorm"/>
     /// with no mip levels. It can be bound as a sampled texture from a graphics or
     /// compute pipeline and as a a readonly storage texture in a compute pipeline.</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>Even though this function accepts a file type, SDL_image may still try
@@ -1848,7 +1848,7 @@ public partial class Image
     /// <para>When done with the returned surface, the app should dispose of it with a
     /// call to <see cref="SDL.DestroySurface"/>.</para>
     /// </summary>
-    /// <param name="xpm">a null-terminated array of strings that comprise XPM data.</param>
+    /// <param name="xpm">a <c>null</c>-terminated array of strings that comprise XPM data.</param>
     /// <returns>a new SDL surface, or <c>null</c> on error.</returns>
     /// <since>This function is available since SDL_image 3.0.0.</since>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_ReadXPMFromArray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1864,7 +1864,7 @@ public partial class Image
     /// <para>When done with the returned surface, the app should dispose of it with a
     /// call to <see cref="SDL.DestroySurface"/>.</para>
     /// </summary>
-    /// <param name="xpm">a null-terminated array of strings that comprise XPM data.</param>
+    /// <param name="xpm">a <c>null</c>-terminated array of strings that comprise XPM data.</param>
     /// <returns>a new SDL surface, or <c>null</c> on error.</returns>
     /// <since>This function is available since SDL_image 3.0.0.</since>
     /// <seealso cref="ReadXPMFromArray"/>
@@ -1902,7 +1902,7 @@ public partial class Image
     /// <summary>
     /// <para>Save an <see cref="SDL.Surface"/> into formatted image data, via an SDL_IOStream.</para>
     /// <para>If you just want to save to a filename, you can use <seealso cref="Save"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// <para>For formats that accept a quality, a default quality of 90 will be used.</para>
     /// </summary>
@@ -1912,7 +1912,7 @@ public partial class Image
     /// to leave it open.</param>
     /// <param name="type">a filename extension that represent this data ("BMP", "GIF",
     /// "PNG", etc).</param>
-    /// <returns>true on success or false on failure; call <seealso cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL_image 3.4.0.</since>
     /// <seealso cref="Save"/>
@@ -1952,7 +1952,7 @@ public partial class Image
     /// <summary>
     /// <para>Save an <see cref="SDL.Surface"/> into AVIF image data, via an SDL_IOStream.</para>
     /// <para>If you just want to save to a filename, you can use <see cref="SaveAVIF"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -1990,7 +1990,7 @@ public partial class Image
     /// <summary>
     /// <para>Save an <see cref="SDL.Surface"/> into BMP image data, via an SDL_IOStream.</para>
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveBMP"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -2026,7 +2026,7 @@ public partial class Image
     /// <summary>
     /// Save an SDL_Surface into CUR image data, via an SDL_IOStream.
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveCUR"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface"></param>
@@ -2062,7 +2062,7 @@ public partial class Image
     /// <summary>
     /// Save an <see cref="SDL.Surface"/> into GIF image data, via an SDL_IOStream.
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveGIF"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -2098,12 +2098,12 @@ public partial class Image
     /// <summary>
     /// Save an <see cref="SDL.Surface"/> into ICO image data, via an SDL_IOStream.
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveICO"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
     /// <param name="dst">the SDL_IOStream to save the image data to.</param>
-    /// <param name="closeio">true to close/free the SDL_IOStream before returning, false
+    /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
     /// to leave it open.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="SDL.GetError"/> for more
     /// information.</returns>
@@ -2136,7 +2136,7 @@ public partial class Image
     /// <summary>
     /// <para>Save an <see cref="SDL.Surface"/> into JPEG image data, via an SDL_IOStream.</para>
     /// <para>If you just want to save to a filename, you can use <see cref="SaveJPG"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -2174,7 +2174,7 @@ public partial class Image
     /// <summary>
     /// <para>Save an <see cref="SDL.Surface"/> into PNG image data, via an SDL_IOStream.</para>
     /// <para>If you just want to save to a filename, you can use <see cref="SavePNG"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -2210,7 +2210,7 @@ public partial class Image
     /// <summary>
     /// Save an <see cref="SDL.Surface"/> into TGA image data, via an SDL_IOStream.
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveTGA"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -2250,7 +2250,7 @@ public partial class Image
     /// <summary>
     /// Save an <see cref="SDL.Surface"/> into WEBP image data, via an SDL_IOStream.
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveWEBP"/> instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="surface">the SDL surface to save.</param>
@@ -2295,7 +2295,7 @@ public partial class Image
     /// <code>extern SDL_DECLSPEC IMG_Animation * SDLCALL IMG_LoadAnimation_IO(SDL_IOStream *src, bool closeio);</code>
     /// <summary>
     /// <para>Load an animation from an SDL_IOStream.</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>When done with the returned animation, the app should dispose of it with a
@@ -2327,7 +2327,7 @@ public partial class Image
     /// the image data, but may rely on the caller-provided type string for formats
     /// that it cannot autodetect. If <c>type</c> is <c>null</c>, SDL_image will rely solely on
     /// its ability to guess the format.</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning, whether this
     /// function succeeds or not. SDL_image reads everything it needs from <c>src</c>
     /// during this call in any case.</para>
     /// <para>When done with the returned animation, the app should dispose of it with a
@@ -2504,7 +2504,7 @@ public partial class Image
     /// Save an animation to an SDL_IOStream.
     /// <para>If you just want to save to a filename, you can use <seealso cref="SaveAnimation"/>
     /// instead.</para>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// <para>For formats that accept a quality, a default quality of 90 will be used.</para>
     /// </summary>
@@ -2530,7 +2530,7 @@ public partial class Image
     /// <code>extern SDL_DECLSPEC bool SDLCALL IMG_SaveANIAnimation_IO(IMG_Animation *anim, SDL_IOStream *dst, bool closeio);</code>
     /// <summary>
     /// Save an animation in ANI format to an SDL_IOStream.
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="anim">the animation to save.</param>
@@ -2554,7 +2554,7 @@ public partial class Image
     /// <code>extern SDL_DECLSPEC bool SDLCALL IMG_SaveAPNGAnimation_IO(IMG_Animation *anim, SDL_IOStream *dst, bool closeio);</code>
     /// <summary>
     /// Save an animation in APNG format to an SDL_IOStream.
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="anim">the animation to save.</param>
@@ -2578,12 +2578,12 @@ public partial class Image
     /// <code>extern SDL_DECLSPEC bool SDLCALL IMG_SaveAVIFAnimation_IO(IMG_Animation *anim, SDL_IOStream *dst, bool closeio, int quality);</code>
     /// <summary>
     /// Save an animation in AVIF format to an SDL_IOStream.
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning, whether this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning, whether this
     /// function succeeds or not.</para>
     /// </summary>
     /// <param name="anim">the animation to save.</param>
     /// <param name="dst">an SDL_IOStream from which data will be written to.</param>
-    /// <param name="closeio">true to close/free the SDL_IOStream before returning, false
+    /// <param name="closeio"><c>true</c> to close/free the SDL_IOStream before returning, <c>false</c>
     /// to leave it open.</param>
     /// <param name="quality">the desired quality, ranging between 0 (lowest) and 100
     /// (highest).</param>
@@ -2727,7 +2727,7 @@ public partial class Image
     /// <item>GIF</item>
     /// <item>WEBP</item>
     /// </list>
-    /// <para>If <c>closeio</c> is true, <c>dst</c> will be closed before returning if this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>dst</c> will be closed before returning if this
     /// function fails, or when the animation encoder is closed if this function
     /// succeeds.</para>
     /// </summary>
@@ -2766,7 +2766,7 @@ public partial class Image
     /// that will be used to save the stream. This should not be closed until the
     /// animation encoder is closed. This is required if
     /// <see cref="Props.AnimationEncoderCreateFilenameString" /> isn't set.</item>
-    /// <item><see cref="Props.AnimationEncoderCreateIOStreamAutoCloseBoolean" />: true if
+    /// <item><see cref="Props.AnimationEncoderCreateIOStreamAutoCloseBoolean" />: <c>true</c> if
     /// closing the animation encoder should also close the associated
     /// SDL_IOStream.</item>
     /// <item><see cref="Props.AnimationEncoderCreateTypeString" />: the output file type,
@@ -2874,7 +2874,7 @@ public partial class Image
     /// <item>GIF</item>
     /// <item>WEBP</item>
     /// </list>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be closed before returning if this
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be closed before returning if this
     /// function fails, or when the animation decoder is closed if this function
     /// succeeds.</para>
     /// </summary>
@@ -2914,7 +2914,7 @@ public partial class Image
     /// containing a series of images. This should not be closed until the
     /// animation decoder is closed. This is required if
     /// <see cref="Props.AnimationDecoderCreateFilenameString" /> isn't set.</item>
-    /// <item><see cref="Props.AnimationDecoderCreateIOStreamAutoCloseBoolean" />: true if
+    /// <item><see cref="Props.AnimationDecoderCreateIOStreamAutoCloseBoolean" />: <c>true</c> if
     /// closing the animation decoder should also close the associated
     /// SDL_IOStream.</item>
     /// <item><see cref="Props.AnimationDecoderCreateTypeString" />: the input file type,
@@ -2959,9 +2959,9 @@ public partial class Image
     /// Get the next frame in an animation decoder.
     /// <para>This function decodes the next frame in the animation decoder, returning it
     /// as an SDL_Surface. The returned surface should be freed with
-    /// <seealso cref="SDL.FreeSurface"/> when no longer needed.</para>
+    /// <see cref="SDL.DestroySurface"/> when no longer needed.</para>
     /// <para>If the animation decoder has no more frames or an error occurred while
-    /// decoding the frame, this function returns false. In that case, please call
+    /// decoding the frame, this function returns <c>false</c>. In that case, please call
     /// <see cref="SDL.GetError"/> for more information. If <see cref="SDL.GetError"/> returns an empty
     /// string, that means there are no more available frames. If <see cref="SDL.GetError"/>
     /// returns a valid string, that means the decoding failed.</para>
@@ -2973,7 +2973,7 @@ public partial class Image
     /// be other units if the
     /// <see cref="Props.AnimationDecoderCreateTimebaseDenominatorNumber"/>
     /// property is set when creating the decoder.</param>
-    /// <returns>true on success or false on failure and when no more frames are
+    /// <returns><c>true</c> on success or <c>false</c> on failure and when no more frames are
     /// available; call <see cref="GetAnimationDecoderStatus"/> or <see cref="SDL.GetError"/>
     /// for more information.</returns>
     /// <since>This function is available since SDL_image 3.4.0.</since>

@@ -57,11 +57,11 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAltiVec(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has AltiVec features.</para>
-    /// <para>This always returns false on CPUs that aren't using PowerPC instruction
+    /// <para>This always returns <c>false</c> on CPUs that aren't using PowerPC instruction
     /// sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has AltiVec features or <c>false</c> if not.</returns>
-    /// 
+    ///
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAltiVec"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -72,7 +72,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasMMX(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has MMX features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has MMX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -85,7 +85,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has SSE features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -102,7 +102,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE2(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has SSE2 features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE2 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -119,7 +119,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE3(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has SSE3 features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE3 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -136,7 +136,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE41(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has SSE4.1 features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE4.1 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -153,7 +153,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE42(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has SSE4.2 features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has SSE4.2 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -170,7 +170,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAVX(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has AVX features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has AVX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -185,7 +185,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAVX2(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has AVX2 features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has AVX2 features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -200,7 +200,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAVX512F(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has AVX-512F (foundation) features.</para>
-    /// <para>This always returns false on CPUs that aren't using Intel instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using Intel instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has AVX-512F features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -216,7 +216,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Determine whether the CPU has ARM SIMD (ARMv6) features.</para>
     /// <para>This is different from ARM NEON, which is a different instruction set.</para>
-    /// <para>This always returns false on CPUs that aren't using ARM instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using ARM instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has ARM SIMD features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -230,7 +230,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasNEON(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has NEON (ARM SIMD) features.</para>
-    /// <para>This always returns false on CPUs that aren't using ARM instruction sets.</para>
+    /// <para>This always returns <c>false</c> on CPUs that aren't using ARM instruction sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has ARM NEON features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -256,7 +256,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasLSX(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has LSX (LOONGARCH SIMD) features.</para>
-    /// <para>This always returns false on CPUs that aren't using LOONGARCH instruction
+    /// <para>This always returns <c>false</c> on CPUs that aren't using LOONGARCH instruction
     /// sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has LOONGARCH LSX features or <c>false</c> if not.</returns>
@@ -270,7 +270,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasLASX(void);</code>
     /// <summary>
     /// <para>Determine whether the CPU has LASX (LOONGARCH SIMD) features.</para>
-    /// <para>This always returns false on CPUs that aren't using LOONGARCH instruction
+    /// <para>This always returns <c>false</c> on CPUs that aren't using LOONGARCH instruction
     /// sets.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has LOONGARCH LASX features or <c>false</c> if not.</returns>

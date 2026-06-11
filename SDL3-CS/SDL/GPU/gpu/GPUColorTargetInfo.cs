@@ -118,7 +118,7 @@ public static partial class SDL
         private Byte _padding2;
         
         /// <summary>
-        /// true cycles the texture if the texture is bound and load_op is not LOAD
+        /// <c>true</c> cycles the texture if the texture is bound and load_op is not LOAD
         /// </summary>
         public bool Cycle
         {
@@ -127,7 +127,7 @@ public static partial class SDL
         }
         
         /// <summary>
-        /// true cycles the resolve texture if the resolve texture is bound. Ignored if a RESOLVE* store_op is not used.
+        /// <c>true</c> cycles the resolve texture if the resolve texture is bound. Ignored if a RESOLVE* store_op is not used.
         /// </summary>
         public bool CycleResolveTexture
         {

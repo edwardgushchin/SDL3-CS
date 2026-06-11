@@ -273,7 +273,7 @@ public static partial class SDL
     /// audio playing, bind a stream and supply audio data to it. Unlike SDL2,
     /// there is no audio callback; you only bind audio streams and make sure they
     /// have data flowing into them (however, you can simulate SDL2's semantics
-    /// fairly closely by using <see cref="OpenAudioDeviceStream(uint, in nint, AudioStreamCallback, nint)"/> instead of this
+    /// fairly closely by using <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/> instead of this
     /// function).</para>
     /// <para>If you don't care about opening a specific device, pass a `devid` of either
     /// <see cref="AudioDeviceDefaultPlayback"/> or
@@ -339,7 +339,7 @@ public static partial class SDL
     /// audio playing, bind a stream and supply audio data to it. Unlike SDL2,
     /// there is no audio callback; you only bind audio streams and make sure they
     /// have data flowing into them (however, you can simulate SDL2's semantics
-    /// fairly closely by using <see cref="OpenAudioDeviceStream(uint, in nint, AudioStreamCallback?, nint)"/> instead of this
+    /// fairly closely by using <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/> instead of this
     /// function).</para>
     /// <para>If you don't care about opening a specific device, pass a `devid` of either
     /// <see cref="AudioDeviceDefaultPlayback"/> or
@@ -400,13 +400,13 @@ public static partial class SDL
     /// <para>An SDL_AudioDeviceID that represents physical hardware is a physica
     /// device; there is one for each piece of hardware that SDL can see. Logical
     /// devices are created by calling <see cref="OpenAudioDevice(uint, nint)"/> or
-    /// <see cref="OpenAudioDeviceStream(uint, in nint, AudioStreamCallback, nint)"/>, and while each is associated with a physical
+    /// <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/>, and while each is associated with a physical
     /// device, there can be any number of logical devices on one physical device.</para>
     /// <para>For the most part, logical and physical IDs are interchangeable--if you try
     /// to open a logical device, SDL understands to assign that effort to the
     /// underlying physical device, etc. However, it might be useful to know if an
     /// arbitrary device ID is physical or logical. This function reports which.</para>
-    /// <para>This function may return either true or false for invalid device IDs.</para>
+    /// <para>This function may return either <c>true</c> or <c>false</c> for invalid device IDs.</para>
     /// </summary>
     /// <param name="devid">the device ID to query.</param>
     /// <returns><c>true</c> if devid is a physical device, <c>false</c> if it is logical.</returns>
@@ -420,7 +420,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsAudioDevicePlayback(SDL_AudioDeviceID devid);</code>
     /// <summary>
     /// <para>Determine if an audio device is a playback device (instead of recording).</para>
-    /// <para>This function may return either true or false for invalid device IDs.</para>
+    /// <para>This function may return either <c>true</c> or <c>false</c> for invalid device IDs.</para>
     /// </summary>
     /// <param name="devid">the device ID to query.</param>
     /// <returns><c>true</c> if devid is a playback device, <c>false</c> if it is recording.</returns>
@@ -447,7 +447,7 @@ public static partial class SDL
     /// created through <see cref="OpenAudioDevice(uint, nint)"/> can be.</para>
     /// </summary>
     /// <param name="devid">a device opened by <see cref="OpenAudioDevice(uint, nint)"/>.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -529,7 +529,7 @@ public static partial class SDL
     /// with a gain of zero being silence.</para>
     /// <para>Audio devices default to a gain of 1.0f (no change in output).</para>
     /// <para>Physical devices may not have their gain changed, only logical devices, and
-    /// this function will always return false when used on physical devices. While
+    /// this function will always return <c>false</c> when used on physical devices. While
     /// it might seem attractive to adjust several logical devices at once in this
     /// way, it would allow an app or library to interfere with another portion of
     /// the program's otherwise-isolated devices.</para>
@@ -589,7 +589,7 @@ public static partial class SDL
     /// device's settings. The caller is welcome to change the other end of the
     /// stream's format at any time with <see cref="SetAudioStreamFormat(nint, nint, nint)"/>. If the other
     /// end of the stream's format has never been set (the audio stream was created
-    /// with a NULL audio spec), this function will set it to match the device
+    /// with a <c>null</c> audio spec), this function will set it to match the device
     /// end's format.</para>
     /// </summary>
     /// <param name="devid">an audio device to bind a stream to.</param>
@@ -682,7 +682,7 @@ public static partial class SDL
     /// <para>Create a new audio stream.</para>
     /// <para>SDL_AudioStream is an audio conversion interface. You push data as you have
     /// it, and pull it when you need it; the stream will buffer data as needed.</para>
-    /// <para>Note that <c>src_spec</c> or <c>dst_spec</c> may be <c>null</c>, but any attempts to put or
+    /// <para>Note that <c>srcSpec</c> or <c>dstSpec</c> may be <c>null</c>, but any attempts to put or
     /// get data from an audio stream will fail until it has valid specs assigned
     /// to both ends of the stream. Specs can be assigned later through
     /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or binding the stream to an audio device (which
@@ -711,7 +711,7 @@ public static partial class SDL
     /// <para>Create a new audio stream.</para>
     /// <para>SDL_AudioStream is an audio conversion interface. You push data as you have
     /// it, and pull it when you need it; the stream will buffer data as needed.</para>
-    /// <para>Note that <c>src_spec</c> or <c>dst_spec</c> may be <c>null</c>, but any attempts to put or
+    /// <para>Note that <c>srcSpec</c> or <c>dstSpec</c> may be <c>null</c>, but any attempts to put or
     /// get data from an audio stream will fail until it has valid specs assigned
     /// to both ends of the stream. Specs can be assigned later through
     /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or binding the stream to an audio device (which
@@ -743,9 +743,9 @@ public static partial class SDL
     /// <para>The application can hang any data it wants here, but the following
     /// properties are understood by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.AudioStreamAutoCleanupBoolean"/>: if true (the default), the
+    /// <item><see cref="Props.AudioStreamAutoCleanupBoolean"/>: if <c>true</c> (the default), the
     /// stream be automatically cleaned up when the audio subsystem quits. If set
-    /// to false, the streams will persist beyond that. This property is ignored
+    /// to <c>false</c>, the streams will persist beyond that. This property is ignored
     /// for streams created through <see cref="OpenAudioDeviceStream(uint, in AudioSpec, AudioStreamCallback?, nint)"/>, and will always
     /// be cleaned up. Streams that are not cleaned up will still be unbound from
     /// devices when the audio subsystem quits. This property was added in SDL
@@ -791,11 +791,11 @@ public static partial class SDL
     /// next sound file, and start putting that new data while the previous sound
     /// file is still queued, and everything will still play back correctly.</para>
     /// <para>If a stream is bound to a device, then the format of the side of the stream
-    /// bound to a device cannot be changed (src_spec for recording devices,
-    /// dst_spec for playback devices). Attempts to make a change to this side
+    /// bound to a device cannot be changed (<c>srcSpec</c> for recording devices,
+    /// <c>dstSpec</c> for playback devices). Attempts to make a change to this side
     /// will be ignored, but this will not report an error. The other side's format
     /// can be changed.</para>
-    /// <para><c>src_spec</c> and <c>dst_spec</c> may each be <c>null</c>; a <c>null</c> spec signals not to
+    /// <para><c>srcSpec</c> and <c>dstSpec</c> may each be <c>null</c>; a <c>null</c> spec signals not to
     /// change the current format for that side of the stream.</para>
     /// </summary>
     /// <param name="stream">the stream the format is being changed.</param>
@@ -827,8 +827,8 @@ public static partial class SDL
     /// next sound file, and start putting that new data while the previous sound
     /// file is still queued, and everything will still play back correctly.</para>
     /// <para>If a stream is bound to a device, then the format of the side of the stream
-    /// bound to a device cannot be changed (src_spec for recording devices,
-    /// dst_spec for playback devices). Attempts to make a change to this side
+    /// bound to a device cannot be changed (<c>srcSpec</c> for recording devices,
+    /// <c>dstSpec</c> for playback devices). Attempts to make a change to this side
     /// will be ignored, but this will not report an error. The other side's format
     /// can be changed.</para>
     /// <para>Use <see cref="SetAudioStreamFormat(nint, nint, nint)"/> when either audio spec should be
@@ -1152,10 +1152,10 @@ public static partial class SDL
     /// <param name="buf">a pointer to the audio data to add.</param>
     /// <param name="len">the number of bytes to add to the stream.</param>
     /// <param name="callback">the callback function to call when the data is no longer
-    /// needed by the stream. May be NULL.</param>
+    /// needed by the stream. May be <c>null</c>.</param>
     /// <param name="userdata">an opaque pointer provided to the callback for its own
     /// personal use.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, but if the
     /// stream has a callback set, the caller might need to manage
@@ -1427,7 +1427,7 @@ public static partial class SDL
     /// <para>This function unpauses audio processing for a given device that has
     /// previously been paused. Once unpaused, any bound audio streams will begin
     /// to progress again, and audio can be generated.</para>
-    /// <para><see cref="OpenAudioDeviceStream(uint, in IntPtr, AudioStreamCallback, IntPtr)"/> opens audio devices in a paused state, so this
+    /// <para><see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/> opens audio devices in a paused state, so this
     /// function call is required for audio playback to begin on such devices.</para>
     /// </summary>
     /// <param name="stream">the audio stream associated with the audio device to resume.</param>
@@ -1509,7 +1509,7 @@ public static partial class SDL
     /// <para>The callback can (optionally) call <see cref="PutAudioStreamData(nint, byte[], int)"/> to add more
     /// audio to the stream during this call; if needed, the request that triggered
     /// this callback will obtain the new data immediately.</para>
-    /// <para>The callback's <c>additional_amount</c> argument is roughly how many bytes of
+    /// <para>The callback's <c>additionalAmount</c> argument is roughly how many bytes of
     /// _unconverted_ data (in the stream's input format) is needed by the caller,
     /// although this may overestimate a little for safety. This takes into account
     /// how much is already in the stream and only asks for any extra necessary to
@@ -1547,7 +1547,7 @@ public static partial class SDL
     /// callback the chance to obtain it immediately.</para>
     /// <para>The callback can (optionally) call <see cref="GetAudioStreamData(nint, byte[], int)"/> to obtain audio
     /// from the stream during this call.</para>
-    /// <para>TThe callback's <c>additional_amount</c> argument is how many bytes of
+    /// <para>TThe callback's <c>additionalAmount</c> argument is how many bytes of
     /// _converted_ data (in the stream's output format) was provided by the
     /// caller, although this may underestimate a little for safety. This value
     /// might be less than what is currently available in the stream, if data was
@@ -1584,7 +1584,7 @@ public static partial class SDL
     /// <para>This will release all allocated data, including any audio that is still
     /// queued. You do not need to manually clear the stream first.</para>
     /// <para>If this stream was bound to an audio device, it is unbound during this
-    /// call. If this stream was created with <see cref="OpenAudioDeviceStream(uint, in nint, AudioStreamCallback, nint)"/>, the audio
+    /// call. If this stream was created with <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/>, the audio
     /// device that was opened alongside this stream's creation will be closed,
     /// too.</para>
     /// </summary>
@@ -1788,7 +1788,7 @@ public static partial class SDL
     /// </code></para>
     /// </summary>
     /// <param name="src">the data source for the WAVE data.</param>
-    /// <param name="closeio">if true, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
     /// in the case of an error.</param>
     /// <param name="spec">a pointer to an <see cref="AudioSpec"/> that will be set to the WAVE
     /// data's format details on successful return.</param>
@@ -1800,7 +1800,7 @@ public static partial class SDL
     /// <para><c>true</c> on success. <c>audioBuf</c> will be filled with a pointer to an
     /// allocated buffer containing the audio data, and <c>audioLen</c> is
     /// filled with the length of that audio buffer in bytes.</para>
-    /// <para>This function returns false if the .WAV file cannot be opened,
+    /// <para>This function returns <c>false</c> if the .WAV file cannot be opened,
     /// uses an unknown data format, or is corrupt; call <see cref="GetError"/>
     /// for more information.</para>
     /// <para>When the application is done with the data returned in
@@ -1829,10 +1829,10 @@ public static partial class SDL
     /// <param name="audioLen">a pointer filled with the length of the audio data buffer
     /// in bytes.</param>
     /// <returns>
-    /// <para>true on success. <c>audioBuf</c> will be filled with a pointer to an
+    /// <para><c>true</c> on success. <c>audioBuf</c> will be filled with a pointer to an
     /// allocated buffer containing the audio data, and <c>audioLen</c> is
     /// filled with the length of that audio buffer in bytes.</para>
-    /// <para>This function returns false if the .WAV file cannot be opened,
+    /// <para>This function returns <c>false</c> if the .WAV file cannot be opened,
     /// uses an unknown data format, or is corrupt; call <see cref="GetError"/>
     /// for more information.</para>
     /// <para>When the application is done with the data returned in
@@ -1894,7 +1894,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="srcSpec">the format details of the input audio.</param>
     /// <param name="srcData">the audio data to be converted.</param>
-    /// <param name="srcLen">the len of src_data.</param>
+    /// <param name="srcLen">the length of <c>srcData</c>.</param>
     /// <param name="dstSpec">the format details of the output audio.</param>
     /// <param name="dstData">will be filled with a pointer to converted audio data,
     /// which should be freed with <see cref="Free"/>. On error, it will be

@@ -153,7 +153,7 @@ public static partial class SDL
     /// <para>If <c>null</c> is returned, the error may be obtained with <see cref="GetError"/>.</para>
     /// </summary>
     /// <param name="folder">the type of folder to find.</param>
-    /// <returns>either a null-terminated C string containing the full path to the
+    /// <returns>either a <c>null</c>-terminated C string containing the full path to the
     /// folder, or <c>null</c> if an error happened.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -188,7 +188,7 @@ public static partial class SDL
     /// callback, called once for each directory entry, until all results have been
     /// provided or the callback returns either <see cref="EnumerationResult.Success"/> or
     /// <see cref="EnumerationResult.Failure"/>.</para>
-    /// <para>This will return false if there was a system problem in general, or if a
+    /// <para>This will return <c>false</c> if there was a system problem in general, or if a
     /// callback returns <see cref="EnumerationResult.Failure"/>. A successful return means a callback
     /// returned <see cref="EnumerationResult.Success"/> to halt enumeration, or all directory entries
     /// were enumerated.</para>
@@ -308,20 +308,20 @@ public static partial class SDL
     /// <summary>
     /// <para>Files are filtered out if they don't match the string in `pattern`, which
     /// may contain wildcard characters `*` (match everything) and `?` (match one
-    /// character). If pattern is NULL, no filtering is done and all results are
+    /// character). If pattern is <c>null</c>, no filtering is done and all results are
     /// returned. Subdirectories are permitted, and are specified with a path
     /// separator of `/`. Wildcard characters `*` and `?` never match a path
     /// separator.</para>
     /// <para><c>flags</c> may be set to <see cref="GlobFlags.CaseInsensitive"/> to make the pattern matching
     /// case-insensitive.</para>
-    /// <para>The returned array is always NULL-terminated, for your iterating
-    /// convenience, but if `count` is non-NULL, on return it will contain the
+    /// <para>The returned array is always <c>null</c>-terminated, for your iterating
+    /// convenience, but if `count` is non-<c>null</c>, on return it will contain the
     /// number of items in the array, not counting the <c>null</c> terminator.</para>
     /// </summary>
     /// <param name="path">the path of the directory to enumerate.</param>
     /// <param name="pattern">the pattern that files in the directory must match. Can be
     /// <c>null</c>.</param>
-    /// <param name="flags"><c>SDL_GLOB_*</c> bitflags that affect this search.</param>
+    /// <param name="flags"><see cref="GlobFlags"/> bitflags that affect this search.</param>
     /// <param name="count">on return, will be set to the number of items in the returned
     /// array. Can be <c>null</c>.</param>
     /// <returns>an array of strings on success or <c>null</c> on failure; call

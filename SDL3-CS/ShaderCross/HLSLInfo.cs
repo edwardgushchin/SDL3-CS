@@ -55,7 +55,7 @@ public partial class ShaderCross
         public IntPtr IncludeDir;
         
         /// <summary>
-        /// The include directory for shader code. Optional, can be NULL.
+        /// The include directory for shader code. Optional, can be <c>null</c>.
         /// </summary>
         public string? ManagedIncludeDir
         {
@@ -64,7 +64,7 @@ public partial class ShaderCross
         }
         
         /// <summary>
-        /// An array of defines. Optional, can be NULL. If not NULL, must be terminated with a fully NULL define struct.
+        /// An array of defines. Optional, can be <c>null</c>. If not <c>null</c>, must be terminated with a fully <c>null</c> define struct.
         /// </summary>
         public IntPtr Defines;
         

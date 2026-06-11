@@ -84,12 +84,12 @@ public static partial class SDL
         public ushort Raw;
         
         /// <summary>
-        /// true if the key is pressed
+        /// <c>true</c> if the key is pressed
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Down;
         
         /// <summary>
-        /// true if this is a key repeat
+        /// <c>true</c> if this is a key repeat
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Repeat;
     }

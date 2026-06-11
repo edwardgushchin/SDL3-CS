@@ -78,7 +78,7 @@ public static partial class SDL
     /// <para>This can be called before any sensors are opened.</para>
     /// </summary>
     /// <param name="instanceID">the sensor instance ID.</param>
-    /// <returns>the <c>SensorType</c>, or <see cref="SensorType.Invalid"/> if <c>instanceID</c> is
+    /// <returns>the <see cref="SensorType"/>, or <see cref="SensorType.Invalid"/> if <c>instanceID</c> is
     /// not valid.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

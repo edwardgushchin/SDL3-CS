@@ -43,7 +43,7 @@ public partial class ShaderCross
         }
 
         /// <summary>
-        /// An optional value for the define. Can be NULL.
+        /// An optional value for the define. Can be <c>null</c>.
         /// </summary>
         public string? ManagedValue
         {

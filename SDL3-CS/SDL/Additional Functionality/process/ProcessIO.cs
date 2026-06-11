@@ -51,7 +51,7 @@ public static partial class SDL
     /// application once the new process is created.</para>
     /// <para>In order to use an SDL_IOStream with <see cref="Redirect"/>, it must
     /// have <see cref="Props.IOStreamWindowsHandlePointer"/> or
-    /// <see cref="Props.IOStreamFileDescriptorNumber"/> set. This is true for streams
+    /// <see cref="Props.IOStreamFileDescriptorNumber"/> set. This is <c>true</c> for streams
     /// representing files and process I/O.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>

@@ -98,7 +98,7 @@ public static partial class SDL
     /// from the south means the user will have to pull the stick to counteract):</para>
     /// <code>
     /// SDL_HapticDirection direction;
-    /// 
+    ///
     /// // Cartesian directions
     /// direction.type = SDL_HAPTIC_CARTESIAN; // Using cartesian direction encoding.
     /// direction.dir[0] = 0; // X position

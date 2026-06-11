@@ -48,7 +48,7 @@ public static partial class TTF
         LineStart = 0x00000200,
         
         /// <summary>
-        /// This substring contains the end of line <c>LineIndex</c> 
+        /// This substring contains the end of line <c>LineIndex</c>
         /// </summary>
         LineEnd = 0x00000400,
         

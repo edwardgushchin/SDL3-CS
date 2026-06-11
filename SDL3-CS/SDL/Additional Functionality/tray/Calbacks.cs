@@ -47,7 +47,7 @@ public partial class SDL
     /// <param name="userdata">userdata an optional pointer to pass extra data to the callback when
     /// it will be invoked. May be <c>null</c>.</param>
     /// <param name="tray">the tray that was clicked.</param>
-    /// <returns>true to show the tray menu after the callback returns, false to
+    /// <returns><c>true</c> to show the tray menu after the callback returns, <c>false</c> to
     /// skip showing the menu. This return value is only used for left and
     /// right click callbacks; other mouse events ignore the return value.</returns>
     /// <since>This datatype is available since SDL 3.6.0.</since>

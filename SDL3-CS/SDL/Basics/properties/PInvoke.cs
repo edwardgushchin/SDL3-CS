@@ -127,7 +127,7 @@ public static partial class SDL
     /// <param name="cleanup">the function to call when this property is deleted, or <c>null</c>
     /// if no cleanup is necessary.</param>
     /// <param name="userdata">a pointer that is passed to the cleanup function.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -281,7 +281,7 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or <c>'default_value'</c> if it is not set or
+    /// <returns>the value of the property, or <c>defaultValue</c> if it is not set or
     /// not a pointer property.</returns>
     /// <threadsafety>It is safe to call this function from any thread, although
     /// the data returned is not protected and could potentially be
@@ -312,7 +312,7 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// <returns>the value of the property, or <c>defaultValue</c> if it is not set or
     /// not a string property.</returns>
     /// <threadsafety>It is safe to call this function from any thread, although
     /// the data returned is not protected and could potentially be
@@ -340,7 +340,7 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// <returns>the value of the property, or <c>defaultValue</c> if it is not set or
     /// not a number property.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -361,7 +361,7 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// <returns>the value of the property, or <c>defaultValue</c> if it is not set or
     /// not a float property.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -382,7 +382,7 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="name">the name of the property to query.</param>
     /// <param name="defaultValue">the default value of the property.</param>
-    /// <returns>the value of the property, or <c>`default_value`</c> if it is not set or
+    /// <returns>the value of the property, or <c>defaultValue</c> if it is not set or
     /// not a boolean property.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -419,7 +419,7 @@ public static partial class SDL
     /// <param name="props">the properties to query.</param>
     /// <param name="callback">the function to call for each property.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>

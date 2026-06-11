@@ -37,7 +37,7 @@ public static partial class SDL
     /// <para>This function should only be invoked from the main thread.</para>
     /// <para>This is an asynchronous function; it will return immediately, and the
     /// result will be passed to the callback.</para>
-    /// <para>The callback will be invoked with a null-terminated list of files the user
+    /// <para>The callback will be invoked with a <c>null</c>-terminated list of files the user
     /// chose. The list will be empty if the user canceled the dialog, and it will
     /// be <c>null</c> if an error occurred.</para>
     /// <para>Note that the callback may be called from a different thread than the one
@@ -57,7 +57,7 @@ public static partial class SDL
     /// Not all platforms support this option.</param>
     /// <param name="filters">a list of filters, may be <c>null</c>. Not all platforms support
     /// this option, and platforms that do support it may allow the
-    /// user to ignore the filters. If non-NULL, it must remain
+    /// user to ignore the filters. If non-<c>null</c>, it must remain
     /// valid at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
@@ -117,7 +117,7 @@ public static partial class SDL
     /// <para>This function should only be invoked from the main thread.</para>
     /// <para>This is an asynchronous function; it will return immediately, and the
     /// result will be passed to the callback.</para>
-    /// <para>The callback will be invoked with a null-terminated list of files the user
+    /// <para>The callback will be invoked with a <c>null</c>-terminated list of files the user
     /// chose. The list will be empty if the user canceled the dialog, and it will
     /// be <c>null</c> if an error occurred.</para>
     /// <para>Note that the callback may be called from a different thread than the one
@@ -136,7 +136,7 @@ public static partial class SDL
     /// Not all platforms support this option.</param>
     /// <param name="filters">a list of filters, may be <c>null</c>. Not all platforms support
     /// this option, and platforms that do support it may allow the
-    /// user to ignore the filters. If non-NULL, it must remain
+    /// user to ignore the filters. If non-<c>null</c>, it must remain
     /// valid at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
@@ -192,7 +192,7 @@ public static partial class SDL
     /// <para>This function should only be invoked from the main thread.</para>
     /// <para>This is an asynchronous function; it will return immediately, and the
     /// result will be passed to the callback.</para>
-    /// <para>The callback will be invoked with a null-terminated list of files the user
+    /// <para>The callback will be invoked with a <c>null</c>-terminated list of files the user
     /// chose. The list will be empty if the user canceled the dialog, and it will
     /// be <c>null</c> if an error occurred.</para>
     /// <para>Note that the callback may be called from a different thread than the one
@@ -253,7 +253,7 @@ public static partial class SDL
     /// <item><see cref="Props.FileDialogFiltersPointer"/>: a pointer to a list of
     /// <see cref="DialogFileFilter"/> structs, which will be used as filters for
     /// file-based selections. Ignored if the dialog is an "Open Folder" dialog.
-    /// If non-NULL, the array of filters must remain valid at least until the
+    /// If non-<c>null</c>, the array of filters must remain valid at least until the
     /// callback is invoked.</item>
     /// <item><see cref="Props.FileDialogNFiltersNumber"/>: the number of filters in the
     /// array of filters, if it exists.</item>
@@ -261,7 +261,7 @@ public static partial class SDL
     /// be modal for.</item>
     /// <item><see cref="Props.FileDialogLocationString"/>: the default folder or file to
     /// start the dialog at.</item>
-    /// <item><see cref="Props.FileDialogManyBoolean"/>: true to allow the user to select
+    /// <item><see cref="Props.FileDialogManyBoolean"/>: <c>true</c> to allow the user to select
     /// more than one entry.</item>
     /// <item><see cref="Props.FileDialogTitleString"/>: the title for the dialog.</item>
     /// <item><see cref="Props.FileDialogAcceptString"/>: the label that the accept button

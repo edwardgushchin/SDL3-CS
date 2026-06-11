@@ -49,7 +49,7 @@ public static partial class SDL
         public UInt32 NumColorTargets;
         
         /// <summary>
-        /// The pixel format of the depth-stencil target. Ignored if has_depth_stencil_target is false.
+        /// The pixel format of the depth-stencil target. Ignored if has_depth_stencil_target is <c>false</c>.
         /// </summary>
         public GPUTextureFormat DepthStencilFormat;
         
@@ -62,7 +62,7 @@ public static partial class SDL
         private Byte _padding3;
         
         /// <summary>
-        /// true specifies that the pipeline uses a depth-stencil target.
+        /// <c>true</c> specifies that the pipeline uses a depth-stencil target.
         /// </summary>
         public bool HasDepthStencilTarget
         {

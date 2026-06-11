@@ -81,7 +81,7 @@ public static partial class SDL
     /// constrained environment.</para>
     /// </summary>
     /// <param name="src">the data stream for the mappings to be added.</param>
-    /// <param name="closeio">if true, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
     /// in the case of an error.</param>
     /// <returns>the number of mappings added or -1 on failure; call <see cref="GetError"/>
     /// for more information.</returns>
@@ -149,7 +149,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="count">a pointer filled in with the number of mappings returned, can
     /// be <c>null</c>.</param>
-    /// <returns>an array of the mapping strings, NULL-terminated, or <c>null</c> on
+    /// <returns>an array of the mapping strings, <c>null</c>-terminated, or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information. This is a
     /// single allocation that should be freed with <see cref="Free"/> when it is
     /// no longer needed.</returns>
@@ -539,15 +539,15 @@ public static partial class SDL
     /// <para>These properties are shared with the underlying joystick object.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.GamepadCapMonoLedBoolean"/>: true if this gamepad has an LED
+    /// <item><see cref="Props.GamepadCapMonoLedBoolean"/>: <c>true</c> if this gamepad has an LED
     /// that has adjustable brightness</item>
-    /// <item><see cref="Props.GamepadCapRGBLedBoolean"/>: true if this gamepad has an LED
+    /// <item><see cref="Props.GamepadCapRGBLedBoolean"/>: <c>true</c> if this gamepad has an LED
     /// that has adjustable color</item>
-    /// <item><see cref="Props.GamepadCapPlayerLedBoolean"/>: true if this gamepad has a
+    /// <item><see cref="Props.GamepadCapPlayerLedBoolean"/>: <c>true</c> if this gamepad has a
     /// player LED</item>
-    /// <item><see cref="Props.GamepadCapRumbleBoolean"/>: true if this gamepad has
+    /// <item><see cref="Props.GamepadCapRumbleBoolean"/>: <c>true</c> if this gamepad has
     /// left/right rumble</item>
-    /// <item><see cref="Props.GamepadCapTriggerRumbleBoolean"/>: true if this gamepad has
+    /// <item><see cref="Props.GamepadCapTriggerRumbleBoolean"/>: <c>true</c> if this gamepad has
     /// simple trigger rumble</item>
     /// </list>
     /// </summary>
@@ -1159,7 +1159,7 @@ public static partial class SDL
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="touchpad">a touchpad.</param>
     /// <param name="finger">a finger.</param>
-    /// <param name="down">a pointer filled with true if the finger is down, false
+    /// <param name="down">a pointer filled with <c>true</c> if the finger is down, <c>false</c>
     /// otherwise, may be <c>null</c>.</param>
     /// <param name="x">a pointer filled with the x position, normalized 0 to 1, with the
     /// origin in the upper left, may be <c>null</c>.</param>

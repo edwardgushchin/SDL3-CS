@@ -36,12 +36,12 @@ public static partial class SDL
     public struct GPURenderStateCreateInfo
     {
         /// <summary>
-        /// The fragment shader to use when this render state is active 
+        /// The fragment shader to use when this render state is active
         /// </summary>
         public IntPtr FragmentShader;
     
         /// <summary>
-        /// The number of additional fragment samplers to bind when this render state is active 
+        /// The number of additional fragment samplers to bind when this render state is active
         /// </summary>
         public int NumSamplerBindings;
         

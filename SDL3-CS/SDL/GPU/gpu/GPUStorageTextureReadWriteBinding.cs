@@ -52,7 +52,7 @@ public static partial class SDL
         public UInt32 Layer;
         
         /// <summary>
-        /// true cycles the texture if it is already bound.
+        /// <c>true</c> cycles the texture if it is already bound.
         /// </summary>
         public Byte Cycle;
         

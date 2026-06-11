@@ -68,7 +68,7 @@ public static partial class SDL
         private Byte _cycle;
         
         /// <summary>
-        /// true cycles the destination texture if it is already bound.
+        /// <c>true</c> cycles the destination texture if it is already bound.
         /// </summary>
         public bool Cycle
         {

@@ -35,7 +35,7 @@ public static partial class SDL
     /// additional arguments passed on the command line of the new process, and the
     /// argument list should be terminated with a <c>null</c>, e.g.:</para>
     /// <code>const char *args[] = { "myprogram", "argument", <c>null</c>};</code>
-    /// <para>Setting pipe_stdio to true is equivalent to setting
+    /// <para>Setting <c>pipeStdio</c> to <c>true</c> is equivalent to setting
     /// <see cref="Props.ProcessCreateSTDInNumber"/> and
     /// <see cref="Props.ProcessCreateSTDOutNumber"/> to <see cref="ProcessIO.App"/>, and
     /// will allow the use of <see cref="ReadProcess"/> or <see cref="GetProcessInput"/> and
@@ -95,11 +95,11 @@ public static partial class SDL
     /// <item><see cref="Props.ProcessCreateSTDErrPointer"/>: an SDL_IOStream pointer used
     /// for standard error when <see cref="Props.ProcessCreateSTDErrNumber"/> is set to
     /// <see cref="ProcessIO.Redirect"/>.</item>
-    /// <item><see cref="Props.ProcessCreateSTDErrToSTDOutBoolean"/>: true if the error
+    /// <item><see cref="Props.ProcessCreateSTDErrToSTDOutBoolean"/>: <c>true</c> if the error
     /// output of the process should be redirected into the standard output of
     /// the process. This property has no effect if
     /// <see cref="Props.ProcessCreateSTDErrNumber"/> is set.</item>
-    /// <item><see cref="Props.ProcessCreateBackgroundBoolean"/>: true if the process should
+    /// <item><see cref="Props.ProcessCreateBackgroundBoolean"/>: <c>true</c> if the process should
     /// run in the background. In this case the default input and output is
     /// <see cref="ProcessIO.Null"/> and the exitcode of the process is not
     /// available, and will always be 0.</item>
@@ -147,7 +147,7 @@ public static partial class SDL
     /// <item><see cref="Props.ProcessSTDErrPointer"/>: a non-blocking SDL_IOStream that can
     /// be used to read error output from the process, if it was created with
     /// <see cref="Props.ProcessCreateSTDErrNumber"/> set to <see cref="ProcessIO.App"/>.</item>
-    /// <item><see cref="Props.ProcessBackgroundBoolean"/>: true if the process is running in
+    /// <item><see cref="Props.ProcessBackgroundBoolean"/>: <c>true</c> if the process is running in
     /// the background.</item>
     /// </list>
     /// </summary>
@@ -192,8 +192,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_IOStream *SDLCALL SDL_GetProcessInput(SDL_Process *process);</code>
     /// <summary>
     /// <para>Get the SDL_IOStream associated with process standard input.</para>
-    /// <para>The process must have been created with <see cref="CreateProcess"/> and pipe_stdio
-    /// set to true, or with <see cref="CreateProcessWithProperties"/> and
+    /// <para>The process must have been created with <see cref="CreateProcess"/> and <c>pipeStdio</c>
+    /// set to <c>true</c>, or with <see cref="CreateProcessWithProperties"/> and
     /// <see cref="Props.ProcessCreateSTDInNumber"/> set to <see cref="ProcessIO.App"/>.</para>
     /// <para>Writing to this stream can return less data than expected if the process
     /// hasn't read its input. It may be blocked waiting for its output to be read,
@@ -215,8 +215,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_IOStream *SDLCALL SDL_GetProcessOutput(SDL_Process *process);</code>
     /// <summary>
     /// <para>Get the SDL_IOStream associated with process standard output.</para>
-    /// <para>The process must have been created with <see cref="CreateProcess"/> and pipe_stdio
-    /// set to true, or with <see cref="CreateProcessWithProperties"/> and
+    /// <para>The process must have been created with <see cref="CreateProcess"/> and <c>pipeStdio</c>
+    /// set to <c>true</c>, or with <see cref="CreateProcessWithProperties"/> and
     /// <see cref="Props.ProcessCreateSTDOutNumber"/> set to <see cref="ProcessIO.App"/>.</para>
     /// <para>Reading from this stream can return 0 with <see cref="GetIOStatus"/> returning
     /// SDL_IO_STATUS_NOT_READY if no output is available yet.</para>
@@ -238,7 +238,7 @@ public static partial class SDL
     /// Stop a process.
     /// </summary>
     /// <param name="process">The process to stop.</param>
-    /// <param name="force">true to terminate the process immediately, false to try to
+    /// <param name="force"><c>true</c> to terminate the process immediately, <c>false</c> to try to
     /// stop the process gracefully. In general you should try to stop
     /// the process gracefully first as terminating a process may
     /// leave it with half-written data or in some other unstable
@@ -264,10 +264,10 @@ public static partial class SDL
     /// normally, a negative signal if it terminated due to a signal, or -255
     /// otherwise. It will not be changed if the process is still running.</para>
     /// <para>If you create a process with standard output piped to the application
-    /// (`pipe_stdio` being true) then you should read all of the process output
+    /// (<c>pipeStdio</c> being <c>true</c>) then you should read all of the process output
     /// before calling <see cref="WaitProcess"/>. If you don't do this the process might be
     /// blocked indefinitely waiting for output to be read and <see cref="WaitProcess"/>
-    /// will never return true;</para>
+    /// will never return <c>true</c>;</para>
     /// </summary>
     /// <param name="process">The process to wait for.</param>
     /// <param name="block">If <c>true</c>, block until the process finishes; otherwise, report

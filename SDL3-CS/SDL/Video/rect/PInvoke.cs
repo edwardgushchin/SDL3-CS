@@ -122,7 +122,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);</code>
     /// <summary>
     /// <para>Determine whether two rectangles intersect.</para>
-    /// <para>If either pointer is <c>null</c> the function will return false.</para>
+    /// <para>If either pointer is <c>null</c> the function will return <c>false</c>.</para>
     /// </summary>
     /// <param name="a">an <see cref="Rect"/> structure representing the first rectangle.</param>
     /// <param name="b">an <see cref="Rect"/> structure representing the second rectangle.</param>
@@ -161,7 +161,7 @@ public static partial class SDL
     /// <param name="b">an <see cref="Rect"/> structure representing the second rectangle.</param>
     /// <param name="result">an <see cref="Rect"/> structure filled in with the union of rectangles
     /// <c>A</c> and <c>B</c>.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -248,7 +248,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="p">the point to test.</param>
     /// <param name="r">the rectangle to test.</param>
-    /// <returns>true if <c>p</c> is contained by <c>r</c>, false otherwise.</returns>
+    /// <returns><c>true</c> if <c>p</c> is contained by <c>r</c>, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     public static bool PointInRectFloat(in FPoint? p, in FRect? r)

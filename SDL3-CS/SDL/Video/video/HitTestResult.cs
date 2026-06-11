@@ -26,7 +26,7 @@ namespace SDL3;
 public static partial class SDL
 {
     /// <summary>
-    /// Possible return values from the SDL_HitTest callback.
+    /// Possible return values from the <see cref="HitTest"/> callback.
     /// </summary>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This enum is available since SDL 3.2.0</since>

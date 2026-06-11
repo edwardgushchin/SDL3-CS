@@ -155,7 +155,7 @@ public static partial class SDL
     /// data the callback function will be called, allowing it to generate and
     /// respond with the data for the requested mime-type.</para>
     /// <para>The size of text data does not include any terminator, and the text does
-    /// not need to be null-terminated (e.g., you can directly copy a portion of a
+    /// not need to be <c>null</c>-terminated (e.g., you can directly copy a portion of a
     /// document).</para>
     /// </summary>
     /// <param name="callback">a function pointer to the function that provides the
@@ -165,7 +165,7 @@ public static partial class SDL
     /// <param name="userdata">an opaque pointer that will be forwarded to the callbacks.</param>
     /// <param name="mimeTypes">a list of mime-types that are being offered. SDL copies
     /// the given list.</param>
-    /// <param name="numMimeTypes">the number of mime-types in the mime_types list.</param>
+    /// <param name="numMimeTypes">the number of mime-types in the <c>mimeTypes</c> list.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
@@ -197,7 +197,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the data from the clipboard for a given mime type.</para>
     /// <para>The size of text data does not include the terminator, but the text is
-    /// guaranteed to be null-terminated.</para>
+    /// guaranteed to be <c>null</c>-terminated.</para>
     /// </summary>
     /// <param name="mimeType">the mime type to read from the clipboard.</param>
     /// <param name="size">a pointer filled in with the length of the returned data.</param>
@@ -236,7 +236,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="numMimeTypes">a pointer filled with the number of mime types, may
     /// be <c>null</c>.</param>
-    /// <returns>a null-terminated array of strings with mime types, or <c>null</c> on
+    /// <returns>a <c>null</c>-terminated array of strings with mime types, or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information. This should be
     /// freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>

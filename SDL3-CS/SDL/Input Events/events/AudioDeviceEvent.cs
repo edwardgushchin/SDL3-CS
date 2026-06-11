@@ -55,7 +55,7 @@ public static partial class SDL
         public UInt32 Which;
         
         /// <summary>
-        /// false if a playback device, true if a recording device.
+        /// <c>false</c> if a playback device, <c>true</c> if a recording device.
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Recording;
         

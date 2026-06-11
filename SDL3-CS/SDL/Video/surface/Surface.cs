@@ -78,7 +78,7 @@ public static partial class SDL
         public int Pitch;
 
         /// <summary>
-        /// A pointer to the pixels of the surface, the pixels are writeable if non-NULL
+        /// A pointer to the pixels of the surface, the pixels are writeable if non-<c>null</c>
         /// </summary>
         public IntPtr Pixels;
 

@@ -467,7 +467,7 @@ public static partial class SDL
         GamepadUpdateComplete,
         
         /// <summary>
-        /// Gamepad Steam handle has changed 
+        /// Gamepad Steam handle has changed
         /// </summary>
         GamepadSteamHandleUpdated,
 
@@ -525,12 +525,12 @@ public static partial class SDL
         DropText,
         
         /// <summary>
-        /// A new set of drops is beginning (NULL filename)
+        /// A new set of drops is beginning (<c>null</c> filename)
         /// </summary>
         DropBegin,
         
         /// <summary>
-        /// Current set of drops is now complete (NULL filename)
+        /// Current set of drops is now complete (<c>null</c> filename)
         /// </summary>
         DropComplete,
         

@@ -1004,7 +1004,7 @@ public static partial class SDL
         KpSpace = 0x400000cdu,
         
         /// <summary>
-        /// SDL.ScancodeToKeycode(SDL.Scancode.KpAt) 
+        /// SDL.ScancodeToKeycode(SDL.Scancode.KpAt)
         /// </summary>
         KpAt = 0x400000ceu,
         

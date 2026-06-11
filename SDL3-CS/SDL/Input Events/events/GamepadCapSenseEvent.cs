@@ -57,7 +57,7 @@ public static partial class SDL
         public Byte CapSense;
 
         /// <summary>
-        /// true if the capsense is touched
+        /// <c>true</c> if the capsense is touched
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Down;
 

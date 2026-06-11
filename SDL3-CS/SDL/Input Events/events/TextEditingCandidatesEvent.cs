@@ -67,7 +67,7 @@ public static partial class SDL
         public Int32 SelectedCandidate;
         
         /// <summary>
-        /// true if the list is horizontal, false if it's vertical
+        /// <c>true</c> if the list is horizontal, <c>false</c> if it's vertical
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Horizontal;
 

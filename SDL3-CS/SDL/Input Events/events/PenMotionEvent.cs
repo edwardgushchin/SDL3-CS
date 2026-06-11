@@ -67,7 +67,7 @@ public static partial class SDL
         public PenInputFlags PenState;
         
         /// <summary>
-        /// X coordinate, relative to window 
+        /// X coordinate, relative to window
         /// </summary>
         public float X;
         

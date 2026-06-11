@@ -58,7 +58,7 @@ public static partial class SDL
         public UInt32 WindowID;
         
         /// <summary>
-        /// User defined event code 
+        /// User defined event code
         /// </summary>
         public Int32 Code;
         

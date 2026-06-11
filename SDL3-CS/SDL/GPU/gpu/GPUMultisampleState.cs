@@ -47,12 +47,12 @@ public static partial class SDL
         public UInt32 SampleMask;
         
         /// <summary>
-        /// Reserved for future use. Must be set to false.
+        /// Reserved for future use. Must be set to <c>false</c>.
         /// </summary>
         public byte EnableMask;
         
         /// <summary>
-        /// true enables the alpha-to-coverage feature.
+        /// <c>true</c> enables the alpha-to-coverage feature.
         /// </summary>
         private byte EnableAlphaToCoverage;
         

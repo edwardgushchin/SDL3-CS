@@ -137,7 +137,7 @@ public static partial class SDL
     /// <para>This function will clear the list of all assertions triggered up to that
     /// point. Immediately following this call, <see cref="GetAssertionReport"/> will return
     /// no items. In addition, any previously-triggered assertions will be reset to
-    /// a trigger_count of zero, and their always_ignore state will be false.</para>
+    /// a trigger_count of zero, and their always_ignore state will be <c>false</c>.</para>
     /// </summary>
     /// <threadsafety>This function is not thread safe. Other threads triggering an
     /// assertion, or simultaneously calling this function may cause

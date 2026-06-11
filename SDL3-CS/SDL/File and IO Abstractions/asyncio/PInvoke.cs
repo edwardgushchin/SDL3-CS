@@ -158,7 +158,7 @@ public static partial class SDL
     /// made it to physical media; it may remain in the operating system's file
     /// cache, for later writing to disk. This means that a successfully-closed
     /// file can be lost if the system crashes or loses power in this small window.
-    /// To prevent this, call this function with the <c>flush</c> parameter set to true.
+    /// To prevent this, call this function with the <c>flush</c> parameter set to <c>true</c>.
     /// This will make the operation take longer, and perhaps increase system load
     /// in general, but a successful result guarantees that the data has made it to
     /// physical storage. Don't use this for temporary files, caches, and
@@ -168,11 +168,11 @@ public static partial class SDL
     /// tasks to <c>asyncio</c>, so it's safe to open a file, start several operations,
     /// close the file immediately, then check for all results later. This function
     /// will not block until the tasks have completed.</para>
-    /// <para>Once this function returns true, <c>asyncio</c> is no longer valid, regardless
+    /// <para>Once this function returns <c>true</c>, <c>asyncio</c> is no longer valid, regardless
     /// of any future outcomes. Any completed tasks might still contain this
     /// pointer in their SDL_AsyncIOOutcome data, in case the app was using this
     /// value to track information, but it should not be used again.</para>
-    /// <para>If this function returns false, the close wasn't started at all, and it's
+    /// <para>If this function returns <c>false</c>, the close wasn't started at all, and it's
     /// safe to attempt to close again later.</para>
     /// <para>An SDL_AsyncIOQueue must be specified. The newly-created task will be added
     /// to it when it completes its work.</para>
@@ -238,9 +238,9 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome);</code>
     /// <summary>
     /// <para>Query an async I/O task queue for completed tasks.</para>
-    /// <para>If a task assigned to this queue has finished, this will return true and
+    /// <para>If a task assigned to this queue has finished, this will return <c>true</c> and
     /// fill in <c>outcome</c> with the details of the task. If no task in the queue has
-    /// finished, this function will return false. This function does not block.</para>
+    /// finished, this function will return <c>false</c>. This function does not block.</para>
     /// <para>If a task has completed, this function will free its resources and the task
     /// pointer will no longer be valid. The task will be removed from the queue.</para>
     /// <para>It is safe for multiple threads to call this function on the same queue at
@@ -263,18 +263,18 @@ public static partial class SDL
     /// <para>Block until an async I/O task queue has a completed task.</para>
     /// <para>This function puts the calling thread to sleep until there a task assigned
     /// to the queue that has finished.</para>
-    /// <para>If a task assigned to the queue has finished, this will return true and
+    /// <para>If a task assigned to the queue has finished, this will return <c>true</c> and
     /// fill in <c>outcome</c> with the details of the task. If no task in the queue has
-    /// finished, this function will return false.</para>
+    /// finished, this function will return <c>false</c>.</para>
     /// <para>If a task has completed, this function will free its resources and the task
     /// pointer will no longer be valid. The task will be removed from the queue.</para>
     /// <para>It is safe for multiple threads to call this function on the same queue at
     /// once; a completed task will only go to one of the threads.</para>
     /// <para>Note that by the nature of various platforms, more than one waiting thread
     /// may wake to handle a single task, but only one will obtain it, so
-    /// <c>timeoutMS</c> is a _maximum_ wait time, and this function may return false
+    /// <c>timeoutMS</c> is a _maximum_ wait time, and this function may return <c>false</c>
     /// sooner.</para>
-    /// <para>This function may return false if there was a system error, the OS
+    /// <para>This function may return <c>false</c> if there was a system error, the OS
     /// inadvertently awoke multiple threads, or if <see cref="SignalAsyncIOQueue"/> was
     /// called to wake up all waiting threads without a finished task.</para>
     /// <para>A timeout can be used to specify a maximum wait time, but rather than
@@ -323,7 +323,7 @@ public static partial class SDL
     /// to complete. On a successful return, this work will continue in the
     /// background. If the work begins, even failure is asynchronous: a failing
     /// return value from this function only means the work couldn't start at all.</para>
-    /// <para>The data is allocated with a zero byte at the end (null terminated) for
+    /// <para>The data is allocated with a zero byte at the end (<c>null</c> terminated) for
     /// convenience. This extra byte is not included in SDL_AsyncIOOutcome's
     /// bytes_transferred value.</para>
     /// <para>This function will allocate the buffer to contain the file. It must be

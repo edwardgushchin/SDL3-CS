@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A struct to provide locale data.</para>
     /// <para>Locale data is split into a spoken language, like English, and an optional
     /// country, like Canada. The language will be in ISO-639 format (so English
-    /// would be "en"), and the country, if not NULL, will be an ISO-3166 country
+    /// would be "en"), and the country, if not <c>null</c>, will be an ISO-3166 country
     /// code (so Canada would be "CA").</para>
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>

@@ -44,11 +44,11 @@ public static partial class SDL
     /// of explicitly loading it at run time. This will work with SDL provided the
     /// application links to a dynamic library and both it and SDL use the same
     /// search path.</para>
-    /// <para>If you specify a non-NULL <c>path</c>, an application should retrieve all of the
+    /// <para>If you specify a non-<c>null</c> <c>path</c>, an application should retrieve all of the
     /// Vulkan functions it uses from the dynamic library using
     /// <see cref="VulkanGetVkGetInstanceProcAddr"/> unless you can guarantee <c>path</c> points
     /// to the same vulkan loader library the application linked to.</para>
-    /// <para>On Apple devices, if <c>path</c> is NULL, SDL will attempt to find the
+    /// <para>On Apple devices, if <c>path</c> is <c>null</c>, SDL will attempt to find the
     /// <c>vkGetInstanceProcAddr</c> address within all the Mach-O images of the current
     /// process. This is because it is fairly common for Vulkan applications to
     /// link with libvulkan (and historically MoltenVK was provided as a static

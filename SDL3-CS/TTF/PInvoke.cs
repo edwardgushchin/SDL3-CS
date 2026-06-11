@@ -110,7 +110,7 @@ public static partial class TTF
     /// <para>Some .fon fonts will have several sizes embedded in the file, so the point
     /// size becomes the index of choosing which size. If the value is too high,
     /// the last indexed size will be the default.</para>
-    /// <para>If <c>closeio</c> is true, <c>src</c> will be automatically closed once the font is
+    /// <para>If <c>closeio</c> is <c>true</c>, <c>src</c> will be automatically closed once the font is
     /// closed. Otherwise you should keep <c>src</c> open until the font is closed.</para>
     /// <para>When done with the returned TTF_Font, use <see cref="CloseFont"/> to dispose of it.</para>
     /// </summary>
@@ -142,7 +142,7 @@ public static partial class TTF
     /// <see cref="Props.FontCreateExistingFontPointer"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamOffsetNumber"/>: the offset in the iostream
     /// for the beginning of the font, defaults to 0.</item>
-    /// <item><see cref="Props.FontCreateIOStreamAutoCloseBoolean"/>: true if closing the
+    /// <item><see cref="Props.FontCreateIOStreamAutoCloseBoolean"/>: <c>true</c> if closing the
     /// font should also close the associated SDL_IOStream.</item>
     /// <item><see cref="Props.FontCreateSizeFloat"/>: the point size of the font. Some .fon
     /// fonts will have several sizes embedded in the file, so the point size
@@ -239,7 +239,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to modify.</param>
     /// <param name="fallback">the font to add as a fallback.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created
     /// both fonts.</threadsafety>
@@ -790,7 +790,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to specify a direction for.</param>
     /// <param name="spacing">the new additional glyph spacing for the font.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
@@ -847,7 +847,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontScript(TTF_Font *font, Uint32 script);</code>
     /// <summary>
     /// <para>Set the script to be used for text shaping by a font.</para>
-    /// <para>This returns false if SDL_ttf isn't built with HarfBuzz support.</para>
+    /// <para>This returns <c>false</c> if SDL_ttf isn't built with HarfBuzz support.</para>
     /// <para>This updates any <see cref="TTFText"/> objects using this font.</para>
     /// </summary>
     /// <param name="font">the font to modify.</param>
@@ -901,12 +901,12 @@ public static partial class TTF
     /// <summary>
     /// <para>Set language to be used for text shaping by a font.</para>
     /// <para>If SDL_ttf was not built with HarfBuzz support, this function returns
-    /// false.</para>
+    /// <c>false</c>.</para>
     /// <para>This updates any <see cref="TTFText"/> objects using this font.</para>
     /// </summary>
     /// <param name="font">the font to specify a language for.</param>
-    /// <param name="languageBcp47">a null-terminated string containing the desired
-    /// language's BCP47 code. Or null to reset the value.</param>
+    /// <param name="languageBcp47">a <c>null</c>-terminated string containing the desired
+    /// language's BCP47 code. Or <c>null</c> to reset the value.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
@@ -1062,7 +1062,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="text">text to calculate, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="w">will be filled with width, in pixels, on return.</param>
     /// <param name="h">will be filled with height, in pixels, on return.</param>
@@ -1083,7 +1083,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="text">text to calculate, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="w">will be filled with width, in pixels, on return.</param>
     /// <param name="h">will be filled with height, in pixels, on return.</param>
@@ -1104,7 +1104,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="text">text to calculate, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="w">will be filled with width, in pixels, on return.</param>
     /// <param name="h">will be filled with height, in pixels, on return.</param>
@@ -1131,7 +1131,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="text">text to calculate, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="wrapWidth">the maximum width or 0 to wrap on newline characters.</param>
     /// <param name="w">will be filled with width, in pixels, on return.</param>
@@ -1155,7 +1155,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to query.</param>
     /// <param name="text">text to calculate, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="maxWidth">maximum width, in pixels, available for the string, or 0
     /// for unbounded width.</param>
@@ -1190,17 +1190,17 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextSolid(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg);
@@ -1221,17 +1221,17 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextSolid(IntPtr font, IntPtr text, UIntPtr length, SDL.Color fg);
@@ -1252,17 +1252,17 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <returns>a new 8-bit, palettized surface, or <c>null</c> if there was an error.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static unsafe partial IntPtr RenderTextSolid(IntPtr font, byte* text, UIntPtr length, SDL.Color fg);
@@ -1283,7 +1283,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <param name="wrapLength">the maximum width of the text surface or 0 to wrap on
@@ -1295,7 +1295,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextBlendedWrapped"/>
     /// <seealso cref="RenderTextLCDWrapped"/>
     /// <seealso cref="RenderTextShadedWrapped"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Solid_Wrapped"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextSolidWrapped(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, int wrapLength);
     
@@ -1337,12 +1337,12 @@ public static partial class TTF
     /// <see cref="RenderTextShadedWrapped"/> instead if you need to wrap the output to
     /// multiple lines.</para>
     /// <para>This will not wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
-    /// <see cref="RenderTextBlended"/>, and <see cref="RenderTextLCD"/>.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>,
+    /// <see cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>, and <see cref="RenderTextLCD"/>.</para>
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <param name="bg">the background color for the text.</param>
@@ -1350,10 +1350,10 @@ public static partial class TTF
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShadedWrapped"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Shaded"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextShaded(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, SDL.Color bg);
     
@@ -1373,7 +1373,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <param name="bg">the background color for the text.</param>
@@ -1424,12 +1424,12 @@ public static partial class TTF
     /// <see cref="RenderTextBlendedWrapped"/> instead if you need to wrap the output to
     /// multiple lines.</para>
     /// <para>This will not wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>,
     /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextLCD"/>.</para>
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <returns>a new 32-bit, ARGB surface, or <c>null</c> if there was an error.</returns>
@@ -1439,7 +1439,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextBlendedWrapped"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextBlended(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg);
     
@@ -1454,12 +1454,12 @@ public static partial class TTF
     /// <see cref="RenderTextBlendedWrapped"/> instead if you need to wrap the output to
     /// multiple lines.</para>
     /// <para>This will not wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>,
     /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextLCD"/>.</para>
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <returns>a new 32-bit, ARGB surface, or <c>null</c> if there was an error.</returns>
@@ -1469,7 +1469,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextBlendedWrapped"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextBlended(IntPtr font, IntPtr text, UIntPtr length, SDL.Color fg);
     
@@ -1484,12 +1484,12 @@ public static partial class TTF
     /// <see cref="RenderTextBlendedWrapped"/> instead if you need to wrap the output to
     /// multiple lines.</para>
     /// <para>This will not wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>,
     /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextLCD"/>.</para>
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <returns>a new 32-bit, ARGB surface, or <c>null</c> if there was an error.</returns>
@@ -1499,7 +1499,7 @@ public static partial class TTF
     /// <seealso cref="RenderTextBlendedWrapped"/>
     /// <seealso cref="RenderTextLCD"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_Blended"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static unsafe partial IntPtr RenderTextBlended(IntPtr font, byte* text, UIntPtr length, SDL.Color fg);
     
@@ -1518,7 +1518,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <param name="wrapWidth">the maximum width of the text surface or 0 to wrap on
@@ -1527,7 +1527,7 @@ public static partial class TTF
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextLCDWrapped"/>
     /// <seealso cref="RenderTextShadedWrapped"/>
     /// <seealso cref="RenderTextSolidWrapped"/>
@@ -1571,12 +1571,12 @@ public static partial class TTF
     /// <see cref="RenderTextLCDWrapped"/> instead if you need to wrap the output to
     /// multiple lines.</para>
     /// <para>This will not wrap on newline characters.</para>
-    /// <para>You can render at other quality levels with <see cref="RenderTextSolid"/>,
-    /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextBlended"/>.</para>
+    /// <para>You can render at other quality levels with <see cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>,
+    /// <see cref="RenderTextShaded"/>, and <see cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>.</para>
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <param name="bg">the background color for the text.</param>
@@ -1584,10 +1584,10 @@ public static partial class TTF
     /// <threadsafety>This function should be called on the thread that created the
     /// font.</threadsafety>
     /// <since>This function is available since SDL_ttf 3.0.0.</since>
-    /// <seealso cref="RenderTextBlended"/>
+    /// <seealso cref="RenderTextBlended(IntPtr, string, UIntPtr, SDL.Color)"/>
     /// <seealso cref="RenderTextLCDWrapped"/>
     /// <seealso cref="RenderTextShaded"/>
-    /// <seealso cref="RenderTextSolid"/>
+    /// <seealso cref="RenderTextSolid(IntPtr, string, UIntPtr, SDL.Color)"/>
     [LibraryImport(FontLibrary, EntryPoint = "TTF_RenderText_LCD"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr RenderTextLCD(IntPtr font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, UIntPtr length, SDL.Color fg, SDL.Color bg);
     
@@ -1607,7 +1607,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">text to render, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <param name="fg">the foreground color for the text.</param>
     /// <param name="bg">the background color for the text.</param>
@@ -1913,7 +1913,7 @@ public static partial class TTF
     /// <c>null</c>.</param>
     /// <param name="font">the font to render with.</param>
     /// <param name="text">the text to use, in UTF-8 encoding.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <returns>a <see cref="TTFText"/> object or <c>null</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
@@ -2040,7 +2040,7 @@ public static partial class TTF
     /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetTextScript(TTF_Text *text, Uint32 script);</code>
     /// <summary>
     /// <para>Set the script to be used for text shaping a text object.</para>
-    /// <para>TThis returns false if SDL_ttf isn't built with HarfBuzz support.</para>
+    /// <para>TThis returns <c>false</c> if SDL_ttf isn't built with HarfBuzz support.</para>
     /// </summary>
     /// <param name="text">an
     /// [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
@@ -2253,7 +2253,7 @@ public static partial class TTF
     /// <para>If the whitespace is visible, it will take up space for purposes of
     /// alignment and wrapping. This is good for editing, but looks better when
     /// centered or aligned if whitespace around line wrapping is hidden. This
-    /// defaults false.</para>
+    /// defaults <c>false</c>.</para>
     /// <para>This function may cause the internal text representation to be rebuilt.</para>
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
@@ -2293,7 +2293,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="string">the UTF-8 text to use, may be <c>null</c>.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
@@ -2319,7 +2319,7 @@ public static partial class TTF
     /// this does not do UTF-8 validation, so you should only insert
     /// at UTF-8 sequence boundaries.</param>
     /// <param name="string">the UTF-8 text to insert.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
@@ -2341,7 +2341,7 @@ public static partial class TTF
     /// </summary>
     /// <param name="text">the <see cref="TTFText"/> to modify.</param>
     /// <param name="string">the UTF-8 text to insert.</param>
-    /// <param name="length">the length of the text, in bytes, or 0 for null terminated
+    /// <param name="length">the length of the text, in bytes, or 0 for <c>null</c> terminated
     /// text.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>

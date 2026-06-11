@@ -35,14 +35,14 @@ public static partial class SDL
     /// <para><see cref="PumpEvents"/> gathers all the pending input information from devices and
     /// places it in the event queue. Without calls to <see cref="PumpEvents"/> no events
     /// would ever be placed on the queue. Often the need for calls to
-    /// <see cref="PumpEvents"/> is hidden from the user since <see cref="PollEvent"/> and
+    /// <see cref="PumpEvents"/> is hidden from the user since <see cref="PollEvent(out Event)"/> and
     /// <see cref="WaitEvent"/> implicitly call <see cref="PumpEvents"/>. However, if you are not
     /// polling or waiting for events (e.g. you are filtering them), then you must
     /// call <see cref="PumpEvents"/> to force an event queue update.</para>
     /// </summary>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="WaitEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PumpEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PumpEvents();
@@ -83,7 +83,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -125,7 +125,7 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -159,7 +159,7 @@ public static partial class SDL
     /// <param name="maxType">the high end of event type to be queried, inclusive; see
     /// <see cref="EventType"/> for details.</param>
     /// <returns><c>true</c> if events with type >= <c>minType</c> and &lt;= <c>maxType</c> are
-    /// present, or false if not.</returns>
+    /// present, or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasEvent"/>
@@ -219,11 +219,11 @@ public static partial class SDL
     /// <para>Poll for currently pending events.</para>
     /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
     /// in the <see cref="Event"/> structure pointed to by <c>event</c>.</para>
-    /// <para>If <c>event</c> is <c>null</c>, it simply returns true if there is an event in the
+    /// <para>If <c>event</c> is <c>null</c>, it simply returns <c>true</c> if there is an event in the
     /// queue, but will not remove it from the queue.</para>
     /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
     /// this function in the thread that initialized the video subsystem.</para>
-    /// <para><see cref="PollEvent"/> is the favored way of receiving system events since it can
+    /// <para><see cref="PollEvent(out Event)"/> is the favored way of receiving system events since it can
     /// be done from the main loop and does not suspend the main loop while waiting
     /// on an event to be posted.</para>
     /// <para>The common practice is to fully process the event queue once every frame,
@@ -237,11 +237,11 @@ public static partial class SDL
     /// // update game state, draw the current frame
     /// }
     /// </code>
-    /// <para>Note that Windows (and possibly other platforms) has a quirk about how it 
-    /// handles events while dragging/resizing a window, which can cause this 
-    /// function to block for significant amounts of time. Technical explanations 
+    /// <para>Note that Windows (and possibly other platforms) has a quirk about how it
+    /// handles events while dragging/resizing a window, which can cause this
+    /// function to block for significant amounts of time. Technical explanations
     /// and solutions are discussed on the wiki:
-    /// 
+    ///
     /// https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag</para>
     /// </summary>
     /// <param name="event">the <see cref="Event"/> structure to be filled with the next event from
@@ -266,7 +266,7 @@ public static partial class SDL
     /// to follow.</para>
     /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
     /// this function in the thread that set the video mode.</para>
-    /// <para><see cref="PollEvent"/> is the favored way of receiving system events since it can
+    /// <para><see cref="PollEvent(out Event)"/> is the favored way of receiving system events since it can
     /// be done from the main loop and does not suspend the main loop while waiting
     /// on an event to be posted.</para>
     /// <para>The common practice is to fully process the event queue once every frame,
@@ -280,11 +280,11 @@ public static partial class SDL
     /// // update game state, draw the current frame
     /// }
     /// </code>
-    /// <para>Note that Windows (and possibly other platforms) has a quirk about how it 
-    /// handles events while dragging/resizing a window, which can cause this 
-    /// function to block for significant amounts of time. Technical explanations 
+    /// <para>Note that Windows (and possibly other platforms) has a quirk about how it
+    /// handles events while dragging/resizing a window, which can cause this
+    /// function to block for significant amounts of time. Technical explanations
     /// and solutions are discussed on the wiki:
-    /// 
+    ///
     /// https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag</para>
     /// </summary>
     /// <param name="event">the <see cref="Event"/> structure to be filled with the next event from
@@ -310,11 +310,11 @@ public static partial class SDL
     /// </summary>
     /// <param name="event">the <see cref="Event"/> structure to be filled in with the next event
     /// from the queue, or <c>null</c>.</param>
-    /// <returns>true on success or false if there was an error while waiting for
+    /// <returns><c>true</c> on success or <c>false</c> if there was an error while waiting for
     /// events; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -341,7 +341,7 @@ public static partial class SDL
     /// any events available.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEventTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -372,7 +372,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="RegisterEvents"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_PushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -385,8 +385,8 @@ public static partial class SDL
     /// event queue.</para>
     /// <para>If you just want to see events without modifying them or preventing them
     /// from being queued, you should use <see cref="AddEventWatch"/> instead.</para>
-    /// <para>If the filter function returns true when called, then the event will be
-    /// added to the internal queue. If it returns false, then the event will be
+    /// <para>If the filter function returns <c>true</c> when called, then the event will be
+    /// added to the internal queue. If it returns <c>false</c>, then the event will be
     /// dropped from the queue, but the internal state will still be updated. This
     /// allows selective filtering of dynamically arriving events.</para>
     /// <para><b>WARNING</b>: Be very careful of what you do in the event filter function,
@@ -486,7 +486,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FilterEvents(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
     /// <para>Run a specific filter function on the current event queue, removing any
-    /// events for which the filter returns false.</para>
+    /// events for which the filter returns <c>false</c>.</para>
     /// <para>See <see cref="SetEventFilter"/> for more information. Unlike <see cref="SetEventFilter"/>,
     /// this function does not change the filter permanently, it only uses the
     /// supplied filter until this function returns.</para>
@@ -551,7 +551,7 @@ public static partial class SDL
     /// <returns>the associated window on success or <c>null</c> if there is none.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="PollEvent"/>
+    /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -563,23 +563,23 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);</code>
     /// <summary>
     /// <para>Generate a human-readable description of an event.</para>
-    /// <para>This will fill <c>buf</c> with a null-terminated string that might look 
+    /// <para>This will fill <c>buf</c> with a <c>null</c>-terminated string that might look
     /// something like this:</para>
     /// <code>EventMouseMotion(timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)</code>
     /// <para>The exact format of the string is not guaranteed; it is intended for
     /// logging purposes, to be read by a human, and not parsed by a computer.</para>
     /// <para>The returned value follows the same rules as SDL_snprintf(): <c>buf</c> will
-    /// always be NULL-terminated (unless <c>buflen</c> is zero), and will be truncated
+    /// always be <c>null</c>-terminated (unless <c>buflen</c> is zero), and will be truncated
     /// if <c>buflen</c> is too small. The return code is the number of bytes needed for
-    /// the complete string, not counting the NULL-terminator, whether the string
+    /// the complete string, not counting the <c>null</c>-terminator, whether the string
     /// was truncated or not. Unlike SDL_snprintf(), though, this function never
     /// returns -1.</para>
     /// </summary>
-    /// <param name="event">an event to describe. May be NULL.</param>
-    /// <param name="buf">the buffer to fill with the description string. May be NULL.</param>
+    /// <param name="event">an event to describe. May be <c>null</c>.</param>
+    /// <param name="buf">the buffer to fill with the description string. May be <c>null</c>.</param>
     /// <param name="buflen">the maximum bytes that can be written to <c>buf</c>.</param>
     /// <returns>number of bytes needed for the full string, not counting the
-    /// null-terminator byte.</returns>
+    /// <c>null</c>-terminator byte.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     public static int GetEventDescription(in Event @event, byte[]? buf, int buflen)
@@ -599,23 +599,23 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);</code>
     /// <summary>
     /// <para>Generate a human-readable description of an event.</para>
-    /// <para>This will fill <c>buf</c> with a null-terminated string that might look 
+    /// <para>This will fill <c>buf</c> with a <c>null</c>-terminated string that might look
     /// something like this:</para>
     /// <code>EventMouseMotion(timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)</code>
     /// <para>The exact format of the string is not guaranteed; it is intended for
     /// logging purposes, to be read by a human, and not parsed by a computer.</para>
     /// <para>The returned value follows the same rules as SDL_snprintf(): <c>buf</c> will
-    /// always be NULL-terminated (unless <c>buflen</c> is zero), and will be truncated
+    /// always be <c>null</c>-terminated (unless <c>buflen</c> is zero), and will be truncated
     /// if <c>buflen</c> is too small. The return code is the number of bytes needed for
-    /// the complete string, not counting the NULL-terminator, whether the string
+    /// the complete string, not counting the <c>null</c>-terminator, whether the string
     /// was truncated or not. Unlike SDL_snprintf(), though, this function never
     /// returns -1.</para>
     /// </summary>
-    /// <param name="event">an event to describe. May be NULL.</param>
-    /// <param name="buf">the buffer to fill with the description string. May be NULL.</param>
+    /// <param name="event">an event to describe. May be <c>null</c>.</param>
+    /// <param name="buf">the buffer to fill with the description string. May be <c>null</c>.</param>
     /// <param name="buflen">the maximum bytes that can be written to <c>buf</c>.</param>
     /// <returns>number of bytes needed for the full string, not counting the
-    /// null-terminator byte.</returns>
+    /// <c>null</c>-terminator byte.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     public static int GetEventDescription(in IntPtr @event, byte[]? buf, int buflen)

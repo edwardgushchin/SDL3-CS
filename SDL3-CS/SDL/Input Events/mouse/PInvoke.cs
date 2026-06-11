@@ -141,7 +141,7 @@ public static partial class SDL
     /// <para>This function immediately queries the platform for the most recent
     /// asynchronous state, more costly than retrieving SDL's cached state in
     /// <see cref="GetMouseState"/>.</para>
-    /// <para>Passing non-NULL pointers to <c>x</c> or <c>y</c> will write the destination with
+    /// <para>Passing non-<c>null</c> pointers to <c>x</c> or <c>y</c> will write the destination with
     /// respective x or y coordinates relative to the desktop.</para>
     /// <para>In Relative Mode, the platform-cursor's position usually contradicts the
     /// SDL-cursor's position as manually calculated from <see cref="GetMouseState"/> and
@@ -177,7 +177,7 @@ public static partial class SDL
     /// <para>In Relative Mode, the platform-cursor's position usually contradicts the
     /// SDL-cursor's position as manually calculated from <see cref="GetMouseState"/> and
     /// <see cref="GetWindowPosition"/>.</para>
-    /// <para>Passing non-NULL pointers to <c>x</c> or <c>y</c> will write the destination with
+    /// <para>Passing non-<c>null</c> pointers to <c>x</c> or <c>y</c> will write the destination with
     /// respective x or y deltas accumulated since the last call to this function
     /// (or since event initialization).</para>
     /// <para>This function is useful for reducing overhead by processing relative mouse
@@ -386,7 +386,7 @@ public static partial class SDL
     /// <para>If this function is passed a surface with alternate representations added
     /// with <see cref="AddSurfaceAlternateImage"/>, the surface will be interpreted as the
     /// content to be used for 100% display scale, and the alternate
-    /// representations will be used for high DPI situations if 
+    /// representations will be used for high DPI situations if
     /// <see cref="Hints.MouseDPIScaleCursors"/> is enabled. For example, if the original
     /// surface is 32x32, then on a 2x macOS display or 200% display scale on
     /// Windows, a 64x64 version of the image will be used, if available. If a

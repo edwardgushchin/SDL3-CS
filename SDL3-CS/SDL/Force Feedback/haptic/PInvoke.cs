@@ -331,15 +331,15 @@ public static partial class SDL
     /// <summary>
     /// <para>Run the haptic effect on its associated haptic device.</para>
     /// <para>To repeat the effect over and over indefinitely, set <c>iterations</c> to
-    /// <c>HAPTIC_INFINITY</c>. (Repeats the envelope - attack and fade.) To make
+    /// <see cref="HAPTIC_INFINITY"/>. (Repeats the envelope - attack and fade.) To make
     /// one instance of the effect last indefinitely (so the effect does not fade),
-    /// set the effect's <c>length</c> in its structure/union to <c>HAPTIC_INFINITY</c>
+    /// set the effect's <c>length</c> in its structure/union to <see cref="HAPTIC_INFINITY"/>
     /// instead.</para>
     /// </summary>
     /// <param name="haptic">the SDL_Haptic device to run the effect on.</param>
     /// <param name="effect">the ID of the haptic effect to run.</param>
     /// <param name="iterations">the number of iterations to run the effect; use
-    /// <c>HAPTIC_INFINITY</c> to repeat forever.</param>
+    /// <see cref="HAPTIC_INFINITY"/> to repeat forever.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -402,7 +402,7 @@ public static partial class SDL
     /// <para>Set the global gain of the specified haptic device.</para>
     /// <para>Device must support the <see cref="HAPTIC_GAIN"/> feature.</para>
     /// <para>The user may specify the maximum gain by setting the environment variable
-    /// <c>HAPTIC_GAIN_MAX</c> which should be between 0 and 100. All calls to
+    /// <c>SDL_HAPTIC_GAIN_MAX</c> which should be between 0 and 100. All calls to
     /// <see cref="SetHapticGain"/> will scale linearly using <c>SDL_HAPTIC_GAIN_MAX</c> as the
     /// maximum.</para>
     /// </summary>
@@ -439,7 +439,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PauseHaptic(SDL_Haptic *haptic);</code>
     /// <summary>
     /// <para>Pause a haptic device.</para>
-    /// <para>Device must support the <c>HAPTIC_PAUSE</c> feature. Call <see cref="ResumeHaptic"/>
+    /// <para>Device must support the <see cref="HAPTIC_PAUSE"/> feature. Call <see cref="ResumeHaptic"/>
     /// to resume playback.</para>
     /// <para>Do not modify the effects nor add new ones while the device is paused. That
     /// can cause all sorts of weird errors.</para>

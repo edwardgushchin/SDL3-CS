@@ -347,7 +347,7 @@ public static partial class SDL
 	/// A macro to determine if an <see cref="Colorspace"/> uses BT709 matrix coefficients.
 	/// </summary>
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>
-	/// <returns>true if BT709, false otherwise.</returns>
+	/// <returns><c>true</c> if BT709, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
 	/// <since>This macro is available since SDL 3.2.0</since>
 	[Macro]
@@ -355,7 +355,7 @@ public static partial class SDL
 
 	
 	/// <summary>
-	/// <para>A macro to determine if an <c>Colorspace</c> uses BT2020_NCL matrix
+	/// <para>A macro to determine if an <see cref="Colorspace"/> uses BT2020_NCL matrix
 	/// coefficients.</para>
 	/// </summary>
 	/// <param name="cspace">an <see cref="Colorspace"/> to check.</param>

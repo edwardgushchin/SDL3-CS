@@ -41,7 +41,7 @@ public static partial class SDL
     /// <item>"w": Create an empty file for writing. If a file with the same name
     /// already exists its content is erased and the file is treated as a new
     /// empty file.</item>
-    /// <item>"wx": Create an empty file for writing. If a file with the same name 
+    /// <item>"wx": Create an empty file for writing. If a file with the same name
     /// already exists, the call fails.</item>
     /// <item>"a": Append to a file. Writing operations append data at the end of the
     /// file. The file is created if it does not exist.</item>
@@ -50,7 +50,7 @@ public static partial class SDL
     /// <item>"w+": Create an empty file for both reading and writing. If a file with
     /// the same name already exists its content is erased and the file is
     /// treated as a new empty file.</item>
-    /// <item>"w+x": Create an empty file for both reading and writing. If a file with 
+    /// <item>"w+x": Create an empty file for both reading and writing. If a file with
     /// the same name already exists, the call fails.</item>
     /// <item>"a+": Open a file for reading and appending. All writing operations are
     /// performed at the end of the file, protecting the previous content to be
@@ -131,7 +131,7 @@ public static partial class SDL
     /// <para>Additionally, the following properties are recognized:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.IOStreamMemoryFreeFuncPointer"/>: if this property is set to
-    /// a non-NULL value it will be interpreted as a function of SDL_free_func
+    /// a non-<c>null</c> value it will be interpreted as a function of SDL_free_func
     /// type and called with the passed `mem` pointer when closing the stream. By
     /// default it is unset, i.e., the memory will not be freed.</item>
     /// </list>
@@ -174,7 +174,7 @@ public static partial class SDL
     /// <para>Additionally, the following properties are recognized:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.IOStreamMemoryFreeFuncPointer"/>: if this property is set to
-    /// a non-NULL value it will be interpreted as a function of SDL_free_func
+    /// a non-<c>null</c> value it will be interpreted as a function of SDL_free_func
     /// type and called with the passed <c>mem</c> pointer when closing the stream. By
     /// default it is unset, i.e., the memory will not be freed.</item>
     /// </list>
@@ -205,7 +205,7 @@ public static partial class SDL
     /// the memory to the application, which should free the memory with
     /// <see cref="Free"/>. If this is done, the next operation on the stream must be
     /// <see cref="CloseIO"/>.</item>
-    /// <item><see cref="Props.IOStreamDynamicChunksizeNumber"/>: memory will be allocated in
+    /// <item><see cref="Props.IOStreamDynamicChunkSizeNumber"/>: memory will be allocated in
     /// multiples of this size, defaulting to 1024.</item>
     /// </list>
     /// </summary>
@@ -251,7 +251,7 @@ public static partial class SDL
     /// <para>Close and free an allocated SDL_IOStream structure.</para>
     /// <para><see cref="CloseIO"/> closes and cleans up the SDL_IOStream stream. It releases any
     /// resources used by the stream and frees the SDL_IOStream itself. This
-    /// returns true on success, or false if the stream failed to flush to its
+    /// returns <c>true</c> on success, or <c>false</c> if the stream failed to flush to its
     /// output (e.g. to disk).</para>
     /// <para>Note that if this fails to flush the stream for any reason, this function
     /// reports an error, but the SDL_IOStream is still invalid once this function
@@ -479,7 +479,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, bool closeio);</code>
     /// <summary>
     /// <para>Load all the data from an SDL data stream.</para>
-    /// <para>The data is allocated with a zero byte at the end (null terminated) for
+    /// <para>The data is allocated with a zero byte at the end (<c>null</c> terminated) for
     /// convenience. This extra byte is not included in the value reported via
     /// <c>datasize</c>.</para>
     /// <para>The data should be freed with <see cref="Free"/>.</para>
@@ -502,7 +502,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_LoadFile(const char *file, size_t *datasize);</code>
     /// <summary>
     /// <para>Load all the data from a file path.</para>
-    /// <para>The data is allocated with a zero byte at the end (null terminated) for
+    /// <para>The data is allocated with a zero byte at the end (<c>null</c> terminated) for
     /// convenience. This extra byte is not included in the value reported via
     /// <c>datasize</c>.</para>
     /// <para>The data should be freed with <see cref="Free"/>.</para>
@@ -562,8 +562,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadU8(SDL_IOStream *src, Uint8 *value);</code>
     /// <summary>
     /// <para>Use this function to read a byte from an SDL_IOStream.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -581,8 +581,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadS8(SDL_IOStream *src, Sint8 *value);</code>
     /// <summary>
     /// <para>Use this function to read a signed byte from an SDL_IOStream.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -603,8 +603,8 @@ public static partial class SDL
     /// SDL_IOStream and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -625,8 +625,8 @@ public static partial class SDL
     /// SDL_IOStream and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -647,8 +647,8 @@ public static partial class SDL
     /// and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -669,8 +669,8 @@ public static partial class SDL
     /// and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -691,8 +691,8 @@ public static partial class SDL
     /// SDL_IOStream and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -713,8 +713,8 @@ public static partial class SDL
     /// SDL_IOStream and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -735,8 +735,8 @@ public static partial class SDL
     /// and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -757,8 +757,8 @@ public static partial class SDL
     /// and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -779,8 +779,8 @@ public static partial class SDL
     /// SDL_IOStream and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -801,8 +801,8 @@ public static partial class SDL
     /// SDL_IOStream and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -823,8 +823,8 @@ public static partial class SDL
     /// and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -845,8 +845,8 @@ public static partial class SDL
     /// and return in native format.</para>
     /// <para>SDL byteswaps the data only if necessary, so the data returned will be in
     /// the native byte order.</para>
-    /// <para>This function will return false when the data stream is completely read,
-    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If false is returned
+    /// <para>This function will return <c>false</c> when the data stream is completely read,
+    /// and <see cref="GetIOStatus"/> will return <see cref="IOStatus.EOF"/>. If <c>false</c> is returned
     /// and the stream is not at EOF, <see cref="GetIOStatus"/> will return a different
     /// error value and <see cref="GetError"/> will offer a human-readable message.</para>
     /// </summary>
@@ -901,7 +901,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="dst">the stream to which data will be written.</param>
     /// <param name="value">the data to be written, in native format.</param>
-    /// <returns><c>true</c> on successful <c>write</c> or false on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful <c>write</c> or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -956,7 +956,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="dst">the stream to which data will be written.</param>
     /// <param name="value">the data to be written, in native format.</param>
-    /// <returns><c>true</c> on successful <c>write</c> or false on failure; call <see cref="GetError"/>
+    /// <returns><c>true</c> on successful <c>write</c> or <c>false</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>

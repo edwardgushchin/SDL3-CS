@@ -36,7 +36,7 @@ public partial class ShaderCross
         public uint NumSamplers;
         
         /// <summary>
-        /// The number of readonly storage textures defined in the shader. 
+        /// The number of readonly storage textures defined in the shader.
         /// </summary>
         public uint NumReadOnlyStorageTextures;
         

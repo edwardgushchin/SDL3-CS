@@ -50,12 +50,12 @@ public static partial class SDL
         public PixelFormat Format;
         
         /// <summary>
-        /// Width 
+        /// Width
         /// </summary>
         public int W;
         
         /// <summary>
-        /// Height 
+        /// Height
         /// </summary>
         public int H;
         

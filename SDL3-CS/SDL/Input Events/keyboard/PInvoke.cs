@@ -116,8 +116,8 @@ public static partial class SDL
     /// <para>The pointer returned is a pointer to an internal SDL array. It will be
     /// valid for the whole lifetime of the application and should not be freed by
     /// the caller.</para>
-    /// <para>A array element with a value of true means that the key is pressed and a
-    /// value of false means that it is not. Indexes into this array are obtained
+    /// <para>A array element with a value of <c>true</c> means that the key is pressed and a
+    /// value of <c>false</c> means that it is not. Indexes into this array are obtained
     /// by using <see cref="Scancode"/> values.</para>
     /// <para>Use <see cref="PumpEvents"/> to update the state array.</para>
     /// <para>This function gives you the current state after all events have been
@@ -127,12 +127,12 @@ public static partial class SDL
     /// <para>Note: This function doesn't take into account whether shift has been
     /// pressed or not.</para>
     /// </summary>
-    /// <param name="numkeys">if non-NULL, receives the length of the returned array.</param>
+    /// <param name="numkeys">if non-<c>null</c>, receives the length of the returned array.</param>
     /// <returns>a pointer to an array of key states.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PumpEvents"/>
-    /// <seealso cref="ResetKeyboard"/> 
+    /// <seealso cref="ResetKeyboard"/>
     public static ReadOnlySpan<bool> GetKeyboardState(out int numkeys)
     {
         var statePtr = SDL_GetKeyboardState(out numkeys);
@@ -192,7 +192,7 @@ public static partial class SDL
     /// current keyboard layout.</para>
     /// <para>If you want to get the keycode as it would be delivered in key events,
     /// including options specified in <see cref="Hints.KeycodeOptions"/>, then you should
-    /// pass <c>keyEvent</c> as true. Otherwise this function simply translates the
+    /// pass <c>keyEvent</c> as <c>true</c>. Otherwise this function simply translates the
     /// scancode based on the given modifier state.</para>
     /// </summary>
     /// <param name="scancode">the desired <see cref="Scancode"/> to query.</param>
@@ -373,11 +373,11 @@ public static partial class SDL
     /// <see cref="Capitalization.Sentences"/> for normal text entry, <see cref="Capitalization.Words"/> for
     /// <see cref="TextInputType.TextName"/>, and <see cref="Capitalization.None"/> for e-mail
     /// addresses, usernames, and passwords.</item>
-    /// <item><see cref="Props.TextInputAutoCorrectBoolean"/> - true to enable auto completion
-    /// and auto correction, defaults to true.</item>
-    /// <item><see cref="Props.TextInputMultilineBoolean"/> - true if multiple lines of text
-    /// are allowed. This defaults to true if <see cref="Hints.ReturnKeyHidesIME"/> is
-    /// "0" or is not set, and defaults to false if <see cref="Hints.ReturnKeyHidesIME"/>
+    /// <item><see cref="Props.TextInputAutoCorrectBoolean"/> - <c>true</c> to enable auto completion
+    /// and auto correction, defaults to <c>true</c>.</item>
+    /// <item><see cref="Props.TextInputMultilineBoolean"/> - <c>true</c> if multiple lines of text
+    /// are allowed. This defaults to <c>true</c> if <see cref="Hints.ReturnKeyHidesIME"/> is
+    /// "0" or is not set, and defaults to <c>false</c> if <see cref="Hints.ReturnKeyHidesIME"/>
     /// is "1".</item>
     /// <item><see cref="Props.TextInputTitleString"/> - a title for the top of the on-screen
     /// keyboard window, if it has one.</item>

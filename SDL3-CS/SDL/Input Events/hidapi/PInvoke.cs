@@ -97,7 +97,7 @@ public static partial class SDL
     /// <param name="productId">the Product ID (PID) of the types of device to open, or 0
     /// to match any product.</param>
     /// <returns>a pointer to a linked list of type <see cref="HIDDeviceInfo"/>, containing
-    /// information about the HID devices attached to the system, or NULL
+    /// information about the HID devices attached to the system, or <c>null</c>
     /// in the case of failure. Free this linked list by calling
     /// <see cref="HIDFreeEnumeration"/>.</returns>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_enumerate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -152,13 +152,13 @@ public static partial class SDL
     /// <para>Get the properties associated with an SDL_hid_device.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.HIDAPILibUSBDeviceHandlePointer"/>: the libusb_device_handle 
-    /// associated with the device, if it was opened using libus 
+    /// <item><see cref="Props.HIDAPILibUSBDeviceHandlePointer"/>: the libusb_device_handle
+    /// associated with the device, if it was opened using libus
     /// </item>
     /// </list>
     /// </summary>
     /// <param name="dev">a device handle returned from SDL_hid_open().</param>
-    /// <returns>a valid property ID on success or 0 on failure; call 
+    /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_properties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint HIDGetProperties(IntPtr dev);

@@ -35,7 +35,7 @@ public static partial class SDL
         Invalid,
         
         /// <summary>
-        /// The comparison always evaluates false.
+        /// The comparison always evaluates <c>false</c>.
         /// </summary>
         Never,
         
@@ -70,7 +70,7 @@ public static partial class SDL
         GreaterOrEqual,
         
         /// <summary>
-        /// The comparison always evaluates true.
+        /// The comparison always evaluates <c>true</c>.
         /// </summary>
         Always
     }

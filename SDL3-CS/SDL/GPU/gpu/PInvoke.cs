@@ -65,7 +65,7 @@ public partial class SDL
     /// <item><c>vulkan</c>: [Vulkan](CategoryGPU#vulkan)</item>
     /// <item><c>direct3d12</c>: [D3D12](CategoryGPU#d3d12)</item>
     /// <item><c>metal</c>: [Metal](CategoryGPU#metal)</item>
-    /// <item><c>NULL</c>: let SDL pick the optimal driver</item>
+    /// <item><c>null</c>: let SDL pick the optimal driver</item>
     /// </list>
     /// </summary>
     /// <param name="formatFlags">a bitflag indicating which shader formats the app is
@@ -91,11 +91,11 @@ public partial class SDL
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.GPUDeviceCreateDebugModeBoolean"/>: enable debug mode
-    /// properties and validations, defaults to true.</item>
+    /// properties and validations, defaults to <c>true</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreatePreferLowPowerBoolean"/>: enable to prefer
-    /// energy efficiency over maximum GPU performance, defaults to false.</item>
+    /// energy efficiency over maximum GPU performance, defaults to <c>false</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateVerboseBoolean"/>: enable to automatically log
-    /// useful debug information on device creation, defaults to true.</item>
+    /// useful debug information on device creation, defaults to <c>true</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateNameString"/>: the name of the GPU driver to
     /// use, if a specific one is desired.</item>
     /// <item><see cref="Props.GPUDeviceCreateFeatureClipDistanceBoolean"/>: Enable Vulkan
@@ -103,22 +103,22 @@ public partial class SDL
     /// supported in shader code: gl_ClipDistance[] built-ins of GLSL,
     /// SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
     /// Metal. Disabling optional features allows the application to run on some
-    /// older Android devices. Defaults to true.</item>
+    /// older Android devices. Defaults to <c>true</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateFeatureDepthClampingBoolean"/>: Enable
     /// Vulkan device feature depthClamp. If disabled, there is no depth clamp
     /// support and enable_depth_clip in <see cref="GPURasterizerState"/> must always be
-    /// set to true. Disabling optional features allows the application to run on
-    /// some older Android devices. Defaults to true.</item>
+    /// set to <c>true</c>. Disabling optional features allows the application to run on
+    /// some older Android devices. Defaults to <c>true</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateFeatureIndirectDrawFirstInstanceBoolean"/>:
     /// Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
     /// argument first_instance of <seealso cref="GPUIndirectDrawCommand"/> must be set to
     /// zero. Disabling optional features allows the application to run on some
-    /// older Android devices. Defaults to true.</item>
+    /// older Android devices. Defaults to <c>true</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateFeatureAnisotropyBoolean"/>: Enable Vulkan
     /// device feature samplerAnisotropy. If disabled, enable_anisotropy of
-    /// <see cref="GPUSamplerCreateInfo"/> must be set to false. Disabling optional
+    /// <see cref="GPUSamplerCreateInfo"/> must be set to <c>false</c>. Disabling optional
     /// features allows the application to run on some older Android devices.
-    /// Defaults to true.</item>
+    /// Defaults to <c>true</c>.</item>
     /// </list>
     /// <para>These are the current shader format properties:</para>
     /// <list type="bullet">
@@ -141,12 +141,12 @@ public partial class SDL
     /// use for all vertex semantics, default is "TEXCOORD".</item>
     /// <item><see cref="Props.GPUDeviceCreateD3D12AllowFewerResourceSlotsBoolean"/>: By
     /// default, Resourcing Binding Tier 2 is required for D3D12 support.
-    /// However, an application can set this property to true to enable Tier 1
+    /// However, an application can set this property to <c>true</c> to enable Tier 1
     /// support, if (and only if) the application uses 8 or fewer storage
     /// resources across all shader stages. As of writing, this property is
     /// useful for targeting Intel Haswell and Broadwell GPUs; other hardware
     /// either supports Tier 2 Resource Binding or does not support D3D12 in any
-    /// capacity. Defaults to false.</item>
+    /// capacity. Defaults to <c>false</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateD3D12AgilitySDKVersionNumber"/>: Certain
     /// feature checks are only possible on Windows 11 by default. By setting
     /// this alongside `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING`
@@ -170,7 +170,7 @@ public partial class SDL
     /// including software renderers (for example, the Lavapipe Mesa driver).
     /// This can be useful if your application _requires_ SDL_GPU, but if you can
     /// provide your own fallback renderer (for example, an OpenGL renderer) this
-    /// property can be set to true. Defaults to false.</item>
+    /// property can be set to <c>true</c>. Defaults to <c>false</c>.</item>
     /// <item><see cref="Props.GPUDeviceCreateVulkanOptionsPointer"/>: a pointer to an
     /// <see cref="GPUVulkanOptions"/> structure to be processed during device creation.
     /// This allows configuring a variety of Vulkan-specific options such as
@@ -181,7 +181,7 @@ public partial class SDL
     /// <list type="bullet">
     /// <item><see cref="Props.GPUDeviceCreateMetalAllowMacFamily1Boolean"/>: By default,
     /// macOS support requires what Apple calls <c>"MTLGPUFamilyMac2"</c> hardware or
-    /// newer. However, an application can set this property to true to enable
+    /// newer. However, an application can set this property to <c>true</c> to enable
     /// support for <c>"MTLGPUFamilyMac1"</c> hardware, if (and only if) the application
     /// does not write to sRGB textures. (For history's sake: MacFamily1 also does
     /// not support indirect command buffers, MSAA depth resolve, and stencil
@@ -1369,8 +1369,8 @@ public partial class SDL
     /// <para>Note that the <c>firstIndex</c> and <c>firstInstance</c> parameters are NOT
     /// compatible with built-in vertex/instance ID variables in shaders (for
     /// example, SV_VertexID); GPU APIs and shader languages do not define these
-    /// built-in variables consistently, so if your shader depends on them, the 
-    /// only way to keep behavior consistent and portable is to always pass 0 for 
+    /// built-in variables consistently, so if your shader depends on them, the
+    /// only way to keep behavior consistent and portable is to always pass 0 for
     /// the correlating parameter in the draw calls.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>

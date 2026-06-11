@@ -102,7 +102,7 @@ public partial class SDL
     /// <param name="swapchainImages">an array of swapchain images returned by the same
     /// call to <see cref="CreateGPUXRSwapchain"/>.</param>
     /// <returns>the result of the call.</returns>
-    /// <since>his function is available since SDL 3.6.0.</since>
+    /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="CreateGPUDeviceWithProperties"/>
     /// <seealso cref="CreateGPUXRSession"/>
     /// <seealso cref="CreateGPUXRSwapchain"/>
@@ -156,7 +156,7 @@ public partial class SDL
     /// </summary>
     /// <returns>the function pointer for <c>xrGetInstanceProcAddr</c> or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.6.0.<;since>
+    /// <since>This function is available since SDL 3.6.0.</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_GetXrGetInstanceProcAddr"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr OpenXRGetXrGetInstanceProcAddr();
 }

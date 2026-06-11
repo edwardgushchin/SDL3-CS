@@ -88,7 +88,7 @@ public partial class SDL
     /// <list type="bullet">
     /// <item>If it returns the same pointer as <c>mem</c>, it means that <c>mem</c> was resized
     /// in place without freeing.</item>
-    /// <item>If it returns a different non-NULL pointer, it means that <c>mem</c> was freed
+    /// <item>If it returns a different non-<c>null</c> pointer, it means that <c>mem</c> was freed
     /// and cannot be dereferenced anymore.</item>
     /// <item>If it returns <c>null</c> (indicating failure), then <c>mem</c> will remain valid and
     /// must still be freed with <see cref="Free"/>.</item>
@@ -281,11 +281,11 @@ public partial class SDL
     /// <summary>
     /// Create a set of environment variables
     /// </summary>
-    /// <param name="populated">true to initialize it from the C runtime environment,
-    /// false to create an empty environment.</param>
+    /// <param name="populated"><c>true</c> to initialize it from the C runtime environment,
+    /// <c>false</c> to create an empty environment.</param>
     /// <returns>a pointer to the new environment or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>If <c>populated</c> is false, it is safe to call this function
+    /// <threadsafety>If <c>populated</c> is <c>false</c>, it is safe to call this function
     /// from any thread, otherwise it is safe if no other threads are
     /// calling setenv() or unsetenv()</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -584,7 +584,7 @@ public partial class SDL
     /// <para>If the parsed number does not fit inside an <c>unsigned long</c>, the result is
     /// clamped to the minimum and maximum representable <c>unsigned long</c> values.</para>
     /// </summary>
-    /// <param name="str">The null-terminated wide string to read. Must not be <c>null</c>.</param>
+    /// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
     /// <param name="endp">If not <c>null</c>, the address of the first invalid wide character
     /// (i.e. the next character after the parsed number) will be
     /// written to this pointer.</param>
@@ -628,7 +628,7 @@ public partial class SDL
     /// <para>If the parsed number does not fit inside a <c>long long</c>, the result is
     /// clamped to the minimum and maximum representable <c>long long</c> values.</para>
     /// </summary>
-    /// <param name="str">The null-terminated wide string to read. Must not be <c>null</c>.</param>
+    /// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
     /// <param name="endp">If not <c>null</c>, the address of the first invalid wide character
     /// (i.e. the next character after the parsed number) will be
     /// written to this pointer.</param>
@@ -653,7 +653,7 @@ public partial class SDL
     /// result is clamped to the minimum and maximum representable <c>unsigned long
     /// long</c> values.</para>
     /// </summary>
-    /// <param name="str">The null-terminated wide string to read. Must not be <c>null</c>.</param>
+    /// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
     /// <param name="endp">If not <c>null</c>, the address of the first invalid wide character
     /// (i.e. the next character after the parsed number) will be
     /// written to this pointer.</param>

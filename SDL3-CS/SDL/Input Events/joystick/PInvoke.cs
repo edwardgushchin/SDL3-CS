@@ -49,7 +49,7 @@ public static partial class SDL
 	/// joysticks while processing to guarantee that the joystick list won't change
 	/// and joystick and gamepad events will not be delivered.</para>
 	/// </summary>
-	/// <returns><c>true</c> if the joysticks were successfully locked, false otherwise.</returns>
+	/// <returns><c>true</c> if the joysticks were successfully locked, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.6.0.</since>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -90,7 +90,7 @@ public static partial class SDL
 	/// <returns>a 0 terminated array of joystick instance IDs or <c>null</c> on failure;
 	/// call <see cref="GetError"/> for more information. This should be freed
 	/// with <see cref="Free"/> when it is no longer needed.</returns>
-	/// 
+	///
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="HasJoystick"/>
 	/// <seealso cref="OpenJoystick"/>
@@ -318,7 +318,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SetJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData"/>
 	[DllImport(SDLLibrary, EntryPoint = "SDL_AttachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	public static extern uint AttachVirtualJoystick(in VirtualJoystickDesc desc);
 	
@@ -358,7 +358,7 @@ public static partial class SDL
 	/// <para>Please note that values set here will not be applied until the next call to
 	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
 	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
+	/// the following: <see cref="PollEvent(out Event)"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
 	/// <see cref="WaitEvent"/>.</para>
 	/// <para>Note that when sending trigger axes, you should scale the value to the full
 	/// range of Sint16. For example, a trigger at rest would have the value of
@@ -371,11 +371,11 @@ public static partial class SDL
 	/// information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	/// <sealso cref="SetJoystickVirtualButton"/>
-	/// <sealso cref="SetJoystickVirtualBall"/>
-	/// <sealso cref="SetJoystickVirtualHat"/>
-	/// <sealso cref="SetJoystickVirtualTouchpad"/>
-	/// <sealso cref="SetJoystickVirtualSensorData"/>
+	/// <seealso cref="SetJoystickVirtualButton"/>
+	/// <seealso cref="SetJoystickVirtualBall"/>
+	/// <seealso cref="SetJoystickVirtualHat"/>
+	/// <seealso cref="SetJoystickVirtualTouchpad"/>
+	/// <seealso cref="SendJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
@@ -387,7 +387,7 @@ public static partial class SDL
 	/// <para>Please note that values set here will not be applied until the next call to
 	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
 	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
+	/// the following: <see cref="PollEvent(out Event)"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
 	/// SDL_WaitEvent.</para>
 	/// </summary>
 	/// <param name="joystick">the virtual joystick on which to set state.</param>
@@ -402,7 +402,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualButton"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SetJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
@@ -414,7 +414,7 @@ public static partial class SDL
 	/// <para>Please note that values set here will not be applied until the next call to
 	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
 	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
+	/// the following: <see cref="PollEvent(out Event)"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
 	/// <see cref="WaitEvent"/>.</para>
 	/// </summary>
 	/// <param name="joystick">the virtual joystick on which to set state.</param>
@@ -428,7 +428,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	///	<seealso cref="SetJoystickVirtualHat"/>
 	///	<seealso cref="SetJoystickVirtualTouchpad"/>
-	///	<seealso cref="SetJoystickVirtualSensorData"/>
+	///	<seealso cref="SendJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualButton(IntPtr joystick, int button, [MarshalAs(UnmanagedType.I1)] bool down);
@@ -440,7 +440,7 @@ public static partial class SDL
 	/// <para>Please note that values set here will not be applied until the next call to
 	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
 	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
+	/// the following: <see cref="PollEvent(out Event)"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
 	/// <see cref="WaitEvent"/>.</para>
 	/// </summary>
 	/// <param name="joystick">the virtual joystick on which to set state.</param>
@@ -454,7 +454,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualButton"/>
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SetJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value);
@@ -466,7 +466,7 @@ public static partial class SDL
 	/// <para>Please note that values set here will not be applied until the next call to
 	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
 	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
+	/// the following: <see cref="PollEvent(out Event)"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
 	/// <see cref="WaitEvent"/>.</para>
 	/// </summary>
 	/// <param name="joystick">the virtual joystick on which to set state.</param>
@@ -483,11 +483,11 @@ public static partial class SDL
 	/// information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	/// <sealso cref="SetJoystickVirtualAxis"/>
-	/// <sealso cref="SetJoystickVirtualButton"/>
-	/// <sealso cref="SetJoystickVirtualBall"/>
-	/// <sealso cref="SetJoystickVirtualHat"/>
-	/// <sealso cref="SetJoystickVirtualSensorData"/>
+	/// <seealso cref="SetJoystickVirtualAxis"/>
+	/// <seealso cref="SetJoystickVirtualButton"/>
+	/// <seealso cref="SetJoystickVirtualBall"/>
+	/// <seealso cref="SetJoystickVirtualHat"/>
+	/// <seealso cref="SendJoystickVirtualSensorData"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualTouchpad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] bool down, float x, float y, float pressure);
@@ -499,7 +499,7 @@ public static partial class SDL
 	/// <para>Please note that values set here will not be applied until the next call to
 	/// <see cref="UpdateJoysticks"/>, which can either be called directly, or can be called
 	/// indirectly through various other SDL APIs, including, but not limited to
-	/// the following: <see cref="PollEvent"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
+	/// the following: <see cref="PollEvent(out Event)"/>, <see cref="PumpEvents"/>, <see cref="WaitEventTimeout"/>,
 	/// <see cref="WaitEvent"/>.</para>
 	/// </summary>
 	/// <param name="joystick">the virtual joystick on which to set state.</param>
@@ -512,11 +512,11 @@ public static partial class SDL
 	/// information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	/// <sealso cref="SetJoystickVirtualAxis"/>
-	/// <sealso cref="SetJoystickVirtualButton"/>
-	/// <sealso cref="SetJoystickVirtualBall"/>
-	/// <sealso cref="SetJoystickVirtualHat"/>
-	/// <sealso cref="SetJoystickVirtualTouchpad"/>
+	/// <seealso cref="SetJoystickVirtualAxis"/>
+	/// <seealso cref="SetJoystickVirtualButton"/>
+	/// <seealso cref="SetJoystickVirtualBall"/>
+	/// <seealso cref="SetJoystickVirtualHat"/>
+	/// <seealso cref="SetJoystickVirtualTouchpad"/>
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickVirtualSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues);
@@ -527,15 +527,15 @@ public static partial class SDL
 	/// <para>Get the properties associated with a joystick.</para>
 	/// <para>The following read-only properties are provided by SDL:</para>
 	/// <list type="bullet">
-	///	<item><see cref="Props.JoystickCapMonoLedBoolean"/>: true if this joystick has an
+	///	<item><see cref="Props.JoystickCapMonoLedBoolean"/>: <c>true</c> if this joystick has an
 	/// LED that has adjustable brightness</item>
-	/// <item><see cref="Props.JoystickCapRGBLedBoolean"/>: true if this joystick has an LED
+	/// <item><see cref="Props.JoystickCapRGBLedBoolean"/>: <c>true</c> if this joystick has an LED
 	/// that has adjustable color</item>
-	/// <item><see cref="Props.JoystickCapPlayerLedBoolean"/>: true if this joystick has a
+	/// <item><see cref="Props.JoystickCapPlayerLedBoolean"/>: <c>true</c> if this joystick has a
 	/// player LED</item>
-	/// <item><see cref="Props.JoystickCapRumbleBoolean"/>: true if this joystick has
+	/// <item><see cref="Props.JoystickCapRumbleBoolean"/>: <c>true</c> if this joystick has
 	/// left/right rumble</item>
-	/// <item><see cref="Props.JoystickCapTriggerRumbleBoolean"/>: true if this joystick has
+	/// <item><see cref="Props.JoystickCapTriggerRumbleBoolean"/>: <c>true</c> if this joystick has
 	/// simple trigger rumble</item>
 	/// </list>
 	/// </summary>

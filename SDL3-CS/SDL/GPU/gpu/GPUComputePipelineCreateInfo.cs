@@ -47,7 +47,7 @@ public static partial class SDL
         public IntPtr Code;
         
         /// <summary>
-        /// A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
+        /// A pointer to a <c>null</c>-terminated UTF-8 string specifying the entry point function name for the shader.
         /// </summary>
         public IntPtr Entrypoint;
         

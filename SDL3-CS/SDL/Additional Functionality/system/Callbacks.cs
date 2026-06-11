@@ -30,8 +30,8 @@ public static partial class SDL
     /// <code>typedef bool (SDLCALL *SDL_WindowsMessageHook)(void *userdata, MSG *msg);</code>
     /// <summary>
     /// <para>A callback to be used with <see cref="SetWindowsMessageHook"/>.</para>
-    /// <para>This callback may modify the message, and should return true if the message
-    /// should continue to be processed, or false to prevent further processing.</para>
+    /// <para>This callback may modify the message, and should return <c>true</c> if the message
+    /// should continue to be processed, or <c>false</c> to prevent further processing.</para>
     /// <para>As this is processing a message directly from the Windows event loop, this
     /// callback should do the minimum required work and return quickly.</para>
     /// </summary>
@@ -52,8 +52,8 @@ public static partial class SDL
     /// <code>typedef bool (SDLCALL *SDL_X11EventHook)(void *userdata, XEvent *xevent);</code>
     /// <summary>
     /// A callback to be used with <see cref="SetX11EventHook"/>.
-    /// <para>This callback may modify the event, and should return true if the event
-    /// should continue to be processed, or false to prevent further processing.</para>
+    /// <para>This callback may modify the event, and should return <c>true</c> if the event
+    /// should continue to be processed, or <c>false</c> to prevent further processing.</para>
     /// <para>As this is processing an event directly from the X11 event loop, this
     /// callback should do the minimum required work and return quickly.</para>
     /// </summary>
@@ -91,7 +91,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
     /// <param name="permission">the Android-specific permission name that was requested.</param>
-    /// <param name="granted">true if permission is granted, false if denied.</param>
+    /// <param name="granted"><c>true</c> if permission is granted, <c>false</c> if denied.</param>
     /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="RequestAndroidPermission"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

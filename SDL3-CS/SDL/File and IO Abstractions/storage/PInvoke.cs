@@ -145,7 +145,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StorageReady(SDL_Storage *storage);</code>
     /// <summary>
     /// <para>Checks if the storage container is ready to use.</para>
-    /// <para>This function should be called in regular intervals until it returns true -
+    /// <para>This function should be called in regular intervals until it returns <c>true</c> -
     /// however, it is not recommended to spinwait on this call, as the backend may
     /// depend on a synchronous message loop. You might instead poll this
     /// game's main loop while processing events and drawing a loading screen.</para>
@@ -239,7 +239,7 @@ public static partial class SDL
     /// callback, called once for each directory entry, until all results have been
     /// provided or the callback returns either <see cref="EnumerationResult.Success"/> or
     /// <see cref="EnumerationResult.Failure"/>.</para>
-    /// <para>This will return false if there was a system problem in general, or if a
+    /// <para>This will return <c>false</c> if there was a system problem in general, or if a
     /// callback returns <see cref="EnumerationResult.Failure"/>. A successful return means a callback
     /// returned <see cref="EnumerationResult.Success"/> to halt enumeration, or all directory entries
     /// were enumerated.</para>
@@ -349,8 +349,8 @@ public static partial class SDL
     /// separator.</para>
     /// <para><c>flags</c> may be set to <see cref="GlobFlags.CaseInsensitive"/> to make the pattern matching
     /// case-insensitive.</para>
-    /// <para>The returned array is always NULL-terminated, for your iterating
-    /// convenience, but if <c>count</c> is non-NULL, on return it will contain the
+    /// <para>The returned array is always <c>null</c>-terminated, for your iterating
+    /// convenience, but if <c>count</c> is non-<c>null</c>, on return it will contain the
     /// number of items in the array, not counting the <c>null</c> terminator.</para>
     /// <para>If <c>path</c> is <c>null</c>, this is treated as a request to enumerate the root of
     /// the storage container's tree. An empty string also works for this.</para>
@@ -359,7 +359,7 @@ public static partial class SDL
     /// <param name="path">the path of the directory to enumerate, or <c>null</c> for the root.</param>
     /// <param name="pattern">the pattern that files in the directory must match. Can be
     /// <c>null</c>.</param>
-    /// <param name="flags"><c>SDL_GLOB_*</c> bitflags that affect this search.</param>
+    /// <param name="flags"><see cref="GlobFlags"/> bitflags that affect this search.</param>
     /// <param name="count">on return, will be set to the number of items in the returned
     /// array. Can be <c>null</c>.</param>
     /// <returns>an array of strings on success or <c>null</c> on failure; call

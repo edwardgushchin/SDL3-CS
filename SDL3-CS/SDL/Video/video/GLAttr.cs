@@ -136,12 +136,12 @@ public static partial class SDL
         ContextMinorVersion,
         
         /// <summary>
-        /// some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0.
+        /// some combination of 0 or more elements of the <see cref="GLContextFlag"/> enumeration; defaults to 0.
         /// </summary>
         ContextFlags,
         
         /// <summary>
-        /// type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.
+        /// type of GL context (Core, Compatibility, ES). See <see cref="GLProfile"/>; default value depends on platform.
         /// </summary>
         ContextProfileMask,
         

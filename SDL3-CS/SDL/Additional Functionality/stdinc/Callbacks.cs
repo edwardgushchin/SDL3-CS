@@ -70,8 +70,8 @@ public static partial class SDL
     /// </summary>
     /// <param name="mem">a pointer to allocated memory to reallocate, or <c>null</c>.</param>
     /// <param name="size">the new size of the memory.</param>
-    /// <para>a pointer to the newly allocated memory, or <c>null</c> if allocation
-    /// failed.</para>
+    /// <returns>a pointer to the newly allocated memory, or <c>null</c> if allocation
+    /// failed.</returns>
     /// <threadsafety>It should be safe to call this callback from any thread.</threadsafety>
     /// <since>This datatype is available since SDL 3.2.0</since>
     /// <seealso cref="Realloc"/>
@@ -85,7 +85,7 @@ public static partial class SDL
     /// <code>typedef void (SDLCALL *SDL_free_func)(void *mem);</code>
     /// <summary>
     /// <para>A callback used to implement <see cref="Free"/>.</para>
-    /// <para>SDL will always ensure that the passed <c>mem</c> is a non-NULL pointer.</para>
+    /// <para>SDL will always ensure that the passed <c>mem</c> is a non-<c>null</c> pointer.</para>
     /// </summary>
     /// <param name="mem">a pointer to allocated memory.</param>
     /// <threadsafety>It should be safe to call this callback from any thread.</threadsafety>
@@ -98,19 +98,19 @@ public static partial class SDL
     public delegate void FreeFunc(IntPtr mem);
     
     
-    /// <code>typedef void (*SDL_FunctionPointer)(void);</code>
-    /// <summary>
-    /// <para>A generic function pointer.</para>
-    /// <para>In theory, generic function pointers should use this, instead of <c>void *</c>,
-    /// since some platforms could treat code addresses differently than data
-    /// addresses. Although in current times no popular platforms make this
-    /// distinction, it is more correct and portable to use the correct type for a
-    /// generic pointer.</para>
-    /// <para>If for some reason you need to force this typedef to be an actual <c>void *</c>,
-    /// perhaps to work around a compiler or existing code, you can define
-    /// <c>SDL_FUNCTION_POINTER_IS_VOID_POINTER</c> before including any SDL headers.</para>
-    /// </summary>
-    /// <since>This datatype is available since SDL 3.2.0</since>
+    // <code>typedef void (*SDL_FunctionPointer)(void);</code>
+    // <summary>
+    // <para>A generic function pointer.</para>
+    // <para>In theory, generic function pointers should use this, instead of <c>void *</c>,
+    // since some platforms could treat code addresses differently than data
+    // addresses. Although in current times no popular platforms make this
+    // distinction, it is more correct and portable to use the correct type for a
+    // generic pointer.</para>
+    // <para>If for some reason you need to force this typedef to be an actual <c>void *</c>,
+    // perhaps to work around a compiler or existing code, you can define
+    // <c>SDL_FUNCTION_POINTER_IS_VOID_POINTER</c> before including any SDL headers.</para>
+    // </summary>
+    // <since>This datatype is available since SDL 3.2.0</since>
     //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     //public delegate void FunctionPointer();
 }

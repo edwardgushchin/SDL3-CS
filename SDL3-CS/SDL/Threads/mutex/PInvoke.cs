@@ -74,10 +74,10 @@ public static partial class SDL
     /// <summary>
     /// <para>Try to lock a mutex without blocking.</para>
     /// <para>This works just like <see cref="LockMutex"/>, but if the mutex is not available,
-    /// this function returns false immediately.</para>
+    /// this function returns <c>false</c> immediately.</para>
     /// <para>This technique is useful if you need exclusive access to a resource but
     /// don't want to wait for it, and will return to it to try again later.</para>
-    /// <para>This function returns true if passed a <c>null</c> mutex.</para>
+    /// <para>This function returns <c>true</c> if passed a <c>null</c> mutex.</para>
     /// </summary>
     /// <param name="mutex">the mutex to try to lock.</param>
     /// <returns><c>true</c> on success, <c>false</c> if the mutex would block.</returns>
@@ -228,12 +228,12 @@ public static partial class SDL
     /// <summary>
     /// <para>Try to lock a read/write lock _for reading_ without blocking.</para>
     /// <para>This works just like <see cref="LockRWLockForReading"/>, but if the rwlock is not
-    /// available, then this function returns false immediately.</para>
+    /// available, then this function returns <c>false</c> immediately.</para>
     /// <para>This technique is useful if you need access to a resource but don't want to
     /// wait for it, and will return to it to try again later.</para>
     /// <para>Trying to lock for read-only access can succeed if other threads are
     /// holding read-only locks, as this won't prevent access.</para>
-    /// <para>This function returns true if passed a <c>null</c> rwlock.</para>
+    /// <para>This function returns <c>true</c> if passed a <c>null</c> rwlock.</para>
     /// </summary>
     /// <param name="rwlock">the rwlock to try to lock.</param>
     /// <returns><c>true</c> on success, <c>false</c> if the lock would block.</returns>
@@ -251,7 +251,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Try to lock a read/write lock _for writing_ without blocking.</para>
     /// <para>This works just like <see cref="LockRWLockForWriting"/>, but if the rwlock is not
-    /// available, then this function returns false immediately.</para>
+    /// available, then this function returns <c>false</c> immediately.</para>
     /// <para>This technique is useful if you need exclusive access to a resource but
     /// don't want to wait for it, and will return to it to try again later.</para>
     /// <para>It is illegal for the owning thread to lock an already-locked rwlock for
@@ -260,7 +260,7 @@ public static partial class SDL
     /// <para>It is illegal to request a write lock from a thread that already holds a
     /// read-only lock. Doing so results in undefined behavior. Unlock the
     /// read-only lock before requesting a write lock.</para>
-    /// <para>This function returns true if passed a <c>null</c> rwlock.</para>
+    /// <para>This function returns <c>true</c> if passed a <c>null</c> rwlock.</para>
     /// </summary>
     /// <param name="rwlock">the rwlock to try to lock.</param>
     /// <returns><c>true</c> on success, <c>false</c> if the lock would block.</returns>
@@ -377,7 +377,7 @@ public static partial class SDL
     /// <para>This function checks to see if the semaphore pointed to by <c>sem</c> has a
     /// positive value and atomically decrements the semaphore value if it does. If
     /// the semaphore doesn't have a positive value, the function immediately
-    /// returns false.</para>
+    /// returns <c>false</c>.</para>
     /// </summary>
     /// <param name="sem">the semaphore to wait on.</param>
     /// <returns><c>true</c> if the wait succeeds, <c>false</c> if the wait would block.</returns>
@@ -550,10 +550,10 @@ public static partial class SDL
     /// <summary>
     /// <para>Return whether initialization should be done.</para>
     /// <para>This function checks the passed in state and if initialization should be
-    /// done, sets the status to <see cref="InitStatus.Initializing"/> and returns true.
+    /// done, sets the status to <see cref="InitStatus.Initializing"/> and returns <c>true</c>.
     /// If another thread is already modifying this state, it will wait until
     /// that's done before returning.</para>
-    /// <para>If this function returns true, the calling code must call
+    /// <para>If this function returns <c>true</c>, the calling code must call
     /// <see cref="SetInitialized"/> to complete the initialization.</para>
     /// </summary>
     /// <param name="state">the initialization state to check.</param>
@@ -571,8 +571,8 @@ public static partial class SDL
     /// <summary>
     /// <para>Return whether cleanup should be done.</para>
     /// <para>This function checks the passed in state and if cleanup should be done,
-    /// sets the status to <see cref="InitStatus.UnInitializing"/> and returns true.</para>
-    /// <para>If this function returns true, the calling code must call
+    /// sets the status to <see cref="InitStatus.UnInitializing"/> and returns <c>true</c>.</para>
+    /// <para>If this function returns <c>true</c>, the calling code must call
     /// <see cref="SetInitialized"/> to complete the cleanup.</para>
     /// </summary>
     /// <param name="state">the initialization state to check.</param>

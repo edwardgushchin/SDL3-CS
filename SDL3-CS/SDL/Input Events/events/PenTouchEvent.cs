@@ -74,12 +74,12 @@ public static partial class SDL
         public float Y;
 
         /// <summary>
-        /// true if eraser end is used (not all pens support this).
+        /// <c>true</c> if eraser end is used (not all pens support this).
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Eraser;
 
         /// <summary>
-        /// true if the pen is touching or false if the pen is lifted off
+        /// <c>true</c> if the pen is touching or <c>false</c> if the pen is lifted off
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Down;
     }

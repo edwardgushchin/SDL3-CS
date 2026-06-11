@@ -31,7 +31,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);</code>
     /// <summary>
     /// <para>Calling this function will replace any previous error message that was set.</para>
-    /// <para>This function always returns false, since SDL frequently uses false to
+    /// <para>This function always returns <c>false</c>, since SDL frequently uses <c>false</c> to
     /// signify a failing result, leading to this idiom:</para>
     /// <code>
     /// if (error_code) {
@@ -40,7 +40,7 @@ public static partial class SDL
     /// </code>
     /// </summary>
     /// <param name="message">a printf()-style message format string.</param>
-    /// <returns>false</returns>
+    /// <returns><c>false</c></returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ClearError"/>
@@ -58,7 +58,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="fmt">a printf()-style message format string.</param>
     /// <param name="ap">a variable argument list.</param>
-    /// <returns>false</returns>
+    /// <returns><c>false</c></returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="ClearError"/>
@@ -74,7 +74,7 @@ public static partial class SDL
     /// <para>Set an error indicating that memory allocation failed.</para>
     /// </summary>
     /// <remarks>This function does not do any memory allocation.</remarks>
-    /// <returns>false</returns>
+    /// <returns><c>false</c></returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OutOfMemory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -123,7 +123,7 @@ public static partial class SDL
     /// <summary>
     /// Clear any previous error message for this thread.
     /// </summary>
-    /// <returns>true.</returns>
+    /// <returns><c>true</c>.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetError"/>

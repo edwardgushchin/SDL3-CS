@@ -35,9 +35,9 @@ public partial class SDL
     /// will not work; you should still check <see cref="CreateTray"/> for errors.</para>
     /// <para>Using tray icons require the video subsystem.</para>
     /// </summary>
-    /// <returns>true if trays are available, false otherwise.</returns>
+    /// <returns><c>true</c> if trays are available, <c>false</c> otherwise.</returns>
     /// <threadsafety>This function should only be called on the main thread. It
-    /// will return false if not called on the main thread.</threadsafety>
+    /// will return <c>false</c> if not called on the main thread.</threadsafety>
     /// <returns>This function is available since SDL 3.4.0.</returns>
     /// <seealso cref="CreateTray"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTraySupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -85,12 +85,12 @@ public partial class SDL
     /// with the tray, which will be passed to click callbacks. May be <c>null</c>.</item>
     /// <item><see cref="Props.TrayCreateLeftClickCallbackPointer"/>: an
     /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is left-clicked.
-    /// Not supported on all platforms. The callback should return true to show
-    /// the default menu, or false to skip showing it. May be <c>null</c>.</item>
+    /// Not supported on all platforms. The callback should return <c>true</c> to show
+    /// the default menu, or <c>false</c> to skip showing it. May be <c>null</c>.</item>
     /// <item><see cref="Props.TrayCreateRightClickCallbackPointer"/>: an
     /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is right-clicked.
-    /// Not supported on all platforms. The callback should return true to show
-    /// the default menu, or false to skip showing it. May be <c>null</c>.</item>
+    /// Not supported on all platforms. The callback should return <c>true</c> to show
+    /// the default menu, or <c>false</c> to skip showing it. May be <c>null</c>.</item>
     /// <item><see cref="Props.TrayCreateMiddleClickCallbackPointer"/>: an
     /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is middle-clicked.
     /// Not supported on all platforms. May be <c>null</c>.</item>
@@ -224,7 +224,7 @@ public partial class SDL
     /// <param name="menu">The menu to get entries from.</param>
     /// <param name="size">An optional pointer to obtain the number of entries in the
     /// menu.</param>
-    /// <returns>a NULL-terminated list of entries within the given menu. The
+    /// <returns>a <c>null</c>-terminated list of entries within the given menu. The
     /// pointer becomes invalid when any function that inserts or deletes
     /// entries in the menu is called.</returns>
     /// <threadsafety>This function should be called on the thread that created the
@@ -290,8 +290,8 @@ public partial class SDL
     /// <summary>
     /// <para>Sets the label of an entry.</para>
     /// <para>An entry cannot change between a separator and an ordinary entry; that is,
-    /// it is not possible to set a non-NULL label on an entry that has a <c>null</c>
-    /// label (separators), or to set a <c>null</c> label to an entry that has a non-NULL
+    /// it is not possible to set a non-<c>null</c> label on an entry that has a <c>null</c>
+    /// label (separators), or to set a <c>null</c> label to an entry that has a non-<c>null</c>
     /// label. The function will silently fail if that happens.</para>
     /// </summary>
     /// <param name="entry">the entry to be updated.</param>
@@ -459,7 +459,7 @@ public partial class SDL
     /// <summary>
     /// <para>Gets the entry for which the menu is a submenu, if the current menu is a
     /// submenu.</para>
-    /// <para>Either this function or <see cref="GetTrayMenuParentTray"/> will return non-NULL
+    /// <para>Either this function or <see cref="GetTrayMenuParentTray"/> will return non-<c>null</c>
     /// for any given menu.</para>
     /// </summary>
     /// <param name="menu">the menu for which to get the parent entry.</param>
@@ -477,7 +477,7 @@ public partial class SDL
     /// <summary>
     /// <para>Gets the tray for which this menu is the first-level menu, if the current
     /// menu isn't a submenu.</para>
-    /// <para>Either this function or <see cref="GetTrayMenuParentEntry"/> will return non-NULL
+    /// <para>Either this function or <see cref="GetTrayMenuParentEntry"/> will return non-<c>null</c>
     /// for any given menu.</para>
     /// </summary>
     /// <param name="menu">the menu for which to get the parent enttrayry.</param>

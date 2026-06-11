@@ -72,7 +72,7 @@ public static partial class SDL
     /// <param name="ticks">the SDL_Time to be converted.</param>
     /// <param name="dt">the resulting <see cref="DateTime"/>.</param>
     /// <param name="localTime">the resulting <see cref="DateTime"/> will be expressed in local time
-    /// if true, otherwise it will be in Universal Coordinated
+    /// if <c>true</c>, otherwise it will be in Universal Coordinated
     /// Time (UTC).</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>

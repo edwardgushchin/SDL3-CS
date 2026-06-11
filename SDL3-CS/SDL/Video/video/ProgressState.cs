@@ -37,7 +37,7 @@ public static partial class SDL
         Invalid = -1,
         
         /// <summary>
-        /// No progress bar is shown 
+        /// No progress bar is shown
         /// </summary>
         None,
         

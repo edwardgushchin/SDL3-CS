@@ -38,7 +38,7 @@ public static partial class SDL
     public struct AssertData
     {
         /// <summary>
-        /// true if app should always continue when assertion is triggered.
+        /// <c>true</c> if app should always continue when assertion is triggered.
         /// </summary>
         public bool AlwaysIgonre;
 

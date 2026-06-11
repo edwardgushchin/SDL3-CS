@@ -69,7 +69,7 @@ public static partial class SDL
         public GPUBlendOp AlphaBlendOp;
         
         /// <summary>
-        /// A bitmask specifying which of the RGBA components are enabled for writing. Writes to all channels if enable_color_write_mask is false.
+        /// A bitmask specifying which of the RGBA components are enabled for writing. Writes to all channels if enable_color_write_mask is <c>false</c>.
         /// </summary>
         public GPUColorComponentFlags ColorWriteMask;
         

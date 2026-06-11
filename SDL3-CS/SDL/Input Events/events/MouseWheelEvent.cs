@@ -67,7 +67,7 @@ public static partial class SDL
         public float Y;
         
         /// <summary>
-        /// Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite. Multiply by -1 to change them back
+        /// Set to one of the <see cref="MouseWheelDirection"/> values. When <see cref="MouseWheelDirection.Flipped"/> the values in X and Y will be opposite. Multiply by -1 to change them back
         /// </summary>
         public MouseWheelDirection Direction;
         

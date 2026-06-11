@@ -32,7 +32,7 @@ public partial class ShaderCross
     /// <summary>
     /// Initializes SDL_shadercross
     /// </summary>
-    /// <returns>true on success, false otherwise.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> otherwise.</returns>
     /// <threadsafety>This should only be called once, from a single thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -147,7 +147,7 @@ public partial class ShaderCross
     /// <param name="bytecode">the SPIRV bytecode.</param>
     /// <param name="bytecodeSize">the length of the SPIRV bytecode.</param>
     /// <param name="props">a properties object filled in with extra shader metadata, provided by the user.</param>
-    /// <returns>A metadata struct on success, NULL otherwise. The struct must be free'd when it is no longer needed.</returns>
+    /// <returns>A metadata struct on success, <c>null</c> otherwise. The struct must be free'd when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_ReflectGraphicsSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr ReflectGraphicsSPIRV(IntPtr bytecode, UIntPtr bytecodeSize, uint props);
@@ -184,7 +184,7 @@ public partial class ShaderCross
     /// <list type="bullet">
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: When true, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: When <c>true</c>, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
     /// </list>
     /// </summary>
     /// <param name="info">a struct describing the shader to transpile.</param>
@@ -203,7 +203,7 @@ public partial class ShaderCross
     /// <list type="bullet">
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when true, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when <c>true</c>, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
     /// </list>
     /// </summary>
     /// <param name="info">a struct describing the shader to transpile.</param>
@@ -221,7 +221,7 @@ public partial class ShaderCross
     /// <list type="bullet">
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when true, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when <c>true</c>, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
     /// </list>
     /// </summary>
     /// <param name="info">a struct describing the shader to transpile.</param>

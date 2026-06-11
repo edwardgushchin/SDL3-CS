@@ -174,7 +174,7 @@ public static partial class SDL
     /// on the main thread during event processing.</para>
     /// <para>Be careful of deadlocks when using this functionality. You should not have
     /// the main thread wait for the current thread while this function is being
-    /// called with <c>waitComplete</c> true.</para>
+    /// called with <c>waitComplete</c> <c>true</c>.</para>
     /// </summary>
     /// <param name="callback">the callback to call on the main thread.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
@@ -274,7 +274,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="name">the name of the metadata property to set.</param>
     /// <param name="value">the value of the property, or <c>null</c> to remove that property.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>

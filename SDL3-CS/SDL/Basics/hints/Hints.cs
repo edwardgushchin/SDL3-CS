@@ -73,9 +73,9 @@ public static partial class SDL
 
         /// <summary>
         /// <para>A variable to control whether the SDL activity is allowed to be re-created.</para>
-        /// <para>If this hint is true, the activity can be recreated on demand by the OS,
+        /// <para>If this hint is <c>true</c>, the activity can be recreated on demand by the OS,
         /// and Java static data and C++ static data remain with their current values.
-        /// If this hint is false, then SDL will call exit() when you return from your
+        /// If this hint is <c>false</c>, then SDL will call exit() when you return from your
         /// main function and the application will be terminated and then started fresh
         /// each time.</para>
         /// <para>The variable can be set to the following values:</para>
@@ -120,7 +120,7 @@ public static partial class SDL
         /// manually.</para>
         /// <para>This is necessary for the right mouse button to work on some Android
         /// devices, or to be able to trap the back button for use in your code
-        /// reliably. If this hint is true, the back button will show up as an
+        /// reliably. If this hint is <c>true</c>, the back button will show up as an
         /// <see cref="EventType.KeyDown"/> / <see cref="EventType.KeyUp"/> pair with a keycode of
         /// <see cref="Scancode.ACBack"/>.</para>
         /// <para>The variable can be set to the following values:</para>
@@ -598,7 +598,7 @@ public static partial class SDL
         /// such as macOS and Haiku.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item><c>NULL</c>: Select automatically (default, all platforms)</item>
+        /// <item><c>null</c>: Select automatically (default, all platforms)</item>
         /// <item><c>"portal"</c>: Use XDG Portals through DBus (Unix only)</item>
         /// <item><c>"zenity"</c>: Use the Zenity program (Unix only)</item>
         /// </list>
@@ -1721,7 +1721,7 @@ public static partial class SDL
         /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
         /// <item><c>"1"</c>: HIDAPI driver is used.</item>
         /// </list>
-        /// <para>This driver doesn't work with the dolphinbar, so the default is false for
+        /// <para>This driver doesn't work with the dolphinbar, so the default is <c>false</c> for
         /// now.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
@@ -2263,7 +2263,7 @@ public static partial class SDL
         public const string MacOptionAsAlt = "SDL_MAC_OPTION_AS_ALT";
         
         /// <summary>
-        /// <para>A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have
+        /// <para>A variable controlling whether <see cref="EventType.MouseWheel"/> event values will have
         /// momentum on macOS.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
@@ -2716,7 +2716,7 @@ public static partial class SDL
         public const string RenderDirect3D11Debug = "SDL_RENDER_DIRECT3D11_DEBUG";
         
         /// <summary>
-        /// <para>A variable controlling whether to use the Direct3D 11 WARP software 
+        /// <para>A variable controlling whether to use the Direct3D 11 WARP software
         /// rasterizer.</para>
         /// <para>For more information, see:
         /// https://learn.microsoft.com/en-us/windows/win32/direct3darticles/directx-warp</para>
@@ -3223,14 +3223,14 @@ public static partial class SDL
         public const string VideoMacFullScreenMenuVisibility = "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY";
         
         /// <summary>
-        /// <para>A variable indicating whether the metal layer drawable size should be 
+        /// <para>A variable indicating whether the metal layer drawable size should be
         /// updated for the <see cref="EventType.WindowPixelSizeChanged"/> event on macOS.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
-        /// <item>"0": the metal layer drawable size will not be updated on the 
+        /// <item>"0": the metal layer drawable size will not be updated on the
         /// <see cref="EventType.WindowPixelSizeChanged"/> event
         /// </item>
-        /// <item>"1": the metal layer drawable size will be updated on the 
+        /// <item>"1": the metal layer drawable size will be updated on the
         /// <see cref="EventType.WindowPixelSizeChanged"/> event. (default)
         /// </item>
         /// </list>
@@ -3249,7 +3249,7 @@ public static partial class SDL
         /// destination display. If an exclusive fullscreen window is moved to a new
         /// display, the window will become fullscreen desktop.</item>
         /// <item><c>"1"</c>: SDL will attempt to automatically set a mode on the destination
-        /// display that most closely matches the mode of the display that the 
+        /// display that most closely matches the mode of the display that the
         /// exclusive fullscreen window was previously on. (default)</item>
         /// </list>
         /// </summary>
@@ -3435,10 +3435,10 @@ public static partial class SDL
         /// <para>If set, this can result in smoother window resizing when rendering using
         /// OpenGL, however, there are some conditions:</para>
         /// <list type="bullet">
-        /// <item>It is only activated on windows created with the <c>SDL_WINDOW_OPENGL</c> flag
+        /// <item>It is only activated on windows created with the <see cref="WindowFlags.OpenGL"/> flag
         /// (windows using an SDL OpenGL renderer have this automatically set).</item>
-        /// <item>When activated, presentation must be done with <c>SDL_GL_SwapWindow()</c>
-        /// (<c>SDL_RenderPresent()</c> calls this internally for OpenGL renderers as
+        /// <item>When activated, presentation must be done with <see cref="GLSwapWindow"/>
+        /// (<see cref="RenderPresent"/> calls this internally for OpenGL renderers as
         /// well).</item>
         /// </list>
         /// <para>Enabling this and presenting via an external mechanism will result in sync
@@ -3802,7 +3802,7 @@ public static partial class SDL
         /// <para>If the mnemonics are enabled, then menus can be opened by pressing the Alt
         /// key and the corresponding mnemonic (for example, Alt+F opens the File
         /// menu). However, in case an invalid mnemonic is pressed, Windows makes an
-        /// audible beep to convey that nothing happened. This is true even if the
+        /// audible beep to convey that nothing happened. This is <c>true</c> even if the
         /// window has no menu at all!</para>
         /// <para>Because most SDL applications don't have menus, and some want to use the
         /// Alt key for other purposes, SDL disables mnemonics (and the beeping) by

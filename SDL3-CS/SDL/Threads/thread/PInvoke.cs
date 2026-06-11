@@ -84,7 +84,7 @@ public static partial class SDL
 	/// see what happens with your system's debugger. The name should be UTF-8 (but
 	/// using the naming limits of C identifiers is a better bet). There are no
 	/// requirements for thread naming conventions, so long as the string is
-	/// null-terminated UTF-8, but these guidelines are helpful in choosing a name:</para>
+	/// <c>null</c>-terminated UTF-8, but these guidelines are helpful in choosing a name:</para>
 	/// <para>https://stackoverflow.com/questions/149932/naming-conventions-for-threads</para>
 	/// <para>If a system imposes requirements, SDL will try to munge the string for it
 	/// (truncate, etc), but the original string contents will be available from

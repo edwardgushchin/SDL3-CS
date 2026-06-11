@@ -353,7 +353,7 @@ public static partial class SDL
     /// <para>Note that this might not be the native format of the hardware, as SDL might
     /// be converting to this format behind the scenes.</para>
     /// <para>If the system is waiting for the user to approve access to the camera, as
-    /// some platforms require, this will return false, but this isn't necessarily
+    /// some platforms require, this will return <c>false</c>, but this isn't necessarily
     /// a fatal error; you should either wait for an
     /// <see cref="EventType.CameraDeviceApproved"/> (or <see cref="EventType.CameraDeviceDenied"/>) event,
     /// or poll <see cref="GetCameraPermissionState"/> occasionally until it returns
@@ -365,7 +365,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="OpenCamera(uint, nint)"/>    
+    /// <seealso cref="OpenCamera(uint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetCameraFormat(IntPtr camera, out CameraSpec spec);
     
@@ -376,7 +376,7 @@ public static partial class SDL
     /// <para>Acquire a frame.</para>
     /// <para>The frame is a memory pointer to the image data, whose size and format are
     /// given by the spec requested when opening the device.</para>
-    /// <para>This is a non blocking API. If there is a frame available, a non-NULL
+    /// <para>This is a non blocking API. If there is a frame available, a non-<c>null</c>
     /// surface is returned, and timestampNS will be filled with a non-zero value.</para>
     /// <para>Note that an error case can also return <c>null</c>, but a <c>null</c> by itself is
     /// normal and just signifies that a new frame is not yet available. Note that

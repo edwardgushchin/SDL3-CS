@@ -75,7 +75,7 @@ public static partial class SDL
         private Byte _padding3;
 
         /// <summary>
-        /// true enables the depth test.
+        /// <c>true</c> enables the depth test.
         /// </summary>
         public bool EnableDepthTest
         {
@@ -84,7 +84,7 @@ public static partial class SDL
         }
 
         /// <summary>
-        /// true enables depth writes. Depth writes are always disabled when enable_depth_test is false.
+        /// <c>true</c> enables depth writes. Depth writes are always disabled when enable_depth_test is <c>false</c>.
         /// </summary>
         public bool EnableDepthWrite
         {
@@ -93,7 +93,7 @@ public static partial class SDL
         }
 
         /// <summary>
-        /// true enables the stencil test.
+        /// <c>true</c> enables the stencil test.
         /// </summary>
         public bool EnableStencilTest
         {

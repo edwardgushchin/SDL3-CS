@@ -33,7 +33,7 @@ public static partial class SDL
     /// to interact with notification dialogs.</para>
     /// <para>Exactly How they are presented depends on the platform and implementation.</para>
     /// <para>User interactions with a notification are reported via events with the type
-    /// SDL_EVENT_NOTIFICATION_ACTION_INVOKED.</para>
+    /// <see cref="EventType.NotificationActionInvoked"/>.</para>
     /// <para>Action types: - button: A button with a localized text label, which
     /// generates feedback when activated.</para>
     /// </summary>

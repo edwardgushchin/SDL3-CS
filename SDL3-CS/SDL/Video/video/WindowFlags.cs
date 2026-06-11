@@ -27,7 +27,7 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>The flags on a window.</para>
-    /// <para>These cover a lot of true/false, or on/off, window state. Some of it is
+    /// <para>These cover a lot of <c>true</c>/<c>false</c>, or on/off, window state. Some of it is
     /// immutable after being set through <see cref="CreateWindow"/>, some of it can be
     /// changed on existing windows by the app, and some of it might be altered by
     /// the user or system outside of the app's control.</para>

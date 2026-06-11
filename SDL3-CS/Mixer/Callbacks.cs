@@ -98,7 +98,7 @@ public partial class Mixer
     /// <param name="cb">the function to call when the track mixes. May be <c>null</c>.</param>
     /// <param name="userdata">an opaque pointer provided to the callback for its own
     /// personal use.</param>
-    /// <returns>true on success or false on failure; call <see cref="SDL.GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
     /// <seealso cref="TrackMixCallback"/>

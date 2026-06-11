@@ -34,7 +34,7 @@ public static partial class SDL
     /// <param name="userdata">what was passed as <c>userdata</c> to <see cref="SetEventFilter"/> or
     /// <see cref="AddEventWatch"/>, etc.</param>
     /// <param name="event">the event that triggered the callback.</param>
-    /// <returns>true to permit event to be added to the queue, and false to
+    /// <returns><c>true</c> to permit event to be added to the queue, and <c>false</c> to
     /// disallow it. When used with <see cref="AddEventWatch"/>, the return value is
     /// ignored.</returns>
     /// <threadsafety>SDL may call this callback at any time from any thread; the

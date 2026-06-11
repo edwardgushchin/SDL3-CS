@@ -82,7 +82,7 @@ public static partial class SDL
     /// <see cref="CreateWindow"/>).</param>
     /// <param name="window">a pointer filled with the window, or <c>null</c> on error.</param>
     /// <param name="renderer">a pointer filled with the renderer, or <c>null</c> on error.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -98,7 +98,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Create a 2D rendering context for a window.</para>
     /// <para>If you want a specific renderer, you can specify its name here. A list of
-    /// available renderers can be obtained by calling <see cref="GetRenderDriver"/> 
+    /// available renderers can be obtained by calling <see cref="GetRenderDriver"/>
     /// multiple times, with indices from 0 to <see cref="GetNumRenderDrivers"/>-1. If you
     /// don't need a specific renderer, specify <c>null</c> and SDL will attempt to choose
     /// the best option for you, based on what is available on the user's system.</para>
@@ -311,12 +311,12 @@ public static partial class SDL
     /// <item><see cref="Props.RendererTextureFormatsPointer"/>: a (const SDL_PixelFormat *)
     /// array of pixel formats, terminated with <see cref="PixelFormat.Unknown"/>,
     /// representing the available texture formats for this renderer.</item>
-    /// <item> <seealso cref="Props.RendererTextureWrappingBoolean"/>: true if the renderer
+    /// <item> <seealso cref="Props.RendererTextureWrappingBoolean"/>: <c>true</c> if the renderer
     /// supports SDL_TEXTURE_ADDRESS_WRAP on non-power-of-two textures.</item>
     /// <item><see cref="Props.RendererOutputColorspaceNumber"/>: an SDL_Colorspace value
     /// describing the colorspace for output to the display, defaults to
     /// <see cref="Colorspace.SRGB"/>.</item>
-    /// <item><see cref="Props.RendererHDREnabledBoolean"/>: true if the output colorspace is
+    /// <item><see cref="Props.RendererHDREnabledBoolean"/>: <c>true</c> if the output colorspace is
     /// <see cref="Colorspace.SRGBLinear"/> and the renderer is showing on a display with
     /// HDR enabled. This property can change dynamically when
     /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
@@ -386,7 +386,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);</code>
     /// <summary>
     /// <para>Get the output size in pixels of a rendering context.</para>
-    /// <para>This returns the true output size in pixels, ignoring any render targets or
+    /// <para>This returns the <c>true</c> output size in pixels, ignoring any render targets or
     /// logical size and presentation.</para>
     /// <para>For the output size of the current rendering target, with logical size
     /// adjustments, use <see cref="GetCurrentRenderOutputSize"/> instead.</para>
@@ -728,7 +728,7 @@ public static partial class SDL
     /// argument can be <c>null</c> if you don't need this information.</param>
     /// <param name="h">a pointer filled in with the height of the texture in pixels. This
     /// argument can be <c>null</c> if you don't need this information.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -779,7 +779,7 @@ public static partial class SDL
     /// following formula:</para>
     /// <para><c>srcC = srcC * (color / 255)</c></para>
     /// <para>Color modulation is not always supported by the renderer; it will return
-    /// false if color modulation is not supported.</para>
+    /// <c>false</c> if color modulation is not supported.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
     /// <param name="r">the red color value multiplied into copy operations.</param>
@@ -805,7 +805,7 @@ public static partial class SDL
     /// following formula:</para>
     /// <para><c>srcC = srcC * color</c></para>
     /// <para>Color modulation is not always supported by the renderer; it will return
-    /// false if color modulation is not supported.</para>
+    /// <c>false</c> if color modulation is not supported.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
     /// <param name="r">the red color value multiplied into copy operations.</param>
@@ -870,7 +870,7 @@ public static partial class SDL
     /// value is modulated by this alpha value according to the following formula:</para>
     /// <para><c>srcA = srcA * (alpha / 255)</c></para>
     /// <para>Alpha modulation is not always supported by the renderer; it will return
-    /// false if alpha modulation is not supported.</para>
+    /// <c>false</c> if alpha modulation is not supported.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
     /// <param name="alpha">the source alpha value multiplied into copy operations.</param>
@@ -893,7 +893,7 @@ public static partial class SDL
     /// value is modulated by this alpha value according to the following formula:</para>
     /// <para><c>srcA = srcA * alpha</c></para>
     /// <para>Alpha modulation is not always supported by the renderer; it will return
-    /// false if alpha modulation is not supported.</para>
+    /// <c>false</c> if alpha modulation is not supported.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
     /// <param name="alpha">the source alpha value multiplied into copy operations.</param>
@@ -949,7 +949,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the blend mode for a texture, used by <see cref="RenderTexture(nint, nint, nint, nint)"/>.</para>
     /// <para>If the blend mode is not supported, the closest supported mode is chosen
-    /// and this function returns false.</para>
+    /// and this function returns <c>false</c>.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
     /// <param name="blendMode">the <see cref="BlendMode"/> to use for texture blending.</param>
@@ -983,7 +983,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the scale mode used for texture scale operations.</para>
     /// <para>The default texture scale mode is <see cref="ScaleMode.Linear"/>.</para>
-    /// <para>If the scale mode is not supported, the closest supported mode is chosen. 
+    /// <para>If the scale mode is not supported, the closest supported mode is chosen.
     /// Palettized textures will use <see cref="ScaleMode.PixelArt"/> instead of
     /// <see cref="ScaleMode.Linear"/>.</para>
     /// </summary>
@@ -1349,7 +1349,7 @@ public static partial class SDL
     /// appropriately offset by the locked area.</param>
     /// <param name="pitch">this is filled in with the pitch of the locked pixels; the
     /// pitch is the length of one row in bytes.</param>
-    /// <returns>true on success or false if the texture is not valid or was not
+    /// <returns><c>true</c> on success or <c>false</c> if the texture is not valid or was not
     /// created with <see cref="TextureAccess.Streaming"/>; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
@@ -1379,7 +1379,7 @@ public static partial class SDL
     /// appropriately offset by the locked area.</param>
     /// <param name="pitch">this is filled in with the pitch of the locked pixels; the
     /// pitch is the length of one row in bytes.</param>
-    /// <returns>true on success or false if the texture is not valid or was not
+    /// <returns><c>true</c> on success or <c>false</c> if the texture is not valid or was not
     /// created with <see cref="TextureAccess.Streaming"/>; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
@@ -1412,7 +1412,7 @@ public static partial class SDL
     /// <c>null</c>, the entire texture will be locked.</param>
     /// <param name="surface">a pointer to an SDL surface of size <b>rect</b>. Don't assume
     /// any specific pixel content.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -1444,7 +1444,7 @@ public static partial class SDL
     /// <c>null</c>, the entire texture will be locked.</param>
     /// <param name="surface">a pointer to an SDL surface of size <b>rect</b>. Don't assume
     /// any specific pixel content.</param>
-    /// <returns>true on success or false on failure; call <see cref="GetError"/> for more
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
@@ -1681,7 +1681,7 @@ public static partial class SDL
     /// <param name="renderer">the rendering context.</param>
     /// <param name="event">the event to modify.</param>
     /// <returns><c>true</c> if the event is converted or doesn't need conversion, or
-    /// false on failure; call <see cref="GetError"/> for more information.</returns>
+    /// <c>false</c> on failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderCoordinatesFromWindow"/>
@@ -1759,12 +1759,12 @@ public static partial class SDL
     /// <summary>
     /// <para>Return whether an explicit rectangle was set as the viewport.</para>
     /// <para>This is useful if you're saving and restoring the viewport and want to know
-    /// whether you should restore a specific rectangle or NULL.</para>
+    /// whether you should restore a specific rectangle or <c>null</c>.</para>
     /// <para>Each render target has its own viewport. This function checks the viewport
     /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
-    /// <returns>true if the viewport was set to a specific rectangle, or false if
+    /// <returns><c>true</c> if the viewport was set to a specific rectangle, or <c>false</c> if
     /// it was set to <c>null</c> (the entire target).</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>

@@ -42,7 +42,7 @@ public static partial class SDL
         public IntPtr Buffer;
         
         /// <summary>
-        /// true cycles the buffer if it is already bound.
+        /// <c>true</c> cycles the buffer if it is already bound.
         /// </summary>
         public Byte Cycle;
         
