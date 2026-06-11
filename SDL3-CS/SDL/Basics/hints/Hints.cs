@@ -54,6 +54,24 @@ public static partial class SDL
         public const string AllowAltTabWhileGrabbed = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
         
         /// <summary>
+        /// <para>A variable to control whether we allow persistent folder access on Android
+        /// when using the SDL select folder dialog.</para>
+        /// <para>If set to <c>"1"</c>, the selected folder will be accessible persistently
+        /// across app launches. That allows the user to only have to select the directory
+        /// once, and then the app can access it again in the future without needing to ask
+        /// the user to select it again.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Persistent folder access is not allowed. (default)</item>
+        /// <item><c>"1"</c>: Persistent folder access is allowed.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before the SDL folder selection dialog is shown,
+        /// and can be changed between dialog invocations.</remarks>
+        /// <since>This hint is available since SDL 3.6.0.</since>
+        public const string AndroidAllowPersistentFolderAccess = "SDL_ANDROID_ALLOW_PERSISTENT_FOLDER_ACCESS";
+
+        /// <summary>
         /// <para>A variable to control whether the SDL activity is allowed to be re-created.</para>
         /// <para>If this hint is true, the activity can be recreated on demand by the OS,
         /// and Java static data and C++ static data remain with their current values.

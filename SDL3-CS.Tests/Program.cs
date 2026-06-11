@@ -39,6 +39,11 @@ if (SDL.Hints.VideoX11EnableXsyncExt != "SDL_VIDEO_X11_ENABLE_XSYNC_EXT")
     throw new InvalidOperationException("Unexpected VideoX11EnableXsyncExt hint value.");
 }
 
+if (SDL.Hints.AndroidAllowPersistentFolderAccess != "SDL_ANDROID_ALLOW_PERSISTENT_FOLDER_ACCESS")
+{
+    throw new InvalidOperationException("Unexpected AndroidAllowPersistentFolderAccess hint value.");
+}
+
 if ((uint)SDL.EventType.WindowCurvatureChanged != (uint)SDL.EventType.WindowHDRStateChanged + 1)
 {
     throw new InvalidOperationException("Unexpected WindowCurvatureChanged event value.");
@@ -99,6 +104,7 @@ Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
 Console.WriteLine("DOS framebuffer hint constant smoke test passed.");
 Console.WriteLine("X11 XSync hint constant smoke test passed.");
+Console.WriteLine("Android persistent folder access hint smoke test passed.");
 Console.WriteLine("visionOS curvature window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
