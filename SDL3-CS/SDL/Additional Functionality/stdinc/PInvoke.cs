@@ -61,7 +61,9 @@ public partial class SDL
     /// <para>If either of <c>nmemb</c> or <c>size</c> is 0, they will both be set to 1.</para>
     /// <para>If the allocation is successful, the returned pointer is guaranteed to be
     /// aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
-    /// C11 and later) or `2 * sizeof(void *)`, whichever is smaller.</para>
+    /// C11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use
+    /// <see cref="AlignedAllocZero"/> if you need to allocate memory aligned to an
+    /// alignment greater than this guarantee.</para>
     /// </summary>
     /// <param name="nmemb">the number of elements in the array.</param>
     /// <param name="size">the size of each element of the array.</param>
@@ -204,18 +206,40 @@ public partial class SDL
     public static partial IntPtr AlignedAlloc(UIntPtr alignment, UIntPtr size);
     
     
+    /// <code>extern SDL_DECLSPEC SDL_MALLOC void * SDLCALL SDL_aligned_alloc_zero(size_t alignment, size_t size);</code>
+    /// <summary>
+    /// <para>Allocate zero-initialized memory aligned to a specific alignment.</para>
+    /// <para>The memory returned by this function must be freed with <see cref="AlignedFree"/>,
+    /// _not_ <see cref="Free"/>.</para>
+    /// <para>If <c>alignment</c> is less than the size of <c>void *</c>, it will be increased to
+    /// match that.</para>
+    /// <para>The returned memory address will be a multiple of the alignment value, and
+    /// the size of the memory allocated will be a multiple of the alignment value.</para>
+    /// </summary>
+    /// <param name="alignment">the alignment of the memory.</param>
+    /// <param name="size">the size to allocate.</param>
+    /// <returns>a pointer to the aligned memory, or <c>null</c> if allocation failed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AlignedFree"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc_zero"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr AlignedAllocZero(UIntPtr alignment, UIntPtr size);
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_aligned_free(void *mem);</code>
     /// <summary>
-    /// <para>Free memory allocated by <see cref="AlignedAlloc"/>.</para>
+    /// <para>Free memory allocated by <see cref="AlignedAlloc"/> or <see cref="AlignedAllocZero"/>.</para>
     /// <para>The pointer is no longer valid after this call and cannot be dereferenced
     /// anymore.</para>
     /// <para>If <c>mem</c> is <c>null</c>, this function does nothing.</para>
     /// </summary>
-    /// <param name="mem">a pointer previously returned by <see cref="AlignedAlloc"/>, or <c>null</c>.</param>
+    /// <param name="mem">a pointer previously returned by <see cref="AlignedAlloc"/> or
+    /// <see cref="AlignedAllocZero"/>, or <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="AlignedFree"/>
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    /// <seealso cref="AlignedAlloc"/>
+    /// <seealso cref="AlignedAllocZero"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AlignedFree(IntPtr mem);
     
     
