@@ -845,6 +845,14 @@ public static partial class SDL
     /// UIWindowScene associated with the window, defaults to the active window
     /// scene.</item>
     /// </list>
+    /// <para>These are additional supported properties with visionOS:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.WindowCreateCurvatureFloat"/>: the curvature of the window
+    /// on visionOS. Curved windows have square corners and additional controls
+    /// for more immersive gaming. This can be <c>-1</c> (disabled), which is the
+    /// default, <c>0</c> (no curve), or set to a specific curvature radius in
+    /// millimeters. A common value for a gaming monitor is 1000.</item>
+    /// </list>
     /// <para>These are additional supported properties on Wayland:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - true if
@@ -1000,6 +1008,14 @@ public static partial class SDL
     /// renderbuffer object. It must be bound when <see cref="GLSwapWindow"/> is called.</item>
     /// <item><see cref="Props.WindowUIKitOpenglResolveFramebufferNumber"/>: the OpenGL
     /// view's resolve framebuffer, when MSAA is used.</item>
+    /// </list>
+    /// <para>On visionOS:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.WindowCurvatureFloat"/>: the curvature of the window in
+    /// curved mode on visionOS. This value is updated dynamically when changed
+    /// via the screen ornaments. This can be <c>0</c> (no curve), or a specific
+    /// curvature radius in millimeters. A common value for a gaming monitor is
+    /// 1000.</item>
     /// </list>
     /// <para>On KMS/DRM:</para>
     /// <list type="bullet">

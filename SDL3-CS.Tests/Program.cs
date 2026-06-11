@@ -33,6 +33,26 @@ if (SDL.Hints.VideoX11EnableXsyncExt != "SDL_VIDEO_X11_ENABLE_XSYNC_EXT")
     throw new InvalidOperationException("Unexpected VideoX11EnableXsyncExt hint value.");
 }
 
+if ((uint)SDL.EventType.WindowCurvatureChanged != (uint)SDL.EventType.WindowHDRStateChanged + 1)
+{
+    throw new InvalidOperationException("Unexpected WindowCurvatureChanged event value.");
+}
+
+if (SDL.EventType.WindowLast != SDL.EventType.WindowCurvatureChanged)
+{
+    throw new InvalidOperationException("Unexpected WindowLast event value after visionOS curvature sync.");
+}
+
+if (SDL.Props.WindowCreateCurvatureFloat != "SDL.window.create.curvature")
+{
+    throw new InvalidOperationException("Unexpected WindowCreateCurvatureFloat property value.");
+}
+
+if (SDL.Props.WindowCurvatureFloat != "SDL.window.curvature")
+{
+    throw new InvalidOperationException("Unexpected WindowCurvatureFloat property value.");
+}
+
 if (SDL.Props.TextInputTitleString != "SDL.textinput.title")
 {
     throw new InvalidOperationException("Unexpected TextInputTitleString property value.");
@@ -58,6 +78,7 @@ Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
 Console.WriteLine("DOS framebuffer hint constant smoke test passed.");
 Console.WriteLine("X11 XSync hint constant smoke test passed.");
+Console.WriteLine("visionOS curvature window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
 

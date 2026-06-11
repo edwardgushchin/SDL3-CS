@@ -269,8 +269,13 @@ public static partial class SDL
         /// Window HDR properties have changed
         /// </summary>
         WindowHDRStateChanged,
+
+        /// <summary>
+        /// Window curvature has changed to data1 (on visionOS)
+        /// </summary>
+        WindowCurvatureChanged,
         WindowFirst = WindowShown,
-        WindowLast = WindowHDRStateChanged,
+        WindowLast = WindowCurvatureChanged,
         #endregion
 
         #region Keyboard events
