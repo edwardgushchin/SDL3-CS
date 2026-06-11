@@ -587,7 +587,7 @@ public static partial class SDL
     /// <para>Binding a stream to a device will set its output format for playback
     /// devices, and its input format for recording devices, so they match the
     /// device's settings. The caller is welcome to change the other end of the
-    /// stream's format at any time with <see cref="SetAudioStreamFormat"/>. If the other
+    /// stream's format at any time with <see cref="SetAudioStreamFormat(nint, nint, nint)"/>. If the other
     /// end of the stream's format has never been set (the audio stream was created
     /// with a NULL audio spec), this function will set it to match the device
     /// end's format.</para>
@@ -680,10 +680,12 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
     /// <para>Create a new audio stream.</para>
+    /// <para>SDL_AudioStream is an audio conversion interface. You push data as you have
+    /// it, and pull it when you need it; the stream will buffer data as needed.</para>
     /// <para>Note that <c>src_spec</c> or <c>dst_spec</c> may be <c>null</c>, but any attempts to put or
     /// get data from an audio stream will fail until it has valid specs assigned
     /// to both ends of the stream. Specs can be assigned later through
-    /// <see cref="SetAudioStreamFormat"/>, or binding the stream to an audio device (which
+    /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or binding the stream to an audio device (which
     /// will set the format of only the input or output, depending on what kind of
     /// device the stream was bound to).</para>
     /// </summary>
@@ -698,7 +700,7 @@ public static partial class SDL
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="ClearAudioStream"/>
-    /// <seealso cref="SetAudioStreamFormat"/>
+    /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     /// <seealso cref="DestroyAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateAudioStream(IntPtr srcSpec, IntPtr dstSpec);
@@ -707,6 +709,14 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
     /// <para>Create a new audio stream.</para>
+    /// <para>SDL_AudioStream is an audio conversion interface. You push data as you have
+    /// it, and pull it when you need it; the stream will buffer data as needed.</para>
+    /// <para>Note that <c>src_spec</c> or <c>dst_spec</c> may be <c>null</c>, but any attempts to put or
+    /// get data from an audio stream will fail until it has valid specs assigned
+    /// to both ends of the stream. Specs can be assigned later through
+    /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or binding the stream to an audio device (which
+    /// will set the format of only the input or output, depending on what kind of
+    /// device the stream was bound to).</para>
     /// <para>Use <see cref="CreateAudioStream(nint, nint)"/> when either audio spec should be <c>null</c>.</para>
     /// </summary>
     /// <param name="srcSpec">the format details of the input audio.</param>
@@ -721,7 +731,7 @@ public static partial class SDL
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="ClearAudioStream"/>
-    /// <seealso cref="SetAudioStreamFormat"/>
+    /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     /// <seealso cref="DestroyAudioStream"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateAudioStream(in AudioSpec srcSpec, in AudioSpec dstSpec);
@@ -763,7 +773,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamFormat"/>
+    /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool GetAudioStreamFormat(IntPtr stream, out AudioSpec srcSpec, out AudioSpec dstSpec);
@@ -772,10 +782,10 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
     /// <para>Change the input and output formats of an audio stream.</para>
-    /// <para>Future calls to and <see cref="GetAudioStreamAvailable"/> and <see cref="GetAudioStreamData(nint, byte[], int)"/>
+    /// <para>Future calls to <see cref="GetAudioStreamAvailable"/> and <see cref="GetAudioStreamData(nint, byte[], int)"/>
     /// will reflect the new format, and future calls to <see cref="PutAudioStreamData(nint, byte[], int)"/>
     /// must provide data in the new input formats.</para>
-    /// <para>Data that was previously queued in the stream will still be operated on i
+    /// <para>Data that was previously queued in the stream will still be operated on in
     /// the format that was current when it was added, which is to say you can put
     /// the end of a sound file in one format to a stream, change formats for the
     /// next sound file, and start putting that new data while the previous sound
@@ -785,17 +795,54 @@ public static partial class SDL
     /// dst_spec for playback devices). Attempts to make a change to this side
     /// will be ignored, but this will not report an error. The other side's format
     /// can be changed.</para>
+    /// <para><c>src_spec</c> and <c>dst_spec</c> may each be <c>null</c>; a <c>null</c> spec signals not to
+    /// change the current format for that side of the stream.</para>
     /// </summary>
     /// <param name="stream">the stream the format is being changed.</param>
-    /// <param name="srcSpec">the new format of the audio input; if <c>null</c>, it is not
+    /// <param name="srcSpec">the new format of the audio input; if <c>IntPtr.Zero</c>, it is not
     /// changed.</param>
-    /// <param name="dstSpec">the new format of the audio output; if <c>null</c>, it is not
+    /// <param name="dstSpec">the new format of the audio output; if <c>IntPtr.Zero</c>, it is not
     /// changed.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetAudioStreamFormat"/>
+    /// <seealso cref="SetAudioStreamFrequencyRatio"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetAudioStreamFormat(IntPtr stream, IntPtr srcSpec, IntPtr dstSpec);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
+    /// <summary>
+    /// <para>Change the input and output formats of an audio stream.</para>
+    /// <para>Future calls to <see cref="GetAudioStreamAvailable"/> and <see cref="GetAudioStreamData(nint, byte[], int)"/>
+    /// will reflect the new format, and future calls to <see cref="PutAudioStreamData(nint, byte[], int)"/>
+    /// must provide data in the new input formats.</para>
+    /// <para>Data that was previously queued in the stream will still be operated on in
+    /// the format that was current when it was added, which is to say you can put
+    /// the end of a sound file in one format to a stream, change formats for the
+    /// next sound file, and start putting that new data while the previous sound
+    /// file is still queued, and everything will still play back correctly.</para>
+    /// <para>If a stream is bound to a device, then the format of the side of the stream
+    /// bound to a device cannot be changed (src_spec for recording devices,
+    /// dst_spec for playback devices). Attempts to make a change to this side
+    /// will be ignored, but this will not report an error. The other side's format
+    /// can be changed.</para>
+    /// <para>Use <see cref="SetAudioStreamFormat(nint, nint, nint)"/> when either audio spec should be
+    /// <c>IntPtr.Zero</c>.</para>
+    /// </summary>
+    /// <param name="stream">the stream the format is being changed.</param>
+    /// <param name="srcSpec">the new format of the audio input.</param>
+    /// <param name="dstSpec">the new format of the audio output.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, as it holds
+    /// a stream-specific mutex while running.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     /// <seealso cref="GetAudioStreamFormat"/>
     /// <seealso cref="SetAudioStreamFrequencyRatio"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -838,7 +885,7 @@ public static partial class SDL
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamFrequencyRatio"/>
-    /// <seealso cref="SetAudioStreamFormat"/>
+    /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetAudioStreamFrequencyRatio(IntPtr stream, float ratio);
@@ -1056,7 +1103,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Add data to the stream.</para>
     /// <para>This data must match the format/channels/samplerate specified in the latest
-    /// call to <see cref="SetAudioStreamFormat"/>, or the format specified when creating the
+    /// call to <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or the format specified when creating the
     /// stream if it hasn't been changed.</para>
     /// <para>Note that this call simply copies the unconverted data for later. This is
     /// different than SDL2, where data was converted during the Put call and the
@@ -1090,7 +1137,7 @@ public static partial class SDL
     /// being read from the stream in its entirety, or a call to
     /// <seealso cref="ClearAudioStream"/> or <see cref="DestroyAudioStream"/>.</para>
     /// <para>The data must match the format/channels/samplerate specified in the latest
-    /// call to <see cref="SetAudioStreamFormat"/>, or the format specified when creating the
+    /// call to <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or the format specified when creating the
     /// stream if it hasn't been changed.</para>
     /// <para>An optional callback may be provided, which is called when the stream no
     /// longer needs the data. Once this callback fires, the stream will not access
@@ -1128,7 +1175,7 @@ public static partial class SDL
     /// <summary>
     /// <para>Add data to the stream.</para>
     /// <para>This data must match the format/channels/samplerate specified in the latest
-    /// call to <see cref="SetAudioStreamFormat"/>, or the format specified when creating the
+    /// call to <see cref="SetAudioStreamFormat(nint, nint, nint)"/>, or the format specified when creating the
     /// stream if it hasn't been changed.</para>
     /// <para>Note that this call simply copies the unconverted data for later. This is
     /// different than SDL2, where data was converted during the Put call and the
@@ -1207,7 +1254,7 @@ public static partial class SDL
     /// <para>Get converted/resampled data from the stream.</para>
     /// <para>The input/output data format/channels/samplerate is specified when creating
     /// the stream, and can be changed after creation by calling
-    /// <see cref="SetAudioStreamFormat"/>.</para>
+    /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>.</para>
     /// <para>Note that any conversion and resampling necessary is done during this call,
     /// and SDL_PutAudioStreamData simply queues unconverted data for later. This
     /// is different than SDL2, where that work was done while inputting new data
@@ -1234,7 +1281,7 @@ public static partial class SDL
     /// <para>Get converted/resampled data from the stream.</para>
     /// <para>The input/output data format/channels/samplerate is specified when creating
     /// the stream, and can be changed after creation by calling
-    /// <see cref="SetAudioStreamFormat"/>.</para>
+    /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>.</para>
     /// <para>Note that any conversion and resampling necessary is done during this call,
     /// and SDL_PutAudioStreamData simply queues unconverted data for later. This
     /// is different than SDL2, where that work was done while inputting new data
