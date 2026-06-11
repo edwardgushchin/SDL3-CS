@@ -48,6 +48,11 @@ if (SDL.Hints.AndroidAllowPersistentFolderAccess != "SDL_ANDROID_ALLOW_PERSISTEN
     throw new InvalidOperationException("Unexpected AndroidAllowPersistentFolderAccess hint value.");
 }
 
+if (SDL.Hints.AudioDuckOthers != "SDL_AUDIO_DUCK_OTHERS")
+{
+    throw new InvalidOperationException("Unexpected AudioDuckOthers hint value.");
+}
+
 if ((uint)SDL.EventType.WindowCurvatureChanged != (uint)SDL.EventType.WindowHDRStateChanged + 1)
 {
     throw new InvalidOperationException("Unexpected WindowCurvatureChanged event value.");
@@ -141,6 +146,7 @@ Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
 Console.WriteLine("DOS framebuffer hint constant smoke test passed.");
 Console.WriteLine("X11 XSync hint constant smoke test passed.");
 Console.WriteLine("Android persistent folder access hint smoke test passed.");
+Console.WriteLine("Audio duck others hint smoke test passed.");
 Console.WriteLine("visionOS curvature window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");

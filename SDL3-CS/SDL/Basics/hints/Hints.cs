@@ -238,9 +238,9 @@ public static partial class SDL
         /// <para>A variable controlling the audio category on iOS and macOS.</para>
         /// <para>The variable can be set to the following values:</para>
         /// <list type="bullet">
+        /// <item><c>"playback"</c>: Use the AVAudioSessionCategoryPlayback category. (default)</item>
         /// <item><c>"ambient"</c>: Use the AVAudioSessionCategoryAmbient audio category, will be
-        /// muted by the phone mute switch (default)</item>
-        /// <item><c>"playback"</c>: Use the AVAudioSessionCategoryPlayback category.</item>
+        /// muted by the phone mute switch.</item>
         /// </list>
         /// <para>For more information, see Apple's documentation:
         /// https://developer.apple.com/library/content/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html</para>
@@ -405,6 +405,20 @@ public static partial class SDL
         /// <remarks>This hint should be set before SDL is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string AudioDriver = "SDL_AUDIO_DRIVER";
+
+        /// <summary>
+        /// <para>Specify whether this audio stream should duck other audio.</para>
+        /// <para>On Apple platforms, this hint controls whether other audio streams are
+        /// ducked (reduced in volume) while your application is in the foreground.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Other audio will not be ducked. (default)</item>
+        /// <item><c>"1"</c>: Other audio will be ducked.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before an audio device is opened.</remarks>
+        /// <since>This hint is available since SDL 3.6.0.</since>
+        public const string AudioDuckOthers = "SDL_AUDIO_DUCK_OTHERS";
         
         /// <summary>
         /// <para>A variable controlling the audio rate when using the dummy audio driver.</para>
