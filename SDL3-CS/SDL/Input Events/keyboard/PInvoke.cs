@@ -379,6 +379,14 @@ public static partial class SDL
     /// are allowed. This defaults to true if <see cref="Hints.ReturnKeyHidesIME"/> is
     /// "0" or is not set, and defaults to false if <see cref="Hints.ReturnKeyHidesIME"/>
     /// is "1".</item>
+    /// <item><see cref="Props.TextInputTitleString"/> - a title for the top of the on-screen
+    /// keyboard window, if it has one.</item>
+    /// <item><see cref="Props.TextInputPlaceholderString"/> - the placeholder shown before
+    /// the user starts typing, when the field is empty.</item>
+    /// <item><see cref="Props.TextInputDefaultTextString"/> - text to prefill the text field
+    /// with.</item>
+    /// <item><see cref="Props.TextInputMaxLengthNumber"/> - maximum length for the text
+    /// field, in characters (not bytes).</item>
     /// </list>
     /// <para>On Android you can directly specify the input type:</para>
     /// <list type="bullet">

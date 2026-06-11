@@ -23,9 +23,30 @@ if (SDL.Hints.JoystickGameInputRaw != "SDL_JOYSTICK_GAMEINPUT_RAW")
     throw new InvalidOperationException("Unexpected JoystickGameInputRaw hint value.");
 }
 
+if (SDL.Props.TextInputTitleString != "SDL.textinput.title")
+{
+    throw new InvalidOperationException("Unexpected TextInputTitleString property value.");
+}
+
+if (SDL.Props.TextInputPlaceholderString != "SDL.textinput.placeholder")
+{
+    throw new InvalidOperationException("Unexpected TextInputPlaceholderString property value.");
+}
+
+if (SDL.Props.TextInputDefaultTextString != "SDL.textinput.default_text")
+{
+    throw new InvalidOperationException("Unexpected TextInputDefaultTextString property value.");
+}
+
+if (SDL.Props.TextInputMaxLengthNumber != "SDL.textinput.max_length")
+{
+    throw new InvalidOperationException("Unexpected TextInputMaxLengthNumber property value.");
+}
+
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
+Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);

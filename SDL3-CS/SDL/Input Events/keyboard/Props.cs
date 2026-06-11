@@ -31,6 +31,10 @@ public static partial class SDL
 		public const string TextInputCapitalizationNumber = "SDL.textinput.capitalization";
 		public const string TextInputAutoCorrectBoolean = "SDL.textinput.autocorrect";
 		public const string TextInputMultilineBoolean = "SDL.textinput.multiline";
+		public const string TextInputTitleString = "SDL.textinput.title";
+		public const string TextInputPlaceholderString = "SDL.textinput.placeholder";
+		public const string TextInputDefaultTextString = "SDL.textinput.default_text";
+		public const string TextInputMaxLengthNumber = "SDL.textinput.max_length";
 		public const string TextInputAndroidInputTypeNumber = "SDL.textinput.android.inputtype";
 	}
 }
