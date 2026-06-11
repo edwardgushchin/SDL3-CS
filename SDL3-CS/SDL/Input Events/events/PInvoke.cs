@@ -336,7 +336,7 @@ public static partial class SDL
     /// <param name="event">the <see cref="Event"/> structure to be filled in with the next event
     /// from the queue, or <c>null</c>.</param>
     /// <param name="timeoutMs">the maximum number of milliseconds to wait for the next
-    /// available event.</param>
+    /// available event, or <c>-1</c> to wait indefinitely.</param>
     /// <returns><c>true</c> if this got an event or <c>false</c> if the timeout elapsed without
     /// any events available.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
