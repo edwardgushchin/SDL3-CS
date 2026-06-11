@@ -135,6 +135,76 @@ public static partial class SDL
         /// Window resize left. May be <see cref="EWResize"/>.
         /// </summary>
         WResize,
+
+        /// <summary>
+        /// A context menu is available for the object under the cursor.
+        /// </summary>
+        ContextMenu,
+
+        /// <summary>
+        /// Help is available for the object under the cursor.
+        /// </summary>
+        Help,
+
+        /// <summary>
+        /// A set of cells may be selected.
+        /// </summary>
+        Cell,
+
+        /// <summary>
+        /// Text selection. May be <see cref="Text"/>.
+        /// </summary>
+        VerticalText,
+
+        /// <summary>
+        /// A shortcut is to be created.
+        /// </summary>
+        Alias,
+
+        /// <summary>
+        /// Something is to be copied.
+        /// </summary>
+        Copy,
+
+        /// <summary>
+        /// The dragged item cannot be dropped at this location. May be <see cref="NotAllowed"/>.
+        /// </summary>
+        NoDrop,
+
+        /// <summary>
+        /// The object under the cursor can be grabbed
+        /// </summary>
+        Grab,
+
+        /// <summary>
+        /// An object is currently being grabbed.
+        /// </summary>
+        Grabbing,
+
+        /// <summary>
+        /// Column resize. May be <see cref="EWResize"/>.
+        /// </summary>
+        ColResize,
+
+        /// <summary>
+        /// Row resize. May be <see cref="NSResize"/>.
+        /// </summary>
+        RowResize,
+
+        /// <summary>
+        /// Four pointed arrow pointing north, south, east, and west.
+        /// </summary>
+        AllScroll,
+
+        /// <summary>
+        /// Zoom in.
+        /// </summary>
+        ZoomIn,
+
+        /// <summary>
+        /// Zoom out.
+        /// </summary>
+        ZoomOut,
         
         SDLNumSystemCursors
     }

@@ -77,6 +77,21 @@ if (SDL.Props.TextInputMaxLengthNumber != "SDL.textinput.max_length")
     throw new InvalidOperationException("Unexpected TextInputMaxLengthNumber property value.");
 }
 
+if ((int)SDL.SystemCursor.ContextMenu != 20)
+{
+    throw new InvalidOperationException("Unexpected ContextMenu cursor value.");
+}
+
+if ((int)SDL.SystemCursor.ZoomOut != 33)
+{
+    throw new InvalidOperationException("Unexpected ZoomOut cursor value.");
+}
+
+if ((int)SDL.SystemCursor.SDLNumSystemCursors != 34)
+{
+    throw new InvalidOperationException("Unexpected SDLNumSystemCursors value after CSS cursor sync.");
+}
+
 Console.WriteLine("CreateAudioStream overload smoke test passed.");
 Console.WriteLine("Joystick device hint constants smoke test passed.");
 Console.WriteLine("Joystick GameInput raw hint constant smoke test passed.");
@@ -86,6 +101,7 @@ Console.WriteLine("visionOS curvature window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
 Console.WriteLine("JPEG surface loader binding smoke test passed.");
+Console.WriteLine("CSS system cursor enum smoke test passed.");
 
 delegate IntPtr CreateAudioStreamWithNullSpecs(IntPtr srcSpec, IntPtr dstSpec);
 
