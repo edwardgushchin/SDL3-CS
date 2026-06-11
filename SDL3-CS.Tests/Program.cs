@@ -53,24 +53,24 @@ if (SDL.Hints.AudioDuckOthers != "SDL_AUDIO_DUCK_OTHERS")
     throw new InvalidOperationException("Unexpected AudioDuckOthers hint value.");
 }
 
-if ((uint)SDL.EventType.WindowCurvatureChanged != (uint)SDL.EventType.WindowHDRStateChanged + 1)
+if ((uint)SDL.EventType.WindowSettingsChanged != (uint)SDL.EventType.WindowHDRStateChanged + 1)
 {
-    throw new InvalidOperationException("Unexpected WindowCurvatureChanged event value.");
+    throw new InvalidOperationException("Unexpected WindowSettingsChanged event value.");
 }
 
-if (SDL.EventType.WindowLast != SDL.EventType.WindowCurvatureChanged)
+if (SDL.EventType.WindowLast != SDL.EventType.WindowSettingsChanged)
 {
-    throw new InvalidOperationException("Unexpected WindowLast event value after visionOS curvature sync.");
+    throw new InvalidOperationException("Unexpected WindowLast event value after visionOS settings sync.");
 }
 
-if (SDL.Props.WindowCreateCurvatureFloat != "SDL.window.create.curvature")
+if (SDL.Props.WindowCreateVisionOSSettingsString != "SDL.window.create.visionos.settings")
 {
-    throw new InvalidOperationException("Unexpected WindowCreateCurvatureFloat property value.");
+    throw new InvalidOperationException("Unexpected WindowCreateVisionOSSettingsString property value.");
 }
 
-if (SDL.Props.WindowCurvatureFloat != "SDL.window.curvature")
+if (SDL.Props.WindowVisionOSSettingsString != "SDL.window.visionos.settings")
 {
-    throw new InvalidOperationException("Unexpected WindowCurvatureFloat property value.");
+    throw new InvalidOperationException("Unexpected WindowVisionOSSettingsString property value.");
 }
 
 if (SDL.Props.TextInputTitleString != "SDL.textinput.title")
@@ -157,7 +157,7 @@ Console.WriteLine("DOS framebuffer hint constant smoke test passed.");
 Console.WriteLine("X11 XSync hint constant smoke test passed.");
 Console.WriteLine("Android persistent folder access hint smoke test passed.");
 Console.WriteLine("Audio duck others hint smoke test passed.");
-Console.WriteLine("visionOS curvature window constants smoke test passed.");
+Console.WriteLine("visionOS settings window constants smoke test passed.");
 Console.WriteLine("Text input property constants smoke test passed.");
 Console.WriteLine("IsPhone binding smoke test passed.");
 Console.WriteLine("SVE2 CPU binding smoke test passed.");

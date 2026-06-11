@@ -847,11 +847,13 @@ public static partial class SDL
     /// </list>
     /// <para>These are additional supported properties with visionOS:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateCurvatureFloat"/>: the curvature of the window
-    /// on visionOS. Curved windows have square corners and additional controls
-    /// for more immersive gaming. This can be <c>-1</c> (disabled), which is the
-    /// default, <c>0</c> (no curve), or set to a specific curvature radius in
-    /// millimeters. A common value for a gaming monitor is 1000.</item>
+    /// <item><see cref="Props.WindowCreateVisionOSSettingsString"/>: the settings of the window
+    /// in JSON format. If this isn't set, the window will have standard UIKit
+    /// behavior. If this is set to <c>""</c> or a valid setting string then the
+    /// window is created with enhanced features allowing curved display. The
+    /// curvature in the settings is defined as a radius in millimeters. A common
+    /// value for a gaming monitor is 1000 and a setting string for that would be
+    /// <c>"{\"curvatureRadius\":1000}"</c>.</item>
     /// </list>
     /// <para>These are additional supported properties on Wayland:</para>
     /// <list type="bullet">
@@ -1011,11 +1013,10 @@ public static partial class SDL
     /// </list>
     /// <para>On visionOS:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.WindowCurvatureFloat"/>: the curvature of the window in
-    /// curved mode on visionOS. This value is updated dynamically when changed
-    /// via the screen ornaments. This can be <c>0</c> (no curve), or a specific
-    /// curvature radius in millimeters. A common value for a gaming monitor is
-    /// 1000.</item>
+    /// <item><see cref="Props.WindowVisionOSSettingsString"/>: the current settings of the
+    /// window in JSON format, or <c>null</c> if the window has standard UIKit
+    /// behavior. <see cref="EventType.WindowSettingsChanged"/> is sent when this
+    /// value changes.</item>
     /// </list>
     /// <para>On KMS/DRM:</para>
     /// <list type="bullet">

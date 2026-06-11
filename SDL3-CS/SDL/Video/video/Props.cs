@@ -85,7 +85,7 @@ public static partial class SDL
 		public const string WindowCreateX11WindowNumber = "SDL.window.create.x11.window";
 		public const string WindowCreateEmscriptennCanvasIdString = "SDL.window.create.emscripten.canvas_id";
 		public const string WindowCreateEmscriptenKeyboardElementString = "SDL.window.create.emscripten.keyboard_element";
-		public const string WindowCreateCurvatureFloat = "SDL.window.create.curvature";
+		public const string WindowCreateVisionOSSettingsString = "SDL.window.create.visionos.settings";
 		
 		public const string WindowShapePointer = "SDL.window.shape";
 		public const string WindowHDREnabledBoolean = "SDL.window.HDR_enabled";
@@ -126,6 +126,6 @@ public static partial class SDL
 		public const string WindowX11WindowNumber = "SDL.window.x11.window";
 		public const string WindowEMScriptenCanvasIdString = "SDL.window.emscripten.canvas_id";
 		public const string WindowEMScriptenKeyboardElementString = "SDL.window.emscripten.keyboard_element";
-		public const string WindowCurvatureFloat = "SDL.window.curvature";
+		public const string WindowVisionOSSettingsString = "SDL.window.visionos.settings";
 	}
 }
