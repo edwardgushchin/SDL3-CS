@@ -69,6 +69,7 @@ foreach ($publishInput in @('publish_github', 'publish_nuget')) {
 }
 
 Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{2}contents:\s+write\s*$" -Description 'workflow permissions for GitHub release creation'
+Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{2}id-token:\s+write\s*$" -Description 'workflow permissions for NuGet Trusted Publishing OIDC'
 
 foreach ($sdkVersion in @('10.0.x', '9.0.x', '8.0.x', '7.0.x')) {
     Assert-WorkflowContains -Text $workflowText -Expected $sdkVersion -Description ".NET SDK setup"
@@ -125,14 +126,24 @@ Assert-WorkflowContains -Text $workflowText -Expected 'publish:' -Description 'p
 Assert-WorkflowContains -Text $workflowText -Expected '- apple-consumer' -Description 'publish job Apple consumer dependency'
 Assert-WorkflowContains -Text $workflowText -Expected '- android-consumer' -Description 'publish job Android consumer dependency'
 Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ inputs.publish_github || inputs.publish_nuget }}' -Description 'publish job gated condition'
+Assert-WorkflowContains -Text $workflowText -Expected 'environment: production' -Description 'publish job Trusted Publishing environment'
 Assert-WorkflowContains -Text $workflowText -Expected 'name: release-assembly-state' -Description 'publish job assembly state download'
 Assert-WorkflowContains -Text $workflowText -Expected "Expand-Archive -LiteralPath 'artifacts/release/state/release-assembly-state.zip'" -Description 'publish job assembly state import'
 Assert-WorkflowContains -Text $workflowText -Expected '$statePaths = @(' -Description 'publish job assembly state cleanup list'
 Assert-WorkflowContains -Text $workflowText -Expected 'Remove-Item -LiteralPath $path -Recurse -Force' -Description 'publish job assembly state cleanup'
 Assert-WorkflowContains -Text $workflowText -Expected "-StatePath '.'" -Description 'publish job imported assembly state validation'
+Assert-WorkflowContains -Text $workflowText -Expected 'uses: NuGet/login@v1' -Description 'publish job NuGet Trusted Publishing login action'
+Assert-WorkflowContains -Text $workflowText -Expected 'id: nuget_login' -Description 'publish job NuGet Trusted Publishing login id'
+Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ inputs.publish_nuget }}' -Description 'publish job NuGet login gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'user: edwardgushchin' -Description 'publish job NuGet Trusted Publishing user'
+Assert-WorkflowContains -Text $workflowText -Expected 'NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}' -Description 'publish job NuGet temporary API key handoff'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.GitHubRelease = $true' -Description 'publish job GitHub release flag'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.NuGetPush = $true' -Description 'publish job NuGet push flag'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Publish-Release.ps1 @params' -Description 'publish script invocation'
+
+if ($workflowText.Contains('${{ secrets.NUGET_API_KEY }}', [System.StringComparison]::Ordinal)) {
+    Add-WorkflowError 'Release workflow must use NuGet Trusted Publishing instead of the repository secret NUGET_API_KEY.'
+}
 
 $initializeCount = ([regex]::Matches($workflowText, [regex]::Escape('./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1'))).Count
 if ($initializeCount -lt 2) {

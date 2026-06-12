@@ -170,7 +170,7 @@ Write-Host "GitHub Actions release workflow plan:"
 } | Format-List
 
 if ($PublishNuGet) {
-    Write-Warning "publish_nuget=true requires repository secret NUGET_API_KEY in GitHub Actions."
+    Write-Warning "publish_nuget=true requires an active NuGet Trusted Publishing policy for owner 'edwardgushchin', repository 'edwardgushchin/SDL3-CS', workflow '$workflowId', environment 'production'."
 }
 
 if ($remoteStateProblems.Count -gt 0) {

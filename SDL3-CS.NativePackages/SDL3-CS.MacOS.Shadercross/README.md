@@ -1,15 +1,26 @@
 # SDL3-CS.MacOS.Shadercross
 
-This package contains native sdl_shadercross runtime libraries for sdl3-cs.
+`SDL3-CS.MacOS.Shadercross` contains native SDL_shadercross runtime libraries for SDL3-CS on MacOS.
 
-## Version Information
+## Native Version
 
 | Package | Native library version |
-|---------|------------------------|
-| SDL3-CS.MacOS.Shadercross | SDL_shadercross 3.0.0 |
+| --- | --- |
+| `SDL3-CS.MacOS.Shadercross` | `SDL_shadercross 3.0.0` |
 
 ## Platform Support
 
-This package is scoped to MacOS and contains native artifacts only for these RIDs: osx-x64, osx-arm64.
+This package is scoped to MacOS and contains native artifacts only for these RIDs:
 
-Use it together with SDL3-CS. Add-on packages may also require the base platform package $(@{Id=MacOS; PackageBase=SDL3-CS.MacOS; Rids=System.Object[]}.PackageBase).
+- `osx-x64`
+- `osx-arm64`
+
+## Usage
+
+```powershell
+dotnet add package SDL3-CS
+dotnet add package SDL3-CS.MacOS
+dotnet add package SDL3-CS.MacOS.Shadercross
+```
+
+Use the same platform family for every SDL3-CS native package in one application. Use it with the base platform package `SDL3-CS.MacOS`.
