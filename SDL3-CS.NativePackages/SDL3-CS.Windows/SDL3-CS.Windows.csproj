@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <RootNamespace>SDL3_CS.Windows</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <Configurations>Debug;Release;Prerelease</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <NativePackagePlatform>Windows</NativePackagePlatform>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet">
+    <PackageId>SDL3-CS.Windows</PackageId>
+    <VersionPrefix>3.4.10</VersionPrefix>
+    <Title>Windows SDL3 native runtime for SDL3-CS</Title>
+    <Authors>Eduard Gushchin</Authors>
+    <Company>Eduard Gushchin</Company>
+    <Description>Native SDL runtime libraries for SDL3-CS. This package is scoped to Windows.</Description>
+    <Copyright>Copyright (c) 2024-2026 Eduard Gushchin.</Copyright>
+    <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>SDL;SDL3;SDL3-CS;Windows</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Prerelease'">
+    <VersionSuffix>preview.$([System.DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))</VersionSuffix>
+    <Description>Native SDL runtime libraries for SDL3-CS. This package is scoped to Windows - PREVIEW CI build.</Description>
+    <PackageReleaseNotes>Preview CI build at $([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC; Version $(VersionPrefix)-$(VersionSuffix)</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>14.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../LICENSE" Pack="true" PackagePath="\" />
+    <None Include="../../logo.png" Pack="true" Visible="false" PackagePath="\" />
+    <None Include="README.md" Pack="true" Visible="true" PackagePath="\" />
+    <None Include="buildTransitive\SDL3-CS.Windows.targets" Pack="true" PackagePath="buildTransitive\$(PackageId).targets" />
+  </ItemGroup>
+
+  <Import Project="..\..\.github\release-tools\NativePackageRidItems.targets" />
+
+</Project>

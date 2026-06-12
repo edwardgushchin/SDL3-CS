@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0-android</TargetFramework>
+        <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+        <RootNamespace>SDL3.Android</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Configurations>Debug;Release;Prerelease</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <NativePackagePlatform>Android</NativePackagePlatform>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet">
+        <PackageId>SDL3-CS.Android</PackageId>
+        <VersionPrefix>3.4.10</VersionPrefix>
+        <Title>SDL3 C# Android runtime and bridge</Title>
+        <Authors>Eduard Gushchin</Authors>
+        <Company>Eduard Gushchin</Company>
+        <Description>Android SDL native runtime assets and SDLActivity bridge bindings for SDL3-CS 3.4.10.x</Description>
+        <Copyright>Copyright (c) 2024-2026 Eduard Gushchin.</Copyright>
+        <PackageProjectUrl>https://github.com/edwardgushchin/SDL3-CS</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/edwardgushchin/SDL3-CS</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>SDL;SDL3;SDL3-CS;Android</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>logo.png</PackageIcon>
+        <NoWarn>1591;8766;BG8A00</NoWarn>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Prerelease'">
+        <VersionSuffix>preview.$([System.DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))</VersionSuffix>
+        <Description>Android SDL native runtime assets and SDLActivity bridge bindings for SDL3-CS - PREVIEW CI build</Description>
+        <PackageReleaseNotes>Preview CI build at $([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC; Version $(VersionPrefix)-$(VersionSuffix)</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <LangVersion>14.0</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AndroidLibrary Include="SDL3Bridge.jar" />
+        <TransformFile Include="Transforms\Metadata.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../../LICENSE" Pack="true" PackagePath="\"/>
+        <None Include="../../logo.png" Pack="true" Visible="false" PackagePath="\"/>
+        <None Include="README.md" Pack="true" Visible="true" PackagePath="\"/>
+        <None Include="buildTransitive\SDL3-CS.Android.targets" Pack="true" PackagePath="buildTransitive\$(PackageId).targets"/>
+    </ItemGroup>
+
+    <Import Project="..\..\.github\release-tools\NativePackageRidItems.targets" />
+
+</Project>

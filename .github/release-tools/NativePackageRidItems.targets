@@ -1,0 +1,40 @@
+<Project>
+  <PropertyGroup>
+    <NativePackagePlatform Condition="'$(NativePackagePlatform)' == ''">All</NativePackagePlatform>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'Windows'">
+    <None Include="$(MSBuildProjectDirectory)\lib\win-x86\**\*" Pack="true" PackagePath="runtimes\win-x86\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\win-x64\**\*" Pack="true" PackagePath="runtimes\win-x64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\win-arm64\**\*" Pack="true" PackagePath="runtimes\win-arm64\native\%(RecursiveDir)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'Linux'">
+    <None Include="$(MSBuildProjectDirectory)\lib\linux-x64\**\*" Pack="true" PackagePath="runtimes\linux-x64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\linux-arm64\**\*" Pack="true" PackagePath="runtimes\linux-arm64\native\%(RecursiveDir)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'MacOS'">
+    <None Include="$(MSBuildProjectDirectory)\lib\osx-x64\**\*" Pack="true" PackagePath="runtimes\osx-x64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\osx-arm64\**\*" Pack="true" PackagePath="runtimes\osx-arm64\native\%(RecursiveDir)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'Android'">
+    <None Include="$(MSBuildProjectDirectory)\lib\android-arm\**\*" Pack="true" PackagePath="runtimes\android-arm\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\android-arm64\**\*" Pack="true" PackagePath="runtimes\android-arm64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\android-x86\**\*" Pack="true" PackagePath="runtimes\android-x86\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\android-x64\**\*" Pack="true" PackagePath="runtimes\android-x64\native\%(RecursiveDir)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'iOS'">
+    <None Include="$(MSBuildProjectDirectory)\lib\ios-arm64\**\*" Pack="true" PackagePath="runtimes\ios-arm64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\iossimulator-arm64\**\*" Pack="true" PackagePath="runtimes\iossimulator-arm64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\iossimulator-x64\**\*" Pack="true" PackagePath="runtimes\iossimulator-x64\native\%(RecursiveDir)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'tvOS'">
+    <None Include="$(MSBuildProjectDirectory)\lib\tvos-arm64\**\*" Pack="true" PackagePath="runtimes\tvos-arm64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\tvossimulator-arm64\**\*" Pack="true" PackagePath="runtimes\tvossimulator-arm64\native\%(RecursiveDir)" />
+    <None Include="$(MSBuildProjectDirectory)\lib\tvossimulator-x64\**\*" Pack="true" PackagePath="runtimes\tvossimulator-x64\native\%(RecursiveDir)" />
+  </ItemGroup>
+</Project>

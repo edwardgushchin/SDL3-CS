@@ -1,0 +1,28 @@
+<Project>
+  <PropertyGroup>
+    <_SDL3CSNativeImageAppleStaticRid Condition="'$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-x64' or '$(RuntimeIdentifier)' == 'tvos-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-x64'">true</_SDL3CSNativeImageAppleStaticRid>
+    <_SDL3CSNativeImageAppleStaticLibDir Condition="'$(_SDL3CSNativeImageAppleStaticRid)' == 'true'">$(MSBuildThisFileDirectory)..\runtimes\$(RuntimeIdentifier)\native\</_SDL3CSNativeImageAppleStaticLibDir>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeImageAppleStaticRid)' == 'true' and Exists('$(_SDL3CSNativeImageAppleStaticLibDir)')">
+    <NativeReference Include="$(_SDL3CSNativeImageAppleStaticLibDir)*.a">
+      <Kind>Static</Kind>
+      <ForceLoad>true</ForceLoad>
+      <SmartLink>true</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeImageAppleStaticRid)' == 'true'">
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="CoreGraphics" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="Foundation" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="ImageIO" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="MobileCoreServices" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="UIKit" />
+    <LinkerArgument Include="-lobjc" />
+  </ItemGroup>
+</Project>

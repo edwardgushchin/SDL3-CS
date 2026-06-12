@@ -50,7 +50,7 @@ jobs:
         id: native-matrix
         shell: pwsh
         run: |
-          $manifest = Get-Content -LiteralPath 'release-tools/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
+          $manifest = Get-Content -LiteralPath '.github/release-tools/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
           $include = @($manifest.rids | ForEach-Object {
             [ordered]@{
               rid = $_.rid
@@ -129,21 +129,38 @@ jobs:
         run: |
           set -eux
           test -n "${ANDROID_HOME:-}"
+          ndk_version="27.2.12479018"
           sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           if [ ! -x "$sdkmanager" ]; then
             sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' -type f | sort | tail -n 1)"
           fi
           test -x "$sdkmanager"
-          ndk="$ANDROID_HOME/ndk/27.2.12479018"
+
+          ndk="${ANDROID_NDK_HOME:-${ANDROID_NDK_ROOT:-}}"
+          if [ -z "$ndk" ] || [ ! -f "$ndk/build/cmake/android.toolchain.cmake" ]; then
+            ndk="$ANDROID_HOME/ndk/$ndk_version"
+          fi
+
           if [ ! -f "$ndk/build/cmake/android.toolchain.cmake" ]; then
-            existing_ndk="$(find "$ANDROID_HOME/ndk" -mindepth 2 -maxdepth 2 -path '*/build/cmake/android.toolchain.cmake' -type f 2>/dev/null | sort | tail -n 1 || true)"
+            existing_ndk="$(find "$ANDROID_HOME/ndk" -path '*/build/cmake/android.toolchain.cmake' -type f 2>/dev/null | sort | tail -n 1 || true)"
             if [ -n "$existing_ndk" ]; then
               ndk="$(dirname "$(dirname "$(dirname "$existing_ndk")")")"
             else
-              yes | "$sdkmanager" --licenses >/dev/null || true
-              "$sdkmanager" "ndk;27.2.12479018"
+              for attempt in 1 2 3; do
+                rm -rf "$ndk" "$ANDROID_HOME/.temp"
+                yes | "$sdkmanager" --licenses >/dev/null || true
+                if "$sdkmanager" "ndk;$ndk_version"; then
+                  break
+                fi
+                if [ "$attempt" -eq 3 ]; then
+                  exit 1
+                fi
+                sleep $((attempt * 10))
+              done
             fi
           fi
+
+          test -f "$ndk/build/cmake/android.toolchain.cmake"
           echo "ANDROID_NDK_HOME=$ndk" >> "$GITHUB_ENV"
           echo "ANDROID_NDK_ROOT=$ndk" >> "$GITHUB_ENV"
 
@@ -158,20 +175,20 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./release-tools/Initialize-NativeForks.ps1 -Depth 1
+        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1
 
       - name: Build native bundle
         shell: pwsh
         run: |
-          $buildArgs = @(
-            '-Rids', '${{ matrix.rid }}',
-            '-Clean',
-            '-BuildParallelLevel', '${{ inputs.build_parallel_level }}'
-          )
-          if ('${{ matrix.allow_cross_compile }}' -eq 'true') {
-            $buildArgs += '-AllowCrossCompile'
+          $buildParams = @{
+            Rids = @('${{ matrix.rid }}')
+            Clean = $true
+            BuildParallelLevel = [int]'${{ inputs.build_parallel_level }}'
           }
-          ./release-tools/Invoke-NativeHostBuild.ps1 @buildArgs
+          if ('${{ matrix.allow_cross_compile }}' -eq 'true') {
+            $buildParams.AllowCrossCompile = $true
+          }
+          ./.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams
 
       - name: Upload native bundle
         uses: actions/upload-artifact@v4
@@ -200,9 +217,13 @@ jobs:
             8.0.x
             7.0.x
 
+      - name: Install Android .NET workload for bridge package
+        shell: pwsh
+        run: dotnet workload install android --source https://api.nuget.org/v3/index.json
+
       - name: Initialize native forks
         shell: pwsh
-        run: ./release-tools/Initialize-NativeForks.ps1 -Depth 1
+        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1
 
       - name: Download native bundles
         uses: actions/download-artifact@v4
@@ -230,7 +251,7 @@ jobs:
             $params.RequireUpstreamCurrent = $true
           }
 
-          ./release-tools/Invoke-ReleaseAssembly.ps1 @params
+          ./.github/release-tools/Invoke-ReleaseAssembly.ps1 @params
 
       - name: Export release assembly state
         shell: pwsh
@@ -243,15 +264,17 @@ jobs:
           if (Test-Path -LiteralPath $stateRoot) {
             Remove-Item -LiteralPath $stateRoot -Recurse -Force
           }
+          . ./.github/release-tools/Release.Common.ps1
+          $manifest = Get-ReleaseManifest
+          $packageRevision = [int]'${{ inputs.package_revision }}'
+          $nativeLibRoots = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $packageRevision |
+            Where-Object { $_.Kind -eq 'native' } |
+            ForEach-Object { Join-Path (Split-Path -Parent $_.Project) 'lib' } |
+            Sort-Object -Unique)
           $stateItems = @(
             'artifacts/release/nuget',
-            'artifacts/release/receipts',
-            'SDL3-CS.Native/lib',
-            'SDL3-CS.Native.Image/lib',
-            'SDL3-CS.Native.Mixer/lib',
-            'SDL3-CS.Native.Shadercross/lib',
-            'SDL3-CS.Native.TTF/lib'
-          )
+            'artifacts/release/receipts'
+          ) + $nativeLibRoots
           foreach ($item in $stateItems) {
             if (-not (Test-Path -LiteralPath $item)) {
               throw "Release assembly state path is missing: $item"
@@ -267,7 +290,7 @@ jobs:
       - name: Validate release assembly state
         shell: pwsh
         run: |
-          ./release-tools/Test-ReleaseAssemblyState.ps1 `
+          ./.github/release-tools/Test-ReleaseAssemblyState.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -StatePath 'artifacts/release/release-assembly-state.zip'
 
@@ -329,7 +352,7 @@ jobs:
         shell: pwsh
         run: |
           $rids = '${{ matrix.rids }}' -split ','
-          ./release-tools/Test-AppleConsumerPackageBuild.ps1 `
+          ./.github/release-tools/Test-AppleConsumerPackageBuild.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -PackageDir 'artifacts/release/nuget' `
             -Rids $rids
@@ -368,7 +391,7 @@ jobs:
         shell: pwsh
         run: |
           $rids = 'android-arm,android-arm64,android-x86,android-x64' -split ','
-          ./release-tools/Test-AndroidConsumerPackageBuild.ps1 `
+          ./.github/release-tools/Test-AndroidConsumerPackageBuild.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -PackageDir 'artifacts/release/nuget' `
             -Rids $rids
@@ -400,7 +423,7 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./release-tools/Initialize-NativeForks.ps1 -Depth 1
+        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1
 
       - name: Download release assembly state
         uses: actions/download-artifact@v4
@@ -411,15 +434,17 @@ jobs:
       - name: Import release assembly state
         shell: pwsh
         run: |
+          . ./.github/release-tools/Release.Common.ps1
+          $manifest = Get-ReleaseManifest
+          $packageRevision = [int]'${{ inputs.package_revision }}'
+          $nativeLibRoots = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $packageRevision |
+            Where-Object { $_.Kind -eq 'native' } |
+            ForEach-Object { Join-Path (Split-Path -Parent $_.Project) 'lib' } |
+            Sort-Object -Unique)
           $statePaths = @(
             'artifacts/release/nuget',
-            'artifacts/release/receipts',
-            'SDL3-CS.Native/lib',
-            'SDL3-CS.Native.Image/lib',
-            'SDL3-CS.Native.Mixer/lib',
-            'SDL3-CS.Native.Shadercross/lib',
-            'SDL3-CS.Native.TTF/lib'
-          )
+            'artifacts/release/receipts'
+          ) + $nativeLibRoots
           foreach ($path in $statePaths) {
             if (Test-Path -LiteralPath $path) {
               Remove-Item -LiteralPath $path -Recurse -Force
@@ -430,7 +455,7 @@ jobs:
       - name: Validate imported release assembly state
         shell: pwsh
         run: |
-          ./release-tools/Test-ReleaseAssemblyState.ps1 `
+          ./.github/release-tools/Test-ReleaseAssemblyState.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -StatePath '.'
 
@@ -447,4 +472,4 @@ jobs:
             $params.NuGetPush = $true
           }
 
-          ./release-tools/Publish-Release.ps1 @params
+          ./.github/release-tools/Publish-Release.ps1 @params

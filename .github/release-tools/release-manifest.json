@@ -1,0 +1,930 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "native-forks",
+  "artifactsRoot": "artifacts/release",
+  "configuration": "Release",
+  "versioning": {
+    "packageRevisionDefault": 0,
+    "packageVersionPattern": "{nativeVersion}.{packageRevision}",
+    "wrapperVersionComponent": "SDL"
+  },
+  "platformCoverage": {
+    "policy": "maximum-public-intersection",
+    "reviewedOn": "2026-06-10",
+    "activeReleaseTier": [
+      "win-x86",
+      "win-x64",
+      "win-arm64",
+      "linux-x64",
+      "linux-arm64",
+      "osx-x64",
+      "osx-arm64",
+      "android-arm",
+      "android-arm64",
+      "android-x86",
+      "android-x64",
+      "ios-arm64",
+      "iossimulator-arm64",
+      "iossimulator-x64",
+      "tvos-arm64",
+      "tvossimulator-arm64",
+      "tvossimulator-x64"
+    ],
+    "nextReleaseTier": [
+      {
+        "rid": "linux-musl-x64",
+        "reason": "Alpine/musl is in the .NET portable RID graph and maps to SDL3 Linux, but needs dedicated musl container jobs."
+      },
+      {
+        "rid": "linux-musl-arm64",
+        "reason": "Alpine/musl Arm64 is in the .NET portable RID graph and maps to SDL3 Linux, but needs dedicated musl Arm64 container jobs."
+      },
+      {
+        "rid": "linux-musl-arm",
+        "reason": "Alpine/musl Arm32 is in the .NET portable RID graph and maps to SDL3 Linux, but needs a checked cross/container toolchain."
+      },
+      {
+        "rid": "linux-arm",
+        "reason": "Linux Arm32 is in the .NET portable RID graph and maps to SDL3 Linux, but needs a checked glibc Arm32 cross/container toolchain."
+      },
+      {
+        "rid": "linux-ppc64le",
+        "reason": ".NET 10 supported OS policy includes ppc64le on enterprise Linux and SDL3 maps it to Linux, but the release pipeline needs a checked cross/container toolchain and package restore proof."
+      },
+      {
+        "rid": "linux-s390x",
+        "reason": ".NET 10 supported OS policy includes s390x on enterprise Linux and SDL3 maps it to Linux, but the release pipeline needs a checked cross/container toolchain and endian/runtime dependency proof."
+      },
+      {
+        "rid": "browser-wasm",
+        "reason": ".NET browser WebAssembly and SDL3 Emscripten overlap, but packaging is separate from desktop-style runtimes/<rid>/native."
+      }
+    ],
+    "candidateTier": [
+      {
+        "rid": "linux-bionic-arm",
+        "reason": "Present in the .NET portable RID graph, but this is not a normal SDL3-CS desktop/mobile release target and Android is already covered by android-* RIDs."
+      },
+      {
+        "rid": "linux-bionic-arm64",
+        "reason": "Present in the .NET portable RID graph, but this is not a normal SDL3-CS desktop/mobile release target and Android is already covered by android-* RIDs."
+      },
+      {
+        "rid": "linux-bionic-x86",
+        "reason": "Present in the .NET portable RID graph, but this is not a normal SDL3-CS desktop/mobile release target and Android is already covered by android-* RIDs."
+      },
+      {
+        "rid": "linux-bionic-x64",
+        "reason": "Present in the .NET portable RID graph, but this is not a normal SDL3-CS desktop/mobile release target and Android is already covered by android-* RIDs."
+      },
+      {
+        "rid": "linux-loongarch64",
+        "reason": "Present in the .NET portable RID graph and SDL3 maps it to Linux, but it is outside the .NET 10 official supported OS matrix and needs separate runtime/toolchain policy."
+      },
+      {
+        "rid": "linux-riscv64",
+        "reason": "Present in the .NET portable RID graph and SDL3 maps it to Linux, but it is outside the .NET 10 official supported OS matrix and needs separate runtime/toolchain policy."
+      },
+      {
+        "rid": "maccatalyst-arm64",
+        "reason": ".NET supports Mac Catalyst, but SDL3 does not list Mac Catalyst as a separate public platform and linking must be proven first."
+      },
+      {
+        "rid": "maccatalyst-x64",
+        "reason": ".NET supports Mac Catalyst, but SDL3 does not list Mac Catalyst as a separate public platform and linking must be proven first."
+      }
+    ],
+    "communityTier": [
+      {
+        "rid": "freebsd-x64",
+        "reason": "SDL3 lists FreeBSD and the .NET portable RID graph contains freebsd-x64, but FreeBSD is outside the official .NET supported OS release matrix and needs community runner/toolchain policy."
+      },
+      {
+        "rid": "freebsd-arm64",
+        "reason": "SDL3 lists FreeBSD and the .NET portable RID graph contains freebsd-arm64, but FreeBSD is outside the official .NET supported OS release matrix and needs community runner/toolchain policy."
+      },
+      {
+        "rid": "openbsd-x64",
+        "reason": "SDL3 lists OpenBSD and the .NET portable RID graph contains openbsd-x64, but OpenBSD is outside the official .NET supported OS release matrix and needs community runner/toolchain policy."
+      },
+      {
+        "rid": "openbsd-arm64",
+        "reason": "SDL3 lists OpenBSD and the .NET portable RID graph contains openbsd-arm64, but OpenBSD is outside the official .NET supported OS release matrix and needs community runner/toolchain policy."
+      },
+      {
+        "rid": "haiku-x64",
+        "reason": "SDL3 lists Haiku OS and the .NET portable RID graph contains haiku-x64, but Haiku is outside the official .NET supported OS release matrix and needs community runner/toolchain policy."
+      }
+    ],
+    "excludedPlatformFamilies": [
+      {
+        "family": "netbsd-qnx-riscos-dos-retro",
+        "reason": "SDL3 lists NetBSD, QNX, RISC OS, DOS and retro/homebrew systems, but they do not have a public official .NET RID/TFM release surface for normal SDL3-CS NuGet packages."
+      },
+      {
+        "family": "visionos",
+        "reason": "SDL3 lists visionOS, but .NET has no public visionos RID/TFM in the current portable release surface."
+      },
+      {
+        "family": "wasi-wasm",
+        "reason": ".NET has wasi-wasm in the portable RID graph, but SDL3 does not list WASI as a supported platform."
+      },
+      {
+        "family": "tizen",
+        "reason": "Tizen is a Samsung .NET/MAUI surface, but SDL3 does not list Tizen as a supported platform."
+      },
+      {
+        "family": "legacy-portable-rids",
+        "reason": "The portable RID graph still contains legacy or graph-only RIDs such as ios-arm, ios-x86, iossimulator-x86, tvos-x64, linux-x86, linux-armel and linux-armv6; these are not part of the official .NET 10 supported OS release surface for SDL3-CS."
+      },
+      {
+        "family": "consoles-gdk-homebrew-nda",
+        "reason": "SDL3 has console, GDK, NDA-only and homebrew paths, but they require separate SDK/legal/release policy and are not ordinary public NuGet targets."
+      },
+      {
+        "family": "legacy-unsupported",
+        "reason": "SDL3 marks WinRT/UWP/WinPhone, NaCL, Stadia, OS/2 and Pandora as unsupported; SDL3-CS release packages do not target them."
+      }
+    ]
+  },
+  "nativePackagePlatforms": [
+    {
+      "id": "Windows",
+      "suffix": "Windows",
+      "packageId": "SDL3-CS.Windows",
+      "rids": [
+        "win-x86",
+        "win-x64",
+        "win-arm64"
+      ]
+    },
+    {
+      "id": "Linux",
+      "suffix": "Linux",
+      "packageId": "SDL3-CS.Linux",
+      "rids": [
+        "linux-x64",
+        "linux-arm64"
+      ]
+    },
+    {
+      "id": "MacOS",
+      "suffix": "MacOS",
+      "packageId": "SDL3-CS.MacOS",
+      "rids": [
+        "osx-x64",
+        "osx-arm64"
+      ]
+    },
+    {
+      "id": "Android",
+      "suffix": "Android",
+      "packageId": "SDL3-CS.Android",
+      "rids": [
+        "android-arm",
+        "android-arm64",
+        "android-x86",
+        "android-x64"
+      ]
+    },
+    {
+      "id": "iOS",
+      "suffix": "iOS",
+      "packageId": "SDL3-CS.iOS",
+      "rids": [
+        "ios-arm64",
+        "iossimulator-arm64",
+        "iossimulator-x64"
+      ]
+    },
+    {
+      "id": "tvOS",
+      "suffix": "tvOS",
+      "packageId": "SDL3-CS.tvOS",
+      "rids": [
+        "tvos-arm64",
+        "tvossimulator-arm64",
+        "tvossimulator-x64"
+      ]
+    }
+  ],
+  "rids": [
+    {
+      "rid": "win-x86",
+      "os": "windows",
+      "arch": "x86",
+      "buildHost": "github-actions-windows",
+      "runner": "windows-2025",
+      "vsArchitecture": "Win32",
+      "cmakeArgs": []
+    },
+    {
+      "rid": "win-x64",
+      "os": "windows",
+      "arch": "x64",
+      "buildHost": "github-actions-windows",
+      "runner": "windows-2025",
+      "vsArchitecture": "x64",
+      "cmakeArgs": []
+    },
+    {
+      "rid": "win-arm64",
+      "os": "windows",
+      "arch": "arm64",
+      "buildHost": "github-actions-windows",
+      "runner": "windows-11-arm",
+      "vsArchitecture": "ARM64",
+      "cmakeArgs": []
+    },
+    {
+      "rid": "linux-x64",
+      "os": "linux",
+      "arch": "x64",
+      "buildHost": "github-actions-linux",
+      "runner": "ubuntu-latest",
+      "cmakeArgs": []
+    },
+    {
+      "rid": "linux-arm64",
+      "os": "linux",
+      "arch": "arm64",
+      "buildHost": "github-actions-linux",
+      "runner": "ubuntu-24.04-arm",
+      "cmakeArgs": []
+    },
+    {
+      "rid": "android-arm",
+      "os": "android",
+      "arch": "arm",
+      "buildHost": "github-actions-android",
+      "runner": "ubuntu-latest",
+      "androidAbi": "armeabi-v7a",
+      "androidPlatform": "android-23",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=Android",
+        "-DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a",
+        "-DANDROID_ABI=armeabi-v7a",
+        "-DANDROID_PLATFORM=android-23",
+        "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
+      ]
+    },
+    {
+      "rid": "android-arm64",
+      "os": "android",
+      "arch": "arm64",
+      "buildHost": "github-actions-android",
+      "runner": "ubuntu-latest",
+      "androidAbi": "arm64-v8a",
+      "androidPlatform": "android-23",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=Android",
+        "-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a",
+        "-DANDROID_ABI=arm64-v8a",
+        "-DANDROID_PLATFORM=android-23",
+        "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
+      ]
+    },
+    {
+      "rid": "android-x86",
+      "os": "android",
+      "arch": "x86",
+      "buildHost": "github-actions-android",
+      "runner": "ubuntu-latest",
+      "androidAbi": "x86",
+      "androidPlatform": "android-23",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=Android",
+        "-DCMAKE_ANDROID_ARCH_ABI=x86",
+        "-DANDROID_ABI=x86",
+        "-DANDROID_PLATFORM=android-23",
+        "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
+      ]
+    },
+    {
+      "rid": "android-x64",
+      "os": "android",
+      "arch": "x64",
+      "buildHost": "github-actions-android",
+      "runner": "ubuntu-latest",
+      "androidAbi": "x86_64",
+      "androidPlatform": "android-23",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=Android",
+        "-DCMAKE_ANDROID_ARCH_ABI=x86_64",
+        "-DANDROID_ABI=x86_64",
+        "-DANDROID_PLATFORM=android-23",
+        "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
+      ]
+    },
+    {
+      "rid": "osx-x64",
+      "os": "macos",
+      "arch": "x64",
+      "buildHost": "github-actions-macos",
+      "runner": "macos-15-intel",
+      "cmakeArgs": [
+        "-DCMAKE_OSX_ARCHITECTURES=x86_64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=12.0"
+      ]
+    },
+    {
+      "rid": "ios-arm64",
+      "os": "ios",
+      "arch": "arm64",
+      "buildHost": "github-actions-ios",
+      "runner": "macos-15",
+      "appleSdk": "iphoneos",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=iOS",
+        "-DCMAKE_OSX_SYSROOT=iphoneos",
+        "-DCMAKE_OSX_ARCHITECTURES=arm64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    {
+      "rid": "iossimulator-arm64",
+      "os": "ios",
+      "arch": "arm64",
+      "buildHost": "github-actions-ios",
+      "runner": "macos-15",
+      "appleSdk": "iphonesimulator",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=iOS",
+        "-DCMAKE_OSX_SYSROOT=iphonesimulator",
+        "-DCMAKE_OSX_ARCHITECTURES=arm64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    {
+      "rid": "iossimulator-x64",
+      "os": "ios",
+      "arch": "x64",
+      "buildHost": "github-actions-ios",
+      "runner": "macos-15-intel",
+      "appleSdk": "iphonesimulator",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=iOS",
+        "-DCMAKE_OSX_SYSROOT=iphonesimulator",
+        "-DCMAKE_OSX_ARCHITECTURES=x86_64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    {
+      "rid": "tvos-arm64",
+      "os": "tvos",
+      "arch": "arm64",
+      "buildHost": "github-actions-tvos",
+      "runner": "macos-15",
+      "appleSdk": "appletvos",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=tvOS",
+        "-DCMAKE_OSX_SYSROOT=appletvos",
+        "-DCMAKE_OSX_ARCHITECTURES=arm64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    {
+      "rid": "tvossimulator-arm64",
+      "os": "tvos",
+      "arch": "arm64",
+      "buildHost": "github-actions-tvos",
+      "runner": "macos-15",
+      "appleSdk": "appletvsimulator",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=tvOS",
+        "-DCMAKE_OSX_SYSROOT=appletvsimulator",
+        "-DCMAKE_OSX_ARCHITECTURES=arm64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    {
+      "rid": "tvossimulator-x64",
+      "os": "tvos",
+      "arch": "x64",
+      "buildHost": "github-actions-tvos",
+      "runner": "macos-15-intel",
+      "appleSdk": "appletvsimulator",
+      "cmakeArgs": [
+        "-DCMAKE_SYSTEM_NAME=tvOS",
+        "-DCMAKE_OSX_SYSROOT=appletvsimulator",
+        "-DCMAKE_OSX_ARCHITECTURES=x86_64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    {
+      "rid": "osx-arm64",
+      "os": "macos",
+      "arch": "arm64",
+      "buildHost": "github-actions-macos",
+      "runner": "macos-15",
+      "cmakeArgs": [
+        "-DCMAKE_OSX_ARCHITECTURES=arm64",
+        "-DCMAKE_OSX_DEPLOYMENT_TARGET=12.0"
+      ]
+    }
+  ],
+  "managedPackages": [
+    {
+      "id": "SDL3-CS",
+      "project": "SDL3-CS/SDL3-CS.csproj",
+      "versionComponent": "SDL"
+    }
+  ],
+  "components": [
+    {
+      "id": "SDL",
+      "repository": "https://github.com/edwardgushchin/SDL",
+      "upstreamRepository": "https://github.com/libsdl-org/SDL",
+      "sourceRef": "8e37db5e797b6167f3a00d697d816a684bd259c7",
+      "sourceFolder": "SDL",
+      "nativeVersion": "3.4.10",
+      "packageNameSuffix": "",
+      "dependencies": [],
+      "cmakeArgs": [
+        "-DSDL_INSTALL=ON",
+        "-DSDL_TESTS=OFF",
+        "-DSDL_EXAMPLES=OFF"
+      ],
+      "artifactPatterns": {
+        "windows": [
+          "bin/SDL3.dll",
+          "lib/SDL3.dll",
+          "**/SDL3.dll"
+        ],
+        "linux": [
+          "lib/libSDL3.so*",
+          "**/libSDL3.so*"
+        ],
+        "android": [
+          "lib/libSDL3.so*",
+          "**/libSDL3.so*"
+        ],
+        "ios": [
+          "lib/libSDL3*.a",
+          "**/libSDL3*.a"
+        ],
+        "tvos": [
+          "lib/libSDL3*.a",
+          "**/libSDL3*.a"
+        ],
+        "macos": [
+          "lib/libSDL3.dylib",
+          "**/libSDL3.dylib"
+        ]
+      }
+    },
+    {
+      "id": "SDL_image",
+      "repository": "https://github.com/edwardgushchin/SDL_image",
+      "upstreamRepository": "https://github.com/libsdl-org/SDL_image",
+      "sourceRef": "bec9134a26c7d0f31b36d6083c25296e04cabff5",
+      "sourceFolder": "SDL_image",
+      "nativeVersion": "3.4.4",
+      "packageNameSuffix": "Image",
+      "dependencies": [
+        "SDL"
+      ],
+      "cmakeArgs": [
+        "-DCMAKE_PREFIX_PATH={installRoot}",
+        "-DSDL3_DIR={installRoot}/lib/cmake/SDL3",
+        "-DSDLIMAGE_INSTALL=ON",
+        "-DSDLIMAGE_VENDORED=ON",
+        "-DSDLIMAGE_DEPS_SHARED=ON",
+        "-DSDLIMAGE_SAMPLES=OFF",
+        "-DSDLIMAGE_TESTS=OFF"
+      ],
+      "artifactPatterns": {
+        "windows": [
+          "bin/SDL3_image.dll",
+          "bin/aom*.dll",
+          "bin/dav1d*.dll",
+          "bin/libavif*.dll",
+          "bin/libpng*.dll",
+          "bin/libwebp*.dll",
+          "bin/tiff*.dll",
+          "**/SDL3_image.dll",
+          "**/aom*.dll",
+          "**/dav1d*.dll",
+          "**/libavif*.dll",
+          "**/libpng*.dll",
+          "**/libwebp*.dll",
+          "**/tiff*.dll"
+        ],
+        "linux": [
+          "lib/libSDL3_image.so*",
+          "lib/libaom.so*",
+          "lib/libdav1d.so*",
+          "lib/libavif.so*",
+          "lib/libpng16.so*",
+          "lib/libwebp.so*",
+          "lib/libwebpdemux.so*",
+          "lib/libwebpmux.so*",
+          "lib/libtiff.so*",
+          "**/libaom.so*",
+          "**/libdav1d.so*",
+          "**/libavif.so*",
+          "**/libpng16.so*",
+          "**/libwebp.so*",
+          "**/libwebpdemux.so*",
+          "**/libwebpmux.so*",
+          "**/libtiff.so*",
+          "**/libSDL3_image.so*"
+        ],
+        "android": [
+          "lib/libSDL3_image.so*",
+          "lib/libaom.so*",
+          "lib/libdav1d.so*",
+          "lib/libavif.so*",
+          "lib/libpng16.so*",
+          "lib/libwebp.so*",
+          "lib/libwebpdemux.so*",
+          "lib/libwebpmux.so*",
+          "lib/libtiff.so*",
+          "**/libaom.so*",
+          "**/libdav1d.so*",
+          "**/libavif.so*",
+          "**/libpng16.so*",
+          "**/libwebp.so*",
+          "**/libwebpdemux.so*",
+          "**/libwebpmux.so*",
+          "**/libtiff.so*",
+          "**/libSDL3_image.so*"
+        ],
+        "ios": [
+          "lib/libSDL3_image*.a",
+          "lib/libaom*.a",
+          "lib/libdav1d*.a",
+          "lib/libavif*.a",
+          "lib/libpng16*.a",
+          "lib/libwebp*.a",
+          "lib/libwebpdemux*.a",
+          "lib/libwebpmux*.a",
+          "lib/libtiff*.a",
+          "**/libSDL3_image*.a",
+          "**/libaom*.a",
+          "**/libdav1d*.a",
+          "**/libavif*.a",
+          "**/libpng16*.a",
+          "**/libwebp*.a",
+          "**/libwebpdemux*.a",
+          "**/libwebpmux*.a",
+          "**/libtiff*.a"
+        ],
+        "tvos": [
+          "lib/libSDL3_image*.a",
+          "lib/libaom*.a",
+          "lib/libdav1d*.a",
+          "lib/libavif*.a",
+          "lib/libpng16*.a",
+          "lib/libwebp*.a",
+          "lib/libwebpdemux*.a",
+          "lib/libwebpmux*.a",
+          "lib/libtiff*.a",
+          "**/libSDL3_image*.a",
+          "**/libaom*.a",
+          "**/libdav1d*.a",
+          "**/libavif*.a",
+          "**/libpng16*.a",
+          "**/libwebp*.a",
+          "**/libwebpdemux*.a",
+          "**/libwebpmux*.a",
+          "**/libtiff*.a"
+        ],
+        "macos": [
+          "lib/libSDL3_image*.dylib*",
+          "lib/libaom*.dylib*",
+          "lib/libdav1d*.dylib*",
+          "lib/libavif*.dylib*",
+          "lib/libpng16*.dylib*",
+          "lib/libwebp*.dylib*",
+          "lib/libwebpdemux*.dylib*",
+          "lib/libwebpmux*.dylib*",
+          "lib/libtiff*.dylib*",
+          "**/libSDL3_image*.dylib*",
+          "**/libaom*.dylib*",
+          "**/libdav1d*.dylib*",
+          "**/libavif*.dylib*",
+          "**/libpng16*.dylib*",
+          "**/libwebp*.dylib*",
+          "**/libwebpdemux*.dylib*",
+          "**/libwebpmux*.dylib*",
+          "**/libtiff*.dylib*"
+        ]
+      }
+    },
+    {
+      "id": "SDL_mixer",
+      "repository": "https://github.com/edwardgushchin/SDL_mixer",
+      "upstreamRepository": "https://github.com/libsdl-org/SDL_mixer",
+      "sourceRef": "72a81869b45e249e8e67102db4e98dd2441f05a1",
+      "sourceFolder": "SDL_mixer",
+      "nativeVersion": "3.2.4",
+      "packageNameSuffix": "Mixer",
+      "dependencies": [
+        "SDL"
+      ],
+      "cmakeArgs": [
+        "-DCMAKE_PREFIX_PATH={installRoot}",
+        "-DSDL3_DIR={installRoot}/lib/cmake/SDL3",
+        "-DSDLMIXER_INSTALL=ON",
+        "-DSDLMIXER_VENDORED=ON",
+        "-DSDLMIXER_DEPS_SHARED=ON",
+        "-DSDLMIXER_EXAMPLES=OFF",
+        "-DSDLMIXER_TESTS=OFF"
+      ],
+      "ridCmakeArgs": {
+        "android-arm": [
+          "-DSDLMIXER_GME=OFF"
+        ],
+        "android-arm64": [
+          "-DSDLMIXER_GME=OFF"
+        ],
+        "android-x86": [
+          "-DSDLMIXER_GME=OFF"
+        ],
+        "android-x64": [
+          "-DSDLMIXER_GME=OFF"
+        ],
+        "win-x86": [
+          "-DWITH_ASM=OFF"
+        ]
+      },
+      "artifactPatterns": {
+        "windows": [
+          "bin/SDL3_mixer.dll",
+          "bin/FLAC*.dll",
+          "bin/gme.dll",
+          "bin/libxmp.dll",
+          "bin/mpg123*.dll",
+          "bin/ogg*.dll",
+          "bin/opus*.dll",
+          "bin/opusfile*.dll",
+          "bin/vorbis*.dll",
+          "bin/vorbisfile*.dll",
+          "bin/wavpack*.dll",
+          "**/SDL3_mixer.dll",
+          "**/FLAC*.dll",
+          "**/gme.dll",
+          "**/libxmp.dll",
+          "**/mpg123*.dll",
+          "**/ogg*.dll",
+          "**/opus*.dll",
+          "**/opusfile*.dll",
+          "**/vorbis*.dll",
+          "**/vorbisfile*.dll",
+          "**/wavpack*.dll"
+        ],
+        "linux": [
+          "lib/libSDL3_mixer.so*",
+          "lib/libFLAC.so*",
+          "lib/libgme.so*",
+          "lib/libxmp.so*",
+          "lib/libmpg123.so*",
+          "lib/libogg.so*",
+          "lib/libopus.so*",
+          "lib/libopusfile.so*",
+          "lib/libvorbis.so*",
+          "lib/libvorbisfile.so*",
+          "lib/libwavpack.so*",
+          "**/libFLAC.so*",
+          "**/libgme.so*",
+          "**/libxmp.so*",
+          "**/libmpg123.so*",
+          "**/libogg.so*",
+          "**/libopus.so*",
+          "**/libopusfile.so*",
+          "**/libvorbis.so*",
+          "**/libvorbisfile.so*",
+          "**/libwavpack.so*",
+          "**/libSDL3_mixer.so*"
+        ],
+        "android": [
+          "lib/libSDL3_mixer.so*",
+          "lib/libFLAC.so*",
+          "lib/libgme.so*",
+          "lib/libxmp.so*",
+          "lib/libmpg123.so*",
+          "lib/libogg.so*",
+          "lib/libopus.so*",
+          "lib/libopusfile.so*",
+          "lib/libvorbis.so*",
+          "lib/libvorbisfile.so*",
+          "lib/libwavpack.so*",
+          "**/libFLAC.so*",
+          "**/libgme.so*",
+          "**/libxmp.so*",
+          "**/libmpg123.so*",
+          "**/libogg.so*",
+          "**/libopus.so*",
+          "**/libopusfile.so*",
+          "**/libvorbis.so*",
+          "**/libvorbisfile.so*",
+          "**/libwavpack.so*",
+          "**/libSDL3_mixer.so*"
+        ],
+        "ios": [
+          "lib/libSDL3_mixer*.a",
+          "lib/libFLAC*.a",
+          "lib/libgme*.a",
+          "lib/libxmp*.a",
+          "lib/libmpg123*.a",
+          "lib/libogg*.a",
+          "lib/libopus*.a",
+          "lib/libopusfile*.a",
+          "lib/libvorbis*.a",
+          "lib/libvorbisfile*.a",
+          "lib/libwavpack*.a",
+          "**/libSDL3_mixer*.a",
+          "**/libFLAC*.a",
+          "**/libgme*.a",
+          "**/libxmp*.a",
+          "**/libmpg123*.a",
+          "**/libogg*.a",
+          "**/libopus*.a",
+          "**/libopusfile*.a",
+          "**/libvorbis*.a",
+          "**/libvorbisfile*.a",
+          "**/libwavpack*.a"
+        ],
+        "tvos": [
+          "lib/libSDL3_mixer*.a",
+          "lib/libFLAC*.a",
+          "lib/libgme*.a",
+          "lib/libxmp*.a",
+          "lib/libmpg123*.a",
+          "lib/libogg*.a",
+          "lib/libopus*.a",
+          "lib/libopusfile*.a",
+          "lib/libvorbis*.a",
+          "lib/libvorbisfile*.a",
+          "lib/libwavpack*.a",
+          "**/libSDL3_mixer*.a",
+          "**/libFLAC*.a",
+          "**/libgme*.a",
+          "**/libxmp*.a",
+          "**/libmpg123*.a",
+          "**/libogg*.a",
+          "**/libopus*.a",
+          "**/libopusfile*.a",
+          "**/libvorbis*.a",
+          "**/libvorbisfile*.a",
+          "**/libwavpack*.a"
+        ],
+        "macos": [
+          "lib/libSDL3_mixer*.dylib*",
+          "lib/libFLAC*.dylib*",
+          "lib/libgme*.dylib*",
+          "lib/libxmp*.dylib*",
+          "lib/libmpg123*.dylib*",
+          "lib/libogg*.dylib*",
+          "lib/libopus*.dylib*",
+          "lib/libopusfile*.dylib*",
+          "lib/libvorbis*.dylib*",
+          "lib/libvorbisfile*.dylib*",
+          "lib/libwavpack*.dylib*",
+          "**/libSDL3_mixer*.dylib*",
+          "**/libFLAC*.dylib*",
+          "**/libgme*.dylib*",
+          "**/libxmp*.dylib*",
+          "**/libmpg123*.dylib*",
+          "**/libogg*.dylib*",
+          "**/libopus*.dylib*",
+          "**/libopusfile*.dylib*",
+          "**/libvorbis*.dylib*",
+          "**/libvorbisfile*.dylib*",
+          "**/libwavpack*.dylib*"
+        ]
+      }
+    },
+    {
+      "id": "SDL_ttf",
+      "repository": "https://github.com/edwardgushchin/SDL_ttf",
+      "upstreamRepository": "https://github.com/libsdl-org/SDL_ttf",
+      "sourceRef": "a1ce3670aec736ecbf0936c43f2f0cc53aa61e5b",
+      "sourceFolder": "SDL_ttf",
+      "nativeVersion": "3.2.2",
+      "packageNameSuffix": "TTF",
+      "dependencies": [
+        "SDL"
+      ],
+      "cmakeArgs": [
+        "-DCMAKE_PREFIX_PATH={installRoot}",
+        "-DSDL3_DIR={installRoot}/lib/cmake/SDL3",
+        "-DSDLTTF_INSTALL=ON",
+        "-DSDLTTF_VENDORED=ON",
+        "-DSDLTTF_HARFBUZZ=ON",
+        "-DSDLTTF_SAMPLES=OFF",
+        "-DCMAKE_DISABLE_FIND_PACKAGE_Freetype=OFF"
+      ],
+      "artifactPatterns": {
+        "windows": [
+          "bin/SDL3_ttf.dll",
+          "**/SDL3_ttf.dll"
+        ],
+        "linux": [
+          "lib/libSDL3_ttf.so*",
+          "**/libSDL3_ttf.so*"
+        ],
+        "android": [
+          "lib/libSDL3_ttf.so*",
+          "**/libSDL3_ttf.so*"
+        ],
+        "ios": [
+          "lib/libSDL3_ttf*.a",
+          "**/libSDL3_ttf*.a"
+        ],
+        "tvos": [
+          "lib/libSDL3_ttf*.a",
+          "**/libSDL3_ttf*.a"
+        ],
+        "macos": [
+          "lib/libSDL3_ttf.dylib",
+          "**/libSDL3_ttf.dylib"
+        ]
+      }
+    },
+    {
+      "id": "SDL_shadercross",
+      "repository": "https://github.com/edwardgushchin/SDL_shadercross",
+      "upstreamRepository": "https://github.com/libsdl-org/SDL_shadercross",
+      "sourceRef": "1d8b0556eefb11a77bc9c28249d16f7a3e0459e9",
+      "sourceFolder": "SDL_shadercross",
+      "nativeVersion": "3.0.0",
+      "packageNameSuffix": "Shadercross",
+      "dependencies": [
+        "SDL"
+      ],
+      "cmakeArgs": [
+        "-DCMAKE_PREFIX_PATH={installRoot}",
+        "-DSDL3_DIR={installRoot}/lib/cmake/SDL3",
+        "-Dspirv_cross_c_shared_DIR={installRoot}/share/spirv_cross_c_shared/cmake",
+        "-Dspirv_cross_c_DIR={installRoot}/share/spirv_cross_c/cmake",
+        "-Dspirv_cross_core_DIR={installRoot}/share/spirv_cross_core/cmake",
+        "-Dspirv_cross_glsl_DIR={installRoot}/share/spirv_cross_glsl/cmake",
+        "-Dspirv_cross_hlsl_DIR={installRoot}/share/spirv_cross_hlsl/cmake",
+        "-Dspirv_cross_msl_DIR={installRoot}/share/spirv_cross_msl/cmake",
+        "-Dspirv_cross_cpp_DIR={installRoot}/share/spirv_cross_cpp/cmake",
+        "-Dspirv_cross_reflect_DIR={installRoot}/share/spirv_cross_reflect/cmake",
+        "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON",
+        "-DSDLSHADERCROSS_INSTALL=ON",
+        "-DSDLSHADERCROSS_SHARED=ON",
+        "-DSDLSHADERCROSS_STATIC=ON",
+        "-DSDLSHADERCROSS_CLI=OFF",
+        "-DSDLSHADERCROSS_SPIRVCROSS_SHARED=ON",
+        "-DSDLSHADERCROSS_INSTALL_RUNTIME=ON"
+      ],
+      "artifactPatterns": {
+        "windows": [
+          "bin/SDL3_shadercross.dll",
+          "bin/spirv-cross-c-shared.dll",
+          "bin/dxcompiler.dll",
+          "bin/dxil.dll",
+          "**/SDL3_shadercross.dll",
+          "**/spirv-cross-c-shared.dll",
+          "**/dxcompiler.dll",
+          "**/dxil.dll"
+        ],
+        "linux": [
+          "lib/libSDL3_shadercross.so*",
+          "lib/libspirv-cross-c-shared.so*",
+          "lib/libvkd3d*.so*",
+          "**/libSDL3_shadercross.so*",
+          "**/libspirv-cross-c-shared.so*",
+          "**/libvkd3d*.so*"
+        ],
+        "android": [
+          "lib/libSDL3_shadercross.so*",
+          "lib/libspirv-cross-c-shared.so*",
+          "**/libSDL3_shadercross.so*",
+          "**/libspirv-cross-c-shared.so*"
+        ],
+        "ios": [
+          "lib/libSDL3_shadercross*.a",
+          "lib/libspirv-cross-c*.a",
+          "**/libSDL3_shadercross*.a",
+          "**/libspirv-cross-c*.a"
+        ],
+        "tvos": [
+          "lib/libSDL3_shadercross*.a",
+          "lib/libspirv-cross-c*.a",
+          "**/libSDL3_shadercross*.a",
+          "**/libspirv-cross-c*.a"
+        ],
+        "macos": [
+          "lib/libSDL3_shadercross*.dylib*",
+          "lib/libspirv-cross-c-shared*.dylib*",
+          "lib/libvkd3d*.dylib*",
+          "**/libSDL3_shadercross*.dylib*",
+          "**/libspirv-cross-c-shared*.dylib*",
+          "**/libvkd3d*.dylib*"
+        ]
+      }
+    }
+  ]
+}
