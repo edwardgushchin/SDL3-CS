@@ -474,8 +474,8 @@
           "**/libSDL3*.a"
         ],
         "macos": [
-          "lib/libSDL3.dylib",
-          "**/libSDL3.dylib"
+          "lib/libSDL3*.dylib*",
+          "**/libSDL3*.dylib*"
         ]
       }
     },
@@ -499,6 +499,44 @@
         "-DSDLIMAGE_SAMPLES=OFF",
         "-DSDLIMAGE_TESTS=OFF"
       ],
+      "ridCmakeArgs": {
+        "android-arm": [
+          "-DSDLIMAGE_AVIF=OFF"
+        ],
+        "android-arm64": [
+          "-DSDLIMAGE_AVIF=OFF"
+        ],
+        "android-x86": [
+          "-DSDLIMAGE_AVIF=OFF"
+        ],
+        "android-x64": [
+          "-DSDLIMAGE_AVIF=OFF"
+        ],
+        "ios-arm64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "iossimulator-arm64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "iossimulator-x64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "osx-arm64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "osx-x64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "tvos-arm64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "tvossimulator-arm64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ],
+        "tvossimulator-x64": [
+          "-DSDLIMAGE_WEBP=OFF"
+        ]
+      },
       "artifactPatterns": {
         "windows": [
           "bin/SDL3_image.dll",

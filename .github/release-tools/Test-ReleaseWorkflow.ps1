@@ -90,6 +90,7 @@ Assert-WorkflowContains -Text $workflowText -Expected 'Rids = @(''${{ matrix.rid
 Assert-WorkflowContains -Text $workflowText -Expected '$buildParams.AllowCrossCompile = $true' -Description 'native build cross compile named parameter'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams' -Description 'native build script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip' -Description 'native bundle upload path'
+Assert-WorkflowContains -Text $workflowText -Expected 'libjson-perl' -Description 'Linux vkd3d Perl JSON dependency'
 Assert-WorkflowContains -Text $workflowText -Expected 'ndk_version="27.2.12479018"' -Description 'Android NDK version pin'
 Assert-WorkflowContains -Text $workflowText -Expected 'for attempt in 1 2 3; do' -Description 'Android NDK install retry loop'
 Assert-WorkflowContains -Text $workflowText -Expected 'rm -rf "$ndk" "$ANDROID_HOME/.temp"' -Description 'Android NDK partial install cleanup'
