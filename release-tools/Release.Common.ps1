@@ -2,7 +2,7 @@
 Set-StrictMode -Version Latest
 
 function Get-ReleaseRepoRoot {
-    return (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
+    return (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 }
 
 function Resolve-ReleasePath {

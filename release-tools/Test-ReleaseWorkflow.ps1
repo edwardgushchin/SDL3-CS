@@ -1,7 +1,7 @@
 #requires -Version 7.0
 [CmdletBinding()]
 param(
-    [string] $WorkflowPath = (Join-Path (Join-Path (Join-Path $PSScriptRoot '..\..') '.github') 'workflows\release-native-packages.yml'),
+    [string] $WorkflowPath = (Join-Path (Join-Path (Join-Path $PSScriptRoot '..') '.github') 'workflows\release-native-packages.yml'),
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json')
 )
 
@@ -74,7 +74,7 @@ foreach ($sdkVersion in @('10.0.x', '9.0.x', '8.0.x', '7.0.x')) {
     Assert-WorkflowContains -Text $workflowText -Expected $sdkVersion -Description ".NET SDK setup"
 }
 
-Assert-WorkflowContains -Text $workflowText -Expected "Get-Content -LiteralPath 'eng/release/release-manifest.json'" -Description 'plan job manifest load'
+Assert-WorkflowContains -Text $workflowText -Expected "Get-Content -LiteralPath 'release-tools/release-manifest.json'" -Description 'plan job manifest load'
 Assert-WorkflowContains -Text $workflowText -Expected '$manifest.rids | ForEach-Object' -Description 'plan job RID enumeration'
 Assert-WorkflowContains -Text $workflowText -Expected 'rid = $_.rid' -Description 'plan job RID field'
 Assert-WorkflowContains -Text $workflowText -Expected 'runner = $_.runner' -Description 'plan job runner field'
@@ -83,8 +83,8 @@ Assert-WorkflowContains -Text $workflowText -Expected 'matrix: ${{ fromJson(need
 Assert-WorkflowContains -Text $workflowText -Expected 'runs-on: ${{ matrix.runner }}' -Description 'native job runner binding'
 Assert-WorkflowContains -Text $workflowText -Expected 'fail-fast: false' -Description 'native matrix fail-fast setting'
 Assert-WorkflowContains -Text $workflowText -Expected 'SDL3CS_NATIVE_BUILD_PARALLEL_LEVEL: ${{ inputs.build_parallel_level }}' -Description 'native build parallel env'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Initialize-NativeForks.ps1 -Depth 1' -Description 'native fork initialization'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Invoke-NativeHostBuild.ps1 @buildArgs' -Description 'native build script invocation'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Initialize-NativeForks.ps1 -Depth 1' -Description 'native fork initialization'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Invoke-NativeHostBuild.ps1 @buildArgs' -Description 'native build script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip' -Description 'native bundle upload path'
 
 Assert-WorkflowContains -Text $workflowText -Expected 'pattern: native-bundle-*' -Description 'assembly bundle download pattern'
@@ -94,22 +94,22 @@ Assert-WorkflowContains -Text $workflowText -Expected 'PackageRevision = [int]''
 Assert-WorkflowContains -Text $workflowText -Expected 'BundlePath = @($bundles | ForEach-Object { $_.FullName })' -Description 'assembly bundle path handoff'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.RequireForksUpToDate = $true' -Description 'assembly upstream current gate'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.RequireUpstreamCurrent = $true' -Description 'assembly upstream current strict flag'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Invoke-ReleaseAssembly.ps1 @params' -Description 'assembly script invocation'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Invoke-ReleaseAssembly.ps1 @params' -Description 'assembly script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'path: artifacts/release/nuget/*.nupkg' -Description 'NuGet artifact upload'
 Assert-WorkflowContains -Text $workflowText -Expected 'release-assembly-state.zip' -Description 'release assembly state artifact'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Test-ReleaseAssemblyState.ps1' -Description 'release assembly state validation'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Test-ReleaseAssemblyState.ps1' -Description 'release assembly state validation'
 Assert-WorkflowContains -Text $workflowText -Expected "-StatePath 'artifacts/release/release-assembly-state.zip'" -Description 'release assembly state zip validation'
 
 Assert-WorkflowContains -Text $workflowText -Expected 'apple-consumer:' -Description 'Apple consumer validation job'
 Assert-WorkflowContains -Text $workflowText -Expected 'needs: assemble' -Description 'Apple consumer job dependency'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos' -Description 'Apple .NET workload installation'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Test-AppleConsumerPackageBuild.ps1' -Description 'Apple consumer package build validation'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Test-AppleConsumerPackageBuild.ps1' -Description 'Apple consumer package build validation'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-arm64,tvossimulator-arm64' -Description 'Apple arm64 simulator consumer RID matrix'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-x64,tvossimulator-x64' -Description 'Apple x64 simulator consumer RID matrix'
 
 Assert-WorkflowContains -Text $workflowText -Expected 'android-consumer:' -Description 'Android consumer validation job'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install android' -Description 'Android .NET workload installation'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Test-AndroidConsumerPackageBuild.ps1' -Description 'Android consumer package build validation'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Test-AndroidConsumerPackageBuild.ps1' -Description 'Android consumer package build validation'
 Assert-WorkflowContains -Text $workflowText -Expected 'android-arm,android-arm64,android-x86,android-x64' -Description 'Android consumer RID list'
 
 Assert-WorkflowContains -Text $workflowText -Expected 'publish:' -Description 'publish job'
@@ -123,9 +123,9 @@ Assert-WorkflowContains -Text $workflowText -Expected 'Remove-Item -LiteralPath 
 Assert-WorkflowContains -Text $workflowText -Expected "-StatePath '.'" -Description 'publish job imported assembly state validation'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.GitHubRelease = $true' -Description 'publish job GitHub release flag'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.NuGetPush = $true' -Description 'publish job NuGet push flag'
-Assert-WorkflowContains -Text $workflowText -Expected './eng/release/Publish-Release.ps1 @params' -Description 'publish script invocation'
+Assert-WorkflowContains -Text $workflowText -Expected './release-tools/Publish-Release.ps1 @params' -Description 'publish script invocation'
 
-$initializeCount = ([regex]::Matches($workflowText, [regex]::Escape('./eng/release/Initialize-NativeForks.ps1 -Depth 1'))).Count
+$initializeCount = ([regex]::Matches($workflowText, [regex]::Escape('./release-tools/Initialize-NativeForks.ps1 -Depth 1'))).Count
 if ($initializeCount -lt 2) {
     Add-WorkflowError "Expected Initialize-NativeForks.ps1 to run in both native and assemble jobs, found $initializeCount occurrence(s)."
 }

@@ -96,8 +96,8 @@ foreach ($rid in $Rids) {
         $imageName,
         'pwsh',
         '-NoProfile',
-        '-File', '/work/eng/release/Invoke-NativeHostBuild.ps1',
-        '-ManifestPath', '/work/eng/release/release-manifest.json',
+        '-File', '/work/release-tools/Invoke-NativeHostBuild.ps1',
+        '-ManifestPath', '/work/release-tools/release-manifest.json',
         '-Rids', $rid,
         '-BuildParallelLevel', [string]$BuildParallelLevel
     )

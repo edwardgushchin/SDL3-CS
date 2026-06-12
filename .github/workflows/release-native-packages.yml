@@ -50,7 +50,7 @@ jobs:
         id: native-matrix
         shell: pwsh
         run: |
-          $manifest = Get-Content -LiteralPath 'eng/release/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
+          $manifest = Get-Content -LiteralPath 'release-tools/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
           $include = @($manifest.rids | ForEach-Object {
             [ordered]@{
               rid = $_.rid
@@ -158,7 +158,7 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./eng/release/Initialize-NativeForks.ps1 -Depth 1
+        run: ./release-tools/Initialize-NativeForks.ps1 -Depth 1
 
       - name: Build native bundle
         shell: pwsh
@@ -171,7 +171,7 @@ jobs:
           if ('${{ matrix.allow_cross_compile }}' -eq 'true') {
             $buildArgs += '-AllowCrossCompile'
           }
-          ./eng/release/Invoke-NativeHostBuild.ps1 @buildArgs
+          ./release-tools/Invoke-NativeHostBuild.ps1 @buildArgs
 
       - name: Upload native bundle
         uses: actions/upload-artifact@v4
@@ -202,7 +202,7 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./eng/release/Initialize-NativeForks.ps1 -Depth 1
+        run: ./release-tools/Initialize-NativeForks.ps1 -Depth 1
 
       - name: Download native bundles
         uses: actions/download-artifact@v4
@@ -230,7 +230,7 @@ jobs:
             $params.RequireUpstreamCurrent = $true
           }
 
-          ./eng/release/Invoke-ReleaseAssembly.ps1 @params
+          ./release-tools/Invoke-ReleaseAssembly.ps1 @params
 
       - name: Export release assembly state
         shell: pwsh
@@ -267,7 +267,7 @@ jobs:
       - name: Validate release assembly state
         shell: pwsh
         run: |
-          ./eng/release/Test-ReleaseAssemblyState.ps1 `
+          ./release-tools/Test-ReleaseAssemblyState.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -StatePath 'artifacts/release/release-assembly-state.zip'
 
@@ -329,7 +329,7 @@ jobs:
         shell: pwsh
         run: |
           $rids = '${{ matrix.rids }}' -split ','
-          ./eng/release/Test-AppleConsumerPackageBuild.ps1 `
+          ./release-tools/Test-AppleConsumerPackageBuild.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -PackageDir 'artifacts/release/nuget' `
             -Rids $rids
@@ -368,7 +368,7 @@ jobs:
         shell: pwsh
         run: |
           $rids = 'android-arm,android-arm64,android-x86,android-x64' -split ','
-          ./eng/release/Test-AndroidConsumerPackageBuild.ps1 `
+          ./release-tools/Test-AndroidConsumerPackageBuild.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -PackageDir 'artifacts/release/nuget' `
             -Rids $rids
@@ -400,7 +400,7 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./eng/release/Initialize-NativeForks.ps1 -Depth 1
+        run: ./release-tools/Initialize-NativeForks.ps1 -Depth 1
 
       - name: Download release assembly state
         uses: actions/download-artifact@v4
@@ -430,7 +430,7 @@ jobs:
       - name: Validate imported release assembly state
         shell: pwsh
         run: |
-          ./eng/release/Test-ReleaseAssemblyState.ps1 `
+          ./release-tools/Test-ReleaseAssemblyState.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -StatePath '.'
 
@@ -447,4 +447,4 @@ jobs:
             $params.NuGetPush = $true
           }
 
-          ./eng/release/Publish-Release.ps1 @params
+          ./release-tools/Publish-Release.ps1 @params

@@ -3,7 +3,7 @@
 param(
     [int] $PackageRevision = -1,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
-    [string] $WorkflowPath = (Join-Path (Join-Path (Join-Path $PSScriptRoot '..\..') '.github') 'workflows\release-native-packages.yml'),
+    [string] $WorkflowPath = (Join-Path (Join-Path (Join-Path $PSScriptRoot '..') '.github') 'workflows\release-native-packages.yml'),
     [string] $Branch,
     [int] $BuildParallelLevel = 2,
     [string] $Repository,
@@ -94,7 +94,7 @@ if (-not $SkipRemoteStateCheck) {
         Add-RemoteStateProblem "Requested branch '$Branch' is not the checked-out branch '$currentBranch'; local file checks cannot prove that the remote branch contains this workflow."
     }
 
-    $releaseToolPaths = @(Get-ChildItem -LiteralPath (Join-Path (Get-ReleaseRepoRoot) 'eng/release') -File | ForEach-Object {
+    $releaseToolPaths = @(Get-ChildItem -LiteralPath (Join-Path (Get-ReleaseRepoRoot) 'release-tools') -File | ForEach-Object {
         Get-ReleaseRepoRelativePath -Path $_.FullName
     })
 
