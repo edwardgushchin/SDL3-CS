@@ -28,6 +28,7 @@ The `x` in SDL3-CS version (e.g., `3.4.10.x`) represents NuGet package revisions
 
 | Architecture | Binary | Requirements |
 |--------------|--------|--------------|
+| x86 | SDL3.dll | Windows 10 version 1903+ |
 | x64 | SDL3.dll | Windows 10 version 1903+ |
 | ARM64 | SDL3.dll | Windows 10 version 1903+ |
 
@@ -44,6 +45,21 @@ The `x` in SDL3-CS version (e.g., `3.4.10.x`) represents NuGet package revisions
 |--------------|--------|-----------------|
 | x64 | libSDL3.dylib | macOS 12.0 (Monterey) |
 | ARM64 | libSDL3.dylib | macOS 12.0 (Monterey) |
+
+### Mobile and Apple TV
+
+| Platform | RID | Binary |
+|----------|-----|--------|
+| Android | `android-arm` | libSDL3.so |
+| Android | `android-arm64` | libSDL3.so |
+| Android | `android-x86` | libSDL3.so |
+| Android | `android-x64` | libSDL3.so |
+| iOS | `ios-arm64` | libSDL3.a |
+| iOS Simulator | `iossimulator-arm64` | libSDL3.a |
+| iOS Simulator | `iossimulator-x64` | libSDL3.a |
+| tvOS | `tvos-arm64` | libSDL3.a |
+| tvOS Simulator | `tvossimulator-arm64` | libSDL3.a |
+| tvOS Simulator | `tvossimulator-x64` | libSDL3.a |
 
 ## Building Native Libraries
 

@@ -7,21 +7,25 @@ This package contains native SDL libraries for SDL3-CS.
 | Package | Native library version |
 |---------|--------------|
 | SDL3-CS.Native | SDL 3.4.10 |
-| SDL3-CS.Native.Image | SDL_image 3.4.0 |
-| SDL3-CS.Native.Mixer | SDL_mixer 3.2.0 |
-| SDL3-CS.Native.TTF | SDL_ttf 3.3.0 |
+| SDL3-CS.Native.Image | SDL_image 3.4.4 |
+| SDL3-CS.Native.Mixer | SDL_mixer 3.2.4 |
+| SDL3-CS.Native.TTF | SDL_ttf 3.2.2 |
 | SDL3-CS.Native.Shadercross | SDL_shadercross 3.0.0 |
 
 ## Platform Support
 
 | Platform | Architecture | Binary |
 |----------|--------------|--------|
+| Windows | x86 | SDL3.dll |
 | Windows | x64 | SDL3.dll |
 | Windows | ARM64 | SDL3.dll |
 | Linux | x64 | libSDL3.so |
 | Linux | ARM64 | libSDL3.so |
 | macOS | x64 | libSDL3.dylib |
 | macOS | ARM64 | libSDL3.dylib |
+| Android | arm, arm64, x86, x64 | libSDL3.so |
+| iOS | arm64, simulator arm64, simulator x64 | libSDL3.a |
+| tvOS | arm64, simulator arm64, simulator x64 | libSDL3.a |
 
 ## Building from Source
 
