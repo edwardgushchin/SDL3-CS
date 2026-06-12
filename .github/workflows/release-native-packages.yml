@@ -29,6 +29,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 env:
   DOTNET_NOLOGO: "1"
@@ -404,9 +405,9 @@ jobs:
       - android-consumer
     if: ${{ inputs.publish_github || inputs.publish_nuget }}
     runs-on: windows-2025
+    environment: production
     env:
       GH_TOKEN: ${{ github.token }}
-      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
     steps:
       - name: Checkout SDL3-CS
@@ -459,8 +460,17 @@ jobs:
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -StatePath '.'
 
+      - name: NuGet trusted publishing login
+        if: ${{ inputs.publish_nuget }}
+        uses: NuGet/login@v1
+        id: nuget_login
+        with:
+          user: edwardgushchin
+
       - name: Publish selected targets
         shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
         run: |
           $params = @{
             PackageRevision = [int]'${{ inputs.package_revision }}'

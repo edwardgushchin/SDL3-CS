@@ -112,7 +112,7 @@ if ($GitHubRelease) {
 
 if ($NuGetPush) {
     if (-not $env:NUGET_API_KEY -and -not $DryRun) {
-        throw "NUGET_API_KEY is required for -NuGetPush."
+        throw "NUGET_API_KEY is required for -NuGetPush. In GitHub Actions it is provided by NuGet/login trusted publishing."
     }
 
     $apiKey = if ($DryRun -and -not $env:NUGET_API_KEY) { '<NUGET_API_KEY>' } else { $env:NUGET_API_KEY }

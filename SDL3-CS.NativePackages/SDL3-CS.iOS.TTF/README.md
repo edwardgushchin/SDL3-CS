@@ -1,15 +1,27 @@
 # SDL3-CS.iOS.TTF
 
-This package contains native sdl_ttf runtime libraries for sdl3-cs.
+`SDL3-CS.iOS.TTF` contains native SDL_ttf runtime libraries for SDL3-CS on iOS.
 
-## Version Information
+## Native Version
 
 | Package | Native library version |
-|---------|------------------------|
-| SDL3-CS.iOS.TTF | SDL_ttf 3.2.2 |
+| --- | --- |
+| `SDL3-CS.iOS.TTF` | `SDL_ttf 3.2.2` |
 
 ## Platform Support
 
-This package is scoped to iOS and contains native artifacts only for these RIDs: ios-arm64, iossimulator-arm64, iossimulator-x64.
+This package is scoped to iOS and contains native artifacts only for these RIDs:
 
-Use it together with SDL3-CS. Add-on packages may also require the base platform package $(@{Id=iOS; PackageBase=SDL3-CS.iOS; Rids=System.Object[]}.PackageBase).
+- `ios-arm64`
+- `iossimulator-arm64`
+- `iossimulator-x64`
+
+## Usage
+
+```powershell
+dotnet add package SDL3-CS
+dotnet add package SDL3-CS.iOS
+dotnet add package SDL3-CS.iOS.TTF
+```
+
+Use the same platform family for every SDL3-CS native package in one application. Use it with the base platform package `SDL3-CS.iOS`.

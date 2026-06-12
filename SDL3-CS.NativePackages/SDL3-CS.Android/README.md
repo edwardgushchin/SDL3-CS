@@ -1,14 +1,28 @@
 # SDL3-CS.Android
 
-`SDL3-CS.Android` доставляет Android `libSDL3.so`, привязки `Org.Libsdl.App.SDLActivity` и Java bridge SDL для Android-приложений на SDL3-CS.
+`SDL3-CS.Android` contains native SDL runtime libraries for SDL3-CS on Android.
 
-Пакет нужен Android-потребителям, которые хотят запускать управляемый C# entrypoint вместо C `SDL_main`. Приложение наследуется от `SDLActivity`, переопределяет `GetLibraries()` и `Main()`, а обычные вызовы SDL выполняются через `SDL3.SDL`.
+## Native Version
 
-Минимальный набор пакетов для Android-приложения:
+| Package | Native library version |
+| --- | --- |
+| `SDL3-CS.Android` | `SDL 3.4.10` |
+
+## Platform Support
+
+This package is scoped to Android and contains native artifacts only for these RIDs:
+
+- `android-arm`
+- `android-arm64`
+- `android-x86`
+- `android-x64`
+
+## Usage
 
 ```powershell
 dotnet add package SDL3-CS
 dotnet add package SDL3-CS.Android
 ```
 
-Для SDL_image, SDL_mixer, SDL_ttf или SDL_shadercross добавьте соответствующие packages: `SDL3-CS.Android.Image`, `SDL3-CS.Android.Mixer`, `SDL3-CS.Android.TTF` или `SDL3-CS.Android.Shadercross`.
+Use the same platform family for every SDL3-CS native package in one application. This is the base native runtime package for Android.
+Android applications should use `MainActivity : Org.Libsdl.App.SDLActivity` and override managed `Main()`. This package also carries the SDL Android Java bridge.
