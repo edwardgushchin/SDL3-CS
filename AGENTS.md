@@ -189,6 +189,20 @@ dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release
 - Stage, commit, push, tag, or open pull requests only when the user explicitly requests it. Stage only files related to the requested task.
 - Commit messages in this repository must be written in English. Conventional technical prefixes are allowed, but both the subject and any human-readable body text must be English.
 
+## Release Branch Mainline Parity
+- Any change made on a release branch must also exist on the main branch. Release branches must not contain release-only fixes, documentation updates, workflow changes, native source pin updates, or wrapper changes that are absent from main.
+- Before considering release branch work ready, verify that the same commits or equivalent changes are already present on main, or explicitly port them to main first. If parity cannot be verified, keep the release work open and document the missing mainline parity in `TASKS.md` and the development diary.
+- This rule applies to project source, release tooling, GitHub Actions workflows, native package metadata, wrapper code, XML documentation, specifications, implementation documentation, tests, and agent instructions.
+
+## Native Fork And Wrapper Alignment Policy
+- Native repositories used by release tooling include `SDL`, `SDL_image`, `SDL_mixer`, `SDL_ttf`, and `SDL_shadercross`.
+- Before updating any native repository reference to an upstream release or to the latest upstream `main`, first bring the SDL3-CS wrapper into the matching state. This includes managed code, XML documentation, version metadata, release manifest entries, specifications, implementation documentation, and automated tests.
+- Do not treat a native release branch, fork `main`, manifest `sourceRef`, or local `native-forks/<repo>` checkout as ready until the wrapper has been audited against the matching upstream headers and documentation, and all required wrapper code/documentation/test changes are already implemented.
+- For every upstream native release prepared in SDL3-CS, the corresponding `edwardgushchin/<repo>` fork must preserve that release on a branch named exactly like the upstream tag, for example `release-3.4.4`, and that branch must point to the exact upstream release tag commit.
+- The fork `main` branch must match the corresponding `libsdl-org/<repo>:main` branch exactly. Do not repoint fork `main` to a release tag; keep release baselines on `release-*` branches or tags and keep latest upstream development on `main`.
+- When updating native fork refs, verify with `git ls-remote` or an equivalent noninteractive command that fork `release-*` equals the upstream release tag and fork `main` equals upstream `main`. Use `--force-with-lease` only when the user explicitly requested the remote ref update.
+- This policy applies to all native repositories in the release manifest, not only `SDL_image`.
+
 ## Feature Gate
 - Feature or runtime work means adding or changing product behavior, UI/API flows, domain rules, integrations, data flow, configuration behavior, startup behavior, production code paths, or user-facing behavior.
 - Before implementing feature or runtime work, find or create a concrete specification in the project's specification area, normally `docs/specifications/<domain>/`. Architecture and design documents are useful context, but they do not replace a feature specification unless the user explicitly names them as the specification.

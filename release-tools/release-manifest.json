@@ -423,9 +423,9 @@
       "id": "SDL_image",
       "repository": "https://github.com/edwardgushchin/SDL_image",
       "upstreamRepository": "https://github.com/libsdl-org/SDL_image",
-      "sourceRef": "98ed433a6c27345ea4ac2c498ba50879d5f92778",
+      "sourceRef": "bec9134a26c7d0f31b36d6083c25296e04cabff5",
       "sourceFolder": "SDL_image",
-      "nativeVersion": "3.4.0",
+      "nativeVersion": "3.4.4",
       "packageId": "SDL3-CS.Native.Image",
       "packageProject": "SDL3-CS.Native.Image/SDL3-CS.Native.Image.csproj",
       "dependencies": [
