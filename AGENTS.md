@@ -51,6 +51,13 @@ For this repository, agent operational materials live inside the worktree but mu
 - Do not create fake managed references just to satisfy this rule; if no wrapper symbol exists, use `<c>SDL_NAME</c>` or leave the upstream C declaration intact according to the surrounding documentation style.
 - Keep wrapper XML documentation warning-clean under `dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release`: fix invalid XML, unresolved `cref`, ambiguous `cref`, and `///` comments that are not attached to a real language element.
 
+## Public Wrapper XML Documentation Placement
+- SDL C API XML documentation belongs on the public C# API member that SDL3-CS users consume, not on private native entry-point stubs.
+- Do not attach upstream C API XML documentation blocks, including blocks that start with `<code>extern SDL_DECLSPEC ...</code>`, to `private` `LibraryImport`, `DllImport`, `extern`, hook, delegate, or native-helper members.
+- When a binding uses a private native stub plus delegate/hook plus public wrapper, keep the original C declaration and the full XML documentation immediately above the public wrapper method. Keep the private native stub undocumented except for required attributes.
+- If there is no public wrapper for a native entry point, add the public wrapper first or leave the C API documentation out until the exposed API exists; do not hide user documentation on a private member.
+- Full-branch audits must run `pwsh .\release-tools\Test-PublicWrapperXmlDocs.ps1` and report zero XML documentation blocks attached to private methods before wrapper documentation work is considered complete.
+
 ## SDL C API Porting Workflow
 - Use this workflow when the user provides an original SDL, SDL_image, SDL_mixer, SDL_ttf, or SDL_shadercross C API declaration with a Doxygen comment and asks to add a new C# binding, update an existing binding, or align XML C# documentation with the original SDL documentation.
 - Port declarations and documentation into the existing SDL3-CS style: find the correct file, add or update the member near the matching neighboring function, and convert the Doxygen comment to XML C# documentation.
