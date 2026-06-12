@@ -68,7 +68,7 @@ public static partial class SDL
         /// <summary>
         /// Duration of the effect.
         /// </summary>
-        public int Length;
+        public uint Length;
 
         /// <summary>
         /// Delay before starting the effect.
@@ -98,12 +98,12 @@ public static partial class SDL
         /// <summary>
         /// How fast to increase the force towards the positive side.
         /// </summary>
-        public unsafe fixed UInt16 RightCoeff[3];
+        public unsafe fixed short RightCoeff[3];
         
         /// <summary>
         /// How fast to increase the force towards the negative side.
         /// </summary>
-        public unsafe fixed UInt16 LeftCoeff[3];
+        public unsafe fixed short LeftCoeff[3];
         
         /// <summary>
         /// Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered.
@@ -113,6 +113,6 @@ public static partial class SDL
         /// <summary>
         /// Position of the dead zone.
         /// </summary>
-        public unsafe fixed UInt16 Center[3];
+        public unsafe fixed short Center[3];
     }
 }
