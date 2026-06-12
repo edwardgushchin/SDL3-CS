@@ -362,6 +362,11 @@ public partial class Mixer
     /// metadata tags, like ID3 and APE tags. This can be used to speed up
     /// loading _if the data definitely doesn't have these tags_. Some decoders
     /// will fail if these tags are present when this property is <c>true</c>.</item>
+    /// <item><see cref="Props.AudioLoadIgnoreLoopsBoolean"/>: <c>true</c> to ignore metadata in
+    /// the audio data specifying loop points. This will make a file decode from
+    /// start to finish without looping, even if the file specified it should
+    /// have. This audio can still be looped at playback time via MIX_Track loop
+    /// settings, regardless of this setting. Default <c>false</c>.</item>
     /// <item><see cref="Props.AudioDecoderString"/>: the name of the decoder to use for this
     /// data. Optional. If not specified, SDL_mixer will examine the data and
     /// choose the best decoder. These names are the same returned from

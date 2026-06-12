@@ -562,9 +562,9 @@
       "id": "SDL_mixer",
       "repository": "https://github.com/edwardgushchin/SDL_mixer",
       "upstreamRepository": "https://github.com/libsdl-org/SDL_mixer",
-      "sourceRef": "d96049ce8873fb4d8fbaa5e36449cb6cf37227ad",
+      "sourceRef": "72a81869b45e249e8e67102db4e98dd2441f05a1",
       "sourceFolder": "SDL_mixer",
-      "nativeVersion": "3.2.0",
+      "nativeVersion": "3.2.4",
       "packageId": "SDL3-CS.Native.Mixer",
       "packageProject": "SDL3-CS.Native.Mixer/SDL3-CS.Native.Mixer.csproj",
       "dependencies": [
