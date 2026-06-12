@@ -2935,13 +2935,15 @@ public partial class Image
     public static partial IntPtr CreateAnimationDecoderWithProperties(uint props);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL IMG_GetAnimationDecoderProperties(IMG_AnimationDecoder* decoder);</code>
+    /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL IMG_GetAnimationDecoderProperties(IMG_AnimationDecoder *decoder);</code>
     /// <summary>
     /// Get the properties of an animation decoder.
     /// <para>This function returns the properties of the animation decoder, which holds
     /// information about the underlying image such as description, copyright text
     /// and loop count.
     /// </para>
+    /// <para><see cref="Props.MetadataLoopCountNumber"/>, if present, specifies the
+    /// number of times to play the animation, with 0 meaning loop continuously.</para>
     /// </summary>
     /// <param name="decoder">the animation decoder.</param>
     /// <returns>the properties ID of the animation decoder, or 0 if there are no
