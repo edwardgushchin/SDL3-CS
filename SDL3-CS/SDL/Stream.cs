@@ -171,7 +171,7 @@ public static partial class SDL
             throw new ArgumentOutOfRangeException(nameof(stream),
                 $"The data is too large: {tmp.Length} bytes (limit is {maxBytes} bytes).");
 
-        return !tmp.TryGetBuffer(out var seg2) ? (tmp.ToArray(), 0, (int)tmp.Length) : (seg2.Array!, seg2.Offset, (int)tmp.Length);
+        return (tmp.GetBuffer(), 0, (int)tmp.Length);
     }
 
     /// <summary>

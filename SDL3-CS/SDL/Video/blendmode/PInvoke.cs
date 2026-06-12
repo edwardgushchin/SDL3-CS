@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -109,11 +110,34 @@ public static partial class SDL
     /// <seealso cref="GetRenderDrawBlendMode"/>
     /// <seealso cref="SetTextureBlendMode"/>
     /// <seealso cref="GetTextureBlendMode"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ComposeCustomBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor, 
+    private static partial BlendMode SDL_ComposeCustomBlendMode(BlendFactor srcColorFactor,
         BlendFactor dstColorFactor,
-        BlendOperation colorOperation, 
-        BlendFactor srcAlphaFactor, 
+        BlendOperation colorOperation,
+        BlendFactor srcAlphaFactor,
         BlendFactor dstAlphaFactor,
         BlendOperation alphaOperation);
+    private delegate BlendMode ComposeCustomBlendModeNativeDelegate(BlendFactor srcColorFactor,
+        BlendFactor dstColorFactor,
+        BlendOperation colorOperation,
+        BlendFactor srcAlphaFactor,
+        BlendFactor dstAlphaFactor,
+        BlendOperation alphaOperation);
+    private static ComposeCustomBlendModeNativeDelegate ComposeCustomBlendModeNativeFunction = SDL_ComposeCustomBlendMode;
+
+    public static BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
+        BlendFactor dstColorFactor,
+        BlendOperation colorOperation,
+        BlendFactor srcAlphaFactor,
+        BlendFactor dstAlphaFactor,
+        BlendOperation alphaOperation)
+    {
+        return ComposeCustomBlendModeNativeFunction(srcColorFactor,
+            dstColorFactor,
+            colorOperation,
+            srcAlphaFactor,
+            dstAlphaFactor,
+            alphaOperation);
+    }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -30,6 +30,8 @@ public static partial class SDL
 {
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPreferredLocales"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPreferredLocales(out int count);
+    private delegate IntPtr GetPreferredLocalesNative(out int count);
+    private static GetPreferredLocalesNative GetPreferredLocalesNativeFunction = SDL_GetPreferredLocales;
     /// <code>extern SDL_DECLSPEC SDL_Locale ** SDLCALL SDL_GetPreferredLocales(int *count);</code>
     /// <summary>
     /// <para>Report the user's preferred locale.</para>
@@ -68,7 +70,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static Locale[]? GetPreferredLocales(out int count)
     {
-        var ptr = SDL_GetPreferredLocales(out count);
+        var ptr = GetPreferredLocalesNativeFunction(out count);
 
         try
         {

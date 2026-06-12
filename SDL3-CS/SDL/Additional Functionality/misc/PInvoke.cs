@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -22,6 +22,7 @@
 #endregion
 
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
@@ -53,7 +54,15 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenURL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
+    private static partial bool SDL_OpenURL([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
+    private delegate bool OpenURLNative(string url);
+    private static OpenURLNative OpenURLNativeFunction = SDL_OpenURL;
+
+    public static bool OpenURL(string url)
+    {
+        return OpenURLNativeFunction(url);
+    }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -40,10 +41,18 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowsMessageHook"/>
     /// <seealso cref="Hints.WindowsEnableMessageLoop"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowsMessageHook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetWindowsMessageHook(WindowsMessageHook callback, IntPtr userdata);
-    
-    
+    private static partial void SDL_SetWindowsMessageHook(WindowsMessageHook callback, IntPtr userdata);
+    private delegate void SetWindowsMessageHookNative(WindowsMessageHook callback, IntPtr userdata);
+    private static SetWindowsMessageHookNative SetWindowsMessageHookNativeFunction = SDL_SetWindowsMessageHook;
+
+    public static void SetWindowsMessageHook(WindowsMessageHook callback, IntPtr userdata)
+    {
+        SetWindowsMessageHookNativeFunction(callback, userdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetDirect3D9AdapterIndex(SDL_DisplayID displayID);</code>
     /// <summary>
     /// <para>Get the D3D9 adapter index that matches the specified display.</para>
@@ -54,10 +63,18 @@ public partial class SDL
     /// <returns>the D3D9 adapter index on success or -1 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDirect3D9AdapterIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int GetDirect3D9AdapterIndex(uint displayID);
-    
-    
+    private static partial int SDL_GetDirect3D9AdapterIndex(uint displayID);
+    private delegate int GetDirect3D9AdapterIndexNative(uint displayID);
+    private static GetDirect3D9AdapterIndexNative GetDirect3D9AdapterIndexNativeFunction = SDL_GetDirect3D9AdapterIndex;
+
+    public static int GetDirect3D9AdapterIndex(uint displayID)
+    {
+        return GetDirect3D9AdapterIndexNativeFunction(displayID);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDXGIOutputInfo(SDL_DisplayID displayID, int *adapterIndex, int *outputIndex);</code>
     /// <summary>
     /// <para>Get the DXGI Adapter and Output indices for the specified display.</para>
@@ -71,11 +88,19 @@ public partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDXGIOutputInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetDXGIOutputInfo(uint displayID, out int adapterIndex, out int outputIndex);
-    
-    
+    private static partial bool SDL_GetDXGIOutputInfo(uint displayID, out int adapterIndex, out int outputIndex);
+    private delegate bool GetDXGIOutputInfoNative(uint displayID, out int adapterIndex, out int outputIndex);
+    private static GetDXGIOutputInfoNative GetDXGIOutputInfoNativeFunction = SDL_GetDXGIOutputInfo;
+
+    public static bool GetDXGIOutputInfo(uint displayID, out int adapterIndex, out int outputIndex)
+    {
+        return GetDXGIOutputInfoNativeFunction(displayID, out adapterIndex, out outputIndex);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);</code>
     /// <summary>
     /// <para>Set a callback for every X11 event.</para>
@@ -86,10 +111,18 @@ public partial class SDL
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetX11EventHook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetX11EventHook(X11EventHook callback, IntPtr userdata);
-    
-    
+    private static partial void SDL_SetX11EventHook(X11EventHook callback, IntPtr userdata);
+    private delegate void SetX11EventHookNative(X11EventHook callback, IntPtr userdata);
+    private static SetX11EventHookNative SetX11EventHookNativeFunction = SDL_SetX11EventHook;
+
+    public static void SetX11EventHook(X11EventHook callback, IntPtr userdata)
+    {
+        SetX11EventHookNativeFunction(callback, userdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetLinuxThreadPriority(Sint64 threadID, int priority);</code>
     /// <summary>
     /// <para>Sets the UNIX nice value for a thread.</para>
@@ -101,11 +134,19 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLinuxThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetLinuxThreadPriority(long threadID, int priority);
-    
-    
+    private static partial bool SDL_SetLinuxThreadPriority(long threadID, int priority);
+    private delegate bool SetLinuxThreadPriorityNative(long threadID, int priority);
+    private static SetLinuxThreadPriorityNative SetLinuxThreadPriorityNativeFunction = SDL_SetLinuxThreadPriority;
+
+    public static bool SetLinuxThreadPriority(long threadID, int priority)
+    {
+        return SetLinuxThreadPriorityNativeFunction(threadID, priority);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetLinuxThreadPriorityAndPolicy(Sint64 threadID, int sdlPriority, int schedPolicy);</code>
     /// <summary>
     /// <para>Sets the priority (not nice level) and scheduling policy for a thread.</para>
@@ -119,11 +160,19 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLinuxThreadPriorityAndPolicy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetLinuxThreadPriorityAndPolicy(long threadID, int priority, int schedPolicy);
-    
-    
+    private static partial bool SDL_SetLinuxThreadPriorityAndPolicy(long threadID, int priority, int schedPolicy);
+    private delegate bool SetLinuxThreadPriorityAndPolicyNative(long threadID, int priority, int schedPolicy);
+    private static SetLinuxThreadPriorityAndPolicyNative SetLinuxThreadPriorityAndPolicyNativeFunction = SDL_SetLinuxThreadPriorityAndPolicy;
+
+    public static bool SetLinuxThreadPriorityAndPolicy(long threadID, int priority, int schedPolicy)
+    {
+        return SetLinuxThreadPriorityAndPolicyNativeFunction(threadID, priority, schedPolicy);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetiOSAnimationCallback(SDL_Window *window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam);</code>
     /// <summary>
     /// <para>Use this function to set the animation callback on Apple iOS.</para>
@@ -149,11 +198,19 @@ public partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetiOSEventPump"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSAnimationCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, IntPtr callbackParam);
-    
-    
+    private static partial bool SDL_SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, IntPtr callbackParam);
+    private delegate bool SetiOSAnimationCallbackNative(IntPtr window, int interval, IOSAnimationCallback callback, IntPtr callbackParam);
+    private static SetiOSAnimationCallbackNative SetiOSAnimationCallbackNativeFunction = SDL_SetiOSAnimationCallback;
+
+    public static bool SetiOSAnimationCallback(IntPtr window, int interval, IOSAnimationCallback callback, IntPtr callbackParam)
+    {
+        return SetiOSAnimationCallbackNativeFunction(window, interval, callback, callbackParam);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetiOSEventPump(bool enabled);</code>
     /// <summary>
     /// <para>Use this function to enable or disable the SDL event pump on Apple iOS.</para>
@@ -163,10 +220,18 @@ public partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetiOSAnimationCallback"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetiOSEventPump"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetiOSEventPump([MarshalAs(UnmanagedType.I1)] bool enabled);
-    
-    
+    private static partial void SDL_SetiOSEventPump([MarshalAs(UnmanagedType.I1)] bool enabled);
+    private delegate void SetiOSEventPumpNative(bool enabled);
+    private static SetiOSEventPumpNative SetiOSEventPumpNativeFunction = SDL_SetiOSEventPump;
+
+    public static void SetiOSEventPump(bool enabled)
+    {
+        SetiOSEventPumpNativeFunction(enabled);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetAndroidJNIEnv(void);</code>
     /// <summary>
     /// <para>Get the Android Java Native Interface Environment of the current thread.</para>
@@ -182,10 +247,18 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidActivity"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidJNIEnv"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetAndroidJNIEnv();
-    
-    
+    private static partial IntPtr SDL_GetAndroidJNIEnv();
+    private delegate IntPtr GetAndroidJNIEnvNative();
+    private static GetAndroidJNIEnvNative GetAndroidJNIEnvNativeFunction = SDL_GetAndroidJNIEnv;
+
+    public static IntPtr GetAndroidJNIEnv()
+    {
+        return GetAndroidJNIEnvNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetAndroidActivity(void);</code>
     /// <summary>
     /// <para>Retrieve the Java instance of the Android activity class.</para>
@@ -203,10 +276,18 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidJNIEnv"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidActivity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetAndroidActivity();
+    private static partial IntPtr SDL_GetAndroidActivity();
+    private delegate IntPtr GetAndroidActivityNative();
+    private static GetAndroidActivityNative GetAndroidActivityNativeFunction = SDL_GetAndroidActivity;
 
-    
+    public static IntPtr GetAndroidActivity()
+    {
+        return GetAndroidActivityNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAndroidSDKVersion(void);</code>
     /// <summary>
     /// <para>Query Android API level of the current device.</para>
@@ -242,10 +323,18 @@ public partial class SDL
     /// <returns>the Android API level.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidSDKVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int GetAndroidSDKVersion();
-    
-    
+    private static partial int SDL_GetAndroidSDKVersion();
+    private delegate int GetAndroidSDKVersionNative();
+    private static GetAndroidSDKVersionNative GetAndroidSDKVersionNativeFunction = SDL_GetAndroidSDKVersion;
+
+    public static int GetAndroidSDKVersion()
+    {
+        return GetAndroidSDKVersionNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsChromebook(void);</code>
     /// <summary>
     /// Query if the application is running on a Chromebook.
@@ -253,11 +342,19 @@ public partial class SDL
     /// <returns><c>true</c> if this is a Chromebook, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsChromebook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool IsChromebook();
-    
-    
+    private static partial bool SDL_IsChromebook();
+    private delegate bool IsChromebookNative();
+    private static IsChromebookNative IsChromebookNativeFunction = SDL_IsChromebook;
+
+    public static bool IsChromebook()
+    {
+        return IsChromebookNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsDeXMode(void);</code>
     /// <summary>
     /// Query if the application is running on a Samsung DeX docking station.
@@ -265,23 +362,42 @@ public partial class SDL
     /// <returns><c>true</c> if this is a DeX docking station, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsDeXMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool IsDeXMode();
-    
-    
+    private static partial bool SDL_IsDeXMode();
+    private delegate bool IsDeXModeNative();
+    private static IsDeXModeNative IsDeXModeNativeFunction = SDL_IsDeXMode;
+
+    public static bool IsDeXMode()
+    {
+        return IsDeXModeNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SendAndroidBackButton(void);</code>
     /// <summary>
     /// Trigger the Android system back button behavior.
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendAndroidBackButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SendAndroidBackButton();
-    
-    
+    private static partial void SDL_SendAndroidBackButton();
+    private delegate void SendAndroidBackButtonNative();
+    private static SendAndroidBackButtonNative SendAndroidBackButtonNativeFunction = SDL_SendAndroidBackButton;
+
+    public static void SendAndroidBackButton()
+    {
+        SendAndroidBackButtonNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidInternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetAndroidInternalStoragePath();
+    private delegate IntPtr GetAndroidInternalStoragePathNative();
+    private static GetAndroidInternalStoragePathNative GetAndroidInternalStoragePathNativeFunction = SDL_GetAndroidInternalStoragePath;
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAndroidInternalStoragePath(void);</code>
     /// <summary>
     /// <para>Get the path used for internal storage for this Android application.</para>
@@ -299,11 +415,11 @@ public partial class SDL
     /// <seealso cref="GetAndroidCachePath"/>
     public static string? GetAndroidInternalStoragePath()
     {
-        var value = SDL_GetAndroidInternalStoragePath(); 
+        var value = GetAndroidInternalStoragePathNativeFunction();
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_GetAndroidExternalStorageState(void);</code>
     /// <summary>
     /// <para>Get the current state of external storage for this Android application.</para>
@@ -315,12 +431,23 @@ public partial class SDL
     /// currently unavailable.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAndroidExternalStoragePath"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidExternalStorageState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint GetAndroidExternalStorageState();
-    
-    
+    private static partial uint SDL_GetAndroidExternalStorageState();
+    private delegate uint GetAndroidExternalStorageStateNative();
+    private static GetAndroidExternalStorageStateNative GetAndroidExternalStorageStateNativeFunction = SDL_GetAndroidExternalStorageState;
+
+    public static uint GetAndroidExternalStorageState()
+    {
+        return GetAndroidExternalStorageStateNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidExternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetAndroidExternalStoragePath();
+    private delegate IntPtr GetAndroidExternalStoragePathNative();
+    private static GetAndroidExternalStoragePathNative GetAndroidExternalStoragePathNativeFunction = SDL_GetAndroidExternalStoragePath;
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAndroidExternalStoragePath(void);</code>
     /// <summary>
     /// <para>Get the path used for external storage for this Android application.</para>
@@ -339,13 +466,16 @@ public partial class SDL
     /// <seealso cref="GetAndroidCachePath"/>
     public static string? GetAndroidExternalStoragePath()
     {
-        var value = SDL_GetAndroidExternalStoragePath(); 
+        var value = GetAndroidExternalStoragePathNativeFunction();
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
-    
-    
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAndroidCachePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetAndroidCachePath();
+    private delegate IntPtr GetAndroidCachePathNative();
+    private static GetAndroidCachePathNative GetAndroidCachePathNativeFunction = SDL_GetAndroidCachePath;
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetAndroidCachePath(void);</code>
     /// <summary>
     /// <para>Get the path used for caching data for this Android application.</para>
@@ -362,11 +492,11 @@ public partial class SDL
     /// <seealso cref="GetAndroidExternalStoragePath"/>
     public static string? GetAndroidCachePath()
     {
-        var value = SDL_GetAndroidCachePath(); 
+        var value = GetAndroidCachePathNativeFunction();
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RequestAndroidPermission(const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata);</code>
     /// <summary>
     /// <para>Request permissions at runtime, asynchronously.</para>
@@ -394,11 +524,19 @@ public partial class SDL
     /// through the callback, not this return value.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RequestAndroidPermission"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RequestAndroidPermission([MarshalAs(UnmanagedType.LPUTF8Str)] string permission, RequestAndroidPermissionCallback cb, IntPtr userdata);
-    
-    
+    private static partial bool SDL_RequestAndroidPermission([MarshalAs(UnmanagedType.LPUTF8Str)] string permission, RequestAndroidPermissionCallback cb, IntPtr userdata);
+    private delegate bool RequestAndroidPermissionNative(string permission, RequestAndroidPermissionCallback cb, IntPtr userdata);
+    private static RequestAndroidPermissionNative RequestAndroidPermissionNativeFunction = SDL_RequestAndroidPermission;
+
+    public static bool RequestAndroidPermission(string permission, RequestAndroidPermissionCallback cb, IntPtr userdata)
+    {
+        return RequestAndroidPermissionNativeFunction(permission, cb, userdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowAndroidToast(const char *message, int duration, int gravity, int xoffset, int yoffset);</code>
     /// <summary>
     /// <para>Shows an Android toast notification.</para>
@@ -418,11 +556,19 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowAndroidToast"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool ShowAndroidToast([MarshalAs(UnmanagedType.LPUTF8Str)] string message, int duration, int gravity, int xoffset, int yoffset);
-    
-    
+    private static partial bool SDL_ShowAndroidToast([MarshalAs(UnmanagedType.LPUTF8Str)] string message, int duration, int gravity, int xoffset, int yoffset);
+    private delegate bool ShowAndroidToastNative(string message, int duration, int gravity, int xoffset, int yoffset);
+    private static ShowAndroidToastNative ShowAndroidToastNativeFunction = SDL_ShowAndroidToast;
+
+    public static bool ShowAndroidToast(string message, int duration, int gravity, int xoffset, int yoffset)
+    {
+        return ShowAndroidToastNativeFunction(message, duration, gravity, xoffset, yoffset);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SendAndroidMessage(Uint32 command, int param);</code>
     /// <summary>
     /// <para>Send a user command to SDLActivity.</para>
@@ -434,10 +580,18 @@ public partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SendAndroidMessage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SendAndroidMessage(uint command, int param);
-    
+    private static partial bool SDL_SendAndroidMessage(uint command, int param);
+    private delegate bool SendAndroidMessageNative(uint command, int param);
+    private static SendAndroidMessageNative SendAndroidMessageNativeFunction = SDL_SendAndroidMessage;
+
+    public static bool SendAndroidMessage(uint command, int param)
+    {
+        return SendAndroidMessageNativeFunction(command, param);
+    }
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsPhone(void);</code>
     /// <summary>
     /// <para>Query if the current device is a phone.</para>
@@ -446,11 +600,19 @@ public partial class SDL
     /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsPhone"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool IsPhone();
-    
-    
+    private static partial bool SDL_IsPhone();
+    private delegate bool IsPhoneNative();
+    private static IsPhoneNative IsPhoneNativeFunction = SDL_IsPhone;
+
+    public static bool IsPhone()
+    {
+        return IsPhoneNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTablet(void);</code>
     /// <summary>
     /// <para>Query if the current device is a tablet.</para>
@@ -459,11 +621,19 @@ public partial class SDL
     /// <returns><c>true</c> if the device is a tablet, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTablet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool IsTablet();
-    
-    
+    private static partial bool SDL_IsTablet();
+    private delegate bool IsTabletNative();
+    private static IsTabletNative IsTabletNativeFunction = SDL_IsTablet;
+
+    public static bool IsTablet()
+    {
+        return IsTabletNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTV(void);</code>
     /// <summary>
     /// <para>Query if the current device is a TV.</para>
@@ -472,11 +642,19 @@ public partial class SDL
     /// <returns><c>true</c> if the <c>device</c> is a TV, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool IsTV();
-    
-    
+    private static partial bool SDL_IsTV();
+    private delegate bool IsTVNative();
+    private static IsTVNative IsTVNativeFunction = SDL_IsTV;
+
+    public static bool IsTV()
+    {
+        return IsTVNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_Sandbox SDLCALL SDL_GetSandbox(void);</code>
     /// <summary>
     /// Get the application sandbox environment, if any.
@@ -484,9 +662,17 @@ public partial class SDL
     /// <returns>the application sandbox environment or <see cref="Sandbox.None"/> if the
     /// application is not running in a sandbox environment.</returns>
     /// <since>This function is available since SDL 3.1.6.</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSandbox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial Sandbox GetSandbox();
-    
+    private static partial Sandbox SDL_GetSandbox();
+    private delegate Sandbox GetSandboxNative();
+    private static GetSandboxNative GetSandboxNativeFunction = SDL_GetSandbox;
+
+    public static Sandbox GetSandbox()
+    {
+        return GetSandboxNativeFunction();
+    }
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationWillTerminate(void);</code>
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -500,10 +686,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationWillTerminate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationWillTerminate();
-    
-    
+    private static partial void SDL_OnApplicationWillTerminate();
+    private delegate void OnApplicationWillTerminateNative();
+    private static OnApplicationWillTerminateNative OnApplicationWillTerminateNativeFunction = SDL_OnApplicationWillTerminate;
+
+    public static void OnApplicationWillTerminate()
+    {
+        OnApplicationWillTerminateNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationDidReceiveMemoryWarning(void);</code>
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -517,10 +711,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidReceiveMemoryWarning"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationDidReceiveMemoryWarning();
-    
-    
+    private static partial void SDL_OnApplicationDidReceiveMemoryWarning();
+    private delegate void OnApplicationDidReceiveMemoryWarningNative();
+    private static OnApplicationDidReceiveMemoryWarningNative OnApplicationDidReceiveMemoryWarningNativeFunction = SDL_OnApplicationDidReceiveMemoryWarning;
+
+    public static void OnApplicationDidReceiveMemoryWarning()
+    {
+        OnApplicationDidReceiveMemoryWarningNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationWillEnterBackground(void);</code>
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -534,10 +736,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationWillEnterBackground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationWillEnterBackground();
-    
-    
+    private static partial void SDL_OnApplicationWillEnterBackground();
+    private delegate void OnApplicationWillEnterBackgroundNative();
+    private static OnApplicationWillEnterBackgroundNative OnApplicationWillEnterBackgroundNativeFunction = SDL_OnApplicationWillEnterBackground;
+
+    public static void OnApplicationWillEnterBackground()
+    {
+        OnApplicationWillEnterBackgroundNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationDidEnterBackground(void);</code>
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -551,10 +761,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidEnterBackground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationDidEnterBackground();
-    
-    
+    private static partial void SDL_OnApplicationDidEnterBackground();
+    private delegate void OnApplicationDidEnterBackgroundNative();
+    private static OnApplicationDidEnterBackgroundNative OnApplicationDidEnterBackgroundNativeFunction = SDL_OnApplicationDidEnterBackground;
+
+    public static void OnApplicationDidEnterBackground()
+    {
+        OnApplicationDidEnterBackgroundNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationWillEnterForeground(void);</code>
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -568,10 +786,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationWillEnterForeground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationWillEnterForeground();
-    
-    
+    private static partial void SDL_OnApplicationWillEnterForeground();
+    private delegate void OnApplicationWillEnterForegroundNative();
+    private static OnApplicationWillEnterForegroundNative OnApplicationWillEnterForegroundNativeFunction = SDL_OnApplicationWillEnterForeground;
+
+    public static void OnApplicationWillEnterForeground()
+    {
+        OnApplicationWillEnterForegroundNativeFunction();
+    }
+
+
     //extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationDidEnterForeground(void);
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -585,10 +811,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidEnterForeground"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationDidEnterForeground();
-    
-    
+    private static partial void SDL_OnApplicationDidEnterForeground();
+    private delegate void OnApplicationDidEnterForegroundNative();
+    private static OnApplicationDidEnterForegroundNative OnApplicationDidEnterForegroundNativeFunction = SDL_OnApplicationDidEnterForeground;
+
+    public static void OnApplicationDidEnterForeground()
+    {
+        OnApplicationDidEnterForegroundNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OnApplicationDidChangeStatusBarOrientation(void);</code>
     /// <summary>
     /// <para>Let iOS apps with external event handling report
@@ -602,10 +836,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OnApplicationDidChangeStatusBarOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OnApplicationDidChangeStatusBarOrientation();
-    
-    
+    private static partial void SDL_OnApplicationDidChangeStatusBarOrientation();
+    private delegate void OnApplicationDidChangeStatusBarOrientationNative();
+    private static OnApplicationDidChangeStatusBarOrientationNative OnApplicationDidChangeStatusBarOrientationNativeFunction = SDL_OnApplicationDidChangeStatusBarOrientation;
+
+    public static void OnApplicationDidChangeStatusBarOrientation()
+    {
+        OnApplicationDidChangeStatusBarOrientationNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGDKTaskQueue(XTaskQueueHandle *outTaskQueue);</code>
     /// <summary>
     /// <para>Gets a reference to the global async task queue handle for GDK,
@@ -617,11 +859,19 @@ public partial class SDL
     /// <param name="outTaskQueue">a pointer to be filled in with task queue handle.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call SDL_GetError() for more
     /// information.</returns>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGDKTaskQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetGDKTaskQueue(out IntPtr outTaskQueue);
-    
-    
+    private static partial bool SDL_GetGDKTaskQueue(out IntPtr outTaskQueue);
+    private delegate bool GetGDKTaskQueueNative(out IntPtr outTaskQueue);
+    private static GetGDKTaskQueueNative GetGDKTaskQueueNativeFunction = SDL_GetGDKTaskQueue;
+
+    public static bool GetGDKTaskQueue(out IntPtr outTaskQueue)
+    {
+        return GetGDKTaskQueueNativeFunction(out outTaskQueue);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGDKDefaultUser(XUserHandle *outUserHandle);</code>
     /// <summary>
     /// <para>Gets a reference to the default user handle for GDK.</para>
@@ -633,7 +883,15 @@ public partial class SDL
     /// <returns><c>true</c> if success or <c>false</c> on failure; call SDL_GetError() for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGDKDefaultUser"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetGDKDefaultUser(out IntPtr outUserHandle);
+    private static partial bool SDL_GetGDKDefaultUser(out IntPtr outUserHandle);
+    private delegate bool GetGDKDefaultUserNative(out IntPtr outUserHandle);
+    private static GetGDKDefaultUserNative GetGDKDefaultUserNativeFunction = SDL_GetGDKDefaultUser;
+
+    public static bool GetGDKDefaultUser(out IntPtr outUserHandle)
+    {
+        return GetGDKDefaultUserNativeFunction(out outUserHandle);
+    }
 }

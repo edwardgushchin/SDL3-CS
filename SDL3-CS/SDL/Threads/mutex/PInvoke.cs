@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -44,10 +45,18 @@ public static partial class SDL
     /// <seealso cref="LockMutex"/>
     /// <seealso cref="TryLockMutex"/>
     /// <seealso cref="UnlockMutex"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateMutex();
-    
-    
+    private static partial IntPtr SDL_CreateMutex();
+    private delegate IntPtr CreateMutexNativeDelegate();
+    private static CreateMutexNativeDelegate CreateMutexNativeFunction = SDL_CreateMutex;
+
+    public static IntPtr CreateMutex()
+    {
+        return CreateMutexNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LockMutex(SDL_Mutex *mutex) SDL_ACQUIRE(mutex);</code>
     /// <summary>
     /// <para>Lock the mutex.</para>
@@ -66,10 +75,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="TryLockMutex"/>
     /// <seealso cref="UnlockMutex"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LockMutex(IntPtr mutex);
-    
-    
+    private static partial void SDL_LockMutex(IntPtr mutex);
+    private delegate void LockMutexNativeDelegate(IntPtr mutex);
+    private static LockMutexNativeDelegate LockMutexNativeFunction = SDL_LockMutex;
+
+    public static void LockMutex(IntPtr mutex)
+    {
+        LockMutexNativeFunction(mutex);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockMutex(SDL_Mutex *mutex) SDL_TRY_ACQUIRE(0, mutex);</code>
     /// <summary>
     /// <para>Try to lock a mutex without blocking.</para>
@@ -88,8 +105,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool TryLockMutex(IntPtr mutex);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockMutex(SDL_Mutex *mutex) SDL_RELEASE(mutex);</code>
     /// <summary>
     /// <para>Unlock the mutex.</para>
@@ -104,10 +121,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockMutex"/>
     /// <seealso cref="TryLockMutex"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void UnlockMutex(IntPtr mutex);
-    
-    
+    private static partial void SDL_UnlockMutex(IntPtr mutex);
+    private delegate void UnlockMutexNativeDelegate(IntPtr mutex);
+    private static UnlockMutexNativeDelegate UnlockMutexNativeFunction = SDL_UnlockMutex;
+
+    public static void UnlockMutex(IntPtr mutex)
+    {
+        UnlockMutexNativeFunction(mutex);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyMutex(SDL_Mutex *mutex);</code>
     /// <summary>
     /// <para>Destroy a mutex created with <see cref="CreateMutex"/>.</para>
@@ -121,10 +146,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateMutex"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyMutex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void DestroyMutex(IntPtr mutex);
-    
-    
+    private static partial void SDL_DestroyMutex(IntPtr mutex);
+    private delegate void DestroyMutexNativeDelegate(IntPtr mutex);
+    private static DestroyMutexNativeDelegate DestroyMutexNativeFunction = SDL_DestroyMutex;
+
+    public static void DestroyMutex(IntPtr mutex)
+    {
+        DestroyMutexNativeFunction(mutex);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_RWLock * SDLCALL SDL_CreateRWLock(void);</code>
     /// <summary>
     /// <para>Create a new read/write lock.</para>
@@ -159,10 +192,18 @@ public static partial class SDL
     /// <seealso cref="TryLockRWLockForReading"/>
     /// <seealso cref="TryLockRWLockForWriting"/>
     /// <seealso cref="UnlockRWLock"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRWLock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateRWLock();
-    
-    
+    private static partial IntPtr SDL_CreateRWLock();
+    private delegate IntPtr CreateRWLockNativeDelegate();
+    private static CreateRWLockNativeDelegate CreateRWLockNativeFunction = SDL_CreateRWLock;
+
+    public static IntPtr CreateRWLock()
+    {
+        return CreateRWLockNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LockRWLockForReading(SDL_RWLock *rwlock) SDL_ACQUIRE_SHARED(rwlock);</code>
     /// <summary>
     /// <para>Lock the read/write lock for _read only_ operations.</para>
@@ -192,10 +233,18 @@ public static partial class SDL
     /// <seealso cref="LockRWLockForWriting"/>
     /// <seealso cref="TryLockRWLockForReading"/>
     /// <seealso cref="UnlockRWLock"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockRWLockForReading"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LockRWLockForReading(IntPtr rwlock);
-    
-    
+    private static partial void SDL_LockRWLockForReading(IntPtr rwlock);
+    private delegate void LockRWLockForReadingNativeDelegate(IntPtr rwlock);
+    private static LockRWLockForReadingNativeDelegate LockRWLockForReadingNativeFunction = SDL_LockRWLockForReading;
+
+    public static void LockRWLockForReading(IntPtr rwlock)
+    {
+        LockRWLockForReadingNativeFunction(rwlock);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LockRWLockForWriting(SDL_RWLock *rwlock) SDL_ACQUIRE(rwlock);</code>
     /// <summary>
     /// <para>Lock the read/write lock for _write_ operations.</para>
@@ -220,10 +269,18 @@ public static partial class SDL
     /// <seealso cref="LockRWLockForReading"/>
     /// <seealso cref="TryLockRWLockForWriting"/>
     /// <seealso cref="UnlockRWLock"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockRWLockForWriting"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LockRWLockForWriting(IntPtr rwlock);
-    
-    
+    private static partial void SDL_LockRWLockForWriting(IntPtr rwlock);
+    private delegate void LockRWLockForWritingNativeDelegate(IntPtr rwlock);
+    private static LockRWLockForWritingNativeDelegate LockRWLockForWritingNativeFunction = SDL_LockRWLockForWriting;
+
+    public static void LockRWLockForWriting(IntPtr rwlock)
+    {
+        LockRWLockForWritingNativeFunction(rwlock);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockRWLockForReading(SDL_RWLock *rwlock) SDL_TRY_ACQUIRE_SHARED(0, rwlock);</code>
     /// <summary>
     /// <para>Try to lock a read/write lock _for reading_ without blocking.</para>
@@ -245,8 +302,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockRWLockForReading"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool TryLockRWLockForReading(IntPtr rwlock);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockRWLockForWriting(SDL_RWLock *rwlock) SDL_TRY_ACQUIRE(0, rwlock);</code>
     /// <summary>
     /// <para>Try to lock a read/write lock _for writing_ without blocking.</para>
@@ -272,8 +329,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockRWLockForWriting"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool TryLockRWLockForWriting(IntPtr rwlock);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockRWLock(SDL_RWLock *rwlock) SDL_RELEASE_GENERIC(rwlock);</code>
     /// <summary>
     /// <para>Unlock the read/write lock.</para>
@@ -293,10 +350,18 @@ public static partial class SDL
     /// <seealso cref="LockRWLockForWriting"/>
     /// <seealso cref="TryLockRWLockForReading"/>
     /// <seealso cref="TryLockRWLockForWriting"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockRWLock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void UnlockRWLock(IntPtr rwlock);
-    
-    
+    private static partial void SDL_UnlockRWLock(IntPtr rwlock);
+    private delegate void UnlockRWLockNativeDelegate(IntPtr rwlock);
+    private static UnlockRWLockNativeDelegate UnlockRWLockNativeFunction = SDL_UnlockRWLock;
+
+    public static void UnlockRWLock(IntPtr rwlock)
+    {
+        UnlockRWLockNativeFunction(rwlock);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyRWLock(SDL_RWLock *rwlock);</code>
     /// <summary>
     /// <para>Destroy a read/write lock created with <see cref="CreateRWLock"/>.</para>
@@ -310,10 +375,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateRWLock"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyRWLock"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void DestroyRWLock(IntPtr rwlock);
-    
-    
+    private static partial void SDL_DestroyRWLock(IntPtr rwlock);
+    private delegate void DestroyRWLockNativeDelegate(IntPtr rwlock);
+    private static DestroyRWLockNativeDelegate DestroyRWLockNativeFunction = SDL_DestroyRWLock;
+
+    public static void DestroyRWLock(IntPtr rwlock)
+    {
+        DestroyRWLockNativeFunction(rwlock);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_Semaphore * SDLCALL SDL_CreateSemaphore(Uint32 initial_value);</code>
     /// <summary>
     /// <para>Create a semaphore.</para>
@@ -334,10 +407,18 @@ public static partial class SDL
     /// <seealso cref="GetSemaphoreValue"/>
     /// <seealso cref="WaitSemaphore"/>
     /// <seealso cref="WaitSemaphoreTimeout"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSemaphore"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateSemaphore(uint initialValue);
-    
-    
+    private static partial IntPtr SDL_CreateSemaphore(uint initialValue);
+    private delegate IntPtr CreateSemaphoreNativeDelegate(uint initialValue);
+    private static CreateSemaphoreNativeDelegate CreateSemaphoreNativeFunction = SDL_CreateSemaphore;
+
+    public static IntPtr CreateSemaphore(uint initialValue)
+    {
+        return CreateSemaphoreNativeFunction(initialValue);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroySemaphore(SDL_Semaphore *sem);</code>
     /// <summary>
     /// <para>Destroy a semaphore.</para>
@@ -348,10 +429,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateSemaphore"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroySemaphore"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void DestroySemaphore(IntPtr sem);
-    
-    
+    private static partial void SDL_DestroySemaphore(IntPtr sem);
+    private delegate void DestroySemaphoreNativeDelegate(IntPtr sem);
+    private static DestroySemaphoreNativeDelegate DestroySemaphoreNativeFunction = SDL_DestroySemaphore;
+
+    public static void DestroySemaphore(IntPtr sem)
+    {
+        DestroySemaphoreNativeFunction(sem);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_WaitSemaphore(SDL_Semaphore *sem);</code>
     /// <summary>
     /// <para>Wait until a semaphore has a positive value and then decrements it.</para>
@@ -367,10 +456,18 @@ public static partial class SDL
     /// <seealso cref="SignalSemaphore"/>
     /// <seealso cref="TryWaitSemaphore"/>
     /// <seealso cref="WaitSemaphoreTimeout"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitSemaphore"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void WaitSemaphore(IntPtr sem);
-    
-    
+    private static partial void SDL_WaitSemaphore(IntPtr sem);
+    private delegate void WaitSemaphoreNativeDelegate(IntPtr sem);
+    private static WaitSemaphoreNativeDelegate WaitSemaphoreNativeFunction = SDL_WaitSemaphore;
+
+    public static void WaitSemaphore(IntPtr sem)
+    {
+        WaitSemaphoreNativeFunction(sem);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryWaitSemaphore(SDL_Semaphore *sem);</code>
     /// <summary>
     /// <para>See if a semaphore has a positive value and decrement it if it does.</para>
@@ -389,8 +486,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_TryWaitSemaphore"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool TryWaitSemaphore(IntPtr sem);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitSemaphoreTimeout(SDL_Semaphore *sem, Sint32 timeoutMS);</code>
     /// <summary>
     /// <para>Wait until a semaphore has a positive value and then decrements it.</para>
@@ -410,8 +507,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitSemaphoreTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WaitSemaphoreTimeout(IntPtr sem, int timeoutMS);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SignalSemaphore(SDL_Semaphore *sem);</code>
     /// <summary>
     /// Atomically increment a semaphore's value and wake waiting threads.
@@ -422,10 +519,18 @@ public static partial class SDL
     /// <seealso cref="TryWaitSemaphore"/>
     /// <seealso cref="WaitSemaphore"/>
     /// <seealso cref="WaitSemaphoreTimeout"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SignalSemaphore"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SignalSemaphore(IntPtr sem);
-    
-    
+    private static partial void SDL_SignalSemaphore(IntPtr sem);
+    private delegate void SignalSemaphoreNativeDelegate(IntPtr sem);
+    private static SignalSemaphoreNativeDelegate SignalSemaphoreNativeFunction = SDL_SignalSemaphore;
+
+    public static void SignalSemaphore(IntPtr sem)
+    {
+        SignalSemaphoreNativeFunction(sem);
+    }
+
+
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_GetSemaphoreValue(SDL_Semaphore *sem);</code>
     /// <summary>
     /// Get the current value of a semaphore.
@@ -434,10 +539,18 @@ public static partial class SDL
     /// <returns>the current value of the semaphore.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSemaphoreValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint GetSemaphoreValue(IntPtr sem);
-    
-    
+    private static partial uint SDL_GetSemaphoreValue(IntPtr sem);
+    private delegate uint GetSemaphoreValueNativeDelegate(IntPtr sem);
+    private static GetSemaphoreValueNativeDelegate GetSemaphoreValueNativeFunction = SDL_GetSemaphoreValue;
+
+    public static uint GetSemaphoreValue(IntPtr sem)
+    {
+        return GetSemaphoreValueNativeFunction(sem);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_Condition * SDLCALL SDL_CreateCondition(void);</code>
     /// <summary>
     /// Create a condition variable.
@@ -451,10 +564,18 @@ public static partial class SDL
     /// <seealso cref="WaitCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
     /// <seealso cref="DestroyCondition"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateCondition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateCondition();
-    
-    
+    private static partial IntPtr SDL_CreateCondition();
+    private delegate IntPtr CreateConditionNativeDelegate();
+    private static CreateConditionNativeDelegate CreateConditionNativeFunction = SDL_CreateCondition;
+
+    public static IntPtr CreateCondition()
+    {
+        return CreateConditionNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyCondition(SDL_Condition *cond);</code>
     /// <summary>
     /// <para>Destroy a condition variable.</para>
@@ -463,10 +584,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateCondition"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyCondition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void DestroyCondition(IntPtr cond);
-    
-    
+    private static partial void SDL_DestroyCondition(IntPtr cond);
+    private delegate void DestroyConditionNativeDelegate(IntPtr cond);
+    private static DestroyConditionNativeDelegate DestroyConditionNativeFunction = SDL_DestroyCondition;
+
+    public static void DestroyCondition(IntPtr cond)
+    {
+        DestroyConditionNativeFunction(cond);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SignalCondition(SDL_Condition *cond);</code>
     /// <summary>
     /// Restart one of the threads that are waiting on the condition variable.
@@ -477,10 +606,18 @@ public static partial class SDL
     /// <seealso cref="BroadcastCondition"/>
     /// <seealso cref="WaitCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SignalCondition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SignalCondition(IntPtr cond);
-    
-    
+    private static partial void SDL_SignalCondition(IntPtr cond);
+    private delegate void SignalConditionNativeDelegate(IntPtr cond);
+    private static SignalConditionNativeDelegate SignalConditionNativeFunction = SDL_SignalCondition;
+
+    public static void SignalCondition(IntPtr cond)
+    {
+        SignalConditionNativeFunction(cond);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BroadcastCondition(SDL_Condition *cond);</code>
     /// <summary>
     /// Restart all threads that are waiting on the condition variable.
@@ -491,10 +628,18 @@ public static partial class SDL
     /// <seealso cref="SignalCondition"/>
     /// <seealso cref="WaitCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BroadcastCondition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void BroadcastCondition(IntPtr cond);
-    
-    
+    private static partial void SDL_BroadcastCondition(IntPtr cond);
+    private delegate void BroadcastConditionNativeDelegate(IntPtr cond);
+    private static BroadcastConditionNativeDelegate BroadcastConditionNativeFunction = SDL_BroadcastCondition;
+
+    public static void BroadcastCondition(IntPtr cond)
+    {
+        BroadcastConditionNativeFunction(cond);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_WaitCondition(SDL_Condition *cond, SDL_Mutex *mutex);</code>
     /// <summary>
     /// <para>Wait until a condition variable is signaled.</para>
@@ -514,10 +659,18 @@ public static partial class SDL
     /// <seealso cref="BroadcastCondition"/>
     /// <seealso cref="SignalCondition"/>
     /// <seealso cref="WaitConditionTimeout"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitCondition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void WaitCondition(IntPtr cond, IntPtr mutex);
-    
-    
+    private static partial void SDL_WaitCondition(IntPtr cond, IntPtr mutex);
+    private delegate void WaitConditionNativeDelegate(IntPtr cond, IntPtr mutex);
+    private static WaitConditionNativeDelegate WaitConditionNativeFunction = SDL_WaitCondition;
+
+    public static void WaitCondition(IntPtr cond, IntPtr mutex)
+    {
+        WaitConditionNativeFunction(cond, mutex);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitConditionTimeout(SDL_Condition *cond, SDL_Mutex *mutex, Sint32 timeoutMS);</code>
     /// <summary>
     /// <para>Wait until a condition variable is signaled or a certain time has passed.</para>
@@ -544,8 +697,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitConditionTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool WaitConditionTimeout(IntPtr cond, IntPtr mutex, int timeoutMS);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShouldInit(SDL_InitState *state);</code>
     /// <summary>
     /// <para>Return whether initialization should be done.</para>
@@ -565,8 +718,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShouldInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ShouldInit(ref InitState state);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShouldQuit(SDL_InitState *state);</code>
     /// <summary>
     /// <para>Return whether cleanup should be done.</para>
@@ -584,8 +737,8 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShouldQuit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool ShouldQuit(ref InitState state);
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetInitialized(SDL_InitState *state, bool initialized);</code>
     /// <summary>
     /// <para>Finish an initialization state transition.</para>

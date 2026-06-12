@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -68,11 +69,19 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetVkGetInstanceProcAddr"/>
     /// <seealso cref="VulkanUnloadLibrary"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_LoadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool VulkanLoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string? path);
-    
-    
+    private static partial bool SDL_Vulkan_LoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string? path);
+    private delegate bool VulkanLoadLibraryNativeDelegate(string? path);
+    private static VulkanLoadLibraryNativeDelegate VulkanLoadLibraryNativeFunction = SDL_Vulkan_LoadLibrary;
+
+    public static bool VulkanLoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string? path)
+    {
+        return VulkanLoadLibraryNativeFunction(path);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_Vulkan_GetVkGetInstanceProcAddr(void);</code>
     /// <summary>
     /// <para>Get the address of the <c>vkGetInstanceProcAddr</c> function.</para>
@@ -88,22 +97,41 @@ public static partial class SDL
     /// <returns>the function pointer for <c>vkGetInstanceProcAddr</c> or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetVkGetInstanceProcAddr"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr VulkanGetVkGetInstanceProcAddr();
-    
-    
+    private static partial IntPtr SDL_Vulkan_GetVkGetInstanceProcAddr();
+    private delegate IntPtr VulkanGetVkGetInstanceProcAddrNativeDelegate();
+    private static VulkanGetVkGetInstanceProcAddrNativeDelegate VulkanGetVkGetInstanceProcAddrNativeFunction = SDL_Vulkan_GetVkGetInstanceProcAddr;
+
+    public static IntPtr VulkanGetVkGetInstanceProcAddr()
+    {
+        return VulkanGetVkGetInstanceProcAddrNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Vulkan_UnloadLibrary(void);</code>
     /// <summary>
     /// Unload the Vulkan library previously loaded by <see cref="VulkanLoadLibrary"/>.
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanLoadLibrary"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void VulkanUnloadLibrary();
-    
-    
+    private static partial void SDL_Vulkan_UnloadLibrary();
+    private delegate void VulkanUnloadLibraryNativeDelegate();
+    private static VulkanUnloadLibraryNativeDelegate VulkanUnloadLibraryNativeFunction = SDL_Vulkan_UnloadLibrary;
+
+    public static void VulkanUnloadLibrary()
+    {
+        VulkanUnloadLibraryNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetInstanceExtensions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_Vulkan_GetInstanceExtensions(out uint count);
+    private delegate IntPtr VulkanGetInstanceExtensionsNativeDelegate(out uint count);
+    private static VulkanGetInstanceExtensionsNativeDelegate VulkanGetInstanceExtensionsNativeFunction = SDL_Vulkan_GetInstanceExtensions;
     /// <code>extern SDL_DECLSPEC char const * const * SDLCALL SDL_Vulkan_GetInstanceExtensions(Uint32 *count);</code>
     /// <summary>
     /// <para>Get the Vulkan instance extensions needed for vkCreateInstance.</para>
@@ -123,11 +151,11 @@ public static partial class SDL
     /// <seealso cref="VulkanCreateSurface"/>
     public static string[]? VulkanGetInstanceExtensions(out uint count)
     {
-        var ptr = SDL_Vulkan_GetInstanceExtensions(out count);
+        var ptr = VulkanGetInstanceExtensionsNativeFunction(out count);
         return ptr == IntPtr.Zero ? null : PointerToStringArray(ptr, (int)count);
     }
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_Vulkan_CreateSurface(SDL_Window *window, VkInstance instance, const struct VkAllocationCallbacks *allocator, VkSurfaceKHR* surface);</code>
     /// <summary>
     /// <para>Create a Vulkan rendering surface for a window.</para>
@@ -148,11 +176,19 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     /// <seealso cref="VulkanDestroySurface"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_CreateSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool VulkanCreateSurface(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface);
-    
-    
+    private static partial bool SDL_Vulkan_CreateSurface(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface);
+    private delegate bool VulkanCreateSurfaceNativeDelegate(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface);
+    private static VulkanCreateSurfaceNativeDelegate VulkanCreateSurfaceNativeFunction = SDL_Vulkan_CreateSurface;
+
+    public static bool VulkanCreateSurface(IntPtr window, IntPtr instance, IntPtr allocator, out IntPtr surface)
+    {
+        return VulkanCreateSurfaceNativeFunction(window, instance, allocator, out surface);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Vulkan_DestroySurface(VkInstance instance, VkSurfaceKHR surface, const struct VkAllocationCallbacks *allocator);</code>
     /// <summary>
     /// <para>Destroy the Vulkan rendering surface of a window.</para>
@@ -171,10 +207,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
     /// <seealso cref="VulkanCreateSurface"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_DestroySurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void VulkanDestroySurface(IntPtr instance, IntPtr surface, IntPtr allocator);
-    
-    
+    private static partial void SDL_Vulkan_DestroySurface(IntPtr instance, IntPtr surface, IntPtr allocator);
+    private delegate void VulkanDestroySurfaceNativeDelegate(IntPtr instance, IntPtr surface, IntPtr allocator);
+    private static VulkanDestroySurfaceNativeDelegate VulkanDestroySurfaceNativeFunction = SDL_Vulkan_DestroySurface;
+
+    public static void VulkanDestroySurface(IntPtr instance, IntPtr surface, IntPtr allocator)
+    {
+        VulkanDestroySurfaceNativeFunction(instance, surface, allocator);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_Vulkan_GetPresentationSupport(VkInstance instance, VkPhysicalDevice physicalDevice, Uint32 queueFamilyIndex);</code>
     /// <summary>
     /// <para>Query support for presentation via a given physical device and queue
@@ -189,7 +233,15 @@ public static partial class SDL
     /// <returns><c>true</c> if supported, <c>false</c> if unsupported or an error occurred.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="VulkanGetInstanceExtensions"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Vulkan_GetPresentationSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool VulkanGetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex);
+    private static partial bool SDL_Vulkan_GetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex);
+    private delegate bool VulkanGetPresentationSupportNativeDelegate(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex);
+    private static VulkanGetPresentationSupportNativeDelegate VulkanGetPresentationSupportNativeFunction = SDL_Vulkan_GetPresentationSupport;
+
+    public static bool VulkanGetPresentationSupport(IntPtr instance, IntPtr physicalDevice, uint queueFamilyIndex)
+    {
+        return VulkanGetPresentationSupportNativeFunction(instance, physicalDevice, queueFamilyIndex);
+    }
 }

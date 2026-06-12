@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -28,8 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBasePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetBasePath();
+    private delegate IntPtr GetBasePathNative();
+    private static GetBasePathNative GetBasePathNativeFunction = SDL_GetBasePath;
+
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetBasePath(void);</code>
     /// <summary>
     /// <para>Get the directory where the application was run from.</para>
@@ -68,13 +73,17 @@ public static partial class SDL
     /// <seealso cref="GetPrefPath"/>
     public static string? GetBasePath()
     {
-        var value = SDL_GetBasePath(); 
+        var value = GetBasePathNativeFunction();
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
-    
-    
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrefPath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPrefPath([MarshalAs(UnmanagedType.LPUTF8Str)] string org, [MarshalAs(UnmanagedType.LPUTF8Str)] string app);
+    private delegate IntPtr GetPrefPathNative(string org, string app);
+    private static GetPrefPathNative GetPrefPathNativeFunction = SDL_GetPrefPath;
+
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetPrefPath(const char *org, const char *app);</code>
     /// <summary>
     /// <para>Get the user-and-app-specific path where files can be written.</para>
@@ -124,7 +133,7 @@ public static partial class SDL
     /// <seealso cref="GetBasePath"/>
     public static string? GetPrefPath(string org, string app)
     {
-        var value = SDL_GetPrefPath(org, app); 
+        var value = GetPrefPathNativeFunction(org, app);
         try
         {
             return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
@@ -134,10 +143,14 @@ public static partial class SDL
             if(value != IntPtr.Zero) Free(value);
         }
     }
-    
-    
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetUserFolder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetUserFolder(Folder folder);
+    private delegate IntPtr GetUserFolderNative(Folder folder);
+    private static GetUserFolderNative GetUserFolderNativeFunction = SDL_GetUserFolder;
+
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetUserFolder(SDL_Folder folder);</code>
     /// <summary>
     /// <para>Finds the most suitable user folder for a specific purpose.</para>
@@ -159,11 +172,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static string? GetUserFolder(Folder folder)
     {
-        var value = SDL_GetUserFolder(folder); 
+        var value = GetUserFolderNativeFunction(folder);
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
 
-    
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CreateDirectory(const char *path);</code>
     /// <summary>
     /// <para>Create a directory, and any missing parent directories.</para>
@@ -176,11 +189,19 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool CreateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+    private static partial bool SDL_CreateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+    private delegate bool CreateDirectoryNative(string path);
+    private static CreateDirectoryNative CreateDirectoryNativeFunction = SDL_CreateDirectory;
 
-    
+    public static bool CreateDirectory(string path)
+    {
+        return CreateDirectoryNativeFunction(path);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);</code>
     /// <summary>
     /// <para>Enumerate a directory through a callback function.</para>
@@ -199,11 +220,19 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnumerateDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool EnumerateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, EnumerateDirectoryCallback callback, IntPtr userdata);
+    private static partial bool SDL_EnumerateDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, EnumerateDirectoryCallback callback, IntPtr userdata);
+    private delegate bool EnumerateDirectoryNative(string path, EnumerateDirectoryCallback callback, IntPtr userdata);
+    private static EnumerateDirectoryNative EnumerateDirectoryNativeFunction = SDL_EnumerateDirectory;
 
-    
+    public static bool EnumerateDirectory(string path, EnumerateDirectoryCallback callback, IntPtr userdata)
+    {
+        return EnumerateDirectoryNativeFunction(path, callback, userdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RemovePath(const char *path);</code>
     /// <summary>
     /// <para>Remove a file or an empty directory.</para>
@@ -215,11 +244,19 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemovePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RemovePath([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
-    
-    
+    private static partial bool SDL_RemovePath([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+    private delegate bool RemovePathNative(string path);
+    private static RemovePathNative RemovePathNativeFunction = SDL_RemovePath;
+
+    public static bool RemovePath(string path)
+    {
+        return RemovePathNativeFunction(path);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenamePath(const char *oldpath, const char *newpath);</code>
     /// <summary>
     /// <para>Rename a file or directory.</para>
@@ -238,11 +275,19 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenamePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RenamePath([MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath, [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
-    
-    
+    private static partial bool SDL_RenamePath([MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath, [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
+    private delegate bool RenamePathNative(string oldpath, string newpath);
+    private static RenamePathNative RenamePathNativeFunction = SDL_RenamePath;
+
+    public static bool RenamePath(string oldpath, string newpath)
+    {
+        return RenamePathNativeFunction(oldpath, newpath);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CopyFile(const char *oldpath, const char *newpath);</code>
     /// <summary>
     /// <para>Copy a file.</para>
@@ -278,11 +323,19 @@ public static partial class SDL
     /// operation is not atomic, so the app might need to protect
     /// access to specific paths from other threads if appropriate.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool CopyFile([MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath, [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
-    
-    
+    private static partial bool SDL_CopyFile([MarshalAs(UnmanagedType.LPUTF8Str)] string oldpath, [MarshalAs(UnmanagedType.LPUTF8Str)] string newpath);
+    private delegate bool CopyFileNative(string oldpath, string newpath);
+    private static CopyFileNative CopyFileNativeFunction = SDL_CopyFile;
+
+    public static bool CopyFile(string oldpath, string newpath)
+    {
+        return CopyFileNativeFunction(oldpath, newpath);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetPathInfo(const char *path, SDL_PathInfo *info);</code>
     /// <summary>
     /// <para>Get information about a filesystem path.</para>
@@ -297,13 +350,25 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPathInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetPathInfo([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out PathInfo info);
-    
-    
+    private static partial bool SDL_GetPathInfo([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out PathInfo info);
+    private delegate bool GetPathInfoNative(string path, out PathInfo info);
+    private static GetPathInfoNative GetPathInfoNativeFunction = SDL_GetPathInfo;
+
+    public static bool GetPathInfo(string path, out PathInfo info)
+    {
+        return GetPathInfoNativeFunction(path, out info);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GlobDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GlobDirectory([MarshalAs(UnmanagedType.LPUTF8Str)] string path, [MarshalAs(UnmanagedType.LPUTF8Str)] string? pattern, GlobFlags flags, out int count);
+    private delegate IntPtr GlobDirectoryNative(string path, string? pattern, GlobFlags flags, out int count);
+    private static GlobDirectoryNative GlobDirectoryNativeFunction = SDL_GlobDirectory;
+
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);</code>
     /// <summary>
     /// <para>Files are filtered out if they don't match the string in `pattern`, which
@@ -331,7 +396,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static string[]? GlobDirectory(string path, string? pattern, GlobFlags flags, out int count)
     {
-        var ptr = SDL_GlobDirectory(path, pattern, flags, out count);
+        var ptr = GlobDirectoryNativeFunction(path, pattern, flags, out count);
 
         try
         {
@@ -342,10 +407,14 @@ public static partial class SDL
             if(ptr != IntPtr.Zero) Free(ptr);
         }
     }
-    
-    
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDirectory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetCurrentDirectory();
+    private delegate IntPtr GetCurrentDirectoryNative();
+    private static GetCurrentDirectoryNative GetCurrentDirectoryNativeFunction = SDL_GetCurrentDirectory;
+
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetCurrentDirectory(void);</code>
     /// <summary>
     /// <para>Get what the system believes is the "current working directory."</para>
@@ -364,7 +433,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     public static string? GetCurrentDirectory()
     {
-        var value = SDL_GetCurrentDirectory(); 
+        var value = GetCurrentDirectoryNativeFunction();
         try
         {
             return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);

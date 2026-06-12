@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -28,8 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPlatform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPlatform();
+    private delegate IntPtr GetPlatformNativeDelegate();
+    private static GetPlatformNativeDelegate GetPlatformNativeFunction = SDL_GetPlatform;
+
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetPlatform(void);</code>
     /// <summary>
     /// <para>Get the name of the platform.</para>
@@ -48,7 +53,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0.</since>
     public static string GetPlatform()
     {
-        var value = SDL_GetPlatform(); 
+        var value = GetPlatformNativeFunction();
         return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
     }
 }

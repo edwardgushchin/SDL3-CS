@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -43,10 +44,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalDestroyView"/>
     /// <seealso cref="MetalGetLayer"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_CreateView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr MetalCreateView(IntPtr window);
-    
-    
+    private static partial IntPtr SDL_Metal_CreateView(IntPtr window);
+    private delegate IntPtr MetalCreateViewNativeDelegate(IntPtr window);
+    private static MetalCreateViewNativeDelegate MetalCreateViewNativeFunction = SDL_Metal_CreateView;
+
+    public static IntPtr MetalCreateView(IntPtr window)
+    {
+        return MetalCreateViewNativeFunction(window);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Metal_DestroyView(SDL_MetalView view);</code>
     /// <summary>
     /// <para>Destroy an existing SDL_MetalView object.</para>
@@ -57,10 +66,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalCreateView"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_DestroyView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void MetalDestroyView(IntPtr view);
-    
-    
+    private static partial void SDL_Metal_DestroyView(IntPtr view);
+    private delegate void MetalDestroyViewNativeDelegate(IntPtr view);
+    private static MetalDestroyViewNativeDelegate MetalDestroyViewNativeFunction = SDL_Metal_DestroyView;
+
+    public static void MetalDestroyView(IntPtr view)
+    {
+        MetalDestroyViewNativeFunction(view);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_Metal_GetLayer(SDL_MetalView view);</code>
     /// <summary>
     /// <para>Get a pointer to the backing CAMetalLayer for the given view.</para>
@@ -69,6 +86,14 @@ public static partial class SDL
     /// <returns>a pointer.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_GetLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr MetalGetLayer(IntPtr view);
+    private static partial IntPtr SDL_Metal_GetLayer(IntPtr view);
+    private delegate IntPtr MetalGetLayerNativeDelegate(IntPtr view);
+    private static MetalGetLayerNativeDelegate MetalGetLayerNativeFunction = SDL_Metal_GetLayer;
+
+    public static IntPtr MetalGetLayer(IntPtr view)
+    {
+        return MetalGetLayerNativeFunction(view);
+    }
 }

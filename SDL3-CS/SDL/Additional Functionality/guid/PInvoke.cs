@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -39,10 +39,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StringToGUID"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GUIDToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial void GUIDToString(GUID guid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ref byte[] pszGUID, int cbGUID);
-    
-    
+    public static partial void GUIDToString(GUID guid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pszGUID, int cbGUID);
+
+
     /// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_StringToGUID(const char *pchGUID);</code>
     /// <summary>
     /// <para>Convert a GUID string into a <see cref="GUID"/> structure.</para>
@@ -56,6 +55,5 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GUIDToString"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_StringToGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
     public static extern GUID StringToGUID([MarshalAs(UnmanagedType.LPUTF8Str)] string pchGUID);
 }

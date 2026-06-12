@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -40,10 +41,18 @@ public static partial class SDL
     /// <returns>assert state.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReportAssertion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial AssertState ReportAssertion(IntPtr data, [MarshalAs(UnmanagedType.LPUTF8Str)] string func, [MarshalAs(UnmanagedType.LPUTF8Str)] string file, int line);
-    
-    
+    private static partial AssertState SDL_ReportAssertion(IntPtr data, [MarshalAs(UnmanagedType.LPUTF8Str)] string func, [MarshalAs(UnmanagedType.LPUTF8Str)] string file, int line);
+    private delegate AssertState ReportAssertionNative(IntPtr data, string func, string file, int line);
+    private static ReportAssertionNative ReportAssertionNativeFunction = SDL_ReportAssertion;
+
+    public static AssertState ReportAssertion(IntPtr data, string func, string file, int line)
+    {
+        return ReportAssertionNativeFunction(data, func, file, line);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetAssertionHandler(SDL_AssertionHandler handler, void *userdata);</code>
     /// <summary>
     /// <para>Set an application-defined assertion handler.</para>
@@ -61,10 +70,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAssertionHandler"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAssertionHandler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetAssertionHandler(AssertionHandler handler, IntPtr userdata);
-    
-    
+    private static partial void SDL_SetAssertionHandler(AssertionHandler handler, IntPtr userdata);
+    private delegate void SetAssertionHandlerNative(AssertionHandler handler, IntPtr userdata);
+    private static SetAssertionHandlerNative SetAssertionHandlerNativeFunction = SDL_SetAssertionHandler;
+
+    public static void SetAssertionHandler(AssertionHandler handler, IntPtr userdata)
+    {
+        SetAssertionHandlerNativeFunction(handler, userdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_AssertionHandler SDLCALL SDL_GetDefaultAssertionHandler(void);</code>
     /// <summary>
     /// <para>Get the default assertion handler.</para>
@@ -78,10 +95,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAssertionHandler"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultAssertionHandler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial AssertionHandler GetDefaultAssertionHandler();
-    
-    
+    private static partial AssertionHandler SDL_GetDefaultAssertionHandler();
+    private delegate AssertionHandler GetDefaultAssertionHandlerNative();
+    private static GetDefaultAssertionHandlerNative GetDefaultAssertionHandlerNativeFunction = SDL_GetDefaultAssertionHandler;
+
+    public static AssertionHandler GetDefaultAssertionHandler()
+    {
+        return GetDefaultAssertionHandlerNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_AssertionHandler SDLCALL SDL_GetAssertionHandler(void **puserdata);</code>
     /// <summary>
     /// <para>Get the current assertion handler.</para>
@@ -100,10 +125,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAssertionHandler"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAssertionHandler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial AssertionHandler GetAssertionHandler(IntPtr puserdata);
-    
-    
+    private static partial AssertionHandler SDL_GetAssertionHandler(IntPtr puserdata);
+    private delegate AssertionHandler GetAssertionHandlerNative(IntPtr puserdata);
+    private static GetAssertionHandlerNative GetAssertionHandlerNativeFunction = SDL_GetAssertionHandler;
+
+    public static AssertionHandler GetAssertionHandler(IntPtr puserdata)
+    {
+        return GetAssertionHandlerNativeFunction(puserdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC const SDL_AssertData * SDLCALL SDL_GetAssertionReport(void);</code>
     /// <summary>
     /// <para>Get a list of all assertion failures.</para>
@@ -127,10 +160,18 @@ public static partial class SDL
     /// returned pointer invalid.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResetAssertionReport"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAssertionReport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetAssertionReport();
-    
-    
+    private static partial IntPtr SDL_GetAssertionReport();
+    private delegate IntPtr GetAssertionReportNative();
+    private static GetAssertionReportNative GetAssertionReportNativeFunction = SDL_GetAssertionReport;
+
+    public static IntPtr GetAssertionReport()
+    {
+        return GetAssertionReportNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetAssertionReport(void);</code>
     /// <summary>
     /// <para>Clear the list of all assertion failures.</para>
@@ -144,6 +185,14 @@ public static partial class SDL
     /// memory leaks or crashes.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAssertionReport"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetAssertionReport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ResetAssertionReport();
+    private static partial void SDL_ResetAssertionReport();
+    private delegate void ResetAssertionReportNative();
+    private static ResetAssertionReportNative ResetAssertionReportNativeFunction = SDL_ResetAssertionReport;
+
+    public static void ResetAssertionReport()
+    {
+        ResetAssertionReportNativeFunction();
+    }
 }

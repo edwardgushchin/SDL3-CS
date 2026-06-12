@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -33,7 +33,7 @@ public static partial class SDL
 		return (uint)(a | (b << 8) | (c << 16) | (d << 24));
 	}
 
-	
+
 	/// <summary>
 	/// <para>A macro to initialize an SDL interface.</para>
 	/// <para>This macro will initialize an SDL interface structure and should be called
@@ -67,22 +67,12 @@ public static partial class SDL
 	[Macro]
 	public static void InitInterface(ref IOStreamInterface iface)
 	{
-		var ptr = StructureToPointer<IOStreamInterface>(iface);
-
-		try
-		{
-			var size = (uint)Marshal.SizeOf(iface);
-		
-			Memset(ptr, 0, size);
-			iface.Version = size;
-		}
-		finally
-		{
-			Marshal.FreeHGlobal(ptr);
-		}
+		var size = (uint)Marshal.SizeOf<IOStreamInterface>();
+		iface = default;
+		iface.Version = size;
 	}
-	
-	
+
+
 	/// <summary>
 	/// <para>A macro to initialize an SDL interface.</para>
 	/// <para>This macro will initialize an SDL interface structure and should be called
@@ -116,22 +106,12 @@ public static partial class SDL
 	[Macro]
 	public static void InitInterface(ref StorageInterface iface)
 	{
-		var ptr = StructureToPointer<StorageInterface>(iface);
-
-		try
-		{
-			var size = (uint)Marshal.SizeOf(iface);
-		
-			Memset(ptr, 0, size);
-			iface.Version = size;
-		}
-		finally
-		{
-			Marshal.FreeHGlobal(ptr);
-		}
+		var size = (uint)Marshal.SizeOf<StorageInterface>();
+		iface = default;
+		iface.Version = size;
 	}
-	
-	
+
+
 	/// <summary>
 	/// <para>A macro to initialize an SDL interface.</para>
 	/// <para>This macro will initialize an SDL interface structure and should be called
@@ -165,18 +145,8 @@ public static partial class SDL
 	[Macro]
 	public static void InitInterface(ref VirtualJoystickDesc iface)
 	{
-		var ptr = StructureToPointer<VirtualJoystickDesc>(iface);
-
-		try
-		{
-			var size = (uint)Marshal.SizeOf(iface);
-		
-			Memset(ptr, 0, size);
-			iface.Version = size;
-		}
-		finally
-		{
-			Marshal.FreeHGlobal(ptr);
-		}
+		var size = (uint)Marshal.SizeOf<VirtualJoystickDesc>();
+		iface = default;
+		iface.Version = size;
 	}
 }

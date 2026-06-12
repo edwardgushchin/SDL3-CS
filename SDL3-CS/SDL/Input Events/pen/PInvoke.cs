@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* SDL3# - C# Wrapper for SDL3
  *
  * Copyright (c) 2024-2026 Eduard Gushchin.
@@ -26,6 +26,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -44,6 +45,14 @@ public static partial class SDL
     /// on failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPenDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial PenDeviceType GetPenDeviceType(uint instanceId);
+    private static partial PenDeviceType SDL_GetPenDeviceType(uint instanceId);
+    private delegate PenDeviceType GetPenDeviceTypeNativeDelegate(uint instanceId);
+    private static GetPenDeviceTypeNativeDelegate GetPenDeviceTypeNativeFunction = SDL_GetPenDeviceType;
+
+    public static PenDeviceType GetPenDeviceType(uint instanceId)
+    {
+        return GetPenDeviceTypeNativeFunction(instanceId);
+    }
 }

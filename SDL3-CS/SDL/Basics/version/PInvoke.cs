@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -41,12 +42,24 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRevision"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int GetVersion();
-    
-    
+    private static partial int SDL_GetVersion();
+    private delegate int GetVersionNative();
+    private static GetVersionNative GetVersionNativeFunction = SDL_GetVersion;
+
+    public static int GetVersion()
+    {
+        return GetVersionNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRevision"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetRevision();
+    private delegate IntPtr GetRevisionNative();
+    private static GetRevisionNative GetRevisionNativeFunction = SDL_GetRevision;
+
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetRevision(void);</code>
     /// <summary>
     /// <para>Get the code revision of the SDL library that is linked against your
@@ -69,7 +82,7 @@ public static partial class SDL
     /// <seealso cref="GetVersion"/>
     public static string GetRevision()
     {
-        var value = SDL_GetRevision(); 
+        var value = GetRevisionNativeFunction();
         return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
     }
 }

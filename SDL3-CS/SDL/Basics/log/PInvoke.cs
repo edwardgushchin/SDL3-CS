@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -37,10 +38,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResetLogPriorities"/>
     /// <seealso cref="SetLogPriority"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriorities"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetLogPriorities(LogPriority priority);
-    
-    
+    private static partial void SDL_SetLogPriorities(LogPriority priority);
+    private delegate void SetLogPrioritiesNative(LogPriority priority);
+    private static SetLogPrioritiesNative SetLogPrioritiesNativeFunction = SDL_SetLogPriorities;
+
+    public static void SetLogPriorities(LogPriority priority)
+    {
+        SetLogPrioritiesNativeFunction(priority);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetLogPriority(int category, SDL_LogPriority priority);</code>
     /// <summary>
     /// Set the priority of a particular log category.
@@ -52,10 +61,18 @@ public static partial class SDL
     /// <seealso cref="GetLogPriority"/>
     /// <seealso cref="ResetLogPriorities"/>
     /// <seealso cref="SetLogPriorities"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetLogPriority(LogCategory category, LogPriority priority);
-    
-    
+    private static partial void SDL_SetLogPriority(LogCategory category, LogPriority priority);
+    private delegate void SetLogPriorityNative(LogCategory category, LogPriority priority);
+    private static SetLogPriorityNative SetLogPriorityNativeFunction = SDL_SetLogPriority;
+
+    public static void SetLogPriority(LogCategory category, LogPriority priority)
+    {
+        SetLogPriorityNativeFunction(category, priority);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_LogPriority SDLCALL SDL_GetLogPriority(int category);</code>
     /// <summary>
     /// Get the priority of a particular log category.
@@ -65,10 +82,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetLogPriority"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial LogPriority GetLogPriority(LogCategory category);
-    
-    
+    private static partial LogPriority SDL_GetLogPriority(LogCategory category);
+    private delegate LogPriority GetLogPriorityNative(LogCategory category);
+    private static GetLogPriorityNative GetLogPriorityNativeFunction = SDL_GetLogPriority;
+
+    public static LogPriority GetLogPriority(LogCategory category)
+    {
+        return GetLogPriorityNativeFunction(category);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetLogPriorities(void);</code>
     /// <summary>
     /// Reset all priorities to default.
@@ -78,10 +103,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetLogPriorities"/>
     /// <seealso cref="SetLogPriority"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetLogPriorities"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ResetLogPriorities();
-    
-    
+    private static partial void SDL_ResetLogPriorities();
+    private delegate void ResetLogPrioritiesNative();
+    private static ResetLogPrioritiesNative ResetLogPrioritiesNativeFunction = SDL_ResetLogPriorities;
+
+    public static void ResetLogPriorities()
+    {
+        ResetLogPrioritiesNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetLogPriorityPrefix(SDL_LogPriority priority, const char *prefix);</code>
     /// <summary>
     /// <para>Set the text prepended to log messages of a given priority.</para>
@@ -100,11 +133,19 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetLogPriorities"/>
     /// <seealso cref="SetLogPriority"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogPriorityPrefix"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetLogPriorityPrefix(LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string? prefix);
+    private static partial bool SDL_SetLogPriorityPrefix(LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string? prefix);
+    private delegate bool SetLogPriorityPrefixNative(LogPriority priority, string? prefix);
+    private static SetLogPriorityPrefixNative SetLogPriorityPrefixNativeFunction = SDL_SetLogPriorityPrefix;
 
-    
+    public static bool SetLogPriorityPrefix(LogPriority priority, string? prefix)
+    {
+        return SetLogPriorityPrefixNativeFunction(priority, prefix);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Log(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);</code>
     /// <summary>
     /// Log a message with <see cref="LogCategory.Application"/> and <see cref="LogPriority.Info"/>.
@@ -121,10 +162,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_Log"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void Log([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_Log([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogNative(string fmt);
+    private static LogNative LogNativeFunction = SDL_Log;
+
+    public static void Log(string fmt)
+    {
+        LogNativeFunction(fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogTrace(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Trace"/>.
@@ -142,10 +191,18 @@ public static partial class SDL
     /// <seealso cref="LogMessageV"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogTrace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogTrace(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_LogTrace(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogTraceNative(LogCategory category, string fmt);
+    private static LogTraceNative LogTraceNativeFunction = SDL_LogTrace;
+
+    public static void LogTrace(LogCategory category, string fmt)
+    {
+        LogTraceNativeFunction(category, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogVerbose(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Verbose"/>,
@@ -162,10 +219,18 @@ public static partial class SDL
     /// <seealso cref="LogMessage"/>
     /// <seealso cref="LogMessageV"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogVerbose"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogVerbose(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_LogVerbose(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogVerboseNative(LogCategory category, string fmt);
+    private static LogVerboseNative LogVerboseNativeFunction = SDL_LogVerbose;
+
+    public static void LogVerbose(LogCategory category, string fmt)
+    {
+        LogVerboseNativeFunction(category, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogDebug(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Debug"/>.
@@ -183,10 +248,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogDebug"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogDebug(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
-    
-    
+    private static partial void SDL_LogDebug(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    private delegate void LogDebugNative(LogCategory category, string message);
+    private static LogDebugNative LogDebugNativeFunction = SDL_LogDebug;
+
+    public static void LogDebug(LogCategory category, string message)
+    {
+        LogDebugNativeFunction(category, message);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogInfo(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Info"/>.
@@ -204,10 +277,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogInfo(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_LogInfo(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogInfoNative(LogCategory category, string fmt);
+    private static LogInfoNative LogInfoNativeFunction = SDL_LogInfo;
+
+    public static void LogInfo(LogCategory category, string fmt)
+    {
+        LogInfoNativeFunction(category, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogWarn(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Warn"/>.
@@ -225,10 +306,18 @@ public static partial class SDL
     /// <seealso cref="LogMessageV"/>
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogWarn"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogWarn(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private static partial void SDL_LogWarn(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogWarnNative(LogCategory category, string fmt);
+    private static LogWarnNative LogWarnNativeFunction = SDL_LogWarn;
 
-    
+    public static void LogWarn(LogCategory category, string fmt)
+    {
+        LogWarnNativeFunction(category, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogError(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Error"/>.
@@ -246,10 +335,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogError(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_LogError(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogErrorNative(LogCategory category, string fmt);
+    private static LogErrorNative LogErrorNativeFunction = SDL_LogError;
+
+    public static void LogError(LogCategory category, string fmt)
+    {
+        LogErrorNativeFunction(category, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogCritical(int category, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// Log a message with <see cref="LogPriority.Critical"/>.
@@ -266,10 +363,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogCritical"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogCritical(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_LogCritical(LogCategory category, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogCriticalNative(LogCategory category, string fmt);
+    private static LogCriticalNative LogCriticalNativeFunction = SDL_LogCritical;
+
+    public static void LogCritical(LogCategory category, string fmt)
+    {
+        LogCriticalNativeFunction(category, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogMessage(int category, SDL_LogPriority priority, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(3);</code>
     /// <summary>
     /// Log a message with the specified category and priority.
@@ -288,10 +393,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogMessage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogMessage(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    
-    
+    private static partial void SDL_LogMessage(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate void LogMessageNative(LogCategory category, LogPriority priority, string fmt);
+    private static LogMessageNative LogMessageNativeFunction = SDL_LogMessage;
+
+    public static void LogMessage(LogCategory category, LogPriority priority, string fmt)
+    {
+        LogMessageNativeFunction(category, priority, fmt);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_LogMessageV(int category, SDL_LogPriority priority, SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap) SDL_PRINTF_VARARG_FUNCV(3);</code>
     /// <summary>
     /// Log a message with the specified category and priority.
@@ -311,10 +424,18 @@ public static partial class SDL
     /// <seealso cref="LogTrace"/>
     /// <seealso cref="LogVerbose"/>
     /// <seealso cref="LogWarn"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogMessageV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void LogMessageV(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
-    
-    
+    private static partial void SDL_LogMessageV(LogCategory category, LogPriority priority, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
+    private delegate void LogMessageVNative(LogCategory category, LogPriority priority, string fmt, string[] ap);
+    private static LogMessageVNative LogMessageVNativeFunction = SDL_LogMessageV;
+
+    public static void LogMessageV(LogCategory category, LogPriority priority, string fmt, string[] ap)
+    {
+        LogMessageVNativeFunction(category, priority, fmt, ap);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_LogOutputFunction SDLCALL SDL_GetDefaultLogOutputFunction(void);</code>
     /// <summary>
     /// Get the default log output function.
@@ -324,10 +445,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="SetLogOutputFunction"/>
     /// <seealso cref="GetLogOutputFunction"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial LogOutputFunction GetDefaultLogOutputFunction();
-    
-    
+    private static partial LogOutputFunction SDL_GetDefaultLogOutputFunction();
+    private delegate LogOutputFunction GetDefaultLogOutputFunctionNative();
+    private static GetDefaultLogOutputFunctionNative GetDefaultLogOutputFunctionNativeFunction = SDL_GetDefaultLogOutputFunction;
+
+    public static LogOutputFunction GetDefaultLogOutputFunction()
+    {
+        return GetDefaultLogOutputFunctionNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);</code>
     /// <summary>
     /// <para>Get the current log output function.</para>
@@ -340,10 +469,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDefaultLogOutputFunction"/>
     /// <seealso cref="SetLogOutputFunction"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void GetLogOutputFunction(out LogOutputFunction callback, out IntPtr userdata);
-    
-    
+    private static partial void SDL_GetLogOutputFunction(out LogOutputFunction callback, out IntPtr userdata);
+    private delegate void GetLogOutputFunctionNative(out LogOutputFunction callback, out IntPtr userdata);
+    private static GetLogOutputFunctionNative GetLogOutputFunctionNativeFunction = SDL_GetLogOutputFunction;
+
+    public static void GetLogOutputFunction(out LogOutputFunction callback, out IntPtr userdata)
+    {
+        GetLogOutputFunctionNativeFunction(out callback, out userdata);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);</code>
     /// <summary>
     /// Replace the default log output function with one of your own.
@@ -354,6 +491,14 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDefaultLogOutputFunction"/>
     /// <seealso cref="GetLogOutputFunction"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetLogOutputFunction(LogOutputFunction callback, IntPtr userdata);
+    private static partial void SDL_SetLogOutputFunction(LogOutputFunction callback, IntPtr userdata);
+    private delegate void SetLogOutputFunctionNative(LogOutputFunction callback, IntPtr userdata);
+    private static SetLogOutputFunctionNative SetLogOutputFunctionNativeFunction = SDL_SetLogOutputFunction;
+
+    public static void SetLogOutputFunction(LogOutputFunction callback, IntPtr userdata)
+    {
+        SetLogOutputFunctionNativeFunction(callback, userdata);
+    }
 }

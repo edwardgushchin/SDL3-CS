@@ -30,6 +30,14 @@ For this repository, agent operational materials live inside the worktree but mu
 - Keep edits scoped to the requested behavior. Avoid unrelated refactors, formatting churn, dependency changes, and metadata churn unless they are necessary to complete the task safely.
 - Prefer structured parsers and project APIs over ad hoc text manipulation when the repository or standard toolchain provides them.
 
+## Wrapper Test Coverage
+- Every function in the wrapper project must be covered 100% by automated tests. For this rule, "function" means every C# method declaration in `SDL3-CS/**/*.cs`, including overloads, public APIs, private native entry-point helpers, partial/extern methods, managed convenience wrappers, generic helpers, and marshalling helpers.
+- Delegate declarations, enum members, struct fields, constants, and compiler-generated accessors are not functions for this rule unless the source file implements an explicit method body or method declaration for them.
+- Tests for wrapper functions must live in `SDL3-CS.Tests/` and mirror the wrapper source structure exactly: a function from `SDL3-CS/<relative path>.cs` is covered from `SDL3-CS.Tests/<relative path>.cs`.
+- Function coverage must be meaningful, not only a delegate-assignment smoke check. Cover success paths, failure paths, null/invalid inputs, overload resolution, marshalling shape, ownership/freeing behavior, and native entry-point metadata where applicable.
+- A wrapper function task is not complete until the relevant coverage report proves 100% function coverage for that function and the focused test command is recorded in the task notes.
+- Direct `LibraryImport` or `extern` stubs that emit no coverable managed IL and therefore do not appear as functions in the coverage report still require a dedicated mirrored test. Prove them with a direct invocation when safe, native metadata/ABI assertions, and a coverage report showing 100% coverage for the mirrored test method that exercises the stub.
+
 ## SDL XML Documentation Links
 - In wrapper XML documentation prose, when referencing an SDL C identifier that has a managed SDL3-CS equivalent, use a `<see cref="..."/>` link to the managed symbol instead of leaving the raw C identifier as text.
 - Example: write `<see cref="EventType.NotificationActionInvoked"/>` instead of `SDL_EVENT_NOTIFICATION_ACTION_INVOKED` when documenting notification events.

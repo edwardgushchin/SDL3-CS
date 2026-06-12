@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -28,8 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDevices"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchDevices(out int count);
+    private delegate IntPtr GetTouchDevicesNativeDelegate(out int count);
+    private static GetTouchDevicesNativeDelegate GetTouchDevicesNativeFunction = SDL_GetTouchDevices;
+
     /// <code>extern SDL_DECLSPEC SDL_TouchID * SDLCALL SDL_GetTouchDevices(int *count);</code>
     /// <summary>
     /// <para>Get a list of registered touch devices.</para>
@@ -45,8 +50,8 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static ulong[]? GetTouchDevices(out int count)
     {
-        var ptr = SDL_GetTouchDevices(out count);
-        
+        var ptr = GetTouchDevicesNativeFunction(out count);
+
         try
         {
             return PointerToStructureArray<ulong>(ptr, count);
@@ -57,9 +62,13 @@ public static partial class SDL
         }
     }
 
-    
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchDeviceName(ulong touchID);
+    private delegate IntPtr GetTouchDeviceNameNativeDelegate(ulong touchID);
+    private static GetTouchDeviceNameNativeDelegate GetTouchDeviceNameNativeFunction = SDL_GetTouchDeviceName;
+
     /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetTouchDeviceName(SDL_TouchID touchID);</code>
     /// <summary>
     /// Get the touch device name as reported from the driver.
@@ -70,11 +79,11 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static string? GetTouchDeviceName(ulong touchID)
     {
-        var value = SDL_GetTouchDeviceName(touchID); 
+        var value = GetTouchDeviceNameNativeFunction(touchID);
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC SDL_TouchDeviceType SDLCALL SDL_GetTouchDeviceType(SDL_TouchID touchID);</code>
     /// <summary>
     /// Get the type of the given touch device.
@@ -82,12 +91,24 @@ public static partial class SDL
     /// <param name="touchID">the ID of a touch device.</param>
     /// <returns>touch device type.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial TouchDeviceType GetTouchDeviceType(ulong touchID);
-    
-    
+    private static partial TouchDeviceType SDL_GetTouchDeviceType(ulong touchID);
+    private delegate TouchDeviceType GetTouchDeviceTypeNativeDelegate(ulong touchID);
+    private static GetTouchDeviceTypeNativeDelegate GetTouchDeviceTypeNativeFunction = SDL_GetTouchDeviceType;
+
+    public static TouchDeviceType GetTouchDeviceType(ulong touchID)
+    {
+        return GetTouchDeviceTypeNativeFunction(touchID);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchFingers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetTouchFingers(ulong touchID, out int count);
+    private delegate IntPtr GetTouchFingersNativeDelegate(ulong touchID, out int count);
+    private static GetTouchFingersNativeDelegate GetTouchFingersNativeFunction = SDL_GetTouchFingers;
+
     /// <code>extern SDL_DECLSPEC SDL_Finger ** SDLCALL SDL_GetTouchFingers(SDL_TouchID touchID, int *count);</code>
     /// <summary>
     /// Get a list of active fingers for a given touch device.
@@ -102,8 +123,8 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static Finger[]? GetTouchFingers(ulong touchID, out int count)
     {
-        var ptr = SDL_GetTouchFingers(touchID, out count);
-        
+        var ptr = GetTouchFingersNativeFunction(touchID, out count);
+
         try
         {
             return PointerToStructureArray<Finger>(ptr, count);

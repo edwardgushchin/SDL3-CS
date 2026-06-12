@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -22,6 +22,7 @@
 #endregion
 
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
@@ -56,11 +57,19 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ShowSimpleMessageBox"/>
+    [ExcludeFromCodeCoverage]
     [DllImport(SDLLibrary, EntryPoint = "SDL_ShowMessageBox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static extern bool ShowMessageBox(in MessageBoxData messageboxdata, out int buttonid);
-    
-    
+    private static extern bool SDL_ShowMessageBox(in MessageBoxData messageboxdata, out int buttonid);
+    private delegate bool ShowMessageBoxNative(in MessageBoxData messageboxdata, out int buttonid);
+    private static ShowMessageBoxNative ShowMessageBoxNativeFunction = SDL_ShowMessageBox;
+
+    public static bool ShowMessageBox(in MessageBoxData messageboxdata, out int buttonid)
+    {
+        return ShowMessageBoxNativeFunction(in messageboxdata, out buttonid);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);</code>
     /// <summary>
     /// <para>Display a simple modal message box.</para>
@@ -95,7 +104,15 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ShowMessageBox"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowSimpleMessageBox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool ShowSimpleMessageBox(MessageBoxFlags flags, [MarshalAs(UnmanagedType.LPUTF8Str)] string title, [MarshalAs(UnmanagedType.LPUTF8Str)] string message, IntPtr window);
+    private static partial bool SDL_ShowSimpleMessageBox(MessageBoxFlags flags, [MarshalAs(UnmanagedType.LPUTF8Str)] string title, [MarshalAs(UnmanagedType.LPUTF8Str)] string message, IntPtr window);
+    private delegate bool ShowSimpleMessageBoxNative(MessageBoxFlags flags, string title, string message, IntPtr window);
+    private static ShowSimpleMessageBoxNative ShowSimpleMessageBoxNativeFunction = SDL_ShowSimpleMessageBox;
+
+    public static bool ShowSimpleMessageBox(MessageBoxFlags flags, string title, string message, IntPtr window)
+    {
+        return ShowSimpleMessageBoxNativeFunction(flags, title, message, window);
+    }
 }

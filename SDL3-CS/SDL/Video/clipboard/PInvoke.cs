@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -39,13 +40,24 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="HasClipboardText"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetClipboardText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
-    
-    
+    private static partial bool SDL_SetClipboardText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
+    private delegate bool SetClipboardTextNativeDelegate(string text);
+    private static SetClipboardTextNativeDelegate SetClipboardTextNativeFunction = SDL_SetClipboardText;
+
+    public static bool SetClipboardText(string text)
+    {
+        return SetClipboardTextNativeFunction(text);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetClipboardText();
+    private delegate IntPtr GetClipboardTextNativeDelegate();
+    private static GetClipboardTextNativeDelegate GetClipboardTextNativeFunction = SDL_GetClipboardText;
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetClipboardText(void);</code>
     /// <summary>
     /// <para>Get UTF-8 text from the clipboard.</para>
@@ -61,7 +73,7 @@ public static partial class SDL
     /// <seealso cref="SetClipboardText"/>
     public static string GetClipboardText()
     {
-        var value = SDL_GetClipboardText(); 
+        var value = GetClipboardTextNativeFunction();
         try
         {
             return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
@@ -72,7 +84,7 @@ public static partial class SDL
         }
     }
 
-    
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasClipboardText(void);</code>
     /// <summary>
     /// Query whether the clipboard exists and contains a non-empty text string.
@@ -82,11 +94,19 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetClipboardText"/>
     /// <seealso cref="SetClipboardText"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasClipboardText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool HasClipboardText();
+    private static partial bool SDL_HasClipboardText();
+    private delegate bool HasClipboardTextNativeDelegate();
+    private static HasClipboardTextNativeDelegate HasClipboardTextNativeFunction = SDL_HasClipboardText;
 
-    
+    public static bool HasClipboardText()
+    {
+        return HasClipboardTextNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPrimarySelectionText(const char *text);</code>
     /// <summary>
     /// Put UTF-8 text into the primary selection.
@@ -98,13 +118,24 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="HasPrimarySelectionText"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetPrimarySelectionText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
-    
-    
+    private static partial bool SDL_SetPrimarySelectionText([MarshalAs(UnmanagedType.LPUTF8Str)] string text);
+    private delegate bool SetPrimarySelectionTextNativeDelegate(string text);
+    private static SetPrimarySelectionTextNativeDelegate SetPrimarySelectionTextNativeFunction = SDL_SetPrimarySelectionText;
+
+    public static bool SetPrimarySelectionText(string text)
+    {
+        return SetPrimarySelectionTextNativeFunction(text);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPrimarySelectionText();
+    private delegate IntPtr GetPrimarySelectionTextNativeDelegate();
+    private static GetPrimarySelectionTextNativeDelegate GetPrimarySelectionTextNativeFunction = SDL_GetPrimarySelectionText;
     /// <code>extern SDL_DECLSPEC char * SDLCALL SDL_GetPrimarySelectionText(void);</code>
     /// <summary>
     /// <para>Get UTF-8 text from the primary selection.</para>
@@ -120,7 +151,7 @@ public static partial class SDL
     /// <seealso cref="SetPrimarySelectionText"/>
     public static string GetPrimarySelectionText()
     {
-        var value = SDL_GetPrimarySelectionText(); 
+        var value = GetPrimarySelectionTextNativeFunction();
         try
         {
             return value == IntPtr.Zero ? "" : Marshal.PtrToStringUTF8(value)!;
@@ -142,11 +173,19 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPrimarySelectionText"/>
     /// <seealso cref="SetPrimarySelectionText"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasPrimarySelectionText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool HasPrimarySelectionText();
-    
-    
+    private static partial bool SDL_HasPrimarySelectionText();
+    private delegate bool HasPrimarySelectionTextNativeDelegate();
+    private static HasPrimarySelectionTextNativeDelegate HasPrimarySelectionTextNativeFunction = SDL_HasPrimarySelectionText;
+
+    public static bool HasPrimarySelectionText()
+    {
+        return HasPrimarySelectionTextNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetClipboardData(SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char *const *mime_types, size_t num_mime_types);</code>
     /// <summary>
     /// <para>Offer clipboard data to the OS.</para>
@@ -173,12 +212,22 @@ public static partial class SDL
     /// <seealso cref="ClearClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
     /// <seealso cref="HasClipboardData"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SetClipboardData(ClipboardDataCallback callback, ClipboardCleanupCallback cleanup, 
+    private static partial bool SDL_SetClipboardData(ClipboardDataCallback callback, ClipboardCleanupCallback cleanup,
         IntPtr userdata, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str, SizeParamIndex = 4)] string[] mimeTypes, UIntPtr numMimeTypes);
-    
-    
+    private delegate bool SetClipboardDataNativeDelegate(ClipboardDataCallback callback, ClipboardCleanupCallback cleanup,
+        IntPtr userdata, string[] mimeTypes, UIntPtr numMimeTypes);
+    private static SetClipboardDataNativeDelegate SetClipboardDataNativeFunction = SDL_SetClipboardData;
+
+    public static bool SetClipboardData(ClipboardDataCallback callback, ClipboardCleanupCallback cleanup,
+        IntPtr userdata, string[] mimeTypes, UIntPtr numMimeTypes)
+    {
+        return SetClipboardDataNativeFunction(callback, cleanup, userdata, mimeTypes, numMimeTypes);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearClipboardData(void);</code>
     /// <summary>
     /// Clear the clipboard data.
@@ -188,11 +237,19 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool ClearClipboardData();
+    private static partial bool SDL_ClearClipboardData();
+    private delegate bool ClearClipboardDataNativeDelegate();
+    private static ClearClipboardDataNativeDelegate ClearClipboardDataNativeFunction = SDL_ClearClipboardData;
 
-    
+    public static bool ClearClipboardData()
+    {
+        return ClearClipboardDataNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetClipboardData(const char *mime_type, size_t *size);</code>
     /// <summary>
     /// <para>Get the data from the clipboard for a given mime type.</para>
@@ -208,10 +265,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasClipboardData"/>
     /// <seealso cref="SetClipboardData"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out UIntPtr size);
+    private static partial IntPtr SDL_GetClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType, out UIntPtr size);
+    private delegate IntPtr GetClipboardDataNativeDelegate(string mimeType, out UIntPtr size);
+    private static GetClipboardDataNativeDelegate GetClipboardDataNativeFunction = SDL_GetClipboardData;
 
-    
+    public static IntPtr GetClipboardData(string mimeType, out UIntPtr size)
+    {
+        return GetClipboardDataNativeFunction(mimeType, out size);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasClipboardData(const char *mime_type);</code>
     /// <summary>
     /// Query whether there is data in the clipboard for the provided mime type.
@@ -223,13 +288,24 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetClipboardData"/>
     /// <seealso cref="GetClipboardData"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasClipboardData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool HasClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType);
-    
-    
+    private static partial bool SDL_HasClipboardData([MarshalAs(UnmanagedType.LPUTF8Str)] string mimeType);
+    private delegate bool HasClipboardDataNativeDelegate(string mimeType);
+    private static HasClipboardDataNativeDelegate HasClipboardDataNativeFunction = SDL_HasClipboardData;
+
+    public static bool HasClipboardData(string mimeType)
+    {
+        return HasClipboardDataNativeFunction(mimeType);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClipboardMimeTypes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetClipboardMimeTypes(out UIntPtr numMimeTypes);
+    private delegate IntPtr GetClipboardMimeTypesNativeDelegate(out UIntPtr numMimeTypes);
+    private static GetClipboardMimeTypesNativeDelegate GetClipboardMimeTypesNativeFunction = SDL_GetClipboardMimeTypes;
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GetClipboardMimeTypes(size_t *num_mime_types);</code>
     /// <summary>
     /// Retrieve the list of mime types available in the clipboard.
@@ -244,7 +320,7 @@ public static partial class SDL
     /// <seealso cref="SetClipboardData"/>
     public static string[]? GetClipboardMimeTypes(out UIntPtr numMimeTypes)
     {
-        var ptr = SDL_GetClipboardMimeTypes(out numMimeTypes);
+        var ptr = GetClipboardMimeTypesNativeFunction(out numMimeTypes);
 
         try
         {

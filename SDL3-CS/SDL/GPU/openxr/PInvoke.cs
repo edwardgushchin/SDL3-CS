@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -41,10 +42,18 @@ public partial class SDL
     /// <returns>the result of the call.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="CreateGPUDeviceWithProperties"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUXRSession"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial XrResult CreateGPUXRSession(IntPtr device, IntPtr createInfo, out IntPtr session);
-    
-    
+    private static partial XrResult SDL_CreateGPUXRSession(IntPtr device, IntPtr createInfo, out IntPtr session);
+    private delegate XrResult CreateGPUXRSessionNativeDelegate(IntPtr device, IntPtr createInfo, out IntPtr session);
+    private static CreateGPUXRSessionNativeDelegate CreateGPUXRSessionNativeFunction = SDL_CreateGPUXRSession;
+
+    public static XrResult CreateGPUXRSession(IntPtr device, IntPtr createInfo, out IntPtr session)
+    {
+        return CreateGPUXRSessionNativeFunction(device, createInfo, out session);
+    }
+
+
     /// <code>extern SDL_DECLSPEC SDL_GPUTextureFormat * SDLCALL SDL_GetGPUXRSwapchainFormats(SDL_GPUDevice *device, XrSession session, int *num_formats);</code>
     /// <summary>
     /// Queries the GPU device for supported XR swapchain image formats.
@@ -60,10 +69,18 @@ public partial class SDL
     /// <see cref="Free"/> when it is no longer needed.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="CreateGPUXRSwapchain"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUXRSwapchainFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetGPUXRSwapchainFormats(IntPtr device, IntPtr session, out int numFormats);
-    
-    
+    private static partial IntPtr SDL_GetGPUXRSwapchainFormats(IntPtr device, IntPtr session, out int numFormats);
+    private delegate IntPtr GetGPUXRSwapchainFormatsNativeDelegate(IntPtr device, IntPtr session, out int numFormats);
+    private static GetGPUXRSwapchainFormatsNativeDelegate GetGPUXRSwapchainFormatsNativeFunction = SDL_GetGPUXRSwapchainFormats;
+
+    public static IntPtr GetGPUXRSwapchainFormats(IntPtr device, IntPtr session, out int numFormats)
+    {
+        return GetGPUXRSwapchainFormatsNativeFunction(device, session, out numFormats);
+    }
+
+
     /// <code>extern SDL_DECLSPEC XrResult SDLCALL SDL_CreateGPUXRSwapchain(SDL_GPUDevice *device, XrSession session, const XrSwapchainCreateInfo *createinfo, SDL_GPUTextureFormat format, XrSwapchain *swapchain, SDL_GPUTexture ***textures);</code>
     /// <summary>
     /// Creates an OpenXR swapchain.
@@ -87,10 +104,18 @@ public partial class SDL
     /// <seealso cref="CreateGPUXRSession"/>
     /// <seealso cref="GetGPUXRSwapchainFormats"/>
     /// <seealso cref="DestroyGPUXRSwapchain"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUXRSwapchain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial XrResult CreateGPUXRSwapchain(IntPtr device, IntPtr session, IntPtr createinfo, GPUTextureFormat format, out IntPtr swapchain, out IntPtr textures);
-    
-    
+    private static partial XrResult SDL_CreateGPUXRSwapchain(IntPtr device, IntPtr session, IntPtr createinfo, GPUTextureFormat format, out IntPtr swapchain, out IntPtr textures);
+    private delegate XrResult CreateGPUXRSwapchainNativeDelegate(IntPtr device, IntPtr session, IntPtr createinfo, GPUTextureFormat format, out IntPtr swapchain, out IntPtr textures);
+    private static CreateGPUXRSwapchainNativeDelegate CreateGPUXRSwapchainNativeFunction = SDL_CreateGPUXRSwapchain;
+
+    public static XrResult CreateGPUXRSwapchain(IntPtr device, IntPtr session, IntPtr createinfo, GPUTextureFormat format, out IntPtr swapchain, out IntPtr textures)
+    {
+        return CreateGPUXRSwapchainNativeFunction(device, session, createinfo, format, out swapchain, out textures);
+    }
+
+
     /// <code>extern SDL_DECLSPEC XrResult SDLCALL SDL_DestroyGPUXRSwapchain(SDL_GPUDevice *device, XrSwapchain swapchain, SDL_GPUTexture **swapchainImages);</code>
     /// <summary>
     /// Destroys and OpenXR swapchain previously returned by
@@ -106,10 +131,18 @@ public partial class SDL
     /// <seealso cref="CreateGPUDeviceWithProperties"/>
     /// <seealso cref="CreateGPUXRSession"/>
     /// <seealso cref="CreateGPUXRSwapchain"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPUXRSwapchain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial XrResult DestroyGPUXRSwapchain(IntPtr device, IntPtr swapchain, IntPtr swapchainImages);
-    
-    
+    private static partial XrResult SDL_DestroyGPUXRSwapchain(IntPtr device, IntPtr swapchain, IntPtr swapchainImages);
+    private delegate XrResult DestroyGPUXRSwapchainNativeDelegate(IntPtr device, IntPtr swapchain, IntPtr swapchainImages);
+    private static DestroyGPUXRSwapchainNativeDelegate DestroyGPUXRSwapchainNativeFunction = SDL_DestroyGPUXRSwapchain;
+
+    public static XrResult DestroyGPUXRSwapchain(IntPtr device, IntPtr swapchain, IntPtr swapchainImages)
+    {
+        return DestroyGPUXRSwapchainNativeFunction(device, swapchain, swapchainImages);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_OpenXR_LoadLibrary(void);</code>
     /// <summary>
     /// Dynamically load the OpenXR loader.
@@ -126,11 +159,19 @@ public partial class SDL
     /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="Hints.OpenXRLibrary"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_LoadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool OpenXRLoadLibrary();
-    
-    
+    private static partial bool SDL_OpenXR_LoadLibrary();
+    private delegate bool OpenXRLoadLibraryNativeDelegate();
+    private static OpenXRLoadLibraryNativeDelegate OpenXRLoadLibraryNativeFunction = SDL_OpenXR_LoadLibrary;
+
+    public static bool OpenXRLoadLibrary()
+    {
+        return OpenXRLoadLibraryNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OpenXR_UnloadLibrary(void);</code>
     /// <summary>
     /// Unload the OpenXR loader previously loaded by <see cref="OpenXRLoadLibrary"/>.
@@ -140,10 +181,18 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void OpenXRUnloadLibrary();
-    
-    
+    private static partial void SDL_OpenXR_UnloadLibrary();
+    private delegate void OpenXRUnloadLibraryNativeDelegate();
+    private static OpenXRUnloadLibraryNativeDelegate OpenXRUnloadLibraryNativeFunction = SDL_OpenXR_UnloadLibrary;
+
+    public static void OpenXRUnloadLibrary()
+    {
+        OpenXRUnloadLibraryNativeFunction();
+    }
+
+
     //extern SDL_DECLSPEC PFN_xrGetInstanceProcAddr SDLCALL SDL_OpenXR_GetXrGetInstanceProcAddr(void);
     /// <summary>
     /// Get the address of the <c>xrGetInstanceProcAddr</c> function.
@@ -157,6 +206,14 @@ public partial class SDL
     /// <returns>the function pointer for <c>xrGetInstanceProcAddr</c> or <c>null</c> on
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_GetXrGetInstanceProcAddr"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr OpenXRGetXrGetInstanceProcAddr();
+    private static partial IntPtr SDL_OpenXR_GetXrGetInstanceProcAddr();
+    private delegate IntPtr OpenXRGetXrGetInstanceProcAddrNativeDelegate();
+    private static OpenXRGetXrGetInstanceProcAddrNativeDelegate OpenXRGetXrGetInstanceProcAddrNativeFunction = SDL_OpenXR_GetXrGetInstanceProcAddr;
+
+    public static IntPtr OpenXRGetXrGetInstanceProcAddr()
+    {
+        return OpenXRGetXrGetInstanceProcAddrNativeFunction();
+    }
 }

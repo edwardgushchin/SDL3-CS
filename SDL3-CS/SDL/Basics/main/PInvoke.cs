@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -21,6 +21,7 @@
  */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -64,10 +65,18 @@ public partial class SDL
     /// <seealso cref="AppIterate"/>
     /// <seealso cref="AppEvent"/>
     /// <seealso cref="AppQuit"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_main"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial AppResult AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
-    
-    
+    private static partial AppResult SDL_AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
+    private delegate AppResult AppInitNative(IntPtr appstate, int argc, string[] argv);
+    private static AppInitNative AppInitNativeFunction = SDL_AppInit;
+
+    public static AppResult AppInit(IntPtr appstate, int argc, string[] argv)
+    {
+        return AppInitNativeFunction(appstate, argc, argv);
+    }
+
+
     /// <code>extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppIterate(void *appstate);</code>
     /// <summary>
     /// <para>App-implemented iteration entry point for SDL_MAIN_USE_CALLBACKS apps.</para>
@@ -106,15 +115,31 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AppInit"/>
     /// <seealso cref="AppEvent"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppIterate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial AppResult AppIterate(IntPtr appstate);
-    
-    
+    private static partial AppResult SDL_AppIterate(IntPtr appstate);
+    private delegate AppResult AppIterateNative(IntPtr appstate);
+    private static AppIterateNative AppIterateNativeFunction = SDL_AppIterate;
+
+    public static AppResult AppIterate(IntPtr appstate)
+    {
+        return AppIterateNativeFunction(appstate);
+    }
+
+
     //extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppEvent(void *appstate, SDL_Event *event);
+    [ExcludeFromCodeCoverage]
     [DllImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static extern AppResult AppEvent(IntPtr appstate, ref Event @event);
-    
-    
+    private static extern AppResult SDL_AppEvent(IntPtr appstate, ref Event @event);
+    private delegate AppResult AppEventNative(IntPtr appstate, ref Event @event);
+    private static AppEventNative AppEventNativeFunction = SDL_AppEvent;
+
+    public static AppResult AppEvent(IntPtr appstate, ref Event @event)
+    {
+        return AppEventNativeFunction(appstate, ref @event);
+    }
+
+
     /// <code>extern SDLMAIN_DECLSPEC void SDLCALL SDL_AppQuit(void *appstate, SDL_AppResult result);</code>
     /// <summary>
     /// <para>App-implemented deinit entry point for SDL_MAIN_USE_CALLBACKS apps.</para>
@@ -141,10 +166,18 @@ public partial class SDL
     /// if other threads that push events are still active.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AppInit"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppQuit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void AppQuit(IntPtr appstate, AppResult result);
-    
-    
+    private static partial void SDL_AppQuit(IntPtr appstate, AppResult result);
+    private delegate void AppQuitNative(IntPtr appstate, AppResult result);
+    private static AppQuitNative AppQuitNativeFunction = SDL_AppQuit;
+
+    public static void AppQuit(IntPtr appstate, AppResult result)
+    {
+        AppQuitNativeFunction(appstate, result);
+    }
+
+
     /// <code>extern SDLMAIN_DECLSPEC int SDLCALL SDL_main(int argc, char *argv[]);</code>
     /// <summary>
     /// <para>An app-supplied function for program entry.</para>
@@ -168,10 +201,18 @@ public partial class SDL
     /// errors.</returns>
     /// <threadsafety>This is the program entry point.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_main"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int Main(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
-    
-    
+    private static partial int SDL_main(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
+    private delegate int MainNative(int argc, string[] argv);
+    private static MainNative MainNativeFunction = SDL_main;
+
+    public static int Main(int argc, string[] argv)
+    {
+        return MainNativeFunction(argc, argv);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetMainReady(void);</code>
     /// <summary>
     /// <para>Circumvent failure of <see cref="Init"/> when not using <see cref="Main"/> as an entry
@@ -183,10 +224,18 @@ public partial class SDL
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMainReady"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetMainReady();
-    
-    
+    private static partial void SDL_SetMainReady();
+    private delegate void SetMainReadyNative();
+    private static SetMainReadyNative SetMainReadyNativeFunction = SDL_SetMainReady;
+
+    public static void SetMainReady()
+    {
+        SetMainReadyNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RunApp(int argc, char *argv[], SDL_main_func mainFunction, void *reserved);</code>
     /// <summary>
     /// <para>Initializes and launches an SDL application, by doing platform-specific
@@ -212,10 +261,18 @@ public partial class SDL
     /// <threadsafety>Generally this is called once, near startup, from the
     /// process's initial thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, MainFunc mainFunction, IntPtr reserved);
-    
-    
+    private static partial int SDL_RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, MainFunc mainFunction, IntPtr reserved);
+    private delegate int RunAppNative(int argc, string[] argv, MainFunc mainFunction, IntPtr reserved);
+    private static RunAppNative RunAppNativeFunction = SDL_RunApp;
+
+    public static int RunApp(int argc, string[] argv, MainFunc mainFunction, IntPtr reserved)
+    {
+        return RunAppNativeFunction(argc, argv, mainFunction, reserved);
+    }
+
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_EnterAppMainCallbacks(int argc, char *argv[], SDL_AppInit_func appinit, SDL_AppIterate_func appiter, SDL_AppEvent_func appevent, SDL_AppQuit_func appquit);</code>
     /// <summary>
     /// <para>An entry point for SDL's use in SDL_MAIN_USE_CALLBACKS.</para>
@@ -237,10 +294,18 @@ public partial class SDL
     /// <threadsafety>It is not safe to call this anywhere except as the only
     /// function call in SDL_main.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnterAppMainCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
-    
-    
+    private static partial int SDL_EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
+    private delegate int EnterAppMainCallbacksNative(int argc, string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
+    private static EnterAppMainCallbacksNative EnterAppMainCallbacksNativeFunction = SDL_EnterAppMainCallbacks;
+
+    public static int EnterAppMainCallbacks(int argc, string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit)
+    {
+        return EnterAppMainCallbacksNativeFunction(argc, argv, appinit, appiter, appevent, appquit);
+    }
+
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RegisterApp(const char *name, Uint32 style, void *hInst);</code>
     /// <summary>
     /// <para>Register a win32 window class for SDL's use.</para>
@@ -262,11 +327,19 @@ public partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "RegisterApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool RegisterApp([MarshalAs(UnmanagedType.LPUTF8Str)] string? name, uint style, IntPtr hInst);
-    
-    
+    private static partial bool SDL_RegisterApp([MarshalAs(UnmanagedType.LPUTF8Str)] string? name, uint style, IntPtr hInst);
+    private delegate bool RegisterAppNative(string? name, uint style, IntPtr hInst);
+    private static RegisterAppNative RegisterAppNativeFunction = SDL_RegisterApp;
+
+    public static bool RegisterApp(string? name, uint style, IntPtr hInst)
+    {
+        return RegisterAppNativeFunction(name, style, hInst);
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnregisterApp(void);</code>
     /// <summary>
     /// <para>Deregister the win32 window class from an <see cref="RegisterApp"/> call.</para>
@@ -279,10 +352,18 @@ public partial class SDL
     /// zero through calls to this function.</para>
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnregisterApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void UnregisterApp();
-    
-    
+    private static partial void SDL_UnregisterApp();
+    private delegate void UnregisterAppNative();
+    private static UnregisterAppNative UnregisterAppNativeFunction = SDL_UnregisterApp;
+
+    public static void UnregisterApp()
+    {
+        UnregisterAppNativeFunction();
+    }
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendComplete(void);</code>
     /// <summary>
     /// <para>Callback from the application to let the suspend continue.</para>
@@ -290,6 +371,14 @@ public partial class SDL
     /// do nothing and set an "unsupported" error message.</para>
     /// </summary>
     /// <since>This function is available since SDL 3.2.0</since>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendComplete"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void GDKSuspendComplete();
+    private static partial void SDL_GDKSuspendComplete();
+    private delegate void GDKSuspendCompleteNative();
+    private static GDKSuspendCompleteNative GDKSuspendCompleteNativeFunction = SDL_GDKSuspendComplete;
+
+    public static void GDKSuspendComplete()
+    {
+        GDKSuspendCompleteNativeFunction();
+    }
 }

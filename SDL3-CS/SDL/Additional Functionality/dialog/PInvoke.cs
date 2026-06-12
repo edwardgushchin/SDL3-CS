@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -22,15 +22,20 @@
 #endregion
 
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowOpenFileDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+    private static partial void SDL_ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         IntPtr filters, int nfilters, IntPtr defaultLocation, [MarshalAs(UnmanagedType.I1)] bool allowMany);
+    private delegate void ShowOpenFileDialogNative(DialogFileCallback callback, IntPtr userdata, IntPtr window,
+        IntPtr filters, int nfilters, IntPtr defaultLocation, bool allowMany);
+    private static ShowOpenFileDialogNative ShowOpenFileDialogNativeFunction = SDL_ShowOpenFileDialog;
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a file on their filesystem.</para>
@@ -73,13 +78,13 @@ public static partial class SDL
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
     /// <seealso cref="ShowFileDialogWithProperties"/>
-    public static void ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+    public static void ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation, bool allowMany)
     {
         var pathPointer = IntPtr.Zero;
         var filterPointer = IntPtr.Zero;
         GCHandle? filterHandle = null;
-        
+
         try
         {
             if (filters != null)
@@ -92,8 +97,8 @@ public static partial class SDL
             {
                 pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
             }
-            
-            SDL_ShowOpenFileDialog(callback, userdata, window, filterPointer, nfilters, pathPointer, allowMany);
+
+            ShowOpenFileDialogNativeFunction(callback, userdata, window, filterPointer, nfilters, pathPointer, allowMany);
         }
         finally
         {
@@ -105,11 +110,15 @@ public static partial class SDL
             filterHandle?.Free();
         }
     }
-    
-    
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowSaveFileDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+    private static partial void SDL_ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         IntPtr filters, int nfilters, IntPtr defaultLocation);
+    private delegate void ShowSaveFileDialogNative(DialogFileCallback callback, IntPtr userdata, IntPtr window,
+        IntPtr filters, int nfilters, IntPtr defaultLocation);
+    private static ShowSaveFileDialogNative ShowSaveFileDialogNativeFunction = SDL_ShowSaveFileDialog;
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user choose a new or existing file on their
@@ -150,13 +159,13 @@ public static partial class SDL
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
     /// <seealso cref="ShowFileDialogWithProperties"/>
-    public static void ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+    public static void ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation)
     {
         var pathPointer = IntPtr.Zero;
         var filterPointer = IntPtr.Zero;
         GCHandle? filterHandle = null;
-        
+
         try
         {
             if (filters != null)
@@ -169,8 +178,8 @@ public static partial class SDL
             {
                 pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
             }
-            
-            SDL_ShowSaveFileDialog(callback, userdata, window, filterPointer, nfilters, pathPointer);
+
+            ShowSaveFileDialogNativeFunction(callback, userdata, window, filterPointer, nfilters, pathPointer);
         }
         finally
         {
@@ -182,11 +191,15 @@ public static partial class SDL
             filterHandle?.Free();
         }
     }
-    
 
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowOpenFolderDialog"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, 
+    private static partial void SDL_ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         IntPtr defaultLocation, [MarshalAs(UnmanagedType.I1)] bool allowMany);
+    private delegate void ShowOpenFolderDialogNative(DialogFileCallback callback, IntPtr userdata, IntPtr window,
+        IntPtr defaultLocation, bool allowMany);
+    private static ShowOpenFolderDialogNative ShowOpenFolderDialogNativeFunction = SDL_ShowOpenFolderDialog;
     /// <summary>
     /// <para>Displays a dialog that lets the user select a folder on their filesystem.</para>
     /// <para>This function should only be invoked from the main thread.</para>
@@ -225,15 +238,15 @@ public static partial class SDL
     public static void ShowOpenFolderDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window, string? defaultLocation, bool allowMany)
     {
         var pathPointer = IntPtr.Zero;
-        
+
         try
         {
             if (defaultLocation != null)
             {
                 pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
             }
-            
-            SDL_ShowOpenFolderDialog(callback, userdata, window,  pathPointer, allowMany);
+
+            ShowOpenFolderDialogNativeFunction(callback, userdata, window, pathPointer, allowMany);
         }
         finally
         {
@@ -243,8 +256,8 @@ public static partial class SDL
             }
         }
     }
-    
-    
+
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Create and launch a file dialog with the specified properties.</para>
@@ -288,7 +301,15 @@ public static partial class SDL
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowFileDialogWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
-    
+    private static partial void SDL_ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
+    private delegate void ShowFileDialogWithPropertiesNative(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
+    private static ShowFileDialogWithPropertiesNative ShowFileDialogWithPropertiesNativeFunction = SDL_ShowFileDialogWithProperties;
+
+    public static void ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props)
+    {
+        ShowFileDialogWithPropertiesNativeFunction(type, callback, userdata, props);
+    }
+
 }
