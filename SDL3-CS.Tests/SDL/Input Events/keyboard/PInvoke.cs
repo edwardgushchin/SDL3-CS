@@ -504,7 +504,7 @@ internal static class PInvokeTests
 
     public static void ScreenKeyboardShown_ForwardsWindowAndReturnsNativeValue()
     {
-        AssertWindowBoolMethod("SDL.ScreenKeyboardShown", "SDL_ScreenKeyboardShown", "ScreenKeyboardShownNativeFunction", "ScreenKeyboardShown", SDL3.SDL.ScreenKeyboardShown);
+        AssertWindowBoolMethod("SDL.ScreenKeyboardShown", "SDL_ScreenKeyboardShown", "ScreenKeyboardShownNativeFunction", "SDL_ScreenKeyboardShown", SDL3.SDL.ScreenKeyboardShown);
     }
 
     private static void AssertWindowBoolMethod(string apiName, string nativeMethodName, string hookFieldName, string entryPoint, Func<IntPtr, bool> call)

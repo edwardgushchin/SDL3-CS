@@ -446,7 +446,7 @@ public static partial class SDL
     /// <seealso cref="SetLogOutputFunction"/>
     /// <seealso cref="GetLogOutputFunction"/>
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultLogOutputFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial LogOutputFunction SDL_GetDefaultLogOutputFunction();
     private delegate LogOutputFunction GetDefaultLogOutputFunctionNative();
     private static GetDefaultLogOutputFunctionNative GetDefaultLogOutputFunctionNativeFunction = SDL_GetDefaultLogOutputFunction;

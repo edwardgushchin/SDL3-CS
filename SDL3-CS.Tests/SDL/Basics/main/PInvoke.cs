@@ -29,7 +29,7 @@ internal static class PInvokeTests
     public static void AppInit_ForwardsStateArgumentsAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_AppInit");
-        AssertLibraryImport(nativeMethod, "SDL_main");
+        AssertLibraryImport(nativeMethod, "SDL_AppInit");
         AssertStringArrayParameterMarshal(nativeMethod, "argv", UnmanagedType.LPArray, UnmanagedType.LPUTF8Str);
 
         ResetCaptureState();
@@ -188,7 +188,7 @@ internal static class PInvokeTests
     public static void RegisterApp_ForwardsNameStyleHInstAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_RegisterApp");
-        AssertLibraryImport(nativeMethod, "RegisterApp");
+        AssertLibraryImport(nativeMethod, "SDL_RegisterApp");
         AssertBoolReturnMarshal(nativeMethod, UnmanagedType.I1);
         AssertStringParameterMarshal(nativeMethod, "name", UnmanagedType.LPUTF8Str);
 
