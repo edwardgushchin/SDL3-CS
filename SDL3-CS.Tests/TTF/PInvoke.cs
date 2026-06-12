@@ -99,6 +99,7 @@ internal static class PInvokeTests
     public static void RunAll()
     {
         NativeEntryPoints_KeepExpectedLibraryImportMetadata();
+        PropertyConstants_MatchSdlTtf322Header();
         VersionAndInitFunctions_ForwardOutputsAndReturnNativeValues();
         OpenFontFunctions_ForwardInputsAndReturnNativePointers();
         BasicFontStateFunctions_ForwardInputsOutputsAndReturnNativeValues();
@@ -270,11 +271,10 @@ internal static class PInvokeTests
         AssertNativeImport(getFontDirection, "TTF_GetFontDirection");
         AssertParameterTypes(getFontDirection, typeof(IntPtr));
 
-        MethodInfo setFontCharSpacing = GetNativeMethod("TTF_SetFontCharSpacing");
-        AssertNativeBoolImport(setFontCharSpacing, "TTF_SetFontCharSpacing");
-        AssertParameterTypes(setFontCharSpacing, typeof(IntPtr), typeof(int));
-
-        AssertSingleFontIntReturnImport("TTF_GetFontCharSpacing", "TTF_GetFontCharSpacing");
+        AssertNoNativeMethod("TTF_SetFontCharSpacing");
+        AssertNoNativeMethod("TTF_GetFontCharSpacing");
+        AssertNoPublicMethod("SetFontCharSpacing", typeof(IntPtr), typeof(int));
+        AssertNoPublicMethod("GetFontCharSpacing", typeof(IntPtr));
 
         MethodInfo stringToTag = GetNativeMethod("TTF_StringToTag");
         AssertNativeImport(stringToTag, "TTF_StringToTag");
@@ -617,6 +617,32 @@ internal static class PInvokeTests
         MethodInfo wasInit = GetNativeMethod("TTF_WasInit");
         AssertNativeImport(wasInit, "TTF_WasInit");
         AssertParameterTypes(wasInit);
+    }
+
+    public static void PropertyConstants_MatchSdlTtf322Header()
+    {
+        TestAssert.Equal("SDL_ttf.font.create.filename", SDL3.TTF.Props.FontCreateFilenameString, "TTF.Props.FontCreateFilenameString must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.iostream", SDL3.TTF.Props.FontCreateIOStreamPointer, "TTF.Props.FontCreateIOStreamPointer must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.iostream.offset", SDL3.TTF.Props.FontCreateIOStreamOffsetNumber, "TTF.Props.FontCreateIOStreamOffsetNumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.iostream.autoclose", SDL3.TTF.Props.FontCreateIOStreamAutoCloseBoolean, "TTF.Props.FontCreateIOStreamAutoCloseBoolean must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.size", SDL3.TTF.Props.FontCreateSizeFloat, "TTF.Props.FontCreateSizeFloat must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.face", SDL3.TTF.Props.FontCreateFaceNumber, "TTF.Props.FontCreateFaceNumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.hdpi", SDL3.TTF.Props.FontCreateHorizontalDPINumber, "TTF.Props.FontCreateHorizontalDPINumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.vdpi", SDL3.TTF.Props.FontCreateVerticalDPINumber, "TTF.Props.FontCreateVerticalDPINumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.create.existing_font", SDL3.TTF.Props.FontCreateExistingFont, "TTF.Props.FontCreateExistingFont must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.outline.line_cap", SDL3.TTF.Props.FontOutlineLineCapNumber, "TTF.Props.FontOutlineLineCapNumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.outline.line_join", SDL3.TTF.Props.FontOutlineLineJoinNumber, "TTF.Props.FontOutlineLineJoinNumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.font.outline.miter_limit", SDL3.TTF.Props.FontOutlineMiterLimitNumber, "TTF.Props.FontOutlineMiterLimitNumber must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.renderer_text_engine.create.renderer", SDL3.TTF.Props.RendererTextEngineRenderer, "TTF.Props.RendererTextEngineRenderer must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.renderer_text_engine.create.atlas_texture_size", SDL3.TTF.Props.RendererTextEngineAtlasTextureSize, "TTF.Props.RendererTextEngineAtlasTextureSize must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.gpu_text_engine.create.device", SDL3.TTF.Props.GPUTextEngineDevice, "TTF.Props.GPUTextEngineDevice must match SDL_ttf 3.2.2.");
+        TestAssert.Equal("SDL_ttf.gpu_text_engine.create.atlas_texture_size", SDL3.TTF.Props.GPUTextEngineAtlasTextureSize, "TTF.Props.GPUTextEngineAtlasTextureSize must match SDL_ttf 3.2.2.");
+
+        AssertNoPropertyConstant("FontCreateExistingFontPointer");
+        AssertNoPropertyConstant("RendererTextEngineRendererPointer");
+        AssertNoPropertyConstant("RendererTextEngineAtlasTextureSizeNumber");
+        AssertNoPropertyConstant("GPUTextEngineDevicePointer");
+        AssertNoPropertyConstant("GPUTextEngineAtlasTextureSizeNumber");
     }
 
     public static void VersionAndInitFunctions_ForwardOutputsAndReturnNativeValues()
@@ -1055,20 +1081,6 @@ internal static class PInvokeTests
             TestAssert.Equal((IntPtr)0x7002, capturedFont, "TTF.GetFontDirection must forward font.");
             TestAssert.Equal(1, capturedCallCount, "TTF.GetFontDirection must call native hook once.");
         }
-
-        ResetCaptureState();
-        nextBool = true;
-        using (NativeHookScope _ = NativeHookScope.Install("SetFontCharSpacingNativeFunction", nameof(CaptureFontIntReturnBool)))
-        {
-            bool actual = SDL3.TTF.SetFontCharSpacing((IntPtr)0x7003, -2);
-
-            TestAssert.Equal(true, actual, "TTF.SetFontCharSpacing must return native success value.");
-            TestAssert.Equal((IntPtr)0x7003, capturedFont, "TTF.SetFontCharSpacing must forward font.");
-            TestAssert.Equal(-2, capturedIntValue, "TTF.SetFontCharSpacing must forward spacing.");
-            TestAssert.Equal(1, capturedCallCount, "TTF.SetFontCharSpacing must call native hook once.");
-        }
-
-        AssertFontIntGetter("GetFontCharSpacingNativeFunction", "GetFontCharSpacing", 0x7004, -3);
 
         ResetCaptureState();
         nextUInt = 0x4C61746Eu;
@@ -3226,6 +3238,24 @@ internal static class PInvokeTests
         MethodInfo? method = typeof(SDL3.TTF).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
         TestAssert.NotNull(method, $"TTF.{methodName} method must be private static.");
         return method!;
+    }
+
+    private static void AssertNoNativeMethod(string methodName)
+    {
+        MethodInfo? method = typeof(SDL3.TTF).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+        TestAssert.True(method is null, $"TTF.{methodName} must not exist for SDL_ttf 3.2.2.");
+    }
+
+    private static void AssertNoPublicMethod(string methodName, params Type[] parameterTypes)
+    {
+        MethodInfo? method = typeof(SDL3.TTF).GetMethod(methodName, BindingFlags.Public | BindingFlags.Static, parameterTypes);
+        TestAssert.True(method is null, $"TTF.{methodName} public wrapper must not exist for SDL_ttf 3.2.2.");
+    }
+
+    private static void AssertNoPropertyConstant(string fieldName)
+    {
+        FieldInfo? field = typeof(SDL3.TTF.Props).GetField(fieldName, BindingFlags.Public | BindingFlags.Static);
+        TestAssert.True(field is null, $"TTF.Props.{fieldName} must not exist for SDL_ttf 3.2.2.");
     }
 
     private static void AssertNativeImport(MethodInfo method, string entryPoint)

@@ -190,11 +190,11 @@ public static partial class TTF
     /// <item><see cref="Props.FontCreateFilenameString"/>: the font file to open, if an
     /// SDL_IOStream isn't being used. This is required if
     /// <see cref="Props.FontCreateIOStreamPointer"/> and
-    /// <see cref="Props.FontCreateExistingFontPointer"/> aren't set.</item>
+    /// <see cref="Props.FontCreateExistingFont"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamPointer"/>: an SDL_IOStream containing the
     /// font to be opened. This should not be closed until the font is closed.
     /// This is required if <see cref="Props.FontCreateFilenameString"/> and
-    /// <see cref="Props.FontCreateExistingFontPointer"/> aren't set.</item>
+    /// <see cref="Props.FontCreateExistingFont"/> aren't set.</item>
     /// <item><see cref="Props.FontCreateIOStreamOffsetNumber"/>: the offset in the iostream
     /// for the beginning of the font, defaults to 0.</item>
     /// <item><see cref="Props.FontCreateIOStreamAutoCloseBoolean"/>: <c>true</c> if closing the
@@ -211,7 +211,7 @@ public static partial class TTF
     /// <item><see cref="Props.FontCreateVerticalDPINumber"/>: the vertical DPI to use for
     /// font rendering, defaults to <see cref="Props.FontCreateHorizontalDPINumber"/>
     /// if set, or 72 otherwise.</item>
-    /// <item><see cref="Props.FontCreateExistingFontPointer"/>: an optional TTF_Font that, if set,
+    /// <item><see cref="Props.FontCreateExistingFont"/>: an optional TTF_Font that, if set,
     /// if set, will be used as the font data source and the initial size and
     /// style of the new font.</item>
     /// </list>
@@ -1100,59 +1100,6 @@ public static partial class TTF
     public static Direction GetFontDirection(IntPtr font)
     {
         return GetFontDirectionNativeFunction(font);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontCharSpacing"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool TTF_SetFontCharSpacing(IntPtr font, int spacing);
-    private delegate bool SetFontCharSpacingNativeDelegate(IntPtr font, int spacing);
-    private static SetFontCharSpacingNativeDelegate SetFontCharSpacingNativeFunction = TTF_SetFontCharSpacing;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_SetFontCharSpacing(TTF_Font *font, int spacing);</code>
-    /// <summary>
-    /// Set additional space in pixels to be applied between any two rendered
-    /// characters.
-    /// <para>The spacing value is applied uniformly after each character, in addition to
-    /// the normal glyph's advance.</para>
-    /// <para>Spacing may be a negative value, in which case it will reduce the distance
-    /// instead.</para>
-    /// <para>This updates any TTF_Text objects using this font.</para>
-    /// </summary>
-    /// <param name="font">the font to specify a direction for.</param>
-    /// <param name="spacing">the new additional glyph spacing for the font.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// font.</threadsafety>
-    /// <since>This function is available since SDL_ttf 3.4.0.</since>
-    public static bool SetFontCharSpacing(IntPtr font, int spacing)
-    {
-        return SetFontCharSpacingNativeFunction(font, spacing);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(FontLibrary, EntryPoint = "TTF_GetFontCharSpacing"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int TTF_GetFontCharSpacing(IntPtr font);
-    private delegate int GetFontCharSpacingNativeDelegate(IntPtr font);
-    private static GetFontCharSpacingNativeDelegate GetFontCharSpacingNativeFunction = TTF_GetFontCharSpacing;
-
-    /// <code>extern SDL_DECLSPEC int SDLCALL TTF_GetFontCharSpacing(TTF_Font *font);</code>
-    /// <summary>
-    /// Get the additional character spacing in pixels to be applied between any
-    /// two rendered characters.
-    /// <para>This defaults to 0 if it hasn't been set.</para>
-    /// </summary>
-    /// <param name="font">the font to query.</param>
-    /// <returns>the character spacing in pixels.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// font.</threadsafety>
-    /// <since>This function is available since SDL_ttf 3.4.0.</since>
-    public static int GetFontCharSpacing(IntPtr font)
-    {
-        return GetFontCharSpacingNativeFunction(font);
     }
 
 
@@ -2378,9 +2325,9 @@ public static partial class TTF
     /// specified properties.</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.RendererTextEngineRendererPointer"/>: the renderer to use for
+    /// <item><see cref="Props.RendererTextEngineRenderer"/>: the renderer to use for
     /// creating textures and drawing text</item>
-    /// <item><see cref="Props.RendererTextEngineAtlasTextureSizeNumber"/>: the size of the
+    /// <item><see cref="Props.RendererTextEngineAtlasTextureSize"/>: the size of the
     /// texture atlas</item>
     /// </list>
     /// </summary>
@@ -2493,9 +2440,9 @@ public static partial class TTF
     /// specified properties.</para>
     /// <para>These are the supported properties:</para>
     /// <list type="bullet">
-    /// <item><see cref="Props.GPUTextEngineDevicePointer"/>: the SDL_GPUDevice to use for creating
+    /// <item><see cref="Props.GPUTextEngineDevice"/>: the SDL_GPUDevice to use for creating
     /// textures and drawing text.</item>
-    /// <item><see cref="Props.GPUTextEngineAtlasTextureSizeNumber"/>: the size of the texture
+    /// <item><see cref="Props.GPUTextEngineAtlasTextureSize"/>: the size of the texture
     /// atlas</item>
     /// </list>
     /// </summary>
