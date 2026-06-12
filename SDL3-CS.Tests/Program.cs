@@ -244,6 +244,8 @@ SDL3.Tests.SDL.FileAndIOAbstractions.Storage.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Storage binding tests passed.");
 SDL3.Tests.SDL.ForceFeedback.Haptic.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Haptic binding tests passed.");
+SDL3.Tests.SDL.ForceFeedback.Haptic.StructLayoutTests.RunAll();
+Console.WriteLine("SDL.Haptic struct layout tests passed.");
 SDL3.Tests.SDL.GPU.Gpu.PInvokeTests.RunAll();
 Console.WriteLine("SDL.GPU binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.PInvokeTests.RunAll();

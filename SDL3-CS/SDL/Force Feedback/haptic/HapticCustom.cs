@@ -55,7 +55,7 @@ public static partial class SDL
         /// <summary>
         /// Duration of the effect.
         /// </summary>
-        public int Length;
+        public uint Length;
 
         /// <summary>
         /// Delay before starting the effect.
@@ -90,7 +90,7 @@ public static partial class SDL
         /// <summary>
         /// Should contain channels*samples items.
         /// </summary>
-        public ushort[] Data;
+        public IntPtr Data;
 
         /// <summary>
         /// Duration of the attack.

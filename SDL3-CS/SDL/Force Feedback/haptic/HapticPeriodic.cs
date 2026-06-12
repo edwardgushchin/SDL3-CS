@@ -102,7 +102,7 @@ public static partial class SDL
         /// <summary>
         /// Duration of the effect.
         /// </summary>
-        public int Length;
+        public uint Length;
 
         /// <summary>
         /// Delay before starting the effect.

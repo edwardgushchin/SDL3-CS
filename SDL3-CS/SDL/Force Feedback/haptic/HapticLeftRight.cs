@@ -48,7 +48,7 @@ public static partial class SDL
         /// <summary>
         /// Duration of the effect in milliseconds.
         /// </summary>
-        public int Length;
+        public uint Length;
 
         /// <summary>
         /// Control of the large controller motor.
