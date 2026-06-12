@@ -386,6 +386,29 @@ foreach ($component in $manifest.components) {
             Add-ValidationError "Component $($component.id) has empty artifactPatterns.$key."
         }
     }
+
+    if ($component.id -eq 'SDL') {
+        $sdlMacOsPatterns = @($component.artifactPatterns.macos)
+        if ($sdlMacOsPatterns -notcontains 'lib/libSDL3*.dylib*') {
+            Add-ValidationError "Component SDL artifactPatterns.macos must include versioned libSDL3*.dylib* files."
+        }
+    }
+
+    if ($component.id -eq 'SDL_image') {
+        foreach ($androidRid in @('android-arm', 'android-arm64', 'android-x86', 'android-x64')) {
+            $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$androidRid].Value)
+            if ($ridArgs -notcontains '-DSDLIMAGE_AVIF=OFF') {
+                Add-ValidationError "Component SDL_image must disable AVIF for $androidRid to avoid vendored AOM/dav1d Android toolchain failures."
+            }
+        }
+
+        foreach ($appleRid in @('ios-arm64', 'iossimulator-arm64', 'iossimulator-x64', 'osx-arm64', 'osx-x64', 'tvos-arm64', 'tvossimulator-arm64', 'tvossimulator-x64')) {
+            $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$appleRid].Value)
+            if ($ridArgs -notcontains '-DSDLIMAGE_WEBP=OFF') {
+                Add-ValidationError "Component SDL_image must disable WEBP for $appleRid to avoid vendored libwebp MACOSX_BUNDLE install failures."
+            }
+        }
+    }
 }
 
 foreach ($package in $manifest.managedPackages) {

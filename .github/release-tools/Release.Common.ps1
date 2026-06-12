@@ -683,6 +683,21 @@ function Get-ReleaseUnixBuildTools {
     return [pscustomobject]$tools
 }
 
+function Test-ReleasePerlModule {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Module
+    )
+
+    $perl = Get-ReleaseToolPath -Name 'perl'
+    if (-not $perl) {
+        return $false
+    }
+
+    & $perl "-M$Module" -e '1' *> $null
+    return $LASTEXITCODE -eq 0
+}
+
 function Assert-ReleaseUnixBuildTools {
     param(
         [Parameter(Mandatory)]
@@ -706,6 +721,7 @@ function Assert-ReleaseUnixBuildTools {
         if (-not $tools.PkgConfig) { $errors.Add("pkg-config was not found. Install pkg-config for Linux native dependency discovery.") }
         if (-not $tools.NASM) { $errors.Add("nasm was not found. Install nasm for vendored SDL_image/libaom Linux builds.") }
         if (-not $tools.Patchelf) { $errors.Add("patchelf was not found. SDL_shadercross runtime install uses patchelf to set Linux RPATH.") }
+        if (-not (Test-ReleasePerlModule -Module 'JSON')) { $errors.Add("Perl module JSON was not found. Install libjson-perl for SDL_shadercross/vkd3d Linux builds.") }
     }
     elseif ($RidInfo.os -eq 'android') {
         if (-not $tools.NASM) { $errors.Add("nasm was not found. Install nasm for vendored SDL_image/libaom Android builds.") }
