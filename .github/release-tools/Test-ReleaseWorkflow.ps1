@@ -84,13 +84,16 @@ Assert-WorkflowContains -Text $workflowText -Expected 'matrix: ${{ fromJson(need
 Assert-WorkflowContains -Text $workflowText -Expected 'runs-on: ${{ matrix.runner }}' -Description 'native job runner binding'
 Assert-WorkflowContains -Text $workflowText -Expected 'fail-fast: false' -Description 'native matrix fail-fast setting'
 Assert-WorkflowContains -Text $workflowText -Expected 'SDL3CS_NATIVE_BUILD_PARALLEL_LEVEL: ${{ inputs.build_parallel_level }}' -Description 'native build parallel env'
-Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Initialize-NativeForks.ps1 -Depth 1' -Description 'native fork initialization'
+Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3' -Description 'native fork initialization with clone retry'
 Assert-WorkflowContains -Text $workflowText -Expected '$buildParams = @{' -Description 'native build hashtable parameter splatting'
 Assert-WorkflowContains -Text $workflowText -Expected 'Rids = @(''${{ matrix.rid }}'')' -Description 'native build RID named parameter'
 Assert-WorkflowContains -Text $workflowText -Expected '$buildParams.AllowCrossCompile = $true' -Description 'native build cross compile named parameter'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams' -Description 'native build script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip' -Description 'native bundle upload path'
 Assert-WorkflowContains -Text $workflowText -Expected 'libjson-perl' -Description 'Linux vkd3d Perl JSON dependency'
+Assert-WorkflowContains -Text $workflowText -Expected 'brew install nasm bison cpanminus' -Description 'macOS native tool installation'
+Assert-WorkflowContains -Text $workflowText -Expected 'cpanm --local-lib="$HOME/perl5" --notest JSON' -Description 'macOS vkd3d Perl JSON dependency'
+Assert-WorkflowContains -Text $workflowText -Expected 'PERL5LIB=$HOME/perl5/lib/perl5' -Description 'macOS Perl JSON module path'
 Assert-WorkflowContains -Text $workflowText -Expected 'ndk_version="27.2.12479018"' -Description 'Android NDK version pin'
 Assert-WorkflowContains -Text $workflowText -Expected 'for attempt in 1 2 3; do' -Description 'Android NDK install retry loop'
 Assert-WorkflowContains -Text $workflowText -Expected 'rm -rf "$ndk" "$ANDROID_HOME/.temp"' -Description 'Android NDK partial install cleanup'
@@ -146,7 +149,7 @@ if ($workflowText.Contains('${{ secrets.NUGET_API_KEY }}', [System.StringCompari
     Add-WorkflowError 'Release workflow must use NuGet Trusted Publishing instead of the repository secret NUGET_API_KEY.'
 }
 
-$initializeCount = ([regex]::Matches($workflowText, [regex]::Escape('./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1'))).Count
+$initializeCount = ([regex]::Matches($workflowText, [regex]::Escape('./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3'))).Count
 if ($initializeCount -lt 2) {
     Add-WorkflowError "Expected Initialize-NativeForks.ps1 to run in both native and assemble jobs, found $initializeCount occurrence(s)."
 }

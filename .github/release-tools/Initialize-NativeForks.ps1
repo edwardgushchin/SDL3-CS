@@ -4,6 +4,8 @@ param(
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
     [string] $SourceRoot,
     [int] $Depth = 0,
+    [ValidateRange(1, 10)]
+    [int] $Retries = 1,
     [switch] $SkipSubmodules,
     [switch] $DryRun
 )
@@ -28,6 +30,34 @@ function Invoke-Git {
     )
 
     Invoke-ReleaseCommand -FilePath 'git' -Arguments $Arguments -WorkingDirectory $WorkingDirectory -DryRun:$DryRun
+}
+
+function Invoke-GitWithRetry {
+    param(
+        [Parameter(Mandatory)]
+        [string[]] $Arguments,
+
+        [string] $WorkingDirectory = (Get-ReleaseRepoRoot),
+
+        [ValidateRange(1, 10)]
+        [int] $Attempts = 1
+    )
+
+    for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+        try {
+            Invoke-Git -Arguments $Arguments -WorkingDirectory $WorkingDirectory
+            return
+        }
+        catch {
+            if ($attempt -eq $Attempts) {
+                throw
+            }
+
+            $delaySeconds = [Math]::Min(30, 5 * $attempt)
+            Write-Warning "Git command failed on attempt $attempt/$Attempts. Retrying in $delaySeconds second(s): $($_.Exception.Message)"
+            Start-Sleep -Seconds $delaySeconds
+        }
+    }
 }
 
 function Invoke-GitText {
@@ -151,6 +181,6 @@ foreach ($component in $manifest.components) {
     $cloneArgs += @($component.repository, $targetPath)
 
     Write-Host "Cloning native fork: $($component.id) -> $targetPath"
-    Invoke-Git -Arguments $cloneArgs
+    Invoke-GitWithRetry -Arguments $cloneArgs -Attempts $Retries
     Update-NativeForkSourceRef -TargetPath $targetPath -SourceRef $sourceRef -Depth $Depth
 }

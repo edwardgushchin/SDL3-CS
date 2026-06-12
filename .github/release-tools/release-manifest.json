@@ -600,6 +600,7 @@
           "lib/libdav1d*.a",
           "lib/libavif*.a",
           "lib/libpng16*.a",
+          "lib/libz*.a",
           "lib/libwebp*.a",
           "lib/libwebpdemux*.a",
           "lib/libwebpmux*.a",
@@ -609,6 +610,7 @@
           "**/libdav1d*.a",
           "**/libavif*.a",
           "**/libpng16*.a",
+          "**/libz*.a",
           "**/libwebp*.a",
           "**/libwebpdemux*.a",
           "**/libwebpmux*.a",
@@ -620,6 +622,7 @@
           "lib/libdav1d*.a",
           "lib/libavif*.a",
           "lib/libpng16*.a",
+          "lib/libz*.a",
           "lib/libwebp*.a",
           "lib/libwebpdemux*.a",
           "lib/libwebpmux*.a",
@@ -629,6 +632,7 @@
           "**/libdav1d*.a",
           "**/libavif*.a",
           "**/libpng16*.a",
+          "**/libz*.a",
           "**/libwebp*.a",
           "**/libwebpdemux*.a",
           "**/libwebpmux*.a",
@@ -681,16 +685,24 @@
           "-DSDLMIXER_MP3_MPG123=OFF"
         ],
         "android-arm": [
-          "-DSDLMIXER_GME=OFF"
+          "-DSDLMIXER_GME=OFF",
+          "-DSDLMIXER_WAVPACK=OFF"
         ],
         "android-arm64": [
           "-DSDLMIXER_GME=OFF"
         ],
         "android-x86": [
-          "-DSDLMIXER_GME=OFF"
+          "-DSDLMIXER_GME=OFF",
+          "-DSDLMIXER_WAVPACK=OFF"
         ],
         "android-x64": [
           "-DSDLMIXER_GME=OFF"
+        ],
+        "osx-arm64": [
+          "-DSDLMIXER_WAVPACK=OFF"
+        ],
+        "osx-x64": [
+          "-DSDLMIXER_WAVPACK=OFF"
         ],
         "win-x86": [
           "-DWITH_ASM=OFF"
