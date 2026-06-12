@@ -1,111 +1,90 @@
+# SDL3-CS
+
+Modern C# bindings for SDL3 and its companion libraries.
+
+SDL3-CS gives .NET applications direct access to SDL3 APIs and pairs the managed wrapper with platform-specific native runtime packages for Windows, Linux, macOS, Android, iOS, and tvOS.
+
 ## 🚀 About
 
-This is SDL3#, a C# wrapper for SDL3.
+The project provides:
 
-## 🔢 Version Compatibility
+- managed C# bindings for SDL3, SDL_image, SDL_ttf, SDL_mixer, and SDL_shadercross;
+- platform-specific native NuGet packages named `SDL3-CS.{Platform}` and `SDL3-CS.{Platform}.{Addon}`;
+- Android SDLActivity bridge bindings for managed Android applications;
+- examples and release checks that validate package layout and wrapper metadata.
 
-| SDL3-CS Version | SDL3 Version | Minimum glibc (Linux) | Notes |
-|-----------------|--------------|----------------------|-------|
-| 3.4.10.x        | 3.4.10       | 2.28 (Ubuntu 18.04+) | Current stable |
-| 3.4.2.x         | 3.4.2        | 2.28 (Ubuntu 18.04+) | Previous stable |
+Use `SDL3-CS` when you want low-level SDL3 access from modern .NET while keeping native runtime deployment predictable across supported platforms.
 
-> **Note:** The version numbering scheme follows SDL3's versioning. For example, SDL3-CS version `3.4.10.x` is designed for SDL3 version `3.4.10`.
+## 🔢 Versioning and Native Compatibility
 
-### Building Native Libraries on Linux
+SDL3-CS package versions follow the native SDL component versions. The first three version segments identify the upstream native component version. The final segment is the SDL3-CS package revision.
 
-If you're building native libraries in a custom environment (e.g., Docker, Steam Runtime SDK), ensure you're building against SDL3 version **3.4.10**. The platform packages (`SDL3-CS.<Platform>*`) contain pre-built binaries for common platforms, but custom builds should match this version.
+| Component | Package pattern | Native target | Package line |
+|-----------|-----------------|---------------|--------------|
+| SDL3 managed bindings | `SDL3-CS` | SDL `3.4.10` | `3.4.10.x` |
+| SDL3 native runtime | `SDL3-CS.{Platform}` | SDL `3.4.10` | `3.4.10.x` |
+| SDL_image native runtime | `SDL3-CS.{Platform}.Image` | SDL_image `3.4.4` | `3.4.4.x` |
+| SDL_ttf native runtime | `SDL3-CS.{Platform}.TTF` | SDL_ttf `3.2.2` | `3.2.2.x` |
+| SDL_mixer native runtime | `SDL3-CS.{Platform}.Mixer` | SDL_mixer `3.2.4` | `3.2.4.x` |
+| SDL_shadercross native runtime | `SDL3-CS.{Platform}.Shadercross` | SDL_shadercross `3.0.0` | `3.0.0.x` |
 
-For more detailed version information, see [VERSIONS.md](https://github.com/edwardgushchin/SDL3-CS/blob/master/VERSIONS.md).
+`{Platform}` is one of `Windows`, `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
+
+Published NuGet packages can lag behind a release branch while native packages are being assembled. The NuGet package page is authoritative for what is currently published.
 
 ## 📚 Documentation
 
-For more information about SDL3, visit the [SDL wiki](https://wiki.libsdl.org/SDL3/FrontPage).
+Project documentation is intended to live in the [SDL3-CS Wiki](https://github.com/edwardgushchin/SDL3-CS/wiki). If the wiki link redirects to the repository home page, use [VERSIONS.md](https://github.com/edwardgushchin/SDL3-CS/blob/main/VERSIONS.md), the examples, and the release documentation in the repository until the wiki content is published.
+
+For upstream SDL API documentation, see the official [SDL3 Wiki](https://wiki.libsdl.org/SDL3/FrontPage).
 
 ## 🧭 Supported Platforms
 
-The managed `SDL3-CS` wrapper targets .NET 7, .NET 8, .NET 9, and .NET 10. Official native NuGet assets are published as platform-specific package families for the following release targets:
+The managed `SDL3-CS` wrapper targets .NET 7, .NET 8, .NET 9, and .NET 10.
 
-| Platform family | Native package suffix | Supported RIDs / ABIs | Notes |
-|-----------------|-----------------------|------------------------|-------|
-| Windows | `Windows` | `win-x86`, `win-x64`, `win-arm64` | Dynamic SDL libraries for desktop Windows apps. |
-| Linux | `Linux` | `linux-x64`, `linux-arm64` | Built against glibc 2.28 or newer. |
-| macOS | `MacOS` | `osx-x64`, `osx-arm64` | Dynamic SDL libraries for Intel and Apple Silicon macOS apps. |
-| Android | `Android` | `android-arm` (`armeabi-v7a`), `android-arm64` (`arm64-v8a`), `android-x86` (`x86`), `android-x64` (`x86_64`) | Use `SDL3-CS.Android` and `MainActivity : Org.Libsdl.App.SDLActivity` with a managed `Main()` override. |
-| iOS | `iOS` | `ios-arm64`, `iossimulator-arm64`, `iossimulator-x64` | Static native assets are linked through package `buildTransitive` targets. |
-| tvOS | `tvOS` | `tvos-arm64`, `tvossimulator-arm64`, `tvossimulator-x64` | Static native assets are linked through package `buildTransitive` targets. |
+Official native package families are built for the following release targets:
 
-Other platforms can still use the managed wrapper if the application supplies compatible SDL native libraries manually. They are not part of the official native NuGet asset set until they are added to the release manifest and CI validation.
+| Platform family | Package suffix | Supported RIDs / ABIs |
+|-----------------|----------------|------------------------|
+| Windows | `Windows` | `win-x86`, `win-x64`, `win-arm64` |
+| Linux | `Linux` | `linux-x64`, `linux-arm64` |
+| macOS | `MacOS` | `osx-x64`, `osx-arm64` |
+| Android | `Android` | `android-arm`, `android-arm64`, `android-x86`, `android-x64` |
+| iOS | `iOS` | `ios-arm64`, `iossimulator-arm64`, `iossimulator-x64` |
+| tvOS | `tvOS` | `tvos-arm64`, `tvossimulator-arm64`, `tvossimulator-x64` |
 
-The native package projects live under `SDL3-CS.NativePackages/`. It contains only the platform package projects (`SDL3-CS.<Platform>` and `SDL3-CS.<Platform>.<Addon>`) so the repository root stays focused on the managed wrapper, examples, and tests.
+Other platforms can use the managed bindings if the application supplies compatible SDL native libraries manually.
 
 ## 📝 Installation
 
-```
-git clone https://github.com/edwardgushchin/SDL3-CS
-cd SDL3-CS
-dotnet build -c Release
-```
+Install the managed bindings:
 
-or
-
-```
+```bash
 dotnet add package SDL3-CS
 ```
 
-Add the platform package family that matches your target platform. For example, Windows desktop apps use:
+Add the native package for your target platform:
 
-```
+```bash
 dotnet add package SDL3-CS.Windows
+```
+
+Replace `Windows` with `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
+
+Optional SDL companion libraries use the same platform suffix:
+
+```bash
 dotnet add package SDL3-CS.Windows.Image
 dotnet add package SDL3-CS.Windows.TTF
 dotnet add package SDL3-CS.Windows.Mixer
 dotnet add package SDL3-CS.Windows.Shadercross
 ```
 
-Replace `Windows` with `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS` for the corresponding platform family.
+Android applications should reference `SDL3-CS.Android` and use `MainActivity : Org.Libsdl.App.SDLActivity` with a managed `Main()` override. The Android package includes the SDL Java bridge bindings and ABI-specific `libSDL3.so` files.
 
-The full platform package families are:
+## 🎓 Example
 
-| Platform | SDL | SDL_image | SDL_ttf | SDL_mixer | SDL_shadercross |
-|----------|-----|-----------|---------|-----------|-----------------|
-| Windows | `SDL3-CS.Windows` | `SDL3-CS.Windows.Image` | `SDL3-CS.Windows.TTF` | `SDL3-CS.Windows.Mixer` | `SDL3-CS.Windows.Shadercross` |
-| Linux | `SDL3-CS.Linux` | `SDL3-CS.Linux.Image` | `SDL3-CS.Linux.TTF` | `SDL3-CS.Linux.Mixer` | `SDL3-CS.Linux.Shadercross` |
-| macOS | `SDL3-CS.MacOS` | `SDL3-CS.MacOS.Image` | `SDL3-CS.MacOS.TTF` | `SDL3-CS.MacOS.Mixer` | `SDL3-CS.MacOS.Shadercross` |
-| Android | `SDL3-CS.Android` | `SDL3-CS.Android.Image` | `SDL3-CS.Android.TTF` | `SDL3-CS.Android.Mixer` | `SDL3-CS.Android.Shadercross` |
-| iOS | `SDL3-CS.iOS` | `SDL3-CS.iOS.Image` | `SDL3-CS.iOS.TTF` | `SDL3-CS.iOS.Mixer` | `SDL3-CS.iOS.Shadercross` |
-| tvOS | `SDL3-CS.tvOS` | `SDL3-CS.tvOS.Image` | `SDL3-CS.tvOS.TTF` | `SDL3-CS.tvOS.Mixer` | `SDL3-CS.tvOS.Shadercross` |
-
-Android apps use a single base Android package that includes both `libSDL3.so` and the SDL Android bridge bindings:
-
-```
-dotnet add package SDL3-CS.Android
-dotnet add package SDL3-CS.Android.Image
-dotnet add package SDL3-CS.Android.TTF
-dotnet add package SDL3-CS.Android.Mixer
-dotnet add package SDL3-CS.Android.Shadercross
-```
-
-### Current NuGet Release
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `SDL3-CS` | `3.4.10.1` | Managed wrapper for SDL 3.4.10 |
-
-Platform package IDs use one of the supported platform suffixes: `Windows`, `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
-
-| Native component | Package ID pattern | Version |
-|------------------|--------------------|---------|
-| SDL | `SDL3-CS.<Platform>` | `3.4.10.1` |
-| SDL_image | `SDL3-CS.<Platform>.Image` | `3.4.4.1` |
-| SDL_mixer | `SDL3-CS.<Platform>.Mixer` | `3.2.4.1` |
-| SDL_ttf | `SDL3-CS.<Platform>.TTF` | `3.2.2.1` |
-| SDL_shadercross | `SDL3-CS.<Platform>.Shadercross` | `3.0.0.1` |
-
-Android applications should use `MainActivity : Org.Libsdl.App.SDLActivity`, override `GetLibraries()` and run SDL from the managed `Main()` override. The `SDL3-CS.Android` package supplies both the SDL Java bridge bindings and the ABI-specific `libSDL3.so` files.
-
-## 🎓 Examples
-
-```C#
+```csharp
 using SDL3;
 
 namespace Create_Window;
@@ -127,13 +106,12 @@ internal static class Program
             return;
         }
 
-        SDL.SetRenderDrawColor(renderer, 100, 149, 237, 0);
+        SDL.SetRenderDrawColor(renderer, 100, 149, 237, 255);
 
         var loop = true;
 
         while (loop)
         {
-
             while (SDL.PollEvent(out var e))
             {
                 if ((SDL.EventType)e.Type == SDL.EventType.Quit)
@@ -154,35 +132,16 @@ internal static class Program
 }
 ```
 
-More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree/master/SDL3-CS.Examples).
-
-## ✅ Readiness
-
-| **Library**                               | **Stage**                                             |
-|-------------------------------------------|-------------------------------------------------------|
-| [SDL3](SDL3-CS/SDL)                       | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-| [SDL_image](SDL3-CS/Image)                | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-| [SDL_mixer](SDL3-CS/Mixer)                | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-| [SDL_ttf](SDL3-CS/TTF)                    | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-| [SDL_shadercross](SDL3-CS/ShaderCross)    | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-
+More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushchin/SDL3-CS/tree/main/SDL3-CS.Examples).
 
 ## 🤝 Feedback and Contributions
 
-Do you have an idea or found a bug? Please open an [issue](https://github.com/edwardgushchin/SDL3-CS/issues) or start a [discussion](https://github.com/edwardgushchin/SDL3-CS/discussions).
+Found a bug or have an idea? Open an [issue](https://github.com/edwardgushchin/SDL3-CS/issues) or start a [discussion](https://github.com/edwardgushchin/SDL3-CS/discussions).
 
-Please note we have a code of conduct, please follow it in all your interactions with the project.
+Please follow the [Code of Conduct](https://github.com/edwardgushchin/SDL3-CS/blob/main/CODE_OF_CONDUCT.md) in all project interactions.
 
-If you have any feedback, please reach out to us at [eduardgushchin@yandex.ru](mailto://eduardgushchin@yandex.ru).
-
-We also have a [chat](https://t.me/sdl3cs) in Telegram, where I am ready to answer any of your questions.
-
-## 💻 Authors
-
-- Eduard Gushchin - Initial work - [edwardgushchin](https://github.com/edwardgushchin)
-
-See also the list of [contributors](https://github.com/edwardgushchin/SDL3-CS/graphs/contributors) who participated in this project.
+You can contact the maintainer at [eduardgushchin@yandex.ru](mailto:eduardgushchin@yandex.ru) or join the [Telegram chat](https://t.me/sdl3cs) for questions and feedback.
 
 ## 📃 License
 
-SDL3 and SDL3# are released under the zlib license. See [LICENSE](LICENSE) for details.
+SDL3 and SDL3# are released under the zlib license. See [LICENSE](https://github.com/edwardgushchin/SDL3-CS/blob/main/LICENSE) for details.
