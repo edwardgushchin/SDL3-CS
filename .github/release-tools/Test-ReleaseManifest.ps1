@@ -426,6 +426,24 @@ foreach ($component in $manifest.components) {
                 Add-ValidationError "Component SDL_mixer must disable WavPack for $wavpackDisabledRid to avoid vendored WavPack toolchain failures."
             }
         }
+
+        foreach ($flacDisabledRid in @('android-arm', 'android-x86')) {
+            $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$flacDisabledRid].Value)
+            if ($ridArgs -notcontains '-DSDLMIXER_FLAC=OFF') {
+                Add-ValidationError "Component SDL_mixer must disable FLAC for $flacDisabledRid to avoid vendored FLAC fseeko/ftello Android 32-bit failures."
+            }
+        }
+    }
+
+    if ($component.id -eq 'SDL_shadercross') {
+        foreach ($appleStaticKey in @('ios', 'tvos')) {
+            $patterns = @($component.artifactPatterns.$appleStaticKey)
+            foreach ($requiredPattern in @('lib/libspirv-cross*.a', '**/libspirv-cross*.a')) {
+                if ($patterns -notcontains $requiredPattern) {
+                    Add-ValidationError "Component SDL_shadercross artifactPatterns.$appleStaticKey must collect all SPIRV-Cross static libraries with '$requiredPattern'."
+                }
+            }
+        }
     }
 }
 
