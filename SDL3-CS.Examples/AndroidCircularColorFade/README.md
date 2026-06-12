@@ -1,5 +1,12 @@
-﻿# Android Example
-1. `SDL3Bridge` and `libSDL3.so` from official release `.aar` build.
-2. `Metadata.xml` exclude internal java element, fixed xamarin generate error (from ppy bindings).
-3. `[Activity]` and `AndroidManifest.xml` content copy from SDL3 `android-project`.
-4. For `X86_64 API 28`, in fact the sdl3 and xamarin both support the `API 21`, but official release build has some problem (maybe hash-style).
+# Android example
+
+Этот пример показывает официальный SDL3-CS Android path: `MainActivity` наследуется от `Org.Libsdl.App.SDLActivity`, загружает `SDL3` через `GetLibraries()` и запускает управляемый SDL loop в override `Main()`.
+
+Bridge больше не хранится локально в примере. Пример использует project reference на `SDL3-CS.Android`, который доставляет bindings для `SDLActivity`, Java bridge SDL и базовые Android native assets в опубликованном package.
+
+Для сборки нужна Android-среда:
+
+```powershell
+dotnet workload restore SDL3-CS.Examples\AndroidCircularColorFade\AndroidCircularColorFade.csproj
+dotnet build SDL3-CS.Examples\AndroidCircularColorFade\AndroidCircularColorFade.csproj -c Release
+```

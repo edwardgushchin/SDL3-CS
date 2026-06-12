@@ -6,20 +6,37 @@ This is SDL3#, a C# wrapper for SDL3.
 
 | SDL3-CS Version | SDL3 Version | Minimum glibc (Linux) | Notes |
 |-----------------|--------------|----------------------|-------|
-| 3.4.2.x         | 3.4.2        | 2.28 (Ubuntu 18.04+) | Current stable |
-| 3.4.0.x         | 3.4.0        | 2.28 (Ubuntu 18.04+) | Previous stable |
+| 3.4.10.x        | 3.4.10       | 2.28 (Ubuntu 18.04+) | Current stable |
+| 3.4.2.x         | 3.4.2        | 2.28 (Ubuntu 18.04+) | Previous stable |
 
-> **Note:** The version numbering scheme follows SDL3's versioning. For example, SDL3-CS version `3.4.2.x` is designed for SDL3 version `3.4.2`.
+> **Note:** The version numbering scheme follows SDL3's versioning. For example, SDL3-CS version `3.4.10.x` is designed for SDL3 version `3.4.10`.
 
 ### Building Native Libraries on Linux
 
-If you're building native libraries in a custom environment (e.g., Docker, Steam Runtime SDK), ensure you're building against SDL3 version **3.4.2**. The native packages (`SDL3-CS.Native*`) contain pre-built binaries for common platforms, but custom builds should match this version.
+If you're building native libraries in a custom environment (e.g., Docker, Steam Runtime SDK), ensure you're building against SDL3 version **3.4.10**. The platform packages (`SDL3-CS.<Platform>*`) contain pre-built binaries for common platforms, but custom builds should match this version.
 
 For more detailed version information, see [VERSIONS.md](https://github.com/edwardgushchin/SDL3-CS/blob/master/VERSIONS.md).
 
 ## 📚 Documentation
 
 For more information about SDL3, visit the [SDL wiki](https://wiki.libsdl.org/SDL3/FrontPage).
+
+## 🧭 Supported Platforms
+
+The managed `SDL3-CS` wrapper targets .NET 7, .NET 8, .NET 9, and .NET 10. Official native NuGet assets are published as platform-specific package families for the following release targets:
+
+| Platform family | Native package suffix | Supported RIDs / ABIs | Notes |
+|-----------------|-----------------------|------------------------|-------|
+| Windows | `Windows` | `win-x86`, `win-x64`, `win-arm64` | Dynamic SDL libraries for desktop Windows apps. |
+| Linux | `Linux` | `linux-x64`, `linux-arm64` | Built against glibc 2.28 or newer. |
+| macOS | `MacOS` | `osx-x64`, `osx-arm64` | Dynamic SDL libraries for Intel and Apple Silicon macOS apps. |
+| Android | `Android` | `android-arm` (`armeabi-v7a`), `android-arm64` (`arm64-v8a`), `android-x86` (`x86`), `android-x64` (`x86_64`) | Use `SDL3-CS.Android` and `MainActivity : Org.Libsdl.App.SDLActivity` with a managed `Main()` override. |
+| iOS | `iOS` | `ios-arm64`, `iossimulator-arm64`, `iossimulator-x64` | Static native assets are linked through package `buildTransitive` targets. |
+| tvOS | `tvOS` | `tvos-arm64`, `tvossimulator-arm64`, `tvossimulator-x64` | Static native assets are linked through package `buildTransitive` targets. |
+
+Other platforms can still use the managed wrapper if the application supplies compatible SDL native libraries manually. They are not part of the official native NuGet asset set until they are added to the release manifest and CI validation.
+
+The native package projects live under `SDL3-CS.NativePackages/`. It contains only the platform package projects (`SDL3-CS.<Platform>` and `SDL3-CS.<Platform>.<Addon>`) so the repository root stays focused on the managed wrapper, examples, and tests.
 
 ## 📝 Installation
 
@@ -35,28 +52,56 @@ or
 dotnet add package SDL3-CS
 ```
 
-Optional:
+Add the platform package family that matches your target platform. For example, Windows desktop apps use:
 
 ```
-dotnet add package SDL3-CS.Native
-dotnet add package SDL3-CS.Native.Image
-dotnet add package SDL3-CS.Native.TTF
-dotnet add package SDL3-CS.Native.Mixer
-dotnet add package SDL3-CS.Native.Shadercross
+dotnet add package SDL3-CS.Windows
+dotnet add package SDL3-CS.Windows.Image
+dotnet add package SDL3-CS.Windows.TTF
+dotnet add package SDL3-CS.Windows.Mixer
+dotnet add package SDL3-CS.Windows.Shadercross
+```
+
+Replace `Windows` with `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS` for the corresponding platform family.
+
+The full platform package families are:
+
+| Platform | SDL | SDL_image | SDL_ttf | SDL_mixer | SDL_shadercross |
+|----------|-----|-----------|---------|-----------|-----------------|
+| Windows | `SDL3-CS.Windows` | `SDL3-CS.Windows.Image` | `SDL3-CS.Windows.TTF` | `SDL3-CS.Windows.Mixer` | `SDL3-CS.Windows.Shadercross` |
+| Linux | `SDL3-CS.Linux` | `SDL3-CS.Linux.Image` | `SDL3-CS.Linux.TTF` | `SDL3-CS.Linux.Mixer` | `SDL3-CS.Linux.Shadercross` |
+| macOS | `SDL3-CS.MacOS` | `SDL3-CS.MacOS.Image` | `SDL3-CS.MacOS.TTF` | `SDL3-CS.MacOS.Mixer` | `SDL3-CS.MacOS.Shadercross` |
+| Android | `SDL3-CS.Android` | `SDL3-CS.Android.Image` | `SDL3-CS.Android.TTF` | `SDL3-CS.Android.Mixer` | `SDL3-CS.Android.Shadercross` |
+| iOS | `SDL3-CS.iOS` | `SDL3-CS.iOS.Image` | `SDL3-CS.iOS.TTF` | `SDL3-CS.iOS.Mixer` | `SDL3-CS.iOS.Shadercross` |
+| tvOS | `SDL3-CS.tvOS` | `SDL3-CS.tvOS.Image` | `SDL3-CS.tvOS.TTF` | `SDL3-CS.tvOS.Mixer` | `SDL3-CS.tvOS.Shadercross` |
+
+Android apps use a single base Android package that includes both `libSDL3.so` and the SDL Android bridge bindings:
+
+```
+dotnet add package SDL3-CS.Android
+dotnet add package SDL3-CS.Android.Image
+dotnet add package SDL3-CS.Android.TTF
+dotnet add package SDL3-CS.Android.Mixer
+dotnet add package SDL3-CS.Android.Shadercross
 ```
 
 ### Current NuGet Release
 
-| Package | Version | Native component |
-|---------|---------|------------------|
-| `SDL3-CS` | `3.4.2.1` | Managed wrapper for SDL 3.4.2 |
-| `SDL3-CS.Native` | `3.4.2.1` | SDL 3.4.2 |
-| `SDL3-CS.Native.Image` | `3.4.4.1` | SDL_image 3.4.4 |
-| `SDL3-CS.Native.Mixer` | `3.2.4.1` | SDL_mixer 3.2.4 |
-| `SDL3-CS.Native.TTF` | `3.2.2.1` | SDL_ttf 3.2.2 |
-| `SDL3-CS.Native.Shadercross` | `3.0.0.1` | SDL_shadercross 3.0.0 |
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `SDL3-CS` | `3.4.10.1` | Managed wrapper for SDL 3.4.10 |
 
-The native packages are built through GitHub Actions for these RIDs: `win-x86`, `win-x64`, `win-arm64`, `linux-x64`, `linux-arm64`, `osx-x64`, `osx-arm64`, `android-arm`, `android-arm64`, `android-x86`, `android-x64`, `ios-arm64`, `iossimulator-arm64`, `iossimulator-x64`, `tvos-arm64`, `tvossimulator-arm64`, and `tvossimulator-x64`.
+Platform package IDs use one of the supported platform suffixes: `Windows`, `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
+
+| Native component | Package ID pattern | Version |
+|------------------|--------------------|---------|
+| SDL | `SDL3-CS.<Platform>` | `3.4.10.1` |
+| SDL_image | `SDL3-CS.<Platform>.Image` | `3.4.4.1` |
+| SDL_mixer | `SDL3-CS.<Platform>.Mixer` | `3.2.4.1` |
+| SDL_ttf | `SDL3-CS.<Platform>.TTF` | `3.2.2.1` |
+| SDL_shadercross | `SDL3-CS.<Platform>.Shadercross` | `3.0.0.1` |
+
+Android applications should use `MainActivity : Org.Libsdl.App.SDLActivity`, override `GetLibraries()` and run SDL from the managed `Main()` override. The `SDL3-CS.Android` package supplies both the SDL Java bridge bindings and the ABI-specific `libSDL3.so` files.
 
 ## 🎓 Examples
 

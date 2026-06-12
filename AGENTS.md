@@ -56,7 +56,7 @@ For this repository, agent operational materials live inside the worktree but mu
 - Do not attach upstream C API XML documentation blocks, including blocks that start with `<code>extern SDL_DECLSPEC ...</code>`, to `private` `LibraryImport`, `DllImport`, `extern`, hook, delegate, or native-helper members.
 - When a binding uses a private native stub plus delegate/hook plus public wrapper, keep the original C declaration and the full XML documentation immediately above the public wrapper method. Keep the private native stub undocumented except for required attributes.
 - If there is no public wrapper for a native entry point, add the public wrapper first or leave the C API documentation out until the exposed API exists; do not hide user documentation on a private member.
-- Full-branch audits must run `pwsh .\release-tools\Test-PublicWrapperXmlDocs.ps1` and report zero XML documentation blocks attached to private methods before wrapper documentation work is considered complete.
+- Full-branch audits must run `pwsh .\.github\release-tools\Test-PublicWrapperXmlDocs.ps1` and report zero XML documentation blocks attached to private methods before wrapper documentation work is considered complete.
 
 ## SDL C API Porting Workflow
 - Use this workflow when the user provides an original SDL, SDL_image, SDL_mixer, SDL_ttf, or SDL_shadercross C API declaration with a Doxygen comment and asks to add a new C# binding, update an existing binding, or align XML C# documentation with the original SDL documentation.

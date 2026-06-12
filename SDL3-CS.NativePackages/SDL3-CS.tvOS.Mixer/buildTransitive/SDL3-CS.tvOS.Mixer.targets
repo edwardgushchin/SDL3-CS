@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <_SDL3CSNativeMixerAppleStaticRid Condition="'$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-x64' or '$(RuntimeIdentifier)' == 'tvos-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-x64'">true</_SDL3CSNativeMixerAppleStaticRid>
+    <_SDL3CSNativeMixerAppleStaticLibDir Condition="'$(_SDL3CSNativeMixerAppleStaticRid)' == 'true'">$(MSBuildThisFileDirectory)..\runtimes\$(RuntimeIdentifier)\native\</_SDL3CSNativeMixerAppleStaticLibDir>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeMixerAppleStaticRid)' == 'true' and Exists('$(_SDL3CSNativeMixerAppleStaticLibDir)')">
+    <NativeReference Include="$(_SDL3CSNativeMixerAppleStaticLibDir)*.a">
+      <Kind>Static</Kind>
+      <ForceLoad>true</ForceLoad>
+      <SmartLink>true</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+</Project>

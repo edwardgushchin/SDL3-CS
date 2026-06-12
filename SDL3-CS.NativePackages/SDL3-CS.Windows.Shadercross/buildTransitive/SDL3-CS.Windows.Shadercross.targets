@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <_SDL3CSNativeShadercrossAppleStaticRid Condition="'$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-x64' or '$(RuntimeIdentifier)' == 'tvos-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-x64'">true</_SDL3CSNativeShadercrossAppleStaticRid>
+    <_SDL3CSNativeShadercrossAppleStaticLibDir Condition="'$(_SDL3CSNativeShadercrossAppleStaticRid)' == 'true'">$(MSBuildThisFileDirectory)..\runtimes\$(RuntimeIdentifier)\native\</_SDL3CSNativeShadercrossAppleStaticLibDir>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeShadercrossAppleStaticRid)' == 'true' and Exists('$(_SDL3CSNativeShadercrossAppleStaticLibDir)')">
+    <NativeReference Include="$(_SDL3CSNativeShadercrossAppleStaticLibDir)*.a">
+      <Kind>Static</Kind>
+      <ForceLoad>true</ForceLoad>
+      <SmartLink>true</SmartLink>
+      <IsCxx>true</IsCxx>
+    </NativeReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeShadercrossAppleStaticRid)' == 'true'">
+    <LinkerArgument Include="-lc++" />
+  </ItemGroup>
+</Project>

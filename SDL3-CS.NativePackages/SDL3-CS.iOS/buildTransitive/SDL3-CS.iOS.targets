@@ -1,0 +1,48 @@
+<Project>
+  <PropertyGroup>
+    <_SDL3CSNativeAppleStaticRid Condition="'$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-x64' or '$(RuntimeIdentifier)' == 'tvos-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-arm64' or '$(RuntimeIdentifier)' == 'tvossimulator-x64'">true</_SDL3CSNativeAppleStaticRid>
+    <_SDL3CSNativeAppleStaticLibDir Condition="'$(_SDL3CSNativeAppleStaticRid)' == 'true'">$(MSBuildThisFileDirectory)..\runtimes\$(RuntimeIdentifier)\native\</_SDL3CSNativeAppleStaticLibDir>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeAppleStaticRid)' == 'true' and Exists('$(_SDL3CSNativeAppleStaticLibDir)')">
+    <NativeReference Include="$(_SDL3CSNativeAppleStaticLibDir)*.a">
+      <Kind>Static</Kind>
+      <ForceLoad>true</ForceLoad>
+      <SmartLink>true</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(_SDL3CSNativeAppleStaticRid)' == 'true'">
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="Foundation" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="CoreVideo" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="CoreMedia" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="CoreAudio" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="AudioToolbox" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="AVFoundation" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="CoreGraphics" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="QuartzCore" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="UIKit" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="GameController" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="Metal" />
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="OpenGLES" />
+    <LinkerArgument Include="-weak_framework" />
+    <LinkerArgument Include="CoreHaptics" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'ios-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-arm64' or '$(RuntimeIdentifier)' == 'iossimulator-x64'">
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="CoreMotion" />
+  </ItemGroup>
+</Project>

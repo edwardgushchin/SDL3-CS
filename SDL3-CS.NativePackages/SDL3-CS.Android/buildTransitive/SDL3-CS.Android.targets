@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <SDL3CSAndroidRuntimePackage>true</SDL3CSAndroidRuntimePackage>
+  </PropertyGroup>
+</Project>
