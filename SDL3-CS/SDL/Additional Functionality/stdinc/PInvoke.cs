@@ -112,6 +112,12 @@ public partial class SDL
     public static partial IntPtr Realloc(IntPtr mem, UIntPtr size);
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_Free(IntPtr mem);
+    private delegate void FreeNativeDelegate(IntPtr mem);
+    private static FreeNativeDelegate FreeNativeFunction = SDL_Free;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_free(void *mem);</code>
     /// <summary>
     /// <para>Free allocated memory.</para>
@@ -122,17 +128,17 @@ public partial class SDL
     /// <param name="mem">a pointer to allocated memory, or <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Free(IntPtr mem);
-    private delegate void FreeNativeDelegate(IntPtr mem);
-    private static FreeNativeDelegate FreeNativeFunction = SDL_Free;
-
     public static void Free(IntPtr mem)
     {
         FreeNativeFunction(mem);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOriginalMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private delegate void GetOriginalMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private static GetOriginalMemoryFunctionsNative GetOriginalMemoryFunctionsNativeFunction = SDL_GetOriginalMemoryFunctions;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);</code>
     /// <summary>
@@ -148,17 +154,17 @@ public partial class SDL
     /// <param name="freeFunc">filled with free function.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOriginalMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private delegate void GetOriginalMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private static GetOriginalMemoryFunctionsNative GetOriginalMemoryFunctionsNativeFunction = SDL_GetOriginalMemoryFunctions;
-
     public static void GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc)
     {
         GetOriginalMemoryFunctionsNativeFunction(out mallocFunc, out callocFunc, out reallocFunc, out freeFunc);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GetMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private delegate void GetMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private static GetMemoryFunctionsNative GetMemoryFunctionsNativeFunction = SDL_GetMemoryFunctions;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);</code>
     /// <summary>
@@ -174,17 +180,18 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetMemoryFunctions"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private delegate void GetMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private static GetMemoryFunctionsNative GetMemoryFunctionsNativeFunction = SDL_GetMemoryFunctions;
-
     public static void GetMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc)
     {
         GetMemoryFunctionsNativeFunction(out mallocFunc, out callocFunc, out reallocFunc, out freeFunc);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
+    private delegate bool SetMemoryFunctionsNative(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
+    private static SetMemoryFunctionsNative SetMemoryFunctionsNativeFunction = SDL_SetMemoryFunctions;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);</code>
     /// <summary>
@@ -207,13 +214,6 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMemoryFunctions"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
-    private delegate bool SetMemoryFunctionsNative(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
-    private static SetMemoryFunctionsNative SetMemoryFunctionsNativeFunction = SDL_SetMemoryFunctions;
-
     public static bool SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc)
     {
         return SetMemoryFunctionsNativeFunction(mallocFunc, callocFunc, reallocFunc, freeFunc);
@@ -240,6 +240,12 @@ public partial class SDL
     public static partial IntPtr AlignedAlloc(UIntPtr alignment, UIntPtr size);
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc_zero"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_AlignedAllocZero(UIntPtr alignment, UIntPtr size);
+    private delegate IntPtr AlignedAllocZeroNative(UIntPtr alignment, UIntPtr size);
+    private static AlignedAllocZeroNative AlignedAllocZeroNativeFunction = SDL_AlignedAllocZero;
+
     /// <code>extern SDL_DECLSPEC SDL_MALLOC void * SDLCALL SDL_aligned_alloc_zero(size_t alignment, size_t size);</code>
     /// <summary>
     /// <para>Allocate zero-initialized memory aligned to a specific alignment.</para>
@@ -256,12 +262,6 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="AlignedFree"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc_zero"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_AlignedAllocZero(UIntPtr alignment, UIntPtr size);
-    private delegate IntPtr AlignedAllocZeroNative(UIntPtr alignment, UIntPtr size);
-    private static AlignedAllocZeroNative AlignedAllocZeroNativeFunction = SDL_AlignedAllocZero;
-
     public static IntPtr AlignedAllocZero(UIntPtr alignment, UIntPtr size)
     {
         return AlignedAllocZeroNativeFunction(alignment, size);
@@ -311,7 +311,7 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironmentVariable"/>
-    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="GetEnvironmentVariable"/>
     /// <seealso cref="SetEnvironmentVariable"/>
     /// <seealso cref="UnsetEnvironmentVariable"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -331,7 +331,7 @@ public partial class SDL
     /// calling setenv() or unsetenv()</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironmentVariable"/>
-    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="GetEnvironmentVariable"/>
     /// <seealso cref="SetEnvironmentVariable"/>
     /// <seealso cref="UnsetEnvironmentVariable"/>
     /// <seealso cref="DestroyEnvironment"/>
@@ -380,7 +380,7 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEnvironment"/>
     /// <seealso cref="CreateEnvironment"/>
-    /// <seealso cref="GetEnvironmentVariables"/>
+    /// <seealso cref="GetEnvironmentVariable"/>
     /// <seealso cref="SetEnvironmentVariable"/>
     /// <seealso cref="UnsetEnvironmentVariable"/>
     public static string[]? GetEnvironmentVariables(IntPtr env)
@@ -617,6 +617,24 @@ public partial class SDL
     public static partial uint RandBitsR(ref ulong state);
 
 
+    private delegate CULong WcstoulNative(IntPtr str, IntPtr endp, int @base);
+    private static WcstoulNative WcstoulNativeFunction = SDL_wcstoul;
+
+    [ExcludeFromCodeCoverage]
+    private static CULong SDL_wcstoul(IntPtr strPtr, IntPtr endp, int @base)
+    {
+        // C unsigned long is 32-bit on Windows/ILP32 and 64-bit on LP64 Unix.
+        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || IntPtr.Size == 4
+            ? new CULong(SDL_wcstoul32(strPtr, endp, @base))
+            : new CULong((UIntPtr)SDL_wcstoul64(strPtr, endp, @base));
+    }
+
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoul"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_wcstoul32(IntPtr str, IntPtr endp, int @base);
+
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoul"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ulong SDL_wcstoul64(IntPtr str, IntPtr endp, int @base);
+
     /// <code>extern SDL_DECLSPEC unsigned long SDLCALL SDL_wcstoul(const wchar_t *str, wchar_t **endp, int base);</code>
     /// <summary>
     /// <para>Parse an <c>unsigned long</c> from a wide string.</para>
@@ -651,24 +669,12 @@ public partial class SDL
         }
     }
 
-    private delegate CULong WcstoulNative(IntPtr str, IntPtr endp, int @base);
-    private static WcstoulNative WcstoulNativeFunction = SDL_wcstoul;
 
     [ExcludeFromCodeCoverage]
-    private static CULong SDL_wcstoul(IntPtr strPtr, IntPtr endp, int @base)
-    {
-        // C unsigned long is 32-bit on Windows/ILP32 and 64-bit on LP64 Unix.
-        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || IntPtr.Size == 4
-            ? new CULong(SDL_wcstoul32(strPtr, endp, @base))
-            : new CULong((UIntPtr)SDL_wcstoul64(strPtr, endp, @base));
-    }
-
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoul"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_wcstoul32(IntPtr str, IntPtr endp, int @base);
-
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoul"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_wcstoul64(IntPtr str, IntPtr endp, int @base);
-
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoll"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial long SDL_Wcstoll(IntPtr str, IntPtr endp, int @base);
+    private delegate long WcstollNative(IntPtr str, IntPtr endp, int @base);
+    private static WcstollNative WcstollNativeFunction = SDL_Wcstoll;
 
     /// <code>extern SDL_DECLSPEC long long SDLCALL SDL_wcstoll(const wchar_t *str, wchar_t **endp, int base);</code>
     /// <summary>
@@ -690,12 +696,6 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_strtoll">SDL_strtoll</seealso>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoll"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial long SDL_Wcstoll(IntPtr str, IntPtr endp, int @base);
-    private delegate long WcstollNative(IntPtr str, IntPtr endp, int @base);
-    private static WcstollNative WcstollNativeFunction = SDL_Wcstoll;
-
     public static long Wcstoll(string str, IntPtr endp, int @base)
     {
         var strPtr = WCharStringMarshaller.ConvertToUnmanaged(str);
@@ -710,6 +710,12 @@ public partial class SDL
         }
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoull"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ulong SDL_Wcstoull(IntPtr str, IntPtr endp, int @base);
+    private delegate ulong WcstoullNative(IntPtr str, IntPtr endp, int @base);
+    private static WcstoullNative WcstoullNativeFunction = SDL_Wcstoull;
 
     /// <code>extern SDL_DECLSPEC unsigned long long SDLCALL SDL_wcstoull(const wchar_t *str, wchar_t **endp, int base);</code>
     /// <summary>
@@ -733,12 +739,6 @@ public partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_strtoull">SDL_strtoull</seealso>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoull"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_Wcstoull(IntPtr str, IntPtr endp, int @base);
-    private delegate ulong WcstoullNative(IntPtr str, IntPtr endp, int @base);
-    private static WcstoullNative WcstoullNativeFunction = SDL_Wcstoull;
-
     public static ulong Wcstoull(string str, IntPtr endp, int @base)
     {
         var strPtr = WCharStringMarshaller.ConvertToUnmanaged(str);

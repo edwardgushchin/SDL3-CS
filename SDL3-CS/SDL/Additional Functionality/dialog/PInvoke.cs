@@ -200,6 +200,7 @@ public static partial class SDL
     private delegate void ShowOpenFolderDialogNative(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         IntPtr defaultLocation, bool allowMany);
     private static ShowOpenFolderDialogNative ShowOpenFolderDialogNativeFunction = SDL_ShowOpenFolderDialog;
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a folder on their filesystem.</para>
     /// <para>This function should only be invoked from the main thread.</para>
@@ -258,6 +259,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowFileDialogWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
+    private delegate void ShowFileDialogWithPropertiesNative(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
+    private static ShowFileDialogWithPropertiesNative ShowFileDialogWithPropertiesNativeFunction = SDL_ShowFileDialogWithProperties;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Create and launch a file dialog with the specified properties.</para>
@@ -294,19 +301,13 @@ public static partial class SDL
     /// <threadsafety>This function should be called only from the main thread. The
     /// callback may be invoked from the same thread or from a
     /// different one, depending on the OS's constraints.</threadsafety>
-    /// <since>This function is available since SDL 3.1.8.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="FileDialogType"/>
     /// <seealso cref="DialogFileCallback"/>
     /// <seealso cref="DialogFileFilter"/>
     /// <seealso cref="ShowOpenFileDialog"/>
     /// <seealso cref="ShowSaveFileDialog"/>
     /// <seealso cref="ShowOpenFolderDialog"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowFileDialogWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
-    private delegate void ShowFileDialogWithPropertiesNative(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props);
-    private static ShowFileDialogWithPropertiesNative ShowFileDialogWithPropertiesNativeFunction = SDL_ShowFileDialogWithProperties;
-
     public static void ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props)
     {
         ShowFileDialogWithPropertiesNativeFunction(type, callback, userdata, props);

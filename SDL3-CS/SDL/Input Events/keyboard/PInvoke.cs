@@ -29,6 +29,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasKeyboard"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasKeyboard();
+    private delegate bool HasKeyboardNativeDelegate();
+    private static HasKeyboardNativeDelegate HasKeyboardNativeFunction = SDL_HasKeyboard;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasKeyboard(void);</code>
     /// <summary>
     /// Return whether a keyboard is currently connected.
@@ -37,13 +44,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboards"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasKeyboard"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasKeyboard();
-    private delegate bool HasKeyboardNativeDelegate();
-    private static HasKeyboardNativeDelegate HasKeyboardNativeFunction = SDL_HasKeyboard;
-
     public static bool HasKeyboard()
     {
         return HasKeyboardNativeFunction();
@@ -110,6 +110,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetKeyboardFocus();
+    private delegate IntPtr GetKeyboardFocusNativeDelegate();
+    private static GetKeyboardFocusNativeDelegate GetKeyboardFocusNativeFunction = SDL_GetKeyboardFocus;
+
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);</code>
     /// <summary>
     /// Query the window which currently has keyboard focus.
@@ -117,12 +123,6 @@ public static partial class SDL
     /// <returns>the window with keyboard focus.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyboardFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetKeyboardFocus();
-    private delegate IntPtr GetKeyboardFocusNativeDelegate();
-    private static GetKeyboardFocusNativeDelegate GetKeyboardFocusNativeFunction = SDL_GetKeyboardFocus;
-
     public static IntPtr GetKeyboardFocus()
     {
         return GetKeyboardFocusNativeFunction();
@@ -169,6 +169,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetKeyboard"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ResetKeyboard();
+    private delegate void ResetKeyboardNativeDelegate();
+    private static ResetKeyboardNativeDelegate ResetKeyboardNativeFunction = SDL_ResetKeyboard;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetKeyboard(void);</code>
     /// <summary>
     /// <para>Clear the state of the keyboard.</para>
@@ -177,17 +183,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboardState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetKeyboard"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ResetKeyboard();
-    private delegate void ResetKeyboardNativeDelegate();
-    private static ResetKeyboardNativeDelegate ResetKeyboardNativeFunction = SDL_ResetKeyboard;
-
     public static void ResetKeyboard()
     {
         ResetKeyboardNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetModState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Keymod SDL_GetModState();
+    private delegate Keymod GetModStateNativeDelegate();
+    private static GetModStateNativeDelegate GetModStateNativeFunction = SDL_GetModState;
 
     /// <code>extern SDL_DECLSPEC SDL_Keymod SDLCALL SDL_GetModState(void);</code>
     /// <summary>
@@ -198,17 +204,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyboardState"/>
     /// <seealso cref="SetModState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetModState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Keymod SDL_GetModState();
-    private delegate Keymod GetModStateNativeDelegate();
-    private static GetModStateNativeDelegate GetModStateNativeFunction = SDL_GetModState;
-
     public static Keymod GetModState()
     {
         return GetModStateNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetModState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetModState(Keymod modstate);
+    private delegate void SetModStateNativeDelegate(Keymod modstate);
+    private static SetModStateNativeDelegate SetModStateNativeFunction = SDL_SetModState;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetModState(SDL_Keymod modstate);</code>
     /// <summary>
@@ -224,17 +230,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetModState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetModState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetModState(Keymod modstate);
-    private delegate void SetModStateNativeDelegate(Keymod modstate);
-    private static SetModStateNativeDelegate SetModStateNativeFunction = SDL_SetModState;
-
     public static void SetModState(Keymod modstate)
     {
         SetModStateNativeFunction(modstate);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyFromScancode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Keycode SDL_GetKeyFromScancode(Scancode scancode, Keymod modstate, [MarshalAs(UnmanagedType.I1)] bool keyEvent);
+    private delegate Keycode GetKeyFromScancodeNativeDelegate(Scancode scancode, Keymod modstate, bool keyEvent);
+    private static GetKeyFromScancodeNativeDelegate GetKeyFromScancodeNativeFunction = SDL_GetKeyFromScancode;
 
     /// <code>extern SDL_DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromScancode(SDL_Scancode scancode, SDL_Keymod modstate, bool key_event);</code>
     /// <summary>
@@ -254,17 +260,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyName"/>
     /// <seealso cref="GetScancodeFromKey"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyFromScancode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Keycode SDL_GetKeyFromScancode(Scancode scancode, Keymod modstate, [MarshalAs(UnmanagedType.I1)] bool keyEvent);
-    private delegate Keycode GetKeyFromScancodeNativeDelegate(Scancode scancode, Keymod modstate, bool keyEvent);
-    private static GetKeyFromScancodeNativeDelegate GetKeyFromScancodeNativeFunction = SDL_GetKeyFromScancode;
-
     public static Keycode GetKeyFromScancode(Scancode scancode, Keymod modstate, bool keyEvent)
     {
         return GetKeyFromScancodeNativeFunction(scancode, modstate, keyEvent);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeFromKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Scancode SDL_GetScancodeFromKey(Keycode key, out Keymod modstate);
+    private delegate Scancode GetScancodeFromKeyNativeDelegate(Keycode key, out Keymod modstate);
+    private static GetScancodeFromKeyNativeDelegate GetScancodeFromKeyNativeFunction = SDL_GetScancodeFromKey;
 
     /// <code>extern SDL_DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);</code>
     /// <summary>
@@ -281,17 +287,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetScancodeName"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeFromKey"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Scancode SDL_GetScancodeFromKey(Keycode key, out Keymod modstate);
-    private delegate Scancode GetScancodeFromKeyNativeDelegate(Keycode key, out Keymod modstate);
-    private static GetScancodeFromKeyNativeDelegate GetScancodeFromKeyNativeFunction = SDL_GetScancodeFromKey;
-
     public static Scancode GetScancodeFromKey(Keycode key, out Keymod modstate)
     {
         return GetScancodeFromKeyNativeFunction(key, out modstate);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetScancodeName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetScancodeName(Scancode scancode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate bool SetScancodeNameNativeDelegate(Scancode scancode, string name);
+    private static SetScancodeNameNativeDelegate SetScancodeNameNativeFunction = SDL_SetScancodeName;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetScancodeName(SDL_Scancode scancode, const char *name);</code>
     /// <summary>
@@ -306,13 +313,6 @@ public static partial class SDL
     /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetScancodeName"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetScancodeName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetScancodeName(Scancode scancode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate bool SetScancodeNameNativeDelegate(Scancode scancode, string name);
-    private static SetScancodeNameNativeDelegate SetScancodeNameNativeFunction = SDL_SetScancodeName;
-
     public static bool SetScancodeName(Scancode scancode, [MarshalAs(UnmanagedType.LPUTF8Str)] string name)
     {
         return SetScancodeNameNativeFunction(scancode, name);
@@ -351,6 +351,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeFromName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Scancode SDL_GetScancodeFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate Scancode GetScancodeFromNameNativeDelegate(string name);
+    private static GetScancodeFromNameNativeDelegate GetScancodeFromNameNativeFunction = SDL_GetScancodeFromName;
+
     /// <code>extern SDL_DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromName(const char *name);</code>
     /// <summary>
     /// Get a scancode from a human-readable name.
@@ -363,12 +369,6 @@ public static partial class SDL
     /// <seealso cref="GetKeyFromName"/>
     /// <seealso cref="GetScancodeFromKey"/>
     /// <seealso cref="GetScancodeName"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetScancodeFromName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Scancode SDL_GetScancodeFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate Scancode GetScancodeFromNameNativeDelegate(string name);
-    private static GetScancodeFromNameNativeDelegate GetScancodeFromNameNativeFunction = SDL_GetScancodeFromName;
-
     public static Scancode GetScancodeFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name)
     {
         return GetScancodeFromNameNativeFunction(name);
@@ -400,6 +400,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyFromName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial Keycode SDL_GetKeyFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate Keycode GetKeyFromNameNativeDelegate(string name);
+    private static GetKeyFromNameNativeDelegate GetKeyFromNameNativeFunction = SDL_GetKeyFromName;
+
     /// <code>extern SDL_DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromName(const char *name);</code>
     /// <summary>
     /// Get a key code from a human-readable name.
@@ -412,17 +418,18 @@ public static partial class SDL
     /// <seealso cref="GetKeyFromScancode"/>
     /// <seealso cref="GetKeyName"/>
     /// <seealso cref="GetScancodeFromName"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetKeyFromName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial Keycode SDL_GetKeyFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate Keycode GetKeyFromNameNativeDelegate(string name);
-    private static GetKeyFromNameNativeDelegate GetKeyFromNameNativeFunction = SDL_GetKeyFromName;
-
     public static Keycode GetKeyFromName([MarshalAs(UnmanagedType.LPUTF8Str)] string name)
     {
         return GetKeyFromNameNativeFunction(name);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StartTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_StartTextInput(IntPtr window);
+    private delegate bool StartTextInputNativeDelegate(IntPtr window);
+    private static StartTextInputNativeDelegate StartTextInputNativeFunction = SDL_StartTextInput;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StartTextInput(SDL_Window *window);</code>
     /// <summary>
@@ -444,18 +451,18 @@ public static partial class SDL
     /// <seealso cref="StartTextInputWithProperties"/>
     /// <seealso cref="StopTextInput"/>
     /// <seealso cref="TextInputActive"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StartTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_StartTextInput(IntPtr window);
-    private delegate bool StartTextInputNativeDelegate(IntPtr window);
-    private static StartTextInputNativeDelegate StartTextInputNativeFunction = SDL_StartTextInput;
-
     public static bool StartTextInput(IntPtr window)
     {
         return StartTextInputNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StartTextInputWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_StartTextInputWithProperties(IntPtr window, uint props);
+    private delegate bool StartTextInputWithPropertiesNativeDelegate(IntPtr window, uint props);
+    private static StartTextInputWithPropertiesNativeDelegate StartTextInputWithPropertiesNativeFunction = SDL_StartTextInputWithProperties;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StartTextInputWithProperties(SDL_Window *window, SDL_PropertiesID props);</code>
     /// <summary>
@@ -509,18 +516,18 @@ public static partial class SDL
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="StopTextInput"/>
     /// <seealso cref="TextInputActive"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StartTextInputWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_StartTextInputWithProperties(IntPtr window, uint props);
-    private delegate bool StartTextInputWithPropertiesNativeDelegate(IntPtr window, uint props);
-    private static StartTextInputWithPropertiesNativeDelegate StartTextInputWithPropertiesNativeFunction = SDL_StartTextInputWithProperties;
-
     public static bool StartTextInputWithProperties(IntPtr window, uint props)
     {
         return StartTextInputWithPropertiesNativeFunction(window, props);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TextInputActive"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_TextInputActive(IntPtr window);
+    private delegate bool TextInputActiveNativeDelegate(IntPtr window);
+    private static TextInputActiveNativeDelegate TextInputActiveNativeFunction = SDL_TextInputActive;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TextInputActive(SDL_Window *window);</code>
     /// <summary>
@@ -531,18 +538,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TextInputActive"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_TextInputActive(IntPtr window);
-    private delegate bool TextInputActiveNativeDelegate(IntPtr window);
-    private static TextInputActiveNativeDelegate TextInputActiveNativeFunction = SDL_TextInputActive;
-
     public static bool TextInputActive(IntPtr window)
     {
         return TextInputActiveNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_StopTextInput(IntPtr window);
+    private delegate bool StopTextInputNativeDelegate(IntPtr window);
+    private static StopTextInputNativeDelegate StopTextInputNativeFunction = SDL_StopTextInput;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_StopTextInput(SDL_Window *window);</code>
     /// <summary>
@@ -556,18 +563,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_StopTextInput"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_StopTextInput(IntPtr window);
-    private delegate bool StopTextInputNativeDelegate(IntPtr window);
-    private static StopTextInputNativeDelegate StopTextInputNativeFunction = SDL_StopTextInput;
-
     public static bool StopTextInput(IntPtr window)
     {
         return StopTextInputNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearComposition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ClearComposition(IntPtr window);
+    private delegate bool ClearCompositionNativeDelegate(IntPtr window);
+    private static ClearCompositionNativeDelegate ClearCompositionNativeFunction = SDL_ClearComposition;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearComposition(SDL_Window *window);</code>
     /// <summary>
@@ -580,36 +587,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="StopTextInput"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearComposition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ClearComposition(IntPtr window);
-    private delegate bool ClearCompositionNativeDelegate(IntPtr window);
-    private static ClearCompositionNativeDelegate ClearCompositionNativeFunction = SDL_ClearComposition;
-
     public static bool ClearComposition(IntPtr window)
     {
         return ClearCompositionNativeFunction(window);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);</code>
-    /// <summary>
-    /// <para>Set the area used to type Unicode text input.</para>
-    /// <para>Native input methods may place a window with word suggestions near the
-    /// cursor, without covering the text being entered.</para>
-    /// </summary>
-    /// <param name="window">the window for which to set the text input area.</param>
-    /// <param name="rect">the <see cref="Rect"/> representing the text input area, in window
-    /// coordinates, or <c>null</c> to clear it.</param>
-    /// <param name="cursor">the offset of the current cursor location relative to
-    /// <c>rect.x</c>, in window coordinates.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetTextInputArea"/>
-    /// <seealso cref="StartTextInput"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -617,11 +600,35 @@ public static partial class SDL
     private delegate bool SetTextInputAreaPointerNativeDelegate(IntPtr window, IntPtr rect, int cursor);
     private static SetTextInputAreaPointerNativeDelegate SetTextInputAreaPointerNativeFunction = SDL_SetTextInputArea;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);</code>
+    /// <summary>
+    /// <para>Set the area used to type Unicode text input.</para>
+    /// <para>Native input methods may place a window with word suggestions near the
+    /// cursor, without covering the text being entered.</para>
+    /// </summary>
+    /// <param name="window">the window for which to set the text input area.</param>
+    /// <param name="rect">the <see cref="Rect"/> representing the text input area, in window
+    /// coordinates, or <c>null</c> to clear it.</param>
+    /// <param name="cursor">the offset of the current cursor location relative to
+    /// <c>rect.x</c>, in window coordinates.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetTextInputArea"/>
+    /// <seealso cref="StartTextInput"/>
     public static bool SetTextInputArea(IntPtr window, IntPtr rect, int cursor)
     {
         return SetTextInputAreaPointerNativeFunction(window, rect, cursor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextInputArea(IntPtr window, in Rect rect, int cursor);
+    private delegate bool SetTextInputAreaRefNativeDelegate(IntPtr window, in Rect rect, int cursor);
+    private static SetTextInputAreaRefNativeDelegate SetTextInputAreaRefNativeFunction = SDL_SetTextInputArea;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);</code>
     /// <summary>
@@ -640,18 +647,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTextInputArea"/>
     /// <seealso cref="StartTextInput"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextInputArea(IntPtr window, in Rect rect, int cursor);
-    private delegate bool SetTextInputAreaRefNativeDelegate(IntPtr window, in Rect rect, int cursor);
-    private static SetTextInputAreaRefNativeDelegate SetTextInputAreaRefNativeFunction = SDL_SetTextInputArea;
-
     public static bool SetTextInputArea(IntPtr window, in Rect rect, int cursor)
     {
         return SetTextInputAreaRefNativeFunction(window, in rect, cursor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
+    private delegate bool GetTextInputAreaNativeDelegate(IntPtr window, out Rect rect, out int cursor);
+    private static GetTextInputAreaNativeDelegate GetTextInputAreaNativeFunction = SDL_GetTextInputArea;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);</code>
     /// <summary>
@@ -668,18 +675,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetTextInputArea(nint, nint, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextInputArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextInputArea(IntPtr window, out Rect rect, out int cursor);
-    private delegate bool GetTextInputAreaNativeDelegate(IntPtr window, out Rect rect, out int cursor);
-    private static GetTextInputAreaNativeDelegate GetTextInputAreaNativeFunction = SDL_GetTextInputArea;
-
     public static bool GetTextInputArea(IntPtr window, out Rect rect, out int cursor)
     {
         return GetTextInputAreaNativeFunction(window, out rect, out cursor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasScreenKeyboardSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasScreenKeyboardSupport();
+    private delegate bool HasScreenKeyboardSupportNativeDelegate();
+    private static HasScreenKeyboardSupportNativeDelegate HasScreenKeyboardSupportNativeFunction = SDL_HasScreenKeyboardSupport;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasScreenKeyboardSupport(void);</code>
     /// <summary>
@@ -691,18 +698,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="StartTextInput"/>
     /// <seealso cref="ScreenKeyboardShown"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasScreenKeyboardSupport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasScreenKeyboardSupport();
-    private delegate bool HasScreenKeyboardSupportNativeDelegate();
-    private static HasScreenKeyboardSupportNativeDelegate HasScreenKeyboardSupportNativeFunction = SDL_HasScreenKeyboardSupport;
-
     public static bool HasScreenKeyboardSupport()
     {
         return HasScreenKeyboardSupportNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ScreenKeyboardShown"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ScreenKeyboardShown(IntPtr window);
+    private delegate bool ScreenKeyboardShownNativeDelegate(IntPtr window);
+    private static ScreenKeyboardShownNativeDelegate ScreenKeyboardShownNativeFunction = SDL_ScreenKeyboardShown;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ScreenKeyboardShown(SDL_Window *window);</code>
     /// <summary>
@@ -713,13 +720,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasScreenKeyboardSupport"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ScreenKeyboardShown"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ScreenKeyboardShown(IntPtr window);
-    private delegate bool ScreenKeyboardShownNativeDelegate(IntPtr window);
-    private static ScreenKeyboardShownNativeDelegate ScreenKeyboardShownNativeFunction = SDL_ScreenKeyboardShown;
-
     public static bool ScreenKeyboardShown(IntPtr window)
     {
         return ScreenKeyboardShownNativeFunction(window);

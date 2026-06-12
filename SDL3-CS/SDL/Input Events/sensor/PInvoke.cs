@@ -81,6 +81,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial SensorType SDL_GetSensorTypeForID(int instanceID);
+    private delegate SensorType GetSensorTypeForIDNativeDelegate(int instanceID);
+    private static GetSensorTypeForIDNativeDelegate GetSensorTypeForIDNativeFunction = SDL_GetSensorTypeForID;
+
     /// <code>extern SDL_DECLSPEC SDL_SensorType SDLCALL SDL_GetSensorTypeForID(SDL_SensorID instance_id);</code>
     /// <summary>
     /// <para>Get the type of a sensor.</para>
@@ -90,17 +96,17 @@ public static partial class SDL
     /// <returns>the <see cref="SensorType"/>, or <see cref="SensorType.Invalid"/> if <c>instanceID</c> is
     /// not valid.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial SensorType SDL_GetSensorTypeForID(int instanceID);
-    private delegate SensorType GetSensorTypeForIDNativeDelegate(int instanceID);
-    private static GetSensorTypeForIDNativeDelegate GetSensorTypeForIDNativeFunction = SDL_GetSensorTypeForID;
-
     public static SensorType GetSensorTypeForID(int instanceID)
     {
         return GetSensorTypeForIDNativeFunction(instanceID);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNonPortableTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetSensorNonPortableTypeForID(int instanceID);
+    private delegate int GetSensorNonPortableTypeForIDNativeDelegate(int instanceID);
+    private static GetSensorNonPortableTypeForIDNativeDelegate GetSensorNonPortableTypeForIDNativeFunction = SDL_GetSensorNonPortableTypeForID;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetSensorNonPortableTypeForID(SDL_SensorID instance_id);</code>
     /// <summary>
@@ -111,17 +117,17 @@ public static partial class SDL
     /// <returns>the sensor platform dependent type, or -1 if <c>instanceID</c> is not
     /// valid.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNonPortableTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSensorNonPortableTypeForID(int instanceID);
-    private delegate int GetSensorNonPortableTypeForIDNativeDelegate(int instanceID);
-    private static GetSensorNonPortableTypeForIDNativeDelegate GetSensorNonPortableTypeForIDNativeFunction = SDL_GetSensorNonPortableTypeForID;
-
     public static int GetSensorNonPortableTypeForID(int instanceID)
     {
         return GetSensorNonPortableTypeForIDNativeFunction(instanceID);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_OpenSensor(int instanceID);
+    private delegate IntPtr OpenSensorNativeDelegate(int instanceID);
+    private static OpenSensorNativeDelegate OpenSensorNativeFunction = SDL_OpenSensor;
 
     /// <code>extern SDL_DECLSPEC SDL_Sensor * SDLCALL SDL_OpenSensor(SDL_SensorID instance_id);</code>
     /// <summary>
@@ -131,17 +137,17 @@ public static partial class SDL
     /// <returns>an SDL_Sensor object or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_OpenSensor(int instanceID);
-    private delegate IntPtr OpenSensorNativeDelegate(int instanceID);
-    private static OpenSensorNativeDelegate OpenSensorNativeFunction = SDL_OpenSensor;
-
     public static IntPtr OpenSensor(int instanceID)
     {
         return OpenSensorNativeFunction(instanceID);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetSensorFromID(int instanceID);
+    private delegate IntPtr GetSensorFromIDNativeDelegate(int instanceID);
+    private static GetSensorFromIDNativeDelegate GetSensorFromIDNativeFunction = SDL_GetSensorFromID;
 
     /// <code>extern SDL_DECLSPEC SDL_Sensor * SDLCALL SDL_GetSensorFromID(SDL_SensorID instance_id);</code>
     /// <summary>
@@ -151,17 +157,17 @@ public static partial class SDL
     /// <returns>an SDL_Sensor object or <c>null</c> on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetSensorFromID(int instanceID);
-    private delegate IntPtr GetSensorFromIDNativeDelegate(int instanceID);
-    private static GetSensorFromIDNativeDelegate GetSensorFromIDNativeFunction = SDL_GetSensorFromID;
-
     public static IntPtr GetSensorFromID(int instanceID)
     {
         return GetSensorFromIDNativeFunction(instanceID);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetSensorProperties(IntPtr sensor);
+    private delegate uint GetSensorPropertiesNativeDelegate(IntPtr sensor);
+    private static GetSensorPropertiesNativeDelegate GetSensorPropertiesNativeFunction = SDL_GetSensorProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetSensorProperties(SDL_Sensor *sensor);</code>
     /// <summary>
@@ -171,12 +177,6 @@ public static partial class SDL
     /// <returns>a valid property ID on success or 0 on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetSensorProperties(IntPtr sensor);
-    private delegate uint GetSensorPropertiesNativeDelegate(IntPtr sensor);
-    private static GetSensorPropertiesNativeDelegate GetSensorPropertiesNativeFunction = SDL_GetSensorProperties;
-
     public static uint GetSensorProperties(IntPtr sensor)
     {
         return GetSensorPropertiesNativeFunction(sensor);
@@ -204,6 +204,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial SensorType SDL_GetSensorType(IntPtr sensor);
+    private delegate SensorType GetSensorTypeNativeDelegate(IntPtr sensor);
+    private static GetSensorTypeNativeDelegate GetSensorTypeNativeFunction = SDL_GetSensorType;
+
     /// <code>extern SDL_DECLSPEC SDL_SensorType SDLCALL SDL_GetSensorType(SDL_Sensor *sensor);</code>
     /// <summary>
     /// Get the type of a sensor.
@@ -212,17 +218,17 @@ public static partial class SDL
     /// <returns>the <see cref="SensorType"/> type, or <see cref="SensorType.Invalid"/> if <c>sensor</c> is
     /// <c>null</c>.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial SensorType SDL_GetSensorType(IntPtr sensor);
-    private delegate SensorType GetSensorTypeNativeDelegate(IntPtr sensor);
-    private static GetSensorTypeNativeDelegate GetSensorTypeNativeFunction = SDL_GetSensorType;
-
     public static SensorType GetSensorType(IntPtr sensor)
     {
         return GetSensorTypeNativeFunction(sensor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNonPortableType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetSensorNonPortableType(IntPtr sensor);
+    private delegate int GetSensorNonPortableTypeNativeDelegate(IntPtr sensor);
+    private static GetSensorNonPortableTypeNativeDelegate GetSensorNonPortableTypeNativeFunction = SDL_GetSensorNonPortableType;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetSensorNonPortableType(SDL_Sensor *sensor);</code>
     /// <summary>
@@ -231,17 +237,17 @@ public static partial class SDL
     /// <param name="sensor">the SDL_Sensor object to inspect.</param>
     /// <returns>the sensor platform dependent type, or -1 if <c>sensor</c> is <c>null</c>.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorNonPortableType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSensorNonPortableType(IntPtr sensor);
-    private delegate int GetSensorNonPortableTypeNativeDelegate(IntPtr sensor);
-    private static GetSensorNonPortableTypeNativeDelegate GetSensorNonPortableTypeNativeFunction = SDL_GetSensorNonPortableType;
-
     public static int GetSensorNonPortableType(IntPtr sensor)
     {
         return GetSensorNonPortableTypeNativeFunction(sensor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetSensorID(IntPtr sensor);
+    private delegate uint GetSensorIDNativeDelegate(IntPtr sensor);
+    private static GetSensorIDNativeDelegate GetSensorIDNativeFunction = SDL_GetSensorID;
 
     /// <code>extern SDL_DECLSPEC SDL_SensorID SDLCALL SDL_GetSensorID(SDL_Sensor *sensor);</code>
     /// <summary>
@@ -251,17 +257,18 @@ public static partial class SDL
     /// <returns>the sensor instance ID, or 0 on failure; call <see cref="GetError"/> for
     /// more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetSensorID(IntPtr sensor);
-    private delegate uint GetSensorIDNativeDelegate(IntPtr sensor);
-    private static GetSensorIDNativeDelegate GetSensorIDNativeFunction = SDL_GetSensorID;
-
     public static uint GetSensorID(IntPtr sensor)
     {
         return GetSensorIDNativeFunction(sensor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetSensorData(IntPtr sensor, out float data, int numValues);
+    private delegate bool GetSensorDataNativeDelegate(IntPtr sensor, out float data, int numValues);
+    private static GetSensorDataNativeDelegate GetSensorDataNativeFunction = SDL_GetSensorData;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetSensorData(SDL_Sensor *sensor, float *data, int num_values);</code>
     /// <summary>
@@ -274,18 +281,17 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetSensorData(IntPtr sensor, out float data, int numValues);
-    private delegate bool GetSensorDataNativeDelegate(IntPtr sensor, out float data, int numValues);
-    private static GetSensorDataNativeDelegate GetSensorDataNativeFunction = SDL_GetSensorData;
-
     public static bool GetSensorData(IntPtr sensor, out float data, int numValues)
     {
         return GetSensorDataNativeFunction(sensor, out data, numValues);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_CloseSensor(IntPtr sensor);
+    private delegate void CloseSensorNativeDelegate(IntPtr sensor);
+    private static CloseSensorNativeDelegate CloseSensorNativeFunction = SDL_CloseSensor;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_CloseSensor(SDL_Sensor *sensor);</code>
     /// <summary>
@@ -293,17 +299,17 @@ public static partial class SDL
     /// </summary>
     /// <param name="sensor">the SDL_Sensor object to close.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_CloseSensor(IntPtr sensor);
-    private delegate void CloseSensorNativeDelegate(IntPtr sensor);
-    private static CloseSensorNativeDelegate CloseSensorNativeFunction = SDL_CloseSensor;
-
     public static void CloseSensor(IntPtr sensor)
     {
         CloseSensorNativeFunction(sensor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateSensors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UpdateSensors();
+    private delegate void UpdateSensorsNativeDelegate();
+    private static UpdateSensorsNativeDelegate UpdateSensorsNativeFunction = SDL_UpdateSensors;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UpdateSensors(void);</code>
     /// <summary>
@@ -313,12 +319,7 @@ public static partial class SDL
     /// <para>This needs to be called from the thread that initialized the sensor
     /// subsystem.</para>
     /// </summary>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateSensors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UpdateSensors();
-    private delegate void UpdateSensorsNativeDelegate();
-    private static UpdateSensorsNativeDelegate UpdateSensorsNativeFunction = SDL_UpdateSensors;
-
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void UpdateSensors()
     {
         UpdateSensorsNativeFunction();

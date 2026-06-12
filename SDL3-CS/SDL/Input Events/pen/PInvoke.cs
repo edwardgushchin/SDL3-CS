@@ -34,6 +34,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPenDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial PenDeviceType SDL_GetPenDeviceType(uint instanceId);
+    private delegate PenDeviceType GetPenDeviceTypeNativeDelegate(uint instanceId);
+    private static GetPenDeviceTypeNativeDelegate GetPenDeviceTypeNativeFunction = SDL_GetPenDeviceType;
+
     /// <code>extern SDL_DECLSPEC SDL_PenDeviceType SDLCALL SDL_GetPenDeviceType(SDL_PenID instance_id);</code>
     /// <summary>
     /// Get the device type of the given pen.
@@ -45,12 +51,6 @@ public static partial class SDL
     /// on failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPenDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial PenDeviceType SDL_GetPenDeviceType(uint instanceId);
-    private delegate PenDeviceType GetPenDeviceTypeNativeDelegate(uint instanceId);
-    private static GetPenDeviceTypeNativeDelegate GetPenDeviceTypeNativeFunction = SDL_GetPenDeviceType;
-
     public static PenDeviceType GetPenDeviceType(uint instanceId)
     {
         return GetPenDeviceTypeNativeFunction(instanceId);

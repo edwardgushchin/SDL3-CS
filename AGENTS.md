@@ -45,6 +45,8 @@ For this repository, agent operational materials live inside the worktree but mu
 - In wrapper XML documentation, always write literal values as `<c>null</c>`, `<c>true</c>`, and `<c>false</c>` in prose, `<param>`, `<returns>`, and `<remarks>` text; do not leave bare `null`, `true`, or `false`.
 - Do not double-wrap XML documentation literals: existing `<c>null</c>`, `<c>true</c>`, and `<c>false</c>` must stay exactly one `<c>` element, never `<c><c>...</c></c>`.
 - In wrapper XML documentation prose, use the public C# parameter name instead of the original SDL C parameter name: for example, write `<c>srcSpec</c>` and `<c>dstSpec</c>`, not `<c>src_spec</c>` or `<c>dst_spec</c>`.
+- Place XML documentation on the public managed wrapper that callers use. If an SDL entry point is implemented as a private `LibraryImport` stub plus delegate field plus public wrapper method, the `/// <code>extern ... SDL_Function(...);</code>` block and all `<summary>`, `<param>`, `<returns>`, `<threadsafety>`, `<since>`, and `<seealso>` tags must immediately precede the public wrapper method, not the private native stub. Match `<param>` names to that public method signature.
+- Do not combine multiple SDL C declarations in a single XML documentation block. Each documented public wrapper method gets its own `<code>extern ... SDL_Function(...);</code>` line for that one SDL symbol; a second SDL symbol means the second declaration belongs on another public wrapper's docblock.
 - Keep raw C identifiers unchanged inside `<code>` blocks, `EntryPoint` values, string literal constants, upstream C declarations, and places where SDL3-CS has no real managed equivalent to link to.
 - Do not create fake managed references just to satisfy this rule; if no wrapper symbol exists, use `<c>SDL_NAME</c>` or leave the upstream C declaration intact according to the surrounding documentation style.
 - Keep wrapper XML documentation warning-clean under `dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release`: fix invalid XML, unresolved `cref`, ambiguous `cref`, and `///` comments that are not attached to a real language element.
@@ -77,6 +79,30 @@ For this repository, agent operational materials live inside the worktree but mu
 [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSVE2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 [return: MarshalAs(UnmanagedType.I1)]
 public static partial bool HasSVE2();
+```
+
+- If a direct `LibraryImport` signature is not the public API and the file uses a private native stub plus a public managed wrapper, keep the native plumbing first and put the XML documentation on the public wrapper:
+
+```csharp
+[ExcludeFromCodeCoverage]
+[LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoll"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+private static partial long SDL_Wcstoll(IntPtr str, IntPtr endp, int @base);
+private delegate long WcstollNative(IntPtr str, IntPtr endp, int @base);
+private static WcstollNative WcstollNativeFunction = SDL_Wcstoll;
+
+/// <code>extern SDL_DECLSPEC long long SDLCALL SDL_wcstoll(const wchar_t *str, wchar_t **endp, int base);</code>
+/// <summary>
+/// <para>Parse a <c>long long</c> from a wide string.</para>
+/// </summary>
+/// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
+/// <param name="endp">If not <c>null</c>, the address of the first invalid wide character will be written to this pointer.</param>
+/// <param name="base">The base of the integer to read.</param>
+/// <returns>the parsed <c>long long</c>, or 0 if no number could be parsed.</returns>
+/// <since>This function is available since SDL 3.6.0.</since>
+public static long Wcstoll(string str, IntPtr endp, int @base)
+{
+    // managed marshalling wrapper
+}
 ```
 
 - Strip the library prefix from the public C# method name: `SDL_HasSVE2` -> `HasSVE2`, `IMG_Load` -> `Load`, `MIX_Init` -> `Init`, `TTF_OpenFont` -> `OpenFont`.

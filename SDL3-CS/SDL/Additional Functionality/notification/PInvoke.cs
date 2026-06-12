@@ -29,6 +29,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RequestNotificationPermission"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RequestNotificationPermission();
+    private delegate bool RequestNotificationPermissionNative();
+    private static RequestNotificationPermissionNative RequestNotificationPermissionNativeFunction = SDL_RequestNotificationPermission;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RequestNotificationPermission(void);</code>
     /// <summary>
     /// <para>Requests permission from the system to display notifications.</para>
@@ -42,17 +49,16 @@ public static partial class SDL
     /// <seealso cref="ShowNotification"/>
     /// <seealso cref="ShowNotificationWithProperties"/>
     /// <seealso cref="NotificationAction"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RequestNotificationPermission"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RequestNotificationPermission();
-    private delegate bool RequestNotificationPermissionNative();
-    private static RequestNotificationPermissionNative RequestNotificationPermissionNativeFunction = SDL_RequestNotificationPermission;
-
     public static bool RequestNotificationPermission()
     {
         return RequestNotificationPermissionNativeFunction();
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowNotificationWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_ShowNotificationWithProperties(uint props);
+    private delegate uint ShowNotificationWithPropertiesNative(uint props);
+    private static ShowNotificationWithPropertiesNative ShowNotificationWithPropertiesNativeFunction = SDL_ShowNotificationWithProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_NotificationID SDLCALL SDL_ShowNotificationWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -116,16 +122,21 @@ public static partial class SDL
     /// <seealso cref="NotificationAction"/>
     /// <seealso cref="NotificationPriority"/>
     /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_NotificationEvent">SDL_NotificationEvent</seealso>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowNotificationWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_ShowNotificationWithProperties(uint props);
-    private delegate uint ShowNotificationWithPropertiesNative(uint props);
-    private static ShowNotificationWithPropertiesNative ShowNotificationWithPropertiesNativeFunction = SDL_ShowNotificationWithProperties;
-
     public static uint ShowNotificationWithProperties(uint props)
     {
         return ShowNotificationWithPropertiesNativeFunction(props);
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowNotification"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_ShowNotification(
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string title,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? message,
+        IntPtr image,
+        IntPtr actions,
+        int numActions);
+    private delegate uint ShowNotificationNative(string title, string? message, IntPtr image, IntPtr actions, int numActions);
+    private static ShowNotificationNative ShowNotificationNativeFunction = SDL_ShowNotification;
 
     /// <code>extern SDL_DECLSPEC SDL_NotificationID SDLCALL SDL_ShowNotification(const char *title, const char *message, SDL_Surface *image, SDL_NotificationAction *actions, int num_actions);</code>
     /// <summary>
@@ -143,21 +154,17 @@ public static partial class SDL
     /// <seealso cref="ShowNotificationWithProperties"/>
     /// <seealso cref="NotificationAction"/>
     /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_NotificationEvent">SDL_NotificationEvent</seealso>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowNotification"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_ShowNotification(
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string title,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? message,
-        IntPtr image,
-        IntPtr actions,
-        int numActions);
-    private delegate uint ShowNotificationNative(string title, string? message, IntPtr image, IntPtr actions, int numActions);
-    private static ShowNotificationNative ShowNotificationNativeFunction = SDL_ShowNotification;
-
     public static uint ShowNotification(string title, string? message, IntPtr image, IntPtr actions, int numActions)
     {
         return ShowNotificationNativeFunction(title, message, image, actions, numActions);
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveNotification"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RemoveNotification(uint notification);
+    private delegate bool RemoveNotificationNative(uint notification);
+    private static RemoveNotificationNative RemoveNotificationNativeFunction = SDL_RemoveNotification;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RemoveNotification(SDL_NotificationID notification);</code>
     /// <summary>
@@ -169,13 +176,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="ShowNotificationWithProperties"/>
     /// <seealso cref="ShowNotification"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveNotification"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RemoveNotification(uint notification);
-    private delegate bool RemoveNotificationNative(uint notification);
-    private static RemoveNotificationNative RemoveNotificationNativeFunction = SDL_RemoveNotification;
-
     public static bool RemoveNotification(uint notification)
     {
         return RemoveNotificationNativeFunction(notification);

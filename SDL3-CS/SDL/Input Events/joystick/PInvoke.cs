@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_LockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_LockJoysticks();
+	private delegate void LockJoysticksNativeDelegate();
+	private static LockJoysticksNativeDelegate LockJoysticksNativeFunction = SDL_LockJoysticks;
+
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_LockJoysticks(void) SDL_ACQUIRE(SDL_event_lock);</code>
 	/// <summary>
 	/// <para>Locking for atomic access to the joystick API.</para>
@@ -39,17 +45,18 @@ public static partial class SDL
 	/// <threadsafety>This should be called from the same thread that called
 	/// <see cref="LockJoysticks"/>.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_LockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_LockJoysticks();
-	private delegate void LockJoysticksNativeDelegate();
-	private static LockJoysticksNativeDelegate LockJoysticksNativeFunction = SDL_LockJoysticks;
-
 	public static void LockJoysticks()
 	{
 		LockJoysticksNativeFunction();
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_TryLockJoysticks();
+	private delegate bool TryLockJoysticksNativeDelegate();
+	private static TryLockJoysticksNativeDelegate TryLockJoysticksNativeFunction = SDL_TryLockJoysticks;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockJoysticks(void) SDL_TRY_ACQUIRE(true, SDL_event_lock);</code>
 	/// <summary>
@@ -61,35 +68,35 @@ public static partial class SDL
 	/// <returns><c>true</c> if the joysticks were successfully locked, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.6.0.</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_TryLockJoysticks();
-	private delegate bool TryLockJoysticksNativeDelegate();
-	private static TryLockJoysticksNativeDelegate TryLockJoysticksNativeFunction = SDL_TryLockJoysticks;
-
 	public static bool TryLockJoysticks()
 	{
 		return TryLockJoysticksNativeFunction();
 	}
 
 
-	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockJoysticks(void) SDL_RELEASE(SDL_event_lock);</code>
-	/// <summary>
-	/// Unlocking for atomic access to the joystick API.
-	/// </summary>
-	/// <since>This function is available since SDL 3.2.0</since>
 	[ExcludeFromCodeCoverage]
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial void SDL_UnlockJoysticks();
 	private delegate void UnlockJoysticksNativeDelegate();
 	private static UnlockJoysticksNativeDelegate UnlockJoysticksNativeFunction = SDL_UnlockJoysticks;
 
+	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockJoysticks(void) SDL_RELEASE(SDL_event_lock);</code>
+	/// <summary>
+	/// Unlocking for atomic access to the joystick API.
+	/// </summary>
+	/// <since>This function is available since SDL 3.2.0</since>
 	public static void UnlockJoysticks()
 	{
 		UnlockJoysticksNativeFunction();
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_HasJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_HasJoystick();
+	private delegate bool HasJoystickNativeDelegate();
+	private static HasJoystickNativeDelegate HasJoystickNativeFunction = SDL_HasJoystick;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasJoystick(void);</code>
 	/// <summary>
@@ -99,13 +106,6 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_HasJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_HasJoystick();
-	private delegate bool HasJoystickNativeDelegate();
-	private static HasJoystickNativeDelegate HasJoystickNativeFunction = SDL_HasJoystick;
-
 	public static bool HasJoystick()
 	{
 		return HasJoystickNativeFunction();
@@ -196,6 +196,12 @@ public static partial class SDL
 	}
 
 
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPlayerIndexForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetJoystickPlayerIndexForID(uint instanceId);
+	private delegate int GetJoystickPlayerIndexForIDNativeDelegate(uint instanceId);
+	private static GetJoystickPlayerIndexForIDNativeDelegate GetJoystickPlayerIndexForIDNativeFunction = SDL_GetJoystickPlayerIndexForID;
+
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetJoystickPlayerIndexForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
 	/// <para>Get the player index of a joystick.</para>
@@ -207,17 +213,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPlayerIndex"/>
 	/// <seealso cref="GetJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPlayerIndexForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_GetJoystickPlayerIndexForID(uint instanceId);
-	private delegate int GetJoystickPlayerIndexForIDNativeDelegate(uint instanceId);
-	private static GetJoystickPlayerIndexForIDNativeDelegate GetJoystickPlayerIndexForIDNativeFunction = SDL_GetJoystickPlayerIndexForID;
-
 	public static int GetJoystickPlayerIndexForID(uint instanceId)
 	{
 		return GetJoystickPlayerIndexForIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUIDForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial GUID SDL_GetJoystickGUIDForID(uint instanceId);
+	private delegate GUID GetJoystickGUIDForIDNativeDelegate(uint instanceId);
+	private static GetJoystickGUIDForIDNativeDelegate GetJoystickGUIDForIDNativeFunction = SDL_GetJoystickGUIDForID;
 
 	/// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_GetJoystickGUIDForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -231,17 +237,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUID"/>
 	/// <seealso cref="GUIDToString"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUIDForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial GUID SDL_GetJoystickGUIDForID(uint instanceId);
-	private delegate GUID GetJoystickGUIDForIDNativeDelegate(uint instanceId);
-	private static GetJoystickGUIDForIDNativeDelegate GetJoystickGUIDForIDNativeFunction = SDL_GetJoystickGUIDForID;
-
 	public static GUID GetJoystickGUIDForID(uint instanceId)
 	{
 		return GetJoystickGUIDForIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendorForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickVendorForID(uint instanceId);
+	private delegate ushort GetJoystickVendorForIDNativeDelegate(uint instanceId);
+	private static GetJoystickVendorForIDNativeDelegate GetJoystickVendorForIDNativeFunction = SDL_GetJoystickVendorForID;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickVendorForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -256,17 +262,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickVendor"/>
 	/// <seealso cref="GetJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendorForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickVendorForID(uint instanceId);
-	private delegate ushort GetJoystickVendorForIDNativeDelegate(uint instanceId);
-	private static GetJoystickVendorForIDNativeDelegate GetJoystickVendorForIDNativeFunction = SDL_GetJoystickVendorForID;
-
 	public static ushort GetJoystickVendorForID(uint instanceId)
 	{
 		return GetJoystickVendorForIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickProductForID(uint instanceId);
+	private delegate ushort GetJoystickProductForIDNativeDelegate(uint instanceId);
+	private static GetJoystickProductForIDNativeDelegate GetJoystickProductForIDNativeFunction = SDL_GetJoystickProductForID;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProductForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -281,17 +287,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProduct"/>
 	/// <seealso cref="GetJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickProductForID(uint instanceId);
-	private delegate ushort GetJoystickProductForIDNativeDelegate(uint instanceId);
-	private static GetJoystickProductForIDNativeDelegate GetJoystickProductForIDNativeFunction = SDL_GetJoystickProductForID;
-
 	public static ushort GetJoystickProductForID(uint instanceId)
 	{
 		return GetJoystickProductForIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersionForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickProductVersionForID(uint instanceId);
+	private delegate ushort GetJoystickProductVersionForIDNativeDelegate(uint instanceId);
+	private static GetJoystickProductVersionForIDNativeDelegate GetJoystickProductVersionForIDNativeFunction = SDL_GetJoystickProductVersionForID;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProductVersionForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -306,17 +312,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProductVersion"/>
 	/// <seealso cref="GetJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersionForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickProductVersionForID(uint instanceId);
-	private delegate ushort GetJoystickProductVersionForIDNativeDelegate(uint instanceId);
-	private static GetJoystickProductVersionForIDNativeDelegate GetJoystickProductVersionForIDNativeFunction = SDL_GetJoystickProductVersionForID;
-
 	public static ushort GetJoystickProductVersionForID(uint instanceId)
 	{
 		return GetJoystickProductVersionForIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickType SDL_GetJoystickTypeForID(uint instanceId);
+	private delegate JoystickType GetJoystickTypeForIDNativeDelegate(uint instanceId);
+	private static GetJoystickTypeForIDNativeDelegate GetJoystickTypeForIDNativeFunction = SDL_GetJoystickTypeForID;
 
 	/// <code>extern SDL_DECLSPEC SDL_JoystickType SDLCALL SDL_GetJoystickTypeForID(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -331,17 +337,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickType"/>
 	/// <seealso cref="GetJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickTypeForID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial JoystickType SDL_GetJoystickTypeForID(uint instanceId);
-	private delegate JoystickType GetJoystickTypeForIDNativeDelegate(uint instanceId);
-	private static GetJoystickTypeForIDNativeDelegate GetJoystickTypeForIDNativeFunction = SDL_GetJoystickTypeForID;
-
 	public static JoystickType GetJoystickTypeForID(uint instanceId)
 	{
 		return GetJoystickTypeForIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_OpenJoystick(uint instanceId);
+	private delegate IntPtr OpenJoystickNativeDelegate(uint instanceId);
+	private static OpenJoystickNativeDelegate OpenJoystickNativeFunction = SDL_OpenJoystick;
 
 	/// <code>extern SDL_DECLSPEC SDL_Joystick * SDLCALL SDL_OpenJoystick(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -355,17 +361,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="CloseJoystick"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial IntPtr SDL_OpenJoystick(uint instanceId);
-	private delegate IntPtr OpenJoystickNativeDelegate(uint instanceId);
-	private static OpenJoystickNativeDelegate OpenJoystickNativeFunction = SDL_OpenJoystick;
-
 	public static IntPtr OpenJoystick(uint instanceId)
 	{
 		return OpenJoystickNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickFromID(uint instanceId);
+	private delegate IntPtr GetJoystickFromIDNativeDelegate(uint instanceId);
+	private static GetJoystickFromIDNativeDelegate GetJoystickFromIDNativeFunction = SDL_GetJoystickFromID;
 
 	/// <code>extern SDL_DECLSPEC SDL_Joystick * SDLCALL SDL_GetJoystickFromID(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -376,17 +382,17 @@ public static partial class SDL
 	/// opened yet; call <see cref="GetError"/> for more information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial IntPtr SDL_GetJoystickFromID(uint instanceId);
-	private delegate IntPtr GetJoystickFromIDNativeDelegate(uint instanceId);
-	private static GetJoystickFromIDNativeDelegate GetJoystickFromIDNativeFunction = SDL_GetJoystickFromID;
-
 	public static IntPtr GetJoystickFromID(uint instanceId)
 	{
 		return GetJoystickFromIDNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFromPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetJoystickFromPlayerIndex(int playerIndex);
+	private delegate IntPtr GetJoystickFromPlayerIndexNativeDelegate(int playerIndex);
+	private static GetJoystickFromPlayerIndexNativeDelegate GetJoystickFromPlayerIndexNativeFunction = SDL_GetJoystickFromPlayerIndex;
 
 	/// <code>extern SDL_DECLSPEC SDL_Joystick * SDLCALL SDL_GetJoystickFromPlayerIndex(int player_index);</code>
 	/// <summary>
@@ -399,17 +405,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPlayerIndex"/>
 	/// <seealso cref="SetJoystickPlayerIndex"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFromPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial IntPtr SDL_GetJoystickFromPlayerIndex(int playerIndex);
-	private delegate IntPtr GetJoystickFromPlayerIndexNativeDelegate(int playerIndex);
-	private static GetJoystickFromPlayerIndexNativeDelegate GetJoystickFromPlayerIndexNativeFunction = SDL_GetJoystickFromPlayerIndex;
-
 	public static IntPtr GetJoystickFromPlayerIndex(int playerIndex)
 	{
 		return GetJoystickFromPlayerIndexNativeFunction(playerIndex);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[DllImport(SDLLibrary, EntryPoint = "SDL_AttachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static extern uint SDL_AttachVirtualJoystick(in VirtualJoystickDesc desc);
+	private delegate uint AttachVirtualJoystickNativeDelegate(in VirtualJoystickDesc desc);
+	private static AttachVirtualJoystickNativeDelegate AttachVirtualJoystickNativeFunction = SDL_AttachVirtualJoystick;
 
 	/// <code>extern SDL_DECLSPEC SDL_JoystickID SDLCALL SDL_AttachVirtualJoystick(const SDL_VirtualJoystickDesc *desc);</code>
 	/// <summary>
@@ -436,17 +442,18 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
 	/// <seealso cref="SendJoystickVirtualSensorData"/>
-	[ExcludeFromCodeCoverage]
-	[DllImport(SDLLibrary, EntryPoint = "SDL_AttachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static extern uint SDL_AttachVirtualJoystick(in VirtualJoystickDesc desc);
-	private delegate uint AttachVirtualJoystickNativeDelegate(in VirtualJoystickDesc desc);
-	private static AttachVirtualJoystickNativeDelegate AttachVirtualJoystickNativeFunction = SDL_AttachVirtualJoystick;
-
 	public static uint AttachVirtualJoystick(in VirtualJoystickDesc desc)
 	{
 		return AttachVirtualJoystickNativeFunction(in desc);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_DetachVirtualJoystick(uint instanceId);
+	private delegate bool DetachVirtualJoystickNativeDelegate(uint instanceId);
+	private static DetachVirtualJoystickNativeDelegate DetachVirtualJoystickNativeFunction = SDL_DetachVirtualJoystick;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_DetachVirtualJoystick(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -459,18 +466,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="AttachVirtualJoystick"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachVirtualJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_DetachVirtualJoystick(uint instanceId);
-	private delegate bool DetachVirtualJoystickNativeDelegate(uint instanceId);
-	private static DetachVirtualJoystickNativeDelegate DetachVirtualJoystickNativeFunction = SDL_DetachVirtualJoystick;
-
 	public static bool DetachVirtualJoystick(uint instanceId)
 	{
 		return DetachVirtualJoystickNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_IsJoystickVirtual"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_IsJoystickVirtual(uint instanceId);
+	private delegate bool IsJoystickVirtualNativeDelegate(uint instanceId);
+	private static IsJoystickVirtualNativeDelegate IsJoystickVirtualNativeFunction = SDL_IsJoystickVirtual;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsJoystickVirtual(SDL_JoystickID instance_id);</code>
 	/// <summary>
@@ -480,18 +487,18 @@ public static partial class SDL
 	/// <returns><c>true</c> if the joystick is virtual, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_IsJoystickVirtual"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_IsJoystickVirtual(uint instanceId);
-	private delegate bool IsJoystickVirtualNativeDelegate(uint instanceId);
-	private static IsJoystickVirtualNativeDelegate IsJoystickVirtualNativeFunction = SDL_IsJoystickVirtual;
-
 	public static bool IsJoystickVirtual(uint instanceId)
 	{
 		return IsJoystickVirtualNativeFunction(instanceId);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
+	private delegate bool SetJoystickVirtualAxisNativeDelegate(IntPtr joystick, int axis, short value);
+	private static SetJoystickVirtualAxisNativeDelegate SetJoystickVirtualAxisNativeFunction = SDL_SetJoystickVirtualAxis;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickVirtualAxis(SDL_Joystick *joystick, int axis, Sint16 value);</code>
 	/// <summary>
@@ -517,18 +524,18 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
 	/// <seealso cref="SendJoystickVirtualSensorData"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
-	private delegate bool SetJoystickVirtualAxisNativeDelegate(IntPtr joystick, int axis, short value);
-	private static SetJoystickVirtualAxisNativeDelegate SetJoystickVirtualAxisNativeFunction = SDL_SetJoystickVirtualAxis;
-
 	public static bool SetJoystickVirtualAxis(IntPtr joystick, int axis, short value)
 	{
 		return SetJoystickVirtualAxisNativeFunction(joystick, axis, value);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
+	private delegate bool SetJoystickVirtualBallNativeDelegate(IntPtr joystick, int ball, short xrel, short yrel);
+	private static SetJoystickVirtualBallNativeDelegate SetJoystickVirtualBallNativeFunction = SDL_SetJoystickVirtualBall;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickVirtualBall(SDL_Joystick *joystick, int ball, Sint16 xrel, Sint16 yrel);</code>
 	/// <summary>
@@ -552,18 +559,18 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
 	/// <seealso cref="SendJoystickVirtualSensorData"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel);
-	private delegate bool SetJoystickVirtualBallNativeDelegate(IntPtr joystick, int ball, short xrel, short yrel);
-	private static SetJoystickVirtualBallNativeDelegate SetJoystickVirtualBallNativeFunction = SDL_SetJoystickVirtualBall;
-
 	public static bool SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel)
 	{
 		return SetJoystickVirtualBallNativeFunction(joystick, ball, xrel, yrel);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickVirtualButton(IntPtr joystick, int button, [MarshalAs(UnmanagedType.I1)] bool down);
+	private delegate bool SetJoystickVirtualButtonNativeDelegate(IntPtr joystick, int button, bool down);
+	private static SetJoystickVirtualButtonNativeDelegate SetJoystickVirtualButtonNativeFunction = SDL_SetJoystickVirtualButton;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickVirtualButton(SDL_Joystick *joystick, int button, bool down);</code>
 	/// <summary>
@@ -586,18 +593,18 @@ public static partial class SDL
 	///	<seealso cref="SetJoystickVirtualHat"/>
 	///	<seealso cref="SetJoystickVirtualTouchpad"/>
 	///	<seealso cref="SendJoystickVirtualSensorData"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickVirtualButton(IntPtr joystick, int button, [MarshalAs(UnmanagedType.I1)] bool down);
-	private delegate bool SetJoystickVirtualButtonNativeDelegate(IntPtr joystick, int button, bool down);
-	private static SetJoystickVirtualButtonNativeDelegate SetJoystickVirtualButtonNativeFunction = SDL_SetJoystickVirtualButton;
-
 	public static bool SetJoystickVirtualButton(IntPtr joystick, int button, bool down)
 	{
 		return SetJoystickVirtualButtonNativeFunction(joystick, button, down);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value);
+	private delegate bool SetJoystickVirtualHatNativeDelegate(IntPtr joystick, int hat, JoystickHat value);
+	private static SetJoystickVirtualHatNativeDelegate SetJoystickVirtualHatNativeFunction = SDL_SetJoystickVirtualHat;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickVirtualHat(SDL_Joystick *joystick, int hat, Uint8 value);</code>
 	/// <summary>
@@ -620,18 +627,18 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
 	/// <seealso cref="SendJoystickVirtualSensorData"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value);
-	private delegate bool SetJoystickVirtualHatNativeDelegate(IntPtr joystick, int hat, JoystickHat value);
-	private static SetJoystickVirtualHatNativeDelegate SetJoystickVirtualHatNativeFunction = SDL_SetJoystickVirtualHat;
-
 	public static bool SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value)
 	{
 		return SetJoystickVirtualHatNativeFunction(joystick, hat, value);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualTouchpad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] bool down, float x, float y, float pressure);
+	private delegate bool SetJoystickVirtualTouchpadNativeDelegate(IntPtr joystick, int touchpad, int finger, bool down, float x, float y, float pressure);
+	private static SetJoystickVirtualTouchpadNativeDelegate SetJoystickVirtualTouchpadNativeFunction = SDL_SetJoystickVirtualTouchpad;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickVirtualTouchpad(SDL_Joystick *joystick, int touchpad, int finger, bool down, float x, float y, float pressure);</code>
 	/// <summary>
@@ -661,18 +668,18 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SendJoystickVirtualSensorData"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickVirtualTouchpad"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, [MarshalAs(UnmanagedType.I1)] bool down, float x, float y, float pressure);
-	private delegate bool SetJoystickVirtualTouchpadNativeDelegate(IntPtr joystick, int touchpad, int finger, bool down, float x, float y, float pressure);
-	private static SetJoystickVirtualTouchpadNativeDelegate SetJoystickVirtualTouchpadNativeFunction = SDL_SetJoystickVirtualTouchpad;
-
 	public static bool SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, bool down, float x, float y, float pressure)
 	{
 		return SetJoystickVirtualTouchpadNativeFunction(joystick, touchpad, finger, down, x, y, pressure);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickVirtualSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues);
+	private delegate bool SendJoystickVirtualSensorDataNativeDelegate(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, float[] data, int numValues);
+	private static SendJoystickVirtualSensorDataNativeDelegate SendJoystickVirtualSensorDataNativeFunction = SDL_SendJoystickVirtualSensorData;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SendJoystickVirtualSensorData(SDL_Joystick *joystick, SDL_SensorType type, Uint64 sensor_timestamp, const float *data, int num_values);</code>
 	/// <summary>
@@ -698,18 +705,17 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickVirtualSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues);
-	private delegate bool SendJoystickVirtualSensorDataNativeDelegate(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, float[] data, int numValues);
-	private static SendJoystickVirtualSensorDataNativeDelegate SendJoystickVirtualSensorDataNativeFunction = SDL_SendJoystickVirtualSensorData;
-
 	public static bool SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues)
 	{
 		return SendJoystickVirtualSensorDataNativeFunction(joystick, type, sensorTimestamp, data, numValues);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial uint SDL_GetJoystickProperties(IntPtr joystick);
+	private delegate uint GetJoystickPropertiesNativeDelegate(IntPtr joystick);
+	private static GetJoystickPropertiesNativeDelegate GetJoystickPropertiesNativeFunction = SDL_GetJoystickProperties;
 
 	/// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetJoystickProperties(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -733,12 +739,6 @@ public static partial class SDL
 	/// <see cref="GetError"/> for more information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial uint SDL_GetJoystickProperties(IntPtr joystick);
-	private delegate uint GetJoystickPropertiesNativeDelegate(IntPtr joystick);
-	private static GetJoystickPropertiesNativeDelegate GetJoystickPropertiesNativeFunction = SDL_GetJoystickProperties;
-
 	public static uint GetJoystickProperties(IntPtr joystick)
 	{
 		return GetJoystickPropertiesNativeFunction(joystick);
@@ -789,6 +789,12 @@ public static partial class SDL
 	}
 
 
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetJoystickPlayerIndex(IntPtr joystick);
+	private delegate int GetJoystickPlayerIndexNativeDelegate(IntPtr joystick);
+	private static GetJoystickPlayerIndexNativeDelegate GetJoystickPlayerIndexNativeFunction = SDL_GetJoystickPlayerIndex;
+
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetJoystickPlayerIndex(SDL_Joystick *joystick);</code>
 	/// <summary>
 	/// <para>Get the player index of an opened joystick.</para>
@@ -800,17 +806,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="SetJoystickPlayerIndex"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_GetJoystickPlayerIndex(IntPtr joystick);
-	private delegate int GetJoystickPlayerIndexNativeDelegate(IntPtr joystick);
-	private static GetJoystickPlayerIndexNativeDelegate GetJoystickPlayerIndexNativeFunction = SDL_GetJoystickPlayerIndex;
-
 	public static int GetJoystickPlayerIndex(IntPtr joystick)
 	{
 		return GetJoystickPlayerIndexNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickPlayerIndex(IntPtr joystick, int playerIndex);
+	private delegate bool SetJoystickPlayerIndexNativeDelegate(IntPtr joystick, int playerIndex);
+	private static SetJoystickPlayerIndexNativeDelegate SetJoystickPlayerIndexNativeFunction = SDL_SetJoystickPlayerIndex;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickPlayerIndex(SDL_Joystick *joystick, int player_index);</code>
 	/// <summary>
@@ -824,18 +831,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickPlayerIndex"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickPlayerIndex"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickPlayerIndex(IntPtr joystick, int playerIndex);
-	private delegate bool SetJoystickPlayerIndexNativeDelegate(IntPtr joystick, int playerIndex);
-	private static SetJoystickPlayerIndexNativeDelegate SetJoystickPlayerIndexNativeFunction = SDL_SetJoystickPlayerIndex;
-
 	public static bool SetJoystickPlayerIndex(IntPtr joystick, int playerIndex)
 	{
 		return SetJoystickPlayerIndexNativeFunction(joystick, playerIndex);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial GUID SDL_GetJoystickGUID(IntPtr joystick);
+	private delegate GUID GetJoystickGUIDNativeDelegate(IntPtr joystick);
+	private static GetJoystickGUIDNativeDelegate GetJoystickGUIDNativeFunction = SDL_GetJoystickGUID;
 
 	/// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_GetJoystickGUID(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -850,17 +856,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUIDForID"/>
 	/// <seealso cref="GUIDToString"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial GUID SDL_GetJoystickGUID(IntPtr joystick);
-	private delegate GUID GetJoystickGUIDNativeDelegate(IntPtr joystick);
-	private static GetJoystickGUIDNativeDelegate GetJoystickGUIDNativeFunction = SDL_GetJoystickGUID;
-
 	public static GUID GetJoystickGUID(IntPtr joystick)
 	{
 		return GetJoystickGUIDNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickVendor(IntPtr joystick);
+	private delegate ushort GetJoystickVendorNativeDelegate(IntPtr joystick);
+	private static GetJoystickVendorNativeDelegate GetJoystickVendorNativeFunction = SDL_GetJoystickVendor;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickVendor(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -872,17 +878,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickVendorForID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickVendor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickVendor(IntPtr joystick);
-	private delegate ushort GetJoystickVendorNativeDelegate(IntPtr joystick);
-	private static GetJoystickVendorNativeDelegate GetJoystickVendorNativeFunction = SDL_GetJoystickVendor;
-
 	public static ushort GetJoystickVendor(IntPtr joystick)
 	{
 		return GetJoystickVendorNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProduct"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickProduct(IntPtr joystick);
+	private delegate ushort GetJoystickProductNativeDelegate(IntPtr joystick);
+	private static GetJoystickProductNativeDelegate GetJoystickProductNativeFunction = SDL_GetJoystickProduct;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProduct(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -894,17 +900,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProductForID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProduct"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickProduct(IntPtr joystick);
-	private delegate ushort GetJoystickProductNativeDelegate(IntPtr joystick);
-	private static GetJoystickProductNativeDelegate GetJoystickProductNativeFunction = SDL_GetJoystickProduct;
-
 	public static ushort GetJoystickProduct(IntPtr joystick)
 	{
 		return GetJoystickProductNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickProductVersion(IntPtr joystick);
+	private delegate ushort GetJoystickProductVersionNativeDelegate(IntPtr joystick);
+	private static GetJoystickProductVersionNativeDelegate GetJoystickProductVersionNativeFunction = SDL_GetJoystickProductVersion;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickProductVersion(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -916,17 +922,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickProductVersionForID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProductVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickProductVersion(IntPtr joystick);
-	private delegate ushort GetJoystickProductVersionNativeDelegate(IntPtr joystick);
-	private static GetJoystickProductVersionNativeDelegate GetJoystickProductVersionNativeFunction = SDL_GetJoystickProductVersion;
-
 	public static ushort GetJoystickProductVersion(IntPtr joystick)
 	{
 		return GetJoystickProductVersionNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFirmwareVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ushort SDL_GetJoystickFirmwareVersion(IntPtr joystick);
+	private delegate ushort GetJoystickFirmwareVersionNativeDelegate(IntPtr joystick);
+	private static GetJoystickFirmwareVersionNativeDelegate GetJoystickFirmwareVersionNativeFunction = SDL_GetJoystickFirmwareVersion;
 
 	/// <code>extern SDL_DECLSPEC Uint16 SDLCALL SDL_GetJoystickFirmwareVersion(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -938,12 +944,6 @@ public static partial class SDL
 	/// unavailable.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickFirmwareVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ushort SDL_GetJoystickFirmwareVersion(IntPtr joystick);
-	private delegate ushort GetJoystickFirmwareVersionNativeDelegate(IntPtr joystick);
-	private static GetJoystickFirmwareVersionNativeDelegate GetJoystickFirmwareVersionNativeFunction = SDL_GetJoystickFirmwareVersion;
-
 	public static ushort GetJoystickFirmwareVersion(IntPtr joystick)
 	{
 		return GetJoystickFirmwareVersionNativeFunction(joystick);
@@ -972,6 +972,12 @@ public static partial class SDL
 	}
 
 
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickType SDL_GetJoystickType(IntPtr joystick);
+	private delegate JoystickType GetJoystickTypeNativeDelegate(IntPtr joystick);
+	private static GetJoystickTypeNativeDelegate GetJoystickTypeNativeFunction = SDL_GetJoystickType;
+
 	/// <code>extern SDL_DECLSPEC SDL_JoystickType SDLCALL SDL_GetJoystickType(SDL_Joystick *joystick);</code>
 	/// <summary>
 	/// Get the type of an opened joystick.
@@ -981,17 +987,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickTypeForID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial JoystickType SDL_GetJoystickType(IntPtr joystick);
-	private delegate JoystickType GetJoystickTypeNativeDelegate(IntPtr joystick);
-	private static GetJoystickTypeNativeDelegate GetJoystickTypeNativeFunction = SDL_GetJoystickType;
-
 	public static JoystickType GetJoystickType(IntPtr joystick)
 	{
 		return GetJoystickTypeNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUIDInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_GetJoystickGUIDInfo(GUID guid, out short vendor, out short product, out short version, out short crc16);
+	private delegate void GetJoystickGUIDInfoNativeDelegate(GUID guid, out short vendor, out short product, out short version, out short crc16);
+	private static GetJoystickGUIDInfoNativeDelegate GetJoystickGUIDInfoNativeFunction = SDL_GetJoystickGUIDInfo;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetJoystickGUIDInfo(SDL_GUID guid, Uint16 *vendor, Uint16 *product, Uint16 *version, Uint16 *crc16);</code>
 	/// <summary>
@@ -1009,17 +1015,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUIDForID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickGUIDInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_GetJoystickGUIDInfo(GUID guid, out short vendor, out short product, out short version, out short crc16);
-	private delegate void GetJoystickGUIDInfoNativeDelegate(GUID guid, out short vendor, out short product, out short version, out short crc16);
-	private static GetJoystickGUIDInfoNativeDelegate GetJoystickGUIDInfoNativeFunction = SDL_GetJoystickGUIDInfo;
-
 	public static void GetJoystickGUIDInfo(GUID guid, out short vendor, out short product, out short version, out short crc16)
 	{
 		GetJoystickGUIDInfoNativeFunction(guid, out vendor, out product, out version, out crc16);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickConnected"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_JoystickConnected(IntPtr joystick);
+	private delegate bool JoystickConnectedNativeDelegate(IntPtr joystick);
+	private static JoystickConnectedNativeDelegate JoystickConnectedNativeFunction = SDL_JoystickConnected;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_JoystickConnected(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1030,18 +1037,17 @@ public static partial class SDL
 	/// <see cref="GetError"/> for more information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickConnected"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_JoystickConnected(IntPtr joystick);
-	private delegate bool JoystickConnectedNativeDelegate(IntPtr joystick);
-	private static JoystickConnectedNativeDelegate JoystickConnectedNativeFunction = SDL_JoystickConnected;
-
 	public static bool JoystickConnected(IntPtr joystick)
 	{
 		return JoystickConnectedNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial uint SDL_GetJoystickID(IntPtr joystick);
+	private delegate uint GetJoystickIDNativeDelegate(IntPtr joystick);
+	private static GetJoystickIDNativeDelegate GetJoystickIDNativeFunction = SDL_GetJoystickID;
 
 	/// <code>extern SDL_DECLSPEC SDL_JoystickID SDLCALL SDL_GetJoystickID(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1052,17 +1058,17 @@ public static partial class SDL
 	/// failure; call <see cref="GetError"/> for more information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial uint SDL_GetJoystickID(IntPtr joystick);
-	private delegate uint GetJoystickIDNativeDelegate(IntPtr joystick);
-	private static GetJoystickIDNativeDelegate GetJoystickIDNativeFunction = SDL_GetJoystickID;
-
 	public static uint GetJoystickID(IntPtr joystick)
 	{
 		return GetJoystickIDNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickAxes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickAxes(IntPtr joystick);
+	private delegate int GetNumJoystickAxesNativeDelegate(IntPtr joystick);
+	private static GetNumJoystickAxesNativeDelegate GetNumJoystickAxesNativeFunction = SDL_GetNumJoystickAxes;
 
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumJoystickAxes(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1080,17 +1086,17 @@ public static partial class SDL
 	/// <seealso cref="GetNumJoystickBalls"/>
 	/// <seealso cref="GetNumJoystickButtons"/>
 	/// <seealso cref="GetNumJoystickHats"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickAxes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_GetNumJoystickAxes(IntPtr joystick);
-	private delegate int GetNumJoystickAxesNativeDelegate(IntPtr joystick);
-	private static GetNumJoystickAxesNativeDelegate GetNumJoystickAxesNativeFunction = SDL_GetNumJoystickAxes;
-
 	public static int GetNumJoystickAxes(IntPtr joystick)
 	{
 		return GetNumJoystickAxesNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickBalls"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickBalls(IntPtr joystick);
+	private delegate int GetNumJoystickBallsNativeDelegate(IntPtr joystick);
+	private static GetNumJoystickBallsNativeDelegate GetNumJoystickBallsNativeFunction = SDL_GetNumJoystickBalls;
 
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumJoystickBalls(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1108,17 +1114,17 @@ public static partial class SDL
 	/// <seealso cref="GetNumJoystickAxes"/>
 	/// <seealso cref="GetNumJoystickButtons"/>
 	/// <seealso cref="GetNumJoystickHats"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickBalls"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_GetNumJoystickBalls(IntPtr joystick);
-	private delegate int GetNumJoystickBallsNativeDelegate(IntPtr joystick);
-	private static GetNumJoystickBallsNativeDelegate GetNumJoystickBallsNativeFunction = SDL_GetNumJoystickBalls;
-
 	public static int GetNumJoystickBalls(IntPtr joystick)
 	{
 		return GetNumJoystickBallsNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickHats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickHats(IntPtr joystick);
+	private delegate int GetNumJoystickHatsNativeDelegate(IntPtr joystick);
+	private static GetNumJoystickHatsNativeDelegate GetNumJoystickHatsNativeFunction = SDL_GetNumJoystickHats;
 
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumJoystickHats(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1133,17 +1139,17 @@ public static partial class SDL
 	/// <seealso cref="GetNumJoystickAxes"/>
 	/// <seealso cref="GetNumJoystickBalls"/>
 	/// <seealso cref="GetNumJoystickButtons"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickHats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_GetNumJoystickHats(IntPtr joystick);
-	private delegate int GetNumJoystickHatsNativeDelegate(IntPtr joystick);
-	private static GetNumJoystickHatsNativeDelegate GetNumJoystickHatsNativeFunction = SDL_GetNumJoystickHats;
-
 	public static int GetNumJoystickHats(IntPtr joystick)
 	{
 		return GetNumJoystickHatsNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickButtons"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial int SDL_GetNumJoystickButtons(IntPtr joystick);
+	private delegate int GetNumJoystickButtonsNativeDelegate(IntPtr joystick);
+	private static GetNumJoystickButtonsNativeDelegate GetNumJoystickButtonsNativeFunction = SDL_GetNumJoystickButtons;
 
 	/// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumJoystickButtons(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1158,17 +1164,17 @@ public static partial class SDL
 	/// <seealso cref="GetNumJoystickAxes"/>
 	/// <seealso cref="GetNumJoystickBalls"/>
 	/// <seealso cref="GetNumJoystickHats"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumJoystickButtons"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial int SDL_GetNumJoystickButtons(IntPtr joystick);
-	private delegate int GetNumJoystickButtonsNativeDelegate(IntPtr joystick);
-	private static GetNumJoystickButtonsNativeDelegate GetNumJoystickButtonsNativeFunction = SDL_GetNumJoystickButtons;
-
 	public static int GetNumJoystickButtons(IntPtr joystick)
 	{
 		return GetNumJoystickButtonsNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_SetJoystickEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
+	private delegate void SetJoystickEventsEnabledNativeDelegate(bool enabled);
+	private static SetJoystickEventsEnabledNativeDelegate SetJoystickEventsEnabledNativeFunction = SDL_SetJoystickEventsEnabled;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetJoystickEventsEnabled(bool enabled);</code>
 	/// <summary>
@@ -1182,17 +1188,18 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="JoystickEventsEnabled"/>
 	/// <seealso cref="UpdateJoysticks"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_SetJoystickEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
-	private delegate void SetJoystickEventsEnabledNativeDelegate(bool enabled);
-	private static SetJoystickEventsEnabledNativeDelegate SetJoystickEventsEnabledNativeFunction = SDL_SetJoystickEventsEnabled;
-
 	public static void SetJoystickEventsEnabled([MarshalAs(UnmanagedType.I1)] bool enabled)
 	{
 		SetJoystickEventsEnabledNativeFunction(enabled);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_JoystickEventsEnabled();
+	private delegate bool JoystickEventsEnabledNativeDelegate();
+	private static JoystickEventsEnabledNativeDelegate JoystickEventsEnabledNativeFunction = SDL_JoystickEventsEnabled;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_JoystickEventsEnabled(void);</code>
 	/// <summary>
@@ -1203,19 +1210,19 @@ public static partial class SDL
 	/// </summary>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <returns><c>true</c> if joystick events are being processed, <c>false</c> otherwise.</returns>
+	/// <since>This function is available since SDL 3.2.0.</since>
 	/// <seealso cref="SetJoystickEventsEnabled"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickEventsEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_JoystickEventsEnabled();
-	private delegate bool JoystickEventsEnabledNativeDelegate();
-	private static JoystickEventsEnabledNativeDelegate JoystickEventsEnabledNativeFunction = SDL_JoystickEventsEnabled;
-
 	public static bool JoystickEventsEnabled()
 	{
 		return JoystickEventsEnabledNativeFunction();
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_UpdateJoysticks();
+	private delegate void UpdateJoysticksNativeDelegate();
+	private static UpdateJoysticksNativeDelegate UpdateJoysticksNativeFunction = SDL_UpdateJoysticks;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_UpdateJoysticks(void);</code>
 	/// <summary>
@@ -1225,17 +1232,17 @@ public static partial class SDL
 	/// </summary>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_UpdateJoysticks();
-	private delegate void UpdateJoysticksNativeDelegate();
-	private static UpdateJoysticksNativeDelegate UpdateJoysticksNativeFunction = SDL_UpdateJoysticks;
-
 	public static void UpdateJoysticks()
 	{
 		UpdateJoysticksNativeFunction();
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial short SDL_GetJoystickAxis(IntPtr joystick, int axis);
+	private delegate short GetJoystickAxisNativeDelegate(IntPtr joystick, int axis);
+	private static GetJoystickAxisNativeDelegate GetJoystickAxisNativeFunction = SDL_GetJoystickAxis;
 
 	/// <code>extern SDL_DECLSPEC Sint16 SDLCALL SDL_GetJoystickAxis(SDL_Joystick *joystick, int axis);</code>
 	/// <summary>
@@ -1256,17 +1263,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickAxes"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickAxis"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial short SDL_GetJoystickAxis(IntPtr joystick, int axis);
-	private delegate short GetJoystickAxisNativeDelegate(IntPtr joystick, int axis);
-	private static GetJoystickAxisNativeDelegate GetJoystickAxisNativeFunction = SDL_GetJoystickAxis;
-
 	public static short GetJoystickAxis(IntPtr joystick, int axis)
 	{
 		return GetJoystickAxisNativeFunction(joystick, axis);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickAxisInitialState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_GetJoystickAxisInitialState(IntPtr joystick, int axis, out short state);
+	private delegate bool GetJoystickAxisInitialStateNativeDelegate(IntPtr joystick, int axis, out short state);
+	private static GetJoystickAxisInitialStateNativeDelegate GetJoystickAxisInitialStateNativeFunction = SDL_GetJoystickAxisInitialState;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetJoystickAxisInitialState(SDL_Joystick *joystick, int axis, Sint16 *state);</code>
 	/// <summary>
@@ -1280,20 +1288,20 @@ public static partial class SDL
 	/// <returns><c>true</c> if this axis has any initial value, or <c>false</c> if not.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickAxisInitialState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_GetJoystickAxisInitialState(IntPtr joystick, int axis, out short state);
-	private delegate bool GetJoystickAxisInitialStateNativeDelegate(IntPtr joystick, int axis, out short state);
-	private static GetJoystickAxisInitialStateNativeDelegate GetJoystickAxisInitialStateNativeFunction = SDL_GetJoystickAxisInitialState;
-
 	public static bool GetJoystickAxisInitialState(IntPtr joystick, int axis, out short state)
 	{
 		return GetJoystickAxisInitialStateNativeFunction(joystick, axis, out state);
 	}
 
 
-	//extern SDL_DECLSPEC bool SDLCALL SDL_GetJoystickBall(SDL_Joystick *joystick, int ball, int *dx, int *dy);
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_GetJoystickBall(IntPtr joystick, int ball, out int dx, out int dy);
+	private delegate bool GetJoystickBallNativeDelegate(IntPtr joystick, int ball, out int dx, out int dy);
+	private static GetJoystickBallNativeDelegate GetJoystickBallNativeFunction = SDL_GetJoystickBall;
+
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetJoystickBall(SDL_Joystick *joystick, int ball, int *dx, int *dy);</code>
 	/// <summary>
 	/// <para>Get the ball axis change since the last poll.</para>
 	/// <para>Trackballs can only return relative motion since the last call to
@@ -1309,18 +1317,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickBalls"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickBall"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_GetJoystickBall(IntPtr joystick, int ball, out int dx, out int dy);
-	private delegate bool GetJoystickBallNativeDelegate(IntPtr joystick, int ball, out int dx, out int dy);
-	private static GetJoystickBallNativeDelegate GetJoystickBallNativeFunction = SDL_GetJoystickBall;
-
 	public static bool GetJoystickBall(IntPtr joystick, int ball, out int dx, out int dy)
 	{
 		return GetJoystickBallNativeFunction(joystick, ball, out dx, out dy);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickHat SDL_GetJoystickHat(IntPtr joystick, int hat);
+	private delegate JoystickHat GetJoystickHatNativeDelegate(IntPtr joystick, int hat);
+	private static GetJoystickHatNativeDelegate GetJoystickHatNativeFunction = SDL_GetJoystickHat;
 
 	/// <code>extern SDL_DECLSPEC Uint8 SDLCALL SDL_GetJoystickHat(SDL_Joystick *joystick, int hat);</code>
 	/// <summary>
@@ -1333,17 +1340,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickHats"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickHat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial JoystickHat SDL_GetJoystickHat(IntPtr joystick, int hat);
-	private delegate JoystickHat GetJoystickHatNativeDelegate(IntPtr joystick, int hat);
-	private static GetJoystickHatNativeDelegate GetJoystickHatNativeFunction = SDL_GetJoystickHat;
-
 	public static JoystickHat GetJoystickHat(IntPtr joystick, int hat)
 	{
 		return GetJoystickHatNativeFunction(joystick, hat);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_GetJoystickButton(IntPtr joystick, int button);
+	private delegate bool GetJoystickButtonNativeDelegate(IntPtr joystick, int button);
+	private static GetJoystickButtonNativeDelegate GetJoystickButtonNativeFunction = SDL_GetJoystickButton;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetJoystickButton(SDL_Joystick *joystick, int button);</code>
 	/// <summary>
@@ -1356,18 +1364,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetNumJoystickButtons"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickButton"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_GetJoystickButton(IntPtr joystick, int button);
-	private delegate bool GetJoystickButtonNativeDelegate(IntPtr joystick, int button);
-	private static GetJoystickButtonNativeDelegate GetJoystickButtonNativeFunction = SDL_GetJoystickButton;
-
 	public static bool GetJoystickButton(IntPtr joystick, int button)
 	{
 		return GetJoystickButtonNativeFunction(joystick, button);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_RumbleJoystick(IntPtr joystick, short lowFrequencyRumble, short highFrequencyRumble, int durationMs);
+	private delegate bool RumbleJoystickNativeDelegate(IntPtr joystick, short lowFrequencyRumble, short highFrequencyRumble, int durationMs);
+	private static RumbleJoystickNativeDelegate RumbleJoystickNativeFunction = SDL_RumbleJoystick;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RumbleJoystick(SDL_Joystick *joystick, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms);</code>
 	/// <summary>
@@ -1386,18 +1394,18 @@ public static partial class SDL
 	/// <returns><c>true</c>, or <c>false</c> if rumble isn't supported on this joystick.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_RumbleJoystick(IntPtr joystick, short lowFrequencyRumble, short highFrequencyRumble, int durationMs);
-	private delegate bool RumbleJoystickNativeDelegate(IntPtr joystick, short lowFrequencyRumble, short highFrequencyRumble, int durationMs);
-	private static RumbleJoystickNativeDelegate RumbleJoystickNativeFunction = SDL_RumbleJoystick;
-
 	public static bool RumbleJoystick(IntPtr joystick, short lowFrequencyRumble, short highFrequencyRumble, int durationMs)
 	{
 		return RumbleJoystickNativeFunction(joystick, lowFrequencyRumble, highFrequencyRumble, durationMs);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleJoystickTriggers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_RumbleJoystickTriggers(IntPtr joystick, short leftRumble, short rightRumble, int durationMs);
+	private delegate bool RumbleJoystickTriggersNativeDelegate(IntPtr joystick, short leftRumble, short rightRumble, int durationMs);
+	private static RumbleJoystickTriggersNativeDelegate RumbleJoystickTriggersNativeFunction = SDL_RumbleJoystickTriggers;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RumbleJoystickTriggers(SDL_Joystick *joystick, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms);</code>
 	/// <summary>
@@ -1422,18 +1430,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="RumbleJoystick"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_RumbleJoystickTriggers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_RumbleJoystickTriggers(IntPtr joystick, short leftRumble, short rightRumble, int durationMs);
-	private delegate bool RumbleJoystickTriggersNativeDelegate(IntPtr joystick, short leftRumble, short rightRumble, int durationMs);
-	private static RumbleJoystickTriggersNativeDelegate RumbleJoystickTriggersNativeFunction = SDL_RumbleJoystickTriggers;
-
 	public static bool RumbleJoystickTriggers(IntPtr joystick, short leftRumble, short rightRumble, int durationMs)
 	{
 		return RumbleJoystickTriggersNativeFunction(joystick, leftRumble, rightRumble, durationMs);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickLED"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue);
+	private delegate bool SetJoystickLEDNativeDelegate(IntPtr joystick, byte red, byte green, byte blue);
+	private static SetJoystickLEDNativeDelegate SetJoystickLEDNativeFunction = SDL_SetJoystickLED;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickLED(SDL_Joystick *joystick, Uint8 red, Uint8 green, Uint8 blue);</code>
 	/// <summary>
@@ -1451,30 +1459,12 @@ public static partial class SDL
 	/// information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickLED"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue);
-	private delegate bool SetJoystickLEDNativeDelegate(IntPtr joystick, byte red, byte green, byte blue);
-	private static SetJoystickLEDNativeDelegate SetJoystickLEDNativeFunction = SDL_SetJoystickLED;
-
 	public static bool SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue)
 	{
 		return SetJoystickLEDNativeFunction(joystick, red, green, blue);
 	}
 
 
-	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SendJoystickEffect(SDL_Joystick *joystick, const void *data, int size);</code>
-	/// <summary>
-	/// Send a joystick specific effect packet.
-	/// </summary>
-	/// <param name="joystick">the joystick to affect.</param>
-	/// <param name="data">the data to send to the joystick.</param>
-	/// <param name="size">the size of the data to send to the joystick.</param>
-	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-	/// information.</returns>
-	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	/// <since>This function is available since SDL 3.2.0</since>
 	[ExcludeFromCodeCoverage]
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -1482,11 +1472,29 @@ public static partial class SDL
 	private delegate bool SendJoystickEffectPointerNativeDelegate(IntPtr joystick, IntPtr data, int size);
 	private static SendJoystickEffectPointerNativeDelegate SendJoystickEffectPointerNativeFunction = SDL_SendJoystickEffect;
 
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SendJoystickEffect(SDL_Joystick *joystick, const void *data, int size);</code>
+	/// <summary>
+	/// Send a joystick specific effect packet.
+	/// </summary>
+	/// <param name="joystick">the joystick to affect.</param>
+	/// <param name="data">the data to send to the joystick.</param>
+	/// <param name="size">the size of the data to send to the joystick.</param>
+	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+	/// information.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.2.0</since>
 	public static bool SendJoystickEffect(IntPtr joystick, IntPtr data, int size)
 	{
 		return SendJoystickEffectPointerNativeFunction(joystick, data, size);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SendJoystickEffect(IntPtr joystick, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size);
+	private delegate bool SendJoystickEffectArrayNativeDelegate(IntPtr joystick, byte[] data, int size);
+	private static SendJoystickEffectArrayNativeDelegate SendJoystickEffectArrayNativeFunction = SDL_SendJoystickEffect;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SendJoystickEffect(SDL_Joystick *joystick, const void *data, int size);</code>
 	/// <summary>
@@ -1499,18 +1507,17 @@ public static partial class SDL
 	/// information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickEffect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SendJoystickEffect(IntPtr joystick, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size);
-	private delegate bool SendJoystickEffectArrayNativeDelegate(IntPtr joystick, byte[] data, int size);
-	private static SendJoystickEffectArrayNativeDelegate SendJoystickEffectArrayNativeFunction = SDL_SendJoystickEffect;
-
 	public static bool SendJoystickEffect(IntPtr joystick, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size)
 	{
 		return SendJoystickEffectArrayNativeFunction(joystick, data, size);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_CloseJoystick(IntPtr joystick);
+	private delegate void CloseJoystickNativeDelegate(IntPtr joystick);
+	private static CloseJoystickNativeDelegate CloseJoystickNativeFunction = SDL_CloseJoystick;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_CloseJoystick(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1520,17 +1527,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="OpenJoystick"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_CloseJoystick(IntPtr joystick);
-	private delegate void CloseJoystickNativeDelegate(IntPtr joystick);
-	private static CloseJoystickNativeDelegate CloseJoystickNativeFunction = SDL_CloseJoystick;
-
 	public static void CloseJoystick(IntPtr joystick)
 	{
 		CloseJoystickNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickConnectionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial JoystickConnectionState SDL_GetJoystickConnectionState(IntPtr joystick);
+	private delegate JoystickConnectionState GetJoystickConnectionStateNativeDelegate(IntPtr joystick);
+	private static GetJoystickConnectionStateNativeDelegate GetJoystickConnectionStateNativeFunction = SDL_GetJoystickConnectionState;
 
 	/// <code>extern SDL_DECLSPEC SDL_JoystickConnectionState SDLCALL SDL_GetJoystickConnectionState(SDL_Joystick *joystick);</code>
 	/// <summary>
@@ -1542,17 +1549,17 @@ public static partial class SDL
 	/// for more information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickConnectionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial JoystickConnectionState SDL_GetJoystickConnectionState(IntPtr joystick);
-	private delegate JoystickConnectionState GetJoystickConnectionStateNativeDelegate(IntPtr joystick);
-	private static GetJoystickConnectionStateNativeDelegate GetJoystickConnectionStateNativeFunction = SDL_GetJoystickConnectionState;
-
 	public static JoystickConnectionState GetJoystickConnectionState(IntPtr joystick)
 	{
 		return GetJoystickConnectionStateNativeFunction(joystick);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPowerInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial PowerState SDL_GetJoystickPowerInfo(IntPtr joystick, out int percent);
+	private delegate PowerState GetJoystickPowerInfoNativeDelegate(IntPtr joystick, out int percent);
+	private static GetJoystickPowerInfoNativeDelegate GetJoystickPowerInfoNativeFunction = SDL_GetJoystickPowerInfo;
 
 	/// <code>extern SDL_DECLSPEC SDL_PowerState SDLCALL SDL_GetJoystickPowerInfo(SDL_Joystick *joystick, int *percent);</code>
 	/// <summary>
@@ -1572,12 +1579,6 @@ public static partial class SDL
 	/// <returns>the current battery state or <see cref="PowerState.Error"/> on failure;
 	/// call <see cref="GetError"/> for more information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickPowerInfo"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial PowerState SDL_GetJoystickPowerInfo(IntPtr joystick, out int percent);
-	private delegate PowerState GetJoystickPowerInfoNativeDelegate(IntPtr joystick, out int percent);
-	private static GetJoystickPowerInfoNativeDelegate GetJoystickPowerInfoNativeFunction = SDL_GetJoystickPowerInfo;
-
 	public static PowerState GetJoystickPowerInfo(IntPtr joystick, out int percent)
 	{
 		return GetJoystickPowerInfoNativeFunction(joystick, out percent);

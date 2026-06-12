@@ -29,6 +29,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDateTimeLocalePreferences"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetDateTimeLocalePreferences(out DateFormat dateFormat, out TimeFormat timeFormat);
+    private delegate bool GetDateTimeLocalePreferencesNativeDelegate(out DateFormat dateFormat, out TimeFormat timeFormat);
+    private static GetDateTimeLocalePreferencesNativeDelegate GetDateTimeLocalePreferencesNativeFunction = SDL_GetDateTimeLocalePreferences;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);</code>
     /// <summary>
     /// <para>Gets the current preferred date and time format for the system locale.</para>
@@ -45,18 +52,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDateTimeLocalePreferences"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetDateTimeLocalePreferences(out DateFormat dateFormat, out TimeFormat timeFormat);
-    private delegate bool GetDateTimeLocalePreferencesNativeDelegate(out DateFormat dateFormat, out TimeFormat timeFormat);
-    private static GetDateTimeLocalePreferencesNativeDelegate GetDateTimeLocalePreferencesNativeFunction = SDL_GetDateTimeLocalePreferences;
-
     public static bool GetDateTimeLocalePreferences(out DateFormat dateFormat, out TimeFormat timeFormat)
     {
         return GetDateTimeLocalePreferencesNativeFunction(out dateFormat, out timeFormat);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetCurrentTime(out long ticks);
+    private delegate bool GetCurrentTimeNativeDelegate(out long ticks);
+    private static GetCurrentTimeNativeDelegate GetCurrentTimeNativeFunction = SDL_GetCurrentTime;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetCurrentTime(SDL_Time *ticks);</code>
     /// <summary>
@@ -68,18 +75,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetCurrentTime(out long ticks);
-    private delegate bool GetCurrentTimeNativeDelegate(out long ticks);
-    private static GetCurrentTimeNativeDelegate GetCurrentTimeNativeFunction = SDL_GetCurrentTime;
-
     public static bool GetCurrentTime(out long ticks)
     {
         return GetCurrentTimeNativeFunction(out ticks);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToDateTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_TimeToDateTime(long ticks, out DateTime dt, [MarshalAs(UnmanagedType.I1)] bool localTime);
+    private delegate bool TimeToDateTimeNativeDelegate(long ticks, out DateTime dt, bool localTime);
+    private static TimeToDateTimeNativeDelegate TimeToDateTimeNativeFunction = SDL_TimeToDateTime;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TimeToDateTime(SDL_Time ticks, SDL_DateTime *dt, bool localTime);</code>
     /// <summary>
@@ -95,18 +102,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToDateTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_TimeToDateTime(long ticks, out DateTime dt, [MarshalAs(UnmanagedType.I1)] bool localTime);
-    private delegate bool TimeToDateTimeNativeDelegate(long ticks, out DateTime dt, bool localTime);
-    private static TimeToDateTimeNativeDelegate TimeToDateTimeNativeFunction = SDL_TimeToDateTime;
-
     public static bool TimeToDateTime(long ticks, out DateTime dt, [MarshalAs(UnmanagedType.I1)] bool localTime)
     {
         return TimeToDateTimeNativeFunction(ticks, out dt, localTime);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DateTimeToTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_DateTimeToTime(in DateTime dt, out long ticks);
+    private delegate bool DateTimeToTimeNativeDelegate(in DateTime dt, out long ticks);
+    private static DateTimeToTimeNativeDelegate DateTimeToTimeNativeFunction = SDL_DateTimeToTime;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);</code>
     /// <summary>
@@ -120,18 +127,17 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DateTimeToTime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_DateTimeToTime(in DateTime dt, out long ticks);
-    private delegate bool DateTimeToTimeNativeDelegate(in DateTime dt, out long ticks);
-    private static DateTimeToTimeNativeDelegate DateTimeToTimeNativeFunction = SDL_DateTimeToTime;
-
     public static bool DateTimeToTime(in DateTime dt, out long ticks)
     {
         return DateTimeToTimeNativeFunction(in dt, out ticks);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_TimeToWindows(long ticks, out uint dwLowDateTime, out uint dwHighDateTime);
+    private delegate void TimeToWindowsNativeDelegate(long ticks, out uint dwLowDateTime, out uint dwHighDateTime);
+    private static TimeToWindowsNativeDelegate TimeToWindowsNativeFunction = SDL_TimeToWindows;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_TimeToWindows(SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime);</code>
     /// <summary>
@@ -146,17 +152,17 @@ public static partial class SDL
     /// Windows FILETIME value.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeToWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_TimeToWindows(long ticks, out uint dwLowDateTime, out uint dwHighDateTime);
-    private delegate void TimeToWindowsNativeDelegate(long ticks, out uint dwLowDateTime, out uint dwHighDateTime);
-    private static TimeToWindowsNativeDelegate TimeToWindowsNativeFunction = SDL_TimeToWindows;
-
     public static void TimeToWindows(long ticks, out uint dwLowDateTime, out uint dwHighDateTime)
     {
         TimeToWindowsNativeFunction(ticks, out dwLowDateTime, out dwHighDateTime);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeFromWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial long SDL_TimeFromWindows(uint dwLowDateTime, uint dwHighDateTime);
+    private delegate long TimeFromWindowsNativeDelegate(uint dwLowDateTime, uint dwHighDateTime);
+    private static TimeFromWindowsNativeDelegate TimeFromWindowsNativeFunction = SDL_TimeFromWindows;
 
     /// <code>extern SDL_DECLSPEC SDL_Time SDLCALL SDL_TimeFromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);</code>
     /// <summary>
@@ -170,17 +176,17 @@ public static partial class SDL
     /// <returns>the converted SDL time.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_TimeFromWindows"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial long SDL_TimeFromWindows(uint dwLowDateTime, uint dwHighDateTime);
-    private delegate long TimeFromWindowsNativeDelegate(uint dwLowDateTime, uint dwHighDateTime);
-    private static TimeFromWindowsNativeDelegate TimeFromWindowsNativeFunction = SDL_TimeFromWindows;
-
     public static long TimeFromWindows(uint dwLowDateTime, uint dwHighDateTime)
     {
         return TimeFromWindowsNativeFunction(dwLowDateTime, dwHighDateTime);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDaysInMonth"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetDaysInMonth(int year, int month);
+    private delegate int GetDaysInMonthNativeDelegate(int year, int month);
+    private static GetDaysInMonthNativeDelegate GetDaysInMonthNativeFunction = SDL_GetDaysInMonth;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetDaysInMonth(int year, int month);</code>
     /// <summary>
@@ -192,17 +198,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDaysInMonth"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetDaysInMonth(int year, int month);
-    private delegate int GetDaysInMonthNativeDelegate(int year, int month);
-    private static GetDaysInMonthNativeDelegate GetDaysInMonthNativeFunction = SDL_GetDaysInMonth;
-
     public static int GetDaysInMonth(int year, int month)
     {
         return GetDaysInMonthNativeFunction(year, month);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDayOfYear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetDayOfYear(int year, int month, int day);
+    private delegate int GetDayOfYearNativeDelegate(int year, int month, int day);
+    private static GetDayOfYearNativeDelegate GetDayOfYearNativeFunction = SDL_GetDayOfYear;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetDayOfYear(int year, int month, int day);</code>
     /// <summary>
@@ -215,17 +221,17 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDayOfYear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetDayOfYear(int year, int month, int day);
-    private delegate int GetDayOfYearNativeDelegate(int year, int month, int day);
-    private static GetDayOfYearNativeDelegate GetDayOfYearNativeFunction = SDL_GetDayOfYear;
-
     public static int GetDayOfYear(int year, int month, int day)
     {
         return GetDayOfYearNativeFunction(year, month, day);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDayOfWeek"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetDayOfWeek(int year, int month, int day);
+    private delegate int GetDayOfWeekNativeDelegate(int year, int month, int day);
+    private static GetDayOfWeekNativeDelegate GetDayOfWeekNativeFunction = SDL_GetDayOfWeek;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetDayOfWeek(int year, int month, int day);</code>
     /// <summary>
@@ -238,12 +244,6 @@ public static partial class SDL
     /// -1 on failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDayOfWeek"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetDayOfWeek(int year, int month, int day);
-    private delegate int GetDayOfWeekNativeDelegate(int year, int month, int day);
-    private static GetDayOfWeekNativeDelegate GetDayOfWeekNativeFunction = SDL_GetDayOfWeek;
-
     public static int GetDayOfWeek(int year, int month, int day)
     {
         return GetDayOfWeekNativeFunction(year, month, day);

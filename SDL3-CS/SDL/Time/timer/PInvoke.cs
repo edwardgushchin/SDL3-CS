@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ulong SDL_GetTicks();
+    private delegate ulong GetTicksNativeDelegate();
+    private static GetTicksNativeDelegate GetTicksNativeFunction = SDL_GetTicks;
+
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetTicks(void);</code>
     /// <summary>
     /// Get the number of milliseconds that have elapsed since the SDL library
@@ -40,17 +46,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTicksNS"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_GetTicks();
-    private delegate ulong GetTicksNativeDelegate();
-    private static GetTicksNativeDelegate GetTicksNativeFunction = SDL_GetTicks;
-
     public static ulong GetTicks()
     {
         return GetTicksNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicksNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ulong SDL_GetTicksNS();
+    private delegate ulong GetTicksNSNativeDelegate();
+    private static GetTicksNSNativeDelegate GetTicksNSNativeFunction = SDL_GetTicksNS;
 
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetTicksNS(void);</code>
     /// <summary>
@@ -60,17 +66,17 @@ public static partial class SDL
     /// since the SDL library initialized.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTicksNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_GetTicksNS();
-    private delegate ulong GetTicksNSNativeDelegate();
-    private static GetTicksNSNativeDelegate GetTicksNSNativeFunction = SDL_GetTicksNS;
-
     public static ulong GetTicksNS()
     {
         return GetTicksNSNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPerformanceCounter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ulong SDL_GetPerformanceCounter();
+    private delegate ulong GetPerformanceCounterNativeDelegate();
+    private static GetPerformanceCounterNativeDelegate GetPerformanceCounterNativeFunction = SDL_GetPerformanceCounter;
 
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetPerformanceCounter(void);</code>
     /// <summary>
@@ -84,17 +90,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPerformanceFrequency"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPerformanceCounter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_GetPerformanceCounter();
-    private delegate ulong GetPerformanceCounterNativeDelegate();
-    private static GetPerformanceCounterNativeDelegate GetPerformanceCounterNativeFunction = SDL_GetPerformanceCounter;
-
     public static ulong GetPerformanceCounter()
     {
         return GetPerformanceCounterNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPerformanceFrequency"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ulong SDL_GetPerformanceFrequency();
+    private delegate ulong GetPerformanceFrequencyNativeDelegate();
+    private static GetPerformanceFrequencyNativeDelegate GetPerformanceFrequencyNativeFunction = SDL_GetPerformanceFrequency;
 
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetPerformanceFrequency(void);</code>
     /// <summary>
@@ -104,17 +110,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPerformanceCounter"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPerformanceFrequency"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_GetPerformanceFrequency();
-    private delegate ulong GetPerformanceFrequencyNativeDelegate();
-    private static GetPerformanceFrequencyNativeDelegate GetPerformanceFrequencyNativeFunction = SDL_GetPerformanceFrequency;
-
     public static ulong GetPerformanceFrequency()
     {
         return GetPerformanceFrequencyNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Delay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_Delay(uint ms);
+    private delegate void DelayNativeDelegate(uint ms);
+    private static DelayNativeDelegate DelayNativeFunction = SDL_Delay;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Delay(Uint32 ms);</code>
     /// <summary>
@@ -128,17 +134,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DelayNS"/>
     /// <seealso cref="DelayPrecise"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Delay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Delay(uint ms);
-    private delegate void DelayNativeDelegate(uint ms);
-    private static DelayNativeDelegate DelayNativeFunction = SDL_Delay;
-
     public static void Delay(uint ms)
     {
         DelayNativeFunction(ms);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DelayNS(ulong ns);
+    private delegate void DelayNSNativeDelegate(ulong ns);
+    private static DelayNSNativeDelegate DelayNSNativeFunction = SDL_DelayNS;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DelayNS(Uint64 ns);</code>
     /// <summary>
@@ -152,17 +158,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Delay"/>
     /// <seealso cref="DelayPrecise"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DelayNS(ulong ns);
-    private delegate void DelayNSNativeDelegate(ulong ns);
-    private static DelayNSNativeDelegate DelayNSNativeFunction = SDL_DelayNS;
-
     public static void DelayNS(ulong ns)
     {
         DelayNSNativeFunction(ns);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayPrecise"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DelayPrecise(ulong ns);
+    private delegate void DelayPreciseNativeDelegate(ulong ns);
+    private static DelayPreciseNativeDelegate DelayPreciseNativeFunction = SDL_DelayPrecise;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DelayPrecise(Uint64 ns);</code>
     /// <summary>
@@ -173,20 +179,20 @@ public static partial class SDL
     /// </summary>
     /// <param name="ns">the number of nanoseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.6.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="Delay"/>
     /// <seealso cref="DelayNS"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DelayPrecise"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DelayPrecise(ulong ns);
-    private delegate void DelayPreciseNativeDelegate(ulong ns);
-    private static DelayPreciseNativeDelegate DelayPreciseNativeFunction = SDL_DelayPrecise;
-
     public static void DelayPrecise(ulong ns)
     {
         DelayPreciseNativeFunction(ns);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_AddTimer(uint interval, TimerCallback callback, IntPtr userdata);
+    private delegate uint AddTimerNativeDelegate(uint interval, TimerCallback callback, IntPtr userdata);
+    private static AddTimerNativeDelegate AddTimerNativeFunction = SDL_AddTimer;
 
     /// <code>extern SDL_DECLSPEC SDL_TimerID SDLCALL SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *userdata);</code>
     /// <summary>
@@ -215,17 +221,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimerNS"/>
     /// <seealso cref="RemoveTimer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_AddTimer(uint interval, TimerCallback callback, IntPtr userdata);
-    private delegate uint AddTimerNativeDelegate(uint interval, TimerCallback callback, IntPtr userdata);
-    private static AddTimerNativeDelegate AddTimerNativeFunction = SDL_AddTimer;
-
     public static uint AddTimer(uint interval, TimerCallback callback, IntPtr userdata)
     {
         return AddTimerNativeFunction(interval, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimerNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_AddTimerNS(ulong interval, NSTimerCallback callback, IntPtr userdata);
+    private delegate uint AddTimerNSNativeDelegate(ulong interval, NSTimerCallback callback, IntPtr userdata);
+    private static AddTimerNSNativeDelegate AddTimerNSNativeFunction = SDL_AddTimerNS;
 
     /// <code>extern SDL_DECLSPEC SDL_TimerID SDLCALL SDL_AddTimerNS(Uint64 interval, SDL_NSTimerCallback callback, void *userdata);</code>
     /// <summary>
@@ -254,17 +260,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimer"/>
     /// <seealso cref="RemoveTimer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddTimerNS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_AddTimerNS(ulong interval, NSTimerCallback callback, IntPtr userdata);
-    private delegate uint AddTimerNSNativeDelegate(ulong interval, NSTimerCallback callback, IntPtr userdata);
-    private static AddTimerNSNativeDelegate AddTimerNSNativeFunction = SDL_AddTimerNS;
-
     public static uint AddTimerNS(ulong interval, NSTimerCallback callback, IntPtr userdata)
     {
         return AddTimerNSNativeFunction(interval, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RemoveTimer(uint id);
+    private delegate bool RemoveTimerNativeDelegate(uint id);
+    private static RemoveTimerNativeDelegate RemoveTimerNativeFunction = SDL_RemoveTimer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RemoveTimer(SDL_TimerID id);</code>
     /// <summary>
@@ -276,13 +283,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddTimer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTimer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RemoveTimer(uint id);
-    private delegate bool RemoveTimerNativeDelegate(uint id);
-    private static RemoveTimerNativeDelegate RemoveTimerNativeFunction = SDL_RemoveTimer;
-
     public static bool RemoveTimer(uint id)
     {
         return RemoveTimerNativeFunction(id);

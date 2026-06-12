@@ -120,6 +120,12 @@ public static partial class SDL
 		CreateThreadWithPropertiesRuntime(props, IntPtr.Zero, IntPtr.Zero);
 
 
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread);
+	private delegate IntPtr CreateThreadRuntimeNativeDelegate(ThreadFunction fn, string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread);
+	private static CreateThreadRuntimeNativeDelegate CreateThreadRuntimeNativeFunction = SDL_CreateThreadRuntime;
+
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadRuntime(SDL_ThreadFunction fn, const char *name, void *data, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);</code>
 	/// <summary>
 	/// The actual entry point for SDL_CreateThread.
@@ -134,17 +140,17 @@ public static partial class SDL
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial IntPtr SDL_CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread);
-	private delegate IntPtr CreateThreadRuntimeNativeDelegate(ThreadFunction fn, string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread);
-	private static CreateThreadRuntimeNativeDelegate CreateThreadRuntimeNativeFunction = SDL_CreateThreadRuntime;
-
 	public static IntPtr CreateThreadRuntime(ThreadFunction fn, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr data, IntPtr pfnBeginThread, IntPtr pfnEndThread)
 	{
 		return CreateThreadRuntimeNativeFunction(fn, name, data, pfnBeginThread, pfnEndThread);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadWithPropertiesRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_CreateThreadWithPropertiesRuntime(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread);
+	private delegate IntPtr CreateThreadWithPropertiesRuntimeNativeDelegate(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread);
+	private static CreateThreadWithPropertiesRuntimeNativeDelegate CreateThreadWithPropertiesRuntimeNativeFunction = SDL_CreateThreadWithPropertiesRuntime;
 
 	/// <code>extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);</code>
 	/// <summary>
@@ -158,12 +164,6 @@ public static partial class SDL
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateThreadWithPropertiesRuntime"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial IntPtr SDL_CreateThreadWithPropertiesRuntime(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread);
-	private delegate IntPtr CreateThreadWithPropertiesRuntimeNativeDelegate(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread);
-	private static CreateThreadWithPropertiesRuntimeNativeDelegate CreateThreadWithPropertiesRuntimeNativeFunction = SDL_CreateThreadWithPropertiesRuntime;
-
 	public static IntPtr CreateThreadWithPropertiesRuntime(uint props, IntPtr pfnBeginThread, IntPtr pfnEndThread)
 	{
 		return CreateThreadWithPropertiesRuntimeNativeFunction(props, pfnBeginThread, pfnEndThread);
@@ -190,6 +190,12 @@ public static partial class SDL
 	}
 
 
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ulong SDL_GetCurrentThreadID();
+	private delegate ulong GetCurrentThreadIDNativeDelegate();
+	private static GetCurrentThreadIDNativeDelegate GetCurrentThreadIDNativeFunction = SDL_GetCurrentThreadID;
+
 	/// <code>extern SDL_DECLSPEC SDL_ThreadID SDLCALL SDL_GetCurrentThreadID(void);</code>
 	/// <summary>
 	/// <para>Get the thread identifier for the current thread.</para>
@@ -203,17 +209,17 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="GetThreadID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ulong SDL_GetCurrentThreadID();
-	private delegate ulong GetCurrentThreadIDNativeDelegate();
-	private static GetCurrentThreadIDNativeDelegate GetCurrentThreadIDNativeFunction = SDL_GetCurrentThreadID;
-
 	public static ulong GetCurrentThreadID()
 	{
 		return GetCurrentThreadIDNativeFunction();
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ulong SDL_GetThreadID(IntPtr thread);
+	private delegate ulong GetThreadIDNativeDelegate(IntPtr thread);
+	private static GetThreadIDNativeDelegate GetThreadIDNativeFunction = SDL_GetThreadID;
 
 	/// <code>extern SDL_DECLSPEC SDL_ThreadID SDLCALL SDL_GetThreadID(SDL_Thread *thread);</code>
 	/// <summary>
@@ -228,17 +234,18 @@ public static partial class SDL
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="GetCurrentThreadID"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ulong SDL_GetThreadID(IntPtr thread);
-	private delegate ulong GetThreadIDNativeDelegate(IntPtr thread);
-	private static GetThreadIDNativeDelegate GetThreadIDNativeFunction = SDL_GetThreadID;
-
 	public static ulong GetThreadID(IntPtr thread)
 	{
 		return GetThreadIDNativeFunction(thread);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCurrentThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetCurrentThreadPriority(ThreadPriority priority);
+	private delegate bool SetCurrentThreadPriorityNativeDelegate(ThreadPriority priority);
+	private static SetCurrentThreadPriorityNativeDelegate SetCurrentThreadPriorityNativeFunction = SDL_SetCurrentThreadPriority;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);</code>
 	/// <summary>
@@ -252,18 +259,17 @@ public static partial class SDL
 	/// information.</returns>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCurrentThreadPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetCurrentThreadPriority(ThreadPriority priority);
-	private delegate bool SetCurrentThreadPriorityNativeDelegate(ThreadPriority priority);
-	private static SetCurrentThreadPriorityNativeDelegate SetCurrentThreadPriorityNativeFunction = SDL_SetCurrentThreadPriority;
-
 	public static bool SetCurrentThreadPriority(ThreadPriority priority)
 	{
 		return SetCurrentThreadPriorityNativeFunction(priority);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_WaitThread(IntPtr thread, out int status);
+	private delegate void WaitThreadNativeDelegate(IntPtr thread, out int status);
+	private static WaitThreadNativeDelegate WaitThreadNativeFunction = SDL_WaitThread;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_WaitThread(SDL_Thread *thread, int *status);</code>
 	/// <summary>
@@ -292,17 +298,17 @@ public static partial class SDL
 	/// single thread can wait any specific thread to finish.</threadsafety>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="DetachThread"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_WaitThread(IntPtr thread, out int status);
-	private delegate void WaitThreadNativeDelegate(IntPtr thread, out int status);
-	private static WaitThreadNativeDelegate WaitThreadNativeFunction = SDL_WaitThread;
-
 	public static void WaitThread(IntPtr thread, out int status)
 	{
 		WaitThreadNativeFunction(thread, out status);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial ThreadState SDL_GetThreadState(IntPtr thread);
+	private delegate ThreadState GetThreadStateNativeDelegate(IntPtr thread);
+	private static GetThreadStateNativeDelegate GetThreadStateNativeFunction = SDL_GetThreadState;
 
 	/// <code>extern SDL_DECLSPEC SDL_ThreadState SDLCALL SDL_GetThreadState(SDL_Thread *thread);</code>
 	/// <summary>
@@ -311,20 +317,20 @@ public static partial class SDL
 	/// <param name="thread">the thread to query.</param>
 	/// <returns>the current state of a thread, or <see cref="ThreadState.Unknown"/> if the thread
 	/// isn't valid.</returns>
-	/// <since>This function is available since SDL 3.1.8.</since>
+	/// <since>This function is available since SDL 3.2.0.</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="ThreadState"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetThreadState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial ThreadState SDL_GetThreadState(IntPtr thread);
-	private delegate ThreadState GetThreadStateNativeDelegate(IntPtr thread);
-	private static GetThreadStateNativeDelegate GetThreadStateNativeFunction = SDL_GetThreadState;
-
 	public static ThreadState GetThreadState(IntPtr thread)
 	{
 		return GetThreadStateNativeFunction(thread);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_DetachThread(IntPtr thread);
+	private delegate void DetachThreadNativeDelegate(IntPtr thread);
+	private static DetachThreadNativeDelegate DetachThreadNativeFunction = SDL_DetachThread;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_DetachThread(SDL_Thread *thread);</code>
 	/// <summary>
@@ -353,17 +359,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="CreateThread"/>
 	/// <seealso cref="WaitThread"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_DetachThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_DetachThread(IntPtr thread);
-	private delegate void DetachThreadNativeDelegate(IntPtr thread);
-	private static DetachThreadNativeDelegate DetachThreadNativeFunction = SDL_DetachThread;
-
 	public static void DetachThread(IntPtr thread)
 	{
 		DetachThreadNativeFunction(thread);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial IntPtr SDL_GetTLS(IntPtr id);
+	private delegate IntPtr GetTLSNativeDelegate(IntPtr id);
+	private static GetTLSNativeDelegate GetTLSNativeFunction = SDL_GetTLS;
 
 	/// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetTLS(SDL_TLSID *id);</code>
 	/// <summary>
@@ -375,17 +381,18 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="SetTLS"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial IntPtr SDL_GetTLS(IntPtr id);
-	private delegate IntPtr GetTLSNativeDelegate(IntPtr id);
-	private static GetTLSNativeDelegate GetTLSNativeFunction = SDL_GetTLS;
-
 	public static IntPtr GetTLS(IntPtr id)
 	{
 		return GetTLSNativeFunction(id);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetTLS(IntPtr id, IntPtr value, TLSDestructorCallback destructor);
+	private delegate bool SetTLSNativeDelegate(IntPtr id, IntPtr value, TLSDestructorCallback destructor);
+	private static SetTLSNativeDelegate SetTLSNativeFunction = SDL_SetTLS;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);</code>
 	/// <summary>
@@ -407,18 +414,17 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetTLS"/>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool SDL_SetTLS(IntPtr id, IntPtr value, TLSDestructorCallback destructor);
-	private delegate bool SetTLSNativeDelegate(IntPtr id, IntPtr value, TLSDestructorCallback destructor);
-	private static SetTLSNativeDelegate SetTLSNativeFunction = SDL_SetTLS;
-
 	public static bool SetTLS(IntPtr id, IntPtr value, TLSDestructorCallback destructor)
 	{
 		return SetTLSNativeFunction(id, value, destructor);
 	}
 
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CleanupTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial void SDL_CleanupTLS();
+	private delegate void CleanupTLSNativeDelegate();
+	private static CleanupTLSNativeDelegate CleanupTLSNativeFunction = SDL_CleanupTLS;
 
 	/// <code>extern SDL_DECLSPEC void SDLCALL SDL_CleanupTLS(void);</code>
 	/// <summary>
@@ -429,12 +435,6 @@ public static partial class SDL
 	/// </summary>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
-	[ExcludeFromCodeCoverage]
-	[LibraryImport(SDLLibrary, EntryPoint = "SDL_CleanupTLS"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-	private static partial void SDL_CleanupTLS();
-	private delegate void CleanupTLSNativeDelegate();
-	private static CleanupTLSNativeDelegate CleanupTLSNativeFunction = SDL_CleanupTLS;
-
 	public static void CleanupTLS()
 	{
 		CleanupTLSNativeFunction();

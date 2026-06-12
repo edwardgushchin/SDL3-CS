@@ -50,6 +50,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMasksForPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetMasksForPixelFormat(PixelFormat format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask);
+    private delegate bool GetMasksForPixelFormatNativeDelegate(PixelFormat format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask);
+    private static GetMasksForPixelFormatNativeDelegate GetMasksForPixelFormatNativeFunction = SDL_GetMasksForPixelFormat;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetMasksForPixelFormat(SDL_PixelFormat format, int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask);</code>
     /// <summary>
     /// Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
@@ -65,18 +72,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPixelFormatForMasks"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMasksForPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetMasksForPixelFormat(PixelFormat format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask);
-    private delegate bool GetMasksForPixelFormatNativeDelegate(PixelFormat format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask);
-    private static GetMasksForPixelFormatNativeDelegate GetMasksForPixelFormatNativeFunction = SDL_GetMasksForPixelFormat;
-
     public static bool GetMasksForPixelFormat(PixelFormat format, ref int bpp, ref uint rmask, ref uint gmask, ref uint bmask, ref uint amask)
     {
         return GetMasksForPixelFormatNativeFunction(format, ref bpp, ref rmask, ref gmask, ref bmask, ref amask);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatForMasks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial PixelFormat SDL_GetPixelFormatForMasks(int bpp, uint rmask, uint gmask, uint bmask, uint amask);
+    private delegate PixelFormat GetPixelFormatForMasksNativeDelegate(int bpp, uint rmask, uint gmask, uint bmask, uint amask);
+    private static GetPixelFormatForMasksNativeDelegate GetPixelFormatForMasksNativeFunction = SDL_GetPixelFormatForMasks;
 
     /// <code>extern SDL_DECLSPEC SDL_PixelFormat SDLCALL SDL_GetPixelFormatForMasks(int bpp, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);</code>
     /// <summary>
@@ -94,17 +100,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMasksForPixelFormat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatForMasks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial PixelFormat SDL_GetPixelFormatForMasks(int bpp, uint rmask, uint gmask, uint bmask, uint amask);
-    private delegate PixelFormat GetPixelFormatForMasksNativeDelegate(int bpp, uint rmask, uint gmask, uint bmask, uint amask);
-    private static GetPixelFormatForMasksNativeDelegate GetPixelFormatForMasksNativeFunction = SDL_GetPixelFormatForMasks;
-
     public static PixelFormat GetPixelFormatForMasks(int bpp, uint rmask, uint gmask, uint bmask, uint amask)
     {
         return GetPixelFormatForMasksNativeFunction(bpp, rmask, gmask, bmask, amask);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatDetails"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetPixelFormatDetails(PixelFormat format);
+    private delegate IntPtr GetPixelFormatDetailsNativeDelegate(PixelFormat format);
+    private static GetPixelFormatDetailsNativeDelegate GetPixelFormatDetailsNativeFunction = SDL_GetPixelFormatDetails;
 
     /// <code>extern SDL_DECLSPEC const SDL_PixelFormatDetails * SDLCALL SDL_GetPixelFormatDetails(SDL_PixelFormat format);</code>
     /// <summary>
@@ -118,17 +124,17 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPixelFormatDetails"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetPixelFormatDetails(PixelFormat format);
-    private delegate IntPtr GetPixelFormatDetailsNativeDelegate(PixelFormat format);
-    private static GetPixelFormatDetailsNativeDelegate GetPixelFormatDetailsNativeFunction = SDL_GetPixelFormatDetails;
-
     public static IntPtr GetPixelFormatDetails(PixelFormat format)
     {
         return GetPixelFormatDetailsNativeFunction(format);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreatePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreatePalette(int ncolors);
+    private delegate IntPtr CreatePaletteNativeDelegate(int ncolors);
+    private static CreatePaletteNativeDelegate CreatePaletteNativeFunction = SDL_CreatePalette;
 
     /// <code>extern SDL_DECLSPEC SDL_Palette * SDLCALL SDL_CreatePalette(int ncolors);</code>
     /// <summary>
@@ -144,17 +150,18 @@ public static partial class SDL
     /// <seealso cref="DestroyPalette"/>
     /// <seealso cref="SetPaletteColors"/>
     /// <seealso cref="SetSurfacePalette"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreatePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreatePalette(int ncolors);
-    private delegate IntPtr CreatePaletteNativeDelegate(int ncolors);
-    private static CreatePaletteNativeDelegate CreatePaletteNativeFunction = SDL_CreatePalette;
-
     public static IntPtr CreatePalette(int ncolors)
     {
         return CreatePaletteNativeFunction(ncolors);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPaletteColors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetPaletteColors(IntPtr palette, [MarshalAs(UnmanagedType.LPArray)] Color[] colors, int firstcolor, int ncolors);
+    private delegate bool SetPaletteColorsNativeDelegate(IntPtr palette, Color[] colors, int firstcolor, int ncolors);
+    private static SetPaletteColorsNativeDelegate SetPaletteColorsNativeFunction = SDL_SetPaletteColors;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPaletteColors(SDL_Palette *palette, const SDL_Color *colors, int firstcolor, int ncolors);</code>
     /// <summary>
@@ -169,18 +176,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified or destroyed in another thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPaletteColors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetPaletteColors(IntPtr palette, [MarshalAs(UnmanagedType.LPArray)] Color[] colors, int firstcolor, int ncolors);
-    private delegate bool SetPaletteColorsNativeDelegate(IntPtr palette, Color[] colors, int firstcolor, int ncolors);
-    private static SetPaletteColorsNativeDelegate SetPaletteColorsNativeFunction = SDL_SetPaletteColors;
-
     public static bool SetPaletteColors(IntPtr palette, Color[] colors, int firstcolor, int ncolors)
     {
         return SetPaletteColorsNativeFunction(palette, colors, firstcolor, ncolors);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyPalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyPalette(IntPtr palette);
+    private delegate void DestroyPaletteNativeDelegate(IntPtr palette);
+    private static DestroyPaletteNativeDelegate DestroyPaletteNativeFunction = SDL_DestroyPalette;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyPalette(SDL_Palette *palette);</code>
     /// <summary>
@@ -191,17 +197,17 @@ public static partial class SDL
     /// the palette is not modified or destroyed in another thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreatePalette"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyPalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyPalette(IntPtr palette);
-    private delegate void DestroyPaletteNativeDelegate(IntPtr palette);
-    private static DestroyPaletteNativeDelegate DestroyPaletteNativeFunction = SDL_DestroyPalette;
-
     public static void DestroyPalette(IntPtr palette)
     {
         DestroyPaletteNativeFunction(palette);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_MapRGB(IntPtr format, IntPtr palette, byte r, byte g, byte b);
+    private delegate uint MapRGBNativeDelegate(IntPtr format, IntPtr palette, byte r, byte g, byte b);
+    private static MapRGBNativeDelegate MapRGBNativeFunction = SDL_MapRGB;
 
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_MapRGB(const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b);</code>
     /// <summary>
@@ -227,17 +233,18 @@ public static partial class SDL
     /// <returns>a pixel value.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_MapRGB(IntPtr format, IntPtr palette, byte r, byte g, byte b);
-    private delegate uint MapRGBNativeDelegate(IntPtr format, IntPtr palette, byte r, byte g, byte b);
-    private static MapRGBNativeDelegate MapRGBNativeFunction = SDL_MapRGB;
-
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static uint MapRGB(IntPtr format, IntPtr palette, byte r, byte g, byte b)
     {
         return MapRGBNativeFunction(format, palette, r, g, b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_MapRGBA(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a);
+    private delegate uint MapRGBANativeDelegate(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a);
+    private static MapRGBANativeDelegate MapRGBANativeFunction = SDL_MapRGBA;
 
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_MapRGBA(const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a);</code>
     /// <summary>
@@ -270,47 +277,47 @@ public static partial class SDL
     /// <seealso cref="GetRGBA(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte, out byte)"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapSurfaceRGBA"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MapRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_MapRGBA(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a);
-    private delegate uint MapRGBANativeDelegate(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a);
-    private static MapRGBANativeDelegate MapRGBANativeFunction = SDL_MapRGBA;
-
     public static uint MapRGBA(IntPtr format, IntPtr palette, byte r, byte g, byte b, byte a)
     {
         return MapRGBANativeFunction(format, palette, r, g, b, a);
     }
 
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
-    /// <summary>
-    /// <para>Get RGB values from a pixel in the specified format.</para>
-    /// <para>This function uses the entire 8-bit [0..255] range when converting color
-    /// components from pixel formats with less than 8-bits per RGB component
-    /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-    /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
-    /// </summary>
-    /// <param name="pixelvalue">a pixel value.</param>
-    /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
-    /// format.</param>
-    /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
-    /// <param name="r">a pointer filled in with the red component, may be <c>null</c>.</param>
-    /// <param name="g">a pointer filled in with the green component, may be <c>null</c>.</param>
-    /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
-    /// <threadsafety>It is safe to call this function from any thread, as long as
-    /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_GetRGB(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b);
     private delegate void GetRGBWithPointerNativeDelegate(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b);
     private static GetRGBWithPointerNativeDelegate GetRGBWithPointerNativeFunction = SDL_GetRGB;
 
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
+    /// <summary>
+    /// <para>Get RGB values from a pixel in the specified format.</para>
+    /// <para>This function uses the entire 8-bit [0..255] range when converting color
+    /// components from pixel formats with less than 8-bits per RGB component
+    /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+    /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
+    /// </summary>
+    /// <param name="pixelvalue">a pixel value.</param>
+    /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
+    /// format.</param>
+    /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
+    /// <param name="r">a pointer filled in with the red component, may be <c>null</c>.</param>
+    /// <param name="g">a pointer filled in with the green component, may be <c>null</c>.</param>
+    /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread, as long as
+    /// the palette is not modified.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static void GetRGB(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b)
     {
         GetRGBWithPointerNativeFunction(pixelvalue, in format, palette, out r, out g, out b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GetRGB(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
+    private delegate void GetRGBWithPaletteNativeDelegate(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
+    private static GetRGBWithPaletteNativeDelegate GetRGBWithPaletteNativeFunction = SDL_GetRGB;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);</code>
     /// <summary>
@@ -330,55 +337,55 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGB"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetRGB(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
-    private delegate void GetRGBWithPaletteNativeDelegate(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b);
-    private static GetRGBWithPaletteNativeDelegate GetRGBWithPaletteNativeFunction = SDL_GetRGB;
-
     public static void GetRGB(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b)
     {
         GetRGBWithPaletteNativeFunction(pixelvalue, in format, in palette, out r, out g, out b);
     }
 
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
-    /// <summary>
-    /// <para>Get RGBA values from a pixel in the specified format.</para>
-    /// <para>This function uses the entire 8-bit [0..255] range when converting color
-    /// components from pixel formats with less than 8-bits per RGB component
-    /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-    /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
-    /// <para>If the format has no alpha component, the alpha will be returned as 0xff
-    /// (100% opaque).</para>
-    /// </summary>
-    /// <param name="pixelvalue">a pixel value.</param>
-    /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
-    /// format.</param>
-    /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
-    /// <param name="r">a pointer filled in with the red component, may be <c>null</c>.</param>
-    /// <param name="g">a pointer filled in with the green component, may be <c>null</c>.</param>
-    /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
-    /// <param name="a">a pointer filled in with the alpha component, may be <c>null</c>.</param>
-    /// <threadsafety>It is safe to call this function from any thread, as long as
-    /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetPixelFormatDetails"/>
-    /// ReSharper disable once InvalidXmlDocComment
-    /// <seealso cref="GetRGB(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte)"/>
-    /// <seealso cref="MapRGB"/>
-    /// <seealso cref="MapRGBA"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_GetRGBA(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b, out byte a);
     private delegate void GetRGBAWithPointerNativeDelegate(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b, out byte a);
     private static GetRGBAWithPointerNativeDelegate GetRGBAWithPointerNativeFunction = SDL_GetRGBA;
 
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
+    /// <summary>
+    /// <para>Get RGBA values from a pixel in the specified format.</para>
+    /// <para>This function uses the entire 8-bit [0..255] range when converting color
+    /// components from pixel formats with less than 8-bits per RGB component
+    /// (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+    /// 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).</para>
+    /// <para>If the format has no alpha component, the alpha will be returned as 0xff
+    /// (100% opaque).</para>
+    /// </summary>
+    /// <param name="pixelvalue">a pixel value.</param>
+    /// <param name="format">a pointer to <see cref="PixelFormatDetails"/> describing the pixel
+    /// format.</param>
+    /// <param name="palette">an optional palette for indexed formats, may be <c>null</c>.</param>
+    /// <param name="r">a pointer filled in with the red component, may be <c>null</c>.</param>
+    /// <param name="g">a pointer filled in with the green component, may be <c>null</c>.</param>
+    /// <param name="b">a pointer filled in with the blue component, may be <c>null</c>.</param>
+    /// <param name="a">a pointer filled in with the alpha component, may be <c>null</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread, as long as
+    /// the palette is not modified.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetPixelFormatDetails"/>
+    /// ReSharper disable once InvalidXmlDocComment
+    /// <seealso cref="GetRGB(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte)"/>
+    /// <seealso cref="MapRGB"/>
+    /// <seealso cref="MapRGBA"/>
     public static void GetRGBA(uint pixelvalue, in PixelFormatDetails format, IntPtr palette, out byte r, out byte g, out byte b, out byte a)
     {
         GetRGBAWithPointerNativeFunction(pixelvalue, in format, palette, out r, out g, out b, out a);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GetRGBA(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
+    private delegate void GetRGBAWithPaletteNativeDelegate(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
+    private static GetRGBAWithPaletteNativeDelegate GetRGBAWithPaletteNativeFunction = SDL_GetRGBA;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
@@ -406,12 +413,6 @@ public static partial class SDL
     /// <seealso cref="GetRGB(uint, in SDL.PixelFormatDetails, nint, out byte, out byte, out byte)"/>
     /// <seealso cref="MapRGB"/>
     /// <seealso cref="MapRGBA"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRGBA"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetRGBA(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
-    private delegate void GetRGBAWithPaletteNativeDelegate(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a);
-    private static GetRGBAWithPaletteNativeDelegate GetRGBAWithPaletteNativeFunction = SDL_GetRGBA;
-
     public static void GetRGBA(uint pixelvalue, in PixelFormatDetails format, in Palette palette, out byte r, out byte g, out byte b, out byte a)
     {
         GetRGBAWithPaletteNativeFunction(pixelvalue, in format, in palette, out r, out g, out b, out a);

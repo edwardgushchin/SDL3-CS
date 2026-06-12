@@ -29,6 +29,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_Init(InitFlags flags);
+    private delegate bool InitNative(InitFlags flags);
+    private static InitNative InitNativeFunction = SDL_Init;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_Init(SDL_InitFlags flags);</code>
     /// <summary>
     /// <para>Initialize the SDL library.</para>
@@ -77,18 +84,18 @@ public static partial class SDL
     /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit"/>
     /// <seealso cref="WasInit"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Init"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_Init(InitFlags flags);
-    private delegate bool InitNative(InitFlags flags);
-    private static InitNative InitNativeFunction = SDL_Init;
-
     public static bool Init(InitFlags flags)
     {
         return InitNativeFunction(flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_InitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_InitSubSystem(InitFlags flags);
+    private delegate bool InitSubSystemNative(InitFlags flags);
+    private static InitSubSystemNative InitSubSystemNativeFunction = SDL_InitSubSystem;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_InitSubSystem(SDL_InitFlags flags);</code>
     /// <summary>
@@ -103,18 +110,17 @@ public static partial class SDL
     /// <seealso cref="Init"/>
     /// <seealso cref="Quit"/>
     /// <seealso cref="QuitSubSystem"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_InitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_InitSubSystem(InitFlags flags);
-    private delegate bool InitSubSystemNative(InitFlags flags);
-    private static InitSubSystemNative InitSubSystemNativeFunction = SDL_InitSubSystem;
-
     public static bool InitSubSystem(InitFlags flags)
     {
         return InitSubSystemNativeFunction(flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_QuitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_QuitSubSystem(InitFlags flags);
+    private delegate void QuitSubSystemNative(InitFlags flags);
+    private static QuitSubSystemNative QuitSubSystemNativeFunction = SDL_QuitSubSystem;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_QuitSubSystem(SDL_InitFlags flags);</code>
     /// <summary>
@@ -127,17 +133,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="InitSubSystem"/>
     /// <seealso cref="Quit"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_QuitSubSystem"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_QuitSubSystem(InitFlags flags);
-    private delegate void QuitSubSystemNative(InitFlags flags);
-    private static QuitSubSystemNative QuitSubSystemNativeFunction = SDL_QuitSubSystem;
-
     public static void QuitSubSystem(InitFlags flags)
     {
         QuitSubSystemNativeFunction(flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WasInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial InitFlags SDL_WasInit(InitFlags flags);
+    private delegate InitFlags WasInitNative(InitFlags flags);
+    private static WasInitNative WasInitNativeFunction = SDL_WasInit;
 
     /// <code>extern SDL_DECLSPEC SDL_InitFlags SDLCALL SDL_WasInit(SDL_InitFlags flags);</code>
     /// <summary>
@@ -150,17 +156,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="InitSubSystem"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WasInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial InitFlags SDL_WasInit(InitFlags flags);
-    private delegate InitFlags WasInitNative(InitFlags flags);
-    private static WasInitNative WasInitNativeFunction = SDL_WasInit;
-
     public static InitFlags WasInit(InitFlags flags)
     {
         return WasInitNativeFunction(flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_Quit();
+    private delegate void QuitNative();
+    private static QuitNative QuitNativeFunction = SDL_Quit;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Quit(void);</code>
     /// <summary>
@@ -176,17 +182,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Init"/>
     /// <seealso cref="QuitSubSystem"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Quit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Quit();
-    private delegate void QuitNative();
-    private static QuitNative QuitNativeFunction = SDL_Quit;
-
     public static void Quit()
     {
         QuitNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_IsMainThread();
+    private delegate bool IsMainThreadNative();
+    private static IsMainThreadNative IsMainThreadNativeFunction = SDL_IsMainThread;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsMainThread(void);</code>
     /// <summary>
@@ -200,20 +207,20 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if this thread is the main thread, or <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.1.8.</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RunOnMainThread"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_IsMainThread();
-    private delegate bool IsMainThreadNative();
-    private static IsMainThreadNative IsMainThreadNativeFunction = SDL_IsMainThread;
-
     public static bool IsMainThread()
     {
         return IsMainThreadNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunOnMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RunOnMainThread(MainThreadCallback callback, IntPtr userdata, [MarshalAs(UnmanagedType.I1)] bool waitComplete);
+    private delegate bool RunOnMainThreadNative(MainThreadCallback callback, IntPtr userdata, bool waitComplete);
+    private static RunOnMainThreadNative RunOnMainThreadNativeFunction = SDL_RunOnMainThread;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);</code>
     /// <summary>
@@ -234,18 +241,21 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IsMainThread"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunOnMainThread"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RunOnMainThread(MainThreadCallback callback, IntPtr userdata, [MarshalAs(UnmanagedType.I1)] bool waitComplete);
-    private delegate bool RunOnMainThreadNative(MainThreadCallback callback, IntPtr userdata, bool waitComplete);
-    private static RunOnMainThreadNative RunOnMainThreadNativeFunction = SDL_RunOnMainThread;
-
     public static bool RunOnMainThread(MainThreadCallback callback, IntPtr userdata, bool waitComplete)
     {
         return RunOnMainThreadNativeFunction(callback, userdata, waitComplete);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadata"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAppMetadata(
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string appname,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string appversion,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string appidentifier);
+    private delegate bool SetAppMetadataNative(string appname, string appversion, string appidentifier);
+    private static SetAppMetadataNative SetAppMetadataNativeFunction = SDL_SetAppMetadata;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAppMetadata(const char *appname, const char *appversion, const char *appidentifier);</code>
     /// <summary>
@@ -275,21 +285,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAppMetadataProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadata"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAppMetadata(
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string appname,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string appversion,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string appidentifier);
-    private delegate bool SetAppMetadataNative(string appname, string appversion, string appidentifier);
-    private static SetAppMetadataNative SetAppMetadataNativeFunction = SDL_SetAppMetadata;
-
     public static bool SetAppMetadata(string appname, string appversion, string appidentifier)
     {
         return SetAppMetadataNativeFunction(appname, appversion, appidentifier);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+    private delegate bool SetAppMetadataPropertyNative(string name, string value);
+    private static SetAppMetadataPropertyNative SetAppMetadataPropertyNativeFunction = SDL_SetAppMetadataProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAppMetadataProperty(const char *name, const char *value);</code>
     /// <summary>
@@ -345,13 +352,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAppMetadataProperty"/>
     /// <seealso cref="SetAppMetadata"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAppMetadataProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAppMetadataProperty([MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
-    private delegate bool SetAppMetadataPropertyNative(string name, string value);
-    private static SetAppMetadataPropertyNative SetAppMetadataPropertyNativeFunction = SDL_SetAppMetadataProperty;
-
     public static bool SetAppMetadataProperty(string name, string value)
     {
         return SetAppMetadataPropertyNativeFunction(name, value);
