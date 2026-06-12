@@ -31,7 +31,8 @@ public static partial class ShaderCross
         public const string ShaderDebugNameString = "SDL_shadercross.spirv.debug.name";
         public const string ShaderCullUnusedBindingsBoolean = "SDL_shadercross.spirv.cull_unused_bindings";
         
-        public const string SPIRVPSSLCompatibilityBoolean = "SDL.shadercross.spirv.pssl.compatibility";
-        public const string SPIRVMSLVersionString = "SDL.shadercross.spirv.msl.version";
+        public const string SPIRVPSSLCompatibilityBoolean = "SDL_shadercross.spirv.pssl.compatibility";
+        public const string SPIRVMSLVersionString = "SDL_shadercross.spirv.msl.version";
+        public const string HLSLSkipSPIRVRoundtripBoolean = "SDL_shadercross.hlsl.skip_spirv_roundtrip";
     }
 }

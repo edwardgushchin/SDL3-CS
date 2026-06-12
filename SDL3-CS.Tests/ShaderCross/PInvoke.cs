@@ -19,11 +19,12 @@ internal static class PInvokeTests
     private static SDL3.ShaderCross.SPIRVInfo capturedSpirvInfo;
     private static SDL3.ShaderCross.HLSLInfo capturedHlslInfo;
     private static SDL3.ShaderCross.GraphicsShaderResourceInfo capturedResourceInfo;
-    private static SDL3.ShaderCross.GraphicsShaderMetadata capturedMetadata;
+    private static SDL3.ShaderCross.ComputePipelineMetadata capturedComputeMetadata;
 
     public static void RunAll()
     {
         NativeEntryPoints_KeepExpectedLibraryImportMetadata();
+        PropsAndComputeMetadata_MatchUpstreamHeader();
         ManagedStringProperties_SetPointersAndRoundTripValues();
         LifecycleAndFormatFunctions_ForwardInputsAndReturnNativeValues();
         SPIRVFunctions_ForwardInputsOutputsAndReturnNativeValues();
@@ -72,7 +73,7 @@ internal static class PInvokeTests
             compileCompute,
             typeof(IntPtr),
             typeof(SDL3.ShaderCross.SPIRVInfo).MakeByRefType(),
-            typeof(SDL3.ShaderCross.GraphicsShaderMetadata).MakeByRefType(),
+            typeof(SDL3.ShaderCross.ComputePipelineMetadata).MakeByRefType(),
             typeof(uint));
 
         MethodInfo reflectGraphics = GetNativeMethod("SDL_ShaderCross_ReflectGraphicsSPIRV");
@@ -101,6 +102,41 @@ internal static class PInvokeTests
         AssertNativeImport(compileSpirvHlsl, "SDL_ShaderCross_CompileSPIRVFromHLSL");
         AssertParameterTypes(compileSpirvHlsl, typeof(SDL3.ShaderCross.HLSLInfo).MakeByRefType(), typeof(UIntPtr).MakeByRefType());
         AssertOutParameter(compileSpirvHlsl, 1);
+    }
+
+    public static void PropsAndComputeMetadata_MatchUpstreamHeader()
+    {
+        TestAssert.Equal("SDL_shadercross.spirv.debug.enable", SDL3.ShaderCross.Props.ShaderDebugEnableBoolean, "ShaderCross debug enable property must match upstream.");
+        TestAssert.Equal("SDL_shadercross.spirv.debug.name", SDL3.ShaderCross.Props.ShaderDebugNameString, "ShaderCross debug name property must match upstream.");
+        TestAssert.Equal("SDL_shadercross.spirv.cull_unused_bindings", SDL3.ShaderCross.Props.ShaderCullUnusedBindingsBoolean, "ShaderCross cull unused bindings property must match upstream.");
+        TestAssert.Equal("SDL_shadercross.spirv.pssl.compatibility", SDL3.ShaderCross.Props.SPIRVPSSLCompatibilityBoolean, "ShaderCross PSSL compatibility property must match upstream.");
+        TestAssert.Equal("SDL_shadercross.spirv.msl.version", SDL3.ShaderCross.Props.SPIRVMSLVersionString, "ShaderCross MSL version property must match upstream.");
+        TestAssert.Equal("SDL_shadercross.hlsl.skip_spirv_roundtrip", SDL3.ShaderCross.Props.HLSLSkipSPIRVRoundtripBoolean, "ShaderCross HLSL skip SPIRV roundtrip property must match upstream.");
+
+        FieldInfo[] fields = typeof(SDL3.ShaderCross.ComputePipelineMetadata).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        string[] fieldNames = fields.Select(static field => field.Name).ToArray();
+        string[] expectedNames =
+        [
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.NumSamplers),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.NumReadOnlyStorageTextures),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.NumReadOnlyStorageBuffers),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.NumReadWriteStorageTextures),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.NumReadWriteStorageBuffers),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.NumUniformBuffers),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.ThreadCountX),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.ThreadCountY),
+            nameof(SDL3.ShaderCross.ComputePipelineMetadata.ThreadCountZ)
+        ];
+
+        TestAssert.Equal(expectedNames.Length, fieldNames.Length, "ComputePipelineMetadata must expose exactly the upstream C fields.");
+
+        for (int i = 0; i < expectedNames.Length; i++)
+        {
+            TestAssert.Equal(expectedNames[i], fieldNames[i], $"ComputePipelineMetadata field {i} must match upstream order.");
+            TestAssert.Equal(typeof(uint), fields[i].FieldType, $"ComputePipelineMetadata field {expectedNames[i]} must marshal as Uint32.");
+        }
+
+        TestAssert.Equal(36, Marshal.SizeOf<SDL3.ShaderCross.ComputePipelineMetadata>(), "ComputePipelineMetadata size must match nine Uint32 fields.");
     }
 
     public static void ManagedStringProperties_SetPointersAndRoundTripValues()
@@ -267,7 +303,7 @@ internal static class PInvokeTests
     {
         SDL3.ShaderCross.SPIRVInfo info = CreateSpirvInfo();
         SDL3.ShaderCross.GraphicsShaderResourceInfo resourceInfo = CreateResourceInfo();
-        SDL3.ShaderCross.GraphicsShaderMetadata metadata = CreateMetadata();
+        SDL3.ShaderCross.ComputePipelineMetadata computeMetadata = CreateComputeMetadata();
 
         ResetCaptureState();
         nextPointer = (IntPtr)0x1001;
@@ -335,13 +371,13 @@ internal static class PInvokeTests
         nextPointer = (IntPtr)0x1006;
         using (NativeHookScope _ = NativeHookScope.Install("CompileComputePipelineFromSPIRVNativeFunction", nameof(CaptureCompileComputePipelineFromSPIRV)))
         {
-            IntPtr actual = SDL3.ShaderCross.CompileComputePipelineFromSPIRV((IntPtr)0x2002, in info, in metadata, 78);
+            IntPtr actual = SDL3.ShaderCross.CompileComputePipelineFromSPIRV((IntPtr)0x2002, in info, in computeMetadata, 78);
 
             TestAssert.Equal(nextPointer, actual, "ShaderCross.CompileComputePipelineFromSPIRV must return native pointer.");
             TestAssert.Equal((IntPtr)0x2002, capturedDevice, "ShaderCross.CompileComputePipelineFromSPIRV must forward device.");
             TestAssert.Equal(78u, capturedProps, "ShaderCross.CompileComputePipelineFromSPIRV must forward props.");
             AssertSpirvInfoEqual(info, capturedSpirvInfo, "ShaderCross.CompileComputePipelineFromSPIRV must forward info.");
-            AssertMetadataEqual(metadata, capturedMetadata, "ShaderCross.CompileComputePipelineFromSPIRV must forward metadata.");
+            AssertComputeMetadataEqual(computeMetadata, capturedComputeMetadata, "ShaderCross.CompileComputePipelineFromSPIRV must forward metadata.");
             TestAssert.Equal(1, capturedCallCount, "ShaderCross.CompileComputePipelineFromSPIRV must call native hook once.");
         }
 
@@ -465,12 +501,12 @@ internal static class PInvokeTests
     private static IntPtr CaptureCompileComputePipelineFromSPIRV(
         IntPtr device,
         in SDL3.ShaderCross.SPIRVInfo info,
-        in SDL3.ShaderCross.GraphicsShaderMetadata metadata,
+        in SDL3.ShaderCross.ComputePipelineMetadata metadata,
         uint props)
     {
         capturedDevice = device;
         capturedSpirvInfo = info;
-        capturedMetadata = metadata;
+        capturedComputeMetadata = metadata;
         capturedProps = props;
         capturedCallCount++;
         return nextPointer;
@@ -556,6 +592,22 @@ internal static class PInvokeTests
         };
     }
 
+    private static SDL3.ShaderCross.ComputePipelineMetadata CreateComputeMetadata()
+    {
+        return new SDL3.ShaderCross.ComputePipelineMetadata
+        {
+            NumSamplers = 17,
+            NumReadOnlyStorageTextures = 19,
+            NumReadOnlyStorageBuffers = 23,
+            NumReadWriteStorageTextures = 29,
+            NumReadWriteStorageBuffers = 31,
+            NumUniformBuffers = 37,
+            ThreadCountX = 41,
+            ThreadCountY = 43,
+            ThreadCountZ = 47
+        };
+    }
+
     private static void AssertSpirvInfoEqual(
         SDL3.ShaderCross.SPIRVInfo expected,
         SDL3.ShaderCross.SPIRVInfo actual,
@@ -604,6 +656,22 @@ internal static class PInvokeTests
         TestAssert.Equal(expected.Outputs, actual.Outputs, $"{message} Outputs mismatch.");
     }
 
+    private static void AssertComputeMetadataEqual(
+        SDL3.ShaderCross.ComputePipelineMetadata expected,
+        SDL3.ShaderCross.ComputePipelineMetadata actual,
+        string message)
+    {
+        TestAssert.Equal(expected.NumSamplers, actual.NumSamplers, $"{message} NumSamplers mismatch.");
+        TestAssert.Equal(expected.NumReadOnlyStorageTextures, actual.NumReadOnlyStorageTextures, $"{message} NumReadOnlyStorageTextures mismatch.");
+        TestAssert.Equal(expected.NumReadOnlyStorageBuffers, actual.NumReadOnlyStorageBuffers, $"{message} NumReadOnlyStorageBuffers mismatch.");
+        TestAssert.Equal(expected.NumReadWriteStorageTextures, actual.NumReadWriteStorageTextures, $"{message} NumReadWriteStorageTextures mismatch.");
+        TestAssert.Equal(expected.NumReadWriteStorageBuffers, actual.NumReadWriteStorageBuffers, $"{message} NumReadWriteStorageBuffers mismatch.");
+        TestAssert.Equal(expected.NumUniformBuffers, actual.NumUniformBuffers, $"{message} NumUniformBuffers mismatch.");
+        TestAssert.Equal(expected.ThreadCountX, actual.ThreadCountX, $"{message} ThreadCountX mismatch.");
+        TestAssert.Equal(expected.ThreadCountY, actual.ThreadCountY, $"{message} ThreadCountY mismatch.");
+        TestAssert.Equal(expected.ThreadCountZ, actual.ThreadCountZ, $"{message} ThreadCountZ mismatch.");
+    }
+
     private static void ResetCaptureState()
     {
         nextShaderFormat = SDL3.SDL.GPUShaderFormat.Invalid;
@@ -618,7 +686,7 @@ internal static class PInvokeTests
         capturedSpirvInfo = default;
         capturedHlslInfo = default;
         capturedResourceInfo = default;
-        capturedMetadata = default;
+        capturedComputeMetadata = default;
     }
 
     private static MethodInfo GetNativeMethod(string methodName)

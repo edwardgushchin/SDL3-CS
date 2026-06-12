@@ -53,7 +53,7 @@ public partial class ShaderCross
         /// <summary>
         /// The number of read-write storage buffers defined in the shader.
         /// </summary>
-        public uint NumReadwriteStorageBuffers;
+        public uint NumReadWriteStorageBuffers;
         
         /// <summary>
         /// The number of uniform buffers defined in the shader.
@@ -75,9 +75,5 @@ public partial class ShaderCross
         /// </summary>
         public uint ThreadCountZ;
 
-        /// <summary>
-        /// A properties ID for extensions. This is allocated and freed by the caller, and should be 0 if no extensions are needed.
-        /// </summary>
-        public uint Props;
     }
 }
