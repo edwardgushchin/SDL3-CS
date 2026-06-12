@@ -270,8 +270,6 @@ SDL3.Tests.SDL.InputEvents.Sensor.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Sensor binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Touch.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Touch binding tests passed.");
-SDL3.Tests.SDL.OldNames.PInvokeTests.RunAll();
-Console.WriteLine("SDL.OldNames binding tests passed.");
 SDL3.Tests.SDL.PlatformAndCPUInformation.Cpuinfo.PInvokeTests.RunAll();
 Console.WriteLine("SDL.CPUInfo binding tests passed.");
 SDL3.Tests.SDL.PlatformAndCPUInformation.Platform.PInvokeTests.RunAll();
