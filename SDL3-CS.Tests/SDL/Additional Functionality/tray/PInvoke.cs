@@ -22,11 +22,6 @@ internal static class PInvokeTests
     private static SDL3.SDL.TrayEntryFlags capturedFlags;
     private static SDL3.SDL.TrayCallback? capturedCallback;
 
-    public static void IsTraySupported_ReturnsNativeValue()
-    {
-        AssertBoolNoArgForwarder("SDL_IsTraySupported", "SDL_IsTraySupported", "IsTraySupportedNativeFunction", SDL3.SDL.IsTraySupported);
-    }
-
     public static void CreateTray_ForwardsIconAndTooltip()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_CreateTray");

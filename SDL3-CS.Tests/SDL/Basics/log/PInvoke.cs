@@ -257,7 +257,7 @@ internal static class PInvokeTests
     public static void GetDefaultLogOutputFunction_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_GetDefaultLogOutputFunction");
-        AssertSdlLibraryImport(nativeMethod, "SDL_LogOutputFunction");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetDefaultLogOutputFunction");
         AssertLogOutputFunctionMetadata();
 
         ResetCaptureState();

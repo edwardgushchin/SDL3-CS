@@ -66,7 +66,7 @@ public partial class SDL
     /// <seealso cref="AppEvent"/>
     /// <seealso cref="AppQuit"/>
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_main"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial AppResult SDL_AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
     private delegate AppResult AppInitNative(IntPtr appstate, int argc, string[] argv);
     private static AppInitNative AppInitNativeFunction = SDL_AppInit;
@@ -328,7 +328,7 @@ public partial class SDL
     /// information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "RegisterApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RegisterApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RegisterApp([MarshalAs(UnmanagedType.LPUTF8Str)] string? name, uint style, IntPtr hInst);
     private delegate bool RegisterAppNative(string? name, uint style, IntPtr hInst);

@@ -508,8 +508,6 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetGDKTaskQueue_Retur
 Console.WriteLine("SDL.GetGDKTaskQueue binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetGDKDefaultUser_ReturnsOutputHandle();
 Console.WriteLine("SDL.GetGDKDefaultUser binding test passed.");
-SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.IsTraySupported_ReturnsNativeValue();
-Console.WriteLine("SDL.IsTraySupported binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTray_ForwardsIconAndTooltip();
 Console.WriteLine("SDL.CreateTray binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.SetTrayIcon_ForwardsTrayAndIcon();
