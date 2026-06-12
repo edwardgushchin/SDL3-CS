@@ -734,9 +734,9 @@
       "id": "SDL_ttf",
       "repository": "https://github.com/edwardgushchin/SDL_ttf",
       "upstreamRepository": "https://github.com/libsdl-org/SDL_ttf",
-      "sourceRef": "a49130e3ecc0ad5a4aad12083e9aeab57ac34dbd",
+      "sourceRef": "a1ce3670aec736ecbf0936c43f2f0cc53aa61e5b",
       "sourceFolder": "SDL_ttf",
-      "nativeVersion": "3.3.0",
+      "nativeVersion": "3.2.2",
       "packageId": "SDL3-CS.Native.TTF",
       "packageProject": "SDL3-CS.Native.TTF/SDL3-CS.Native.TTF.csproj",
       "dependencies": [
