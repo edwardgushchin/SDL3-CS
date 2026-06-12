@@ -65,7 +65,7 @@ dotnet add package SDL3-CS.Android.TTF
 dotnet add package SDL3-CS.MacOS.Mixer
 ```
 
-The older root-style native package IDs such as `SDL3-CS.Native`, `SDL3-CS.Native.Image`, and `SDL3-CS.Native.TTF` are not used by this release model.
+This release model uses only platform-scoped native package IDs.
 
 ## Supported Native Targets
 
@@ -110,19 +110,19 @@ When building add-ons, use the matching upstream component version from the curr
 
 ## Migration Notes
 
-### From the old root native packages
+### From previous root native package references
 
-Replace root native package IDs with platform-scoped package IDs:
+Replace previous root native package references with platform-scoped package IDs:
 
 ```bash
-dotnet remove package SDL3-CS.Native
+dotnet remove package <previous-root-native-package-id>
 dotnet add package SDL3-CS.Windows
 ```
 
 Use the suffix for the actual target platform. For add-ons, replace package IDs in the same way:
 
 ```bash
-dotnet remove package SDL3-CS.Native.Image
+dotnet remove package <previous-root-native-addon-package-id>
 dotnet add package SDL3-CS.Windows.Image
 ```
 

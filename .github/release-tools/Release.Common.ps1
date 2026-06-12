@@ -734,6 +734,7 @@ function Assert-ReleaseUnixBuildTools {
     }
     elseif ($RidInfo.os -in @('macos', 'ios', 'tvos')) {
         if (-not $tools.InstallNameTool) { $errors.Add("install_name_tool was not found. Install Xcode command line tools for macOS runtime RPATH updates.") }
+        if (-not (Test-ReleasePerlModule -Module 'JSON')) { $errors.Add("Perl module JSON was not found. Install JSON with cpanm for SDL_shadercross/vkd3d Apple builds.") }
     }
     else {
         $errors.Add("Unsupported Unix RID OS '$($RidInfo.os)'.")

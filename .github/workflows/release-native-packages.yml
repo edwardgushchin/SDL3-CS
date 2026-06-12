@@ -171,12 +171,14 @@ jobs:
         run: |
           set -eux
           brew update
-          brew install nasm bison
+          brew install nasm bison cpanminus
+          cpanm --local-lib="$HOME/perl5" --notest JSON
           echo "$(brew --prefix bison)/bin" >> "$GITHUB_PATH"
+          echo "PERL5LIB=$HOME/perl5/lib/perl5:${PERL5LIB:-}" >> "$GITHUB_ENV"
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1
+        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
       - name: Build native bundle
         shell: pwsh
@@ -224,7 +226,7 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1
+        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
       - name: Download native bundles
         uses: actions/download-artifact@v4
@@ -424,7 +426,7 @@ jobs:
 
       - name: Initialize native forks
         shell: pwsh
-        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1
+        run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
       - name: Download release assembly state
         uses: actions/download-artifact@v4

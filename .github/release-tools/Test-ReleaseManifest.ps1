@@ -408,6 +408,24 @@ foreach ($component in $manifest.components) {
                 Add-ValidationError "Component SDL_image must disable WEBP for $appleRid to avoid vendored libwebp MACOSX_BUNDLE install failures."
             }
         }
+
+        foreach ($appleStaticKey in @('ios', 'tvos')) {
+            $patterns = @($component.artifactPatterns.$appleStaticKey)
+            foreach ($requiredPattern in @('lib/libz*.a', '**/libz*.a')) {
+                if ($patterns -notcontains $requiredPattern) {
+                    Add-ValidationError "Component SDL_image artifactPatterns.$appleStaticKey must collect vendored zlib static library '$requiredPattern'."
+                }
+            }
+        }
+    }
+
+    if ($component.id -eq 'SDL_mixer') {
+        foreach ($wavpackDisabledRid in @('android-arm', 'android-x86', 'osx-arm64', 'osx-x64')) {
+            $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$wavpackDisabledRid].Value)
+            if ($ridArgs -notcontains '-DSDLMIXER_WAVPACK=OFF') {
+                Add-ValidationError "Component SDL_mixer must disable WavPack for $wavpackDisabledRid to avoid vendored WavPack toolchain failures."
+            }
+        }
     }
 }
 
