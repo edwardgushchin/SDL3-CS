@@ -31,6 +31,7 @@ internal static class PInvokeTests
     private static byte capturedGreen;
     private static byte capturedBlue;
     private static IntPtr capturedEffectData;
+    private static IntPtr capturedFloatPointer;
     private static byte[]? capturedEffectBytes;
     private static int capturedSize;
     private static int capturedCount;
@@ -142,11 +143,13 @@ internal static class PInvokeTests
         GamepadSensorEnabled_ForwardsGamepadSensorAndReturnsNativeValue();
         GetGamepadSensorDataRate_ForwardsGamepadSensorAndReturnsNativeValue();
         GetGamepadSensorData_ForwardsGamepadSensorDataAndReturnsNativeValue();
+        GetGamepadSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue();
         RumbleGamepad_ForwardsRumbleValuesAndReturnsNativeValue();
         RumbleGamepadTriggers_ForwardsTriggerRumbleValuesAndReturnsNativeValue();
         SetGamepadLED_ForwardsColorAndReturnsNativeValue();
         SendGamepadEffect_WithPointer_ForwardsDataAndReturnsNativeValue();
         SendGamepadEffect_WithArray_ForwardsDataAndReturnsNativeValue();
+        SendGamepadEffect_WithSpan_ForwardsPinnedDataAndReturnsNativeValue();
         CloseGamepad_ForwardsGamepad();
         SDL_GetGamepadAppleSFSymbolsNameForButton_UsesExpectedNativeMetadata();
         GetGamepadAppleSFSymbolsNameForButton_ReturnsStringAndNull();
@@ -1330,7 +1333,7 @@ internal static class PInvokeTests
 
     public static void GetGamepadSensorData_ForwardsGamepadSensorDataAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_GetGamepadSensorData");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetGamepadSensorData", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(float[]).MakeByRefType(), typeof(int));
         AssertSdlImport(nativeMethod, "SDL_GetGamepadSensorData");
         AssertBoolReturnMarshal(nativeMethod);
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 3);
@@ -1351,6 +1354,29 @@ internal static class PInvokeTests
         TestAssert.Equal(2.5f, data[1], "SDL.GetGamepadSensorData must output value 1.");
         TestAssert.Equal(3.75f, data[2], "SDL.GetGamepadSensorData must output value 2.");
         TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadSensorData must call the native hook once.");
+    }
+
+    public static void GetGamepadSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetGamepadSensorData", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(IntPtr), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_GetGamepadSensorData");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFloatArray = [4.25f, 5.5f, 6.75f];
+        float[] data = new float[3];
+
+        using NativeHookScope _ = NativeHookScope.Install("GetGamepadSensorDataPointerNativeFunction", nameof(CaptureGamepadSensorDataPointer));
+        bool result = SDL3.SDL.GetGamepadSensorData((IntPtr)0x5B06, SDL3.SDL.SensorType.AccelL, data.AsSpan(), data.Length);
+
+        TestAssert.Equal(true, result, "SDL.GetGamepadSensorData span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x5B06, capturedGamepad, "SDL.GetGamepadSensorData span overload must forward gamepad.");
+        TestAssert.Equal(SDL3.SDL.SensorType.AccelL, capturedSensorType, "SDL.GetGamepadSensorData span overload must forward sensor type.");
+        TestAssert.Equal(3, capturedCount, "SDL.GetGamepadSensorData span overload must forward numValues.");
+        TestAssert.True(capturedFloatPointer != IntPtr.Zero, "SDL.GetGamepadSensorData span overload must pin data.");
+        AssertFloats(nextFloatArray!, data, "SDL.GetGamepadSensorData span overload must write sensor values.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadSensorData span overload must call the native hook once.");
     }
 
     public static void RumbleGamepad_ForwardsRumbleValuesAndReturnsNativeValue()
@@ -1451,6 +1477,27 @@ internal static class PInvokeTests
         TestAssert.Equal(effect, capturedEffectBytes, "SDL.SendGamepadEffect(byte[]) must forward the same data array.");
         TestAssert.Equal(4, capturedSize, "SDL.SendGamepadEffect(byte[]) must forward size.");
         TestAssert.Equal(1, capturedCallCount, "SDL.SendGamepadEffect(byte[]) must call the native hook once.");
+    }
+
+    public static void SendGamepadEffect_WithSpan_ForwardsPinnedDataAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_SendGamepadEffect", typeof(IntPtr), typeof(IntPtr), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_SendGamepadEffect");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        ResetCaptureState();
+        nextBool = true;
+        byte[] effect = [5, 6, 7, 8];
+
+        using NativeHookScope _ = NativeHookScope.Install("SendGamepadEffectPointerNativeFunction", nameof(CaptureSendGamepadEffectPointerBytes));
+        bool result = SDL3.SDL.SendGamepadEffect((IntPtr)0x5D08, effect.AsSpan(), effect.Length);
+
+        TestAssert.Equal(true, result, "SDL.SendGamepadEffect span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x5D08, capturedGamepad, "SDL.SendGamepadEffect span overload must forward gamepad.");
+        TestAssert.True(capturedEffectData != IntPtr.Zero, "SDL.SendGamepadEffect span overload must pin data.");
+        AssertBytes(effect, capturedEffectBytes ?? [], "SDL.SendGamepadEffect span overload must forward data bytes.");
+        TestAssert.Equal(4, capturedSize, "SDL.SendGamepadEffect span overload must forward size.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.SendGamepadEffect span overload must call the native hook once.");
     }
 
     public static void CloseGamepad_ForwardsGamepad()
@@ -2035,6 +2082,17 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureGamepadSensorDataPointer(IntPtr gamepad, SDL3.SDL.SensorType type, IntPtr data, int numValues)
+    {
+        capturedCallCount++;
+        capturedGamepad = gamepad;
+        capturedSensorType = type;
+        capturedFloatPointer = data;
+        capturedCount = numValues;
+        WriteFloats(data, nextFloatArray ?? []);
+        return nextBool;
+    }
+
     private static bool CaptureRumbleGamepad(IntPtr gamepad, ushort lowFrequencyRumble, ushort highFrequencyRumble, uint durationMs)
     {
         capturedCallCount++;
@@ -2070,6 +2128,16 @@ internal static class PInvokeTests
         capturedCallCount++;
         capturedGamepad = gamepad;
         capturedEffectData = data;
+        capturedSize = size;
+        return nextBool;
+    }
+
+    private static bool CaptureSendGamepadEffectPointerBytes(IntPtr gamepad, IntPtr data, int size)
+    {
+        capturedCallCount++;
+        capturedGamepad = gamepad;
+        capturedEffectData = data;
+        capturedEffectBytes = CopyBytes(data, size);
         capturedSize = size;
         return nextBool;
     }
@@ -2166,6 +2234,7 @@ internal static class PInvokeTests
         capturedGreen = 0;
         capturedBlue = 0;
         capturedEffectData = IntPtr.Zero;
+        capturedFloatPointer = IntPtr.Zero;
         capturedEffectBytes = null;
         capturedSize = 0;
         capturedCount = 0;
@@ -2245,6 +2314,42 @@ internal static class PInvokeTests
         IntPtr pointer = Marshal.AllocHGlobal(Marshal.SizeOf<SDL3.SDL.GamepadBinding>());
         Marshal.StructureToPtr(binding, pointer, fDeleteOld: false);
         return pointer;
+    }
+
+    private static void WriteFloats(IntPtr destination, float[] values)
+    {
+        if (destination == IntPtr.Zero || values.Length == 0)
+            return;
+
+        Marshal.Copy(values, 0, destination, values.Length);
+    }
+
+    private static byte[] CopyBytes(IntPtr source, int length)
+    {
+        if (source == IntPtr.Zero || length == 0)
+            return [];
+
+        byte[] values = new byte[length];
+        Marshal.Copy(source, values, 0, length);
+        return values;
+    }
+
+    private static void AssertFloats(float[] expected, float[] actual, string message)
+    {
+        TestAssert.Equal(expected.Length, actual.Length, $"{message} Length must match.");
+        for (int i = 0; i < expected.Length; i++)
+        {
+            TestAssert.Equal(expected[i], actual[i], $"{message} Value {i} must match.");
+        }
+    }
+
+    private static void AssertBytes(byte[] expected, byte[] actual, string message)
+    {
+        TestAssert.Equal(expected.Length, actual.Length, $"{message} Length must match.");
+        for (int i = 0; i < expected.Length; i++)
+        {
+            TestAssert.Equal(expected[i], actual[i], $"{message} Byte {i} must match.");
+        }
     }
 
     private static MethodInfo GetNativeMethod(string methodName)

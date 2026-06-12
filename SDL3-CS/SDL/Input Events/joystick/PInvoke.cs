@@ -213,7 +213,7 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUID"/>
-	/// <seealso cref="GUIDToString"/>
+	/// <seealso cref="GUIDToString(GUID, byte[], int)"/>
 	public static GUID GetJoystickGUIDForID(uint instanceId)
 	{
 		return GetJoystickGUIDForIDNativeFunction(instanceId);
@@ -418,7 +418,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SendJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
 	public static uint AttachVirtualJoystick(in VirtualJoystickDesc desc)
 	{
 		return AttachVirtualJoystickNativeFunction(in desc);
@@ -500,7 +500,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SendJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
 	public static bool SetJoystickVirtualAxis(IntPtr joystick, int axis, short value)
 	{
 		return SetJoystickVirtualAxisNativeFunction(joystick, axis, value);
@@ -535,7 +535,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualButton"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SendJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
 	public static bool SetJoystickVirtualBall(IntPtr joystick, int ball, short xrel, short yrel)
 	{
 		return SetJoystickVirtualBallNativeFunction(joystick, ball, xrel, yrel);
@@ -569,7 +569,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	///	<seealso cref="SetJoystickVirtualHat"/>
 	///	<seealso cref="SetJoystickVirtualTouchpad"/>
-	///	<seealso cref="SendJoystickVirtualSensorData"/>
+	///	<seealso cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
 	public static bool SetJoystickVirtualButton(IntPtr joystick, int button, bool down)
 	{
 		return SetJoystickVirtualButtonNativeFunction(joystick, button, down);
@@ -603,7 +603,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualButton"/>
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualTouchpad"/>
-	/// <seealso cref="SendJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
 	public static bool SetJoystickVirtualHat(IntPtr joystick, int hat, JoystickHat value)
 	{
 		return SetJoystickVirtualHatNativeFunction(joystick, hat, value);
@@ -644,7 +644,7 @@ public static partial class SDL
 	/// <seealso cref="SetJoystickVirtualButton"/>
 	/// <seealso cref="SetJoystickVirtualBall"/>
 	/// <seealso cref="SetJoystickVirtualHat"/>
-	/// <seealso cref="SendJoystickVirtualSensorData"/>
+	/// <seealso cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
 	public static bool SetJoystickVirtualTouchpad(IntPtr joystick, int touchpad, int finger, bool down, float x, float y, float pressure)
 	{
 		return SetJoystickVirtualTouchpadNativeFunction(joystick, touchpad, finger, down, x, y, pressure);
@@ -685,6 +685,22 @@ public static partial class SDL
 	public static bool SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] data, int numValues)
 	{
 		return SendJoystickVirtualSensorDataNativeFunction(joystick, type, sensorTimestamp, data, numValues);
+	}
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SendJoystickVirtualSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, IntPtr data, int numValues);
+	private delegate bool SendJoystickVirtualSensorDataPointerNativeDelegate(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, IntPtr data, int numValues);
+	private static SendJoystickVirtualSensorDataPointerNativeDelegate SendJoystickVirtualSensorDataPointerNativeFunction = SDL_SendJoystickVirtualSensorData;
+
+	/// <inheritdoc cref="SendJoystickVirtualSensorData(nint, SensorType, UInt64, float[], int)"/>
+	public static unsafe bool SendJoystickVirtualSensorData(IntPtr joystick, SensorType type, UInt64 sensorTimestamp, ReadOnlySpan<float> data, int numValues)
+	{
+		fixed (float* pData = data)
+		{
+			return SendJoystickVirtualSensorDataPointerNativeFunction(joystick, type, sensorTimestamp, (IntPtr)pData, numValues);
+		}
 	}
 
 
@@ -832,7 +848,7 @@ public static partial class SDL
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.2.0</since>
 	/// <seealso cref="GetJoystickGUIDForID"/>
-	/// <seealso cref="GUIDToString"/>
+	/// <seealso cref="GUIDToString(GUID, byte[], int)"/>
 	public static GUID GetJoystickGUID(IntPtr joystick)
 	{
 		return GetJoystickGUIDNativeFunction(joystick);
@@ -1486,6 +1502,15 @@ public static partial class SDL
 	public static bool SendJoystickEffect(IntPtr joystick, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size)
 	{
 		return SendJoystickEffectArrayNativeFunction(joystick, data, size);
+	}
+
+	/// <inheritdoc cref="SendJoystickEffect(nint, byte[], int)"/>
+	public static unsafe bool SendJoystickEffect(IntPtr joystick, ReadOnlySpan<byte> data, int size)
+	{
+		fixed (byte* pData = data)
+		{
+			return SendJoystickEffectPointerNativeFunction(joystick, (IntPtr)pData, size);
+		}
 	}
 
 

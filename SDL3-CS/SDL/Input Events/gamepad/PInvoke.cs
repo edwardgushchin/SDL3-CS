@@ -40,7 +40,7 @@ public static partial class SDL
     /// <para>Add support for gamepads that SDL is unaware of or change the binding of an
     /// existing gamepad.</para>
     /// <para>The mapping string has the format "GUID,name,mapping", where GUID is the
-    /// string value from <see cref="GUIDToString"/>, name is the human readable string for
+    /// string value from <see cref="GUIDToString(GUID, byte[], int)"/>, name is the human readable string for
     /// the device and mappings are gamepad mappings to joystick ones. Under
     /// Windows there is a reserved GUID of "xinput" that covers all XInput
     /// devices. The mapping format for joystick is:</para>
@@ -462,7 +462,7 @@ public static partial class SDL
     /// this function returns a zero GUID.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GUIDToString"/>
+    /// <seealso cref="GUIDToString(GUID, byte[], int)"/>
     /// <seealso cref="GetGamepads"/>
     public static GUID GetGamepadGUIDForID(uint instanceID)
     {
@@ -1611,7 +1611,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetGamepadSensorData"/>
+    /// <seealso cref="GetGamepadSensorData(nint, SensorType, out float[], int)"/>
     /// <seealso cref="GetGamepadSensorDataRate"/>
     /// <seealso cref="SetGamepadSensorEnabled"/>
     public static bool GamepadHasSensor(IntPtr gamepad, SensorType type)
@@ -1714,6 +1714,22 @@ public static partial class SDL
     public static bool GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out float[] data, int numValues)
     {
         return GetGamepadSensorDataNativeFunction(gamepad, type, out data, numValues);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private delegate bool GetGamepadSensorDataPointerNativeDelegate(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private static GetGamepadSensorDataPointerNativeDelegate GetGamepadSensorDataPointerNativeFunction = SDL_GetGamepadSensorData;
+
+    /// <inheritdoc cref="GetGamepadSensorData(nint, SensorType, out float[], int)"/>
+    public static unsafe bool GetGamepadSensorData(IntPtr gamepad, SensorType type, Span<float> data, int numValues)
+    {
+        fixed (float* pData = data)
+        {
+            return GetGamepadSensorDataPointerNativeFunction(gamepad, type, (IntPtr)pData, numValues);
+        }
     }
 
 
@@ -1857,6 +1873,15 @@ public static partial class SDL
     public static bool SendGamepadEffect(IntPtr gamepad, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size)
     {
         return SendGamepadEffectArrayNativeFunction(gamepad, data, size);
+    }
+
+    /// <inheritdoc cref="SendGamepadEffect(nint, byte[], int)"/>
+    public static unsafe bool SendGamepadEffect(IntPtr gamepad, ReadOnlySpan<byte> data, int size)
+    {
+        fixed (byte* pData = data)
+        {
+            return SendGamepadEffectPointerNativeFunction(gamepad, (IntPtr)pData, size);
+        }
     }
 
 

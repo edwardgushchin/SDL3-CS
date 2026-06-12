@@ -472,7 +472,7 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateAnimatedCursor"/>
+    /// <seealso cref="CreateAnimatedCursor(CursorFrameInfo[], int, int, int)"/>
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
@@ -480,6 +480,22 @@ public static partial class SDL
     public static IntPtr CreateCursor(byte[] data, byte[] mask, int w, int h, int hotX, int hotY)
     {
         return CreateCursorNativeFunction(data, mask, w, h, hotX, hotY);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateCursor(IntPtr data, IntPtr mask, int w, int h, int hotX, int hotY);
+    private delegate IntPtr CreateCursorPointerNativeDelegate(IntPtr data, IntPtr mask, int w, int h, int hotX, int hotY);
+    private static CreateCursorPointerNativeDelegate CreateCursorPointerNativeFunction = SDL_CreateCursor;
+
+    /// <inheritdoc cref="CreateCursor(byte[], byte[], int, int, int, int)"/>
+    public static unsafe IntPtr CreateCursor(ReadOnlySpan<byte> data, ReadOnlySpan<byte> mask, int w, int h, int hotX, int hotY)
+    {
+        fixed (byte* pData = data)
+        fixed (byte* pMask = mask)
+        {
+            return CreateCursorPointerNativeFunction((IntPtr)pData, (IntPtr)pMask, w, h, hotX, hotY);
+        }
     }
 
 
@@ -511,9 +527,9 @@ public static partial class SDL
     /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>+
-    /// <seealso cref="CreateAnimatedCursor"/>
+    /// <seealso cref="CreateAnimatedCursor(CursorFrameInfo[], int, int, int)"/>
     /// <seealso cref="AddSurfaceAlternateImage"/>
-    /// <seealso cref="CreateCursor"/>
+    /// <seealso cref="CreateCursor(byte[], byte[], int, int, int, int)"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
     /// <seealso cref="SetCursor"/>
@@ -563,7 +579,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="AddSurfaceAlternateImage"/>
-    /// <seealso cref="CreateCursor"/>
+    /// <seealso cref="CreateCursor(byte[], byte[], int, int, int, int)"/>
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
@@ -571,6 +587,21 @@ public static partial class SDL
     public static IntPtr CreateAnimatedCursor(CursorFrameInfo[] frames, int frameCount, int hotX, int hotY)
     {
         return CreateAnimatedCursorNativeFunction(frames, frameCount, hotX, hotY);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAnimatedCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateAnimatedCursor(IntPtr frames, int frameCount, int hotX, int hotY);
+    private delegate IntPtr CreateAnimatedCursorPointerNativeDelegate(IntPtr frames, int frameCount, int hotX, int hotY);
+    private static CreateAnimatedCursorPointerNativeDelegate CreateAnimatedCursorPointerNativeFunction = SDL_CreateAnimatedCursor;
+
+    /// <inheritdoc cref="CreateAnimatedCursor(CursorFrameInfo[], int, int, int)"/>
+    public static unsafe IntPtr CreateAnimatedCursor(ReadOnlySpan<CursorFrameInfo> frames, int frameCount, int hotX, int hotY)
+    {
+        fixed (CursorFrameInfo* pFrames = frames)
+        {
+            return CreateAnimatedCursorPointerNativeFunction((IntPtr)pFrames, frameCount, hotX, hotY);
+        }
     }
 
 
@@ -676,15 +707,15 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyCursor(SDL_Cursor *cursor);</code>
     /// <summary>
     /// <para>Free a previously-created cursor.</para>
-    /// <para>Use this function to free cursor resources created with <see cref="CreateCursor"/>,
+    /// <para>Use this function to free cursor resources created with <see cref="CreateCursor(byte[], byte[], int, int, int, int)"/>,
     /// <see cref="CreateColorCursor"/> or <see cref="CreateSystemCursor"/>.</para>
     /// </summary>
     /// <param name="cursor">the cursor to free.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateAnimatedCursor"/>
+    /// <seealso cref="CreateAnimatedCursor(CursorFrameInfo[], int, int, int)"/>
     /// <seealso cref="CreateColorCursor"/>
-    /// <seealso cref="CreateCursor"/>
+    /// <seealso cref="CreateCursor(byte[], byte[], int, int, int, int)"/>
     /// <seealso cref="CreateSystemCursor"/>
     public static void DestroyCursor(IntPtr cursor)
     {

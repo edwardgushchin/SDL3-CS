@@ -41,6 +41,18 @@ public static partial class SDL
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GUIDToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GUIDToString(GUID guid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pszGUID, int cbGUID);
 
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GUIDToString"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GUIDToStringPointer(GUID guid, IntPtr pszGUID, int cbGUID);
+
+    /// <inheritdoc cref="GUIDToString(GUID, byte[], int)"/>
+    public static unsafe void GUIDToString(GUID guid, Span<byte> pszGUID, int cbGUID)
+    {
+        fixed (byte* pPszGUID = pszGUID)
+        {
+            SDL_GUIDToStringPointer(guid, (IntPtr)pPszGUID, cbGUID);
+        }
+    }
+
 
     /// <code>extern SDL_DECLSPEC SDL_GUID SDLCALL SDL_StringToGUID(const char *pchGUID);</code>
     /// <summary>
@@ -53,7 +65,7 @@ public static partial class SDL
     /// <returns>a <see cref="GUID"/> structure.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GUIDToString"/>
+    /// <seealso cref="GUIDToString(GUID, byte[], int)"/>
     [DllImport(SDLLibrary, EntryPoint = "SDL_StringToGUID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static extern GUID StringToGUID([MarshalAs(UnmanagedType.LPUTF8Str)] string pchGUID);
 }

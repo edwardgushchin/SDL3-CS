@@ -68,6 +68,7 @@ internal static class PInvokeTests
         MethodInfo setPaletteColors = GetNativeMethod("SDL_SetPaletteColors");
         AssertSdlLibraryImport(setPaletteColors, "SDL_SetPaletteColors");
         AssertBoolReturnMarshal(setPaletteColors);
+        AssertNativeBoolImport(GetNativeMethod("SDL_SetPaletteColorsPointer"), "SDL_SetPaletteColors");
 
         AssertSdlLibraryImport(GetNativeMethod("SDL_DestroyPalette"), "SDL_DestroyPalette");
         AssertSdlLibraryImport(GetNativeMethod("SDL_MapRGB"), "SDL_MapRGB");
@@ -187,6 +188,18 @@ internal static class PInvokeTests
         AssertColor(colors[1], capturedColors[1], "SDL.SetPaletteColors must forward second color.");
         TestAssert.Equal(4, capturedFirstColor, "SDL.SetPaletteColors must forward first color index.");
         TestAssert.Equal(2, capturedColorCount, "SDL.SetPaletteColors must forward color count.");
+
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope pointerHook = NativeHookScope.Install("SetPaletteColorsPointerNativeFunction", nameof(CaptureSetPaletteColorsPointer));
+        result = SDL3.SDL.SetPaletteColors((IntPtr)0x3031, colors.AsSpan(1), 5, 1);
+
+        TestAssert.Equal(true, result, "SDL.SetPaletteColors(ReadOnlySpan<Color>) must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x3031, capturedPalettePointer, "SDL.SetPaletteColors(ReadOnlySpan<Color>) must forward palette.");
+        TestAssert.NotNull(capturedColors, "SDL.SetPaletteColors(ReadOnlySpan<Color>) must forward colors.");
+        AssertColor(colors[1], capturedColors![0], "SDL.SetPaletteColors(ReadOnlySpan<Color>) must forward color slice item 0.");
+        TestAssert.Equal(5, capturedFirstColor, "SDL.SetPaletteColors(ReadOnlySpan<Color>) must forward first color index.");
+        TestAssert.Equal(1, capturedColorCount, "SDL.SetPaletteColors(ReadOnlySpan<Color>) must forward color count.");
     }
 
     public static void DestroyPalette_ForwardsPalette()
@@ -357,6 +370,15 @@ internal static class PInvokeTests
     {
         capturedPalettePointer = palette;
         capturedColors = [.. colors];
+        capturedFirstColor = firstcolor;
+        capturedColorCount = ncolors;
+        return nextBool;
+    }
+
+    private static bool CaptureSetPaletteColorsPointer(IntPtr palette, IntPtr colors, int firstcolor, int ncolors)
+    {
+        capturedPalettePointer = palette;
+        capturedColors = CopyUnmanaged<SDL3.SDL.Color>(colors, ncolors);
         capturedFirstColor = firstcolor;
         capturedColorCount = ncolors;
         return nextBool;
@@ -555,6 +577,24 @@ internal static class PInvokeTests
         MarshalAsAttribute? marshalAs = method.ReturnParameter.GetCustomAttribute<MarshalAsAttribute>();
         TestAssert.NotNull(marshalAs, $"SDL.{method.Name} return value must keep MarshalAs metadata.");
         TestAssert.Equal(UnmanagedType.I1, marshalAs!.Value, $"SDL.{method.Name} return value must use I1 marshalling.");
+    }
+
+    private static void AssertNativeBoolImport(MethodInfo method, string entryPoint)
+    {
+        AssertSdlLibraryImport(method, entryPoint);
+        AssertBoolReturnMarshal(method);
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
     }
 
     private sealed class NativeHookScope : IDisposable

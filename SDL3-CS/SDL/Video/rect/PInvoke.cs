@@ -223,6 +223,22 @@ public static partial class SDL
         return GetRectEnclosingPointsPointerNativeFunction(points, count, clip, out result);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectEnclosingPointsSpanPointer(IntPtr points, int count, IntPtr clip, out Rect result);
+    private delegate bool GetRectEnclosingPointsSpanPointerNativeDelegate(IntPtr points, int count, IntPtr clip, out Rect result);
+    private static GetRectEnclosingPointsSpanPointerNativeDelegate GetRectEnclosingPointsSpanPointerNativeFunction = SDL_GetRectEnclosingPointsSpanPointer;
+
+    /// <inheritdoc cref="GetRectEnclosingPoints(Point[], int, nint, out Rect)"/>
+    public static unsafe bool GetRectEnclosingPoints(ReadOnlySpan<Point> points, int count, IntPtr clip, out Rect result)
+    {
+        fixed (Point* pPoints = points)
+        {
+            return GetRectEnclosingPointsSpanPointerNativeFunction((IntPtr)pPoints, count, clip, out result);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -250,6 +266,22 @@ public static partial class SDL
     public static bool GetRectEnclosingPoints(Point[] points, int count, in Rect clip, out Rect result)
     {
         return GetRectEnclosingPointsClipNativeFunction(points, count, in clip, out result);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectEnclosingPointsSpanClip(IntPtr points, int count, in Rect clip, out Rect result);
+    private delegate bool GetRectEnclosingPointsSpanClipNativeDelegate(IntPtr points, int count, in Rect clip, out Rect result);
+    private static GetRectEnclosingPointsSpanClipNativeDelegate GetRectEnclosingPointsSpanClipNativeFunction = SDL_GetRectEnclosingPointsSpanClip;
+
+    /// <inheritdoc cref="GetRectEnclosingPoints(Point[], int, in Rect, out Rect)"/>
+    public static unsafe bool GetRectEnclosingPoints(ReadOnlySpan<Point> points, int count, in Rect clip, out Rect result)
+    {
+        fixed (Point* pPoints = points)
+        {
+            return GetRectEnclosingPointsSpanClipNativeFunction((IntPtr)pPoints, count, in clip, out result);
+        }
     }
 
 
@@ -489,6 +521,22 @@ public static partial class SDL
         return GetRectEnclosingPointsFloatPointerNativeFunction(points, count, clip, out result);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectEnclosingPointsFloatSpanPointer(IntPtr points, int count, IntPtr clip, out FRect result);
+    private delegate bool GetRectEnclosingPointsFloatSpanPointerNativeDelegate(IntPtr points, int count, IntPtr clip, out FRect result);
+    private static GetRectEnclosingPointsFloatSpanPointerNativeDelegate GetRectEnclosingPointsFloatSpanPointerNativeFunction = SDL_GetRectEnclosingPointsFloatSpanPointer;
+
+    /// <inheritdoc cref="GetRectEnclosingPointsFloat(FPoint[], int, nint, out FRect)"/>
+    public static unsafe bool GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint> points, int count, IntPtr clip, out FRect result)
+    {
+        fixed (FPoint* pPoints = points)
+        {
+            return GetRectEnclosingPointsFloatSpanPointerNativeFunction((IntPtr)pPoints, count, clip, out result);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -517,6 +565,22 @@ public static partial class SDL
     public static bool GetRectEnclosingPointsFloat(FPoint[] points, int count, in FRect clip, out FRect result)
     {
         return GetRectEnclosingPointsFloatClipNativeFunction(points, count, in clip, out result);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectEnclosingPointsFloatSpanClip(IntPtr points, int count, in FRect clip, out FRect result);
+    private delegate bool GetRectEnclosingPointsFloatSpanClipNativeDelegate(IntPtr points, int count, in FRect clip, out FRect result);
+    private static GetRectEnclosingPointsFloatSpanClipNativeDelegate GetRectEnclosingPointsFloatSpanClipNativeFunction = SDL_GetRectEnclosingPointsFloatSpanClip;
+
+    /// <inheritdoc cref="GetRectEnclosingPointsFloat(FPoint[], int, in FRect, out FRect)"/>
+    public static unsafe bool GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint> points, int count, in FRect clip, out FRect result)
+    {
+        fixed (FPoint* pPoints = points)
+        {
+            return GetRectEnclosingPointsFloatSpanClipNativeFunction((IntPtr)pPoints, count, in clip, out result);
+        }
     }
 
 

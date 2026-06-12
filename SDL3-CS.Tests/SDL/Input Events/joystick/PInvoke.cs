@@ -35,6 +35,7 @@ internal static class PInvokeTests
     private static SDL3.SDL.GUID capturedGuid;
     private static SDL3.SDL.JoystickHat capturedHat;
     private static IntPtr capturedEffectData;
+    private static IntPtr capturedFloatPointer;
     private static byte[]? capturedEffectBytes;
     private static float capturedX;
     private static float capturedY;
@@ -95,6 +96,7 @@ internal static class PInvokeTests
         SetJoystickVirtualHat_ForwardsVirtualHatAndReturnsNativeValue();
         SetJoystickVirtualTouchpad_ForwardsVirtualTouchpadAndReturnsNativeValue();
         SendJoystickVirtualSensorData_ForwardsVirtualSensorDataAndReturnsNativeValue();
+        SendJoystickVirtualSensorDataSpan_ForwardsPinnedVirtualSensorDataAndReturnsNativeValue();
         GetJoystickProperties_ForwardsJoystickAndReturnsNativeValue();
         SDL_GetJoystickName_UsesExpectedNativeMetadata();
         GetJoystickName_ReturnsStringAndNull();
@@ -130,6 +132,7 @@ internal static class PInvokeTests
         SetJoystickLED_ForwardsColorAndReturnsNativeValue();
         SendJoystickEffect_WithPointer_ForwardsDataAndReturnsNativeValue();
         SendJoystickEffect_WithArray_ForwardsDataAndReturnsNativeValue();
+        SendJoystickEffect_WithSpan_ForwardsPinnedDataAndReturnsNativeValue();
         CloseJoystick_ForwardsJoystick();
         GetJoystickConnectionState_ForwardsJoystickAndReturnsNativeValue();
         GetJoystickPowerInfo_ForwardsJoystickAndOutputsPercent();
@@ -484,7 +487,7 @@ internal static class PInvokeTests
 
     public static void SendJoystickVirtualSensorData_ForwardsVirtualSensorDataAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_SendJoystickVirtualSensorData");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_SendJoystickVirtualSensorData", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(ulong), typeof(float[]), typeof(int));
         AssertSdlImport(nativeMethod, "SDL_SendJoystickVirtualSensorData");
         AssertBoolReturnMarshal(nativeMethod);
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 4);
@@ -503,6 +506,29 @@ internal static class PInvokeTests
         TestAssert.Equal(3, capturedNumValues, "SDL.SendJoystickVirtualSensorData must forward numValues.");
         TestAssert.True(ReferenceEquals(data, capturedFloatArray), "SDL.SendJoystickVirtualSensorData must forward the managed data array.");
         TestAssert.Equal(1, capturedCallCount, "SDL.SendJoystickVirtualSensorData must call the native hook once.");
+    }
+
+    public static void SendJoystickVirtualSensorDataSpan_ForwardsPinnedVirtualSensorDataAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_SendJoystickVirtualSensorData", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(ulong), typeof(IntPtr), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_SendJoystickVirtualSensorData");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        ResetCaptureState();
+        nextBool = true;
+        float[] data = [4.0f, 5.0f, 6.0f];
+
+        using NativeHookScope _ = NativeHookScope.Install("SendJoystickVirtualSensorDataPointerNativeFunction", nameof(CaptureSendJoystickVirtualSensorDataPointer));
+        bool result = SDL3.SDL.SendJoystickVirtualSensorData((IntPtr)0x7608, SDL3.SDL.SensorType.AccelL, 987654321UL, data.AsSpan(), data.Length);
+
+        TestAssert.Equal(true, result, "SDL.SendJoystickVirtualSensorData span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7608, capturedJoystick, "SDL.SendJoystickVirtualSensorData span overload must forward joystick.");
+        TestAssert.Equal(SDL3.SDL.SensorType.AccelL, capturedSensorType, "SDL.SendJoystickVirtualSensorData span overload must forward type.");
+        TestAssert.Equal(987654321UL, capturedSensorTimestamp, "SDL.SendJoystickVirtualSensorData span overload must forward sensorTimestamp.");
+        TestAssert.Equal(3, capturedNumValues, "SDL.SendJoystickVirtualSensorData span overload must forward numValues.");
+        TestAssert.True(capturedFloatPointer != IntPtr.Zero, "SDL.SendJoystickVirtualSensorData span overload must pin data.");
+        AssertFloats(data, capturedFloatArray ?? [], "SDL.SendJoystickVirtualSensorData span overload must forward sensor values.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.SendJoystickVirtualSensorData span overload must call the native hook once.");
     }
 
     public static void GetJoystickProperties_ForwardsJoystickAndReturnsNativeValue()
@@ -956,6 +982,27 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.SendJoystickEffect(byte[]) must call the native hook once.");
     }
 
+    public static void SendJoystickEffect_WithSpan_ForwardsPinnedDataAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_SendJoystickEffect", typeof(IntPtr), typeof(IntPtr), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_SendJoystickEffect");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        ResetCaptureState();
+        nextBool = true;
+        byte[] effect = [5, 6, 7, 8];
+
+        using NativeHookScope _ = NativeHookScope.Install("SendJoystickEffectPointerNativeFunction", nameof(CaptureSendJoystickEffectPointerBytes));
+        bool result = SDL3.SDL.SendJoystickEffect((IntPtr)0x790D, effect.AsSpan(), effect.Length);
+
+        TestAssert.Equal(true, result, "SDL.SendJoystickEffect span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x790D, capturedJoystick, "SDL.SendJoystickEffect span overload must forward joystick.");
+        TestAssert.True(capturedEffectData != IntPtr.Zero, "SDL.SendJoystickEffect span overload must pin data.");
+        AssertBytes(effect, capturedEffectBytes ?? [], "SDL.SendJoystickEffect span overload must forward data bytes.");
+        TestAssert.Equal(4, capturedSize, "SDL.SendJoystickEffect span overload must forward size.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.SendJoystickEffect span overload must call the native hook once.");
+    }
+
     public static void CloseJoystick_ForwardsJoystick()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_CloseJoystick");
@@ -1318,6 +1365,18 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureSendJoystickVirtualSensorDataPointer(IntPtr joystick, SDL3.SDL.SensorType type, ulong sensorTimestamp, IntPtr data, int numValues)
+    {
+        capturedCallCount++;
+        capturedJoystick = joystick;
+        capturedSensorType = type;
+        capturedSensorTimestamp = sensorTimestamp;
+        capturedFloatPointer = data;
+        capturedFloatArray = CopyFloats(data, numValues);
+        capturedNumValues = numValues;
+        return nextBool;
+    }
+
     private static uint CaptureJoystickUInt(IntPtr joystick)
     {
         capturedCallCount++;
@@ -1457,6 +1516,16 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureSendJoystickEffectPointerBytes(IntPtr joystick, IntPtr data, int size)
+    {
+        capturedCallCount++;
+        capturedJoystick = joystick;
+        capturedEffectData = data;
+        capturedEffectBytes = CopyBytes(data, size);
+        capturedSize = size;
+        return nextBool;
+    }
+
     private static bool CaptureSendJoystickEffectArray(IntPtr joystick, byte[] data, int size)
     {
         capturedCallCount++;
@@ -1529,6 +1598,7 @@ internal static class PInvokeTests
         capturedGuid = default;
         capturedHat = SDL3.SDL.JoystickHat.Centered;
         capturedEffectData = IntPtr.Zero;
+        capturedFloatPointer = IntPtr.Zero;
         capturedEffectBytes = null;
         capturedX = 0;
         capturedY = 0;
@@ -1602,6 +1672,44 @@ internal static class PInvokeTests
         }
 
         return pointer;
+    }
+
+    private static float[] CopyFloats(IntPtr source, int length)
+    {
+        if (source == IntPtr.Zero || length == 0)
+            return [];
+
+        float[] values = new float[length];
+        Marshal.Copy(source, values, 0, length);
+        return values;
+    }
+
+    private static byte[] CopyBytes(IntPtr source, int length)
+    {
+        if (source == IntPtr.Zero || length == 0)
+            return [];
+
+        byte[] values = new byte[length];
+        Marshal.Copy(source, values, 0, length);
+        return values;
+    }
+
+    private static void AssertFloats(float[] expected, float[] actual, string message)
+    {
+        TestAssert.Equal(expected.Length, actual.Length, $"{message} Length must match.");
+        for (int i = 0; i < expected.Length; i++)
+        {
+            TestAssert.Equal(expected[i], actual[i], $"{message} Value {i} must match.");
+        }
+    }
+
+    private static void AssertBytes(byte[] expected, byte[] actual, string message)
+    {
+        TestAssert.Equal(expected.Length, actual.Length, $"{message} Length must match.");
+        for (int i = 0; i < expected.Length; i++)
+        {
+            TestAssert.Equal(expected[i], actual[i], $"{message} Byte {i} must match.");
+        }
     }
 
     private static MethodInfo GetNativeMethod(string methodName)

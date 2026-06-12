@@ -2308,7 +2308,7 @@ public static partial class SDL
     /// <seealso cref="DestroyWindowSurface"/>
     /// <seealso cref="WindowHasSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
-    /// <seealso cref="UpdateWindowSurfaceRects"/>
+    /// <seealso cref="UpdateWindowSurfaceRects(nint, Rect[], int)"/>
     public static IntPtr GetWindowSurface(IntPtr window)
     {
         return GetWindowSurfaceNativeFunction(window);
@@ -2392,7 +2392,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSurface"/>
-    /// <seealso cref="UpdateWindowSurfaceRects"/>
+    /// <seealso cref="UpdateWindowSurfaceRects(nint, Rect[], int)"/>
     public static bool UpdateWindowSurface(IntPtr window)
     {
         return UpdateWindowSurfaceNativeFunction(window);
@@ -2430,6 +2430,22 @@ public static partial class SDL
     public static bool UpdateWindowSurfaceRects(IntPtr window, Rect[] rects, int numrects)
     {
         return UpdateWindowSurfaceRectsNativeFunction(window, rects, numrects);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateWindowSurfaceRectsPointer(IntPtr window, IntPtr rects, int numrects);
+    private delegate bool UpdateWindowSurfaceRectsPointerNativeDelegate(IntPtr window, IntPtr rects, int numrects);
+    private static UpdateWindowSurfaceRectsPointerNativeDelegate UpdateWindowSurfaceRectsPointerNativeFunction = SDL_UpdateWindowSurfaceRectsPointer;
+
+    /// <inheritdoc cref="UpdateWindowSurfaceRects(nint, Rect[], int)"/>
+    public static unsafe bool UpdateWindowSurfaceRects(IntPtr window, ReadOnlySpan<Rect> rects, int numrects)
+    {
+        fixed (Rect* pRects = rects)
+        {
+            return UpdateWindowSurfaceRectsPointerNativeFunction(window, (IntPtr)pRects, numrects);
+        }
     }
 
 

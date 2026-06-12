@@ -73,10 +73,12 @@ internal static class PInvokeTests
         MethodInfo enclosingPointsPointer = GetNativeMethod("SDL_GetRectEnclosingPointsPointer");
         AssertNativeBoolImport(enclosingPointsPointer, "SDL_GetRectEnclosingPoints");
         AssertArrayMarshal(enclosingPointsPointer);
+        AssertNativeBoolImport(GetNativeMethod("SDL_GetRectEnclosingPointsSpanPointer"), "SDL_GetRectEnclosingPoints");
 
         MethodInfo enclosingPointsClip = GetNativeMethod("SDL_GetRectEnclosingPointsClip");
         AssertNativeBoolImport(enclosingPointsClip, "SDL_GetRectEnclosingPoints");
         AssertArrayMarshal(enclosingPointsClip);
+        AssertNativeBoolImport(GetNativeMethod("SDL_GetRectEnclosingPointsSpanClip"), "SDL_GetRectEnclosingPoints");
 
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRectAndLineIntersection"), "SDL_GetRectAndLineIntersection");
         AssertNativeBoolImport(GetNativeMethod("SDL_HasRectIntersectionFloat"), "SDL_HasRectIntersectionFloat");
@@ -86,10 +88,12 @@ internal static class PInvokeTests
         MethodInfo enclosingFloatPointsPointer = GetNativeMethod("SDL_GetRectEnclosingPointsFloatPointer");
         AssertNativeBoolImport(enclosingFloatPointsPointer, "SDL_GetRectEnclosingPointsFloat");
         AssertArrayMarshal(enclosingFloatPointsPointer);
+        AssertNativeBoolImport(GetNativeMethod("SDL_GetRectEnclosingPointsFloatSpanPointer"), "SDL_GetRectEnclosingPointsFloat");
 
         MethodInfo enclosingFloatPointsClip = GetNativeMethod("SDL_GetRectEnclosingPointsFloatClip");
         AssertNativeBoolImport(enclosingFloatPointsClip, "SDL_GetRectEnclosingPointsFloat");
         AssertArrayMarshal(enclosingFloatPointsClip);
+        AssertNativeBoolImport(GetNativeMethod("SDL_GetRectEnclosingPointsFloatSpanClip"), "SDL_GetRectEnclosingPointsFloat");
 
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRectAndLineIntersectionFloat"), "SDL_GetRectAndLineIntersectionFloat");
     }
@@ -221,6 +225,18 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)0x1234, capturedClipPointer, "SDL.GetRectEnclosingPoints(IntPtr) must forward clip pointer.");
         AssertPoints(points, capturedPoints, "SDL.GetRectEnclosingPoints(IntPtr) must forward points.");
         AssertRect(nextRect, enclosing, "SDL.GetRectEnclosingPoints(IntPtr) must output result.");
+
+        ResetCaptureState();
+        nextBool = true;
+        nextRect = CreateRect(6, 7, 8, 9);
+        using NativeHookScope pointerHook = NativeHookScope.Install("GetRectEnclosingPointsSpanPointerNativeFunction", nameof(CaptureGetRectEnclosingPointsSpanPointer));
+        result = SDL3.SDL.GetRectEnclosingPoints(points.AsSpan(1), 1, (IntPtr)0x1235, out enclosing);
+
+        TestAssert.Equal(true, result, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, IntPtr) must return the native hook value.");
+        TestAssert.Equal(1, capturedCount, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, IntPtr) must forward count.");
+        TestAssert.Equal((IntPtr)0x1235, capturedClipPointer, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, IntPtr) must forward clip pointer.");
+        AssertPoints([points[1]], capturedPoints, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, IntPtr) must forward point slice.");
+        AssertRect(nextRect, enclosing, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, IntPtr) must output result.");
     }
 
     public static void GetRectEnclosingPoints_WithRectClipForwardsArrayClipAndResult()
@@ -239,6 +255,18 @@ internal static class PInvokeTests
         AssertPoints(points, capturedPoints, "SDL.GetRectEnclosingPoints(in Rect) must forward points.");
         AssertRect(clip, capturedClipRect, "SDL.GetRectEnclosingPoints(in Rect) must forward clip rect.");
         AssertRect(nextRect, enclosing, "SDL.GetRectEnclosingPoints(in Rect) must output result.");
+
+        ResetCaptureState();
+        nextBool = true;
+        nextRect = CreateRect(10, 11, 12, 13);
+        using NativeHookScope pointerHook = NativeHookScope.Install("GetRectEnclosingPointsSpanClipNativeFunction", nameof(CaptureGetRectEnclosingPointsSpanClip));
+        result = SDL3.SDL.GetRectEnclosingPoints(points.AsSpan(1), 1, in clip, out enclosing);
+
+        TestAssert.Equal(true, result, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, in Rect) must return the native hook value.");
+        TestAssert.Equal(1, capturedCount, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, in Rect) must forward count.");
+        AssertPoints([points[1]], capturedPoints, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, in Rect) must forward point slice.");
+        AssertRect(clip, capturedClipRect, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, in Rect) must forward clip rect.");
+        AssertRect(nextRect, enclosing, "SDL.GetRectEnclosingPoints(ReadOnlySpan<Point>, in Rect) must output result.");
     }
 
     public static void GetRectAndLineIntersection_ForwardsLineMutatesCoordinatesAndReturnsNativeValue()
@@ -399,6 +427,18 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)0x5678, capturedClipPointer, "SDL.GetRectEnclosingPointsFloat(IntPtr) must forward clip pointer.");
         AssertFPoints(points, capturedFPoints, "SDL.GetRectEnclosingPointsFloat(IntPtr) must forward points.");
         AssertFRect(nextFRect, enclosing, "SDL.GetRectEnclosingPointsFloat(IntPtr) must output result.");
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFRect = CreateFRect(6.5f, 7.5f, 8.5f, 9.5f);
+        using NativeHookScope pointerHook = NativeHookScope.Install("GetRectEnclosingPointsFloatSpanPointerNativeFunction", nameof(CaptureGetRectEnclosingPointsFloatSpanPointer));
+        result = SDL3.SDL.GetRectEnclosingPointsFloat(points.AsSpan(1), 1, (IntPtr)0x5679, out enclosing);
+
+        TestAssert.Equal(true, result, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, IntPtr) must return the native hook value.");
+        TestAssert.Equal(1, capturedCount, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, IntPtr) must forward count.");
+        TestAssert.Equal((IntPtr)0x5679, capturedClipPointer, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, IntPtr) must forward clip pointer.");
+        AssertFPoints([points[1]], capturedFPoints, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, IntPtr) must forward point slice.");
+        AssertFRect(nextFRect, enclosing, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, IntPtr) must output result.");
     }
 
     public static void GetRectEnclosingPointsFloat_WithRectClipForwardsArrayClipAndResult()
@@ -417,6 +457,18 @@ internal static class PInvokeTests
         AssertFPoints(points, capturedFPoints, "SDL.GetRectEnclosingPointsFloat(in FRect) must forward points.");
         AssertFRect(clip, capturedFClipRect, "SDL.GetRectEnclosingPointsFloat(in FRect) must forward clip rect.");
         AssertFRect(nextFRect, enclosing, "SDL.GetRectEnclosingPointsFloat(in FRect) must output result.");
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFRect = CreateFRect(10.5f, 11.5f, 12.5f, 13.5f);
+        using NativeHookScope pointerHook = NativeHookScope.Install("GetRectEnclosingPointsFloatSpanClipNativeFunction", nameof(CaptureGetRectEnclosingPointsFloatSpanClip));
+        result = SDL3.SDL.GetRectEnclosingPointsFloat(points.AsSpan(1), 1, in clip, out enclosing);
+
+        TestAssert.Equal(true, result, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, in FRect) must return the native hook value.");
+        TestAssert.Equal(1, capturedCount, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, in FRect) must forward count.");
+        AssertFPoints([points[1]], capturedFPoints, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, in FRect) must forward point slice.");
+        AssertFRect(clip, capturedFClipRect, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, in FRect) must forward clip rect.");
+        AssertFRect(nextFRect, enclosing, "SDL.GetRectEnclosingPointsFloat(ReadOnlySpan<FPoint>, in FRect) must output result.");
     }
 
     public static void GetRectAndLineIntersectionFloat_ForwardsLineMutatesCoordinatesAndReturnsNativeValue()
@@ -480,9 +532,27 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureGetRectEnclosingPointsSpanPointer(IntPtr points, int count, IntPtr clip, out SDL3.SDL.Rect result)
+    {
+        capturedPoints = CopyUnmanaged<SDL3.SDL.Point>(points, count);
+        capturedCount = count;
+        capturedClipPointer = clip;
+        result = nextRect;
+        return nextBool;
+    }
+
     private static bool CaptureGetRectEnclosingPointsClip(SDL3.SDL.Point[] points, int count, in SDL3.SDL.Rect clip, out SDL3.SDL.Rect result)
     {
         capturedPoints = [.. points];
+        capturedCount = count;
+        capturedClipRect = clip;
+        result = nextRect;
+        return nextBool;
+    }
+
+    private static bool CaptureGetRectEnclosingPointsSpanClip(IntPtr points, int count, in SDL3.SDL.Rect clip, out SDL3.SDL.Rect result)
+    {
+        capturedPoints = CopyUnmanaged<SDL3.SDL.Point>(points, count);
         capturedCount = count;
         capturedClipRect = clip;
         result = nextRect;
@@ -535,9 +605,27 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureGetRectEnclosingPointsFloatSpanPointer(IntPtr points, int count, IntPtr clip, out SDL3.SDL.FRect result)
+    {
+        capturedFPoints = CopyUnmanaged<SDL3.SDL.FPoint>(points, count);
+        capturedCount = count;
+        capturedClipPointer = clip;
+        result = nextFRect;
+        return nextBool;
+    }
+
     private static bool CaptureGetRectEnclosingPointsFloatClip(SDL3.SDL.FPoint[] points, int count, in SDL3.SDL.FRect clip, out SDL3.SDL.FRect result)
     {
         capturedFPoints = [.. points];
+        capturedCount = count;
+        capturedFClipRect = clip;
+        result = nextFRect;
+        return nextBool;
+    }
+
+    private static bool CaptureGetRectEnclosingPointsFloatSpanClip(IntPtr points, int count, in SDL3.SDL.FRect clip, out SDL3.SDL.FRect result)
+    {
+        capturedFPoints = CopyUnmanaged<SDL3.SDL.FPoint>(points, count);
         capturedCount = count;
         capturedFClipRect = clip;
         result = nextFRect;
@@ -693,6 +781,18 @@ internal static class PInvokeTests
     {
         ExcludeFromCodeCoverageAttribute? attribute = method.GetCustomAttribute<ExcludeFromCodeCoverageAttribute>();
         TestAssert.NotNull(attribute, $"SDL.{method.Name} native stub must be excluded from code coverage.");
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
     }
 
     private sealed class NativeHookScope : IDisposable

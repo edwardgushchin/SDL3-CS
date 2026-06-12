@@ -32,7 +32,7 @@ public static partial class SDL
     /// pass.
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
-    /// <seealso cref="BeginGPUComputePass"/>
+    /// <seealso cref="BeginGPUComputePass(nint, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUStorageTextureReadWriteBinding
     {

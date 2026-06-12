@@ -245,7 +245,7 @@ public static partial class SDL
     /// <threadsafety>This function can be called on different threads with
     /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetPaletteColors"/>
+    /// <seealso cref="SetPaletteColors(nint, Color[], int, int)"/>
     public static IntPtr CreateSurfacePalette(IntPtr surface)
     {
         return CreateSurfacePaletteNativeFunction(surface);
@@ -1460,6 +1460,41 @@ public static partial class SDL
         return ConvertPixelsArrayToArrayNativeFunction(width, height, srcFormat, src, srcPitch, dstFormat, out dst, dstPitch);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ConvertPixelsSpan(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch);
+    private delegate bool ConvertPixelsSpanNativeDelegate(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch);
+    private static ConvertPixelsSpanNativeDelegate ConvertPixelsSpanNativeFunction = SDL_ConvertPixelsSpan;
+
+    /// <inheritdoc cref="ConvertPixels(int, int, PixelFormat, byte[], int, PixelFormat, out byte[], int)"/>
+    public static unsafe bool ConvertPixels(int width, int height, PixelFormat srcFormat, ReadOnlySpan<byte> src, int srcPitch, PixelFormat dstFormat, Span<byte> dst, int dstPitch)
+    {
+        fixed (byte* pSrc = src)
+        fixed (byte* pDst = dst)
+        {
+            return ConvertPixelsSpanNativeFunction(width, height, srcFormat, (IntPtr)pSrc, srcPitch, dstFormat, (IntPtr)pDst, dstPitch);
+        }
+    }
+
+    /// <inheritdoc cref="ConvertPixels(int, int, PixelFormat, nint, int, PixelFormat, out byte[], int)"/>
+    public static unsafe bool ConvertPixels(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, Span<byte> dst, int dstPitch)
+    {
+        fixed (byte* pDst = dst)
+        {
+            return ConvertPixelsSpanNativeFunction(width, height, srcFormat, src, srcPitch, dstFormat, (IntPtr)pDst, dstPitch);
+        }
+    }
+
+    /// <inheritdoc cref="ConvertPixels(int, int, PixelFormat, byte[], int, PixelFormat, out nint, int)"/>
+    public static unsafe bool ConvertPixels(int width, int height, PixelFormat srcFormat, ReadOnlySpan<byte> src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch)
+    {
+        fixed (byte* pSrc = src)
+        {
+            return ConvertPixelsSpanNativeFunction(width, height, srcFormat, (IntPtr)pSrc, srcPitch, dstFormat, dst, dstPitch);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1624,6 +1659,65 @@ public static partial class SDL
         return ConvertPixelsAndColorspaceArrayToArrayNativeFunction(width, height, srcFormat, srcColorspace, srcProperties, src, srcPitch, dstFormat, dstColorspace, dstProperties, out dst, dstPitch);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertPixelsAndColorspace"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ConvertPixelsAndColorspaceSpan(
+        int width,
+        int height,
+        PixelFormat srcFormat,
+        Colorspace srcColorspace,
+        uint srcProperties,
+        IntPtr src,
+        int srcPitch,
+        PixelFormat dstFormat,
+        Colorspace dstColorspace,
+        uint dstProperties,
+        IntPtr dst,
+        int dstPitch);
+    private delegate bool ConvertPixelsAndColorspaceSpanNativeDelegate(
+        int width,
+        int height,
+        PixelFormat srcFormat,
+        Colorspace srcColorspace,
+        uint srcProperties,
+        IntPtr src,
+        int srcPitch,
+        PixelFormat dstFormat,
+        Colorspace dstColorspace,
+        uint dstProperties,
+        IntPtr dst,
+        int dstPitch);
+    private static ConvertPixelsAndColorspaceSpanNativeDelegate ConvertPixelsAndColorspaceSpanNativeFunction = SDL_ConvertPixelsAndColorspaceSpan;
+
+    /// <inheritdoc cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, byte[], int, PixelFormat, Colorspace, uint, out byte[], int)"/>
+    public static unsafe bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, ReadOnlySpan<byte> src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, Span<byte> dst, int dstPitch)
+    {
+        fixed (byte* pSrc = src)
+        fixed (byte* pDst = dst)
+        {
+            return ConvertPixelsAndColorspaceSpanNativeFunction(width, height, srcFormat, srcColorspace, srcProperties, (IntPtr)pSrc, srcPitch, dstFormat, dstColorspace, dstProperties, (IntPtr)pDst, dstPitch);
+        }
+    }
+
+    /// <inheritdoc cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, nint, int, PixelFormat, Colorspace, uint, out byte[], int)"/>
+    public static unsafe bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, IntPtr src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, Span<byte> dst, int dstPitch)
+    {
+        fixed (byte* pDst = dst)
+        {
+            return ConvertPixelsAndColorspaceSpanNativeFunction(width, height, srcFormat, srcColorspace, srcProperties, src, srcPitch, dstFormat, dstColorspace, dstProperties, (IntPtr)pDst, dstPitch);
+        }
+    }
+
+    /// <inheritdoc cref="ConvertPixelsAndColorspace(int, int, PixelFormat, Colorspace, uint, byte[], int, PixelFormat, Colorspace, uint, out nint, int)"/>
+    public static unsafe bool ConvertPixelsAndColorspace(int width, int height, PixelFormat srcFormat, Colorspace srcColorspace, uint srcProperties, ReadOnlySpan<byte> src, int srcPitch, PixelFormat dstFormat, Colorspace dstColorspace, uint dstProperties, IntPtr dst, int dstPitch)
+    {
+        fixed (byte* pSrc = src)
+        {
+            return ConvertPixelsAndColorspaceSpanNativeFunction(width, height, srcFormat, srcColorspace, srcProperties, (IntPtr)pSrc, srcPitch, dstFormat, dstColorspace, dstProperties, dst, dstPitch);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplyAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1760,6 +1854,34 @@ public static partial class SDL
         return PremultiplyAlphaArrayToArrayNativeFunction(width, height, srcFormat, src, srcPitch, dstFormat, out dst, dstPitch, linear);
     }
 
+    /// <inheritdoc cref="PremultiplyAlpha(int, int, PixelFormat, byte[], int, PixelFormat, out byte[], int, bool)"/>
+    public static unsafe bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, ReadOnlySpan<byte> src, int srcPitch, PixelFormat dstFormat, Span<byte> dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear)
+    {
+        fixed (byte* pSrc = src)
+        fixed (byte* pDst = dst)
+        {
+            return PremultiplyAlphaPointerToPointerNativeFunction(width, height, srcFormat, (IntPtr)pSrc, srcPitch, dstFormat, (IntPtr)pDst, dstPitch, linear);
+        }
+    }
+
+    /// <inheritdoc cref="PremultiplyAlpha(int, int, PixelFormat, nint, int, PixelFormat, out byte[], int, bool)"/>
+    public static unsafe bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, IntPtr src, int srcPitch, PixelFormat dstFormat, Span<byte> dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear)
+    {
+        fixed (byte* pDst = dst)
+        {
+            return PremultiplyAlphaPointerToPointerNativeFunction(width, height, srcFormat, src, srcPitch, dstFormat, (IntPtr)pDst, dstPitch, linear);
+        }
+    }
+
+    /// <inheritdoc cref="PremultiplyAlpha(int, int, PixelFormat, byte[], int, PixelFormat, nint, int, bool)"/>
+    public static unsafe bool PremultiplyAlpha(int width, int height, PixelFormat srcFormat, ReadOnlySpan<byte> src, int srcPitch, PixelFormat dstFormat, IntPtr dst, int dstPitch, [MarshalAs(UnmanagedType.I1)] bool linear)
+    {
+        fixed (byte* pSrc = src)
+        {
+            return PremultiplyAlphaPointerToPointerNativeFunction(width, height, srcFormat, (IntPtr)pSrc, srcPitch, dstFormat, dst, dstPitch, linear);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PremultiplySurfaceAlpha"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1844,7 +1966,7 @@ public static partial class SDL
     /// <threadsafety>This function can be called on different threads with
     /// different surfaces.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="FillSurfaceRects"/>
+    /// <seealso cref="FillSurfaceRects(nint, Rect[], int, uint)"/>
     public static bool FillSurfaceRect(IntPtr dst, IntPtr rect, uint color)
     {
         return FillSurfaceRectPointerNativeFunction(dst, rect, color);
@@ -1877,7 +1999,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function is not thread safe.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="FillSurfaceRects"/>
+    /// <seealso cref="FillSurfaceRects(nint, Rect[], int, uint)"/>
     public static bool FillSurfaceRect(IntPtr dst, in Rect rect, uint color)
     {
         return FillSurfaceRectRectNativeFunction(dst, in rect, color);
@@ -1914,6 +2036,22 @@ public static partial class SDL
     public static bool FillSurfaceRects(IntPtr dst, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Rect[] rects, int count, uint color)
     {
         return FillSurfaceRectsNativeFunction(dst, rects, count, color);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FillSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_FillSurfaceRectsPointer(IntPtr dst, IntPtr rects, int count, uint color);
+    private delegate bool FillSurfaceRectsPointerNativeDelegate(IntPtr dst, IntPtr rects, int count, uint color);
+    private static FillSurfaceRectsPointerNativeDelegate FillSurfaceRectsPointerNativeFunction = SDL_FillSurfaceRectsPointer;
+
+    /// <inheritdoc cref="FillSurfaceRects(nint, Rect[], int, uint)"/>
+    public static unsafe bool FillSurfaceRects(IntPtr dst, ReadOnlySpan<Rect> rects, int count, uint color)
+    {
+        fixed (Rect* pRects = rects)
+        {
+            return FillSurfaceRectsPointerNativeFunction(dst, (IntPtr)pRects, count, color);
+        }
     }
 
 

@@ -156,6 +156,15 @@ public static partial class SDL
         return PeepEventsArrayNativeFunction(events, numevents, action, minType, maxType);
     }
 
+    /// <inheritdoc cref="PeepEvents(Event[], int, EventAction, uint, uint)"/>
+    public static unsafe int PeepEvents(Span<Event> events, int numevents, EventAction action, uint minType, uint maxType)
+    {
+        fixed (Event* eventsPtr = events)
+        {
+            return PeepEventsPointerNativeFunction((IntPtr)eventsPtr, numevents, action, minType, maxType);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -767,6 +776,24 @@ public static partial class SDL
             Marshal.FreeHGlobal(eventPtr);
         }
     }
+
+    /// <inheritdoc cref="GetEventDescription(in Event, byte[], int)"/>
+    public static unsafe int GetEventDescription(in Event @event, Span<byte> buf, int buflen)
+    {
+        var eventPtr = StructureToPointer<Event>(@event);
+        try
+        {
+            fixed (byte* bufPtr = buf)
+            {
+                return GetEventDescriptionNativeFunction(in eventPtr, (IntPtr)bufPtr, buflen);
+            }
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(eventPtr);
+        }
+    }
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);</code>
     /// <summary>
     /// <para>Generate a human-readable description of an event.</para>
@@ -793,6 +820,15 @@ public static partial class SDL
     {
         var bufPtr = buf is null ? IntPtr.Zero : Marshal.UnsafeAddrOfPinnedArrayElement(buf, 0);
         return GetEventDescriptionNativeFunction(in @event, bufPtr, buflen);
+    }
+
+    /// <inheritdoc cref="GetEventDescription(in IntPtr, byte[], int)"/>
+    public static unsafe int GetEventDescription(in IntPtr @event, Span<byte> buf, int buflen)
+    {
+        fixed (byte* bufPtr = buf)
+        {
+            return GetEventDescriptionNativeFunction(in @event, (IntPtr)bufPtr, buflen);
+        }
     }
 
 }

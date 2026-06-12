@@ -241,12 +241,12 @@ public static partial class SDL
     /// <para>The first byte of <c>data</c> must contain the Report ID. For devices which only
     /// support a single report, this must be set to 0x0. The remaining bytes
     /// contain the report data. Since the Report ID is mandatory, calls to
-    /// <see cref="HIDWrite"/> will always contain one more byte than the report contains.
+    /// <see cref="HIDWrite(nint, byte[], UIntPtr)"/> will always contain one more byte than the report contains.
     /// For example, if a hid report is 16 bytes long, 17 bytes must be passed to
-    /// <see cref="HIDWrite"/>, the Report ID (or 0x0, for devices with a single report),
+    /// <see cref="HIDWrite(nint, byte[], UIntPtr)"/>, the Report ID (or 0x0, for devices with a single report),
     /// followed by the report data (16 bytes). In this example, the length passed
     /// in would be 17.</para>
-    /// <para><see cref="HIDWrite"/> will send the data on the first OUT endpoint, if one
+    /// <para><see cref="HIDWrite(nint, byte[], UIntPtr)"/> will send the data on the first OUT endpoint, if one
     /// exists. If it does not, it will send the data through the Control Endpoint
     /// (Endpoint 0).</para>
     /// </summary>
@@ -260,6 +260,21 @@ public static partial class SDL
     public static int HIDWrite(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, UIntPtr length)
     {
         return HIDWriteNativeFunction(dev, data, length);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_write"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_write(IntPtr dev, IntPtr data, UIntPtr length);
+    private delegate int HIDWritePointerNativeDelegate(IntPtr dev, IntPtr data, UIntPtr length);
+    private static HIDWritePointerNativeDelegate HIDWritePointerNativeFunction = SDL_hid_write;
+
+    /// <inheritdoc cref="HIDWrite(nint, byte[], UIntPtr)"/>
+    public static unsafe int HIDWrite(IntPtr dev, ReadOnlySpan<byte> data, UIntPtr length)
+    {
+        fixed (byte* pData = data)
+        {
+            return HIDWritePointerNativeFunction(dev, (IntPtr)pData, length);
+        }
     }
 
 
@@ -291,6 +306,21 @@ public static partial class SDL
         return HIDReadTimeoutNativeFunction(dev, out data, length, milliseconds);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_read_timeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_read_timeout(IntPtr dev, IntPtr data, UIntPtr length, int milliseconds);
+    private delegate int HIDReadTimeoutPointerNativeDelegate(IntPtr dev, IntPtr data, UIntPtr length, int milliseconds);
+    private static HIDReadTimeoutPointerNativeDelegate HIDReadTimeoutPointerNativeFunction = SDL_hid_read_timeout;
+
+    /// <inheritdoc cref="HIDReadTimeout(nint, out byte[], UIntPtr, int)"/>
+    public static unsafe int HIDReadTimeout(IntPtr dev, Span<byte> data, UIntPtr length, int milliseconds)
+    {
+        fixed (byte* pData = data)
+        {
+            return HIDReadTimeoutPointerNativeFunction(dev, (IntPtr)pData, length, milliseconds);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_read"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -320,6 +350,21 @@ public static partial class SDL
         return HIDReadNativeFunction(dev, out data, length);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_read"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_read(IntPtr dev, IntPtr data, UIntPtr length);
+    private delegate int HIDReadPointerNativeDelegate(IntPtr dev, IntPtr data, UIntPtr length);
+    private static HIDReadPointerNativeDelegate HIDReadPointerNativeFunction = SDL_hid_read;
+
+    /// <inheritdoc cref="HIDRead(nint, out byte[], UIntPtr)"/>
+    public static unsafe int HIDRead(IntPtr dev, Span<byte> data, UIntPtr length)
+    {
+        fixed (byte* pData = data)
+        {
+            return HIDReadPointerNativeFunction(dev, (IntPtr)pData, length);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_set_nonblocking"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -330,8 +375,8 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_hid_set_nonblocking(SDL_hid_device *dev, int nonblock);</code>
     /// <summary>
     /// <para>Set the device handle to be non-blocking.</para>
-    /// <para>In non-blocking mode calls to <see cref="HIDRead"/> will return immediately with a
-    /// value of 0 if there is no data to be read. In blocking mode, <see cref="HIDRead"/>
+    /// <para>In non-blocking mode calls to <see cref="HIDRead(nint, out byte[], UIntPtr)"/> will return immediately with a
+    /// value of 0 if there is no data to be read. In blocking mode, <see cref="HIDRead(nint, out byte[], UIntPtr)"/>
     /// will wait (block) until there is data to read before returning.</para>
     /// <para>Nonblocking can be turned on and off at any time.</para>
     /// </summary>
@@ -359,9 +404,9 @@ public static partial class SDL
     /// transfer. The first byte of <c>data</c> must contain the Report ID. For devices
     /// which only support a single report, this must be set to 0x0. The remaining
     /// bytes contain the report data. Since the Report ID is mandatory, calls to
-    /// <see cref="HIDSendFeatureReport"/> will always contain one more byte than the
+    /// <see cref="HIDSendFeatureReport(nint, byte[], UIntPtr)"/> will always contain one more byte than the
     /// report contains. For example, if a hid report is 16 bytes long, 17 bytes
-    /// must be passed to <see cref="HIDSendFeatureReport"/>: the Report ID (or 0x0, for
+    /// must be passed to <see cref="HIDSendFeatureReport(nint, byte[], UIntPtr)"/>: the Report ID (or 0x0, for
     /// devices which do not use numbered reports), followed by the report data (16
     /// bytes). In this example, the length passed in would be 17.</para>
     /// </summary>
@@ -376,6 +421,21 @@ public static partial class SDL
     public static int HIDSendFeatureReport(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, UIntPtr length)
     {
         return HIDSendFeatureReportNativeFunction(dev, data, length);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_send_feature_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_send_feature_report(IntPtr dev, IntPtr data, UIntPtr length);
+    private delegate int HIDSendFeatureReportPointerNativeDelegate(IntPtr dev, IntPtr data, UIntPtr length);
+    private static HIDSendFeatureReportPointerNativeDelegate HIDSendFeatureReportPointerNativeFunction = SDL_hid_send_feature_report;
+
+    /// <inheritdoc cref="HIDSendFeatureReport(nint, byte[], UIntPtr)"/>
+    public static unsafe int HIDSendFeatureReport(IntPtr dev, ReadOnlySpan<byte> data, UIntPtr length)
+    {
+        fixed (byte* pData = data)
+        {
+            return HIDSendFeatureReportPointerNativeFunction(dev, (IntPtr)pData, length);
+        }
     }
 
 
@@ -409,6 +469,21 @@ public static partial class SDL
         return HIDGetFeatureReportNativeFunction(dev, out data, length);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_feature_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_feature_report(IntPtr dev, IntPtr data, UIntPtr length);
+    private delegate int HIDGetFeatureReportPointerNativeDelegate(IntPtr dev, IntPtr data, UIntPtr length);
+    private static HIDGetFeatureReportPointerNativeDelegate HIDGetFeatureReportPointerNativeFunction = SDL_hid_get_feature_report;
+
+    /// <inheritdoc cref="HIDGetFeatureReport(nint, out byte[], UIntPtr)"/>
+    public static unsafe int HIDGetFeatureReport(IntPtr dev, Span<byte> data, UIntPtr length)
+    {
+        fixed (byte* pData = data)
+        {
+            return HIDGetFeatureReportPointerNativeFunction(dev, (IntPtr)pData, length);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_input_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -438,6 +513,21 @@ public static partial class SDL
     public static int HidGetInputReport(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out byte[] data, UIntPtr length)
     {
         return HidGetInputReportNativeFunction(dev, out data, length);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_input_report"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_input_report(IntPtr dev, IntPtr data, UIntPtr length);
+    private delegate int HidGetInputReportPointerNativeDelegate(IntPtr dev, IntPtr data, UIntPtr length);
+    private static HidGetInputReportPointerNativeDelegate HidGetInputReportPointerNativeFunction = SDL_hid_get_input_report;
+
+    /// <inheritdoc cref="HidGetInputReport(nint, out byte[], UIntPtr)"/>
+    public static unsafe int HidGetInputReport(IntPtr dev, Span<byte> data, UIntPtr length)
+    {
+        fixed (byte* pData = data)
+        {
+            return HidGetInputReportPointerNativeFunction(dev, (IntPtr)pData, length);
+        }
     }
 
 
@@ -650,6 +740,21 @@ public static partial class SDL
     public static int HIDGetReportDescriptor(IntPtr dev, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, UIntPtr bufSize)
     {
         return HIDGetReportDescriptorNativeFunction(dev, buf, bufSize);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_hid_get_report_descriptor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_hid_get_report_descriptor(IntPtr dev, IntPtr buf, UIntPtr bufSize);
+    private delegate int HIDGetReportDescriptorPointerNativeDelegate(IntPtr dev, IntPtr buf, UIntPtr bufSize);
+    private static HIDGetReportDescriptorPointerNativeDelegate HIDGetReportDescriptorPointerNativeFunction = SDL_hid_get_report_descriptor;
+
+    /// <inheritdoc cref="HIDGetReportDescriptor(nint, byte[], UIntPtr)"/>
+    public static unsafe int HIDGetReportDescriptor(IntPtr dev, Span<byte> buf, UIntPtr bufSize)
+    {
+        fixed (byte* pBuf = buf)
+        {
+            return HIDGetReportDescriptorPointerNativeFunction(dev, (IntPtr)pBuf, bufSize);
+        }
     }
 
 

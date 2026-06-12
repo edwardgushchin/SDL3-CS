@@ -172,6 +172,7 @@ internal static class PInvokeTests
         AssertNativeImport(GetNativeMethod("SDL_ConvertSurface"), "SDL_ConvertSurface");
         AssertNativeImport(GetNativeMethod("SDL_ConvertSurfaceAndColorspace"), "SDL_ConvertSurfaceAndColorspace");
         AssertNativeBoolImport(GetNativeMethod("SDL_ConvertPixelsPointerToPointer"), "SDL_ConvertPixels");
+        AssertNativeBoolImport(GetNativeMethod("SDL_ConvertPixelsSpan"), "SDL_ConvertPixels");
         MethodInfo convertPixelsArrayToPointer = GetNativeMethod("SDL_ConvertPixelsArrayToPointer");
         AssertNativeBoolImport(convertPixelsArrayToPointer, "SDL_ConvertPixels");
         AssertArrayParameterMarshal(convertPixelsArrayToPointer, 3, 4);
@@ -183,6 +184,7 @@ internal static class PInvokeTests
         AssertArrayParameterMarshal(convertPixelsArrayToArray, 3, 4);
         AssertArrayParameterMarshal(convertPixelsArrayToArray, 6, 7);
         AssertNativeBoolImport(GetNativeMethod("SDL_ConvertPixelsAndColorspacePointerToPointer"), "SDL_ConvertPixelsAndColorspace");
+        AssertNativeBoolImport(GetNativeMethod("SDL_ConvertPixelsAndColorspaceSpan"), "SDL_ConvertPixelsAndColorspace");
         MethodInfo convertPixelsAndColorspaceArrayToPointer = GetNativeMethod("SDL_ConvertPixelsAndColorspaceArrayToPointer");
         AssertNativeBoolImport(convertPixelsAndColorspaceArrayToPointer, "SDL_ConvertPixelsAndColorspace");
         AssertArrayParameterMarshal(convertPixelsAndColorspaceArrayToPointer, 5, 6);
@@ -218,6 +220,7 @@ internal static class PInvokeTests
         MethodInfo fillSurfaceRects = GetNativeMethod("SDL_FillSurfaceRects");
         AssertNativeBoolImport(fillSurfaceRects, "SDL_FillSurfaceRects");
         AssertArrayParameterMarshal(fillSurfaceRects, 1, 2);
+        AssertNativeBoolImport(GetNativeMethod("SDL_FillSurfaceRectsPointer"), "SDL_FillSurfaceRects");
         AssertNativeBoolImport(GetNativeMethod("SDL_BlitSurfacePointerPointer"), "SDL_BlitSurface");
         AssertNativeBoolImport(GetNativeMethod("SDL_BlitSurfacePointerRect"), "SDL_BlitSurface");
         AssertNativeBoolImport(GetNativeMethod("SDL_BlitSurfaceRectPointer"), "SDL_BlitSurface");
@@ -856,6 +859,60 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        nextBytes = outputBytes;
+        nextCount = srcBytes.Length;
+        byte[] spanDst = new byte[outputBytes.Length];
+        using (NativeHookScope _ = NativeHookScope.Install("ConvertPixelsSpanNativeFunction", nameof(CaptureConvertPixelsSpan)))
+        {
+            bool result = SDL3.SDL.ConvertPixels(18, 19, SDL3.SDL.PixelFormat.RGBA8888, srcBytes.AsSpan(), 12, SDL3.SDL.PixelFormat.BGRA8888, spanDst.AsSpan(), 16);
+
+            TestAssert.Equal(true, result, "SDL.ConvertPixels(ReadOnlySpan<byte>, Span<byte>) must return the native hook value.");
+            AssertConvertPixelsCommon(18, 19, SDL3.SDL.PixelFormat.RGBA8888, SDL3.SDL.PixelFormat.BGRA8888, 12, 16);
+            TestAssert.True(capturedSrc != IntPtr.Zero, "SDL.ConvertPixels(ReadOnlySpan<byte>, Span<byte>) must pin source bytes.");
+            TestAssert.True(capturedDst != IntPtr.Zero, "SDL.ConvertPixels(ReadOnlySpan<byte>, Span<byte>) must pin destination bytes.");
+            AssertBytes(srcBytes, capturedBytes, "SDL.ConvertPixels(ReadOnlySpan<byte>, Span<byte>) must forward source bytes.");
+            AssertBytes(outputBytes, spanDst, "SDL.ConvertPixels(ReadOnlySpan<byte>, Span<byte>) must write destination bytes.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        spanDst = new byte[outputBytes.Length];
+        using (NativeHookScope _ = NativeHookScope.Install("ConvertPixelsSpanNativeFunction", nameof(CaptureConvertPixelsSpan)))
+        {
+            bool result = SDL3.SDL.ConvertPixels(20, 21, SDL3.SDL.PixelFormat.ARGB8888, (IntPtr)0x8032, 24, SDL3.SDL.PixelFormat.ABGR8888, spanDst.AsSpan(), 32);
+
+            TestAssert.Equal(true, result, "SDL.ConvertPixels(IntPtr, Span<byte>) must return the native hook value.");
+            AssertConvertPixelsCommon(20, 21, SDL3.SDL.PixelFormat.ARGB8888, SDL3.SDL.PixelFormat.ABGR8888, 24, 32);
+            TestAssert.Equal((IntPtr)0x8032, capturedSrc, "SDL.ConvertPixels(IntPtr, Span<byte>) must forward source pointer.");
+            TestAssert.True(capturedDst != IntPtr.Zero, "SDL.ConvertPixels(IntPtr, Span<byte>) must pin destination bytes.");
+            AssertBytes(outputBytes, spanDst, "SDL.ConvertPixels(IntPtr, Span<byte>) must write destination bytes.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        nextCount = srcBytes.Length;
+        IntPtr nativeDst = Marshal.AllocHGlobal(outputBytes.Length);
+        try
+        {
+            using NativeHookScope _ = NativeHookScope.Install("ConvertPixelsSpanNativeFunction", nameof(CaptureConvertPixelsSpan));
+            bool result = SDL3.SDL.ConvertPixels(22, 23, SDL3.SDL.PixelFormat.RGB24, srcBytes.AsSpan(), 40, SDL3.SDL.PixelFormat.RGBA8888, nativeDst, 48);
+
+            TestAssert.Equal(true, result, "SDL.ConvertPixels(ReadOnlySpan<byte>, IntPtr) must return the native hook value.");
+            AssertConvertPixelsCommon(22, 23, SDL3.SDL.PixelFormat.RGB24, SDL3.SDL.PixelFormat.RGBA8888, 40, 48);
+            TestAssert.True(capturedSrc != IntPtr.Zero, "SDL.ConvertPixels(ReadOnlySpan<byte>, IntPtr) must pin source bytes.");
+            TestAssert.Equal(nativeDst, capturedDst, "SDL.ConvertPixels(ReadOnlySpan<byte>, IntPtr) must forward destination pointer.");
+            AssertBytes(srcBytes, capturedBytes, "SDL.ConvertPixels(ReadOnlySpan<byte>, IntPtr) must forward source bytes.");
+            AssertBytes(outputBytes, CopyBytes(nativeDst, outputBytes.Length), "SDL.ConvertPixels(ReadOnlySpan<byte>, IntPtr) must write destination bytes.");
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(nativeDst);
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         nextPointer = (IntPtr)0x8041;
         using (NativeHookScope _ = NativeHookScope.Install("ConvertPixelsAndColorspacePointerToPointerNativeFunction", nameof(CaptureConvertPixelsAndColorspacePointerToPointer)))
         {
@@ -908,6 +965,63 @@ internal static class PInvokeTests
             AssertConvertPixelsColorspaceCommon(SDL3.SDL.Colorspace.SRGBLinear, 0x16u, SDL3.SDL.Colorspace.SRGB, 0x17u);
             AssertBytes(srcBytes, capturedBytes, "SDL.ConvertPixelsAndColorspace(byte[], out byte[]) must forward source bytes.");
             AssertBytes(outputBytes, dst, "SDL.ConvertPixelsAndColorspace(byte[], out byte[]) must output destination bytes.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        nextCount = srcBytes.Length;
+        spanDst = new byte[outputBytes.Length];
+        using (NativeHookScope _ = NativeHookScope.Install("ConvertPixelsAndColorspaceSpanNativeFunction", nameof(CaptureConvertPixelsAndColorspaceSpan)))
+        {
+            bool result = SDL3.SDL.ConvertPixelsAndColorspace(24, 25, SDL3.SDL.PixelFormat.RGBA8888, SDL3.SDL.Colorspace.SRGB, 0x18u, srcBytes.AsSpan(), 56, SDL3.SDL.PixelFormat.BGRA8888, SDL3.SDL.Colorspace.SRGBLinear, 0x19u, spanDst.AsSpan(), 64);
+
+            TestAssert.Equal(true, result, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, Span<byte>) must return the native hook value.");
+            AssertConvertPixelsCommon(24, 25, SDL3.SDL.PixelFormat.RGBA8888, SDL3.SDL.PixelFormat.BGRA8888, 56, 64);
+            AssertConvertPixelsColorspaceCommon(SDL3.SDL.Colorspace.SRGB, 0x18u, SDL3.SDL.Colorspace.SRGBLinear, 0x19u);
+            TestAssert.True(capturedSrc != IntPtr.Zero, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, Span<byte>) must pin source bytes.");
+            TestAssert.True(capturedDst != IntPtr.Zero, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, Span<byte>) must pin destination bytes.");
+            AssertBytes(srcBytes, capturedBytes, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, Span<byte>) must forward source bytes.");
+            AssertBytes(outputBytes, spanDst, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, Span<byte>) must write destination bytes.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        spanDst = new byte[outputBytes.Length];
+        using (NativeHookScope _ = NativeHookScope.Install("ConvertPixelsAndColorspaceSpanNativeFunction", nameof(CaptureConvertPixelsAndColorspaceSpan)))
+        {
+            bool result = SDL3.SDL.ConvertPixelsAndColorspace(26, 27, SDL3.SDL.PixelFormat.ARGB8888, SDL3.SDL.Colorspace.SRGBLinear, 0x1Au, (IntPtr)0x8072, 72, SDL3.SDL.PixelFormat.ABGR8888, SDL3.SDL.Colorspace.SRGB, 0x1Bu, spanDst.AsSpan(), 80);
+
+            TestAssert.Equal(true, result, "SDL.ConvertPixelsAndColorspace(IntPtr, Span<byte>) must return the native hook value.");
+            AssertConvertPixelsCommon(26, 27, SDL3.SDL.PixelFormat.ARGB8888, SDL3.SDL.PixelFormat.ABGR8888, 72, 80);
+            AssertConvertPixelsColorspaceCommon(SDL3.SDL.Colorspace.SRGBLinear, 0x1Au, SDL3.SDL.Colorspace.SRGB, 0x1Bu);
+            TestAssert.Equal((IntPtr)0x8072, capturedSrc, "SDL.ConvertPixelsAndColorspace(IntPtr, Span<byte>) must forward source pointer.");
+            TestAssert.True(capturedDst != IntPtr.Zero, "SDL.ConvertPixelsAndColorspace(IntPtr, Span<byte>) must pin destination bytes.");
+            AssertBytes(outputBytes, spanDst, "SDL.ConvertPixelsAndColorspace(IntPtr, Span<byte>) must write destination bytes.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        nextCount = srcBytes.Length;
+        nativeDst = Marshal.AllocHGlobal(outputBytes.Length);
+        try
+        {
+            using NativeHookScope _ = NativeHookScope.Install("ConvertPixelsAndColorspaceSpanNativeFunction", nameof(CaptureConvertPixelsAndColorspaceSpan));
+            bool result = SDL3.SDL.ConvertPixelsAndColorspace(28, 29, SDL3.SDL.PixelFormat.RGB24, SDL3.SDL.Colorspace.SRGB, 0x1Cu, srcBytes.AsSpan(), 88, SDL3.SDL.PixelFormat.RGBA8888, SDL3.SDL.Colorspace.SRGBLinear, 0x1Du, nativeDst, 96);
+
+            TestAssert.Equal(true, result, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, IntPtr) must return the native hook value.");
+            AssertConvertPixelsCommon(28, 29, SDL3.SDL.PixelFormat.RGB24, SDL3.SDL.PixelFormat.RGBA8888, 88, 96);
+            AssertConvertPixelsColorspaceCommon(SDL3.SDL.Colorspace.SRGB, 0x1Cu, SDL3.SDL.Colorspace.SRGBLinear, 0x1Du);
+            TestAssert.True(capturedSrc != IntPtr.Zero, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, IntPtr) must pin source bytes.");
+            TestAssert.Equal(nativeDst, capturedDst, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, IntPtr) must forward destination pointer.");
+            AssertBytes(srcBytes, capturedBytes, "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, IntPtr) must forward source bytes.");
+            AssertBytes(outputBytes, CopyBytes(nativeDst, outputBytes.Length), "SDL.ConvertPixelsAndColorspace(ReadOnlySpan<byte>, IntPtr) must write destination bytes.");
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(nativeDst);
         }
     }
 
@@ -968,6 +1082,63 @@ internal static class PInvokeTests
             AssertBytes(srcBytes, capturedBytes, "SDL.PremultiplyAlpha(byte[], out byte[]) must forward source bytes.");
             AssertBytes(outputBytes, dst, "SDL.PremultiplyAlpha(byte[], out byte[]) must output destination bytes.");
             TestAssert.Equal(false, capturedLinear, "SDL.PremultiplyAlpha(byte[], out byte[]) must forward linear.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        nextCount = srcBytes.Length;
+        byte[] spanDst = new byte[outputBytes.Length];
+        using (NativeHookScope _ = NativeHookScope.Install("PremultiplyAlphaPointerToPointerNativeFunction", nameof(CapturePremultiplyAlphaPointerToPointerBytes)))
+        {
+            bool result = SDL3.SDL.PremultiplyAlpha(11, 12, SDL3.SDL.PixelFormat.RGBA8888, srcBytes.AsSpan(), 4096, SDL3.SDL.PixelFormat.BGRA8888, spanDst.AsSpan(), 8192, true);
+
+            TestAssert.Equal(true, result, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, Span<byte>) must return the native hook value.");
+            AssertConvertPixelsCommon(11, 12, SDL3.SDL.PixelFormat.RGBA8888, SDL3.SDL.PixelFormat.BGRA8888, 4096, 8192);
+            TestAssert.True(capturedSrc != IntPtr.Zero, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, Span<byte>) must pin source bytes.");
+            TestAssert.True(capturedDst != IntPtr.Zero, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, Span<byte>) must pin destination bytes.");
+            AssertBytes(srcBytes, capturedBytes, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, Span<byte>) must forward source bytes.");
+            AssertBytes(outputBytes, spanDst, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, Span<byte>) must write destination bytes.");
+            TestAssert.Equal(true, capturedLinear, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, Span<byte>) must forward linear.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        spanDst = new byte[outputBytes.Length];
+        using (NativeHookScope _ = NativeHookScope.Install("PremultiplyAlphaPointerToPointerNativeFunction", nameof(CapturePremultiplyAlphaPointerToPointerBytes)))
+        {
+            bool result = SDL3.SDL.PremultiplyAlpha(13, 14, SDL3.SDL.PixelFormat.ARGB8888, (IntPtr)0x9031, 16384, SDL3.SDL.PixelFormat.ABGR8888, spanDst.AsSpan(), 32768, false);
+
+            TestAssert.Equal(true, result, "SDL.PremultiplyAlpha(IntPtr, Span<byte>) must return the native hook value.");
+            AssertConvertPixelsCommon(13, 14, SDL3.SDL.PixelFormat.ARGB8888, SDL3.SDL.PixelFormat.ABGR8888, 16384, 32768);
+            TestAssert.Equal((IntPtr)0x9031, capturedSrc, "SDL.PremultiplyAlpha(IntPtr, Span<byte>) must forward source pointer.");
+            TestAssert.True(capturedDst != IntPtr.Zero, "SDL.PremultiplyAlpha(IntPtr, Span<byte>) must pin destination bytes.");
+            AssertBytes(outputBytes, spanDst, "SDL.PremultiplyAlpha(IntPtr, Span<byte>) must write destination bytes.");
+            TestAssert.Equal(false, capturedLinear, "SDL.PremultiplyAlpha(IntPtr, Span<byte>) must forward linear.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextBytes = outputBytes;
+        nextCount = srcBytes.Length;
+        IntPtr nativeDst = Marshal.AllocHGlobal(outputBytes.Length);
+        try
+        {
+            using NativeHookScope _ = NativeHookScope.Install("PremultiplyAlphaPointerToPointerNativeFunction", nameof(CapturePremultiplyAlphaPointerToPointerBytes));
+            bool result = SDL3.SDL.PremultiplyAlpha(15, 16, SDL3.SDL.PixelFormat.RGB24, srcBytes.AsSpan(), 65536, SDL3.SDL.PixelFormat.RGBA8888, nativeDst, 131072, true);
+
+            TestAssert.Equal(true, result, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, IntPtr) must return the native hook value.");
+            AssertConvertPixelsCommon(15, 16, SDL3.SDL.PixelFormat.RGB24, SDL3.SDL.PixelFormat.RGBA8888, 65536, 131072);
+            TestAssert.True(capturedSrc != IntPtr.Zero, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, IntPtr) must pin source bytes.");
+            TestAssert.Equal(nativeDst, capturedDst, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, IntPtr) must forward destination pointer.");
+            AssertBytes(srcBytes, capturedBytes, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, IntPtr) must forward source bytes.");
+            AssertBytes(outputBytes, CopyBytes(nativeDst, outputBytes.Length), "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, IntPtr) must write destination bytes.");
+            TestAssert.Equal(true, capturedLinear, "SDL.PremultiplyAlpha(ReadOnlySpan<byte>, IntPtr) must forward linear.");
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(nativeDst);
         }
 
         ResetCaptureState();
@@ -1036,6 +1207,19 @@ internal static class PInvokeTests
             TestAssert.Equal(rects.Length, nextCount, "SDL.FillSurfaceRects must forward count.");
             AssertRectArray(rects, capturedRects, "SDL.FillSurfaceRects must forward rect array.");
             TestAssert.Equal(0xA034u, capturedColor, "SDL.FillSurfaceRects must forward color.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("FillSurfaceRectsPointerNativeFunction", nameof(CaptureFillSurfaceRectsPointer)))
+        {
+            bool result = SDL3.SDL.FillSurfaceRects((IntPtr)0xA041, rects.AsSpan(1), 1, 0xA044u);
+
+            TestAssert.Equal(true, result, "SDL.FillSurfaceRects(ReadOnlySpan<Rect>) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0xA041, capturedDst, "SDL.FillSurfaceRects(ReadOnlySpan<Rect>) must forward destination surface.");
+            TestAssert.Equal(1, nextCount, "SDL.FillSurfaceRects(ReadOnlySpan<Rect>) must forward count.");
+            AssertRectArray([rects[1]], capturedRects, "SDL.FillSurfaceRects(ReadOnlySpan<Rect>) must forward rect span.");
+            TestAssert.Equal(0xA044u, capturedColor, "SDL.FillSurfaceRects(ReadOnlySpan<Rect>) must forward color.");
         }
     }
 
@@ -1824,6 +2008,16 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureConvertPixelsSpan(int width, int height, SDL3.SDL.PixelFormat srcFormat, IntPtr src, int srcPitch, SDL3.SDL.PixelFormat dstFormat, IntPtr dst, int dstPitch)
+    {
+        CaptureConvertPixelsCore(width, height, srcFormat, srcPitch, dstFormat, dstPitch);
+        capturedSrc = src;
+        capturedDst = dst;
+        capturedBytes = CopyBytes(src, nextCount);
+        WriteBytes(dst, nextBytes);
+        return nextBool;
+    }
+
     private static bool CaptureConvertPixelsAndColorspacePointerToPointer(
         int width,
         int height,
@@ -1904,6 +2098,28 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureConvertPixelsAndColorspaceSpan(
+        int width,
+        int height,
+        SDL3.SDL.PixelFormat srcFormat,
+        SDL3.SDL.Colorspace srcColorspace,
+        uint srcProperties,
+        IntPtr src,
+        int srcPitch,
+        SDL3.SDL.PixelFormat dstFormat,
+        SDL3.SDL.Colorspace dstColorspace,
+        uint dstProperties,
+        IntPtr dst,
+        int dstPitch)
+    {
+        CaptureConvertPixelsAndColorspaceCore(width, height, srcFormat, srcColorspace, srcProperties, srcPitch, dstFormat, dstColorspace, dstProperties, dstPitch);
+        capturedSrc = src;
+        capturedDst = dst;
+        capturedBytes = CopyBytes(src, nextCount);
+        WriteBytes(dst, nextBytes);
+        return nextBool;
+    }
+
     private static void CaptureConvertPixelsCore(int width, int height, SDL3.SDL.PixelFormat srcFormat, int srcPitch, SDL3.SDL.PixelFormat dstFormat, int dstPitch)
     {
         capturedWidth = width;
@@ -1938,6 +2154,16 @@ internal static class PInvokeTests
         CapturePremultiplyAlphaCore(width, height, srcFormat, srcPitch, dstFormat, dstPitch, linear);
         capturedSrc = src;
         capturedDst = dst;
+        return nextBool;
+    }
+
+    private static bool CapturePremultiplyAlphaPointerToPointerBytes(int width, int height, SDL3.SDL.PixelFormat srcFormat, IntPtr src, int srcPitch, SDL3.SDL.PixelFormat dstFormat, IntPtr dst, int dstPitch, bool linear)
+    {
+        CapturePremultiplyAlphaCore(width, height, srcFormat, srcPitch, dstFormat, dstPitch, linear);
+        capturedSrc = src;
+        capturedDst = dst;
+        capturedBytes = CopyBytes(src, nextCount);
+        WriteBytes(dst, nextBytes);
         return nextBool;
     }
 
@@ -2008,6 +2234,15 @@ internal static class PInvokeTests
     {
         capturedDst = dst;
         capturedRects = rects;
+        nextCount = count;
+        capturedColor = color;
+        return nextBool;
+    }
+
+    private static bool CaptureFillSurfaceRectsPointer(IntPtr dst, IntPtr rects, int count, uint color)
+    {
+        capturedDst = dst;
+        capturedRects = CopyUnmanaged<SDL3.SDL.Rect>(rects, count);
         nextCount = count;
         capturedColor = color;
         return nextBool;
@@ -2286,6 +2521,24 @@ internal static class PInvokeTests
         TestAssert.Equal(dstProperties, capturedDstProperties, "pixel colorspace conversion must forward destination properties.");
     }
 
+    private static byte[] CopyBytes(IntPtr source, int length)
+    {
+        if (source == IntPtr.Zero || length == 0)
+            return [];
+
+        byte[] bytes = new byte[length];
+        Marshal.Copy(source, bytes, 0, length);
+        return bytes;
+    }
+
+    private static void WriteBytes(IntPtr destination, byte[]? bytes)
+    {
+        if (destination == IntPtr.Zero || bytes is null || bytes.Length == 0)
+            return;
+
+        Marshal.Copy(bytes, 0, destination, bytes.Length);
+    }
+
     private static void AssertBytes(byte[] expected, byte[]? actual, string message)
     {
         TestAssert.NotNull(actual, message);
@@ -2481,6 +2734,18 @@ internal static class PInvokeTests
     {
         ExcludeFromCodeCoverageAttribute? attribute = method.GetCustomAttribute<ExcludeFromCodeCoverageAttribute>();
         TestAssert.NotNull(attribute, $"SDL.{method.Name} native stub must be excluded from code coverage.");
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
     }
 
     private sealed class NativeHookScope : IDisposable

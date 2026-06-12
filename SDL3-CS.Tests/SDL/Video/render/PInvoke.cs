@@ -78,6 +78,7 @@ internal static class PInvokeTests
     private static float[]? capturedXY;
     private static SDL3.SDL.FColor[]? capturedColors;
     private static float[]? capturedUV;
+    private static float[]? capturedColorFloats;
     private static byte[]? capturedByteIndices;
     private static SDL3.SDL.Rect capturedRect;
     private static SDL3.SDL.Rect nextRect;
@@ -317,6 +318,7 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTexture9GridTiledDestinationRect"), "SDL_RenderTexture9GridTiled");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTexture9GridTiledRects"), "SDL_RenderTexture9GridTiled");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderGeometryPointerIndices"), "SDL_RenderGeometry");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderGeometryPointers"), "SDL_RenderGeometry");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderGeometryArrayIndices"), "SDL_RenderGeometry");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderGeometryRawPointers"), "SDL_RenderGeometryRaw");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderGeometryRawPointerIndices"), "SDL_RenderGeometryRaw");
@@ -1336,6 +1338,18 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("RenderPointsPointerNativeFunction", nameof(CaptureRenderPointsPointerSpan)))
+        {
+            bool result = SDL3.SDL.RenderPoints((IntPtr)0x8012, points.AsSpan(1, 1), 1);
+
+            TestAssert.Equal(true, result, "SDL.RenderPoints(ReadOnlySpan<FPoint>) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x8012, capturedRenderer, "SDL.RenderPoints(ReadOnlySpan<FPoint>) must forward renderer.");
+            AssertFPoints([points[1]], capturedFPoints, "SDL.RenderPoints(ReadOnlySpan<FPoint>) must forward span slice.");
+            TestAssert.Equal(1, capturedCount, "SDL.RenderPoints(ReadOnlySpan<FPoint>) must forward count.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("RenderPointsPointerNativeFunction", nameof(CaptureRenderPointsPointer)))
         {
             bool result = SDL3.SDL.RenderPoints((IntPtr)0x8021, (IntPtr)0x8022, 3);
@@ -1370,6 +1384,18 @@ internal static class PInvokeTests
             TestAssert.Equal((IntPtr)0x8041, capturedRenderer, "SDL.RenderLines(FPoint[]) must forward renderer.");
             AssertFPoints(points, capturedFPoints, "SDL.RenderLines(FPoint[]) must forward points.");
             TestAssert.Equal(2, capturedCount, "SDL.RenderLines(FPoint[]) must forward count.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("RenderLinesPointerNativeFunction", nameof(CaptureRenderLinesPointerSpan)))
+        {
+            bool result = SDL3.SDL.RenderLines((IntPtr)0x8042, points.AsSpan(0, 2), 2);
+
+            TestAssert.Equal(true, result, "SDL.RenderLines(ReadOnlySpan<FPoint>) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x8042, capturedRenderer, "SDL.RenderLines(ReadOnlySpan<FPoint>) must forward renderer.");
+            AssertFPoints(points, capturedFPoints, "SDL.RenderLines(ReadOnlySpan<FPoint>) must forward span.");
+            TestAssert.Equal(2, capturedCount, "SDL.RenderLines(ReadOnlySpan<FPoint>) must forward count.");
         }
 
         ResetCaptureState();
@@ -1420,6 +1446,18 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("RenderRectsPointerNativeFunction", nameof(CaptureRenderRectsPointerSpan)))
+        {
+            bool result = SDL3.SDL.RenderRects((IntPtr)0x8082, rects.AsSpan(1, 1), 1);
+
+            TestAssert.Equal(true, result, "SDL.RenderRects(ReadOnlySpan<FRect>) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x8082, capturedRenderer, "SDL.RenderRects(ReadOnlySpan<FRect>) must forward renderer.");
+            AssertFRects([rects[1]], capturedFRects, "SDL.RenderRects(ReadOnlySpan<FRect>) must forward span slice.");
+            TestAssert.Equal(1, capturedCount, "SDL.RenderRects(ReadOnlySpan<FRect>) must forward count.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("RenderRectsPointerNativeFunction", nameof(CaptureRenderRectsPointer)))
         {
             bool result = SDL3.SDL.RenderRects((IntPtr)0x8091, (IntPtr)0x8092, 3);
@@ -1462,6 +1500,18 @@ internal static class PInvokeTests
             TestAssert.Equal((IntPtr)0x80C1, capturedRenderer, "SDL.RenderFillRects(FRect[]) must forward renderer.");
             AssertFRects(rects, capturedFRects, "SDL.RenderFillRects(FRect[]) must forward rects.");
             TestAssert.Equal(2, capturedCount, "SDL.RenderFillRects(FRect[]) must forward count.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("RenderFillRectsPointerNativeFunction", nameof(CaptureRenderFillRectsPointerSpan)))
+        {
+            bool result = SDL3.SDL.RenderFillRects((IntPtr)0x80C2, rects.AsSpan(), 2);
+
+            TestAssert.Equal(true, result, "SDL.RenderFillRects(ReadOnlySpan<FRect>) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x80C2, capturedRenderer, "SDL.RenderFillRects(ReadOnlySpan<FRect>) must forward renderer.");
+            AssertFRects(rects, capturedFRects, "SDL.RenderFillRects(ReadOnlySpan<FRect>) must forward span.");
+            TestAssert.Equal(2, capturedCount, "SDL.RenderFillRects(ReadOnlySpan<FRect>) must forward count.");
         }
 
         ResetCaptureState();
@@ -2003,6 +2053,27 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        int[] pointerIndices = [7, 8];
+        IntPtr nativePointerIndices = Marshal.AllocHGlobal(sizeof(int) * pointerIndices.Length);
+        try
+        {
+            Marshal.Copy(pointerIndices, 0, nativePointerIndices, pointerIndices.Length);
+            using NativeHookScope _ = NativeHookScope.Install("RenderGeometryPointersNativeFunction", nameof(CaptureRenderGeometryPointers));
+            bool result = SDL3.SDL.RenderGeometry((IntPtr)0xD004, (IntPtr)0xD005, vertices.AsSpan(1, 2), 2, nativePointerIndices, 2);
+
+            TestAssert.Equal(true, result, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, IntPtr indices) must return the native hook value.");
+            AssertGeometryBase((IntPtr)0xD004, (IntPtr)0xD005, 2, 2, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, IntPtr indices)");
+            AssertVertices([vertices[1], vertices[2]], capturedVertices, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, IntPtr indices) must forward vertex span slice.");
+            TestAssert.Equal(nativePointerIndices, capturedIndicesPointer, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, IntPtr indices) must forward indices pointer.");
+            AssertInts(pointerIndices, capturedIntIndices, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, IntPtr indices) must forward unmanaged indices.");
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(nativePointerIndices);
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("RenderGeometryArrayIndicesNativeFunction", nameof(CaptureRenderGeometryArrayIndices)))
         {
             bool result = SDL3.SDL.RenderGeometry((IntPtr)0xD011, (IntPtr)0xD012, vertices, 3, intIndices, 3);
@@ -2011,6 +2082,18 @@ internal static class PInvokeTests
             AssertGeometryBase((IntPtr)0xD011, (IntPtr)0xD012, 3, 3, "SDL.RenderGeometry(int[] indices)");
             AssertVertices(vertices, capturedVertices, "SDL.RenderGeometry(int[] indices) must forward vertices.");
             AssertInts(intIndices, capturedIntIndices, "SDL.RenderGeometry(int[] indices) must forward indices.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("RenderGeometryPointersNativeFunction", nameof(CaptureRenderGeometryPointers)))
+        {
+            bool result = SDL3.SDL.RenderGeometry((IntPtr)0xD014, (IntPtr)0xD015, vertices.AsSpan(), 3, intIndices.AsSpan(1, 2), 2);
+
+            TestAssert.Equal(true, result, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, ReadOnlySpan<int>) must return the native hook value.");
+            AssertGeometryBase((IntPtr)0xD014, (IntPtr)0xD015, 3, 2, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, ReadOnlySpan<int>)");
+            AssertVertices(vertices, capturedVertices, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, ReadOnlySpan<int>) must forward vertices.");
+            AssertInts([1, 2], capturedIntIndices, "SDL.RenderGeometry(ReadOnlySpan<Vertex>, ReadOnlySpan<int>) must forward index span slice.");
         }
 
         ResetCaptureState();
@@ -2084,6 +2167,40 @@ internal static class PInvokeTests
         TestAssert.True(capturedColorPointer != IntPtr.Zero, "SDL.RenderGeometryRaw<TIndex>(int indices) must pin colors.");
         TestAssert.True(capturedUVPointer != IntPtr.Zero, "SDL.RenderGeometryRaw<TIndex>(int indices) must pin uv.");
         TestAssert.True(capturedIndicesPointer != IntPtr.Zero, "SDL.RenderGeometryRaw<TIndex>(int indices) must pin indices.");
+
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope rawFloatSpans = NativeHookScope.Install("RenderGeometryRawPointersNativeFunction", nameof(CaptureRenderGeometryRawFloatSpans));
+        float[] interleavedFloats =
+        [
+            1.0f, 2.0f,
+            0.1f, 0.2f, 0.3f, 0.4f,
+            0.0f, 0.1f,
+            3.0f, 4.0f,
+            0.5f, 0.6f, 0.7f, 0.8f,
+            0.2f, 0.3f,
+        ];
+        bool rawFloatResult = SDL3.SDL.RenderGeometryRaw<ushort>(
+            (IntPtr)0xD071,
+            (IntPtr)0xD072,
+            interleavedFloats.AsSpan(0, 10),
+            sizeof(float) * 8,
+            interleavedFloats.AsSpan(2, 10),
+            sizeof(float) * 8,
+            interleavedFloats.AsSpan(6, 10),
+            sizeof(float) * 8,
+            2,
+            ReadOnlySpan<ushort>.Empty,
+            0,
+            sizeof(ushort));
+
+        TestAssert.Equal(true, rawFloatResult, "SDL.RenderGeometryRaw<TIndex>(float color spans) must return the native hook value.");
+        AssertGeometryBase((IntPtr)0xD071, (IntPtr)0xD072, 2, 0, "SDL.RenderGeometryRaw<TIndex>(float color spans)");
+        AssertFloats([1.0f, 2.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.0f, 0.1f, 3.0f, 4.0f], capturedXY, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward xy pointer.");
+        AssertFloats([0.1f, 0.2f, 0.3f, 0.4f, 0.0f, 0.1f, 3.0f, 4.0f, 0.5f, 0.6f, 0.7f, 0.8f], capturedColorFloats, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward color pointer.");
+        AssertFloats([0.0f, 0.1f, 3.0f, 4.0f, 0.5f, 0.6f, 0.7f, 0.8f, 0.2f, 0.3f], capturedUV, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward uv pointer.");
+        TestAssert.Equal(IntPtr.Zero, capturedIndicesPointer, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward empty indices as null.");
+        TestAssert.Equal(0, capturedSizeIndices, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward empty index size as zero.");
     }
 
     public static void RenderTextureAddressReadPresentDestroyFlushAndMetalFunctions_ForwardInputsOutputsAndReturnNativeValues()
@@ -2820,6 +2937,15 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureRenderPointsPointerSpan(IntPtr renderer, IntPtr points, int count)
+    {
+        capturedRenderer = renderer;
+        capturedPointer = points;
+        capturedFPoints = CopyUnmanaged<SDL3.SDL.FPoint>(points, count);
+        capturedCount = count;
+        return nextBool;
+    }
+
     private static bool CaptureRenderLine(IntPtr renderer, float x1, float y1, float x2, float y2)
     {
         capturedRenderer = renderer;
@@ -2842,6 +2968,15 @@ internal static class PInvokeTests
     {
         capturedRenderer = renderer;
         capturedPointer = points;
+        capturedCount = count;
+        return nextBool;
+    }
+
+    private static bool CaptureRenderLinesPointerSpan(IntPtr renderer, IntPtr points, int count)
+    {
+        capturedRenderer = renderer;
+        capturedPointer = points;
+        capturedFPoints = CopyUnmanaged<SDL3.SDL.FPoint>(points, count);
         capturedCount = count;
         return nextBool;
     }
@@ -2876,6 +3011,15 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureRenderRectsPointerSpan(IntPtr renderer, IntPtr rects, int count)
+    {
+        capturedRenderer = renderer;
+        capturedPointer = rects;
+        capturedFRects = CopyUnmanaged<SDL3.SDL.FRect>(rects, count);
+        capturedCount = count;
+        return nextBool;
+    }
+
     private static bool CaptureRenderFillRectPointer(IntPtr renderer, IntPtr rect)
     {
         capturedRenderer = renderer;
@@ -2902,6 +3046,15 @@ internal static class PInvokeTests
     {
         capturedRenderer = renderer;
         capturedPointer = rects;
+        capturedCount = count;
+        return nextBool;
+    }
+
+    private static bool CaptureRenderFillRectsPointerSpan(IntPtr renderer, IntPtr rects, int count)
+    {
+        capturedRenderer = renderer;
+        capturedPointer = rects;
+        capturedFRects = CopyUnmanaged<SDL3.SDL.FRect>(rects, count);
         capturedCount = count;
         return nextBool;
     }
@@ -3262,6 +3415,15 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureRenderGeometryPointers(IntPtr renderer, IntPtr texture, IntPtr vertices, int numVertices, IntPtr indices, int numIndices)
+    {
+        CaptureGeometryBase(renderer, texture, numVertices, numIndices);
+        capturedVertices = CopyUnmanaged<SDL3.SDL.Vertex>(vertices, numVertices);
+        capturedIndicesPointer = indices;
+        capturedIntIndices = CopyUnmanaged<int>(indices, numIndices);
+        return nextBool;
+    }
+
     private static bool CaptureRenderGeometryRawPointers(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color, int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices)
     {
         CaptureGeometryBase(renderer, texture, numVertices, numIndices);
@@ -3273,6 +3435,15 @@ internal static class PInvokeTests
         capturedUVStride = uvStride;
         capturedIndicesPointer = indices;
         capturedSizeIndices = sizeIndices;
+        return nextBool;
+    }
+
+    private static bool CaptureRenderGeometryRawFloatSpans(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color, int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices)
+    {
+        CaptureRenderGeometryRawPointers(renderer, texture, xy, xyStride, color, colorStride, uv, uvStride, numVertices, indices, numIndices, sizeIndices);
+        capturedXY = CopyUnmanaged<float>(xy, FloatElementCount(numVertices, xyStride, 2));
+        capturedColorFloats = CopyUnmanaged<float>(color, FloatElementCount(numVertices, colorStride, 4));
+        capturedUV = CopyUnmanaged<float>(uv, FloatElementCount(numVertices, uvStride, 2));
         return nextBool;
     }
 
@@ -3795,6 +3966,23 @@ internal static class PInvokeTests
         }
     }
 
+    private static int FloatElementCount(int count, int stride, int elementWidth)
+    {
+        return count <= 0 ? 0 : ((count - 1) * (stride / sizeof(float))) + elementWidth;
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
+    }
+
     private static void AssertYuvPlanes(IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch, string message)
     {
         TestAssert.Equal(yplane, capturedYPlane, $"{message} must forward Y plane.");
@@ -3886,6 +4074,7 @@ internal static class PInvokeTests
         capturedXY = null;
         capturedColors = null;
         capturedUV = null;
+        capturedColorFloats = null;
         capturedByteIndices = null;
         capturedRect = default;
         nextRect = default;

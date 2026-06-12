@@ -17,8 +17,11 @@ internal static class PInvokeTests
     private static IntPtr capturedFreeMemory;
     private static SDL3.SDL.MouseMotionTransformCallback? capturedTransformCallback;
     private static byte[]? capturedData;
+    private static IntPtr capturedDataPointer;
     private static byte[]? capturedMask;
+    private static IntPtr capturedMaskPointer;
     private static SDL3.SDL.CursorFrameInfo[]? capturedFrames;
+    private static IntPtr capturedFramesPointer;
     private static SDL3.SDL.SystemCursor capturedSystemCursor;
     private static bool capturedEnabled;
     private static float capturedX;
@@ -55,8 +58,10 @@ internal static class PInvokeTests
         GetWindowRelativeMouseMode_ForwardsWindowAndReturnsNativeValue();
         CaptureMouse_ForwardsEnabledAndReturnsNativeValue();
         CreateCursor_ForwardsDataMaskDimensionsAndReturnsNativePointer();
+        CreateCursorSpan_ForwardsPinnedDataMaskDimensionsAndReturnsNativePointer();
         CreateColorCursor_ForwardsSurfaceHotspotAndReturnsNativePointer();
         CreateAnimatedCursor_ForwardsFramesCountHotspotAndReturnsNativePointer();
+        CreateAnimatedCursorSpan_ForwardsPinnedFramesCountHotspotAndReturnsNativePointer();
         CreateSystemCursor_ForwardsIdAndReturnsNativePointer();
         SetCursor_ForwardsCursorAndReturnsNativeValue();
         GetCursor_ReturnsNativePointer();
@@ -304,7 +309,7 @@ internal static class PInvokeTests
 
     public static void CreateCursor_ForwardsDataMaskDimensionsAndReturnsNativePointer()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateCursor");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateCursor", typeof(byte[]), typeof(byte[]), typeof(int), typeof(int), typeof(int), typeof(int));
         AssertSdlImport(nativeMethod, "SDL_CreateCursor");
 
         ResetCaptureState();
@@ -323,6 +328,31 @@ internal static class PInvokeTests
         TestAssert.Equal(3, capturedHotX, "SDL.CreateCursor must forward hotX.");
         TestAssert.Equal(4, capturedHotY, "SDL.CreateCursor must forward hotY.");
         TestAssert.Equal(1, capturedCallCount, "SDL.CreateCursor must call the native hook once.");
+    }
+
+    public static void CreateCursorSpan_ForwardsPinnedDataMaskDimensionsAndReturnsNativePointer()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateCursor", typeof(IntPtr), typeof(IntPtr), typeof(int), typeof(int), typeof(int), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_CreateCursor");
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x5607;
+        byte[] data = [0xAA, 0x55];
+        byte[] mask = [0xFF, 0x00];
+
+        using NativeHookScope _ = NativeHookScope.Install("CreateCursorPointerNativeFunction", nameof(CaptureCreateCursorPointer));
+        IntPtr result = SDL3.SDL.CreateCursor(data.AsSpan(), mask.AsSpan(), 16, 8, 3, 4);
+
+        TestAssert.Equal((IntPtr)0x5607, result, "SDL.CreateCursor span overload must return the native hook value.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, "SDL.CreateCursor span overload must pin data.");
+        TestAssert.True(capturedMaskPointer != IntPtr.Zero, "SDL.CreateCursor span overload must pin mask.");
+        AssertBytes(data, capturedData ?? [], "SDL.CreateCursor span overload must forward data bytes.");
+        AssertBytes(mask, capturedMask ?? [], "SDL.CreateCursor span overload must forward mask bytes.");
+        TestAssert.Equal(16, capturedW, "SDL.CreateCursor span overload must forward width.");
+        TestAssert.Equal(8, capturedH, "SDL.CreateCursor span overload must forward height.");
+        TestAssert.Equal(3, capturedHotX, "SDL.CreateCursor span overload must forward hotX.");
+        TestAssert.Equal(4, capturedHotY, "SDL.CreateCursor span overload must forward hotY.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateCursor span overload must call the native hook once.");
     }
 
     public static void CreateColorCursor_ForwardsSurfaceHotspotAndReturnsNativePointer()
@@ -346,7 +376,7 @@ internal static class PInvokeTests
 
     public static void CreateAnimatedCursor_ForwardsFramesCountHotspotAndReturnsNativePointer()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateAnimatedCursor");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateAnimatedCursor", typeof(SDL3.SDL.CursorFrameInfo[]), typeof(int), typeof(int), typeof(int));
         AssertSdlImport(nativeMethod, "SDL_CreateAnimatedCursor");
         AssertArrayParameterMarshal(nativeMethod, "frames", 1);
 
@@ -367,6 +397,32 @@ internal static class PInvokeTests
         TestAssert.Equal(7, capturedHotX, "SDL.CreateAnimatedCursor must forward hotX.");
         TestAssert.Equal(8, capturedHotY, "SDL.CreateAnimatedCursor must forward hotY.");
         TestAssert.Equal(1, capturedCallCount, "SDL.CreateAnimatedCursor must call the native hook once.");
+    }
+
+    public static void CreateAnimatedCursorSpan_ForwardsPinnedFramesCountHotspotAndReturnsNativePointer()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateAnimatedCursor", typeof(IntPtr), typeof(int), typeof(int), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_CreateAnimatedCursor");
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x590A;
+        SDL3.SDL.CursorFrameInfo[] frames =
+        [
+            new() { Surface = (IntPtr)0x5911, Duration = 16 },
+            new() { Surface = (IntPtr)0x5912, Duration = 32 }
+        ];
+
+        using NativeHookScope _ = NativeHookScope.Install("CreateAnimatedCursorPointerNativeFunction", nameof(CaptureCreateAnimatedCursorPointer));
+        IntPtr result = SDL3.SDL.CreateAnimatedCursor(frames.AsSpan(), frames.Length, 7, 8);
+
+        TestAssert.Equal((IntPtr)0x590A, result, "SDL.CreateAnimatedCursor span overload must return the native hook value.");
+        TestAssert.True(capturedFramesPointer != IntPtr.Zero, "SDL.CreateAnimatedCursor span overload must pin frames.");
+        TestAssert.Equal(frames.Length, capturedFrameCount, "SDL.CreateAnimatedCursor span overload must forward frame count.");
+        TestAssert.Equal(frames[0].Surface, capturedFrames![0].Surface, "SDL.CreateAnimatedCursor span overload must forward frame 0 surface.");
+        TestAssert.Equal(frames[1].Duration, capturedFrames![1].Duration, "SDL.CreateAnimatedCursor span overload must forward frame 1 duration.");
+        TestAssert.Equal(7, capturedHotX, "SDL.CreateAnimatedCursor span overload must forward hotX.");
+        TestAssert.Equal(8, capturedHotY, "SDL.CreateAnimatedCursor span overload must forward hotY.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateAnimatedCursor span overload must call the native hook once.");
     }
 
     public static void CreateSystemCursor_ForwardsIdAndReturnsNativePointer()
@@ -609,6 +665,20 @@ internal static class PInvokeTests
         return nextPointer;
     }
 
+    private static IntPtr CaptureCreateCursorPointer(IntPtr data, IntPtr mask, int w, int h, int hotX, int hotY)
+    {
+        capturedCallCount++;
+        capturedDataPointer = data;
+        capturedMaskPointer = mask;
+        capturedData = CopyBytes(data, 2);
+        capturedMask = CopyBytes(mask, 2);
+        capturedW = w;
+        capturedH = h;
+        capturedHotX = hotX;
+        capturedHotY = hotY;
+        return nextPointer;
+    }
+
     private static IntPtr CaptureCreateColorCursor(IntPtr surface, int hotX, int hotY)
     {
         capturedCallCount++;
@@ -622,6 +692,17 @@ internal static class PInvokeTests
     {
         capturedCallCount++;
         capturedFrames = frames;
+        capturedFrameCount = frameCount;
+        capturedHotX = hotX;
+        capturedHotY = hotY;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureCreateAnimatedCursorPointer(IntPtr frames, int frameCount, int hotX, int hotY)
+    {
+        capturedCallCount++;
+        capturedFramesPointer = frames;
+        capturedFrames = CopyCursorFrames(frames, frameCount);
         capturedFrameCount = frameCount;
         capturedHotX = hotX;
         capturedHotY = hotY;
@@ -670,8 +751,11 @@ internal static class PInvokeTests
         capturedFreeMemory = IntPtr.Zero;
         capturedTransformCallback = null;
         capturedData = null;
+        capturedDataPointer = IntPtr.Zero;
         capturedMask = null;
+        capturedMaskPointer = IntPtr.Zero;
         capturedFrames = null;
+        capturedFramesPointer = IntPtr.Zero;
         capturedSystemCursor = default;
         capturedEnabled = false;
         capturedX = 0;
@@ -708,6 +792,47 @@ internal static class PInvokeTests
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
         TestAssert.NotNull(method, $"SDL.{methodName} method must be private static.");
         return method!;
+    }
+
+    private static MethodInfo GetNativeMethod(string methodName, params Type[] parameterTypes)
+    {
+        MethodInfo? method = typeof(SDL3.SDL).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, parameterTypes);
+        TestAssert.NotNull(method, $"SDL.{methodName} overload must be private static.");
+        return method!;
+    }
+
+    private static byte[] CopyBytes(IntPtr source, int length)
+    {
+        if (source == IntPtr.Zero || length == 0)
+            return [];
+
+        byte[] bytes = new byte[length];
+        Marshal.Copy(source, bytes, 0, length);
+        return bytes;
+    }
+
+    private static SDL3.SDL.CursorFrameInfo[] CopyCursorFrames(IntPtr source, int count)
+    {
+        if (source == IntPtr.Zero || count == 0)
+            return [];
+
+        SDL3.SDL.CursorFrameInfo[] frames = new SDL3.SDL.CursorFrameInfo[count];
+        int size = Marshal.SizeOf<SDL3.SDL.CursorFrameInfo>();
+        for (int i = 0; i < count; i++)
+        {
+            frames[i] = Marshal.PtrToStructure<SDL3.SDL.CursorFrameInfo>(source + (i * size));
+        }
+
+        return frames;
+    }
+
+    private static void AssertBytes(byte[] expected, byte[] actual, string message)
+    {
+        TestAssert.Equal(expected.Length, actual.Length, $"{message} Length must match.");
+        for (int i = 0; i < expected.Length; i++)
+        {
+            TestAssert.Equal(expected[i], actual[i], $"{message} Byte {i} must match.");
+        }
     }
 
     private static void AssertSdlImport(MethodInfo method, string entryPoint)

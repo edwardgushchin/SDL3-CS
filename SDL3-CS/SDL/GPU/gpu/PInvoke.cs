@@ -672,9 +672,9 @@ public partial class SDL
     /// <seealso cref="BeginGPURenderPass(nint, in GPUColorTargetInfo[], uint, nint)"/>
     /// <seealso cref="BeginGPURenderPass(nint, nint, uint, in GPUDepthStencilTargetInfo)"/>
     /// <seealso cref="BeginGPURenderPass(nint, in GPUColorTargetInfo[], uint, in GPUDepthStencilTargetInfo)"/>
-    /// <seealso cref="BeginGPUComputePass"/>
+    /// <seealso cref="BeginGPUComputePass(nint, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>
     /// <seealso cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
-    /// <seealso cref="BindGPUVertexStorageTextures"/>
+    /// <seealso cref="BindGPUVertexStorageTextures(nint, uint, nint[], uint)"/>
     /// <seealso cref="BindGPUFragmentSamplers(nint, uint, nint, uint)"/>
     /// <seealso cref="BindGPUFragmentStorageTextures(nint, uint, nint[], uint)"/>
     /// <seealso cref="BindGPUComputeStorageTextures(nint, uint, nint[], uint)"/>
@@ -722,7 +722,7 @@ public partial class SDL
     /// <seealso cref="CopyGPUBufferToBuffer"/>
     /// <seealso cref="BindGPUVertexBuffers(nint, uint, GPUBufferBinding[], uint)"/>
     /// <seealso cref="BindGPUIndexBuffer"/>
-    /// <seealso cref="BindGPUVertexStorageBuffers"/>
+    /// <seealso cref="BindGPUVertexStorageBuffers(nint, uint, nint[], uint)"/>
     /// <seealso cref="BindGPUFragmentStorageBuffers(nint, uint, nint[], uint)"/>
     /// <seealso cref="DrawGPUPrimitivesIndirect"/>
     /// <seealso cref="DrawGPUIndexedPrimitivesIndirect"/>
@@ -1111,6 +1111,15 @@ public partial class SDL
         PushGPUVertexUniformDataArrayNativeFunction(commandBuffer, slotIndex, data, length);
     }
 
+    /// <inheritdoc cref="PushGPUVertexUniformData(nint, uint, byte[], uint)"/>
+    public static unsafe void PushGPUVertexUniformData(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length)
+    {
+        fixed (byte* pData = data)
+        {
+            PushGPUVertexUniformData(commandBuffer, slotIndex, (IntPtr)pData, length);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUFragmentUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1158,6 +1167,15 @@ public partial class SDL
         PushGPUFragmentUniformDataArrayNativeFunction(commandBuffer, slotIndex, data, length);
     }
 
+    /// <inheritdoc cref="PushGPUFragmentUniformData(nint, uint, byte[], uint)"/>
+    public static unsafe void PushGPUFragmentUniformData(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length)
+    {
+        fixed (byte* pData = data)
+        {
+            PushGPUFragmentUniformData(commandBuffer, slotIndex, (IntPtr)pData, length);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_PushGPUComputeUniformData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1203,6 +1221,15 @@ public partial class SDL
     public static void PushGPUComputeUniformData(IntPtr commandBuffer, uint slotIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint length)
     {
         PushGPUComputeUniformDataArrayNativeFunction(commandBuffer, slotIndex, data, length);
+    }
+
+    /// <inheritdoc cref="PushGPUComputeUniformData(nint, uint, byte[], uint)"/>
+    public static unsafe void PushGPUComputeUniformData(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length)
+    {
+        fixed (byte* pData = data)
+        {
+            PushGPUComputeUniformData(commandBuffer, slotIndex, (IntPtr)pData, length);
+        }
     }
 
 
@@ -1276,6 +1303,15 @@ public partial class SDL
         }
     }
 
+    /// <inheritdoc cref="BeginGPURenderPass(nint, in GPUColorTargetInfo[], uint, nint)"/>
+    public static unsafe IntPtr BeginGPURenderPass(IntPtr commandBuffer, ReadOnlySpan<GPUColorTargetInfo> colorTargetInfos, uint numColorTargets, IntPtr depthStencilTargetInfo)
+    {
+        fixed (GPUColorTargetInfo* pInfos = colorTargetInfos)
+        {
+            return BeginGPURenderPass(commandBuffer, (IntPtr)pInfos, numColorTargets, depthStencilTargetInfo);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPURenderPass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1344,6 +1380,15 @@ public partial class SDL
             {
                 return BeginGPURenderPass(commandBuffer, (nint)pInfos, numColorTargets, depthStencilTargetInfo);
             }
+        }
+    }
+
+    /// <inheritdoc cref="BeginGPURenderPass(nint, in GPUColorTargetInfo[], uint, in GPUDepthStencilTargetInfo)"/>
+    public static unsafe IntPtr BeginGPURenderPass(IntPtr commandBuffer, ReadOnlySpan<GPUColorTargetInfo> colorTargetInfos, uint numColorTargets, in GPUDepthStencilTargetInfo depthStencilTargetInfo)
+    {
+        fixed (GPUColorTargetInfo* pInfos = colorTargetInfos)
+        {
+            return BeginGPURenderPass(commandBuffer, (IntPtr)pInfos, numColorTargets, depthStencilTargetInfo);
         }
     }
 
@@ -1474,6 +1519,15 @@ public partial class SDL
         }
     }
 
+    /// <inheritdoc cref="BindGPUVertexBuffers(nint, uint, GPUBufferBinding[], uint)"/>
+    public static unsafe void BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, ReadOnlySpan<GPUBufferBinding> bindings, uint numBindings)
+    {
+        fixed (GPUBufferBinding* pBindings = bindings)
+        {
+            BindGPUVertexBuffers(renderPass, firstSlot, (IntPtr)pBindings, numBindings);
+        }
+    }
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_BindGPUVertexBuffers(IntPtr renderPass, uint firstSlot, IntPtr bindings, uint numBindings);
@@ -1554,6 +1608,15 @@ public partial class SDL
 
     }
 
+    /// <inheritdoc cref="BindGPUVertexSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    public static unsafe void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, ReadOnlySpan<GPUTextureSamplerBinding> textureSamplerBindings, uint numBindings)
+    {
+        fixed (GPUTextureSamplerBinding* pTextureSamplerBindings = textureSamplerBindings)
+        {
+            BindGPUVertexSamplers(renderPass, firstSlot, (IntPtr)pTextureSamplerBindings, numBindings);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexSamplers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1606,6 +1669,21 @@ public partial class SDL
         BindGPUVertexStorageTexturesNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_BindGPUVertexStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr storageTextures, uint numBindings);
+    private delegate void BindGPUVertexStorageTexturesPointerNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr storageTextures, uint numBindings);
+    private static BindGPUVertexStorageTexturesPointerNativeDelegate BindGPUVertexStorageTexturesPointerNativeFunction = SDL_BindGPUVertexStorageTextures;
+
+    /// <inheritdoc cref="BindGPUVertexStorageTextures(nint, uint, nint[], uint)"/>
+    public static unsafe void BindGPUVertexStorageTextures(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> storageTextures, uint numBindings)
+    {
+        fixed (IntPtr* pStorageTextures = storageTextures)
+        {
+            BindGPUVertexStorageTexturesPointerNativeFunction(renderPass, firstSlot, (IntPtr)pStorageTextures, numBindings);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1629,6 +1707,21 @@ public partial class SDL
     public static void BindGPUVertexStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings)
     {
         BindGPUVertexStorageBuffersNativeFunction(renderPass, firstSlot, storageBuffers, numBindings);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUVertexStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_BindGPUVertexStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr storageBuffers, uint numBindings);
+    private delegate void BindGPUVertexStorageBuffersPointerNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr storageBuffers, uint numBindings);
+    private static BindGPUVertexStorageBuffersPointerNativeDelegate BindGPUVertexStorageBuffersPointerNativeFunction = SDL_BindGPUVertexStorageBuffers;
+
+    /// <inheritdoc cref="BindGPUVertexStorageBuffers(nint, uint, nint[], uint)"/>
+    public static unsafe void BindGPUVertexStorageBuffers(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> storageBuffers, uint numBindings)
+    {
+        fixed (IntPtr* pStorageBuffers = storageBuffers)
+        {
+            BindGPUVertexStorageBuffersPointerNativeFunction(renderPass, firstSlot, (IntPtr)pStorageBuffers, numBindings);
+        }
     }
 
 
@@ -1683,6 +1776,15 @@ public partial class SDL
     {
         BindGPUFragmentSamplersPointerNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
     }
+
+    /// <inheritdoc cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    public static unsafe void BindGPUFragmentSamplers(IntPtr renderPass, uint firstSlot, ReadOnlySpan<GPUTextureSamplerBinding> textureSamplerBindings, uint numBindings)
+    {
+        fixed (GPUTextureSamplerBinding* pTextureSamplerBindings = textureSamplerBindings)
+        {
+            BindGPUFragmentSamplers(renderPass, firstSlot, (IntPtr)pTextureSamplerBindings, numBindings);
+        }
+    }
     #endregion
 
 
@@ -1735,6 +1837,15 @@ public partial class SDL
     {
         BindGPUFragmentStorageTexturesPointerNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
     }
+
+    /// <inheritdoc cref="BindGPUFragmentStorageTextures(nint, uint, nint[], uint)"/>
+    public static unsafe void BindGPUFragmentStorageTextures(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> storageTextures, uint numBindings)
+    {
+        fixed (IntPtr* pStorageTextures = storageTextures)
+        {
+            BindGPUFragmentStorageTextures(renderPass, firstSlot, (IntPtr)pStorageTextures, numBindings);
+        }
+    }
     #endregion
 
 
@@ -1786,6 +1897,15 @@ public partial class SDL
     public static void BindGPUFragmentStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr storageBuffers, uint numBindings)
     {
         BindGPUFragmentStorageBuffersPointerNativeFunction(renderPass, firstSlot, storageBuffers, numBindings);
+    }
+
+    /// <inheritdoc cref="BindGPUFragmentStorageBuffers(nint, uint, nint[], uint)"/>
+    public static unsafe void BindGPUFragmentStorageBuffers(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> storageBuffers, uint numBindings)
+    {
+        fixed (IntPtr* pStorageBuffers = storageBuffers)
+        {
+            BindGPUFragmentStorageBuffers(renderPass, firstSlot, (IntPtr)pStorageBuffers, numBindings);
+        }
     }
     #endregion
 
@@ -1967,6 +2087,27 @@ public partial class SDL
         return BeginGPUComputePassNativeFunction(commandBuffer, storageTextureBindings, numStorageTextureBindings, storageBufferBindings, numStorageBufferBindings);
     }
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BeginGPUComputePass"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_BeginGPUComputePass(IntPtr commandBuffer, IntPtr storageTextureBindings, uint numStorageTextureBindings, IntPtr storageBufferBindings, uint numStorageBufferBindings);
+    private delegate IntPtr BeginGPUComputePassPointerNativeDelegate(IntPtr commandBuffer, IntPtr storageTextureBindings, uint numStorageTextureBindings, IntPtr storageBufferBindings, uint numStorageBufferBindings);
+    private static BeginGPUComputePassPointerNativeDelegate BeginGPUComputePassPointerNativeFunction = SDL_BeginGPUComputePass;
+
+    public static IntPtr BeginGPUComputePass(IntPtr commandBuffer, IntPtr storageTextureBindings, uint numStorageTextureBindings, IntPtr storageBufferBindings, uint numStorageBufferBindings)
+    {
+        return BeginGPUComputePassPointerNativeFunction(commandBuffer, storageTextureBindings, numStorageTextureBindings, storageBufferBindings, numStorageBufferBindings);
+    }
+
+    /// <inheritdoc cref="BeginGPUComputePass(nint, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>
+    public static unsafe IntPtr BeginGPUComputePass(IntPtr commandBuffer, ReadOnlySpan<GPUStorageTextureReadWriteBinding> storageTextureBindings, uint numStorageTextureBindings, ReadOnlySpan<GPUStorageBufferReadWriteBinding> storageBufferBindings, uint numStorageBufferBindings)
+    {
+        fixed (GPUStorageTextureReadWriteBinding* pStorageTextureBindings = storageTextureBindings)
+        fixed (GPUStorageBufferReadWriteBinding* pStorageBufferBindings = storageBufferBindings)
+        {
+            return BeginGPUComputePass(commandBuffer, (IntPtr)pStorageTextureBindings, numStorageTextureBindings, (IntPtr)pStorageBufferBindings, numStorageBufferBindings);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindGPUComputePipeline"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2038,6 +2179,15 @@ public partial class SDL
     {
         BindGPUComputeSamplersPointerNativeFunction(computePass, firstSlot, textureSamplerBindings, numBindings);
     }
+
+    /// <inheritdoc cref="BindGPUComputeSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
+    public static unsafe void BindGPUComputeSamplers(IntPtr computePass, uint firstSlot, ReadOnlySpan<GPUTextureSamplerBinding> textureSamplerBindings, uint numBindings)
+    {
+        fixed (GPUTextureSamplerBinding* pTextureSamplerBindings = textureSamplerBindings)
+        {
+            BindGPUComputeSamplers(computePass, firstSlot, (IntPtr)pTextureSamplerBindings, numBindings);
+        }
+    }
     #endregion
 
 
@@ -2090,6 +2240,15 @@ public partial class SDL
     {
         BindGPUComputeStorageTexturesPointerNativeFunction(computePass, firstSlot, storageTextures, numBindings);
     }
+
+    /// <inheritdoc cref="BindGPUComputeStorageTextures(nint, uint, nint[], uint)"/>
+    public static unsafe void BindGPUComputeStorageTextures(IntPtr computePass, uint firstSlot, ReadOnlySpan<IntPtr> storageTextures, uint numBindings)
+    {
+        fixed (IntPtr* pStorageTextures = storageTextures)
+        {
+            BindGPUComputeStorageTextures(computePass, firstSlot, (IntPtr)pStorageTextures, numBindings);
+        }
+    }
     #endregion
 
 
@@ -2141,6 +2300,15 @@ public partial class SDL
     public static void BindGPUComputeStorageBuffers(IntPtr computePass, uint firstSlot, IntPtr storageBuffers, uint numBindings)
     {
         BindGPUComputeStorageBuffersPointerNativeFunction(computePass, firstSlot, storageBuffers, numBindings);
+    }
+
+    /// <inheritdoc cref="BindGPUComputeStorageBuffers(nint, uint, nint[], uint)"/>
+    public static unsafe void BindGPUComputeStorageBuffers(IntPtr computePass, uint firstSlot, ReadOnlySpan<IntPtr> storageBuffers, uint numBindings)
+    {
+        fixed (IntPtr* pStorageBuffers = storageBuffers)
+        {
+            BindGPUComputeStorageBuffers(computePass, firstSlot, (IntPtr)pStorageBuffers, numBindings);
+        }
     }
     #endregion
 
@@ -3020,6 +3188,15 @@ public partial class SDL
     public static bool WaitForGPUFences(IntPtr device, [MarshalAs(UnmanagedType.I1)] bool waitAll, IntPtr fences, uint numFences)
     {
         return WaitForGPUFencesPointerNativeFunction(device, waitAll, fences, numFences);
+    }
+
+    /// <inheritdoc cref="WaitForGPUFences(nint, bool, nint[], uint)"/>
+    public static unsafe bool WaitForGPUFences(IntPtr device, [MarshalAs(UnmanagedType.I1)] bool waitAll, ReadOnlySpan<IntPtr> fences, uint numFences)
+    {
+        fixed (IntPtr* pFences = fences)
+        {
+            return WaitForGPUFences(device, waitAll, (IntPtr)pFences, numFences);
+        }
     }
     #endregion
 

@@ -11,7 +11,7 @@ internal static class PInvokeTests
 
     public static void GUIDToString_WritesAsciiGuidString()
     {
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.GUIDToString), BindingFlags.Public | BindingFlags.Static);
+        MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.GUIDToString), BindingFlags.Public | BindingFlags.Static, [typeof(SDL3.SDL.GUID), typeof(byte[]), typeof(int)]);
         TestAssert.NotNull(method, "SDL.GUIDToString method must be public static.");
         AssertSdlLibraryImport(method!, "SDL_GUIDToString");
         AssertArrayParameterMarshal(method!, "pszGUID");
@@ -21,6 +21,22 @@ internal static class PInvokeTests
         SDL3.SDL.GUIDToString(guid, buffer, buffer.Length);
         string value = Encoding.ASCII.GetString(buffer).TrimEnd('\0');
         TestAssert.Equal(SampleGuid, value, "SDL.GUIDToString must write the canonical ASCII GUID string.");
+    }
+
+    public static void GUIDToStringSpan_WritesAsciiGuidString()
+    {
+        MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.GUIDToString), BindingFlags.Public | BindingFlags.Static, [typeof(SDL3.SDL.GUID), typeof(Span<byte>), typeof(int)]);
+        TestAssert.NotNull(method, "SDL.GUIDToString span overload must be public static.");
+
+        MethodInfo? nativeMethod = typeof(SDL3.SDL).GetMethod("SDL_GUIDToStringPointer", BindingFlags.NonPublic | BindingFlags.Static);
+        TestAssert.NotNull(nativeMethod, "SDL.SDL_GUIDToStringPointer method must be private static.");
+        AssertSdlLibraryImport(nativeMethod!, "SDL_GUIDToString");
+
+        SDL3.SDL.GUID guid = SDL3.SDL.StringToGUID(SampleGuid);
+        Span<byte> buffer = stackalloc byte[33];
+        SDL3.SDL.GUIDToString(guid, buffer, buffer.Length);
+        string value = Encoding.ASCII.GetString(buffer).TrimEnd('\0');
+        TestAssert.Equal(SampleGuid, value, "SDL.GUIDToString span overload must write the canonical ASCII GUID string.");
     }
 
     public static void StringToGUID_ParsesAsciiGuidString()

@@ -338,6 +338,8 @@ SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.ShowFileDialogWithPro
 Console.WriteLine("SDL.ShowFileDialogWithProperties binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Guid.PInvokeTests.GUIDToString_WritesAsciiGuidString();
 Console.WriteLine("SDL.GUIDToString binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Guid.PInvokeTests.GUIDToStringSpan_WritesAsciiGuidString();
+Console.WriteLine("SDL.GUIDToString span binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Guid.PInvokeTests.StringToGUID_ParsesAsciiGuidString();
 Console.WriteLine("SDL.StringToGUID binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Loadso.PInvokeTests.LoadObject_LoadsSdlLibraryAndReturnsNullForMissingFile();
