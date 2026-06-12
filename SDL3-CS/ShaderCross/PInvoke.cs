@@ -203,11 +203,11 @@ public partial class ShaderCross
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [ExcludeFromCodeCoverage]
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileComputePipelineFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_ShaderCross_CompileComputePipelineFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderMetadata metadata, uint props);
-    private delegate IntPtr CompileComputePipelineFromSPIRVNativeDelegate(IntPtr device, in SPIRVInfo info, in GraphicsShaderMetadata metadata, uint props);
+    private static partial IntPtr SDL_ShaderCross_CompileComputePipelineFromSPIRV(IntPtr device, in SPIRVInfo info, in ComputePipelineMetadata metadata, uint props);
+    private delegate IntPtr CompileComputePipelineFromSPIRVNativeDelegate(IntPtr device, in SPIRVInfo info, in ComputePipelineMetadata metadata, uint props);
     private static CompileComputePipelineFromSPIRVNativeDelegate CompileComputePipelineFromSPIRVNativeFunction = SDL_ShaderCross_CompileComputePipelineFromSPIRV;
 
-    public static IntPtr CompileComputePipelineFromSPIRV(IntPtr device, in SPIRVInfo info, in GraphicsShaderMetadata metadata, uint props)
+    public static IntPtr CompileComputePipelineFromSPIRV(IntPtr device, in SPIRVInfo info, in ComputePipelineMetadata metadata, uint props)
     {
         return CompileComputePipelineFromSPIRVNativeFunction(device, in info, in metadata, props);
     }
@@ -280,8 +280,9 @@ public partial class ShaderCross
     /// <para>These are the optional properties that can be used:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: When <c>true</c>, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.ShaderDebugNameString"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: When <c>true</c>, indicates that the compiler should cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.HLSLSkipSPIRVRoundtripBoolean"/>: When <c>true</c>, the SPIRV roundtrip is skipped. This behavior is disabled by default. Do not use this property if your shader uses Structured Buffers.</item>
     /// </list>
     /// </summary>
     /// <param name="info">a struct describing the shader to transpile.</param>
@@ -307,14 +308,15 @@ public partial class ShaderCross
     /// <para>These are the optional properties that can be used:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when <c>true</c>, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.ShaderDebugNameString"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when <c>true</c>, indicates that the compiler should cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.HLSLSkipSPIRVRoundtripBoolean"/>: when <c>true</c>, the SPIRV roundtrip is skipped. This behavior is disabled by default. Do not use this property if your shader uses Structured Buffers.</item>
     /// </list>
     /// </summary>
     /// <param name="info">a struct describing the shader to transpile.</param>
     /// <param name="size">filled in with the bytecode buffer size.</param>
     /// <returns>an SDL_malloc'd buffer containing DXIL bytecode.</returns>
-    /// <threadsafety> It is safe to call this function from any thread.</threadsafety>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     [ExcludeFromCodeCoverage]
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileDXILFromHLSL"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_ShaderCross_CompileDXILFromHLSL(in HLSLInfo info, out UIntPtr size);
@@ -330,11 +332,12 @@ public partial class ShaderCross
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_ShaderCross_CompileSPIRVFromHLSL(const SDL_ShaderCross_HLSL_Info *info, size_t *size);</code>
     /// <summary>
     /// Compile to SPIRV bytecode from HLSL code.
+    /// <para>You must <see cref="SDL.Free"/> the returned buffer once you are done with it.</para>
     /// <para>These are the optional properties that can be used:</para>
     /// <list type="bullet">
     /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: allows debug info to be emitted when relevant. Should only be used with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderDebugEnableBoolean"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
-    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when <c>true</c>, indicates that the compiler should not cull unused shader resources. This behavior is disabled by default.</item>
+    /// <item><see cref="Props.ShaderDebugNameString"/>: a UTF-8 name to be used with the shader. Relevant for use with debugging tools like Renderdoc.</item>
+    /// <item><see cref="Props.ShaderCullUnusedBindingsBoolean"/>: when <c>true</c>, indicates that the compiler should cull unused shader resources. This behavior is disabled by default.</item>
     /// </list>
     /// </summary>
     /// <param name="info">a struct describing the shader to transpile.</param>
