@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumRenderDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumRenderDrivers();
+    private delegate int GetNumRenderDriversNativeDelegate();
+    private static GetNumRenderDriversNativeDelegate GetNumRenderDriversNativeFunction = SDL_GetNumRenderDrivers;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumRenderDrivers(void);</code>
     /// <summary>
     /// <para>Get the number of 2D rendering drivers available for the current display.</para>
@@ -42,12 +48,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateRenderer"/>
     /// <seealso cref="GetRenderDriver"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumRenderDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetNumRenderDrivers();
-    private delegate int GetNumRenderDriversNativeDelegate();
-    private static GetNumRenderDriversNativeDelegate GetNumRenderDriversNativeFunction = SDL_GetNumRenderDrivers;
-
     public static int GetNumRenderDrivers()
     {
         return GetNumRenderDriversNativeFunction();
@@ -83,6 +83,14 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindowAndRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_CreateWindowAndRenderer([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int width, int height, WindowFlags windowFlags,
+        out IntPtr window, out IntPtr renderer);
+    private delegate bool CreateWindowAndRendererNativeDelegate(string title, int width, int height, WindowFlags windowFlags, out IntPtr window, out IntPtr renderer);
+    private static CreateWindowAndRendererNativeDelegate CreateWindowAndRendererNativeFunction = SDL_CreateWindowAndRenderer;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CreateWindowAndRenderer(const char *title, int width, int height, SDL_WindowFlags window_flags, SDL_Window **window, SDL_Renderer **renderer);</code>
     /// <summary>
     /// Create a window and default renderer.
@@ -100,19 +108,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateRenderer"/>
     /// <seealso cref="CreateWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindowAndRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_CreateWindowAndRenderer([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int width, int height, WindowFlags windowFlags,
-        out IntPtr window, out IntPtr renderer);
-    private delegate bool CreateWindowAndRendererNativeDelegate(string title, int width, int height, WindowFlags windowFlags, out IntPtr window, out IntPtr renderer);
-    private static CreateWindowAndRendererNativeDelegate CreateWindowAndRendererNativeFunction = SDL_CreateWindowAndRenderer;
-
     public static bool CreateWindowAndRenderer(string title, int width, int height, WindowFlags windowFlags, out IntPtr window, out IntPtr renderer)
     {
         return CreateWindowAndRendererNativeFunction(title, width, height, windowFlags, out window, out renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
+    private delegate IntPtr CreateRendererNativeDelegate(IntPtr window, string? name);
+    private static CreateRendererNativeDelegate CreateRendererNativeFunction = SDL_CreateRenderer;
 
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateRenderer(SDL_Window *window, const char *name);</code>
     /// <summary>
@@ -141,17 +147,17 @@ public static partial class SDL
     /// <seealso cref="GetNumRenderDrivers"/>
     /// <seealso cref="GetRenderDriver"/>
     /// <seealso cref="GetRendererName"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateRenderer(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string? name);
-    private delegate IntPtr CreateRendererNativeDelegate(IntPtr window, string? name);
-    private static CreateRendererNativeDelegate CreateRendererNativeFunction = SDL_CreateRenderer;
-
     public static IntPtr CreateRenderer(IntPtr window, string? name)
     {
         return CreateRendererNativeFunction(window, name);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRendererWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateRendererWithProperties(uint props);
+    private delegate IntPtr CreateRendererWithPropertiesNativeDelegate(uint props);
+    private static CreateRendererWithPropertiesNativeDelegate CreateRendererWithPropertiesNativeFunction = SDL_CreateRendererWithProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateRendererWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -210,17 +216,17 @@ public static partial class SDL
     /// <seealso cref="CreateSoftwareRenderer"/>
     /// <seealso cref="DestroyRenderer"/>
     /// <seealso cref="GetRendererName"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateRendererWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateRendererWithProperties(uint props);
-    private delegate IntPtr CreateRendererWithPropertiesNativeDelegate(uint props);
-    private static CreateRendererWithPropertiesNativeDelegate CreateRendererWithPropertiesNativeFunction = SDL_CreateRendererWithProperties;
-
     public static IntPtr CreateRendererWithProperties(uint props)
     {
         return CreateRendererWithPropertiesNativeFunction(props);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateGPURenderer(IntPtr device, IntPtr window);
+    private delegate IntPtr CreateGPURendererNativeDelegate(IntPtr device, IntPtr window);
+    private static CreateGPURendererNativeDelegate CreateGPURendererNativeFunction = SDL_CreateGPURenderer;
 
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateGPURenderer(SDL_Window *window, SDL_GPUShaderFormat format_flags, SDL_GPUDevice **device);</code>
     /// <summary>
@@ -249,17 +255,17 @@ public static partial class SDL
     /// <seealso cref="CreateGPUShader"/>
     /// <seealso cref="CreateGPURenderState"/>
     /// <seealso cref="SetGPURenderState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateGPURenderer(IntPtr device, IntPtr window);
-    private delegate IntPtr CreateGPURendererNativeDelegate(IntPtr device, IntPtr window);
-    private static CreateGPURendererNativeDelegate CreateGPURendererNativeFunction = SDL_CreateGPURenderer;
-
     public static IntPtr CreateGPURenderer(IntPtr device, IntPtr window)
     {
         return CreateGPURendererNativeFunction(device, window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPURendererDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetGPURendererDevice(IntPtr renderer);
+    private delegate IntPtr GetGPURendererDeviceNativeDelegate(IntPtr renderer);
+    private static GetGPURendererDeviceNativeDelegate GetGPURendererDeviceNativeFunction = SDL_GetGPURendererDevice;
 
     /// <code>extern SDL_DECLSPEC SDL_GPUDevice * SDLCALL SDL_GetGPURendererDevice(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -270,17 +276,17 @@ public static partial class SDL
     /// not a GPU renderer; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPURendererDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGPURendererDevice(IntPtr renderer);
-    private delegate IntPtr GetGPURendererDeviceNativeDelegate(IntPtr renderer);
-    private static GetGPURendererDeviceNativeDelegate GetGPURendererDeviceNativeFunction = SDL_GetGPURendererDevice;
-
     public static IntPtr GetGPURendererDevice(IntPtr renderer)
     {
         return GetGPURendererDeviceNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSoftwareRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateSoftwareRenderer(IntPtr surface);
+    private delegate IntPtr CreateSoftwareRendererNativeDelegate(IntPtr surface);
+    private static CreateSoftwareRendererNativeDelegate CreateSoftwareRendererNativeFunction = SDL_CreateSoftwareRenderer;
 
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateSoftwareRenderer(SDL_Surface *surface);</code>
     /// <summary>
@@ -297,17 +303,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyRenderer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSoftwareRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateSoftwareRenderer(IntPtr surface);
-    private delegate IntPtr CreateSoftwareRendererNativeDelegate(IntPtr surface);
-    private static CreateSoftwareRendererNativeDelegate CreateSoftwareRendererNativeFunction = SDL_CreateSoftwareRenderer;
-
     public static IntPtr CreateSoftwareRenderer(IntPtr surface)
     {
         return CreateSoftwareRendererNativeFunction(surface);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRenderer(IntPtr window);
+    private delegate IntPtr GetRendererNativeDelegate(IntPtr window);
+    private static GetRendererNativeDelegate GetRendererNativeFunction = SDL_GetRenderer;
 
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_GetRenderer(SDL_Window *window);</code>
     /// <summary>
@@ -318,17 +324,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRenderer(IntPtr window);
-    private delegate IntPtr GetRendererNativeDelegate(IntPtr window);
-    private static GetRendererNativeDelegate GetRendererNativeFunction = SDL_GetRenderer;
-
     public static IntPtr GetRenderer(IntPtr window)
     {
         return GetRendererNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRenderWindow(IntPtr renderer);
+    private delegate IntPtr GetRenderWindowNativeDelegate(IntPtr renderer);
+    private static GetRenderWindowNativeDelegate GetRenderWindowNativeFunction = SDL_GetRenderWindow;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetRenderWindow(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -339,12 +345,6 @@ public static partial class SDL
     /// more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRenderWindow(IntPtr renderer);
-    private delegate IntPtr GetRenderWindowNativeDelegate(IntPtr renderer);
-    private static GetRenderWindowNativeDelegate GetRenderWindowNativeFunction = SDL_GetRenderWindow;
-
     public static IntPtr GetRenderWindow(IntPtr renderer)
     {
         return GetRenderWindowNativeFunction(renderer);
@@ -373,6 +373,12 @@ public static partial class SDL
         return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRendererProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetRendererProperties(IntPtr renderer);
+    private delegate uint GetRendererPropertiesNativeDelegate(IntPtr renderer);
+    private static GetRendererPropertiesNativeDelegate GetRendererPropertiesNativeFunction = SDL_GetRendererProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetRendererProperties(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -458,17 +464,18 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRendererProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetRendererProperties(IntPtr renderer);
-    private delegate uint GetRendererPropertiesNativeDelegate(IntPtr renderer);
-    private static GetRendererPropertiesNativeDelegate GetRendererPropertiesNativeFunction = SDL_GetRendererProperties;
-
     public static uint GetRendererProperties(IntPtr renderer)
     {
         return GetRendererPropertiesNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderOutputSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderOutputSize(IntPtr renderer, out int w, out int h);
+    private delegate bool GetRenderOutputSizeNativeDelegate(IntPtr renderer, out int w, out int h);
+    private static GetRenderOutputSizeNativeDelegate GetRenderOutputSizeNativeFunction = SDL_GetRenderOutputSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);</code>
     /// <summary>
@@ -486,18 +493,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCurrentRenderOutputSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderOutputSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderOutputSize(IntPtr renderer, out int w, out int h);
-    private delegate bool GetRenderOutputSizeNativeDelegate(IntPtr renderer, out int w, out int h);
-    private static GetRenderOutputSizeNativeDelegate GetRenderOutputSizeNativeFunction = SDL_GetRenderOutputSize;
-
     public static bool GetRenderOutputSize(IntPtr renderer, out int w, out int h)
     {
         return GetRenderOutputSizeNativeFunction(renderer, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentRenderOutputSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetCurrentRenderOutputSize(IntPtr renderer, out int w, out int h);
+    private delegate bool GetCurrentRenderOutputSizeNativeDelegate(IntPtr renderer, out int w, out int h);
+    private static GetCurrentRenderOutputSizeNativeDelegate GetCurrentRenderOutputSizeNativeFunction = SDL_GetCurrentRenderOutputSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetCurrentRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);</code>
     /// <summary>
@@ -515,18 +522,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderOutputSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentRenderOutputSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetCurrentRenderOutputSize(IntPtr renderer, out int w, out int h);
-    private delegate bool GetCurrentRenderOutputSizeNativeDelegate(IntPtr renderer, out int w, out int h);
-    private static GetCurrentRenderOutputSizeNativeDelegate GetCurrentRenderOutputSizeNativeFunction = SDL_GetCurrentRenderOutputSize;
-
     public static bool GetCurrentRenderOutputSize(IntPtr renderer, out int w, out int h)
     {
         return GetCurrentRenderOutputSizeNativeFunction(renderer, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTexture(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h);
+    private delegate IntPtr CreateTextureNativeDelegate(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h);
+    private static CreateTextureNativeDelegate CreateTextureNativeFunction = SDL_CreateTexture;
 
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL SDL_CreateTexture(SDL_Renderer *renderer, SDL_PixelFormat format, SDL_TextureAccess access, int w, int h);</code>
     /// <summary>
@@ -547,17 +553,17 @@ public static partial class SDL
     /// <seealso cref="DestroyTexture"/>
     /// <seealso cref="GetTextureSize"/>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTexture(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h);
-    private delegate IntPtr CreateTextureNativeDelegate(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h);
-    private static CreateTextureNativeDelegate CreateTextureNativeFunction = SDL_CreateTexture;
-
     public static IntPtr CreateTexture(IntPtr renderer, PixelFormat format, TextureAccess access, int w, int h)
     {
         return CreateTextureNativeFunction(renderer, format, access, w, h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTextureFromSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTextureFromSurface(IntPtr renderer, IntPtr surface);
+    private delegate IntPtr CreateTextureFromSurfaceNativeDelegate(IntPtr renderer, IntPtr surface);
+    private static CreateTextureFromSurfaceNativeDelegate CreateTextureFromSurfaceNativeFunction = SDL_CreateTextureFromSurface;
 
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface);</code>
     /// <summary>
@@ -579,17 +585,17 @@ public static partial class SDL
     /// <seealso cref="CreateTexture"/>
     /// <seealso cref="CreateTextureWithProperties"/>
     /// <seealso cref="DestroyTexture"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTextureFromSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTextureFromSurface(IntPtr renderer, IntPtr surface);
-    private delegate IntPtr CreateTextureFromSurfaceNativeDelegate(IntPtr renderer, IntPtr surface);
-    private static CreateTextureFromSurfaceNativeDelegate CreateTextureFromSurfaceNativeFunction = SDL_CreateTextureFromSurface;
-
     public static IntPtr CreateTextureFromSurface(IntPtr renderer, IntPtr surface)
     {
         return CreateTextureFromSurfaceNativeFunction(renderer, surface);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTextureWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTextureWithProperties(IntPtr renderer, uint props);
+    private delegate IntPtr CreateTextureWithPropertiesNativeDelegate(IntPtr renderer, uint props);
+    private static CreateTextureWithPropertiesNativeDelegate CreateTextureWithPropertiesNativeFunction = SDL_CreateTextureWithProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL SDL_CreateTextureWithProperties(SDL_Renderer *renderer, SDL_PropertiesID props);</code>
     /// <summary>
@@ -715,17 +721,17 @@ public static partial class SDL
     /// <seealso cref="DestroyTexture"/>
     /// <seealso cref="GetTextureSize"/>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTextureWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTextureWithProperties(IntPtr renderer, uint props);
-    private delegate IntPtr CreateTextureWithPropertiesNativeDelegate(IntPtr renderer, uint props);
-    private static CreateTextureWithPropertiesNativeDelegate CreateTextureWithPropertiesNativeFunction = SDL_CreateTextureWithProperties;
-
     public static IntPtr CreateTextureWithProperties(IntPtr renderer, uint props)
     {
         return CreateTextureWithPropertiesNativeFunction(renderer, props);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetTextureProperties(IntPtr texture);
+    private delegate uint GetTexturePropertiesNativeDelegate(IntPtr texture);
+    private static GetTexturePropertiesNativeDelegate GetTexturePropertiesNativeFunction = SDL_GetTextureProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetTextureProperties(SDL_Texture *texture);</code>
     /// <summary>
@@ -829,17 +835,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetTextureProperties(IntPtr texture);
-    private delegate uint GetTexturePropertiesNativeDelegate(IntPtr texture);
-    private static GetTexturePropertiesNativeDelegate GetTexturePropertiesNativeFunction = SDL_GetTextureProperties;
-
     public static uint GetTextureProperties(IntPtr texture)
     {
         return GetTexturePropertiesNativeFunction(texture);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRendererFromTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRendererFromTexture(IntPtr texture);
+    private delegate IntPtr GetRendererFromTextureNativeDelegate(IntPtr texture);
+    private static GetRendererFromTextureNativeDelegate GetRendererFromTextureNativeFunction = SDL_GetRendererFromTexture;
 
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_GetRendererFromTexture(SDL_Texture *texture);</code>
     /// <summary>
@@ -850,17 +856,18 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRendererFromTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRendererFromTexture(IntPtr texture);
-    private delegate IntPtr GetRendererFromTextureNativeDelegate(IntPtr texture);
-    private static GetRendererFromTextureNativeDelegate GetRendererFromTextureNativeFunction = SDL_GetRendererFromTexture;
-
     public static IntPtr GetRendererFromTexture(IntPtr texture)
     {
         return GetRendererFromTextureNativeFunction(texture);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureSize(IntPtr texture, out float w, out float h);
+    private delegate bool GetTextureSizeNativeDelegate(IntPtr texture, out float w, out float h);
+    private static GetTextureSizeNativeDelegate GetTextureSizeNativeFunction = SDL_GetTextureSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureSize(SDL_Texture *texture, float *w, float *h);</code>
     /// <summary>
@@ -875,18 +882,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureSize(IntPtr texture, out float w, out float h);
-    private delegate bool GetTextureSizeNativeDelegate(IntPtr texture, out float w, out float h);
-    private static GetTextureSizeNativeDelegate GetTextureSizeNativeFunction = SDL_GetTextureSize;
-
     public static bool GetTextureSize(IntPtr texture, out float w, out float h)
     {
         return GetTextureSizeNativeFunction(texture, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTexturePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTexturePalette(IntPtr texture, IntPtr palette);
+    private delegate bool SetTexturePaletteNativeDelegate(IntPtr texture, IntPtr palette);
+    private static SetTexturePaletteNativeDelegate SetTexturePaletteNativeFunction = SDL_SetTexturePalette;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTexturePalette(SDL_Texture *texture, SDL_Palette *palette);</code>
     /// <summary>
@@ -903,18 +910,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="CreatePalette"/>
     /// <seealso cref="GetTexturePalette"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTexturePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTexturePalette(IntPtr texture, IntPtr palette);
-    private delegate bool SetTexturePaletteNativeDelegate(IntPtr texture, IntPtr palette);
-    private static SetTexturePaletteNativeDelegate SetTexturePaletteNativeFunction = SDL_SetTexturePalette;
-
     public static bool SetTexturePalette(IntPtr texture, IntPtr palette)
     {
         return SetTexturePaletteNativeFunction(texture, palette);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTexturePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTexturePalette(IntPtr texture);
+    private delegate IntPtr GetTexturePaletteNativeDelegate(IntPtr texture);
+    private static GetTexturePaletteNativeDelegate GetTexturePaletteNativeFunction = SDL_GetTexturePalette;
 
     /// <code>extern SDL_DECLSPEC SDL_Palette * SDLCALL SDL_GetTexturePalette(SDL_Texture *texture);</code>
     /// <summary>
@@ -926,17 +932,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="SetTexturePalette"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTexturePalette"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTexturePalette(IntPtr texture);
-    private delegate IntPtr GetTexturePaletteNativeDelegate(IntPtr texture);
-    private static GetTexturePaletteNativeDelegate GetTexturePaletteNativeFunction = SDL_GetTexturePalette;
-
     public static IntPtr GetTexturePalette(IntPtr texture)
     {
         return GetTexturePaletteNativeFunction(texture);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextureColorMod(IntPtr texture, byte r, byte g, byte b);
+    private delegate bool SetTextureColorModNativeDelegate(IntPtr texture, byte r, byte g, byte b);
+    private static SetTextureColorModNativeDelegate SetTextureColorModNativeFunction = SDL_SetTextureColorMod;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b);</code>
     /// <summary>
@@ -959,18 +966,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureColorMod"/>
     /// <seealso cref="SetTextureAlphaMod"/>
     /// <seealso cref="SetTextureColorModFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextureColorMod(IntPtr texture, byte r, byte g, byte b);
-    private delegate bool SetTextureColorModNativeDelegate(IntPtr texture, byte r, byte g, byte b);
-    private static SetTextureColorModNativeDelegate SetTextureColorModNativeFunction = SDL_SetTextureColorMod;
-
     public static bool SetTextureColorMod(IntPtr texture, byte r, byte g, byte b)
     {
         return SetTextureColorModNativeFunction(texture, r, g, b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureColorModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextureColorModFloat(IntPtr texture, float r, float g, float b);
+    private delegate bool SetTextureColorModFloatNativeDelegate(IntPtr texture, float r, float g, float b);
+    private static SetTextureColorModFloatNativeDelegate SetTextureColorModFloatNativeFunction = SDL_SetTextureColorModFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureColorModFloat(SDL_Texture *texture, float r, float g, float b);</code>
     /// <summary>
@@ -993,18 +1000,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureColorModFloat"/>
     /// <seealso cref="SetTextureAlphaModFloat"/>
     /// <seealso cref="SetTextureColorMod"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureColorModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextureColorModFloat(IntPtr texture, float r, float g, float b);
-    private delegate bool SetTextureColorModFloatNativeDelegate(IntPtr texture, float r, float g, float b);
-    private static SetTextureColorModFloatNativeDelegate SetTextureColorModFloatNativeFunction = SDL_SetTextureColorModFloat;
-
     public static bool SetTextureColorModFloat(IntPtr texture, float r, float g, float b)
     {
         return SetTextureColorModFloatNativeFunction(texture, r, g, b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureColorMod(IntPtr texture, out byte r, out byte g, out byte b);
+    private delegate bool GetTextureColorModNativeDelegate(IntPtr texture, out byte r, out byte g, out byte b);
+    private static GetTextureColorModNativeDelegate GetTextureColorModNativeFunction = SDL_GetTextureColorMod;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureColorMod(SDL_Texture *texture, Uint8 *r, Uint8 *g, Uint8 *b);</code>
     /// <summary>
@@ -1021,18 +1028,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureAlphaMod"/>
     /// <seealso cref="GetTextureColorModFloat"/>
     /// <seealso cref="SetTextureColorMod"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureColorMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureColorMod(IntPtr texture, out byte r, out byte g, out byte b);
-    private delegate bool GetTextureColorModNativeDelegate(IntPtr texture, out byte r, out byte g, out byte b);
-    private static GetTextureColorModNativeDelegate GetTextureColorModNativeFunction = SDL_GetTextureColorMod;
-
     public static bool GetTextureColorMod(IntPtr texture, out byte r, out byte g, out byte b)
     {
         return GetTextureColorModNativeFunction(texture, out r, out g, out b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureColorModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureColorModFloat(IntPtr texture, out float r, out float g, out float b);
+    private delegate bool GetTextureColorModFloatNativeDelegate(IntPtr texture, out float r, out float g, out float b);
+    private static GetTextureColorModFloatNativeDelegate GetTextureColorModFloatNativeFunction = SDL_GetTextureColorModFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureColorModFloat(SDL_Texture *texture, float *r, float *g, float *b);</code>
     /// <summary>
@@ -1049,18 +1056,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureAlphaModFloat"/>
     /// <seealso cref="GetTextureColorMod"/>
     /// <seealso cref="SetTextureColorModFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureColorModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureColorModFloat(IntPtr texture, out float r, out float g, out float b);
-    private delegate bool GetTextureColorModFloatNativeDelegate(IntPtr texture, out float r, out float g, out float b);
-    private static GetTextureColorModFloatNativeDelegate GetTextureColorModFloatNativeFunction = SDL_GetTextureColorModFloat;
-
     public static bool GetTextureColorModFloat(IntPtr texture, out float r, out float g, out float b)
     {
         return GetTextureColorModFloatNativeFunction(texture, out r, out g, out b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextureAlphaMod(IntPtr texture, byte alpha);
+    private delegate bool SetTextureAlphaModNativeDelegate(IntPtr texture, byte alpha);
+    private static SetTextureAlphaModNativeDelegate SetTextureAlphaModNativeFunction = SDL_SetTextureAlphaMod;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureAlphaMod(SDL_Texture *texture, Uint8 alpha);</code>
     /// <summary>
@@ -1080,18 +1087,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureAlphaMod"/>
     /// <seealso cref="SetTextureAlphaModFloat"/>
     /// <seealso cref="SetTextureColorMod"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextureAlphaMod(IntPtr texture, byte alpha);
-    private delegate bool SetTextureAlphaModNativeDelegate(IntPtr texture, byte alpha);
-    private static SetTextureAlphaModNativeDelegate SetTextureAlphaModNativeFunction = SDL_SetTextureAlphaMod;
-
     public static bool SetTextureAlphaMod(IntPtr texture, byte alpha)
     {
         return SetTextureAlphaModNativeFunction(texture, alpha);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureAlphaModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextureAlphaModFloat(IntPtr texture, float alpha);
+    private delegate bool SetTextureAlphaModFloatNativeDelegate(IntPtr texture, float alpha);
+    private static SetTextureAlphaModFloatNativeDelegate SetTextureAlphaModFloatNativeFunction = SDL_SetTextureAlphaModFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureAlphaModFloat(SDL_Texture *texture, float alpha);</code>
     /// <summary>
@@ -1111,18 +1118,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureAlphaModFloat"/>
     /// <seealso cref="SetTextureAlphaMod"/>
     /// <seealso cref="SetTextureColorModFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureAlphaModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextureAlphaModFloat(IntPtr texture, float alpha);
-    private delegate bool SetTextureAlphaModFloatNativeDelegate(IntPtr texture, float alpha);
-    private static SetTextureAlphaModFloatNativeDelegate SetTextureAlphaModFloatNativeFunction = SDL_SetTextureAlphaModFloat;
-
     public static bool SetTextureAlphaModFloat(IntPtr texture, float alpha)
     {
         return SetTextureAlphaModFloatNativeFunction(texture, alpha);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureAlphaMod(IntPtr texture, out byte alpha);
+    private delegate bool GetTextureAlphaModNativeDelegate(IntPtr texture, out byte alpha);
+    private static GetTextureAlphaModNativeDelegate GetTextureAlphaModNativeFunction = SDL_GetTextureAlphaMod;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureAlphaMod(SDL_Texture *texture, Uint8 *alpha);</code>
     /// <summary>
@@ -1137,18 +1144,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureAlphaModFloat"/>
     /// <seealso cref="GetTextureColorMod"/>
     /// <seealso cref="SetTextureAlphaMod"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureAlphaMod"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureAlphaMod(IntPtr texture, out byte alpha);
-    private delegate bool GetTextureAlphaModNativeDelegate(IntPtr texture, out byte alpha);
-    private static GetTextureAlphaModNativeDelegate GetTextureAlphaModNativeFunction = SDL_GetTextureAlphaMod;
-
     public static bool GetTextureAlphaMod(IntPtr texture, out byte alpha)
     {
         return GetTextureAlphaModNativeFunction(texture, out alpha);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureAlphaModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureAlphaModFloat(IntPtr texture, out float alpha);
+    private delegate bool GetTextureAlphaModFloatNativeDelegate(IntPtr texture, out float alpha);
+    private static GetTextureAlphaModFloatNativeDelegate GetTextureAlphaModFloatNativeFunction = SDL_GetTextureAlphaModFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureAlphaModFloat(SDL_Texture *texture, float *alpha);</code>
     /// <summary>
@@ -1163,18 +1170,18 @@ public static partial class SDL
     /// <seealso cref="GetTextureAlphaMod"/>
     /// <seealso cref="GetTextureColorModFloat"/>
     /// <seealso cref="SetTextureAlphaModFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureAlphaModFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureAlphaModFloat(IntPtr texture, out float alpha);
-    private delegate bool GetTextureAlphaModFloatNativeDelegate(IntPtr texture, out float alpha);
-    private static GetTextureAlphaModFloatNativeDelegate GetTextureAlphaModFloatNativeFunction = SDL_GetTextureAlphaModFloat;
-
     public static bool GetTextureAlphaModFloat(IntPtr texture, out float alpha)
     {
         return GetTextureAlphaModFloatNativeFunction(texture, out alpha);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextureBlendMode(IntPtr texture, BlendMode blendMode);
+    private delegate bool SetTextureBlendModeNativeDelegate(IntPtr texture, BlendMode blendMode);
+    private static SetTextureBlendModeNativeDelegate SetTextureBlendModeNativeFunction = SDL_SetTextureBlendMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode blendMode);</code>
     /// <summary>
@@ -1189,18 +1196,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTextureBlendMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextureBlendMode(IntPtr texture, BlendMode blendMode);
-    private delegate bool SetTextureBlendModeNativeDelegate(IntPtr texture, BlendMode blendMode);
-    private static SetTextureBlendModeNativeDelegate SetTextureBlendModeNativeFunction = SDL_SetTextureBlendMode;
-
     public static bool SetTextureBlendMode(IntPtr texture, BlendMode blendMode)
     {
         return SetTextureBlendModeNativeFunction(texture, blendMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureBlendMode(IntPtr texture, out BlendMode blendMode);
+    private delegate bool GetTextureBlendModeNativeDelegate(IntPtr texture, out BlendMode blendMode);
+    private static GetTextureBlendModeNativeDelegate GetTextureBlendModeNativeFunction = SDL_GetTextureBlendMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode *blendMode);</code>
     /// <summary>
@@ -1213,18 +1220,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetTextureBlendMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureBlendMode(IntPtr texture, out BlendMode blendMode);
-    private delegate bool GetTextureBlendModeNativeDelegate(IntPtr texture, out BlendMode blendMode);
-    private static GetTextureBlendModeNativeDelegate GetTextureBlendModeNativeFunction = SDL_GetTextureBlendMode;
-
     public static bool GetTextureBlendMode(IntPtr texture, out BlendMode blendMode)
     {
         return GetTextureBlendModeNativeFunction(texture, out blendMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetTextureScaleMode(IntPtr texture, ScaleMode scaleMode);
+    private delegate bool SetTextureScaleModeNativeDelegate(IntPtr texture, ScaleMode scaleMode);
+    private static SetTextureScaleModeNativeDelegate SetTextureScaleModeNativeFunction = SDL_SetTextureScaleMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode scaleMode);</code>
     /// <summary>
@@ -1241,18 +1248,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTextureScaleMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetTextureScaleMode(IntPtr texture, ScaleMode scaleMode);
-    private delegate bool SetTextureScaleModeNativeDelegate(IntPtr texture, ScaleMode scaleMode);
-    private static SetTextureScaleModeNativeDelegate SetTextureScaleModeNativeFunction = SDL_SetTextureScaleMode;
-
     public static bool SetTextureScaleMode(IntPtr texture, ScaleMode scaleMode)
     {
         return SetTextureScaleModeNativeFunction(texture, scaleMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTextureScaleMode(IntPtr texture, out ScaleMode scaleMode);
+    private delegate bool GetTextureScaleModeNativeDelegate(IntPtr texture, out ScaleMode scaleMode);
+    private static GetTextureScaleModeNativeDelegate GetTextureScaleModeNativeFunction = SDL_GetTextureScaleMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode *scaleMode);</code>
     /// <summary>
@@ -1265,13 +1272,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetTextureScaleMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTextureScaleMode(IntPtr texture, out ScaleMode scaleMode);
-    private delegate bool GetTextureScaleModeNativeDelegate(IntPtr texture, out ScaleMode scaleMode);
-    private static GetTextureScaleModeNativeDelegate GetTextureScaleModeNativeFunction = SDL_GetTextureScaleMode;
-
     public static bool GetTextureScaleMode(IntPtr texture, out ScaleMode scaleMode)
     {
         return GetTextureScaleModeNativeFunction(texture, out scaleMode);
@@ -1280,32 +1280,6 @@ public static partial class SDL
 
     #region UpdateTexture
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
-    /// <summary>
-    /// <para>Update the given texture rectangle with new pixel data.</para>
-    /// <para>The pixel data must be in the pixel format of the texture, which can be
-    /// queried using the <see cref="Props.TextureFormatNumber"/> property.</para>
-    /// <para>This is a fairly slow function, intended for use with static textures that
-    /// do not change often.</para>
-    /// <para>If the texture is intended to be updated often, it is preferred to create
-    /// the texture as streaming and use the locking functions referenced below.
-    /// While this function will work with streaming textures, for optimization
-    /// reasons you may not get the pixels back if you lock the texture afterward.</para>
-    /// </summary>
-    /// <param name="texture">the texture to update.</param>
-    /// <param name="rect">an <see cref="Rect"/> structure representing the area to update, or <c>null</c>
-    /// to update the entire texture.</param>
-    /// <param name="pixels">the raw pixel data in the format of the texture.</param>
-    /// <param name="pitch">the number of bytes in a row of pixel data, including padding
-    /// between lines.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
-    /// <seealso cref="UnlockTexture"/>
-    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
-    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1313,11 +1287,44 @@ public static partial class SDL
     private delegate bool UpdateTexturePointerNativeDelegate(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch);
     private static UpdateTexturePointerNativeDelegate UpdateTexturePointerNativeFunction = SDL_UpdateTexturePointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
+    /// <summary>
+    /// <para>Update the given texture rectangle with new pixel data.</para>
+    /// <para>The pixel data must be in the pixel format of the texture, which can be
+    /// queried using the <see cref="Props.TextureFormatNumber"/> property.</para>
+    /// <para>This is a fairly slow function, intended for use with static textures that
+    /// do not change often.</para>
+    /// <para>If the texture is intended to be updated often, it is preferred to create
+    /// the texture as streaming and use the locking functions referenced below.
+    /// While this function will work with streaming textures, for optimization
+    /// reasons you may not get the pixels back if you lock the texture afterward.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the area to update, or <c>null</c>
+    /// to update the entire texture.</param>
+    /// <param name="pixels">the raw pixel data in the format of the texture.</param>
+    /// <param name="pitch">the number of bytes in a row of pixel data, including padding
+    /// between lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
+    /// <seealso cref="UnlockTexture"/>
+    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
+    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     public static bool UpdateTexture(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch)
     {
         return UpdateTexturePointerNativeFunction(texture, rect, pixels, pitch);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateTextureArray(IntPtr texture, IntPtr rect, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] pixels, int pitch);
+    private delegate bool UpdateTextureArrayNativeDelegate(IntPtr texture, IntPtr rect, byte[] pixels, int pitch);
+    private static UpdateTextureArrayNativeDelegate UpdateTextureArrayNativeFunction = SDL_UpdateTextureArray;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
     /// <summary>
@@ -1345,13 +1352,6 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UpdateTextureArray(IntPtr texture, IntPtr rect, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] pixels, int pitch);
-    private delegate bool UpdateTextureArrayNativeDelegate(IntPtr texture, IntPtr rect, byte[] pixels, int pitch);
-    private static UpdateTextureArrayNativeDelegate UpdateTextureArrayNativeFunction = SDL_UpdateTextureArray;
-
     public static bool UpdateTexture(IntPtr texture, IntPtr rect, byte[] pixels, int pitch)
     {
         return UpdateTextureArrayNativeFunction(texture, rect, pixels, pitch);
@@ -1393,32 +1393,6 @@ public static partial class SDL
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
-    /// <summary>
-    /// <para>Update the given texture rectangle with new pixel data.</para>
-    /// <para>The pixel data must be in the pixel format of the texture, which can be
-    /// queried using the <see cref="Props.TextureFormatNumber"/> property.</para>
-    /// <para>This is a fairly slow function, intended for use with static textures that
-    /// do not change often.</para>
-    /// <para>If the texture is intended to be updated often, it is preferred to create
-    /// the texture as streaming and use the locking functions referenced below.
-    /// While this function will work with streaming textures, for optimization
-    /// reasons you may not get the pixels back if you lock the texture afterward.</para>
-    /// </summary>
-    /// <param name="texture">the texture to update.</param>
-    /// <param name="rect">an <see cref="Rect"/> structure representing the area to update, or <c>null</c>
-    /// to update the entire texture.</param>
-    /// <param name="pixels">the raw pixel data in the format of the texture.</param>
-    /// <param name="pitch">the number of bytes in a row of pixel data, including padding
-    /// between lines.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
-    /// <seealso cref="UnlockTexture"/>
-    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
-    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1426,11 +1400,44 @@ public static partial class SDL
     private delegate bool UpdateTextureRectPointerNativeDelegate(IntPtr texture, in Rect rect, IntPtr pixels, int pitch);
     private static UpdateTextureRectPointerNativeDelegate UpdateTextureRectPointerNativeFunction = SDL_UpdateTextureRectPointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
+    /// <summary>
+    /// <para>Update the given texture rectangle with new pixel data.</para>
+    /// <para>The pixel data must be in the pixel format of the texture, which can be
+    /// queried using the <see cref="Props.TextureFormatNumber"/> property.</para>
+    /// <para>This is a fairly slow function, intended for use with static textures that
+    /// do not change often.</para>
+    /// <para>If the texture is intended to be updated often, it is preferred to create
+    /// the texture as streaming and use the locking functions referenced below.
+    /// While this function will work with streaming textures, for optimization
+    /// reasons you may not get the pixels back if you lock the texture afterward.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the area to update, or <c>null</c>
+    /// to update the entire texture.</param>
+    /// <param name="pixels">the raw pixel data in the format of the texture.</param>
+    /// <param name="pitch">the number of bytes in a row of pixel data, including padding
+    /// between lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
+    /// <seealso cref="UnlockTexture"/>
+    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
+    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     public static bool UpdateTexture(IntPtr texture, in Rect rect, IntPtr pixels, int pitch)
     {
         return UpdateTextureRectPointerNativeFunction(texture, in rect, pixels, pitch);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateTextureRectArray(IntPtr texture, in Rect rect, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] pixels, int pitch);
+    private delegate bool UpdateTextureRectArrayNativeDelegate(IntPtr texture, in Rect rect, byte[] pixels, int pitch);
+    private static UpdateTextureRectArrayNativeDelegate UpdateTextureRectArrayNativeFunction = SDL_UpdateTextureRectArray;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);</code>
     /// <summary>
@@ -1458,13 +1465,6 @@ public static partial class SDL
     /// <seealso cref="UnlockTexture"/>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UpdateTextureRectArray(IntPtr texture, in Rect rect, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] pixels, int pitch);
-    private delegate bool UpdateTextureRectArrayNativeDelegate(IntPtr texture, in Rect rect, byte[] pixels, int pitch);
-    private static UpdateTextureRectArrayNativeDelegate UpdateTextureRectArrayNativeFunction = SDL_UpdateTextureRectArray;
-
     public static bool UpdateTexture(IntPtr texture, in Rect rect, byte[] pixels, int pitch)
     {
         return UpdateTextureRectArrayNativeFunction(texture, in rect, pixels, pitch);
@@ -1509,32 +1509,6 @@ public static partial class SDL
 
 
     #region UpdateYUVTexture
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);</code>
-    /// <summary>
-    /// <para>Update a rectangle within a planar YV12 or IYUV texture with new pixel
-    /// data.</para>
-    /// <para>You can use <see cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/> as long as your pixel data is a contiguous
-    /// block of Y and U/V planes in the proper order, but this function is
-    /// available if your pixel data is not contiguous.</para>
-    /// </summary>
-    /// <param name="texture">the texture to update.</param>
-    /// <param name="rect">a pointer to the rectangle of pixels to update, or <c>null</c> to
-    /// update the entire texture.</param>
-    /// <param name="yplane">the raw pixel data for the Y plane.</param>
-    /// <param name="ypitch">the number of bytes between rows of pixel data for the Y
-    /// plane.</param>
-    /// <param name="uplane">the raw pixel data for the U plane.</param>
-    /// <param name="upitch">the number of bytes between rows of pixel data for the U
-    /// plane.</param>
-    /// <param name="vplane">the raw pixel data for the V plane.</param>
-    /// <param name="vpitch">the number of bytes between rows of pixel data for the V
-    /// plane.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
-    /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateYUVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1542,11 +1516,44 @@ public static partial class SDL
     private delegate bool UpdateYUVTexturePointerNativeDelegate(IntPtr texture, IntPtr rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
     private static UpdateYUVTexturePointerNativeDelegate UpdateYUVTexturePointerNativeFunction = SDL_UpdateYUVTexturePointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);</code>
+    /// <summary>
+    /// <para>Update a rectangle within a planar YV12 or IYUV texture with new pixel
+    /// data.</para>
+    /// <para>You can use <see cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/> as long as your pixel data is a contiguous
+    /// block of Y and U/V planes in the proper order, but this function is
+    /// available if your pixel data is not contiguous.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="rect">a pointer to the rectangle of pixels to update, or <c>null</c> to
+    /// update the entire texture.</param>
+    /// <param name="yplane">the raw pixel data for the Y plane.</param>
+    /// <param name="ypitch">the number of bytes between rows of pixel data for the Y
+    /// plane.</param>
+    /// <param name="uplane">the raw pixel data for the U plane.</param>
+    /// <param name="upitch">the number of bytes between rows of pixel data for the U
+    /// plane.</param>
+    /// <param name="vplane">the raw pixel data for the V plane.</param>
+    /// <param name="vpitch">the number of bytes between rows of pixel data for the V
+    /// plane.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
+    /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     public static bool UpdateYUVTexture(IntPtr texture, IntPtr rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch)
     {
         return UpdateYUVTexturePointerNativeFunction(texture, rect, yplane, ypitch, uplane, upitch, vplane, vpitch);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateYUVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateYUVTextureRect(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
+    private delegate bool UpdateYUVTextureRectNativeDelegate(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
+    private static UpdateYUVTextureRectNativeDelegate UpdateYUVTextureRectNativeFunction = SDL_UpdateYUVTextureRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);</code>
     /// <summary>
@@ -1574,13 +1581,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateYUVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UpdateYUVTextureRect(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
-    private delegate bool UpdateYUVTextureRectNativeDelegate(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch);
-    private static UpdateYUVTextureRectNativeDelegate UpdateYUVTextureRectNativeFunction = SDL_UpdateYUVTextureRect;
-
     public static bool UpdateYUVTexture(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uplane, int upitch, IntPtr vplane, int vpitch)
     {
         return UpdateYUVTextureRectNativeFunction(texture, in rect, yplane, ypitch, uplane, upitch, vplane, vpitch);
@@ -1588,28 +1588,6 @@ public static partial class SDL
     #endregion
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);</code>
-    /// <summary>
-    /// <para>Update a rectangle within a planar NV12 or NV21 texture with new pixels.</para>
-    /// <para>You can use <see cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/> as long as your pixel data is a contiguous
-    /// block of NV12/21 planes in the proper order, but this function is available
-    /// if your pixel data is not contiguous.</para>
-    /// </summary>
-    /// <param name="texture">the texture to update.</param>
-    /// <param name="rect">a pointer to the rectangle of pixels to update, or <c>null</c> to
-    /// update the entire texture.</param>
-    /// <param name="yplane">the raw pixel data for the Y plane.</param>
-    /// <param name="ypitch">the number of bytes between rows of pixel data for the Y
-    /// plane.</param>
-    /// <param name="uvplane">the raw pixel data for the UV plane.</param>
-    /// <param name="uvpitch">the number of bytes between rows of pixel data for the UV
-    /// plane.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
-    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateNVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1617,11 +1595,40 @@ public static partial class SDL
     private delegate bool UpdateNVTexturePointerNativeDelegate(IntPtr texture, IntPtr rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch);
     private static UpdateNVTexturePointerNativeDelegate UpdateNVTexturePointerNativeFunction = SDL_UpdateNVTexturePointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);</code>
+    /// <summary>
+    /// <para>Update a rectangle within a planar NV12 or NV21 texture with new pixels.</para>
+    /// <para>You can use <see cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/> as long as your pixel data is a contiguous
+    /// block of NV12/21 planes in the proper order, but this function is available
+    /// if your pixel data is not contiguous.</para>
+    /// </summary>
+    /// <param name="texture">the texture to update.</param>
+    /// <param name="rect">a pointer to the rectangle of pixels to update, or <c>null</c> to
+    /// update the entire texture.</param>
+    /// <param name="yplane">the raw pixel data for the Y plane.</param>
+    /// <param name="ypitch">the number of bytes between rows of pixel data for the Y
+    /// plane.</param>
+    /// <param name="uvplane">the raw pixel data for the UV plane.</param>
+    /// <param name="uvpitch">the number of bytes between rows of pixel data for the UV
+    /// plane.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
+    /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     public static bool UpdateNVTexture(IntPtr texture, IntPtr rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch)
     {
         return UpdateNVTexturePointerNativeFunction(texture, rect, yplane, ypitch, uvplane, uvpitch);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateNVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateNVTextureRect(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch);
+    private delegate bool UpdateNVTextureRectNativeDelegate(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch);
+    private static UpdateNVTextureRectNativeDelegate UpdateNVTextureRectNativeFunction = SDL_UpdateNVTextureRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);</code>
     /// <summary>
@@ -1645,44 +1652,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateNVTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UpdateNVTextureRect(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch);
-    private delegate bool UpdateNVTextureRectNativeDelegate(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch);
-    private static UpdateNVTextureRectNativeDelegate UpdateNVTextureRectNativeFunction = SDL_UpdateNVTextureRect;
-
     public static bool UpdateNVTexture(IntPtr texture, in Rect rect, IntPtr yplane, int ypitch, IntPtr uvplane, int uvpitch)
     {
         return UpdateNVTextureRectNativeFunction(texture, in rect, yplane, ypitch, uvplane, uvpitch);
     }
 
 
-    //extern SDL_DECLSPEC bool SDLCALL SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
-    /// <summary>
-    /// <para>Lock a portion of the texture for <b>write-only</b> pixel access.</para>
-    /// <para>As an optimization, the pixels made available for editing don't necessarily
-    /// contain the old texture data. This is a write-only operation, and if you
-    /// need to keep a copy of the texture data you should do that at the
-    /// application level.</para>
-    /// <para>You must use <see cref="UnlockTexture"/> to unlock the pixels and apply any
-    /// changes.</para>
-    /// </summary>
-    /// <param name="texture">the texture to lock for access, which was created with
-    /// <see cref="TextureAccess.Streaming"/>.</param>
-    /// <param name="rect">an <see cref="Rect"/> structure representing the area to lock for access;
-    /// <c>null</c> to lock the entire texture.</param>
-    /// <param name="pixels">this is filled in with a pointer to the locked pixels,
-    /// appropriately offset by the locked area.</param>
-    /// <param name="pitch">this is filled in with the pitch of the locked pixels; the
-    /// pitch is the length of one row in bytes.</param>
-    /// <returns><c>true</c> on success or <c>false</c> if the texture is not valid or was not
-    /// created with <see cref="TextureAccess.Streaming"/>; call <see cref="GetError"/>
-    /// for more information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
-    /// <seealso cref="UnlockTexture"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1690,13 +1665,7 @@ public static partial class SDL
     private delegate bool LockTexturePointerNativeDelegate(IntPtr texture, IntPtr rect, out IntPtr pixels, out int pitch);
     private static LockTexturePointerNativeDelegate LockTexturePointerNativeFunction = SDL_LockTexturePointer;
 
-    public static bool LockTexture(IntPtr texture, IntPtr rect, out IntPtr pixels, out int pitch)
-    {
-        return LockTexturePointerNativeFunction(texture, rect, out pixels, out pitch);
-    }
-
-
-    //extern SDL_DECLSPEC bool SDLCALL SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);</code>
     /// <summary>
     /// <para>Lock a portion of the texture for <b>write-only</b> pixel access.</para>
     /// <para>As an optimization, the pixels made available for editing don't necessarily
@@ -1721,6 +1690,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
     /// <seealso cref="UnlockTexture"/>
+    public static bool LockTexture(IntPtr texture, IntPtr rect, out IntPtr pixels, out int pitch)
+    {
+        return LockTexturePointerNativeFunction(texture, rect, out pixels, out pitch);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1728,39 +1703,37 @@ public static partial class SDL
     private delegate bool LockTextureRectNativeDelegate(IntPtr texture, in Rect rect, out IntPtr pixels, out int pitch);
     private static LockTextureRectNativeDelegate LockTextureRectNativeFunction = SDL_LockTextureRect;
 
-    public static bool LockTexture(IntPtr texture, in Rect rect, out IntPtr pixels, out int pitch)
-    {
-        return LockTextureRectNativeFunction(texture, in rect, out pixels, out pitch);
-    }
-
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);</code>
     /// <summary>
-    /// <para>Lock a portion of the texture for <b>write-only</b> pixel access, and expose
-    /// it as a SDL surface.</para>
-    /// <para>Besides providing an <see cref="Surface"/> instead of raw pixel data, this function
-    /// operates like <see cref="LockTexture(nint, nint, out nint, out int)"/>.</para>
+    /// <para>Lock a portion of the texture for <b>write-only</b> pixel access.</para>
     /// <para>As an optimization, the pixels made available for editing don't necessarily
     /// contain the old texture data. This is a write-only operation, and if you
     /// need to keep a copy of the texture data you should do that at the
     /// application level.</para>
     /// <para>You must use <see cref="UnlockTexture"/> to unlock the pixels and apply any
     /// changes.</para>
-    /// <para>The returned surface is freed internally after calling <see cref="UnlockTexture"/>
-    /// or <see cref="DestroyTexture"/>. The caller should not free it.</para>
     /// </summary>
-    /// <param name="texture">the texture to lock for access, which must be created with
+    /// <param name="texture">the texture to lock for access, which was created with
     /// <see cref="TextureAccess.Streaming"/>.</param>
-    /// <param name="rect">a pointer to the rectangle to lock for access. If the rect is
-    /// <c>null</c>, the entire texture will be locked.</param>
-    /// <param name="surface">a pointer to an SDL surface of size <b>rect</b>. Don't assume
-    /// any specific pixel content.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the area to lock for access;
+    /// <c>null</c> to lock the entire texture.</param>
+    /// <param name="pixels">this is filled in with a pointer to the locked pixels,
+    /// appropriately offset by the locked area.</param>
+    /// <param name="pitch">this is filled in with the pitch of the locked pixels; the
+    /// pitch is the length of one row in bytes.</param>
+    /// <returns><c>true</c> on success or <c>false</c> if the texture is not valid or was not
+    /// created with <see cref="TextureAccess.Streaming"/>; call <see cref="GetError"/>
+    /// for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
+    /// <seealso cref="LockTextureToSurface(nint, nint, out nint)"/>
     /// <seealso cref="UnlockTexture"/>
+    public static bool LockTexture(IntPtr texture, in Rect rect, out IntPtr pixels, out int pitch)
+    {
+        return LockTextureRectNativeFunction(texture, in rect, out pixels, out pitch);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTextureToSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1768,11 +1741,45 @@ public static partial class SDL
     private delegate bool LockTextureToSurfacePointerNativeDelegate(IntPtr texture, IntPtr rect, out IntPtr surface);
     private static LockTextureToSurfacePointerNativeDelegate LockTextureToSurfacePointerNativeFunction = SDL_LockTextureToSurfacePointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);</code>
+    /// <summary>
+    /// <para>Lock a portion of the texture for <b>write-only</b> pixel access, and expose
+    /// it as a SDL surface.</para>
+    /// <para>Besides providing an <see cref="Surface"/> instead of raw pixel data, this function
+    /// operates like <see cref="LockTexture(nint, nint, out nint, out int)"/>.</para>
+    /// <para>As an optimization, the pixels made available for editing don't necessarily
+    /// contain the old texture data. This is a write-only operation, and if you
+    /// need to keep a copy of the texture data you should do that at the
+    /// application level.</para>
+    /// <para>You must use <see cref="UnlockTexture"/> to unlock the pixels and apply any
+    /// changes.</para>
+    /// <para>The returned surface is freed internally after calling <see cref="UnlockTexture"/>
+    /// or <see cref="DestroyTexture"/>. The caller should not free it.</para>
+    /// </summary>
+    /// <param name="texture">the texture to lock for access, which must be created with
+    /// <see cref="TextureAccess.Streaming"/>.</param>
+    /// <param name="rect">a pointer to the rectangle to lock for access. If the rect is
+    /// <c>null</c>, the entire texture will be locked.</param>
+    /// <param name="surface">a pointer to an SDL surface of size <b>rect</b>. Don't assume
+    /// any specific pixel content.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
+    /// <seealso cref="UnlockTexture"/>
     public static bool LockTextureToSurface(IntPtr texture, IntPtr rect, out IntPtr surface)
     {
         return LockTextureToSurfacePointerNativeFunction(texture, rect, out surface);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTextureToSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_LockTextureToSurfaceRect(IntPtr texture, in Rect rect, out IntPtr surface);
+    private delegate bool LockTextureToSurfaceRectNativeDelegate(IntPtr texture, in Rect rect, out IntPtr surface);
+    private static LockTextureToSurfaceRectNativeDelegate LockTextureToSurfaceRectNativeFunction = SDL_LockTextureToSurfaceRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);</code>
     /// <summary>
@@ -1801,18 +1808,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
     /// <seealso cref="UnlockTexture"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockTextureToSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_LockTextureToSurfaceRect(IntPtr texture, in Rect rect, out IntPtr surface);
-    private delegate bool LockTextureToSurfaceRectNativeDelegate(IntPtr texture, in Rect rect, out IntPtr surface);
-    private static LockTextureToSurfaceRectNativeDelegate LockTextureToSurfaceRectNativeFunction = SDL_LockTextureToSurfaceRect;
-
     public static bool LockTextureToSurface(IntPtr texture, in Rect rect, out IntPtr surface)
     {
         return LockTextureToSurfaceRectNativeFunction(texture, in rect, out surface);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UnlockTexture(IntPtr texture);
+    private delegate void UnlockTextureNativeDelegate(IntPtr texture);
+    private static UnlockTextureNativeDelegate UnlockTextureNativeFunction = SDL_UnlockTexture;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockTexture(SDL_Texture *texture);</code>
     /// <summary>
@@ -1828,17 +1834,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockTexture(nint, nint, out nint, out int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnlockTexture(IntPtr texture);
-    private delegate void UnlockTextureNativeDelegate(IntPtr texture);
-    private static UnlockTextureNativeDelegate UnlockTextureNativeFunction = SDL_UnlockTexture;
-
     public static void UnlockTexture(IntPtr texture)
     {
         UnlockTextureNativeFunction(texture);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderTarget"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderTarget(IntPtr renderer, IntPtr texture);
+    private delegate bool SetRenderTargetNativeDelegate(IntPtr renderer, IntPtr texture);
+    private static SetRenderTargetNativeDelegate SetRenderTargetNativeFunction = SDL_SetRenderTarget;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture);</code>
     /// <summary>
@@ -1860,18 +1867,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderTarget"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderTarget"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderTarget(IntPtr renderer, IntPtr texture);
-    private delegate bool SetRenderTargetNativeDelegate(IntPtr renderer, IntPtr texture);
-    private static SetRenderTargetNativeDelegate SetRenderTargetNativeFunction = SDL_SetRenderTarget;
-
     public static bool SetRenderTarget(IntPtr renderer, IntPtr texture)
     {
         return SetRenderTargetNativeFunction(renderer, texture);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTarget"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRenderTarget(IntPtr renderer);
+    private delegate IntPtr GetRenderTargetNativeDelegate(IntPtr renderer);
+    private static GetRenderTargetNativeDelegate GetRenderTargetNativeFunction = SDL_GetRenderTarget;
 
     /// <code>extern SDL_DECLSPEC SDL_Texture * SDLCALL SDL_GetRenderTarget(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -1884,17 +1890,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderTarget"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTarget"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRenderTarget(IntPtr renderer);
-    private delegate IntPtr GetRenderTargetNativeDelegate(IntPtr renderer);
-    private static GetRenderTargetNativeDelegate GetRenderTargetNativeFunction = SDL_GetRenderTarget;
-
     public static IntPtr GetRenderTarget(IntPtr renderer)
     {
         return GetRenderTargetNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderLogicalPresentation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderLogicalPresentation(IntPtr renderer, int w, int h, RendererLogicalPresentation mode);
+    private delegate bool SetRenderLogicalPresentationNativeDelegate(IntPtr renderer, int w, int h, RendererLogicalPresentation mode);
+    private static SetRenderLogicalPresentationNativeDelegate SetRenderLogicalPresentationNativeFunction = SDL_SetRenderLogicalPresentation;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderLogicalPresentation(SDL_Renderer *renderer, int w, int h, SDL_RendererLogicalPresentation mode);</code>
     /// <summary>
@@ -1933,18 +1940,18 @@ public static partial class SDL
     /// <seealso cref="ConvertEventToRenderCoordinates"/>
     /// <seealso cref="GetRenderLogicalPresentation"/>
     /// <seealso cref="GetRenderLogicalPresentationRect"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderLogicalPresentation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderLogicalPresentation(IntPtr renderer, int w, int h, RendererLogicalPresentation mode);
-    private delegate bool SetRenderLogicalPresentationNativeDelegate(IntPtr renderer, int w, int h, RendererLogicalPresentation mode);
-    private static SetRenderLogicalPresentationNativeDelegate SetRenderLogicalPresentationNativeFunction = SDL_SetRenderLogicalPresentation;
-
     public static bool SetRenderLogicalPresentation(IntPtr renderer, int w, int h, RendererLogicalPresentation mode)
     {
         return SetRenderLogicalPresentationNativeFunction(renderer, w, h, mode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderLogicalPresentation(IntPtr renderer, out int w, out int h, out RendererLogicalPresentation mode);
+    private delegate bool GetRenderLogicalPresentationNativeDelegate(IntPtr renderer, out int w, out int h, out RendererLogicalPresentation mode);
+    private static GetRenderLogicalPresentationNativeDelegate GetRenderLogicalPresentationNativeFunction = SDL_GetRenderLogicalPresentation;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderLogicalPresentation(SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode);</code>
     /// <summary>
@@ -1964,18 +1971,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderLogicalPresentation(IntPtr renderer, out int w, out int h, out RendererLogicalPresentation mode);
-    private delegate bool GetRenderLogicalPresentationNativeDelegate(IntPtr renderer, out int w, out int h, out RendererLogicalPresentation mode);
-    private static GetRenderLogicalPresentationNativeDelegate GetRenderLogicalPresentationNativeFunction = SDL_GetRenderLogicalPresentation;
-
     public static bool GetRenderLogicalPresentation(IntPtr renderer, out int w, out int h, out RendererLogicalPresentation mode)
     {
         return GetRenderLogicalPresentationNativeFunction(renderer, out w, out h, out mode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentationRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderLogicalPresentationRect(IntPtr renderer, out FRect rect);
+    private delegate bool GetRenderLogicalPresentationRectNativeDelegate(IntPtr renderer, out FRect rect);
+    private static GetRenderLogicalPresentationRectNativeDelegate GetRenderLogicalPresentationRectNativeFunction = SDL_GetRenderLogicalPresentationRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderLogicalPresentationRect(SDL_Renderer *renderer, SDL_FRect *rect);</code>
     /// <summary>
@@ -1995,18 +2002,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderLogicalPresentationRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderLogicalPresentationRect(IntPtr renderer, out FRect rect);
-    private delegate bool GetRenderLogicalPresentationRectNativeDelegate(IntPtr renderer, out FRect rect);
-    private static GetRenderLogicalPresentationRectNativeDelegate GetRenderLogicalPresentationRectNativeFunction = SDL_GetRenderLogicalPresentationRect;
-
     public static bool GetRenderLogicalPresentationRect(IntPtr renderer, out FRect rect)
     {
         return GetRenderLogicalPresentationRectNativeFunction(renderer, out rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderCoordinatesFromWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderCoordinatesFromWindow(IntPtr renderer, float windowx, float windowy, out float x, out float y);
+    private delegate bool RenderCoordinatesFromWindowNativeDelegate(IntPtr renderer, float windowx, float windowy, out float x, out float y);
+    private static RenderCoordinatesFromWindowNativeDelegate RenderCoordinatesFromWindowNativeFunction = SDL_RenderCoordinatesFromWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderCoordinatesFromWindow(SDL_Renderer *renderer, float window_x, float window_y, float *x, float *y);</code>
     /// <summary>
@@ -2030,18 +2037,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderLogicalPresentation"/>
     /// <seealso cref="SetRenderScale"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderCoordinatesFromWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderCoordinatesFromWindow(IntPtr renderer, float windowx, float windowy, out float x, out float y);
-    private delegate bool RenderCoordinatesFromWindowNativeDelegate(IntPtr renderer, float windowx, float windowy, out float x, out float y);
-    private static RenderCoordinatesFromWindowNativeDelegate RenderCoordinatesFromWindowNativeFunction = SDL_RenderCoordinatesFromWindow;
-
     public static bool RenderCoordinatesFromWindow(IntPtr renderer, float windowx, float windowy, out float x, out float y)
     {
         return RenderCoordinatesFromWindowNativeFunction(renderer, windowx, windowy, out x, out y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderCoordinatesToWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderCoordinatesToWindow(IntPtr renderer, float x, float y, out float windowx, out float windowy);
+    private delegate bool RenderCoordinatesToWindowNativeDelegate(IntPtr renderer, float x, float y, out float windowx, out float windowy);
+    private static RenderCoordinatesToWindowNativeDelegate RenderCoordinatesToWindowNativeFunction = SDL_RenderCoordinatesToWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderCoordinatesToWindow(SDL_Renderer *renderer, float x, float y, float *window_x, float *window_y);</code>
     /// <summary>
@@ -2068,18 +2075,18 @@ public static partial class SDL
     /// <seealso cref="SetRenderLogicalPresentation"/>
     /// <seealso cref="SetRenderScale"/>
     /// <seealso cref="SetRenderViewport(nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderCoordinatesToWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderCoordinatesToWindow(IntPtr renderer, float x, float y, out float windowx, out float windowy);
-    private delegate bool RenderCoordinatesToWindowNativeDelegate(IntPtr renderer, float x, float y, out float windowx, out float windowy);
-    private static RenderCoordinatesToWindowNativeDelegate RenderCoordinatesToWindowNativeFunction = SDL_RenderCoordinatesToWindow;
-
     public static bool RenderCoordinatesToWindow(IntPtr renderer, float x, float y, out float windowx, out float windowy)
     {
         return RenderCoordinatesToWindowNativeFunction(renderer, x, y, out windowx, out windowy);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_ConvertEventToRenderCoordinates"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_ConvertEventToRenderCoordinates(IntPtr renderer, ref Event @event);
+    private delegate bool ConvertEventToRenderCoordinatesNativeDelegate(IntPtr renderer, ref Event @event);
+    private static ConvertEventToRenderCoordinatesNativeDelegate ConvertEventToRenderCoordinatesNativeFunction = SDL_ConvertEventToRenderCoordinates;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertEventToRenderCoordinates(SDL_Renderer *renderer, SDL_Event *event);</code>
     /// <summary>
@@ -2108,18 +2115,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderCoordinatesFromWindow"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_ConvertEventToRenderCoordinates"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_ConvertEventToRenderCoordinates(IntPtr renderer, ref Event @event);
-    private delegate bool ConvertEventToRenderCoordinatesNativeDelegate(IntPtr renderer, ref Event @event);
-    private static ConvertEventToRenderCoordinatesNativeDelegate ConvertEventToRenderCoordinatesNativeFunction = SDL_ConvertEventToRenderCoordinates;
-
     public static bool ConvertEventToRenderCoordinates(IntPtr renderer, ref Event @event)
     {
         return ConvertEventToRenderCoordinatesNativeFunction(renderer, ref @event);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderViewportPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool SetRenderViewportPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static SetRenderViewportPointerNativeDelegate SetRenderViewportPointerNativeFunction = SDL_SetRenderViewportPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
@@ -2140,18 +2147,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="RenderViewportSet"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderViewportPointer(IntPtr renderer, IntPtr rect);
-    private delegate bool SetRenderViewportPointerNativeDelegate(IntPtr renderer, IntPtr rect);
-    private static SetRenderViewportPointerNativeDelegate SetRenderViewportPointerNativeFunction = SDL_SetRenderViewportPointer;
-
     public static bool SetRenderViewport(IntPtr renderer, IntPtr rect)
     {
         return SetRenderViewportPointerNativeFunction(renderer, rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderViewportRect(IntPtr renderer, Rect rect);
+    private delegate bool SetRenderViewportRectNativeDelegate(IntPtr renderer, Rect rect);
+    private static SetRenderViewportRectNativeDelegate SetRenderViewportRectNativeFunction = SDL_SetRenderViewportRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
@@ -2170,18 +2177,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="RenderViewportSet"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderViewportRect(IntPtr renderer, Rect rect);
-    private delegate bool SetRenderViewportRectNativeDelegate(IntPtr renderer, Rect rect);
-    private static SetRenderViewportRectNativeDelegate SetRenderViewportRectNativeFunction = SDL_SetRenderViewportRect;
-
     public static bool SetRenderViewport(IntPtr renderer, Rect rect)
     {
         return SetRenderViewportRectNativeFunction(renderer, rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderViewport(IntPtr renderer, out Rect rect);
+    private delegate bool GetRenderViewportNativeDelegate(IntPtr renderer, out Rect rect);
+    private static GetRenderViewportNativeDelegate GetRenderViewportNativeFunction = SDL_GetRenderViewport;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
@@ -2197,18 +2204,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderViewportSet"/>
     /// <seealso cref="SetRenderViewport(nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderViewport(IntPtr renderer, out Rect rect);
-    private delegate bool GetRenderViewportNativeDelegate(IntPtr renderer, out Rect rect);
-    private static GetRenderViewportNativeDelegate GetRenderViewportNativeFunction = SDL_GetRenderViewport;
-
     public static bool GetRenderViewport(IntPtr renderer, out Rect rect)
     {
         return GetRenderViewportNativeFunction(renderer, out rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderViewportSet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderViewportSet(IntPtr renderer);
+    private delegate bool RenderViewportSetNativeDelegate(IntPtr renderer);
+    private static RenderViewportSetNativeDelegate RenderViewportSetNativeFunction = SDL_RenderViewportSet;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderViewportSet(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -2225,18 +2232,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="SetRenderViewport(nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderViewportSet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderViewportSet(IntPtr renderer);
-    private delegate bool RenderViewportSetNativeDelegate(IntPtr renderer);
-    private static RenderViewportSetNativeDelegate RenderViewportSetNativeFunction = SDL_RenderViewportSet;
-
     public static bool RenderViewportSet(IntPtr renderer)
     {
         return RenderViewportSetNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderSafeArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderSafeArea(IntPtr renderer, out Rect rect);
+    private delegate bool GetRenderSafeAreaNativeDelegate(IntPtr renderer, out Rect rect);
+    private static GetRenderSafeAreaNativeDelegate GetRenderSafeAreaNativeFunction = SDL_GetRenderSafeArea;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
@@ -2255,34 +2262,12 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderSafeArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderSafeArea(IntPtr renderer, out Rect rect);
-    private delegate bool GetRenderSafeAreaNativeDelegate(IntPtr renderer, out Rect rect);
-    private static GetRenderSafeAreaNativeDelegate GetRenderSafeAreaNativeFunction = SDL_GetRenderSafeArea;
-
     public static bool GetRenderSafeArea(IntPtr renderer, out Rect rect)
     {
         return GetRenderSafeAreaNativeFunction(renderer, out rect);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
-    /// <summary>
-    /// Set the clip rectangle for rendering on the specified target.
-    /// <para>Each render target has its own clip rectangle. This function
-    /// sets the cliprect for the current render target.</para>
-    /// </summary>
-    /// <param name="renderer">the rendering context.</param>
-    /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
-    /// the viewport, or <c>null</c> to disable clipping.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="RenderClipEnabled"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2290,11 +2275,33 @@ public static partial class SDL
     private delegate bool SetRenderClipRectPointerNativeDelegate(IntPtr renderer, IntPtr rect);
     private static SetRenderClipRectPointerNativeDelegate SetRenderClipRectPointerNativeFunction = SDL_SetRenderClipRectPointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
+    /// <summary>
+    /// Set the clip rectangle for rendering on the specified target.
+    /// <para>Each render target has its own clip rectangle. This function
+    /// sets the cliprect for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
+    /// the viewport, or <c>null</c> to disable clipping.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetRenderClipRect"/>
+    /// <seealso cref="RenderClipEnabled"/>
     public static bool SetRenderClipRect(IntPtr renderer, IntPtr rect)
     {
         return SetRenderClipRectPointerNativeFunction(renderer, rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderClipRectRect(IntPtr renderer, in Rect rect);
+    private delegate bool SetRenderClipRectRectNativeDelegate(IntPtr renderer, in Rect rect);
+    private static SetRenderClipRectRectNativeDelegate SetRenderClipRectRectNativeFunction = SDL_SetRenderClipRectRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
@@ -2311,18 +2318,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderClipRect"/>
     /// <seealso cref="RenderClipEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderClipRectRect(IntPtr renderer, in Rect rect);
-    private delegate bool SetRenderClipRectRectNativeDelegate(IntPtr renderer, in Rect rect);
-    private static SetRenderClipRectRectNativeDelegate SetRenderClipRectRectNativeFunction = SDL_SetRenderClipRectRect;
-
     public static bool SetRenderClipRect(IntPtr renderer, in Rect rect)
     {
         return SetRenderClipRectRectNativeFunction(renderer, in rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderClipRect(IntPtr renderer, out Rect rect);
+    private delegate bool GetRenderClipRectNativeDelegate(IntPtr renderer, out Rect rect);
+    private static GetRenderClipRectNativeDelegate GetRenderClipRectNativeFunction = SDL_GetRenderClipRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
@@ -2339,18 +2346,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderClipEnabled"/>
     /// <seealso cref="SetRenderClipRect(nint, in Rect)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderClipRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderClipRect(IntPtr renderer, out Rect rect);
-    private delegate bool GetRenderClipRectNativeDelegate(IntPtr renderer, out Rect rect);
-    private static GetRenderClipRectNativeDelegate GetRenderClipRectNativeFunction = SDL_GetRenderClipRect;
-
     public static bool GetRenderClipRect(IntPtr renderer, out Rect rect)
     {
         return GetRenderClipRectNativeFunction(renderer, out rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClipEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderClipEnabled(IntPtr renderer);
+    private delegate bool RenderClipEnabledNativeDelegate(IntPtr renderer);
+    private static RenderClipEnabledNativeDelegate RenderClipEnabledNativeFunction = SDL_RenderClipEnabled;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderClipEnabled(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -2365,18 +2372,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderClipRect"/>
     /// <seealso cref="SetRenderClipRect(nint, in Rect)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClipEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderClipEnabled(IntPtr renderer);
-    private delegate bool RenderClipEnabledNativeDelegate(IntPtr renderer);
-    private static RenderClipEnabledNativeDelegate RenderClipEnabledNativeFunction = SDL_RenderClipEnabled;
-
     public static bool RenderClipEnabled(IntPtr renderer)
     {
         return RenderClipEnabledNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderScale(IntPtr renderer, float scalex, float scaley);
+    private delegate bool SetRenderScaleNativeDelegate(IntPtr renderer, float scalex, float scaley);
+    private static SetRenderScaleNativeDelegate SetRenderScaleNativeFunction = SDL_SetRenderScale;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderScale(SDL_Renderer *renderer, float scaleX, float scaleY);</code>
     /// <summary>
@@ -2398,18 +2405,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderScale"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderScale(IntPtr renderer, float scalex, float scaley);
-    private delegate bool SetRenderScaleNativeDelegate(IntPtr renderer, float scalex, float scaley);
-    private static SetRenderScaleNativeDelegate SetRenderScaleNativeFunction = SDL_SetRenderScale;
-
     public static bool SetRenderScale(IntPtr renderer, float scalex, float scaley)
     {
         return SetRenderScaleNativeFunction(renderer, scalex, scaley);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderScale(IntPtr renderer, out float scalex, out float scaley);
+    private delegate bool GetRenderScaleNativeDelegate(IntPtr renderer, out float scalex, out float scaley);
+    private static GetRenderScaleNativeDelegate GetRenderScaleNativeFunction = SDL_GetRenderScale;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);</code>
     /// <summary>
@@ -2425,18 +2432,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderScale"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderScale(IntPtr renderer, out float scalex, out float scaley);
-    private delegate bool GetRenderScaleNativeDelegate(IntPtr renderer, out float scalex, out float scaley);
-    private static GetRenderScaleNativeDelegate GetRenderScaleNativeFunction = SDL_GetRenderScale;
-
     public static bool GetRenderScale(IntPtr renderer, out float scalex, out float scaley)
     {
         return GetRenderScaleNativeFunction(renderer, out scalex, out scaley);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawColor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
+    private delegate bool SetRenderDrawColorNativeDelegate(IntPtr renderer, byte r, byte g, byte b, byte a);
+    private static SetRenderDrawColorNativeDelegate SetRenderDrawColorNativeFunction = SDL_SetRenderDrawColor;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a);</code>
     /// <summary>
@@ -2457,18 +2464,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderDrawColor"/>
     /// <seealso cref="SetRenderDrawColorFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawColor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
-    private delegate bool SetRenderDrawColorNativeDelegate(IntPtr renderer, byte r, byte g, byte b, byte a);
-    private static SetRenderDrawColorNativeDelegate SetRenderDrawColorNativeFunction = SDL_SetRenderDrawColor;
-
     public static bool SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a)
     {
         return SetRenderDrawColorNativeFunction(renderer, r, g, b, a);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawColorFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderDrawColorFloat(IntPtr renderer, float r, float g, float b, float a);
+    private delegate bool SetRenderDrawColorFloatNativeDelegate(IntPtr renderer, float r, float g, float b, float a);
+    private static SetRenderDrawColorFloatNativeDelegate SetRenderDrawColorFloatNativeFunction = SDL_SetRenderDrawColorFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderDrawColorFloat(SDL_Renderer *renderer, float r, float g, float b, float a);</code>
     /// <summary>
@@ -2489,18 +2496,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderDrawColorFloat"/>
     /// <seealso cref="SetRenderDrawColor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawColorFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderDrawColorFloat(IntPtr renderer, float r, float g, float b, float a);
-    private delegate bool SetRenderDrawColorFloatNativeDelegate(IntPtr renderer, float r, float g, float b, float a);
-    private static SetRenderDrawColorFloatNativeDelegate SetRenderDrawColorFloatNativeFunction = SDL_SetRenderDrawColorFloat;
-
     public static bool SetRenderDrawColorFloat(IntPtr renderer, float r, float g, float b, float a)
     {
         return SetRenderDrawColorFloatNativeFunction(renderer, r, g, b, a);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawColor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderDrawColor(IntPtr renderer, out byte r, out byte g, out byte b, out byte a);
+    private delegate bool GetRenderDrawColorNativeDelegate(IntPtr renderer, out byte r, out byte g, out byte b, out byte a);
+    private static GetRenderDrawColorNativeDelegate GetRenderDrawColorNativeFunction = SDL_GetRenderDrawColor;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderDrawColor(SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
@@ -2521,18 +2528,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderDrawColorFloat"/>
     /// <seealso cref="SetRenderDrawColor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawColor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderDrawColor(IntPtr renderer, out byte r, out byte g, out byte b, out byte a);
-    private delegate bool GetRenderDrawColorNativeDelegate(IntPtr renderer, out byte r, out byte g, out byte b, out byte a);
-    private static GetRenderDrawColorNativeDelegate GetRenderDrawColorNativeFunction = SDL_GetRenderDrawColor;
-
     public static bool GetRenderDrawColor(IntPtr renderer, out byte r, out byte g, out byte b, out byte a)
     {
         return GetRenderDrawColorNativeFunction(renderer, out r, out g, out b, out a);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawColorFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderDrawColorFloat(IntPtr renderer, out float r, out float g, out float b, out float a);
+    private delegate bool GetRenderDrawColorFloatNativeDelegate(IntPtr renderer, out float r, out float g, out float b, out float a);
+    private static GetRenderDrawColorFloatNativeDelegate GetRenderDrawColorFloatNativeFunction = SDL_GetRenderDrawColorFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderDrawColorFloat(SDL_Renderer *renderer, float *r, float *g, float *b, float *a);</code>
     /// <summary>
@@ -2553,18 +2560,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderDrawColorFloat"/>
     /// <seealso cref="GetRenderDrawColor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawColorFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderDrawColorFloat(IntPtr renderer, out float r, out float g, out float b, out float a);
-    private delegate bool GetRenderDrawColorFloatNativeDelegate(IntPtr renderer, out float r, out float g, out float b, out float a);
-    private static GetRenderDrawColorFloatNativeDelegate GetRenderDrawColorFloatNativeFunction = SDL_GetRenderDrawColorFloat;
-
     public static bool GetRenderDrawColorFloat(IntPtr renderer, out float r, out float g, out float b, out float a)
     {
         return GetRenderDrawColorFloatNativeFunction(renderer, out r, out g, out b, out a);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderColorScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderColorScale(IntPtr renderer, float scale);
+    private delegate bool SetRenderColorScaleNativeDelegate(IntPtr renderer, float scale);
+    private static SetRenderColorScaleNativeDelegate SetRenderColorScaleNativeFunction = SDL_SetRenderColorScale;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderColorScale(SDL_Renderer *renderer, float scale);</code>
     /// <summary>
@@ -2583,18 +2590,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderColorScale"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderColorScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderColorScale(IntPtr renderer, float scale);
-    private delegate bool SetRenderColorScaleNativeDelegate(IntPtr renderer, float scale);
-    private static SetRenderColorScaleNativeDelegate SetRenderColorScaleNativeFunction = SDL_SetRenderColorScale;
-
     public static bool SetRenderColorScale(IntPtr renderer, float scale)
     {
         return SetRenderColorScaleNativeFunction(renderer, scale);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderColorScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderColorScale(IntPtr renderer, out float scale);
+    private delegate bool GetRenderColorScaleNativeDelegate(IntPtr renderer, out float scale);
+    private static GetRenderColorScaleNativeDelegate GetRenderColorScaleNativeFunction = SDL_GetRenderColorScale;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderColorScale(SDL_Renderer *renderer, float *scale);</code>
     /// <summary>
@@ -2607,18 +2614,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderColorScale"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderColorScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderColorScale(IntPtr renderer, out float scale);
-    private delegate bool GetRenderColorScaleNativeDelegate(IntPtr renderer, out float scale);
-    private static GetRenderColorScaleNativeDelegate GetRenderColorScaleNativeFunction = SDL_GetRenderColorScale;
-
     public static bool GetRenderColorScale(IntPtr renderer, out float scale)
     {
         return GetRenderColorScaleNativeFunction(renderer, out scale);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderDrawBlendMode(IntPtr renderer, BlendMode blendMode);
+    private delegate bool SetRenderDrawBlendModeNativeDelegate(IntPtr renderer, BlendMode blendMode);
+    private static SetRenderDrawBlendModeNativeDelegate SetRenderDrawBlendModeNativeFunction = SDL_SetRenderDrawBlendMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode);</code>
     /// <summary>
@@ -2632,18 +2639,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderDrawBlendMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderDrawBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderDrawBlendMode(IntPtr renderer, BlendMode blendMode);
-    private delegate bool SetRenderDrawBlendModeNativeDelegate(IntPtr renderer, BlendMode blendMode);
-    private static SetRenderDrawBlendModeNativeDelegate SetRenderDrawBlendModeNativeFunction = SDL_SetRenderDrawBlendMode;
-
     public static bool SetRenderDrawBlendMode(IntPtr renderer, BlendMode blendMode)
     {
         return SetRenderDrawBlendModeNativeFunction(renderer, blendMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderDrawBlendMode(IntPtr renderer, out BlendMode blendMode);
+    private delegate bool GetRenderDrawBlendModeNativeDelegate(IntPtr renderer, out BlendMode blendMode);
+    private static GetRenderDrawBlendModeNativeDelegate GetRenderDrawBlendModeNativeFunction = SDL_GetRenderDrawBlendMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);</code>
     /// <summary>
@@ -2656,18 +2663,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderDrawBlendMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderDrawBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderDrawBlendMode(IntPtr renderer, out BlendMode blendMode);
-    private delegate bool GetRenderDrawBlendModeNativeDelegate(IntPtr renderer, out BlendMode blendMode);
-    private static GetRenderDrawBlendModeNativeDelegate GetRenderDrawBlendModeNativeFunction = SDL_GetRenderDrawBlendMode;
-
     public static bool GetRenderDrawBlendMode(IntPtr renderer, out BlendMode blendMode)
     {
         return GetRenderDrawBlendModeNativeFunction(renderer, out blendMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderClear(IntPtr renderer);
+    private delegate bool RenderClearNativeDelegate(IntPtr renderer);
+    private static RenderClearNativeDelegate RenderClearNativeFunction = SDL_RenderClear;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderClear(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -2683,18 +2690,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderDrawColor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderClear"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderClear(IntPtr renderer);
-    private delegate bool RenderClearNativeDelegate(IntPtr renderer);
-    private static RenderClearNativeDelegate RenderClearNativeFunction = SDL_RenderClear;
-
     public static bool RenderClear(IntPtr renderer)
     {
         return RenderClearNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderPoint(IntPtr renderer, float x, float y);
+    private delegate bool RenderPointNativeDelegate(IntPtr renderer, float x, float y);
+    private static RenderPointNativeDelegate RenderPointNativeFunction = SDL_RenderPoint;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPoint(SDL_Renderer *renderer, float x, float y);</code>
     /// <summary>
@@ -2708,31 +2715,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderPoints(nint, FPoint[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderPoint(IntPtr renderer, float x, float y);
-    private delegate bool RenderPointNativeDelegate(IntPtr renderer, float x, float y);
-    private static RenderPointNativeDelegate RenderPointNativeFunction = SDL_RenderPoint;
-
     public static bool RenderPoint(IntPtr renderer, float x, float y)
     {
         return RenderPointNativeFunction(renderer, x, y);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
-    /// <summary>
-    /// Draw multiple points on the current rendering target at subpixel precision.
-    /// </summary>
-    /// <param name="renderer">the renderer which should draw multiple points.</param>
-    /// <param name="points">the points to draw.</param>
-    /// <param name="count">the number of points to draw.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderPoint"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2740,10 +2728,29 @@ public static partial class SDL
     private delegate bool RenderPointsArrayNativeDelegate(IntPtr renderer, FPoint[] points, int count);
     private static RenderPointsArrayNativeDelegate RenderPointsArrayNativeFunction = SDL_RenderPointsArray;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
+    /// <summary>
+    /// Draw multiple points on the current rendering target at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple points.</param>
+    /// <param name="points">the points to draw.</param>
+    /// <param name="count">the number of points to draw.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderPoint"/>
     public static bool RenderPoints(IntPtr renderer, FPoint[] points, int count)
     {
         return RenderPointsArrayNativeFunction(renderer, points, count);
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderPointsPointer(IntPtr renderer, IntPtr points, int count);
+    private delegate bool RenderPointsPointerNativeDelegate(IntPtr renderer, IntPtr points, int count);
+    private static RenderPointsPointerNativeDelegate RenderPointsPointerNativeFunction = SDL_RenderPointsPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
     /// <summary>
@@ -2757,18 +2764,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderPoint"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderPointsPointer(IntPtr renderer, IntPtr points, int count);
-    private delegate bool RenderPointsPointerNativeDelegate(IntPtr renderer, IntPtr points, int count);
-    private static RenderPointsPointerNativeDelegate RenderPointsPointerNativeFunction = SDL_RenderPointsPointer;
-
     public static bool RenderPoints(IntPtr renderer, IntPtr points, int count)
     {
         return RenderPointsPointerNativeFunction(renderer, points, count);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderLine(IntPtr renderer, float x1, float y1, float x2, float y2);
+    private delegate bool RenderLineNativeDelegate(IntPtr renderer, float x1, float y1, float x2, float y2);
+    private static RenderLineNativeDelegate RenderLineNativeFunction = SDL_RenderLine;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLine(SDL_Renderer *renderer, float x1, float y1, float x2, float y2);</code>
     /// <summary>
@@ -2785,32 +2792,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderLines(IntPtr, FPoint[], int)"/>
     /// <seealso cref="RenderLines(IntPtr, IntPtr, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderLine(IntPtr renderer, float x1, float y1, float x2, float y2);
-    private delegate bool RenderLineNativeDelegate(IntPtr renderer, float x1, float y1, float x2, float y2);
-    private static RenderLineNativeDelegate RenderLineNativeFunction = SDL_RenderLine;
-
     public static bool RenderLine(IntPtr renderer, float x1, float y1, float x2, float y2)
     {
         return RenderLineNativeFunction(renderer, x1, y1, x2, y2);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
-    /// <summary>
-    /// Draw a series of connected lines on the current rendering target at
-    /// subpixel precision.
-    /// </summary>
-    /// <param name="renderer">the renderer which should draw multiple lines.</param>
-    /// <param name="points">the points along the lines.</param>
-    /// <param name="count">the number of points, drawing count-1 lines.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderLine"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLines"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2818,10 +2805,30 @@ public static partial class SDL
     private delegate bool RenderLinesArrayNativeDelegate(IntPtr renderer, FPoint[] points, int count);
     private static RenderLinesArrayNativeDelegate RenderLinesArrayNativeFunction = SDL_RenderLinesArray;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
+    /// <summary>
+    /// Draw a series of connected lines on the current rendering target at
+    /// subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple lines.</param>
+    /// <param name="points">the points along the lines.</param>
+    /// <param name="count">the number of points, drawing count-1 lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderLine"/>
     public static bool RenderLines(IntPtr renderer, FPoint[] points, int count)
     {
         return RenderLinesArrayNativeFunction(renderer, points, count);
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLines"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderLinesPointer(IntPtr renderer, IntPtr points, int count);
+    private delegate bool RenderLinesPointerNativeDelegate(IntPtr renderer, IntPtr points, int count);
+    private static RenderLinesPointerNativeDelegate RenderLinesPointerNativeFunction = SDL_RenderLinesPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
     /// <summary>
@@ -2836,18 +2843,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderLine"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderLines"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderLinesPointer(IntPtr renderer, IntPtr points, int count);
-    private delegate bool RenderLinesPointerNativeDelegate(IntPtr renderer, IntPtr points, int count);
-    private static RenderLinesPointerNativeDelegate RenderLinesPointerNativeFunction = SDL_RenderLinesPointer;
-
     public static bool RenderLines(IntPtr renderer, IntPtr points, int count)
     {
         return RenderLinesPointerNativeFunction(renderer, points, count);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderRectPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool RenderRectPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static RenderRectPointerNativeDelegate RenderRectPointerNativeFunction = SDL_RenderRectPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
     /// <summary>
@@ -2861,18 +2868,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderRects(nint, nint, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderRectPointer(IntPtr renderer, IntPtr rect);
-    private delegate bool RenderRectPointerNativeDelegate(IntPtr renderer, IntPtr rect);
-    private static RenderRectPointerNativeDelegate RenderRectPointerNativeFunction = SDL_RenderRectPointer;
-
     public static bool RenderRect(IntPtr renderer, IntPtr rect)
     {
         return RenderRectPointerNativeFunction(renderer, rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderRectRect(IntPtr renderer, in FRect rect);
+    private delegate bool RenderRectRectNativeDelegate(IntPtr renderer, in FRect rect);
+    private static RenderRectRectNativeDelegate RenderRectRectNativeFunction = SDL_RenderRectRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
     /// <summary>
@@ -2886,32 +2893,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderRects(IntPtr, FRect[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderRectRect(IntPtr renderer, in FRect rect);
-    private delegate bool RenderRectRectNativeDelegate(IntPtr renderer, in FRect rect);
-    private static RenderRectRectNativeDelegate RenderRectRectNativeFunction = SDL_RenderRectRect;
-
     public static bool RenderRect(IntPtr renderer, in FRect rect)
     {
         return RenderRectRectNativeFunction(renderer, in rect);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
-    /// <summary>
-    /// Draw some number of rectangles on the current rendering target at subpixel
-    /// precision.
-    /// </summary>
-    /// <param name="renderer">the renderer which should draw multiple rectangles.</param>
-    /// <param name="rects">a pointer to an array of destination rectangles.</param>
-    /// <param name="count">the number of rectangles.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <see cref="RenderRect(nint, nint)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2919,10 +2906,30 @@ public static partial class SDL
     private delegate bool RenderRectsArrayNativeDelegate(IntPtr renderer, FRect[] rects, int count);
     private static RenderRectsArrayNativeDelegate RenderRectsArrayNativeFunction = SDL_RenderRectsArray;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
+    /// <summary>
+    /// Draw some number of rectangles on the current rendering target at subpixel
+    /// precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
+    /// <param name="count">the number of rectangles.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <see cref="RenderRect(nint, nint)"/>
     public static bool RenderRects(IntPtr renderer, FRect[] rects, int count)
     {
         return RenderRectsArrayNativeFunction(renderer, rects, count);
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderRectsPointer(IntPtr renderer, IntPtr rects, int count);
+    private delegate bool RenderRectsPointerNativeDelegate(IntPtr renderer, IntPtr rects, int count);
+    private static RenderRectsPointerNativeDelegate RenderRectsPointerNativeFunction = SDL_RenderRectsPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
     /// <summary>
@@ -2937,18 +2944,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <see cref="RenderRect(nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderRectsPointer(IntPtr renderer, IntPtr rects, int count);
-    private delegate bool RenderRectsPointerNativeDelegate(IntPtr renderer, IntPtr rects, int count);
-    private static RenderRectsPointerNativeDelegate RenderRectsPointerNativeFunction = SDL_RenderRectsPointer;
-
     public static bool RenderRects(IntPtr renderer, IntPtr rects, int count)
     {
         return RenderRectsPointerNativeFunction(renderer, rects, count);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderFillRectPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool RenderFillRectPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static RenderFillRectPointerNativeDelegate RenderFillRectPointerNativeFunction = SDL_RenderFillRectPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
     /// <summary>
@@ -2963,18 +2970,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderFillRects(nint, nint, int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderFillRectPointer(IntPtr renderer, IntPtr rect);
-    private delegate bool RenderFillRectPointerNativeDelegate(IntPtr renderer, IntPtr rect);
-    private static RenderFillRectPointerNativeDelegate RenderFillRectPointerNativeFunction = SDL_RenderFillRectPointer;
-
     public static bool RenderFillRect(IntPtr renderer, IntPtr rect)
     {
         return RenderFillRectPointerNativeFunction(renderer, rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderFillRectRect(IntPtr renderer, in FRect rect);
+    private delegate bool RenderFillRectRectNativeDelegate(IntPtr renderer, in FRect rect);
+    private static RenderFillRectRectNativeDelegate RenderFillRectRectNativeFunction = SDL_RenderFillRectRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
     /// <summary>
@@ -2989,33 +2996,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderFillRects(IntPtr, FRect[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderFillRectRect(IntPtr renderer, in FRect rect);
-    private delegate bool RenderFillRectRectNativeDelegate(IntPtr renderer, in FRect rect);
-    private static RenderFillRectRectNativeDelegate RenderFillRectRectNativeFunction = SDL_RenderFillRectRect;
-
     public static bool RenderFillRect(IntPtr renderer, in FRect rect)
     {
         return RenderFillRectRectNativeFunction(renderer, in rect);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
-    /// <summary>
-    /// Fill some number of rectangles on the current rendering target with the
-    /// drawing color at subpixel precision.
-    /// </summary>
-    /// <param name="renderer">the renderer which should fill multiple rectangles.</param>
-    /// <param name="rects">a pointer to an array of destination rectangles.</param>
-    /// <param name="count">the number of rectangles.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderFillRect(nint, nint)"/>
-    /// <seealso cref="RenderFillRect(nint, in FRect)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3023,11 +3009,32 @@ public static partial class SDL
     private delegate bool RenderFillRectsArrayNativeDelegate(IntPtr renderer, FRect[] rects, int count);
     private static RenderFillRectsArrayNativeDelegate RenderFillRectsArrayNativeFunction = SDL_RenderFillRectsArray;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
+    /// <summary>
+    /// Fill some number of rectangles on the current rendering target with the
+    /// drawing color at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should fill multiple rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
+    /// <param name="count">the number of rectangles.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderFillRect(nint, nint)"/>
+    /// <seealso cref="RenderFillRect(nint, in FRect)"/>
     public static bool RenderFillRects(IntPtr renderer, FRect[] rects, int count)
     {
         return RenderFillRectsArrayNativeFunction(renderer, rects, count);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderFillRectsPointer(IntPtr renderer, IntPtr rects, int count);
+    private delegate bool RenderFillRectsPointerNativeDelegate(IntPtr renderer, IntPtr rects, int count);
+    private static RenderFillRectsPointerNativeDelegate RenderFillRectsPointerNativeFunction = SDL_RenderFillRectsPointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
     /// <summary>
@@ -3043,13 +3050,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderFillRect(nint, nint)"/>
     /// <seealso cref="RenderFillRect(nint, in FRect)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderFillRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderFillRectsPointer(IntPtr renderer, IntPtr rects, int count);
-    private delegate bool RenderFillRectsPointerNativeDelegate(IntPtr renderer, IntPtr rects, int count);
-    private static RenderFillRectsPointerNativeDelegate RenderFillRectsPointerNativeFunction = SDL_RenderFillRectsPointer;
-
     public static bool RenderFillRects(IntPtr renderer, IntPtr rects, int count)
     {
         return RenderFillRectsPointerNativeFunction(renderer, rects, count);
@@ -3057,23 +3057,6 @@ public static partial class SDL
 
 
     #region RenderTexture
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
-    /// <summary>
-    /// Copy a portion of the texture to the current rendering target at subpixel
-    /// precision.
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
-    /// texture.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
-    /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3081,12 +3064,6 @@ public static partial class SDL
     private delegate bool RenderTexturePointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect);
     private static RenderTexturePointersNativeDelegate RenderTexturePointersNativeFunction = SDL_RenderTexturePointers;
 
-    public static bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect)
-    {
-        return RenderTexturePointersNativeFunction(renderer, texture, srcrect, dstrect);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
     /// <summary>
     /// Copy a portion of the texture to the current rendering target at subpixel
@@ -3104,6 +3081,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
+    public static bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect)
+    {
+        return RenderTexturePointersNativeFunction(renderer, texture, srcrect, dstrect);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3111,12 +3094,6 @@ public static partial class SDL
     private delegate bool RenderTextureSourceRectNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect);
     private static RenderTextureSourceRectNativeDelegate RenderTextureSourceRectNativeFunction = SDL_RenderTextureSourceRect;
 
-    public static bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect)
-    {
-        return RenderTextureSourceRectNativeFunction(renderer, texture, in srcrect, dstrect);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
     /// <summary>
     /// Copy a portion of the texture to the current rendering target at subpixel
@@ -3134,6 +3111,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
+    public static bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect)
+    {
+        return RenderTextureSourceRectNativeFunction(renderer, texture, in srcrect, dstrect);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3141,11 +3124,35 @@ public static partial class SDL
     private delegate bool RenderTextureDestinationRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect);
     private static RenderTextureDestinationRectNativeDelegate RenderTextureDestinationRectNativeFunction = SDL_RenderTextureDestinationRect;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
+    /// <summary>
+    /// Copy a portion of the texture to the current rendering target at subpixel
+    /// precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
+    /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
     public static bool RenderTexture(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect)
     {
         return RenderTextureDestinationRectNativeFunction(renderer, texture, srcrect, in dstrect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderTextureRects(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
+    private delegate bool RenderTextureRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
+    private static RenderTextureRectsNativeDelegate RenderTextureRectsNativeFunction = SDL_RenderTextureRects;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);</code>
     /// <summary>
@@ -3164,13 +3171,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTextureRotated(IntPtr, IntPtr, IntPtr, IntPtr, double, IntPtr, FlipMode)"/>
     /// <seealso cref="RenderTextureTiled(IntPtr, IntPtr, IntPtr, float, IntPtr)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureRects(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
-    private delegate bool RenderTextureRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect);
-    private static RenderTextureRectsNativeDelegate RenderTextureRectsNativeFunction = SDL_RenderTextureRects;
-
     public static bool RenderTexture(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect)
     {
         return RenderTextureRectsNativeFunction(renderer, texture, in srcrect, in dstrect);
@@ -3179,29 +3179,6 @@ public static partial class SDL
 
 
     #region RenderTextureRotated
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
-    /// <summary>
-    /// Copy a portion of the source texture to the current rendering target, with
-    /// rotation and flipping, at subpixel precision.
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect"> a pointer to the source rectangle, or <c>null</c> for the entire
-    /// texture.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <param name="angle">an angle in degrees that indicates the rotation that will be
-    /// applied to dstrect, rotating it in a clockwise direction.</param>
-    /// <param name="center">a pointer to a point indicating the point around which
-    /// dstrect will be rotated (if <c>null</c>, rotation will be done
-    /// around dstrect.w/2, dstrect.h/2).</param>
-    /// <param name="flip">an <see cref="FlipMode"/> value stating which flipping actions should be
-    /// performed on the texture.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3209,12 +3186,6 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedPointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip);
     private static RenderTextureRotatedPointersNativeDelegate RenderTextureRotatedPointersNativeFunction = SDL_RenderTextureRotatedPointers;
 
-    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip)
-    {
-        return RenderTextureRotatedPointersNativeFunction(renderer, texture, srcrect, dstrect, angle, center, flip);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
     /// Copy a portion of the source texture to the current rendering target, with
@@ -3238,6 +3209,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip)
+    {
+        return RenderTextureRotatedPointersNativeFunction(renderer, texture, srcrect, dstrect, angle, center, flip);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3245,12 +3222,6 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedSourceRectNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip);
     private static RenderTextureRotatedSourceRectNativeDelegate RenderTextureRotatedSourceRectNativeFunction = SDL_RenderTextureRotatedSourceRect;
 
-    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip)
-    {
-        return RenderTextureRotatedSourceRectNativeFunction(renderer, texture, in srcrect, dstrect, angle, center, flip);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
     /// Copy a portion of the source texture to the current rendering target, with
@@ -3274,6 +3245,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, IntPtr center, FlipMode flip)
+    {
+        return RenderTextureRotatedSourceRectNativeFunction(renderer, texture, in srcrect, dstrect, angle, center, flip);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3281,12 +3258,6 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedDestinationRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip);
     private static RenderTextureRotatedDestinationRectNativeDelegate RenderTextureRotatedDestinationRectNativeFunction = SDL_RenderTextureRotatedDestinationRect;
 
-    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip)
-    {
-        return RenderTextureRotatedDestinationRectNativeFunction(renderer, texture, srcrect, in dstrect, angle, center, flip);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
     /// Copy a portion of the source texture to the current rendering target, with
@@ -3310,6 +3281,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip)
+    {
+        return RenderTextureRotatedDestinationRectNativeFunction(renderer, texture, srcrect, in dstrect, angle, center, flip);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3317,12 +3294,6 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedCenterPointNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, in FPoint center, FlipMode flip);
     private static RenderTextureRotatedCenterPointNativeDelegate RenderTextureRotatedCenterPointNativeFunction = SDL_RenderTextureRotatedCenterPoint;
 
-    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, in FPoint center, FlipMode flip)
-    {
-        return RenderTextureRotatedCenterPointNativeFunction(renderer, texture, srcrect, dstrect, angle, in center, flip);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
     /// Copy a portion of the source texture to the current rendering target, with
@@ -3346,6 +3317,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr dstrect, double angle, in FPoint center, FlipMode flip)
+    {
+        return RenderTextureRotatedCenterPointNativeFunction(renderer, texture, srcrect, dstrect, angle, in center, flip);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3353,12 +3330,6 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip);
     private static RenderTextureRotatedRectsNativeDelegate RenderTextureRotatedRectsNativeFunction = SDL_RenderTextureRotatedRects;
 
-    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip)
-    {
-        return RenderTextureRotatedRectsNativeFunction(renderer, texture, in srcrect, in dstrect, angle, center, flip);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
     /// Copy a portion of the source texture to the current rendering target, with
@@ -3382,6 +3353,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, IntPtr center, FlipMode flip)
+    {
+        return RenderTextureRotatedRectsNativeFunction(renderer, texture, in srcrect, in dstrect, angle, center, flip);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3389,12 +3366,6 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedDestinationRectCenterPointNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
     private static RenderTextureRotatedDestinationRectCenterPointNativeDelegate RenderTextureRotatedDestinationRectCenterPointNativeFunction = SDL_RenderTextureRotatedDestinationRectCenterPoint;
 
-    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip)
-    {
-        return RenderTextureRotatedDestinationRectCenterPointNativeFunction(renderer, texture, srcrect, in dstrect, angle, in center, flip);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
     /// Copy a portion of the source texture to the current rendering target, with
@@ -3418,6 +3389,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip)
+    {
+        return RenderTextureRotatedDestinationRectCenterPointNativeFunction(renderer, texture, srcrect, in dstrect, angle, in center, flip);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3425,11 +3402,41 @@ public static partial class SDL
     private delegate bool RenderTextureRotatedSourceRectCenterPointNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, in FPoint center, FlipMode flip);
     private static RenderTextureRotatedSourceRectCenterPointNativeDelegate RenderTextureRotatedSourceRectCenterPointNativeFunction = SDL_RenderTextureRotatedSourceRectCenterPoint;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
+    /// <summary>
+    /// Copy a portion of the source texture to the current rendering target, with
+    /// rotation and flipping, at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect"> a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <param name="angle">an angle in degrees that indicates the rotation that will be
+    /// applied to dstrect, rotating it in a clockwise direction.</param>
+    /// <param name="center">a pointer to a point indicating the point around which
+    /// dstrect will be rotated (if <c>null</c>, rotation will be done
+    /// around dstrect.w/2, dstrect.h/2).</param>
+    /// <param name="flip">an <see cref="FlipMode"/> value stating which flipping actions should be
+    /// performed on the texture.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr dstrect, double angle, in FPoint center, FlipMode flip)
     {
         return RenderTextureRotatedSourceRectCenterPointNativeFunction(renderer, texture, in srcrect, dstrect, angle, in center, flip);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderTextureRotatedRectsCenterPoint(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
+    private delegate bool RenderTextureRotatedRectsCenterPointNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
+    private static RenderTextureRotatedRectsCenterPointNativeDelegate RenderTextureRotatedRectsCenterPointNativeFunction = SDL_RenderTextureRotatedRectsCenterPoint;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);</code>
     /// <summary>
@@ -3454,13 +3461,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureRotated"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureRotatedRectsCenterPoint(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
-    private delegate bool RenderTextureRotatedRectsCenterPointNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip);
-    private static RenderTextureRotatedRectsCenterPointNativeDelegate RenderTextureRotatedRectsCenterPointNativeFunction = SDL_RenderTextureRotatedRectsCenterPoint;
-
     public static bool RenderTextureRotated(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect dstrect, double angle, in FPoint center, FlipMode flip)
     {
         return RenderTextureRotatedRectsCenterPointNativeFunction(renderer, texture, in srcrect, in dstrect, angle, in center, flip);
@@ -3469,6 +3469,13 @@ public static partial class SDL
 
 
     #region RenderTextureAffine
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderTextureAffinePointers(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, IntPtr down);
+    private delegate bool RenderTextureAffinePointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, IntPtr down);
+    private static RenderTextureAffinePointersNativeDelegate RenderTextureAffinePointersNativeFunction = SDL_RenderTextureAffinePointers;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
@@ -3493,42 +3500,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureAffinePointers(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, IntPtr down);
-    private delegate bool RenderTextureAffinePointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, IntPtr down);
-    private static RenderTextureAffinePointersNativeDelegate RenderTextureAffinePointersNativeFunction = SDL_RenderTextureAffinePointers;
-
     public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, IntPtr down)
     {
         return RenderTextureAffinePointersNativeFunction(renderer, texture, srcrect, origin, right, down);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
-    /// <summary>
-    /// <para>Copy a portion of the source texture to the current rendering target, with
-    /// affine transform, at subpixel precision.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
-    /// texture.</param>
-    /// <param name="origin">a pointer to a point indicating where the top-left corner of
-    /// srcrect should be mapped to, or <c>null</c> for the rendering
-    /// target's origin.</param>
-    /// <param name="right">a pointer to a point indicating where the top-right corner of
-    /// srcrect should be mapped to, or <c>null</c> for the rendering
-    /// target's top-right corner.</param>
-    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
-    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
-    /// bottom-left corner.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3536,12 +3513,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineDownRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, in FRect down);
     private static RenderTextureAffineDownRectNativeDelegate RenderTextureAffineDownRectNativeFunction = SDL_RenderTextureAffineDownRect;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, in FRect down)
-    {
-        return RenderTextureAffineDownRectNativeFunction(renderer, texture, srcrect, origin, right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3565,6 +3536,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, in FRect down)
+    {
+        return RenderTextureAffineDownRectNativeFunction(renderer, texture, srcrect, origin, right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3572,12 +3549,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineRightRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, IntPtr down);
     private static RenderTextureAffineRightRectNativeDelegate RenderTextureAffineRightRectNativeFunction = SDL_RenderTextureAffineRightRect;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, IntPtr down)
-    {
-        return RenderTextureAffineRightRectNativeFunction(renderer, texture, srcrect, origin, in right, down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3601,6 +3572,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, IntPtr down)
+    {
+        return RenderTextureAffineRightRectNativeFunction(renderer, texture, srcrect, origin, in right, down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3608,12 +3585,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineRightDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, in FRect down);
     private static RenderTextureAffineRightDownRectsNativeDelegate RenderTextureAffineRightDownRectsNativeFunction = SDL_RenderTextureAffineRightDownRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, in FRect down)
-    {
-        return RenderTextureAffineRightDownRectsNativeFunction(renderer, texture, srcrect, origin, in right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3637,6 +3608,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in FRect right, in FRect down)
+    {
+        return RenderTextureAffineRightDownRectsNativeFunction(renderer, texture, srcrect, origin, in right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3644,12 +3621,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineOriginRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, IntPtr down);
     private static RenderTextureAffineOriginRectNativeDelegate RenderTextureAffineOriginRectNativeFunction = SDL_RenderTextureAffineOriginRect;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, IntPtr down)
-    {
-        return RenderTextureAffineOriginRectNativeFunction(renderer, texture, srcrect, in origin, right, down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3673,6 +3644,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, IntPtr down)
+    {
+        return RenderTextureAffineOriginRectNativeFunction(renderer, texture, srcrect, in origin, right, down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3680,12 +3657,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineOriginDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, in FRect down);
     private static RenderTextureAffineOriginDownRectsNativeDelegate RenderTextureAffineOriginDownRectsNativeFunction = SDL_RenderTextureAffineOriginDownRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, in FRect down)
-    {
-        return RenderTextureAffineOriginDownRectsNativeFunction(renderer, texture, srcrect, in origin, right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3709,6 +3680,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, IntPtr right, in FRect down)
+    {
+        return RenderTextureAffineOriginDownRectsNativeFunction(renderer, texture, srcrect, in origin, right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3716,12 +3693,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineOriginRightRectsNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, IntPtr down);
     private static RenderTextureAffineOriginRightRectsNativeDelegate RenderTextureAffineOriginRightRectsNativeFunction = SDL_RenderTextureAffineOriginRightRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, IntPtr down)
-    {
-        return RenderTextureAffineOriginRightRectsNativeFunction(renderer, texture, srcrect, in origin, in right, down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3745,6 +3716,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, IntPtr down)
+    {
+        return RenderTextureAffineOriginRightRectsNativeFunction(renderer, texture, srcrect, in origin, in right, down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3752,12 +3729,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineOriginRightDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, in FRect down);
     private static RenderTextureAffineOriginRightDownRectsNativeDelegate RenderTextureAffineOriginRightDownRectsNativeFunction = SDL_RenderTextureAffineOriginRightDownRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, in FRect down)
-    {
-        return RenderTextureAffineOriginRightDownRectsNativeFunction(renderer, texture, srcrect, in origin, in right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3781,6 +3752,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, IntPtr srcrect, in FRect origin, in FRect right, in FRect down)
+    {
+        return RenderTextureAffineOriginRightDownRectsNativeFunction(renderer, texture, srcrect, in origin, in right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3788,12 +3765,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceRectNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, IntPtr down);
     private static RenderTextureAffineSourceRectNativeDelegate RenderTextureAffineSourceRectNativeFunction = SDL_RenderTextureAffineSourceRect;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, IntPtr down)
-    {
-        return RenderTextureAffineSourceRectNativeFunction(renderer, texture, in srcrect, origin, right, down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3817,6 +3788,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, IntPtr down)
+    {
+        return RenderTextureAffineSourceRectNativeFunction(renderer, texture, in srcrect, origin, right, down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3824,12 +3801,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, in FRect down);
     private static RenderTextureAffineSourceDownRectsNativeDelegate RenderTextureAffineSourceDownRectsNativeFunction = SDL_RenderTextureAffineSourceDownRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, in FRect down)
-    {
-        return RenderTextureAffineSourceDownRectsNativeFunction(renderer, texture, in srcrect, origin, right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3853,6 +3824,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, IntPtr right, in FRect down)
+    {
+        return RenderTextureAffineSourceDownRectsNativeFunction(renderer, texture, in srcrect, origin, right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3860,12 +3837,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceRightRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, IntPtr down);
     private static RenderTextureAffineSourceRightRectsNativeDelegate RenderTextureAffineSourceRightRectsNativeFunction = SDL_RenderTextureAffineSourceRightRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, IntPtr down)
-    {
-        return RenderTextureAffineSourceRightRectsNativeFunction(renderer, texture, in srcrect, origin, in right, down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3889,6 +3860,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, IntPtr down)
+    {
+        return RenderTextureAffineSourceRightRectsNativeFunction(renderer, texture, in srcrect, origin, in right, down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3896,12 +3873,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceRightDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, in FRect down);
     private static RenderTextureAffineSourceRightDownRectsNativeDelegate RenderTextureAffineSourceRightDownRectsNativeFunction = SDL_RenderTextureAffineSourceRightDownRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, in FRect down)
-    {
-        return RenderTextureAffineSourceRightDownRectsNativeFunction(renderer, texture, in srcrect, origin, in right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3925,6 +3896,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, IntPtr origin, in FRect right, in FRect down)
+    {
+        return RenderTextureAffineSourceRightDownRectsNativeFunction(renderer, texture, in srcrect, origin, in right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3932,12 +3909,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceOriginRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, IntPtr down);
     private static RenderTextureAffineSourceOriginRectsNativeDelegate RenderTextureAffineSourceOriginRectsNativeFunction = SDL_RenderTextureAffineSourceOriginRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, IntPtr down)
-    {
-        return RenderTextureAffineSourceOriginRectsNativeFunction(renderer, texture, in srcrect, in origin, right, down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3961,6 +3932,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, IntPtr down)
+    {
+        return RenderTextureAffineSourceOriginRectsNativeFunction(renderer, texture, in srcrect, in origin, right, down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -3968,12 +3945,6 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceOriginDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, in FRect down);
     private static RenderTextureAffineSourceOriginDownRectsNativeDelegate RenderTextureAffineSourceOriginDownRectsNativeFunction = SDL_RenderTextureAffineSourceOriginDownRects;
 
-    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, in FRect down)
-    {
-        return RenderTextureAffineSourceOriginDownRectsNativeFunction(renderer, texture, in srcrect, in origin, right, in down);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
     /// <para>Copy a portion of the source texture to the current rendering target, with
@@ -3997,6 +3968,12 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, IntPtr right, in FRect down)
+    {
+        return RenderTextureAffineSourceOriginDownRectsNativeFunction(renderer, texture, in srcrect, in origin, right, in down);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4004,11 +3981,41 @@ public static partial class SDL
     private delegate bool RenderTextureAffineSourceOriginRightRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, IntPtr down);
     private static RenderTextureAffineSourceOriginRightRectsNativeDelegate RenderTextureAffineSourceOriginRightRectsNativeFunction = SDL_RenderTextureAffineSourceOriginRightRects;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
+    /// <summary>
+    /// <para>Copy a portion of the source texture to the current rendering target, with
+    /// affine transform, at subpixel precision.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="origin">a pointer to a point indicating where the top-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's origin.</param>
+    /// <param name="right">a pointer to a point indicating where the top-right corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering
+    /// target's top-right corner.</param>
+    /// <param name="down">a pointer to a point indicating where the bottom-left corner of
+    /// srcrect should be mapped to, or <c>null</c> for the rendering target's
+    /// bottom-left corner.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>You may only call this function from the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, IntPtr down)
     {
         return RenderTextureAffineSourceOriginRightRectsNativeFunction(renderer, texture, in srcrect, in origin, in right, down);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderTextureAffineSourceOriginRightDownRects(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down);
+    private delegate bool RenderTextureAffineSourceOriginRightDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down);
+    private static RenderTextureAffineSourceOriginRightDownRectsNativeDelegate RenderTextureAffineSourceOriginRightDownRectsNativeFunction = SDL_RenderTextureAffineSourceOriginRightDownRects;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);</code>
     /// <summary>
@@ -4033,13 +4040,6 @@ public static partial class SDL
     /// <threadsafety>You may only call this function from the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureAffine"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureAffineSourceOriginRightDownRects(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down);
-    private delegate bool RenderTextureAffineSourceOriginRightDownRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down);
-    private static RenderTextureAffineSourceOriginRightDownRectsNativeDelegate RenderTextureAffineSourceOriginRightDownRectsNativeFunction = SDL_RenderTextureAffineSourceOriginRightDownRects;
-
     public static bool RenderTextureAffine(IntPtr renderer, IntPtr texture, in FRect srcrect, in FRect origin, in FRect right, in FRect down)
     {
         return RenderTextureAffineSourceOriginRightDownRectsNativeFunction(renderer, texture, in srcrect, in origin, in right, in down);
@@ -4049,27 +4049,6 @@ public static partial class SDL
 
 
     #region RenderTextureTiled
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
-    /// <summary>
-    /// <para>Tile a portion of the texture to the current rendering target at subpixel
-    /// precision.</para>
-    /// <para>The pixels in <c>srcrect</c> will be repeated as many times as needed to
-    /// completely fill <c>dstrect</c>.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
-    /// texture.</param>
-    /// <param name="scale">the scale used to transform srcrect into the destination
-    /// rectangle, e.g. a 32x32 texture with a scale of 2 would fill
-    /// 64x64 tiles.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4077,12 +4056,6 @@ public static partial class SDL
     private delegate bool RenderTextureTiledPointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, IntPtr dstrect);
     private static RenderTextureTiledPointersNativeDelegate RenderTextureTiledPointersNativeFunction = SDL_RenderTextureTiledPointers;
 
-    public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, IntPtr dstrect)
-    {
-        return RenderTextureTiledPointersNativeFunction(renderer, texture, srcrect, scale, dstrect);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
     /// <para>Tile a portion of the texture to the current rendering target at subpixel
@@ -4104,6 +4077,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, IntPtr dstrect)
+    {
+        return RenderTextureTiledPointersNativeFunction(renderer, texture, srcrect, scale, dstrect);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4111,12 +4090,6 @@ public static partial class SDL
     private delegate bool RenderTextureTiledSourceRectNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, IntPtr dstrect);
     private static RenderTextureTiledSourceRectNativeDelegate RenderTextureTiledSourceRectNativeFunction = SDL_RenderTextureTiledSourceRect;
 
-    public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, IntPtr dstrect)
-    {
-        return RenderTextureTiledSourceRectNativeFunction(renderer, texture, in srcrect, scale, dstrect);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
     /// <para>Tile a portion of the texture to the current rendering target at subpixel
@@ -4138,6 +4111,12 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, IntPtr dstrect)
+    {
+        return RenderTextureTiledSourceRectNativeFunction(renderer, texture, in srcrect, scale, dstrect);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4145,11 +4124,39 @@ public static partial class SDL
     private delegate bool RenderTextureTiledDestinationRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, in FRect dstrect);
     private static RenderTextureTiledDestinationRectNativeDelegate RenderTextureTiledDestinationRectNativeFunction = SDL_RenderTextureTiledDestinationRect;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
+    /// <summary>
+    /// <para>Tile a portion of the texture to the current rendering target at subpixel
+    /// precision.</para>
+    /// <para>The pixels in <c>srcrect</c> will be repeated as many times as needed to
+    /// completely fill <c>dstrect</c>.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">a pointer to the source rectangle, or <c>null</c> for the entire
+    /// texture.</param>
+    /// <param name="scale">the scale used to transform srcrect into the destination
+    /// rectangle, e.g. a 32x32 texture with a scale of 2 would fill
+    /// 64x64 tiles.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float scale, in FRect dstrect)
     {
         return RenderTextureTiledDestinationRectNativeFunction(renderer, texture, srcrect, scale, in dstrect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderTextureTiledRects(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect);
+    private delegate bool RenderTextureTiledRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect);
+    private static RenderTextureTiledRectsNativeDelegate RenderTextureTiledRectsNativeFunction = SDL_RenderTextureTiledRects;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
@@ -4172,13 +4179,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTextureTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureTiledRects(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect);
-    private delegate bool RenderTextureTiledRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect);
-    private static RenderTextureTiledRectsNativeDelegate RenderTextureTiledRectsNativeFunction = SDL_RenderTextureTiledRects;
-
     public static bool RenderTextureTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float scale, in FRect dstrect)
     {
         return RenderTextureTiledRectsNativeFunction(renderer, texture, in srcrect, scale, in dstrect);
@@ -4187,35 +4187,6 @@ public static partial class SDL
 
 
     #region RenderTexture9Grid
-    //extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
-    /// <summary>
-    /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
-    /// target at subpixel precision.</para>
-    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
-    /// corner sizes for each corner, and the sides and center making up the
-    /// remaining pixels. The corners are then scaled using `scale` and fit into
-    /// the corners of the destination rectangle. The sides and center are then
-    /// stretched into place to cover the remaining destination rectangle.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be used
-    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
-    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
-    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
-    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
-    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
-    /// <c>srcrect</c>.</param>
-    /// <param name="sacel">the scale used to transform the corner of <c>srcrect</c> into the
-    /// corner of <c>dstrect</c>, or 0.0f for an unscaled copy.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
-    /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4223,13 +4194,7 @@ public static partial class SDL
     private delegate bool RenderTexture9GridSourceRectNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, IntPtr dstrect);
     private static RenderTexture9GridSourceRectNativeDelegate RenderTexture9GridSourceRectNativeFunction = SDL_RenderTexture9GridSourceRect;
 
-    public static bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, IntPtr dstrect)
-    {
-        return RenderTexture9GridSourceRectNativeFunction(renderer, texture, in srcrect, leftWidth, rightWidth, topHeight, bottomHeight, sacel, dstrect);
-    }
-
-
-    //extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
     /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
     /// target at subpixel precision.</para>
@@ -4258,6 +4223,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
+    public static bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, IntPtr dstrect)
+    {
+        return RenderTexture9GridSourceRectNativeFunction(renderer, texture, in srcrect, leftWidth, rightWidth, topHeight, bottomHeight, sacel, dstrect);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4265,13 +4236,7 @@ public static partial class SDL
     private delegate bool RenderTexture9GridDestinationRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect);
     private static RenderTexture9GridDestinationRectNativeDelegate RenderTexture9GridDestinationRectNativeFunction = SDL_RenderTexture9GridDestinationRect;
 
-    public static bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect)
-    {
-        return RenderTexture9GridDestinationRectNativeFunction(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, sacel, in dstrect);
-    }
-
-
-    //extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
     /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
     /// target at subpixel precision.</para>
@@ -4300,6 +4265,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
     /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
+    public static bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect)
+    {
+        return RenderTexture9GridDestinationRectNativeFunction(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, sacel, in dstrect);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9Grid"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4307,6 +4278,35 @@ public static partial class SDL
     private delegate bool RenderTexture9GridRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect);
     private static RenderTexture9GridRectsNativeDelegate RenderTexture9GridRectsNativeFunction = SDL_RenderTexture9GridRects;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);</code>
+    /// <summary>
+    /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
+    /// target at subpixel precision.</para>
+    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
+    /// corner sizes for each corner, and the sides and center making up the
+    /// remaining pixels. The corners are then scaled using `scale` and fit into
+    /// the corners of the destination rectangle. The sides and center are then
+    /// stretched into place to cover the remaining destination rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">the <see cref="Rect"/> structure representing the rectangle to be used
+    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
+    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
+    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
+    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
+    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
+    /// <c>srcrect</c>.</param>
+    /// <param name="sacel">the scale used to transform the corner of <c>srcrect</c> into the
+    /// corner of <c>dstrect</c>, or 0.0f for an unscaled copy.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderTexture(nint, nint, nint, nint)"/>
+    /// <seealso cref="RenderTexture9GridTiled(nint, nint, nint, float, float, float, float, float, nint, float)"/>
     public static bool RenderTexture9Grid(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float sacel, in FRect dstrect)
     {
         return RenderTexture9GridRectsNativeFunction(renderer, texture, in srcrect, leftWidth, rightWidth, topHeight, bottomHeight, sacel, in dstrect);
@@ -4315,38 +4315,6 @@ public static partial class SDL
 
 
     #region RenderTexture9GridTiled
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
-    /// <summary>
-    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
-    /// target at subpixel precision.</para>
-    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
-    /// corner sizes for each corner, and the sides and center making up the
-    /// remaining pixels. The corners are then scaled using <c>scale</c> and fit into
-    /// the corners of the destination rectangle. The sides and center are then
-    /// tiled into place to cover the remaining destination rectangle.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
-    /// <param name="texture">the source texture.</param>
-    /// <param name="srcrect">the SDL_Rect structure representing the rectangle to be used
-    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
-    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
-    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
-    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
-    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
-    /// <c>srcrect</c>.</param>
-    /// <param name="scale">the scale used to transform the corner of <c>srcrect</c> into the
-    /// corner of <c>dstrect</c>, or <c>0.0f</c> for an unscaled copy.</param>
-    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
-    /// entire rendering target.</param>
-    /// <param name="tileScale">the scale used to transform the borders and center of
-    /// <c>srcrect</c> into the borders and middle of <c>dstrect</c>, or
-    /// <c>1.0f</c> for an unscaled copy.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.4.0.</since>
-    /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
-    /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4354,12 +4322,6 @@ public static partial class SDL
     private delegate bool RenderTexture9GridTiledPointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale);
     private static RenderTexture9GridTiledPointersNativeDelegate RenderTexture9GridTiledPointersNativeFunction = SDL_RenderTexture9GridTiledPointers;
 
-    public static bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale)
-    {
-        return RenderTexture9GridTiledPointersNativeFunction(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect, tileScale);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
     /// <summary>
     /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -4392,6 +4354,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
     /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
+    public static bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale)
+    {
+        return RenderTexture9GridTiledPointersNativeFunction(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect, tileScale);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4399,12 +4367,6 @@ public static partial class SDL
     private delegate bool RenderTexture9GridTiledSourceRectNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale);
     private static RenderTexture9GridTiledSourceRectNativeDelegate RenderTexture9GridTiledSourceRectNativeFunction = SDL_RenderTexture9GridTiledSourceRect;
 
-    public static bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale)
-    {
-        return RenderTexture9GridTiledSourceRectNativeFunction(renderer, texture, in srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect, tileScale);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
     /// <summary>
     /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -4437,6 +4399,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
     /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
+    public static bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, IntPtr dstrect, float tileScale)
+    {
+        return RenderTexture9GridTiledSourceRectNativeFunction(renderer, texture, in srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect, tileScale);
+    }
+
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4444,11 +4412,50 @@ public static partial class SDL
     private delegate bool RenderTexture9GridTiledDestinationRectNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
     private static RenderTexture9GridTiledDestinationRectNativeDelegate RenderTexture9GridTiledDestinationRectNativeFunction = SDL_RenderTexture9GridTiledDestinationRect;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
+    /// <summary>
+    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// target at subpixel precision.</para>
+    /// <para>The pixels in the texture are split into a 3x3 grid, using the different
+    /// corner sizes for each corner, and the sides and center making up the
+    /// remaining pixels. The corners are then scaled using <c>scale</c> and fit into
+    /// the corners of the destination rectangle. The sides and center are then
+    /// tiled into place to cover the remaining destination rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should copy parts of a texture.</param>
+    /// <param name="texture">the source texture.</param>
+    /// <param name="srcrect">the SDL_Rect structure representing the rectangle to be used
+    /// for the 9-grid, or <c>null</c> to use the entire texture.</param>
+    /// <param name="leftWidth">the width, in pixels, of the left corners in <c>srcrect</c>.</param>
+    /// <param name="rightWidth">the width, in pixels, of the right corners in <c>srcrect</c>.</param>
+    /// <param name="topHeight">the height, in pixels, of the top corners in <c>srcrect</c>.</param>
+    /// <param name="bottomHeight">the height, in pixels, of the bottom corners in
+    /// <c>srcrect</c>.</param>
+    /// <param name="scale">the scale used to transform the corner of <c>srcrect</c> into the
+    /// corner of <c>dstrect</c>, or <c>0.0f</c> for an unscaled copy.</param>
+    /// <param name="dstrect">a pointer to the destination rectangle, or <c>null</c> for the
+    /// entire rendering target.</param>
+    /// <param name="tileScale">the scale used to transform the borders and center of
+    /// <c>srcrect</c> into the borders and middle of <c>dstrect</c>, or
+    /// <c>1.0f</c> for an unscaled copy.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <seealso cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
+    /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
     public static bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, IntPtr srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale)
     {
         return RenderTexture9GridTiledDestinationRectNativeFunction(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, in dstrect, tileScale);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderTexture9GridTiledRects(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
+    private delegate bool RenderTexture9GridTiledRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
+    private static RenderTexture9GridTiledRectsNativeDelegate RenderTexture9GridTiledRectsNativeFunction = SDL_RenderTexture9GridTiledRects;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);</code>
     /// <summary>
@@ -4482,13 +4489,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="RenderTexture(IntPtr, IntPtr, IntPtr, IntPtr)"/>
     /// <seealso cref="RenderTexture9GridTiled(IntPtr, IntPtr, IntPtr, float, float, float, float, float, IntPtr, float)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderTexture9GridTiled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTexture9GridTiledRects(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
-    private delegate bool RenderTexture9GridTiledRectsNativeDelegate(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale);
-    private static RenderTexture9GridTiledRectsNativeDelegate RenderTexture9GridTiledRectsNativeFunction = SDL_RenderTexture9GridTiledRects;
-
     public static bool RenderTexture9GridTiled(IntPtr renderer, IntPtr texture, in FRect srcrect, float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, in FRect dstrect, float tileScale)
     {
         return RenderTexture9GridTiledRectsNativeFunction(renderer, texture, in srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, in dstrect, tileScale);
@@ -4499,27 +4499,6 @@ public static partial class SDL
 
     #region RenderGeometry
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
-    /// <summary>
-    /// <para>Render a list of triangles, optionally using a texture and indices into the
-    /// vertex array.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
-    /// </summary>
-    /// <param name="renderer">the rendering context.</param>
-    /// <param name="texture">(optional) The SDL texture to use.</param>
-    /// <param name="vertices">vertices.</param>
-    /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
-    /// array, if <c>null</c> all vertices will be rendered in sequential
-    /// order.</param>
-    /// <param name="numIndices">number of indices.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4527,11 +4506,39 @@ public static partial class SDL
     private delegate bool RenderGeometryPointerIndicesNativeDelegate(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, IntPtr indices, int numIndices);
     private static RenderGeometryPointerIndicesNativeDelegate RenderGeometryPointerIndicesNativeFunction = SDL_RenderGeometryPointerIndices;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
+    /// <summary>
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex array.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="vertices">vertices.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
+    /// array, if <c>null</c> all vertices will be rendered in sequential
+    /// order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     public static bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, IntPtr indices, int numIndices)
     {
         return RenderGeometryPointerIndicesNativeFunction(renderer, texture, vertices, numVertices, indices, numIndices);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderGeometryArrayIndices(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
+    private delegate bool RenderGeometryArrayIndicesNativeDelegate(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
+    private static RenderGeometryArrayIndicesNativeDelegate RenderGeometryArrayIndicesNativeFunction = SDL_RenderGeometryArrayIndices;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
     /// <summary>
@@ -4554,13 +4561,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
     /// <seealso cref="SetRenderTextureAddressMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderGeometryArrayIndices(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
-    private delegate bool RenderGeometryArrayIndicesNativeDelegate(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
-    private static RenderGeometryArrayIndicesNativeDelegate RenderGeometryArrayIndicesNativeFunction = SDL_RenderGeometryArrayIndices;
-
     public static bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices)
     {
         return RenderGeometryArrayIndicesNativeFunction(renderer, texture, vertices, numVertices, indices, numIndices);
@@ -4571,32 +4571,6 @@ public static partial class SDL
 
     #region RenderGeometryRaw
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
-    /// <summary>
-    /// <para>Render a list of triangles, optionally using a texture and indices into the
-    /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
-    /// </summary>
-    /// <param name="renderer">the rendering context.</param>
-    /// <param name="texture">(optional) The SDL texture to use.</param>
-    /// <param name="xy">vertex positions.</param>
-    /// <param name="xyStride">byte size to move from one element to the next element.</param>
-    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
-    /// <param name="colorStride">byte size to move from one element to the next element.</param>
-    /// <param name="uv">vertex normalized texture coordinates.</param>
-    /// <param name="uvStride">byte size to move from one element to the next element.</param>
-    /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
-    /// <param name="numIndices">number of indices.</param>
-    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4606,6 +4580,32 @@ public static partial class SDL
         int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices);
     private static RenderGeometryRawPointersNativeDelegate RenderGeometryRawPointersNativeFunction = SDL_RenderGeometryRawPointers;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
+    /// <summary>
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="xy">vertex positions.</param>
+    /// <param name="xyStride">byte size to move from one element to the next element.</param>
+    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
+    /// <param name="colorStride">byte size to move from one element to the next element.</param>
+    /// <param name="uv">vertex normalized texture coordinates.</param>
+    /// <param name="uvStride">byte size to move from one element to the next element.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
+    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     public static bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color,
         int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices)
     {
@@ -4613,32 +4613,6 @@ public static partial class SDL
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
-    /// <summary>
-    /// <para>Render a list of triangles, optionally using a texture and indices into the
-    /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
-    /// </summary>
-    /// <param name="renderer">the rendering context.</param>
-    /// <param name="texture">(optional) The SDL texture to use.</param>
-    /// <param name="xy">vertex positions.</param>
-    /// <param name="xyStride">byte size to move from one element to the next element.</param>
-    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
-    /// <param name="colorStride">byte size to move from one element to the next element.</param>
-    /// <param name="uv">vertex normalized texture coordinates.</param>
-    /// <param name="uvStride">byte size to move from one element to the next element.</param>
-    /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
-    /// <param name="numIndices">number of indices.</param>
-    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -4646,11 +4620,44 @@ public static partial class SDL
     private delegate bool RenderGeometryRawPointerIndicesNativeDelegate(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices);
     private static RenderGeometryRawPointerIndicesNativeDelegate RenderGeometryRawPointerIndicesNativeFunction = SDL_RenderGeometryRawPointerIndices;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
+    /// <summary>
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="xy">vertex positions.</param>
+    /// <param name="xyStride">byte size to move from one element to the next element.</param>
+    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
+    /// <param name="colorStride">byte size to move from one element to the next element.</param>
+    /// <param name="uv">vertex normalized texture coordinates.</param>
+    /// <param name="uvStride">byte size to move from one element to the next element.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
+    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
     public static bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices)
     {
         return RenderGeometryRawPointerIndicesNativeFunction(renderer, texture, xy, xyStride, color, colorStride, uv, uvStride, numVertices, indices, numIndices, sizeIndices);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderGeometryRawByteIndices(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
+    private delegate bool RenderGeometryRawByteIndicesNativeDelegate(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
+    private static RenderGeometryRawByteIndicesNativeDelegate RenderGeometryRawByteIndicesNativeFunction = SDL_RenderGeometryRawByteIndices;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
     /// <summary>
@@ -4678,13 +4685,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
     /// <seealso cref="SetRenderTextureAddressMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometryRaw"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderGeometryRawByteIndices(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
-    private delegate bool RenderGeometryRawByteIndicesNativeDelegate(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices);
-    private static RenderGeometryRawByteIndicesNativeDelegate RenderGeometryRawByteIndicesNativeFunction = SDL_RenderGeometryRawByteIndices;
-
     public static bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices)
     {
         return RenderGeometryRawByteIndicesNativeFunction(renderer, texture, xy, xyStride, color, colorStride, uv, uvStride, numVertices, indices, numIndices, sizeIndices);
@@ -4745,6 +4745,13 @@ public static partial class SDL
 
     #region SetRenderTextureAddressMode
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderTextureAddressMode(IntPtr renderer, TextureAddressMode umode, TextureAddressMode vmode);
+    private delegate bool SetRenderTextureAddressModeNativeDelegate(IntPtr renderer, TextureAddressMode umode, TextureAddressMode vmode);
+    private static SetRenderTextureAddressModeNativeDelegate SetRenderTextureAddressModeNativeFunction = SDL_SetRenderTextureAddressMode;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode);</code>
     /// <summary>
     /// <para>Set the texture addressing mode used in <see cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>.</para>
@@ -4761,18 +4768,18 @@ public static partial class SDL
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
     /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
     /// <seealso cref="GetRenderTextureAddressMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderTextureAddressMode(IntPtr renderer, TextureAddressMode umode, TextureAddressMode vmode);
-    private delegate bool SetRenderTextureAddressModeNativeDelegate(IntPtr renderer, TextureAddressMode umode, TextureAddressMode vmode);
-    private static SetRenderTextureAddressModeNativeDelegate SetRenderTextureAddressModeNativeFunction = SDL_SetRenderTextureAddressMode;
-
     public static bool SetRenderTextureAddressMode(IntPtr renderer, TextureAddressMode umode, TextureAddressMode vmode)
     {
         return SetRenderTextureAddressModeNativeFunction(renderer, umode, vmode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderTextureAddressMode(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode);
+    private delegate bool GetRenderTextureAddressModeNativeDelegate(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode);
+    private static GetRenderTextureAddressModeNativeDelegate GetRenderTextureAddressModeNativeFunction = SDL_GetRenderTextureAddressMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode *u_mode, SDL_TextureAddressMode *v_mode);</code>
     /// <summary>
@@ -4790,13 +4797,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="SetRenderTextureAddressMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderTextureAddressMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderTextureAddressMode(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode);
-    private delegate bool GetRenderTextureAddressModeNativeDelegate(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode);
-    private static GetRenderTextureAddressModeNativeDelegate GetRenderTextureAddressModeNativeFunction = SDL_GetRenderTextureAddressMode;
-
     public static bool GetRenderTextureAddressMode(IntPtr renderer, out TextureAddressMode umode, out TextureAddressMode vmode)
     {
         return GetRenderTextureAddressModeNativeFunction(renderer, out umode, out vmode);
@@ -4846,6 +4846,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPresent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderPresent(IntPtr renderer);
+    private delegate bool RenderPresentNativeDelegate(IntPtr renderer);
+    private static RenderPresentNativeDelegate RenderPresentNativeFunction = SDL_RenderPresent;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPresent(SDL_Renderer *renderer);</code>
     /// <summary>
     /// <para>Update the screen with any rendering performed since the previous call.</para>
@@ -4887,18 +4894,17 @@ public static partial class SDL
     /// <seealso cref="RenderRects(IntPtr, IntPtr, int)"/>
     /// <seealso cref="SetRenderDrawBlendMode"/>
     /// <seealso cref="SetRenderDrawColor(IntPtr, byte, byte, byte, byte)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPresent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderPresent(IntPtr renderer);
-    private delegate bool RenderPresentNativeDelegate(IntPtr renderer);
-    private static RenderPresentNativeDelegate RenderPresentNativeFunction = SDL_RenderPresent;
-
     public static bool RenderPresent(IntPtr renderer)
     {
         return RenderPresentNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyTexture(IntPtr texture);
+    private delegate void DestroyTextureNativeDelegate(IntPtr texture);
+    private static DestroyTextureNativeDelegate DestroyTextureNativeFunction = SDL_DestroyTexture;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyTexture(SDL_Texture *texture);</code>
     /// <summary>
@@ -4911,17 +4917,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateTexture"/>
     /// <seealso cref="CreateTextureFromSurface"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyTexture(IntPtr texture);
-    private delegate void DestroyTextureNativeDelegate(IntPtr texture);
-    private static DestroyTextureNativeDelegate DestroyTextureNativeFunction = SDL_DestroyTexture;
-
     public static void DestroyTexture(IntPtr texture)
     {
         DestroyTextureNativeFunction(texture);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyRenderer(IntPtr renderer);
+    private delegate void DestroyRendererNativeDelegate(IntPtr renderer);
+    private static DestroyRendererNativeDelegate DestroyRendererNativeFunction = SDL_DestroyRenderer;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyRenderer(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -4933,17 +4939,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateRenderer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyRenderer(IntPtr renderer);
-    private delegate void DestroyRendererNativeDelegate(IntPtr renderer);
-    private static DestroyRendererNativeDelegate DestroyRendererNativeFunction = SDL_DestroyRenderer;
-
     public static void DestroyRenderer(IntPtr renderer)
     {
         DestroyRendererNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_FlushRenderer(IntPtr renderer);
+    private delegate bool FlushRendererNativeDelegate(IntPtr renderer);
+    private static FlushRendererNativeDelegate FlushRendererNativeFunction = SDL_FlushRenderer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_FlushRenderer(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -4969,18 +4976,17 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_FlushRenderer(IntPtr renderer);
-    private delegate bool FlushRendererNativeDelegate(IntPtr renderer);
-    private static FlushRendererNativeDelegate FlushRendererNativeFunction = SDL_FlushRenderer;
-
     public static bool FlushRenderer(IntPtr renderer)
     {
         return FlushRendererNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderMetalLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRenderMetalLayer(IntPtr renderer);
+    private delegate IntPtr GetRenderMetalLayerNativeDelegate(IntPtr renderer);
+    private static GetRenderMetalLayerNativeDelegate GetRenderMetalLayerNativeFunction = SDL_GetRenderMetalLayer;
 
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetRenderMetalLayer(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -4994,17 +5000,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderMetalCommandEncoder"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderMetalLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRenderMetalLayer(IntPtr renderer);
-    private delegate IntPtr GetRenderMetalLayerNativeDelegate(IntPtr renderer);
-    private static GetRenderMetalLayerNativeDelegate GetRenderMetalLayerNativeFunction = SDL_GetRenderMetalLayer;
-
     public static IntPtr GetRenderMetalLayer(IntPtr renderer)
     {
         return GetRenderMetalLayerNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderMetalCommandEncoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetRenderMetalCommandEncoder(IntPtr renderer);
+    private delegate IntPtr GetRenderMetalCommandEncoderNativeDelegate(IntPtr renderer);
+    private static GetRenderMetalCommandEncoderNativeDelegate GetRenderMetalCommandEncoderNativeFunction = SDL_GetRenderMetalCommandEncoder;
 
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetRenderMetalCommandEncoder(SDL_Renderer *renderer);</code>
     /// <summary>
@@ -5022,17 +5028,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderMetalLayer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderMetalCommandEncoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetRenderMetalCommandEncoder(IntPtr renderer);
-    private delegate IntPtr GetRenderMetalCommandEncoderNativeDelegate(IntPtr renderer);
-    private static GetRenderMetalCommandEncoderNativeDelegate GetRenderMetalCommandEncoderNativeFunction = SDL_GetRenderMetalCommandEncoder;
-
     public static IntPtr GetRenderMetalCommandEncoder(IntPtr renderer)
     {
         return GetRenderMetalCommandEncoderNativeFunction(renderer);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddVulkanRenderSemaphores"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_AddVulkanRenderSemaphores(IntPtr renderer, uint waitStageMasl, long waitSemaphore, long signalSemaphore);
+    private delegate bool AddVulkanRenderSemaphoresNativeDelegate(IntPtr renderer, uint waitStageMasl, long waitSemaphore, long signalSemaphore);
+    private static AddVulkanRenderSemaphoresNativeDelegate AddVulkanRenderSemaphoresNativeFunction = SDL_AddVulkanRenderSemaphores;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AddVulkanRenderSemaphores(SDL_Renderer *renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore);</code>
     /// <summary>
@@ -5058,18 +5065,18 @@ public static partial class SDL
     /// <threadsafety>It is <b>NOT</b> safe to call this function from two threads at
     /// once.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddVulkanRenderSemaphores"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_AddVulkanRenderSemaphores(IntPtr renderer, uint waitStageMasl, long waitSemaphore, long signalSemaphore);
-    private delegate bool AddVulkanRenderSemaphoresNativeDelegate(IntPtr renderer, uint waitStageMasl, long waitSemaphore, long signalSemaphore);
-    private static AddVulkanRenderSemaphoresNativeDelegate AddVulkanRenderSemaphoresNativeFunction = SDL_AddVulkanRenderSemaphores;
-
     public static bool AddVulkanRenderSemaphores(IntPtr renderer, uint waitStageMasl, long waitSemaphore, long signalSemaphore)
     {
         return AddVulkanRenderSemaphoresNativeFunction(renderer, waitStageMasl, waitSemaphore, signalSemaphore);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderVSync(IntPtr renderer, int vsync);
+    private delegate bool SetRenderVSyncNativeDelegate(IntPtr renderer, int vsync);
+    private static SetRenderVSyncNativeDelegate SetRenderVSyncNativeFunction = SDL_SetRenderVSync;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderVSync(SDL_Renderer *renderer, int vsync);</code>
     /// <summary>
@@ -5089,18 +5096,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderVSync"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderVSync(IntPtr renderer, int vsync);
-    private delegate bool SetRenderVSyncNativeDelegate(IntPtr renderer, int vsync);
-    private static SetRenderVSyncNativeDelegate SetRenderVSyncNativeFunction = SDL_SetRenderVSync;
-
     public static bool SetRenderVSync(IntPtr renderer, int vsync)
     {
         return SetRenderVSyncNativeFunction(renderer, vsync);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderVSync(IntPtr renderer, out int vsync);
+    private delegate bool GetRenderVSyncNativeDelegate(IntPtr renderer, out int vsync);
+    private static GetRenderVSyncNativeDelegate GetRenderVSyncNativeFunction = SDL_GetRenderVSync;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderVSync(SDL_Renderer *renderer, int *vsync);</code>
     /// <summary>
@@ -5114,18 +5121,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetRenderVSync"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRenderVSync(IntPtr renderer, out int vsync);
-    private delegate bool GetRenderVSyncNativeDelegate(IntPtr renderer, out int vsync);
-    private static GetRenderVSyncNativeDelegate GetRenderVSyncNativeFunction = SDL_GetRenderVSync;
-
     public static bool GetRenderVSync(IntPtr renderer, out int vsync)
     {
         return GetRenderVSyncNativeFunction(renderer, out vsync);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderDebugText(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
+    private delegate bool RenderDebugTextNativeDelegate(IntPtr renderer, float x, float y, string str);
+    private static RenderDebugTextNativeDelegate RenderDebugTextNativeFunction = SDL_RenderDebugText;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderDebugText(SDL_Renderer *renderer, float x, float y, const char *str);</code>
     /// <summary>
@@ -5159,18 +5166,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="RenderDebugTextFormat"/>
     /// <seealso cref="DebugTextFontCharacterSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugText"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderDebugText(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
-    private delegate bool RenderDebugTextNativeDelegate(IntPtr renderer, float x, float y, string str);
-    private static RenderDebugTextNativeDelegate RenderDebugTextNativeFunction = SDL_RenderDebugText;
-
     public static bool RenderDebugText(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string str)
     {
         return RenderDebugTextNativeFunction(renderer, x, y, str);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugTextFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderDebugTextFormat(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate bool RenderDebugTextFormatNativeDelegate(IntPtr renderer, float x, float y, string fmt);
+    private static RenderDebugTextFormatNativeDelegate RenderDebugTextFormatNativeFunction = SDL_RenderDebugTextFormat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderDebugTextFormat(SDL_Renderer *renderer, float x, float y, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(4);</code>
     /// <summary>
@@ -5191,18 +5198,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RenderDebugText"/>
     /// <seealso cref="DebugTextFontCharacterSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderDebugTextFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderDebugTextFormat(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    private delegate bool RenderDebugTextFormatNativeDelegate(IntPtr renderer, float x, float y, string fmt);
-    private static RenderDebugTextFormatNativeDelegate RenderDebugTextFormatNativeFunction = SDL_RenderDebugTextFormat;
-
     public static bool RenderDebugTextFormat(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt)
     {
         return RenderDebugTextFormatNativeFunction(renderer, x, y, fmt);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetDefaultTextureScaleMode(IntPtr renderer, ScaleMode scaleMode);
+    private delegate bool SetDefaultTextureScaleModeNativeDelegate(IntPtr renderer, ScaleMode scaleMode);
+    private static SetDefaultTextureScaleModeNativeDelegate SetDefaultTextureScaleModeNativeFunction = SDL_SetDefaultTextureScaleMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode scale_mode);</code>
     /// <summary>
@@ -5216,18 +5223,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="GetDefaultTextureScaleMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetDefaultTextureScaleMode(IntPtr renderer, ScaleMode scaleMode);
-    private delegate bool SetDefaultTextureScaleModeNativeDelegate(IntPtr renderer, ScaleMode scaleMode);
-    private static SetDefaultTextureScaleModeNativeDelegate SetDefaultTextureScaleModeNativeFunction = SDL_SetDefaultTextureScaleMode;
-
     public static bool SetDefaultTextureScaleMode(IntPtr renderer, ScaleMode scaleMode)
     {
         return SetDefaultTextureScaleModeNativeFunction(renderer, scaleMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetDefaultTextureScaleMode(IntPtr renderer, out ScaleMode scaleMode);
+    private delegate bool GetDefaultTextureScaleModeNativeDelegate(IntPtr renderer, out ScaleMode scaleMode);
+    private static GetDefaultTextureScaleModeNativeDelegate GetDefaultTextureScaleModeNativeFunction = SDL_GetDefaultTextureScaleMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode *scale_mode);</code>
     /// <summary>
@@ -5242,18 +5249,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="SetDefaultTextureScaleMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultTextureScaleMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetDefaultTextureScaleMode(IntPtr renderer, out ScaleMode scaleMode);
-    private delegate bool GetDefaultTextureScaleModeNativeDelegate(IntPtr renderer, out ScaleMode scaleMode);
-    private static GetDefaultTextureScaleModeNativeDelegate GetDefaultTextureScaleModeNativeFunction = SDL_GetDefaultTextureScaleMode;
-
     public static bool GetDefaultTextureScaleMode(IntPtr renderer, out ScaleMode scaleMode)
     {
         return GetDefaultTextureScaleModeNativeFunction(renderer, out scaleMode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateGPURenderState(IntPtr renderer, IntPtr createinfo);
+    private delegate IntPtr CreateGPURenderStateNativeDelegate(IntPtr renderer, IntPtr createinfo);
+    private static CreateGPURenderStateNativeDelegate CreateGPURenderStateNativeFunction = SDL_CreateGPURenderState;
 
     /// <code>extern SDL_DECLSPEC SDL_GPURenderState * SDLCALL SDL_CreateGPURenderState(SDL_Renderer *renderer, const SDL_GPURenderStateCreateInfo *createinfo);</code>
     /// <summary>
@@ -5269,17 +5275,18 @@ public static partial class SDL
     /// <seealso cref="SetGPURenderStateFragmentUniforms"/>
     /// <seealso cref="SetGPURenderState"/>
     /// <seealso cref="DestroyGPURenderState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateGPURenderState(IntPtr renderer, IntPtr createinfo);
-    private delegate IntPtr CreateGPURenderStateNativeDelegate(IntPtr renderer, IntPtr createinfo);
-    private static CreateGPURenderStateNativeDelegate CreateGPURenderStateNativeFunction = SDL_CreateGPURenderState;
-
     public static IntPtr CreateGPURenderState(IntPtr renderer, IntPtr createinfo)
     {
         return CreateGPURenderStateNativeFunction(renderer, createinfo);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateFragmentUniforms"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length);
+    private delegate bool SetGPURenderStateFragmentUniformsNativeDelegate(IntPtr state, uint slotIndex, IntPtr data, uint length);
+    private static SetGPURenderStateFragmentUniformsNativeDelegate SetGPURenderStateFragmentUniformsNativeFunction = SDL_SetGPURenderStateFragmentUniforms;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);</code>
     /// <summary>
@@ -5296,18 +5303,18 @@ public static partial class SDL
     /// <threadsafety>This function should be called on the thread that created the
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateFragmentUniforms"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length);
-    private delegate bool SetGPURenderStateFragmentUniformsNativeDelegate(IntPtr state, uint slotIndex, IntPtr data, uint length);
-    private static SetGPURenderStateFragmentUniformsNativeDelegate SetGPURenderStateFragmentUniformsNativeFunction = SDL_SetGPURenderStateFragmentUniforms;
-
     public static bool SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length)
     {
         return SetGPURenderStateFragmentUniformsNativeFunction(state, slotIndex, data, length);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetGPURenderState(IntPtr renderer, IntPtr state);
+    private delegate bool SetGPURenderStateNativeDelegate(IntPtr renderer, IntPtr state);
+    private static SetGPURenderStateNativeDelegate SetGPURenderStateNativeFunction = SDL_SetGPURenderState;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderGPUState(SDL_Renderer *renderer, SDL_GPURenderState *state);</code>
     /// <summary>
@@ -5322,18 +5329,17 @@ public static partial class SDL
     /// <threadsafety>This function should be called on the thread that created the
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderState(IntPtr renderer, IntPtr state);
-    private delegate bool SetGPURenderStateNativeDelegate(IntPtr renderer, IntPtr state);
-    private static SetGPURenderStateNativeDelegate SetGPURenderStateNativeFunction = SDL_SetGPURenderState;
-
     public static bool SetGPURenderState(IntPtr renderer, IntPtr state)
     {
         return SetGPURenderStateNativeFunction(renderer, state);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyGPURenderState(IntPtr state);
+    private delegate void DestroyGPURenderStateNativeDelegate(IntPtr state);
+    private static DestroyGPURenderStateNativeDelegate DestroyGPURenderStateNativeFunction = SDL_DestroyGPURenderState;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyGPURenderState(SDL_GPURenderState *state);</code>
     /// <summary>
@@ -5343,12 +5349,6 @@ public static partial class SDL
     /// <threadsafety>This function should be called on the thread that created the
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyGPURenderState(IntPtr state);
-    private delegate void DestroyGPURenderStateNativeDelegate(IntPtr state);
-    private static DestroyGPURenderStateNativeDelegate DestroyGPURenderStateNativeFunction = SDL_DestroyGPURenderState;
-
     public static void DestroyGPURenderState(IntPtr state)
     {
         DestroyGPURenderStateNativeFunction(state);

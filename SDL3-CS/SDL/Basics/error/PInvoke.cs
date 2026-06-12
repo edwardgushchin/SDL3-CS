@@ -29,6 +29,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
+    private delegate bool SetErrorNative(string message);
+    private static SetErrorNative SetErrorNativeFunction = SDL_SetError;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);</code>
     /// <summary>
     /// <para>Calling this function will replace any previous error message that was set.</para>
@@ -47,18 +54,18 @@ public static partial class SDL
     /// <seealso cref="ClearError"/>
     /// <seealso cref="GetError"/>
     /// <seealso cref="SetErrorV"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetError([MarshalAs(UnmanagedType.LPUTF8Str)] string message);
-    private delegate bool SetErrorNative(string message);
-    private static SetErrorNative SetErrorNativeFunction = SDL_SetError;
-
     public static bool SetError(string message)
     {
         return SetErrorNativeFunction(message);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetErrorV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    private static partial bool SDL_SetErrorV([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
+    private delegate bool SetErrorVNative(string fmt, string[] ap);
+    private static SetErrorVNative SetErrorVNativeFunction = SDL_SetErrorV;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetErrorV(SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap) SDL_PRINTF_VARARG_FUNCV(1);</code>
     /// <summary>
@@ -73,18 +80,18 @@ public static partial class SDL
     /// <seealso cref="ClearError"/>
     /// <seealso cref="GetError"/>
     /// <seealso cref="SetError"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetErrorV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.U1)]
-    private static partial bool SDL_SetErrorV([MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
-    private delegate bool SetErrorVNative(string fmt, string[] ap);
-    private static SetErrorVNative SetErrorVNativeFunction = SDL_SetErrorV;
-
     public static bool SetErrorV(string fmt, string[] ap)
     {
         return SetErrorVNativeFunction(fmt, ap);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OutOfMemory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    private static partial bool SDL_OutOfMemory();
+    private delegate bool OutOfMemoryNative();
+    private static OutOfMemoryNative OutOfMemoryNativeFunction = SDL_OutOfMemory;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_OutOfMemory(void);</code>
     /// <summary>
@@ -94,13 +101,6 @@ public static partial class SDL
     /// <returns><c>false</c></returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OutOfMemory"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.U1)]
-    private static partial bool SDL_OutOfMemory();
-    private delegate bool OutOfMemoryNative();
-    private static OutOfMemoryNative OutOfMemoryNativeFunction = SDL_OutOfMemory;
-
     public static bool OutOfMemory()
     {
         return OutOfMemoryNativeFunction();
@@ -147,6 +147,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    private static partial bool SDL_ClearError();
+    private delegate bool ClearErrorNative();
+    private static ClearErrorNative ClearErrorNativeFunction = SDL_ClearError;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearError(void);</code>
     /// <summary>
     /// Clear any previous error message for this thread.
@@ -156,13 +163,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetError"/>
     /// <seealso cref="SetError"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearError"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.U1)]
-    private static partial bool SDL_ClearError();
-    private delegate bool ClearErrorNative();
-    private static ClearErrorNative ClearErrorNativeFunction = SDL_ClearError;
-
     public static bool ClearError()
     {
         return ClearErrorNativeFunction();

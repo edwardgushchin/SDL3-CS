@@ -34,6 +34,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasMouse();
+    private delegate bool HasMouseNativeDelegate();
+    private static HasMouseNativeDelegate HasMouseNativeFunction = SDL_HasMouse;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasMouse(void);</code>
     /// <summary>
     /// Return whether a mouse is currently connected.
@@ -42,13 +49,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasMouse();
-    private delegate bool HasMouseNativeDelegate();
-    private static HasMouseNativeDelegate HasMouseNativeFunction = SDL_HasMouse;
-
     public static bool HasMouse()
     {
         return HasMouseNativeFunction();
@@ -115,6 +115,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetMouseFocus();
+    private delegate IntPtr GetMouseFocusNativeDelegate();
+    private static GetMouseFocusNativeDelegate GetMouseFocusNativeFunction = SDL_GetMouseFocus;
+
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);</code>
     /// <summary>
     /// Get the window which currently has mouse focus.
@@ -122,17 +128,17 @@ public static partial class SDL
     /// <returns>the window with mouse focus.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseFocus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetMouseFocus();
-    private delegate IntPtr GetMouseFocusNativeDelegate();
-    private static GetMouseFocusNativeDelegate GetMouseFocusNativeFunction = SDL_GetMouseFocus;
-
     public static IntPtr GetMouseFocus()
     {
         return GetMouseFocusNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial MouseButtonFlags SDL_GetMouseState(out float x, out float y);
+    private delegate MouseButtonFlags GetMouseStateNativeDelegate(out float x, out float y);
+    private static GetMouseStateNativeDelegate GetMouseStateNativeFunction = SDL_GetMouseState;
 
     /// <code>extern SDL_DECLSPEC SDL_MouseButtonFlags SDLCALL SDL_GetMouseState(float *x, float *y);</code>
     /// <summary>
@@ -153,17 +159,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGlobalMouseState"/>
     /// <seealso cref="GetRelativeMouseState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial MouseButtonFlags SDL_GetMouseState(out float x, out float y);
-    private delegate MouseButtonFlags GetMouseStateNativeDelegate(out float x, out float y);
-    private static GetMouseStateNativeDelegate GetMouseStateNativeFunction = SDL_GetMouseState;
-
     public static MouseButtonFlags GetMouseState(out float x, out float y)
     {
         return GetMouseStateNativeFunction(out x, out y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGlobalMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial MouseButtonFlags SDL_GetGlobalMouseState(out float x, out float y);
+    private delegate MouseButtonFlags GetGlobalMouseStateNativeDelegate(out float x, out float y);
+    private static GetGlobalMouseStateNativeDelegate GetGlobalMouseStateNativeFunction = SDL_GetGlobalMouseState;
 
     /// <code>extern SDL_DECLSPEC SDL_MouseButtonFlags SDLCALL SDL_GetGlobalMouseState(float *x, float *y);</code>
     /// <summary>
@@ -193,17 +199,17 @@ public static partial class SDL
     /// <seealso cref="CaptureMouse"/>
     /// <seealso cref="GetMouseState"/>
     /// <seealso cref="GetGlobalMouseState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGlobalMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial MouseButtonFlags SDL_GetGlobalMouseState(out float x, out float y);
-    private delegate MouseButtonFlags GetGlobalMouseStateNativeDelegate(out float x, out float y);
-    private static GetGlobalMouseStateNativeDelegate GetGlobalMouseStateNativeFunction = SDL_GetGlobalMouseState;
-
     public static MouseButtonFlags GetGlobalMouseState(out float x, out float y)
     {
         return GetGlobalMouseStateNativeFunction(out x, out y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRelativeMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial MouseButtonFlags SDL_GetRelativeMouseState(out float x, out float y);
+    private delegate MouseButtonFlags GetRelativeMouseStateNativeDelegate(out float x, out float y);
+    private static GetRelativeMouseStateNativeDelegate GetRelativeMouseStateNativeFunction = SDL_GetRelativeMouseState;
 
     /// <code>extern SDL_DECLSPEC SDL_MouseButtonFlags SDLCALL SDL_GetRelativeMouseState(float *x, float *y);</code>
     /// <summary>
@@ -234,17 +240,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMouseState"/>
     /// <seealso cref="GetGlobalMouseState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRelativeMouseState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial MouseButtonFlags SDL_GetRelativeMouseState(out float x, out float y);
-    private delegate MouseButtonFlags GetRelativeMouseStateNativeDelegate(out float x, out float y);
-    private static GetRelativeMouseStateNativeDelegate GetRelativeMouseStateNativeFunction = SDL_GetRelativeMouseState;
-
     public static MouseButtonFlags GetRelativeMouseState(out float x, out float y)
     {
         return GetRelativeMouseStateNativeFunction(out x, out y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseInWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_WarpMouseInWindow(IntPtr window, float x, float y);
+    private delegate void WarpMouseInWindowNativeDelegate(IntPtr window, float x, float y);
+    private static WarpMouseInWindowNativeDelegate WarpMouseInWindowNativeFunction = SDL_WarpMouseInWindow;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_WarpMouseInWindow(SDL_Window * window, float x, float y);</code>
     /// <summary>
@@ -262,17 +268,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WarpMouseGlobal"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseInWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_WarpMouseInWindow(IntPtr window, float x, float y);
-    private delegate void WarpMouseInWindowNativeDelegate(IntPtr window, float x, float y);
-    private static WarpMouseInWindowNativeDelegate WarpMouseInWindowNativeFunction = SDL_WarpMouseInWindow;
-
     public static void WarpMouseInWindow(IntPtr window, float x, float y)
     {
         WarpMouseInWindowNativeFunction(window, x, y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseGlobal"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_WarpMouseGlobal(float x, float y);
+    private delegate bool WarpMouseGlobalNativeDelegate(float x, float y);
+    private static WarpMouseGlobalNativeDelegate WarpMouseGlobalNativeFunction = SDL_WarpMouseGlobal;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WarpMouseGlobal(float x, float y);</code>
     /// <summary>
@@ -290,18 +297,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="WarpMouseInWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WarpMouseGlobal"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_WarpMouseGlobal(float x, float y);
-    private delegate bool WarpMouseGlobalNativeDelegate(float x, float y);
-    private static WarpMouseGlobalNativeDelegate WarpMouseGlobalNativeFunction = SDL_WarpMouseGlobal;
-
     public static bool WarpMouseGlobal(float x, float y)
     {
         return WarpMouseGlobalNativeFunction(x, y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRelativeMouseTransform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRelativeMouseTransform(MouseMotionTransformCallback callback, IntPtr userdata);
+    private delegate bool SetRelativeMouseTransformNativeDelegate(MouseMotionTransformCallback callback, IntPtr userdata);
+    private static SetRelativeMouseTransformNativeDelegate SetRelativeMouseTransformNativeFunction = SDL_SetRelativeMouseTransform;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRelativeMouseTransform(SDL_MouseMotionTransformCallback callback, void *userdata);</code>
     /// <summary>
@@ -316,18 +323,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRelativeMouseTransform"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRelativeMouseTransform(MouseMotionTransformCallback callback, IntPtr userdata);
-    private delegate bool SetRelativeMouseTransformNativeDelegate(MouseMotionTransformCallback callback, IntPtr userdata);
-    private static SetRelativeMouseTransformNativeDelegate SetRelativeMouseTransformNativeFunction = SDL_SetRelativeMouseTransform;
-
     public static bool SetRelativeMouseTransform(MouseMotionTransformCallback callback, IntPtr userdata)
     {
         return SetRelativeMouseTransformNativeFunction(callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowRelativeMouseMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowRelativeMouseMode(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool enabled);
+    private delegate bool SetWindowRelativeMouseModeNativeDelegate(IntPtr window, bool enabled);
+    private static SetWindowRelativeMouseModeNativeDelegate SetWindowRelativeMouseModeNativeFunction = SDL_SetWindowRelativeMouseMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);</code>
     /// <summary>
@@ -349,18 +356,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowRelativeMouseMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowRelativeMouseMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowRelativeMouseMode(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool enabled);
-    private delegate bool SetWindowRelativeMouseModeNativeDelegate(IntPtr window, bool enabled);
-    private static SetWindowRelativeMouseModeNativeDelegate SetWindowRelativeMouseModeNativeFunction = SDL_SetWindowRelativeMouseMode;
-
     public static bool SetWindowRelativeMouseMode(IntPtr window, bool enabled)
     {
         return SetWindowRelativeMouseModeNativeFunction(window, enabled);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowRelativeMouseMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowRelativeMouseMode(IntPtr window);
+    private delegate bool GetWindowRelativeMouseModeNativeDelegate(IntPtr window);
+    private static GetWindowRelativeMouseModeNativeDelegate GetWindowRelativeMouseModeNativeFunction = SDL_GetWindowRelativeMouseMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowRelativeMouseMode(SDL_Window *window);</code>
     /// <summary>
@@ -371,18 +378,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowRelativeMouseMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowRelativeMouseMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowRelativeMouseMode(IntPtr window);
-    private delegate bool GetWindowRelativeMouseModeNativeDelegate(IntPtr window);
-    private static GetWindowRelativeMouseModeNativeDelegate GetWindowRelativeMouseModeNativeFunction = SDL_GetWindowRelativeMouseMode;
-
     public static bool GetWindowRelativeMouseMode(IntPtr window)
     {
         return GetWindowRelativeMouseModeNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CaptureMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_CaptureMouse([MarshalAs(UnmanagedType.I1)] bool enabled);
+    private delegate bool CaptureMouseNativeDelegate(bool enabled);
+    private static CaptureMouseNativeDelegate CaptureMouseNativeFunction = SDL_CaptureMouse;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CaptureMouse(bool enabled);</code>
     /// <summary>
@@ -422,17 +429,16 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetGlobalMouseState"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CaptureMouse"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_CaptureMouse([MarshalAs(UnmanagedType.I1)] bool enabled);
-    private delegate bool CaptureMouseNativeDelegate(bool enabled);
-    private static CaptureMouseNativeDelegate CaptureMouseNativeFunction = SDL_CaptureMouse;
-
     public static bool CaptureMouse(bool enabled)
     {
         return CaptureMouseNativeFunction(enabled);
     }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateCursor(byte[] data, byte[] mask, int w, int h, int hotX, int hotY);
+    private delegate IntPtr CreateCursorNativeDelegate(byte[] data, byte[] mask, int w, int h, int hotX, int hotY);
+    private static CreateCursorNativeDelegate CreateCursorNativeFunction = SDL_CreateCursor;
 
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_CreateCursor(const Uint8 * data, const Uint8 * mask, int w, int h, int hot_x, int hot_y);</code>
     /// <summary>
@@ -471,17 +477,17 @@ public static partial class SDL
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
     /// <seealso cref="SetCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateCursor(byte[] data, byte[] mask, int w, int h, int hotX, int hotY);
-    private delegate IntPtr CreateCursorNativeDelegate(byte[] data, byte[] mask, int w, int h, int hotX, int hotY);
-    private static CreateCursorNativeDelegate CreateCursorNativeFunction = SDL_CreateCursor;
-
     public static IntPtr CreateCursor(byte[] data, byte[] mask, int w, int h, int hotX, int hotY)
     {
         return CreateCursorNativeFunction(data, mask, w, h, hotX, hotY);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateColorCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateColorCursor(IntPtr surface, int hotX, int hotY);
+    private delegate IntPtr CreateColorCursorNativeDelegate(IntPtr surface, int hotX, int hotY);
+    private static CreateColorCursorNativeDelegate CreateColorCursorNativeFunction = SDL_CreateColorCursor;
 
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);</code>
     /// <summary>
@@ -511,17 +517,17 @@ public static partial class SDL
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
     /// <seealso cref="SetCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateColorCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateColorCursor(IntPtr surface, int hotX, int hotY);
-    private delegate IntPtr CreateColorCursorNativeDelegate(IntPtr surface, int hotX, int hotY);
-    private static CreateColorCursorNativeDelegate CreateColorCursorNativeFunction = SDL_CreateColorCursor;
-
     public static IntPtr CreateColorCursor(IntPtr surface, int hotX, int hotY)
     {
         return CreateColorCursorNativeFunction(surface, hotX, hotY);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAnimatedCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateAnimatedCursor([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] CursorFrameInfo[] frames, int frameCount, int hotX, int hotY);
+    private delegate IntPtr CreateAnimatedCursorNativeDelegate(CursorFrameInfo[] frames, int frameCount, int hotX, int hotY);
+    private static CreateAnimatedCursorNativeDelegate CreateAnimatedCursorNativeFunction = SDL_CreateAnimatedCursor;
 
     /// <code>extern SDL_DECLSPEC SDL_Cursor *SDLCALL SDL_CreateAnimatedCursor(SDL_CursorFrameInfo *frames,int frame_count, int hot_x, int hot_y);</code>
     /// <summary>
@@ -562,17 +568,17 @@ public static partial class SDL
     /// <seealso cref="CreateSystemCursor"/>
     /// <seealso cref="DestroyCursor"/>
     /// <seealso cref="SetCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAnimatedCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateAnimatedCursor([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] CursorFrameInfo[] frames, int frameCount, int hotX, int hotY);
-    private delegate IntPtr CreateAnimatedCursorNativeDelegate(CursorFrameInfo[] frames, int frameCount, int hotX, int hotY);
-    private static CreateAnimatedCursorNativeDelegate CreateAnimatedCursorNativeFunction = SDL_CreateAnimatedCursor;
-
     public static IntPtr CreateAnimatedCursor(CursorFrameInfo[] frames, int frameCount, int hotX, int hotY)
     {
         return CreateAnimatedCursorNativeFunction(frames, frameCount, hotX, hotY);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSystemCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateSystemCursor(SystemCursor id);
+    private delegate IntPtr CreateSystemCursorNativeDelegate(SystemCursor id);
+    private static CreateSystemCursorNativeDelegate CreateSystemCursorNativeFunction = SDL_CreateSystemCursor;
 
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_CreateSystemCursor(SDL_SystemCursor id);</code>
     /// <summary>
@@ -584,17 +590,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateSystemCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateSystemCursor(SystemCursor id);
-    private delegate IntPtr CreateSystemCursorNativeDelegate(SystemCursor id);
-    private static CreateSystemCursorNativeDelegate CreateSystemCursorNativeFunction = SDL_CreateSystemCursor;
-
     public static IntPtr CreateSystemCursor(SystemCursor id)
     {
         return CreateSystemCursorNativeFunction(id);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetCursor(IntPtr cursor);
+    private delegate bool SetCursorNativeDelegate(IntPtr cursor);
+    private static SetCursorNativeDelegate SetCursorNativeFunction = SDL_SetCursor;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetCursor(SDL_Cursor *cursor);</code>
     /// <summary>
@@ -610,18 +617,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetCursor(IntPtr cursor);
-    private delegate bool SetCursorNativeDelegate(IntPtr cursor);
-    private static SetCursorNativeDelegate SetCursorNativeFunction = SDL_SetCursor;
-
     public static bool SetCursor(IntPtr cursor)
     {
         return SetCursorNativeFunction(cursor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetCursor();
+    private delegate IntPtr GetCursorNativeDelegate();
+    private static GetCursorNativeDelegate GetCursorNativeFunction = SDL_GetCursor;
 
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_GetCursor(void);</code>
     /// <summary>
@@ -633,17 +639,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetCursor();
-    private delegate IntPtr GetCursorNativeDelegate();
-    private static GetCursorNativeDelegate GetCursorNativeFunction = SDL_GetCursor;
-
     public static IntPtr GetCursor()
     {
         return GetCursorNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetDefaultCursor();
+    private delegate IntPtr GetDefaultCursorNativeDelegate();
+    private static GetDefaultCursorNativeDelegate GetDefaultCursorNativeFunction = SDL_GetDefaultCursor;
 
     /// <code>extern SDL_DECLSPEC SDL_Cursor * SDLCALL SDL_GetDefaultCursor(void);</code>
     /// <summary>
@@ -655,17 +661,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDefaultCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetDefaultCursor();
-    private delegate IntPtr GetDefaultCursorNativeDelegate();
-    private static GetDefaultCursorNativeDelegate GetDefaultCursorNativeFunction = SDL_GetDefaultCursor;
-
     public static IntPtr GetDefaultCursor()
     {
         return GetDefaultCursorNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyCursor(IntPtr cursor);
+    private delegate void DestroyCursorNativeDelegate(IntPtr cursor);
+    private static DestroyCursorNativeDelegate DestroyCursorNativeFunction = SDL_DestroyCursor;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyCursor(SDL_Cursor *cursor);</code>
     /// <summary>
@@ -680,17 +686,18 @@ public static partial class SDL
     /// <seealso cref="CreateColorCursor"/>
     /// <seealso cref="CreateCursor"/>
     /// <seealso cref="CreateSystemCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyCursor(IntPtr cursor);
-    private delegate void DestroyCursorNativeDelegate(IntPtr cursor);
-    private static DestroyCursorNativeDelegate DestroyCursorNativeFunction = SDL_DestroyCursor;
-
     public static void DestroyCursor(IntPtr cursor)
     {
         DestroyCursorNativeFunction(cursor);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ShowCursor();
+    private delegate bool ShowCursorNativeDelegate();
+    private static ShowCursorNativeDelegate ShowCursorNativeFunction = SDL_ShowCursor;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowCursor(void);</code>
     /// <summary>
@@ -702,18 +709,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CursorVisible"/>
     /// <seealso cref="HideCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ShowCursor();
-    private delegate bool ShowCursorNativeDelegate();
-    private static ShowCursorNativeDelegate ShowCursorNativeFunction = SDL_ShowCursor;
-
     public static bool ShowCursor()
     {
         return ShowCursorNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HideCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HideCursor();
+    private delegate bool HideCursorNativeDelegate();
+    private static HideCursorNativeDelegate HideCursorNativeFunction = SDL_HideCursor;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HideCursor(void);</code>
     /// <summary>
@@ -725,18 +732,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CursorVisible"/>
     /// <seealso cref="ShowCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HideCursor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HideCursor();
-    private delegate bool HideCursorNativeDelegate();
-    private static HideCursorNativeDelegate HideCursorNativeFunction = SDL_HideCursor;
-
     public static bool HideCursor()
     {
         return HideCursorNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CursorVisible"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_CursorVisible();
+    private delegate bool CursorVisibleNativeDelegate();
+    private static CursorVisibleNativeDelegate CursorVisibleNativeFunction = SDL_CursorVisible;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CursorVisible(void);</code>
     /// <summary>
@@ -748,13 +755,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HideCursor"/>
     /// <seealso cref="ShowCursor"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CursorVisible"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_CursorVisible();
-    private delegate bool CursorVisibleNativeDelegate();
-    private static CursorVisibleNativeDelegate CursorVisibleNativeFunction = SDL_CursorVisible;
-
     public static bool CursorVisible()
     {
         return CursorVisibleNativeFunction();

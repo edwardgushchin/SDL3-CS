@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_CreateView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_Metal_CreateView(IntPtr window);
+    private delegate IntPtr MetalCreateViewNativeDelegate(IntPtr window);
+    private static MetalCreateViewNativeDelegate MetalCreateViewNativeFunction = SDL_Metal_CreateView;
+
     /// <code>extern SDL_DECLSPEC SDL_MetalView SDLCALL SDL_Metal_CreateView(SDL_Window *window);</code>
     /// <summary>
     /// <para>Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
@@ -44,17 +50,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalDestroyView"/>
     /// <seealso cref="MetalGetLayer"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_CreateView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_Metal_CreateView(IntPtr window);
-    private delegate IntPtr MetalCreateViewNativeDelegate(IntPtr window);
-    private static MetalCreateViewNativeDelegate MetalCreateViewNativeFunction = SDL_Metal_CreateView;
-
     public static IntPtr MetalCreateView(IntPtr window)
     {
         return MetalCreateViewNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_DestroyView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_Metal_DestroyView(IntPtr view);
+    private delegate void MetalDestroyViewNativeDelegate(IntPtr view);
+    private static MetalDestroyViewNativeDelegate MetalDestroyViewNativeFunction = SDL_Metal_DestroyView;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_Metal_DestroyView(SDL_MetalView view);</code>
     /// <summary>
@@ -66,17 +72,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MetalCreateView"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_DestroyView"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Metal_DestroyView(IntPtr view);
-    private delegate void MetalDestroyViewNativeDelegate(IntPtr view);
-    private static MetalDestroyViewNativeDelegate MetalDestroyViewNativeFunction = SDL_Metal_DestroyView;
-
     public static void MetalDestroyView(IntPtr view)
     {
         MetalDestroyViewNativeFunction(view);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_GetLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_Metal_GetLayer(IntPtr view);
+    private delegate IntPtr MetalGetLayerNativeDelegate(IntPtr view);
+    private static MetalGetLayerNativeDelegate MetalGetLayerNativeFunction = SDL_Metal_GetLayer;
 
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_Metal_GetLayer(SDL_MetalView view);</code>
     /// <summary>
@@ -86,12 +92,6 @@ public static partial class SDL
     /// <returns>a pointer.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_Metal_GetLayer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_Metal_GetLayer(IntPtr view);
-    private delegate IntPtr MetalGetLayerNativeDelegate(IntPtr view);
-    private static MetalGetLayerNativeDelegate MetalGetLayerNativeFunction = SDL_Metal_GetLayer;
-
     public static IntPtr MetalGetLayer(IntPtr view)
     {
         return MetalGetLayerNativeFunction(view);

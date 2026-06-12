@@ -29,6 +29,12 @@ namespace SDL3;
 
 public partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTray(IntPtr icon, [MarshalAs(UnmanagedType.LPUTF8Str)] string? tooltip);
+    private delegate IntPtr CreateTrayNative(IntPtr icon, string? tooltip);
+    private static CreateTrayNative CreateTrayNativeFunction = SDL_CreateTray;
+
     /// <code>extern SDL_DECLSPEC SDL_Tray *SDLCALL SDL_CreateTray(SDL_Surface *icon, const char *tooltip);</code>
     /// <summary>
     /// <para>Create an icon to be placed in the operating system's tray, or equivalent.</para>
@@ -46,17 +52,17 @@ public partial class SDL
     /// <seealso cref="CreateTrayMenu"/>
     /// <seealso cref="GetTrayMenu"/>
     /// <seealso cref="DestroyTray"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTray(IntPtr icon, [MarshalAs(UnmanagedType.LPUTF8Str)] string? tooltip);
-    private delegate IntPtr CreateTrayNative(IntPtr icon, string? tooltip);
-    private static CreateTrayNative CreateTrayNativeFunction = SDL_CreateTray;
-
     public static IntPtr CreateTray(IntPtr icon, string? tooltip)
     {
         return CreateTrayNativeFunction(icon, tooltip);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetTrayIcon(IntPtr tray, IntPtr icon);
+    private delegate void SetTrayIconNative(IntPtr tray, IntPtr icon);
+    private static SetTrayIconNative SetTrayIconNativeFunction = SDL_SetTrayIcon;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayIcon(SDL_Tray *tray, SDL_Surface *icon);</code>
     /// <summary>
@@ -68,17 +74,17 @@ public partial class SDL
     /// tray.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetTrayIcon(IntPtr tray, IntPtr icon);
-    private delegate void SetTrayIconNative(IntPtr tray, IntPtr icon);
-    private static SetTrayIconNative SetTrayIconNativeFunction = SDL_SetTrayIcon;
-
     public static void SetTrayIcon(IntPtr tray, IntPtr icon)
     {
         SetTrayIconNativeFunction(tray, icon);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayTooltip"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetTrayTooltip(IntPtr tray, [MarshalAs(UnmanagedType.LPUTF8Str)] string? tooltip);
+    private delegate void SetTrayTooltipNative(IntPtr tray, string? tooltip);
+    private static SetTrayTooltipNative SetTrayTooltipNativeFunction = SDL_SetTrayTooltip;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayTooltip(SDL_Tray *tray, const char *tooltip);</code>
     /// <summary>
@@ -90,17 +96,17 @@ public partial class SDL
     /// tray.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayTooltip"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetTrayTooltip(IntPtr tray, [MarshalAs(UnmanagedType.LPUTF8Str)] string? tooltip);
-    private delegate void SetTrayTooltipNative(IntPtr tray, string? tooltip);
-    private static SetTrayTooltipNative SetTrayTooltipNativeFunction = SDL_SetTrayTooltip;
-
     public static void SetTrayTooltip(IntPtr tray, string? tooltip)
     {
         SetTrayTooltipNativeFunction(tray, tooltip);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTrayMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTrayMenu(IntPtr tray);
+    private delegate IntPtr CreateTrayMenuNative(IntPtr tray);
+    private static CreateTrayMenuNative CreateTrayMenuNativeFunction = SDL_CreateTrayMenu;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayMenu *SDLCALL SDL_CreateTrayMenu(SDL_Tray *tray);</code>
     /// <summary>
@@ -118,17 +124,17 @@ public partial class SDL
     /// <seealso cref="CreateTray"/>
     /// <seealso cref="GetTrayMenu"/>
     /// <seealso cref="GetTrayMenuParentTray"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTrayMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTrayMenu(IntPtr tray);
-    private delegate IntPtr CreateTrayMenuNative(IntPtr tray);
-    private static CreateTrayMenuNative CreateTrayMenuNativeFunction = SDL_CreateTrayMenu;
-
     public static IntPtr CreateTrayMenu(IntPtr tray)
     {
         return CreateTrayMenuNativeFunction(tray);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTraySubmenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTraySubmenu(IntPtr entry);
+    private delegate IntPtr CreateTraySubmenuNative(IntPtr entry);
+    private static CreateTraySubmenuNative CreateTraySubmenuNativeFunction = SDL_CreateTraySubmenu;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayMenu *SDLCALL SDL_CreateTraySubmenu(SDL_TrayEntry *entry);</code>
     /// <summary>
@@ -146,17 +152,17 @@ public partial class SDL
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTraySubmenu"/>
     /// <seealso cref="GetTrayMenuParentEntry"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTraySubmenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTraySubmenu(IntPtr entry);
-    private delegate IntPtr CreateTraySubmenuNative(IntPtr entry);
-    private static CreateTraySubmenuNative CreateTraySubmenuNativeFunction = SDL_CreateTraySubmenu;
-
     public static IntPtr CreateTraySubmenu(IntPtr entry)
     {
         return CreateTraySubmenuNativeFunction(entry);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTrayMenu(IntPtr tray);
+    private delegate IntPtr GetTrayMenuNative(IntPtr tray);
+    private static GetTrayMenuNative GetTrayMenuNativeFunction = SDL_GetTrayMenu;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayMenu *SDLCALL SDL_GetTrayMenu(SDL_Tray *tray);</code>
     /// <summary>
@@ -174,17 +180,17 @@ public partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
     /// <seealso cref="CreateTrayMenu"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTrayMenu(IntPtr tray);
-    private delegate IntPtr GetTrayMenuNative(IntPtr tray);
-    private static GetTrayMenuNative GetTrayMenuNativeFunction = SDL_GetTrayMenu;
-
     public static IntPtr GetTrayMenu(IntPtr tray)
     {
         return GetTrayMenuNativeFunction(tray);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTraySubmenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTraySubmenu(IntPtr entry);
+    private delegate IntPtr GetTraySubmenuNative(IntPtr entry);
+    private static GetTraySubmenuNative GetTraySubmenuNativeFunction = SDL_GetTraySubmenu;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayMenu *SDLCALL SDL_GetTraySubmenu(SDL_TrayEntry *entry);</code>
     /// <summary>
@@ -202,12 +208,6 @@ public partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="CreateTraySubmenu"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTraySubmenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTraySubmenu(IntPtr entry);
-    private delegate IntPtr GetTraySubmenuNative(IntPtr entry);
-    private static GetTraySubmenuNative GetTraySubmenuNativeFunction = SDL_GetTraySubmenu;
-
     public static IntPtr GetTraySubmenu(IntPtr entry)
     {
         return GetTraySubmenuNativeFunction(entry);
@@ -249,6 +249,12 @@ public partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_RemoveTrayEntry(IntPtr entry);
+    private delegate void RemoveTrayEntryNative(IntPtr entry);
+    private static RemoveTrayEntryNative RemoveTrayEntryNativeFunction = SDL_RemoveTrayEntry;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_RemoveTrayEntry(SDL_TrayEntry *entry);</code>
     /// <summary>
     /// Removes a tray entry.
@@ -259,17 +265,17 @@ public partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_RemoveTrayEntry(IntPtr entry);
-    private delegate void RemoveTrayEntryNative(IntPtr entry);
-    private static RemoveTrayEntryNative RemoveTrayEntryNativeFunction = SDL_RemoveTrayEntry;
-
     public static void RemoveTrayEntry(IntPtr entry)
     {
         RemoveTrayEntryNativeFunction(entry);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_InsertTrayEntryAt"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_InsertTrayEntryAt(IntPtr menu, int pos, [MarshalAs(UnmanagedType.LPUTF8Str)] string? label, TrayEntryFlags flags);
+    private delegate IntPtr InsertTrayEntryAtNative(IntPtr menu, int pos, string? label, TrayEntryFlags flags);
+    private static InsertTrayEntryAtNative InsertTrayEntryAtNativeFunction = SDL_InsertTrayEntryAt;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayEntry *SDLCALL SDL_InsertTrayEntryAt(SDL_TrayMenu *menu, int pos, const char *label, SDL_TrayEntryFlags flags);</code>
     /// <summary>
@@ -292,17 +298,17 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="RemoveTrayEntry"/>
     /// <seealso cref="GetTrayEntryParent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_InsertTrayEntryAt"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_InsertTrayEntryAt(IntPtr menu, int pos, [MarshalAs(UnmanagedType.LPUTF8Str)] string? label, TrayEntryFlags flags);
-    private delegate IntPtr InsertTrayEntryAtNative(IntPtr menu, int pos, string? label, TrayEntryFlags flags);
-    private static InsertTrayEntryAtNative InsertTrayEntryAtNativeFunction = SDL_InsertTrayEntryAt;
-
     public static IntPtr InsertTrayEntryAt(IntPtr menu, int pos, string? label, TrayEntryFlags flags)
     {
         return InsertTrayEntryAtNativeFunction(menu, pos, label, flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryLabel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetTrayEntryLabel(IntPtr entry, [MarshalAs(UnmanagedType.LPUTF8Str)] string label);
+    private delegate void SetTrayEntryLabelNative(IntPtr entry, string label);
+    private static SetTrayEntryLabelNative SetTrayEntryLabelNativeFunction = SDL_SetTrayEntryLabel;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayEntryLabel(SDL_TrayEntry *entry, const char *label);</code>
     /// <summary>
@@ -320,12 +326,6 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryLabel"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryLabel"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetTrayEntryLabel(IntPtr entry, [MarshalAs(UnmanagedType.LPUTF8Str)] string label);
-    private delegate void SetTrayEntryLabelNative(IntPtr entry, string label);
-    private static SetTrayEntryLabelNative SetTrayEntryLabelNativeFunction = SDL_SetTrayEntryLabel;
-
     public static void SetTrayEntryLabel(IntPtr entry, string label)
     {
         SetTrayEntryLabelNativeFunction(entry, label);
@@ -357,6 +357,12 @@ public partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryChecked"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetTrayEntryChecked(IntPtr entry, [MarshalAs(UnmanagedType.I1)] bool @checked);
+    private delegate void SetTrayEntryCheckedNative(IntPtr entry, bool @checked);
+    private static SetTrayEntryCheckedNative SetTrayEntryCheckedNativeFunction = SDL_SetTrayEntryChecked;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayEntryChecked(SDL_TrayEntry *entry, bool checked);</code>
     /// <summary>
     /// <para>Sets whether or not an entry is checked.</para>
@@ -371,17 +377,18 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryChecked"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryChecked"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetTrayEntryChecked(IntPtr entry, [MarshalAs(UnmanagedType.I1)] bool @checked);
-    private delegate void SetTrayEntryCheckedNative(IntPtr entry, bool @checked);
-    private static SetTrayEntryCheckedNative SetTrayEntryCheckedNativeFunction = SDL_SetTrayEntryChecked;
-
     public static void SetTrayEntryChecked(IntPtr entry, bool @checked)
     {
         SetTrayEntryCheckedNativeFunction(entry, @checked);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryChecked"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTrayEntryChecked(IntPtr entry);
+    private delegate bool GetTrayEntryCheckedNative(IntPtr entry);
+    private static GetTrayEntryCheckedNative GetTrayEntryCheckedNativeFunction = SDL_GetTrayEntryChecked;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTrayEntryChecked(SDL_TrayEntry *entry);</code>
     /// <summary>
@@ -396,18 +403,17 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryChecked"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryChecked"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTrayEntryChecked(IntPtr entry);
-    private delegate bool GetTrayEntryCheckedNative(IntPtr entry);
-    private static GetTrayEntryCheckedNative GetTrayEntryCheckedNativeFunction = SDL_GetTrayEntryChecked;
-
     public static bool GetTrayEntryChecked(IntPtr entry)
     {
         return GetTrayEntryCheckedNativeFunction(entry);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetTrayEntryEnabled(IntPtr entry, [MarshalAs(UnmanagedType.I1)] bool enabled);
+    private delegate void SetTrayEntryEnabledNative(IntPtr entry, bool enabled);
+    private static SetTrayEntryEnabledNative SetTrayEntryEnabledNativeFunction = SDL_SetTrayEntryEnabled;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayEntryEnabled(SDL_TrayEntry *entry, bool enabled);</code>
     /// <summary>
@@ -422,17 +428,18 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetTrayEntryEnabled(IntPtr entry, [MarshalAs(UnmanagedType.I1)] bool enabled);
-    private delegate void SetTrayEntryEnabledNative(IntPtr entry, bool enabled);
-    private static SetTrayEntryEnabledNative SetTrayEntryEnabledNativeFunction = SDL_SetTrayEntryEnabled;
-
     public static void SetTrayEntryEnabled(IntPtr entry, bool enabled)
     {
         SetTrayEntryEnabledNativeFunction(entry, enabled);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetTrayEntryEnabled(IntPtr entry);
+    private delegate bool GetTrayEntryEnabledNative(IntPtr entry);
+    private static GetTrayEntryEnabledNative GetTrayEntryEnabledNativeFunction = SDL_GetTrayEntryEnabled;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetTrayEntryEnabled(SDL_TrayEntry *entry);</code>
     /// <summary>
@@ -446,18 +453,17 @@ public partial class SDL
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetTrayEntryEnabled(IntPtr entry);
-    private delegate bool GetTrayEntryEnabledNative(IntPtr entry);
-    private static GetTrayEntryEnabledNative GetTrayEntryEnabledNativeFunction = SDL_GetTrayEntryEnabled;
-
     public static bool GetTrayEntryEnabled(IntPtr entry)
     {
         return GetTrayEntryEnabledNativeFunction(entry);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetTrayEntryCallback(IntPtr entry, TrayCallback callback, IntPtr userdata);
+    private delegate void SetTrayEntryCallbackNative(IntPtr entry, TrayCallback callback, IntPtr userdata);
+    private static SetTrayEntryCallbackNative SetTrayEntryCallbackNativeFunction = SDL_SetTrayEntryCallback;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetTrayEntryCallback(SDL_TrayEntry *entry, SDL_TrayCallback callback, void *userdata);</code>
     /// <summary>
@@ -472,17 +478,17 @@ public partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayEntryCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetTrayEntryCallback(IntPtr entry, TrayCallback callback, IntPtr userdata);
-    private delegate void SetTrayEntryCallbackNative(IntPtr entry, TrayCallback callback, IntPtr userdata);
-    private static SetTrayEntryCallbackNative SetTrayEntryCallbackNativeFunction = SDL_SetTrayEntryCallback;
-
     public static void SetTrayEntryCallback(IntPtr entry, TrayCallback callback, IntPtr userdata)
     {
         SetTrayEntryCallbackNativeFunction(entry, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClickTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ClickTrayEntry(IntPtr entry);
+    private delegate void ClickTrayEntryNative(IntPtr entry);
+    private static ClickTrayEntryNative ClickTrayEntryNativeFunction = SDL_ClickTrayEntry;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ClickTrayEntry(SDL_TrayEntry *entry);</code>
     /// <summary>
@@ -492,17 +498,17 @@ public partial class SDL
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
     /// <since>This function is available since SDL 3.1.10.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClickTrayEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ClickTrayEntry(IntPtr entry);
-    private delegate void ClickTrayEntryNative(IntPtr entry);
-    private static ClickTrayEntryNative ClickTrayEntryNativeFunction = SDL_ClickTrayEntry;
-
     public static void ClickTrayEntry(IntPtr entry)
     {
         ClickTrayEntryNativeFunction(entry);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyTray(IntPtr tray);
+    private delegate void DestroyTrayNative(IntPtr tray);
+    private static DestroyTrayNative DestroyTrayNativeFunction = SDL_DestroyTray;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyTray(SDL_Tray *tray);</code>
     /// <summary>
@@ -514,17 +520,17 @@ public partial class SDL
     /// tray.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyTray(IntPtr tray);
-    private delegate void DestroyTrayNative(IntPtr tray);
-    private static DestroyTrayNative DestroyTrayNativeFunction = SDL_DestroyTray;
-
     public static void DestroyTray(IntPtr tray)
     {
         DestroyTrayNativeFunction(tray);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTrayEntryParent(IntPtr entry);
+    private delegate IntPtr GetTrayEntryParentNative(IntPtr entry);
+    private static GetTrayEntryParentNative GetTrayEntryParentNativeFunction = SDL_GetTrayEntryParent;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayMenu *SDLCALL SDL_GetTrayEntryParent(SDL_TrayEntry *entry);</code>
     /// <summary>
@@ -536,17 +542,17 @@ public partial class SDL
     /// tray.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayEntryParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTrayEntryParent(IntPtr entry);
-    private delegate IntPtr GetTrayEntryParentNative(IntPtr entry);
-    private static GetTrayEntryParentNative GetTrayEntryParentNativeFunction = SDL_GetTrayEntryParent;
-
     public static IntPtr GetTrayEntryParent(IntPtr entry)
     {
         return GetTrayEntryParentNativeFunction(entry);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenuParentEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTrayMenuParentEntry(IntPtr menu);
+    private delegate IntPtr GetTrayMenuParentEntryNative(IntPtr menu);
+    private static GetTrayMenuParentEntryNative GetTrayMenuParentEntryNativeFunction = SDL_GetTrayMenuParentEntry;
 
     /// <code>extern SDL_DECLSPEC SDL_TrayEntry *SDLCALL SDL_GetTrayMenuParentEntry(SDL_TrayMenu *menu);</code>
     /// <summary>
@@ -562,17 +568,17 @@ public partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTraySubmenu"/>
     /// <seealso cref="GetTrayMenuParentTray"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenuParentEntry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTrayMenuParentEntry(IntPtr menu);
-    private delegate IntPtr GetTrayMenuParentEntryNative(IntPtr menu);
-    private static GetTrayMenuParentEntryNative GetTrayMenuParentEntryNativeFunction = SDL_GetTrayMenuParentEntry;
-
     public static IntPtr GetTrayMenuParentEntry(IntPtr menu)
     {
         return GetTrayMenuParentEntryNativeFunction(menu);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenuParentTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetTrayMenuParentTray(IntPtr menu);
+    private delegate IntPtr GetTrayMenuParentTrayNative(IntPtr menu);
+    private static GetTrayMenuParentTrayNative GetTrayMenuParentTrayNativeFunction = SDL_GetTrayMenuParentTray;
 
     /// <code>extern SDL_DECLSPEC SDL_Tray *SDLCALL SDL_GetTrayMenuParentTray(SDL_TrayMenu *menu);</code>
     /// <summary>
@@ -588,17 +594,17 @@ public partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTrayMenu"/>
     /// <seealso cref="GetTrayMenuParentEntry"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTrayMenuParentTray"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetTrayMenuParentTray(IntPtr menu);
-    private delegate IntPtr GetTrayMenuParentTrayNative(IntPtr menu);
-    private static GetTrayMenuParentTrayNative GetTrayMenuParentTrayNativeFunction = SDL_GetTrayMenuParentTray;
-
     public static IntPtr GetTrayMenuParentTray(IntPtr menu)
     {
         return GetTrayMenuParentTrayNativeFunction(menu);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTrays"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UpdateTrays();
+    private delegate void UpdateTraysNative();
+    private static UpdateTraysNative UpdateTraysNativeFunction = SDL_UpdateTrays;
 
     /// extern SDL_DECLSPEC void SDLCALL SDL_UpdateTrays(void);
     /// <summary>
@@ -608,12 +614,6 @@ public partial class SDL
     /// </summary>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTrays"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UpdateTrays();
-    private delegate void UpdateTraysNative();
-    private static UpdateTraysNative UpdateTraysNativeFunction = SDL_UpdateTrays;
-
     public static void UpdateTrays()
     {
         UpdateTraysNativeFunction();

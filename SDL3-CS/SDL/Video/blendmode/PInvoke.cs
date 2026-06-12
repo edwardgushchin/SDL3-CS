@@ -29,6 +29,22 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ComposeCustomBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial BlendMode SDL_ComposeCustomBlendMode(BlendFactor srcColorFactor,
+        BlendFactor dstColorFactor,
+        BlendOperation colorOperation,
+        BlendFactor srcAlphaFactor,
+        BlendFactor dstAlphaFactor,
+        BlendOperation alphaOperation);
+    private delegate BlendMode ComposeCustomBlendModeNativeDelegate(BlendFactor srcColorFactor,
+        BlendFactor dstColorFactor,
+        BlendOperation colorOperation,
+        BlendFactor srcAlphaFactor,
+        BlendFactor dstAlphaFactor,
+        BlendOperation alphaOperation);
+    private static ComposeCustomBlendModeNativeDelegate ComposeCustomBlendModeNativeFunction = SDL_ComposeCustomBlendMode;
+
     /// <code>extern SDL_DECLSPEC SDL_BlendMode SDLCALL SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor,
     /// SDL_BlendFactor dstColorFactor,
     /// SDL_BlendOperation colorOperation,
@@ -110,22 +126,6 @@ public static partial class SDL
     /// <seealso cref="GetRenderDrawBlendMode"/>
     /// <seealso cref="SetTextureBlendMode"/>
     /// <seealso cref="GetTextureBlendMode"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ComposeCustomBlendMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial BlendMode SDL_ComposeCustomBlendMode(BlendFactor srcColorFactor,
-        BlendFactor dstColorFactor,
-        BlendOperation colorOperation,
-        BlendFactor srcAlphaFactor,
-        BlendFactor dstAlphaFactor,
-        BlendOperation alphaOperation);
-    private delegate BlendMode ComposeCustomBlendModeNativeDelegate(BlendFactor srcColorFactor,
-        BlendFactor dstColorFactor,
-        BlendOperation colorOperation,
-        BlendFactor srcAlphaFactor,
-        BlendFactor dstAlphaFactor,
-        BlendOperation alphaOperation);
-    private static ComposeCustomBlendModeNativeDelegate ComposeCustomBlendModeNativeFunction = SDL_ComposeCustomBlendMode;
-
     public static BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
         BlendFactor dstColorFactor,
         BlendOperation colorOperation,

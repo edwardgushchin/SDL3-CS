@@ -29,6 +29,14 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetHintWithPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
+    private delegate bool SetHintWithPriorityNative(string name, string value, HintPriority priority);
+    private static SetHintWithPriorityNative SetHintWithPriorityNativeFunction = SDL_SetHintWithPriority;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);</code>
     /// <summary>
     /// <para>Set a hint with a specific priority.</para>
@@ -46,19 +54,19 @@ public static partial class SDL
     /// <seealso cref="GetHint"/>
     /// <seealso cref="ResetHint"/>
     /// <seealso cref="SetHint"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetHintWithPriority"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetHintWithPriority([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string value, HintPriority priority);
-    private delegate bool SetHintWithPriorityNative(string name, string value, HintPriority priority);
-    private static SetHintWithPriorityNative SetHintWithPriorityNativeFunction = SDL_SetHintWithPriority;
-
     public static bool SetHintWithPriority(string name, string value, HintPriority priority)
     {
         return SetHintWithPriorityNativeFunction(name, value, priority);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetHint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+    private delegate bool SetHintNative(string name, string value);
+    private static SetHintNative SetHintNativeFunction = SDL_SetHint;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetHint(const char *name, const char *value);</code>
     /// <summary>
@@ -76,19 +84,18 @@ public static partial class SDL
     /// <seealso cref="GetHint"/>
     /// <seealso cref="ResetHint"/>
     /// <seealso cref="SetHintWithPriority"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetHint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
-    private delegate bool SetHintNative(string name, string value);
-    private static SetHintNative SetHintNativeFunction = SDL_SetHint;
-
     public static bool SetHint(string name, string value)
     {
         return SetHintNativeFunction(name, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetHint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ResetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate bool ResetHintNative(string name);
+    private static ResetHintNative ResetHintNativeFunction = SDL_ResetHint;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ResetHint(const char *name);</code>
     /// <summary>
@@ -104,18 +111,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetHint"/>
     /// <seealso cref="ResetHints"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetHint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ResetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate bool ResetHintNative(string name);
-    private static ResetHintNative ResetHintNativeFunction = SDL_ResetHint;
-
     public static bool ResetHint(string name)
     {
         return ResetHintNativeFunction(name);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetHints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ResetHints();
+    private delegate void ResetHintsNative();
+    private static ResetHintsNative ResetHintsNativeFunction = SDL_ResetHints;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ResetHints(void);</code>
     /// <summary>
@@ -127,12 +133,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResetHint"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResetHints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ResetHints();
-    private delegate void ResetHintsNative();
-    private static ResetHintsNative ResetHintsNativeFunction = SDL_ResetHints;
-
     public static void ResetHints()
     {
         ResetHintsNativeFunction();
@@ -161,6 +161,14 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHintBoolean"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
+    private delegate bool GetHintBooleanNative(string name, bool defaultValue);
+    private static GetHintBooleanNative GetHintBooleanNativeFunction = SDL_GetHintBoolean;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetHintBoolean(const char *name, bool default_value);</code>
     /// <summary>
     /// Get the boolean value of a hint variable.
@@ -173,19 +181,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetHint"/>
     /// <seealso cref="SetHint"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetHintBoolean"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetHintBoolean([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
-    private delegate bool GetHintBooleanNative(string name, bool defaultValue);
-    private static GetHintBooleanNative GetHintBooleanNativeFunction = SDL_GetHintBoolean;
-
     public static bool GetHintBoolean(string name, bool defaultValue)
     {
         return GetHintBooleanNativeFunction(name, defaultValue);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddHintCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        HintCallback callback, IntPtr userdata);
+    private delegate int AddHintCallbackNative(string name, HintCallback callback, IntPtr userdata);
+    private static AddHintCallbackNative AddHintCallbackNativeFunction = SDL_AddHintCallback;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);</code>
     /// <summary>
@@ -202,18 +209,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RemoveHintCallback"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddHintCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_AddHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        HintCallback callback, IntPtr userdata);
-    private delegate int AddHintCallbackNative(string name, HintCallback callback, IntPtr userdata);
-    private static AddHintCallbackNative AddHintCallbackNativeFunction = SDL_AddHintCallback;
-
     public static int AddHintCallback(string name, HintCallback callback, IntPtr userdata)
     {
         return AddHintCallbackNativeFunction(name, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveHintCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_RemoveHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        HintCallback callback, IntPtr userdata);
+    private delegate void RemoveHintCallbackNative(string name, HintCallback callback, IntPtr userdata);
+    private static RemoveHintCallbackNative RemoveHintCallbackNativeFunction = SDL_RemoveHintCallback;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);</code>
     /// <summary>
@@ -226,13 +233,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddHintCallback"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveHintCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_RemoveHintCallback([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        HintCallback callback, IntPtr userdata);
-    private delegate void RemoveHintCallbackNative(string name, HintCallback callback, IntPtr userdata);
-    private static RemoveHintCallbackNative RemoveHintCallbackNativeFunction = SDL_RemoveHintCallback;
-
     public static void RemoveHintCallback(string name, HintCallback callback, IntPtr userdata)
     {
         RemoveHintCallbackNativeFunction(name, callback, userdata);

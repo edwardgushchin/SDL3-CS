@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PumpEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_PumpEvents();
+    private delegate void PumpEventsNativeDelegate();
+    private static PumpEventsNativeDelegate PumpEventsNativeFunction = SDL_PumpEvents;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_PumpEvents(void);</code>
     /// <summary>
     /// <para>Pump the event loop, gathering events from the input devices.</para>
@@ -45,17 +51,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="WaitEvent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PumpEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_PumpEvents();
-    private delegate void PumpEventsNativeDelegate();
-    private static PumpEventsNativeDelegate PumpEventsNativeFunction = SDL_PumpEvents;
-
     public static void PumpEvents()
     {
         PumpEventsNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_PeepEvents(IntPtr events, int numevents, EventAction action, uint minType, uint maxType);
+    private delegate int PeepEventsPointerNativeDelegate(IntPtr events, int numevents, EventAction action, uint minType, uint maxType);
+    private static PeepEventsPointerNativeDelegate PeepEventsPointerNativeFunction = SDL_PeepEvents;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);</code>
     /// <summary>
@@ -95,17 +101,17 @@ public static partial class SDL
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_PeepEvents(IntPtr events, int numevents, EventAction action, uint minType, uint maxType);
-    private delegate int PeepEventsPointerNativeDelegate(IntPtr events, int numevents, EventAction action, uint minType, uint maxType);
-    private static PeepEventsPointerNativeDelegate PeepEventsPointerNativeFunction = SDL_PeepEvents;
-
     public static int PeepEvents(IntPtr events, int numevents, EventAction action, uint minType, uint maxType)
     {
         return PeepEventsPointerNativeFunction(events, numevents, action, minType, maxType);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static extern int SDL_PeepEvents([Out] Event[] events, int numevents, EventAction action, uint minType, uint maxType);
+    private delegate int PeepEventsArrayNativeDelegate(Event[] events, int numevents, EventAction action, uint minType, uint maxType);
+    private static PeepEventsArrayNativeDelegate PeepEventsArrayNativeFunction = SDL_PeepEvents;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);</code>
     /// <summary>
@@ -145,17 +151,18 @@ public static partial class SDL
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PumpEvents"/>
     /// <seealso cref="PushEvent"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_PeepEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static extern int SDL_PeepEvents([Out] Event[] events, int numevents, EventAction action, uint minType, uint maxType);
-    private delegate int PeepEventsArrayNativeDelegate(Event[] events, int numevents, EventAction action, uint minType, uint maxType);
-    private static PeepEventsArrayNativeDelegate PeepEventsArrayNativeFunction = SDL_PeepEvents;
-
     public static int PeepEvents([Out] Event[] events, int numevents, EventAction action, uint minType, uint maxType)
     {
         return PeepEventsArrayNativeFunction(events, numevents, action, minType, maxType);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasEvent(uint type);
+    private delegate bool HasEventNativeDelegate(uint type);
+    private static HasEventNativeDelegate HasEventNativeFunction = SDL_HasEvent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasEvent(Uint32 type);</code>
     /// <summary>
@@ -169,18 +176,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasEvents"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasEvent(uint type);
-    private delegate bool HasEventNativeDelegate(uint type);
-    private static HasEventNativeDelegate HasEventNativeFunction = SDL_HasEvent;
-
     public static bool HasEvent(uint type)
     {
         return HasEventNativeFunction(type);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasEvents(uint minType, uint maxType);
+    private delegate bool HasEventsNativeDelegate(uint minType, uint maxType);
+    private static HasEventsNativeDelegate HasEventsNativeFunction = SDL_HasEvents;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasEvents(Uint32 minType, Uint32 maxType);</code>
     /// <summary>
@@ -196,18 +203,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasEvent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasEvents(uint minType, uint maxType);
-    private delegate bool HasEventsNativeDelegate(uint minType, uint maxType);
-    private static HasEventsNativeDelegate HasEventsNativeFunction = SDL_HasEvents;
-
     public static bool HasEvents(uint minType, uint maxType)
     {
         return HasEventsNativeFunction(minType, maxType);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_FlushEvent(uint type);
+    private delegate void FlushEventNativeDelegate(uint type);
+    private static FlushEventNativeDelegate FlushEventNativeFunction = SDL_FlushEvent;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FlushEvent(Uint32 type);</code>
     /// <summary>
@@ -228,17 +234,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="FlushEvents"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FlushEvent(uint type);
-    private delegate void FlushEventNativeDelegate(uint type);
-    private static FlushEventNativeDelegate FlushEventNativeFunction = SDL_FlushEvent;
-
     public static void FlushEvent(uint type)
     {
         FlushEventNativeFunction(type);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_FlushEvents(uint minType, uint maxType);
+    private delegate void FlushEventsNativeDelegate(uint minType, uint maxType);
+    private static FlushEventsNativeDelegate FlushEventsNativeFunction = SDL_FlushEvents;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FlushEvents(Uint32 minType, Uint32 maxType);</code>
     /// <summary>
@@ -259,17 +265,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="FlushEvent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FlushEvents(uint minType, uint maxType);
-    private delegate void FlushEventsNativeDelegate(uint minType, uint maxType);
-    private static FlushEventsNativeDelegate FlushEventsNativeFunction = SDL_FlushEvents;
-
     public static void FlushEvents(uint minType, uint maxType)
     {
         FlushEventsNativeFunction(minType, maxType);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_PollEvent(out Event @event);
+    private delegate bool PollEventOutNativeDelegate(out Event @event);
+    private static PollEventOutNativeDelegate PollEventOutNativeFunction = SDL_PollEvent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
     /// <summary>
@@ -309,18 +316,18 @@ public static partial class SDL
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_PollEvent(out Event @event);
-    private delegate bool PollEventOutNativeDelegate(out Event @event);
-    private static PollEventOutNativeDelegate PollEventOutNativeFunction = SDL_PollEvent;
-
     public static bool PollEvent(out Event @event)
     {
         return PollEventOutNativeFunction(out @event);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_PollEvent(IntPtr @event);
+    private delegate bool PollEventPointerNativeDelegate(IntPtr @event);
+    private static PollEventPointerNativeDelegate PollEventPointerNativeFunction = SDL_PollEvent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PollEvent(SDL_Event *event);</code>
     /// <summary>
@@ -360,18 +367,18 @@ public static partial class SDL
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_PollEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_PollEvent(IntPtr @event);
-    private delegate bool PollEventPointerNativeDelegate(IntPtr @event);
-    private static PollEventPointerNativeDelegate PollEventPointerNativeFunction = SDL_PollEvent;
-
     public static bool PollEvent(IntPtr @event)
     {
         return PollEventPointerNativeFunction(@event);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_WaitEvent(out Event @event);
+    private delegate bool WaitEventNativeDelegate(out Event @event);
+    private static WaitEventNativeDelegate WaitEventNativeFunction = SDL_WaitEvent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEvent(SDL_Event *event);</code>
     /// <summary>
@@ -390,18 +397,18 @@ public static partial class SDL
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_WaitEvent(out Event @event);
-    private delegate bool WaitEventNativeDelegate(out Event @event);
-    private static WaitEventNativeDelegate WaitEventNativeFunction = SDL_WaitEvent;
-
     public static bool WaitEvent(out Event @event)
     {
         return WaitEventNativeFunction(out @event);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEventTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_WaitEventTimeout(out Event @event, int timeoutMs);
+    private delegate bool WaitEventTimeoutNativeDelegate(out Event @event, int timeoutMs);
+    private static WaitEventTimeoutNativeDelegate WaitEventTimeoutNativeFunction = SDL_WaitEventTimeout;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);</code>
     /// <summary>
@@ -425,18 +432,18 @@ public static partial class SDL
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="PushEvent"/>
     /// <seealso cref="WaitEvent"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_WaitEventTimeout"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_WaitEventTimeout(out Event @event, int timeoutMs);
-    private delegate bool WaitEventTimeoutNativeDelegate(out Event @event, int timeoutMs);
-    private static WaitEventTimeoutNativeDelegate WaitEventTimeoutNativeFunction = SDL_WaitEventTimeout;
-
     public static bool WaitEventTimeout(out Event @event, int timeoutMs)
     {
         return WaitEventTimeoutNativeFunction(out @event, timeoutMs);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_PushEvent(ref Event @event);
+    private delegate bool PushEventNativeDelegate(ref Event @event);
+    private static PushEventNativeDelegate PushEventNativeFunction = SDL_PushEvent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PushEvent(SDL_Event *event);</code>
     /// <summary>
@@ -463,18 +470,17 @@ public static partial class SDL
     /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="RegisterEvents"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_PushEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_PushEvent(ref Event @event);
-    private delegate bool PushEventNativeDelegate(ref Event @event);
-    private static PushEventNativeDelegate PushEventNativeFunction = SDL_PushEvent;
-
     public static bool PushEvent(ref Event @event)
     {
         return PushEventNativeFunction(ref @event);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetEventFilter(EventFilter filter, IntPtr userdata);
+    private delegate void SetEventFilterNativeDelegate(EventFilter filter, IntPtr userdata);
+    private static SetEventFilterNativeDelegate SetEventFilterNativeFunction = SDL_SetEventFilter;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -515,17 +521,18 @@ public static partial class SDL
     /// <seealso cref="GetEventFilter"/>
     /// <seealso cref="PeepEvents(nint, int, EventAction, uint, uint)"/>
     /// <seealso cref="PushEvent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetEventFilter(EventFilter filter, IntPtr userdata);
-    private delegate void SetEventFilterNativeDelegate(EventFilter filter, IntPtr userdata);
-    private static SetEventFilterNativeDelegate SetEventFilterNativeFunction = SDL_SetEventFilter;
-
     public static void SetEventFilter(EventFilter filter, IntPtr userdata)
     {
         SetEventFilterNativeFunction(filter, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetEventFilter(out EventFilter filter, out IntPtr userdata);
+    private delegate bool GetEventFilterNativeDelegate(out EventFilter filter, out IntPtr userdata);
+    private static GetEventFilterNativeDelegate GetEventFilterNativeFunction = SDL_GetEventFilter;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);</code>
     /// <summary>
@@ -540,18 +547,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetEventFilter"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEventFilter"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetEventFilter(out EventFilter filter, out IntPtr userdata);
-    private delegate bool GetEventFilterNativeDelegate(out EventFilter filter, out IntPtr userdata);
-    private static GetEventFilterNativeDelegate GetEventFilterNativeFunction = SDL_GetEventFilter;
-
     public static bool GetEventFilter(out EventFilter filter, out IntPtr userdata)
     {
         return GetEventFilterNativeFunction(out filter, out userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_AddEventWatch(EventFilter filter, IntPtr userdata);
+    private delegate bool AddEventWatchNativeDelegate(EventFilter filter, IntPtr userdata);
+    private static AddEventWatchNativeDelegate AddEventWatchNativeFunction = SDL_AddEventWatch;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -576,18 +583,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="RemoveEventWatch"/>
     /// <seealso cref="SetEventFilter"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AddEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_AddEventWatch(EventFilter filter, IntPtr userdata);
-    private delegate bool AddEventWatchNativeDelegate(EventFilter filter, IntPtr userdata);
-    private static AddEventWatchNativeDelegate AddEventWatchNativeFunction = SDL_AddEventWatch;
-
     public static bool AddEventWatch(EventFilter filter, IntPtr userdata)
     {
         return AddEventWatchNativeFunction(filter, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_RemoveEventWatch(EventFilter filter, IntPtr userdata);
+    private delegate void RemoveEventWatchNativeDelegate(EventFilter filter, IntPtr userdata);
+    private static RemoveEventWatchNativeDelegate RemoveEventWatchNativeFunction = SDL_RemoveEventWatch;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -600,17 +606,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddEventWatch"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RemoveEventWatch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_RemoveEventWatch(EventFilter filter, IntPtr userdata);
-    private delegate void RemoveEventWatchNativeDelegate(EventFilter filter, IntPtr userdata);
-    private static RemoveEventWatchNativeDelegate RemoveEventWatchNativeFunction = SDL_RemoveEventWatch;
-
     public static void RemoveEventWatch(EventFilter filter, IntPtr userdata)
     {
         RemoveEventWatchNativeFunction(filter, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FilterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_FilterEvents(EventFilter filter, IntPtr userdata);
+    private delegate void FilterEventsNativeDelegate(EventFilter filter, IntPtr userdata);
+    private static FilterEventsNativeDelegate FilterEventsNativeFunction = SDL_FilterEvents;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_FilterEvents(SDL_EventFilter filter, void *userdata);</code>
     /// <summary>
@@ -626,17 +632,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetEventFilter"/>
     /// <seealso cref="SetEventFilter"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FilterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_FilterEvents(EventFilter filter, IntPtr userdata);
-    private delegate void FilterEventsNativeDelegate(EventFilter filter, IntPtr userdata);
-    private static FilterEventsNativeDelegate FilterEventsNativeFunction = SDL_FilterEvents;
-
     public static void FilterEvents(EventFilter filter, IntPtr userdata)
     {
         FilterEventsNativeFunction(filter, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
+    private delegate void SetEventEnabledNativeDelegate(uint type, bool enabled);
+    private static SetEventEnabledNativeDelegate SetEventEnabledNativeFunction = SDL_SetEventEnabled;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetEventEnabled(Uint32 type, bool enabled);</code>
     /// <summary>
@@ -647,17 +653,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EventEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetEventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetEventEnabled(uint type, [MarshalAs(UnmanagedType.I1)] bool enabled);
-    private delegate void SetEventEnabledNativeDelegate(uint type, bool enabled);
-    private static SetEventEnabledNativeDelegate SetEventEnabledNativeFunction = SDL_SetEventEnabled;
-
     public static void SetEventEnabled(uint type, bool enabled)
     {
         SetEventEnabledNativeFunction(type, enabled);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_EventEnabled(uint type);
+    private delegate bool EventEnabledNativeDelegate(uint type);
+    private static EventEnabledNativeDelegate EventEnabledNativeFunction = SDL_EventEnabled;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EventEnabled(Uint32 type);</code>
     /// <summary>
@@ -668,18 +675,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetEventEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EventEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_EventEnabled(uint type);
-    private delegate bool EventEnabledNativeDelegate(uint type);
-    private static EventEnabledNativeDelegate EventEnabledNativeFunction = SDL_EventEnabled;
-
     public static bool EventEnabled(uint type)
     {
         return EventEnabledNativeFunction(type);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RegisterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_RegisterEvents(int numevents);
+    private delegate uint RegisterEventsNativeDelegate(int numevents);
+    private static RegisterEventsNativeDelegate RegisterEventsNativeFunction = SDL_RegisterEvents;
 
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_RegisterEvents(int numevents);</code>
     /// <summary>
@@ -692,17 +698,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PushEvent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RegisterEvents"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_RegisterEvents(int numevents);
-    private delegate uint RegisterEventsNativeDelegate(int numevents);
-    private static RegisterEventsNativeDelegate RegisterEventsNativeFunction = SDL_RegisterEvents;
-
     public static uint RegisterEvents(int numevents)
     {
         return RegisterEventsNativeFunction(numevents);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static extern IntPtr SDL_GetWindowFromEvent(in Event @event);
+    private delegate IntPtr GetWindowFromEventNativeDelegate(in Event @event);
+    private static GetWindowFromEventNativeDelegate GetWindowFromEventNativeFunction = SDL_GetWindowFromEvent;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetWindowFromEvent(const SDL_Event *event);</code>
     /// <summary>
@@ -715,12 +721,6 @@ public static partial class SDL
     /// <seealso cref="PollEvent(out Event)"/>
     /// <seealso cref="WaitEvent"/>
     /// <seealso cref="WaitEventTimeout"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static extern IntPtr SDL_GetWindowFromEvent(in Event @event);
-    private delegate IntPtr GetWindowFromEventNativeDelegate(in Event @event);
-    private static GetWindowFromEventNativeDelegate GetWindowFromEventNativeFunction = SDL_GetWindowFromEvent;
-
     public static IntPtr GetWindowFromEvent(in Event @event)
     {
         return GetWindowFromEventNativeFunction(in @event);

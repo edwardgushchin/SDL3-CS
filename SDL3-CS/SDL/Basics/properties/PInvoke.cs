@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGlobalProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetGlobalProperties();
+    private delegate uint GetGlobalPropertiesNative();
+    private static GetGlobalPropertiesNative GetGlobalPropertiesNativeFunction = SDL_GetGlobalProperties;
+
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetGlobalProperties(void);</code>
     /// <summary>
     /// Get the global SDL properties.
@@ -37,17 +43,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGlobalProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetGlobalProperties();
-    private delegate uint GetGlobalPropertiesNative();
-    private static GetGlobalPropertiesNative GetGlobalPropertiesNativeFunction = SDL_GetGlobalProperties;
-
     public static uint GetGlobalProperties()
     {
         return GetGlobalPropertiesNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_CreateProperties();
+    private delegate uint CreatePropertiesNative();
+    private static CreatePropertiesNative CreatePropertiesNativeFunction = SDL_CreateProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_CreateProperties(void);</code>
     /// <summary>
@@ -59,17 +65,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyProperties"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_CreateProperties();
-    private delegate uint CreatePropertiesNative();
-    private static CreatePropertiesNative CreatePropertiesNativeFunction = SDL_CreateProperties;
-
     public static uint CreateProperties()
     {
         return CreatePropertiesNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_CopyProperties(uint src, uint dst);
+    private delegate bool CopyPropertiesNative(uint src, uint dst);
+    private static CopyPropertiesNative CopyPropertiesNativeFunction = SDL_CopyProperties;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);</code>
     /// <summary>
@@ -87,18 +94,18 @@ public static partial class SDL
     /// function acquires simultaneous mutex locks on both the source
     /// and destination property sets.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CopyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_CopyProperties(uint src, uint dst);
-    private delegate bool CopyPropertiesNative(uint src, uint dst);
-    private static CopyPropertiesNative CopyPropertiesNativeFunction = SDL_CopyProperties;
-
     public static bool CopyProperties(uint src, uint dst)
     {
         return CopyPropertiesNativeFunction(src, dst);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_LockProperties(uint props);
+    private delegate bool LockPropertiesNative(uint props);
+    private static LockPropertiesNative LockPropertiesNativeFunction = SDL_LockProperties;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -117,18 +124,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UnlockProperties"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_LockProperties(uint props);
-    private delegate bool LockPropertiesNative(uint props);
-    private static LockPropertiesNative LockPropertiesNativeFunction = SDL_LockProperties;
-
     public static bool LockProperties(uint props)
     {
         return LockPropertiesNativeFunction(props);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UnlockProperties(uint props);
+    private delegate void UnlockPropertiesNative(uint props);
+    private static UnlockPropertiesNative UnlockPropertiesNativeFunction = SDL_UnlockProperties;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnlockProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -138,12 +144,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockProperties"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnlockProperties(uint props);
-    private delegate void UnlockPropertiesNative(uint props);
-    private static UnlockPropertiesNative UnlockPropertiesNativeFunction = SDL_UnlockProperties;
-
     public static void UnlockProperties(uint props)
     {
         UnlockPropertiesNativeFunction(props);
@@ -151,6 +151,15 @@ public static partial class SDL
 
 
     // ReSharper disable once InvalidXmlDocComment
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPointerPropertyWithCleanup"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetPointerPropertyWithCleanup(uint props,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr value, CleanupPropertyCallback cleanup,
+        IntPtr userdata);
+    private delegate bool SetPointerPropertyWithCleanupNative(uint props, string name, IntPtr value, CleanupPropertyCallback cleanup, IntPtr userdata);
+    private static SetPointerPropertyWithCleanupNative SetPointerPropertyWithCleanupNativeFunction = SDL_SetPointerPropertyWithCleanup;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);</code>
     /// <summary>
     /// <para>Set a pointer property in a group of properties with a cleanup function
@@ -175,20 +184,19 @@ public static partial class SDL
     /// <seealso cref="GetPointerProperty"/>
     /// <seealso cref="SetPointerProperty"/>
     /// <seealso cref="CleanupPropertyCallback"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPointerPropertyWithCleanup"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetPointerPropertyWithCleanup(uint props,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr value, CleanupPropertyCallback cleanup,
-        IntPtr userdata);
-    private delegate bool SetPointerPropertyWithCleanupNative(uint props, string name, IntPtr value, CleanupPropertyCallback cleanup, IntPtr userdata);
-    private static SetPointerPropertyWithCleanupNative SetPointerPropertyWithCleanupNativeFunction = SDL_SetPointerPropertyWithCleanup;
-
     public static bool SetPointerPropertyWithCleanup(uint props, string name, IntPtr value, CleanupPropertyCallback cleanup, IntPtr userdata)
     {
         return SetPointerPropertyWithCleanupNativeFunction(props, name, value, cleanup, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        IntPtr value);
+    private delegate bool SetPointerPropertyNative(uint props, string name, IntPtr value);
+    private static SetPointerPropertyNative SetPointerPropertyNativeFunction = SDL_SetPointerProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);</code>
     /// <summary>
@@ -208,19 +216,19 @@ public static partial class SDL
     /// <seealso cref="SetNumberProperty"/>
     /// <seealso cref="SetPointerPropertyWithCleanup"/>
     /// <seealso cref="SetStringProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        IntPtr value);
-    private delegate bool SetPointerPropertyNative(uint props, string name, IntPtr value);
-    private static SetPointerPropertyNative SetPointerPropertyNativeFunction = SDL_SetPointerProperty;
-
     public static bool SetPointerProperty(uint props, string name, IntPtr value)
     {
         return SetPointerPropertyNativeFunction(props, name, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetStringProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? value);
+    private delegate bool SetStringPropertyNative(uint props, string name, string? value);
+    private static SetStringPropertyNative SetStringPropertyNativeFunction = SDL_SetStringProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);</code>
     /// <summary>
@@ -236,19 +244,19 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetStringProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetStringProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetStringProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? value);
-    private delegate bool SetStringPropertyNative(uint props, string name, string? value);
-    private static SetStringPropertyNative SetStringPropertyNativeFunction = SDL_SetStringProperty;
-
     public static bool SetStringProperty(uint props, string name, string? value)
     {
         return SetStringPropertyNativeFunction(props, name, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetNumberProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        long value);
+    private delegate bool SetNumberPropertyNative(uint props, string name, long value);
+    private static SetNumberPropertyNative SetNumberPropertyNativeFunction = SDL_SetNumberProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 value);</code>
     /// <summary>
@@ -262,19 +270,19 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetNumberProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetNumberProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        long value);
-    private delegate bool SetNumberPropertyNative(uint props, string name, long value);
-    private static SetNumberPropertyNative SetNumberPropertyNativeFunction = SDL_SetNumberProperty;
-
     public static bool SetNumberProperty(uint props, string name, long value)
     {
         return SetNumberPropertyNativeFunction(props, name, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetFloatProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        float value);
+    private delegate bool SetFloatPropertyNative(uint props, string name, float value);
+    private static SetFloatPropertyNative SetFloatPropertyNativeFunction = SDL_SetFloatProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);</code>
     /// <summary>
@@ -288,19 +296,19 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetFloatProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetFloatProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        float value);
-    private delegate bool SetFloatPropertyNative(uint props, string name, float value);
-    private static SetFloatPropertyNative SetFloatPropertyNativeFunction = SDL_SetFloatProperty;
-
     public static bool SetFloatProperty(uint props, string name, float value)
     {
         return SetFloatPropertyNativeFunction(props, name, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetBooleanProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.I1)] bool value);
+    private delegate bool SetBooleanPropertyNative(uint props, string name, bool value);
+    private static SetBooleanPropertyNative SetBooleanPropertyNativeFunction = SDL_SetBooleanProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, bool value);</code>
     /// <summary>
@@ -314,19 +322,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetBooleanProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetBooleanProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.I1)] bool value);
-    private delegate bool SetBooleanPropertyNative(uint props, string name, bool value);
-    private static SetBooleanPropertyNative SetBooleanPropertyNativeFunction = SDL_SetBooleanProperty;
-
     public static bool SetBooleanProperty(uint props, string name, bool value)
     {
         return SetBooleanPropertyNativeFunction(props, name, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate bool HasPropertyNative(uint props, string name);
+    private static HasPropertyNative HasPropertyNativeFunction = SDL_HasProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasProperty(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
@@ -338,18 +345,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetPropertyType"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate bool HasPropertyNative(uint props, string name);
-    private static HasPropertyNative HasPropertyNativeFunction = SDL_HasProperty;
-
     public static bool HasProperty(uint props, string name)
     {
         return HasPropertyNativeFunction(props, name);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPropertyType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial PropertyType SDL_GetPropertyType(uint props,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate PropertyType GetPropertyTypeNative(uint props, string name);
+    private static GetPropertyTypeNative GetPropertyTypeNativeFunction = SDL_GetPropertyType;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertyType SDLCALL SDL_GetPropertyType(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
@@ -362,18 +369,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPropertyType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial PropertyType SDL_GetPropertyType(uint props,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate PropertyType GetPropertyTypeNative(uint props, string name);
-    private static GetPropertyTypeNative GetPropertyTypeNativeFunction = SDL_GetPropertyType;
-
     public static PropertyType GetPropertyType(uint props, string name)
     {
         return GetPropertyTypeNativeFunction(props, name);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        IntPtr defaultValue);
+    private delegate IntPtr GetPointerPropertyNative(uint props, string name, IntPtr defaultValue);
+    private static GetPointerPropertyNative GetPointerPropertyNativeFunction = SDL_GetPointerProperty;
 
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetPointerProperty(SDL_PropertiesID props, const char *name, void *default_value);</code>
     /// <summary>
@@ -402,13 +409,6 @@ public static partial class SDL
     /// <seealso cref="GetStringProperty"/>
     /// <seealso cref="HasProperty"/>
     /// <seealso cref="SetPointerProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        IntPtr defaultValue);
-    private delegate IntPtr GetPointerPropertyNative(uint props, string name, IntPtr defaultValue);
-    private static GetPointerPropertyNative GetPointerPropertyNativeFunction = SDL_GetPointerProperty;
-
     public static IntPtr GetPointerProperty(uint props, string name, IntPtr defaultValue)
     {
         return GetPointerPropertyNativeFunction(props, name, defaultValue);
@@ -447,6 +447,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumberProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial long SDL_GetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        long defaultValue);
+    private delegate long GetNumberPropertyNative(uint props, string name, long defaultValue);
+    private static GetNumberPropertyNative GetNumberPropertyNativeFunction = SDL_GetNumberProperty;
+
     /// <code>extern SDL_DECLSPEC Sint64 SDLCALL SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);</code>
     /// <summary>
     /// <para>Get a number property from a group of properties.</para>
@@ -463,18 +470,18 @@ public static partial class SDL
     /// <seealso cref="GetPropertyType"/>
     /// <seealso cref="HasProperty"/>
     /// <seealso cref="SetNumberProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumberProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial long SDL_GetNumberProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        long defaultValue);
-    private delegate long GetNumberPropertyNative(uint props, string name, long defaultValue);
-    private static GetNumberPropertyNative GetNumberPropertyNativeFunction = SDL_GetNumberProperty;
-
     public static long GetNumberProperty(uint props, string name, long defaultValue)
     {
         return GetNumberPropertyNativeFunction(props, name, defaultValue);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetFloatProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        float defaultValue);
+    private delegate float GetFloatPropertyNative(uint props, string name, float defaultValue);
+    private static GetFloatPropertyNative GetFloatPropertyNativeFunction = SDL_GetFloatProperty;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);</code>
     /// <summary>
@@ -492,18 +499,19 @@ public static partial class SDL
     /// <seealso cref="GetPropertyType"/>
     /// <seealso cref="HasProperty"/>
     /// <seealso cref="SetFloatProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetFloatProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetFloatProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        float defaultValue);
-    private delegate float GetFloatPropertyNative(uint props, string name, float defaultValue);
-    private static GetFloatPropertyNative GetFloatPropertyNativeFunction = SDL_GetFloatProperty;
-
     public static float GetFloatProperty(uint props, string name, float defaultValue)
     {
         return GetFloatPropertyNativeFunction(props, name, defaultValue);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBooleanProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
+    private delegate bool GetBooleanPropertyNative(uint props, string name, bool defaultValue);
+    private static GetBooleanPropertyNative GetBooleanPropertyNativeFunction = SDL_GetBooleanProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, bool default_value);</code>
     /// <summary>
@@ -521,19 +529,18 @@ public static partial class SDL
     /// <seealso cref="GetPropertyType"/>
     /// <seealso cref="HasProperty"/>
     /// <seealso cref="SetBooleanProperty"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetBooleanProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetBooleanProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-        [MarshalAs(UnmanagedType.I1)] bool defaultValue);
-    private delegate bool GetBooleanPropertyNative(uint props, string name, bool defaultValue);
-    private static GetBooleanPropertyNative GetBooleanPropertyNativeFunction = SDL_GetBooleanProperty;
-
     public static bool GetBooleanProperty(uint props, string name, bool defaultValue)
     {
         return GetBooleanPropertyNativeFunction(props, name, defaultValue);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ClearProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    private delegate bool ClearPropertyNative(uint props, string name);
+    private static ClearPropertyNative ClearPropertyNativeFunction = SDL_ClearProperty;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearProperty(SDL_PropertiesID props, const char *name);</code>
     /// <summary>
@@ -545,18 +552,19 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ClearProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
-    private delegate bool ClearPropertyNative(uint props, string name);
-    private static ClearPropertyNative ClearPropertyNativeFunction = SDL_ClearProperty;
-
     public static bool ClearProperty(uint props, string name)
     {
         return ClearPropertyNativeFunction(props, name);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnumerateProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_EnumerateProperties(uint props, EnumeratePropertiesCallback callback,
+        IntPtr userdata);
+    private delegate bool EnumeratePropertiesNative(uint props, EnumeratePropertiesCallback callback, IntPtr userdata);
+    private static EnumeratePropertiesNative EnumeratePropertiesNativeFunction = SDL_EnumerateProperties;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);</code>
     /// <summary>
@@ -571,19 +579,17 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnumerateProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_EnumerateProperties(uint props, EnumeratePropertiesCallback callback,
-        IntPtr userdata);
-    private delegate bool EnumeratePropertiesNative(uint props, EnumeratePropertiesCallback callback, IntPtr userdata);
-    private static EnumeratePropertiesNative EnumeratePropertiesNativeFunction = SDL_EnumerateProperties;
-
     public static bool EnumerateProperties(uint props, EnumeratePropertiesCallback callback, IntPtr userdata)
     {
         return EnumeratePropertiesNativeFunction(props, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyProperties(uint props);
+    private delegate void DestroyPropertiesNative(uint props);
+    private static DestroyPropertiesNative DestroyPropertiesNativeFunction = SDL_DestroyProperties;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -597,12 +603,6 @@ public static partial class SDL
     /// from these properties.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateProperties"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyProperties(uint props);
-    private delegate void DestroyPropertiesNative(uint props);
-    private static DestroyPropertiesNative DestroyPropertiesNativeFunction = SDL_DestroyProperties;
-
     public static void DestroyProperties(uint props)
     {
         DestroyPropertiesNativeFunction(props);

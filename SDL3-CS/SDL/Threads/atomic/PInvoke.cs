@@ -77,6 +77,12 @@ public static partial class SDL
     public static partial void UnlockSpinlock(ref int @lock);
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierReleaseFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_MemoryBarrierReleaseFunction();
+    private delegate void MemoryBarrierReleaseFunctionNativeDelegate();
+    private static MemoryBarrierReleaseFunctionNativeDelegate MemoryBarrierReleaseFunctionNativeFunction = SDL_MemoryBarrierReleaseFunction;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_MemoryBarrierReleaseFunction(void);</code>
     /// <summary>
     /// <para>Insert a memory release barrier (function version).</para>
@@ -92,17 +98,17 @@ public static partial class SDL
     /// dealing with some very sensitive code; be careful!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MemoryBarrierRelease"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierReleaseFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_MemoryBarrierReleaseFunction();
-    private delegate void MemoryBarrierReleaseFunctionNativeDelegate();
-    private static MemoryBarrierReleaseFunctionNativeDelegate MemoryBarrierReleaseFunctionNativeFunction = SDL_MemoryBarrierReleaseFunction;
-
     public static void MemoryBarrierReleaseFunction()
     {
         MemoryBarrierReleaseFunctionNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierAcquireFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_MemoryBarrierAcquireFunction();
+    private delegate void MemoryBarrierAcquireFunctionNativeDelegate();
+    private static MemoryBarrierAcquireFunctionNativeDelegate MemoryBarrierAcquireFunctionNativeFunction = SDL_MemoryBarrierAcquireFunction;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_MemoryBarrierAcquireFunction(void);</code>
     /// <summary>
@@ -119,12 +125,6 @@ public static partial class SDL
     /// dealing with some very sensitive code; be careful!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="MemoryBarrierAcquire"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MemoryBarrierAcquireFunction"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_MemoryBarrierAcquireFunction();
-    private delegate void MemoryBarrierAcquireFunctionNativeDelegate();
-    private static MemoryBarrierAcquireFunctionNativeDelegate MemoryBarrierAcquireFunctionNativeFunction = SDL_MemoryBarrierAcquireFunction;
-
     public static void MemoryBarrierAcquireFunction()
     {
         MemoryBarrierAcquireFunctionNativeFunction();

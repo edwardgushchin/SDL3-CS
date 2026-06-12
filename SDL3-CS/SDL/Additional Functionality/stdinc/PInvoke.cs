@@ -111,6 +111,12 @@ public partial class SDL
     public static partial IntPtr Realloc(IntPtr mem, UIntPtr size);
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_Free(IntPtr mem);
+    private delegate void FreeNativeDelegate(IntPtr mem);
+    private static FreeNativeDelegate FreeNativeFunction = SDL_Free;
+
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_free(void *mem);</code>
     /// <summary>
     /// <para>Free allocated memory.</para>
@@ -121,17 +127,17 @@ public partial class SDL
     /// <param name="mem">a pointer to allocated memory, or <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_Free(IntPtr mem);
-    private delegate void FreeNativeDelegate(IntPtr mem);
-    private static FreeNativeDelegate FreeNativeFunction = SDL_Free;
-
     public static void Free(IntPtr mem)
     {
         FreeNativeFunction(mem);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOriginalMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private delegate void GetOriginalMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private static GetOriginalMemoryFunctionsNative GetOriginalMemoryFunctionsNativeFunction = SDL_GetOriginalMemoryFunctions;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);</code>
     /// <summary>
@@ -147,17 +153,17 @@ public partial class SDL
     /// <param name="freeFunc">filled with free function.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOriginalMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private delegate void GetOriginalMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private static GetOriginalMemoryFunctionsNative GetOriginalMemoryFunctionsNativeFunction = SDL_GetOriginalMemoryFunctions;
-
     public static void GetOriginalMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc)
     {
         GetOriginalMemoryFunctionsNativeFunction(out mallocFunc, out callocFunc, out reallocFunc, out freeFunc);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GetMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private delegate void GetMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
+    private static GetMemoryFunctionsNative GetMemoryFunctionsNativeFunction = SDL_GetMemoryFunctions;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);</code>
     /// <summary>
@@ -173,17 +179,18 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetMemoryFunctions"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GetMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private delegate void GetMemoryFunctionsNative(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc);
-    private static GetMemoryFunctionsNative GetMemoryFunctionsNativeFunction = SDL_GetMemoryFunctions;
-
     public static void GetMemoryFunctions(out MallocFunc mallocFunc, out CallocFunc callocFunc, out ReallocFunc reallocFunc, out FreeFunc freeFunc)
     {
         GetMemoryFunctionsNativeFunction(out mallocFunc, out callocFunc, out reallocFunc, out freeFunc);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
+    private delegate bool SetMemoryFunctionsNative(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
+    private static SetMemoryFunctionsNative SetMemoryFunctionsNativeFunction = SDL_SetMemoryFunctions;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);</code>
     /// <summary>
@@ -206,13 +213,6 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetMemoryFunctions"/>
     /// <seealso cref="GetOriginalMemoryFunctions"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetMemoryFunctions"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
-    private delegate bool SetMemoryFunctionsNative(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc);
-    private static SetMemoryFunctionsNative SetMemoryFunctionsNativeFunction = SDL_SetMemoryFunctions;
-
     public static bool SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc)
     {
         return SetMemoryFunctionsNativeFunction(mallocFunc, callocFunc, reallocFunc, freeFunc);

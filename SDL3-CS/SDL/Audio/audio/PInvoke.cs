@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumAudioDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumAudioDrivers();
+    private delegate int GetNumAudioDriversNative();
+    private static GetNumAudioDriversNative GetNumAudioDriversNativeFunction = SDL_GetNumAudioDrivers;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumAudioDrivers(void);</code>
     /// <summary>
     /// <para>Use this function to get the number of built-in audio drivers.</para>
@@ -45,12 +51,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioDriver"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumAudioDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetNumAudioDrivers();
-    private delegate int GetNumAudioDriversNative();
-    private static GetNumAudioDriversNative GetNumAudioDriversNativeFunction = SDL_GetNumAudioDrivers;
-
     public static int GetNumAudioDrivers()
     {
         return GetNumAudioDriversNativeFunction();
@@ -227,6 +227,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetAudioDeviceFormat(uint devid, out AudioSpec spec, out int sampleFrames);
+    private delegate bool GetAudioDeviceFormatNative(uint devid, out AudioSpec spec, out int sampleFrames);
+    private static GetAudioDeviceFormatNative GetAudioDeviceFormatNativeFunction = SDL_GetAudioDeviceFormat;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetAudioDeviceFormat(SDL_AudioDeviceID devid, SDL_AudioSpec *spec, int *sample_frames);</code>
     /// <summary>
     /// <para>Get the current audio format of a specific audio device.</para>
@@ -253,13 +260,6 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetAudioDeviceFormat(uint devid, out AudioSpec spec, out int sampleFrames);
-    private delegate bool GetAudioDeviceFormatNative(uint devid, out AudioSpec spec, out int sampleFrames);
-    private static GetAudioDeviceFormatNative GetAudioDeviceFormatNativeFunction = SDL_GetAudioDeviceFormat;
-
     public static bool GetAudioDeviceFormat(uint devid, out AudioSpec spec, out int sampleFrames)
     {
         return GetAudioDeviceFormatNativeFunction(devid, out spec, out sampleFrames);
@@ -303,79 +303,85 @@ public static partial class SDL
     }
 
 
-    /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID SDLCALL SDL_OpenAudioDevice(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec);</code>
-    /// <summary>
-    /// <para>Open a specific audio device.</para>
-    /// <para>You can open both playback and recording devices through this function.
-    /// Playback devices will take data from bound audio streams, mix it, and send
-    /// it to the hardware. Recording devices will feed any bound audio streams
-    /// with a copy of any incoming data.</para>
-    /// <para>An opened audio device starts out with no audio streams bound. To start
-    /// audio playing, bind a stream and supply audio data to it. Unlike SDL2,
-    /// there is no audio callback; you only bind audio streams and make sure they
-    /// have data flowing into them (however, you can simulate SDL2's semantics
-    /// fairly closely by using <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/> instead of this
-    /// function).</para>
-    /// <para>If you don't care about opening a specific device, pass a `devid` of either
-    /// <see cref="AudioDeviceDefaultPlayback"/> or
-    /// <see cref="AudioDeviceDefaultRecording"/>. In this case, SDL will try to pick
-    /// the most reasonable default, and may also switch between physical devices
-    /// seamlessly later, if the most reasonable default changes during the
-    /// lifetime of this opened device (user changed the default in the OS's system
-    /// preferences, the default got unplugged so the system jumped to a new
-    /// default, the user plugged in headphones on a mobile device, etc). Unless
-    /// you have a good reason to choose a specific device, this is probably what
-    /// you want.</para>
-    /// <para>You may request a specific format for the audio device, but there is no
-    /// promise the device will honor that request for several reasons. As such,
-    /// it's only meant to be a hint as to what data your app will provide. Audio
-    /// streams will accept data in whatever format you specify and manage
-    /// conversion for you as appropriate. <see cref="GetAudioDeviceFormat"/> can tell you
-    /// the preferred format for the device before opening and the actual format
-    /// the device is using after opening.</para>
-    /// <para>It's legal to open the same device ID more than once; each successful open
-    /// will generate a new logical SDL_AudioDeviceID that is managed separately
-    /// from others on the same physical device. This allows libraries to open a
-    /// device separately from the main app and bind its own streams without
-    /// conflicting.</para>
-    /// <para>It is also legal to open a device ID returned by a previous call to thi
-    /// function; doing so just creates another logical device on the same physical
-    /// device. This may be useful for making logical groupings of audio streams.</para>
-    /// <para>This function returns the opened device ID on success. This is a new,
-    /// unique SDL_AudioDeviceID that represents a logical device.</para>
-    /// <para>Some backends might offer arbitrary devices (for example, a networked audio
-    /// protocol that can connect to an arbitrary server). For these, as a change
-    /// from SDL2, you should open a default device ID and use an SDL hint to
-    /// specify the target if you care, or otherwise let the backend figure out a
-    /// reasonable default. Most backends don't offer anything like this, and often
-    /// this would be an end user setting an environment variable for their custom
-    /// need, and not something an application should specifically manage.</para>
-    /// <para>When done with an audio device, possibly at the end of the app's life, one
-    /// should call <see cref="CloseAudioDevice"/> on the returned device id.</para>
-    /// </summary>
-    /// <param name="devid">the device instance id to open, or
-    /// <see cref="AudioDeviceDefaultPlayback"/> or
-    /// <see cref="AudioDeviceDefaultRecording"/> for the most reasonable
-    /// default device.</param>
-    /// <param name="spec">the requested device configuration. Can be <c>null</c> to use
-    /// reasonable defaults.</param>
-    /// <returns>the device ID on success or 0 on failure; call <see cref="GetError"/> for
-    /// more information.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CloseAudioDevice"/>
-    /// <seealso cref="GetAudioDeviceFormat"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial uint SDL_OpenAudioDevice(uint devid, in AudioSpec spec);
     private delegate uint OpenAudioDeviceWithSpecNative(uint devid, in AudioSpec spec);
     private static OpenAudioDeviceWithSpecNative OpenAudioDeviceWithSpecNativeFunction = SDL_OpenAudioDevice;
 
+    /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID SDLCALL SDL_OpenAudioDevice(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec);</code>
+    /// <summary>
+    /// <para>Open a specific audio device.</para>
+    /// <para>You can open both playback and recording devices through this function.
+    /// Playback devices will take data from bound audio streams, mix it, and send
+    /// it to the hardware. Recording devices will feed any bound audio streams
+    /// with a copy of any incoming data.</para>
+    /// <para>An opened audio device starts out with no audio streams bound. To start
+    /// audio playing, bind a stream and supply audio data to it. Unlike SDL2,
+    /// there is no audio callback; you only bind audio streams and make sure they
+    /// have data flowing into them (however, you can simulate SDL2's semantics
+    /// fairly closely by using <see cref="OpenAudioDeviceStream(uint, IntPtr, AudioStreamCallback?, IntPtr)"/> instead of this
+    /// function).</para>
+    /// <para>If you don't care about opening a specific device, pass a `devid` of either
+    /// <see cref="AudioDeviceDefaultPlayback"/> or
+    /// <see cref="AudioDeviceDefaultRecording"/>. In this case, SDL will try to pick
+    /// the most reasonable default, and may also switch between physical devices
+    /// seamlessly later, if the most reasonable default changes during the
+    /// lifetime of this opened device (user changed the default in the OS's system
+    /// preferences, the default got unplugged so the system jumped to a new
+    /// default, the user plugged in headphones on a mobile device, etc). Unless
+    /// you have a good reason to choose a specific device, this is probably what
+    /// you want.</para>
+    /// <para>You may request a specific format for the audio device, but there is no
+    /// promise the device will honor that request for several reasons. As such,
+    /// it's only meant to be a hint as to what data your app will provide. Audio
+    /// streams will accept data in whatever format you specify and manage
+    /// conversion for you as appropriate. <see cref="GetAudioDeviceFormat"/> can tell you
+    /// the preferred format for the device before opening and the actual format
+    /// the device is using after opening.</para>
+    /// <para>It's legal to open the same device ID more than once; each successful open
+    /// will generate a new logical SDL_AudioDeviceID that is managed separately
+    /// from others on the same physical device. This allows libraries to open a
+    /// device separately from the main app and bind its own streams without
+    /// conflicting.</para>
+    /// <para>It is also legal to open a device ID returned by a previous call to thi
+    /// function; doing so just creates another logical device on the same physical
+    /// device. This may be useful for making logical groupings of audio streams.</para>
+    /// <para>This function returns the opened device ID on success. This is a new,
+    /// unique SDL_AudioDeviceID that represents a logical device.</para>
+    /// <para>Some backends might offer arbitrary devices (for example, a networked audio
+    /// protocol that can connect to an arbitrary server). For these, as a change
+    /// from SDL2, you should open a default device ID and use an SDL hint to
+    /// specify the target if you care, or otherwise let the backend figure out a
+    /// reasonable default. Most backends don't offer anything like this, and often
+    /// this would be an end user setting an environment variable for their custom
+    /// need, and not something an application should specifically manage.</para>
+    /// <para>When done with an audio device, possibly at the end of the app's life, one
+    /// should call <see cref="CloseAudioDevice"/> on the returned device id.</para>
+    /// </summary>
+    /// <param name="devid">the device instance id to open, or
+    /// <see cref="AudioDeviceDefaultPlayback"/> or
+    /// <see cref="AudioDeviceDefaultRecording"/> for the most reasonable
+    /// default device.</param>
+    /// <param name="spec">the requested device configuration. Can be <c>null</c> to use
+    /// reasonable defaults.</param>
+    /// <returns>the device ID on success or 0 on failure; call <see cref="GetError"/> for
+    /// more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="CloseAudioDevice"/>
+    /// <seealso cref="GetAudioDeviceFormat"/>
     public static uint OpenAudioDevice(uint devid, in AudioSpec spec)
     {
         return OpenAudioDeviceWithSpecNativeFunction(devid, in spec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_OpenAudioDevice(uint devid, IntPtr spec);
+    private delegate uint OpenAudioDeviceWithPointerNative(uint devid, IntPtr spec);
+    private static OpenAudioDeviceWithPointerNative OpenAudioDeviceWithPointerNativeFunction = SDL_OpenAudioDevice;
 
     /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID SDLCALL SDL_OpenAudioDevice(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec);</code>
     /// <summary>
@@ -439,17 +445,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CloseAudioDevice"/>
     /// <seealso cref="GetAudioDeviceFormat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_OpenAudioDevice(uint devid, IntPtr spec);
-    private delegate uint OpenAudioDeviceWithPointerNative(uint devid, IntPtr spec);
-    private static OpenAudioDeviceWithPointerNative OpenAudioDeviceWithPointerNativeFunction = SDL_OpenAudioDevice;
-
     public static uint OpenAudioDevice(uint devid, IntPtr spec)
     {
         return OpenAudioDeviceWithPointerNativeFunction(devid, spec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsAudioDevicePhysical"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_IsAudioDevicePhysical(uint devid);
+    private delegate bool IsAudioDevicePhysicalNative(uint devid);
+    private static IsAudioDevicePhysicalNative IsAudioDevicePhysicalNativeFunction = SDL_IsAudioDevicePhysical;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsAudioDevicePhysical(SDL_AudioDeviceID devid);</code>
     /// <summary>
@@ -469,18 +476,18 @@ public static partial class SDL
     /// <returns><c>true</c> if devid is a physical device, <c>false</c> if it is logical.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsAudioDevicePhysical"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_IsAudioDevicePhysical(uint devid);
-    private delegate bool IsAudioDevicePhysicalNative(uint devid);
-    private static IsAudioDevicePhysicalNative IsAudioDevicePhysicalNativeFunction = SDL_IsAudioDevicePhysical;
-
     public static bool IsAudioDevicePhysical(uint devid)
     {
         return IsAudioDevicePhysicalNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsAudioDevicePlayback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_IsAudioDevicePlayback(uint devid);
+    private delegate bool IsAudioDevicePlaybackNative(uint devid);
+    private static IsAudioDevicePlaybackNative IsAudioDevicePlaybackNativeFunction = SDL_IsAudioDevicePlayback;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsAudioDevicePlayback(SDL_AudioDeviceID devid);</code>
     /// <summary>
@@ -491,18 +498,18 @@ public static partial class SDL
     /// <returns><c>true</c> if devid is a playback device, <c>false</c> if it is recording.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsAudioDevicePlayback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_IsAudioDevicePlayback(uint devid);
-    private delegate bool IsAudioDevicePlaybackNative(uint devid);
-    private static IsAudioDevicePlaybackNative IsAudioDevicePlaybackNativeFunction = SDL_IsAudioDevicePlayback;
-
     public static bool IsAudioDevicePlayback(uint devid)
     {
         return IsAudioDevicePlaybackNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_PauseAudioDevice(uint devid);
+    private delegate bool PauseAudioDeviceNative(uint devid);
+    private static PauseAudioDeviceNative PauseAudioDeviceNativeFunction = SDL_PauseAudioDevice;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PauseAudioDevice(SDL_AudioDeviceID dev);</code>
     /// <summary>
@@ -526,18 +533,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResumeAudioDevice"/>
     /// <seealso cref="AudioDevicePaused"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_PauseAudioDevice(uint devid);
-    private delegate bool PauseAudioDeviceNative(uint devid);
-    private static PauseAudioDeviceNative PauseAudioDeviceNativeFunction = SDL_PauseAudioDevice;
-
     public static bool PauseAudioDevice(uint devid)
     {
         return PauseAudioDeviceNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ResumeAudioDevice(uint devid);
+    private delegate bool ResumeAudioDeviceNative(uint devid);
+    private static ResumeAudioDeviceNative ResumeAudioDeviceNativeFunction = SDL_ResumeAudioDevice;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ResumeAudioDevice(SDL_AudioDeviceID dev);</code>
     /// <summary>
@@ -559,18 +566,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AudioDevicePaused"/>
     /// <seealso cref="PauseAudioDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ResumeAudioDevice(uint devid);
-    private delegate bool ResumeAudioDeviceNative(uint devid);
-    private static ResumeAudioDeviceNative ResumeAudioDeviceNativeFunction = SDL_ResumeAudioDevice;
-
     public static bool ResumeAudioDevice(uint devid)
     {
         return ResumeAudioDeviceNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AudioDevicePaused"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_AudioDevicePaused(uint devid);
+    private delegate bool AudioDevicePausedNative(uint devid);
+    private static AudioDevicePausedNative AudioDevicePausedNativeFunction = SDL_AudioDevicePaused;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AudioDevicePaused(SDL_AudioDeviceID dev);</code>
     /// <summary>
@@ -587,18 +594,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PauseAudioDevice"/>
     /// <seealso cref="ResumeAudioDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AudioDevicePaused"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_AudioDevicePaused(uint devid);
-    private delegate bool AudioDevicePausedNative(uint devid);
-    private static AudioDevicePausedNative AudioDevicePausedNativeFunction = SDL_AudioDevicePaused;
-
     public static bool AudioDevicePaused(uint devid)
     {
         return AudioDevicePausedNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetAudioDeviceGain(uint devid);
+    private delegate float GetAudioDeviceGainNative(uint devid);
+    private static GetAudioDeviceGainNative GetAudioDeviceGainNativeFunction = SDL_GetAudioDeviceGain;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetAudioDeviceGain(SDL_AudioDeviceID devid);</code>
     /// <summary>
@@ -615,17 +621,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioDeviceGain"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioDeviceGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetAudioDeviceGain(uint devid);
-    private delegate float GetAudioDeviceGainNative(uint devid);
-    private static GetAudioDeviceGainNative GetAudioDeviceGainNativeFunction = SDL_GetAudioDeviceGain;
-
     public static float GetAudioDeviceGain(uint devid)
     {
         return GetAudioDeviceGainNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioDeviceGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioDeviceGain(uint devid, float gain);
+    private delegate bool SetAudioDeviceGainNative(uint devid, float gain);
+    private static SetAudioDeviceGainNative SetAudioDeviceGainNativeFunction = SDL_SetAudioDeviceGain;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioDeviceGain(SDL_AudioDeviceID devid, float gain);</code>
     /// <summary>
@@ -653,18 +660,17 @@ public static partial class SDL
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioDeviceGain"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioDeviceGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioDeviceGain(uint devid, float gain);
-    private delegate bool SetAudioDeviceGainNative(uint devid, float gain);
-    private static SetAudioDeviceGainNative SetAudioDeviceGainNativeFunction = SDL_SetAudioDeviceGain;
-
     public static bool SetAudioDeviceGain(uint devid, float gain)
     {
         return SetAudioDeviceGainNativeFunction(devid, gain);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_CloseAudioDevice(uint devid);
+    private delegate void CloseAudioDeviceNative(uint devid);
+    private static CloseAudioDeviceNative CloseAudioDeviceNativeFunction = SDL_CloseAudioDevice;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_CloseAudioDevice(SDL_AudioDeviceID devid);</code>
     /// <summary>
@@ -680,17 +686,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenAudioDevice(uint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseAudioDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_CloseAudioDevice(uint devid);
-    private delegate void CloseAudioDeviceNative(uint devid);
-    private static CloseAudioDeviceNative CloseAudioDeviceNativeFunction = SDL_CloseAudioDevice;
-
     public static void CloseAudioDevice(uint devid)
     {
         CloseAudioDeviceNativeFunction(devid);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_BindAudioStreams(uint devid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] streams, int numStream);
+    private delegate bool BindAudioStreamsNative(uint devid, IntPtr[] streams, int numStream);
+    private static BindAudioStreamsNative BindAudioStreamsNativeFunction = SDL_BindAudioStreams;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams);</code>
     /// <summary>
@@ -723,18 +730,18 @@ public static partial class SDL
     /// <seealso cref="BindAudioStreams"/>
     /// <seealso cref="UnbindAudioStream"/>
     /// <seealso cref="GetAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_BindAudioStreams(uint devid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] streams, int numStream);
-    private delegate bool BindAudioStreamsNative(uint devid, IntPtr[] streams, int numStream);
-    private static BindAudioStreamsNative BindAudioStreamsNativeFunction = SDL_BindAudioStreams;
-
     public static bool BindAudioStreams(uint devid, IntPtr[] streams, int numStream)
     {
         return BindAudioStreamsNativeFunction(devid, streams, numStream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_BindAudioStream(uint devid, IntPtr stream);
+    private delegate bool BindAudioStreamNative(uint devid, IntPtr stream);
+    private static BindAudioStreamNative BindAudioStreamNativeFunction = SDL_BindAudioStream;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_BindAudioStream(SDL_AudioDeviceID devid, SDL_AudioStream *stream);</code>
     /// <summary>
@@ -751,18 +758,17 @@ public static partial class SDL
     /// <seealso cref="BindAudioStreams"/>
     /// <seealso cref="UnbindAudioStream"/>
     /// <seealso cref="GetAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_BindAudioStream(uint devid, IntPtr stream);
-    private delegate bool BindAudioStreamNative(uint devid, IntPtr stream);
-    private static BindAudioStreamNative BindAudioStreamNativeFunction = SDL_BindAudioStream;
-
     public static bool BindAudioStream(uint devid, IntPtr stream)
     {
         return BindAudioStreamNativeFunction(devid, stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UnbindAudioStreams([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? streams, int numStreams);
+    private delegate void UnbindAudioStreamsNative(IntPtr[]? streams, int numStreams);
+    private static UnbindAudioStreamsNative UnbindAudioStreamsNativeFunction = SDL_UnbindAudioStreams;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnbindAudioStreams(SDL_AudioStream * const *streams, int num_streams);</code>
     /// <summary>
@@ -778,17 +784,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStreams"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnbindAudioStreams([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? streams, int numStreams);
-    private delegate void UnbindAudioStreamsNative(IntPtr[]? streams, int numStreams);
-    private static UnbindAudioStreamsNative UnbindAudioStreamsNativeFunction = SDL_UnbindAudioStreams;
-
     public static void UnbindAudioStreams(IntPtr[]? streams, int numStreams)
     {
         UnbindAudioStreamsNativeFunction(streams, numStreams);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UnbindAudioStream(IntPtr stream);
+    private delegate void UnbindAudioStreamNative(IntPtr stream);
+    private static UnbindAudioStreamNative UnbindAudioStreamNativeFunction = SDL_UnbindAudioStream;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UnbindAudioStream(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -800,17 +806,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStream"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_UnbindAudioStream(IntPtr stream);
-    private delegate void UnbindAudioStreamNative(IntPtr stream);
-    private static UnbindAudioStreamNative UnbindAudioStreamNativeFunction = SDL_UnbindAudioStream;
-
     public static void UnbindAudioStream(IntPtr stream)
     {
         UnbindAudioStreamNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetAudioStreamDevice(IntPtr stream);
+    private delegate uint GetAudioStreamDeviceNative(IntPtr stream);
+    private static GetAudioStreamDeviceNative GetAudioStreamDeviceNativeFunction = SDL_GetAudioStreamDevice;
 
     /// <code>extern SDL_DECLSPEC SDL_AudioDeviceID SDLCALL SDL_GetAudioStreamDevice(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -826,17 +832,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStream"/>
     /// <seealso cref="BindAudioStreams"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetAudioStreamDevice(IntPtr stream);
-    private delegate uint GetAudioStreamDeviceNative(IntPtr stream);
-    private static GetAudioStreamDeviceNative GetAudioStreamDeviceNativeFunction = SDL_GetAudioStreamDevice;
-
     public static uint GetAudioStreamDevice(IntPtr stream)
     {
         return GetAudioStreamDeviceNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateAudioStream(IntPtr srcSpec, IntPtr dstSpec);
+    private delegate IntPtr CreateAudioStreamWithPointersNative(IntPtr srcSpec, IntPtr dstSpec);
+    private static CreateAudioStreamWithPointersNative CreateAudioStreamWithPointersNativeFunction = SDL_CreateAudioStream;
 
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
@@ -863,17 +869,17 @@ public static partial class SDL
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     /// <seealso cref="DestroyAudioStream"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateAudioStream(IntPtr srcSpec, IntPtr dstSpec);
-    private delegate IntPtr CreateAudioStreamWithPointersNative(IntPtr srcSpec, IntPtr dstSpec);
-    private static CreateAudioStreamWithPointersNative CreateAudioStreamWithPointersNativeFunction = SDL_CreateAudioStream;
-
     public static IntPtr CreateAudioStream(IntPtr srcSpec, IntPtr dstSpec)
     {
         return CreateAudioStreamWithPointersNativeFunction(srcSpec, dstSpec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateAudioStream(in AudioSpec srcSpec, in AudioSpec dstSpec);
+    private delegate IntPtr CreateAudioStreamWithSpecsNative(in AudioSpec srcSpec, in AudioSpec dstSpec);
+    private static CreateAudioStreamWithSpecsNative CreateAudioStreamWithSpecsNativeFunction = SDL_CreateAudioStream;
 
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
@@ -902,17 +908,17 @@ public static partial class SDL
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     /// <seealso cref="DestroyAudioStream"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateAudioStream(in AudioSpec srcSpec, in AudioSpec dstSpec);
-    private delegate IntPtr CreateAudioStreamWithSpecsNative(in AudioSpec srcSpec, in AudioSpec dstSpec);
-    private static CreateAudioStreamWithSpecsNative CreateAudioStreamWithSpecsNativeFunction = SDL_CreateAudioStream;
-
     public static IntPtr CreateAudioStream(in AudioSpec srcSpec, in AudioSpec dstSpec)
     {
         return CreateAudioStreamWithSpecsNativeFunction(in srcSpec, in dstSpec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetAudioStreamProperties(IntPtr stream);
+    private delegate uint GetAudioStreamPropertiesNative(IntPtr stream);
+    private static GetAudioStreamPropertiesNative GetAudioStreamPropertiesNativeFunction = SDL_GetAudioStreamProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetAudioStreamProperties(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -934,17 +940,18 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetAudioStreamProperties(IntPtr stream);
-    private delegate uint GetAudioStreamPropertiesNative(IntPtr stream);
-    private static GetAudioStreamPropertiesNative GetAudioStreamPropertiesNativeFunction = SDL_GetAudioStreamProperties;
-
     public static uint GetAudioStreamProperties(IntPtr stream)
     {
         return GetAudioStreamPropertiesNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetAudioStreamFormat(IntPtr stream, out AudioSpec srcSpec, out AudioSpec dstSpec);
+    private delegate bool GetAudioStreamFormatNative(IntPtr stream, out AudioSpec srcSpec, out AudioSpec dstSpec);
+    private static GetAudioStreamFormatNative GetAudioStreamFormatNativeFunction = SDL_GetAudioStreamFormat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetAudioStreamFormat(SDL_AudioStream *stream, SDL_AudioSpec *src_spec, SDL_AudioSpec *dst_spec);</code>
     /// <summary>
@@ -959,18 +966,18 @@ public static partial class SDL
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetAudioStreamFormat(IntPtr stream, out AudioSpec srcSpec, out AudioSpec dstSpec);
-    private delegate bool GetAudioStreamFormatNative(IntPtr stream, out AudioSpec srcSpec, out AudioSpec dstSpec);
-    private static GetAudioStreamFormatNative GetAudioStreamFormatNativeFunction = SDL_GetAudioStreamFormat;
-
     public static bool GetAudioStreamFormat(IntPtr stream, out AudioSpec srcSpec, out AudioSpec dstSpec)
     {
         return GetAudioStreamFormatNativeFunction(stream, out srcSpec, out dstSpec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamFormat(IntPtr stream, IntPtr srcSpec, IntPtr dstSpec);
+    private delegate bool SetAudioStreamFormatWithPointersNative(IntPtr stream, IntPtr srcSpec, IntPtr dstSpec);
+    private static SetAudioStreamFormatWithPointersNative SetAudioStreamFormatWithPointersNativeFunction = SDL_SetAudioStreamFormat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
@@ -1003,18 +1010,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamFormat"/>
     /// <seealso cref="SetAudioStreamFrequencyRatio"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamFormat(IntPtr stream, IntPtr srcSpec, IntPtr dstSpec);
-    private delegate bool SetAudioStreamFormatWithPointersNative(IntPtr stream, IntPtr srcSpec, IntPtr dstSpec);
-    private static SetAudioStreamFormatWithPointersNative SetAudioStreamFormatWithPointersNativeFunction = SDL_SetAudioStreamFormat;
-
     public static bool SetAudioStreamFormat(IntPtr stream, IntPtr srcSpec, IntPtr dstSpec)
     {
         return SetAudioStreamFormatWithPointersNativeFunction(stream, srcSpec, dstSpec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamFormat(IntPtr stream, in AudioSpec srcSpec, in AudioSpec dstSpec);
+    private delegate bool SetAudioStreamFormatWithSpecsNative(IntPtr stream, in AudioSpec srcSpec, in AudioSpec dstSpec);
+    private static SetAudioStreamFormatWithSpecsNative SetAudioStreamFormatWithSpecsNativeFunction = SDL_SetAudioStreamFormat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);</code>
     /// <summary>
@@ -1046,18 +1053,17 @@ public static partial class SDL
     /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
     /// <seealso cref="GetAudioStreamFormat"/>
     /// <seealso cref="SetAudioStreamFrequencyRatio"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamFormat(IntPtr stream, in AudioSpec srcSpec, in AudioSpec dstSpec);
-    private delegate bool SetAudioStreamFormatWithSpecsNative(IntPtr stream, in AudioSpec srcSpec, in AudioSpec dstSpec);
-    private static SetAudioStreamFormatWithSpecsNative SetAudioStreamFormatWithSpecsNativeFunction = SDL_SetAudioStreamFormat;
-
     public static bool SetAudioStreamFormat(IntPtr stream, in AudioSpec srcSpec, in AudioSpec dstSpec)
     {
         return SetAudioStreamFormatWithSpecsNativeFunction(stream, in srcSpec, in dstSpec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetAudioStreamFrequencyRatio(IntPtr stream);
+    private delegate float GetAudioStreamFrequencyRatioNative(IntPtr stream);
+    private static GetAudioStreamFrequencyRatioNative GetAudioStreamFrequencyRatioNativeFunction = SDL_GetAudioStreamFrequencyRatio;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetAudioStreamFrequencyRatio(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1070,17 +1076,18 @@ public static partial class SDL
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamFrequencyRatio"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetAudioStreamFrequencyRatio(IntPtr stream);
-    private delegate float GetAudioStreamFrequencyRatioNative(IntPtr stream);
-    private static GetAudioStreamFrequencyRatioNative GetAudioStreamFrequencyRatioNativeFunction = SDL_GetAudioStreamFrequencyRatio;
-
     public static float GetAudioStreamFrequencyRatio(IntPtr stream)
     {
         return GetAudioStreamFrequencyRatioNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamFrequencyRatio(IntPtr stream, float ratio);
+    private delegate bool SetAudioStreamFrequencyRatioNative(IntPtr stream, float ratio);
+    private static SetAudioStreamFrequencyRatioNative SetAudioStreamFrequencyRatioNativeFunction = SDL_SetAudioStreamFrequencyRatio;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamFrequencyRatio(SDL_AudioStream *stream, float ratio);</code>
     /// <summary>
@@ -1103,18 +1110,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamFrequencyRatio"/>
     /// <seealso cref="SetAudioStreamFormat(nint, nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamFrequencyRatio(IntPtr stream, float ratio);
-    private delegate bool SetAudioStreamFrequencyRatioNative(IntPtr stream, float ratio);
-    private static SetAudioStreamFrequencyRatioNative SetAudioStreamFrequencyRatioNativeFunction = SDL_SetAudioStreamFrequencyRatio;
-
     public static bool SetAudioStreamFrequencyRatio(IntPtr stream, float ratio)
     {
         return SetAudioStreamFrequencyRatioNativeFunction(stream, ratio);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetAudioStreamGain(IntPtr stream);
+    private delegate float GetAudioStreamGainNative(IntPtr stream);
+    private static GetAudioStreamGainNative GetAudioStreamGainNativeFunction = SDL_GetAudioStreamGain;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetAudioStreamGain(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1130,17 +1136,18 @@ public static partial class SDL
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamGain"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetAudioStreamGain(IntPtr stream);
-    private delegate float GetAudioStreamGainNative(IntPtr stream);
-    private static GetAudioStreamGainNative GetAudioStreamGainNativeFunction = SDL_GetAudioStreamGain;
-
     public static float GetAudioStreamGain(IntPtr stream)
     {
         return GetAudioStreamGainNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamGain(IntPtr stream, float gain);
+    private delegate bool SetAudioStreamGainNative(IntPtr stream, float gain);
+    private static SetAudioStreamGainNative SetAudioStreamGainNativeFunction = SDL_SetAudioStreamGain;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamGain(SDL_AudioStream *stream, float gain);</code>
     /// <summary>
@@ -1159,13 +1166,6 @@ public static partial class SDL
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamGain"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamGain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamGain(IntPtr stream, float gain);
-    private delegate bool SetAudioStreamGainNative(IntPtr stream, float gain);
-    private static SetAudioStreamGainNative SetAudioStreamGainNativeFunction = SDL_SetAudioStreamGain;
-
     public static bool SetAudioStreamGain(IntPtr stream, float gain)
     {
         return SetAudioStreamGainNativeFunction(stream, gain);
@@ -1248,6 +1248,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamInputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamInputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
+    private delegate bool SetAudioStreamInputChannelMapNative(IntPtr stream, int[]? chmap, int count);
+    private static SetAudioStreamInputChannelMapNative SetAudioStreamInputChannelMapNativeFunction = SDL_SetAudioStreamInputChannelMap;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamInputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);</code>
     /// <summary>
     /// <para>Set the current input channel map of an audio stream.</para>
@@ -1294,18 +1301,18 @@ public static partial class SDL
     /// different thread at the same time, though!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamOutputChannelMap"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamInputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamInputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
-    private delegate bool SetAudioStreamInputChannelMapNative(IntPtr stream, int[]? chmap, int count);
-    private static SetAudioStreamInputChannelMapNative SetAudioStreamInputChannelMapNativeFunction = SDL_SetAudioStreamInputChannelMap;
-
     public static bool SetAudioStreamInputChannelMap(IntPtr stream, int[]? chmap, int count)
     {
         return SetAudioStreamInputChannelMapNativeFunction(stream, chmap, count);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamOutputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamOutputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
+    private delegate bool SetAudioStreamOutputChannelMapNative(IntPtr stream, int[]? chmap, int count);
+    private static SetAudioStreamOutputChannelMapNative SetAudioStreamOutputChannelMapNativeFunction = SDL_SetAudioStreamOutputChannelMap;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);</code>
     /// <summary>
@@ -1351,18 +1358,18 @@ public static partial class SDL
     /// a different thread at the same time, though!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamInputChannelMap"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamOutputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamOutputChannelMap(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? chmap, int count);
-    private delegate bool SetAudioStreamOutputChannelMapNative(IntPtr stream, int[]? chmap, int count);
-    private static SetAudioStreamOutputChannelMapNative SetAudioStreamOutputChannelMapNativeFunction = SDL_SetAudioStreamOutputChannelMap;
-
     public static bool SetAudioStreamOutputChannelMap(IntPtr stream, int[]? chmap, int count)
     {
         return SetAudioStreamOutputChannelMapNativeFunction(stream, chmap, count);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_PutAudioStreamData(IntPtr stream, IntPtr buf, int len);
+    private delegate bool PutAudioStreamDataWithPointerNative(IntPtr stream, IntPtr buf, int len);
+    private static PutAudioStreamDataWithPointerNative PutAudioStreamDataWithPointerNativeFunction = SDL_PutAudioStreamData;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);</code>
     /// <summary>
@@ -1387,18 +1394,18 @@ public static partial class SDL
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_PutAudioStreamData(IntPtr stream, IntPtr buf, int len);
-    private delegate bool PutAudioStreamDataWithPointerNative(IntPtr stream, IntPtr buf, int len);
-    private static PutAudioStreamDataWithPointerNative PutAudioStreamDataWithPointerNativeFunction = SDL_PutAudioStreamData;
-
     public static bool PutAudioStreamData(IntPtr stream, IntPtr buf, int len)
     {
         return PutAudioStreamDataWithPointerNativeFunction(stream, buf, len);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamDataNoCopy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_PutAudioStreamDataNoCopy(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata);
+    private delegate bool PutAudioStreamDataNoCopyNative(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata);
+    private static PutAudioStreamDataNoCopyNative PutAudioStreamDataNoCopyNativeFunction = SDL_PutAudioStreamDataNoCopy;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamDataNoCopy(SDL_AudioStream *stream, const void *buf, int len, SDL_AudioStreamDataCompleteCallback callback, void *userdata);</code>
     /// <summary>
@@ -1438,19 +1445,19 @@ public static partial class SDL
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="GetAudioStreamData(nint, nint, int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamDataNoCopy"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_PutAudioStreamDataNoCopy(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata);
-    private delegate bool PutAudioStreamDataNoCopyNative(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata);
-    private static PutAudioStreamDataNoCopyNative PutAudioStreamDataNoCopyNativeFunction = SDL_PutAudioStreamDataNoCopy;
-
     public static bool PutAudioStreamDataNoCopy(IntPtr stream, IntPtr buf, int len, AudioStreamDataCompleteCallback? callback, IntPtr userdata)
     {
         return PutAudioStreamDataNoCopyNativeFunction(stream, buf, len, callback, userdata);
     }
 
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_PutAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
+    private delegate bool PutAudioStreamDataWithBytesNative(IntPtr stream, byte[] buf, int len);
+    private static PutAudioStreamDataWithBytesNative PutAudioStreamDataWithBytesNativeFunction = SDL_PutAudioStreamData;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);</code>
     /// <summary>
@@ -1475,18 +1482,20 @@ public static partial class SDL
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_PutAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
-    private delegate bool PutAudioStreamDataWithBytesNative(IntPtr stream, byte[] buf, int len);
-    private static PutAudioStreamDataWithBytesNative PutAudioStreamDataWithBytesNativeFunction = SDL_PutAudioStreamData;
-
     public static bool PutAudioStreamData(IntPtr stream, byte[] buf, int len)
     {
         return PutAudioStreamDataWithBytesNativeFunction(stream, buf, len);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamPlanarData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_PutAudioStreamPlanarData(IntPtr stream,
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPArray)] IntPtr[] channelBuffers,
+        int numChannels, int numSamples);
+    private delegate bool PutAudioStreamPlanarDataNative(IntPtr stream, IntPtr[] channelBuffers, int numChannels, int numSamples);
+    private static PutAudioStreamPlanarDataNative PutAudioStreamPlanarDataNativeFunction = SDL_PutAudioStreamPlanarData;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PutAudioStreamPlanarData(SDL_AudioStream *stream, const void * const *channel_buffers, int num_channels, int num_samples);</code>
     /// <summary>
@@ -1531,55 +1540,52 @@ public static partial class SDL
     /// <seealso cref="FlushAudioStream"/>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
-    [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamPlanarData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool SDL_PutAudioStreamPlanarData(IntPtr stream,
-        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPArray)] IntPtr[] channelBuffers,
-        int numChannels, int numSamples);
-    private delegate bool PutAudioStreamPlanarDataNative(IntPtr stream, IntPtr[] channelBuffers, int numChannels, int numSamples);
-    private static PutAudioStreamPlanarDataNative PutAudioStreamPlanarDataNativeFunction = SDL_PutAudioStreamPlanarData;
-
     public static bool PutAudioStreamPlanarData(IntPtr stream, IntPtr[] channelBuffers, int numChannels, int numSamples)
     {
         return PutAudioStreamPlanarDataNativeFunction(stream, channelBuffers, numChannels, numSamples);
     }
 
 
-    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);</code>
-    /// <summary>
-    /// <para>Get converted/resampled data from the stream.</para>
-    /// <para>The input/output data format/channels/samplerate is specified when creating
-    /// the stream, and can be changed after creation by calling
-    /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>.</para>
-    /// <para>Note that any conversion and resampling necessary is done during this call,
-    /// and SDL_PutAudioStreamData simply queues unconverted data for later. This
-    /// is different than SDL2, where that work was done while inputting new data
-    /// to the stream and requesting the output just copied the converted data.</para>
-    /// </summary>
-    /// <param name="stream">the stream the audio is being requested from.</param>
-    /// <param name="buf">a buffer to fill with audio data.</param>
-    /// <param name="len">the maximum number of bytes to fill.</param>
-    /// <returns>the number of bytes read from the stream or -1 on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <threadsafety>It is safe to call this function from any thread, but if the
-    /// stream has a callback set, the caller might need to manage
-    /// extra locking.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="ClearAudioStream"/>
-    /// <seealso cref="GetAudioStreamAvailable"/>
-    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial int SDL_GetAudioStreamData(IntPtr stream, IntPtr buf, int len);
     private delegate int GetAudioStreamDataWithPointerNative(IntPtr stream, IntPtr buf, int len);
     private static GetAudioStreamDataWithPointerNative GetAudioStreamDataWithPointerNativeFunction = SDL_GetAudioStreamData;
 
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);</code>
+    /// <summary>
+    /// <para>Get converted/resampled data from the stream.</para>
+    /// <para>The input/output data format/channels/samplerate is specified when creating
+    /// the stream, and can be changed after creation by calling
+    /// <see cref="SetAudioStreamFormat(nint, nint, nint)"/>.</para>
+    /// <para>Note that any conversion and resampling necessary is done during this call,
+    /// and SDL_PutAudioStreamData simply queues unconverted data for later. This
+    /// is different than SDL2, where that work was done while inputting new data
+    /// to the stream and requesting the output just copied the converted data.</para>
+    /// </summary>
+    /// <param name="stream">the stream the audio is being requested from.</param>
+    /// <param name="buf">a buffer to fill with audio data.</param>
+    /// <param name="len">the maximum number of bytes to fill.</param>
+    /// <returns>the number of bytes read from the stream or -1 on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread, but if the
+    /// stream has a callback set, the caller might need to manage
+    /// extra locking.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="ClearAudioStream"/>
+    /// <seealso cref="GetAudioStreamAvailable"/>
+    /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     public static int GetAudioStreamData(IntPtr stream, IntPtr buf, int len)
     {
         return GetAudioStreamDataWithPointerNativeFunction(stream, buf, len);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
+    private delegate int GetAudioStreamDataWithBytesNative(IntPtr stream, byte[] buf, int len);
+    private static GetAudioStreamDataWithBytesNative GetAudioStreamDataWithBytesNativeFunction = SDL_GetAudioStreamData;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);</code>
     /// <summary>
@@ -1604,17 +1610,17 @@ public static partial class SDL
     /// <seealso cref="ClearAudioStream"/>
     /// <seealso cref="GetAudioStreamAvailable"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetAudioStreamData(IntPtr stream, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] buf, int len);
-    private delegate int GetAudioStreamDataWithBytesNative(IntPtr stream, byte[] buf, int len);
-    private static GetAudioStreamDataWithBytesNative GetAudioStreamDataWithBytesNativeFunction = SDL_GetAudioStreamData;
-
     public static int GetAudioStreamData(IntPtr stream, byte[] buf, int len)
     {
         return GetAudioStreamDataWithBytesNativeFunction(stream, buf, len);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamAvailable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetAudioStreamAvailable(IntPtr stream);
+    private delegate int GetAudioStreamAvailableNative(IntPtr stream);
+    private static GetAudioStreamAvailableNative GetAudioStreamAvailableNativeFunction = SDL_GetAudioStreamAvailable;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamAvailable(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1635,17 +1641,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamAvailable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetAudioStreamAvailable(IntPtr stream);
-    private delegate int GetAudioStreamAvailableNative(IntPtr stream);
-    private static GetAudioStreamAvailableNative GetAudioStreamAvailableNativeFunction = SDL_GetAudioStreamAvailable;
-
     public static int GetAudioStreamAvailable(IntPtr stream)
     {
         return GetAudioStreamAvailableNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamQueued"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetAudioStreamQueued(IntPtr stream);
+    private delegate int GetAudioStreamQueuedNative(IntPtr stream);
+    private static GetAudioStreamQueuedNative GetAudioStreamQueuedNativeFunction = SDL_GetAudioStreamQueued;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetAudioStreamQueued(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1676,17 +1682,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="ClearAudioStream"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAudioStreamQueued"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetAudioStreamQueued(IntPtr stream);
-    private delegate int GetAudioStreamQueuedNative(IntPtr stream);
-    private static GetAudioStreamQueuedNative GetAudioStreamQueuedNativeFunction = SDL_GetAudioStreamQueued;
-
     public static int GetAudioStreamQueued(IntPtr stream)
     {
         return GetAudioStreamQueuedNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_FlushAudioStream(IntPtr stream);
+    private delegate bool FlushAudioStreamNative(IntPtr stream);
+    private static FlushAudioStreamNative FlushAudioStreamNativeFunction = SDL_FlushAudioStream;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_FlushAudioStream(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1702,18 +1709,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlushAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_FlushAudioStream(IntPtr stream);
-    private delegate bool FlushAudioStreamNative(IntPtr stream);
-    private static FlushAudioStreamNative FlushAudioStreamNativeFunction = SDL_FlushAudioStream;
-
     public static bool FlushAudioStream(IntPtr stream)
     {
         return FlushAudioStreamNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ClearAudioStream(IntPtr stream);
+    private delegate bool ClearAudioStreamNative(IntPtr stream);
+    private static ClearAudioStreamNative ClearAudioStreamNativeFunction = SDL_ClearAudioStream;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ClearAudioStream(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1730,18 +1737,18 @@ public static partial class SDL
     /// <seealso cref="GetAudioStreamData(nint, byte[], int)"/>
     /// <seealso cref="GetAudioStreamQueued"/>
     /// <seealso cref="PutAudioStreamData(nint, byte[], int)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ClearAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ClearAudioStream(IntPtr stream);
-    private delegate bool ClearAudioStreamNative(IntPtr stream);
-    private static ClearAudioStreamNative ClearAudioStreamNativeFunction = SDL_ClearAudioStream;
-
     public static bool ClearAudioStream(IntPtr stream)
     {
         return ClearAudioStreamNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_PauseAudioStreamDevice(IntPtr stream);
+    private delegate bool PauseAudioStreamDeviceNative(IntPtr stream);
+    private static PauseAudioStreamDeviceNative PauseAudioStreamDeviceNativeFunction = SDL_PauseAudioStreamDevice;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_PauseAudioStreamDevice(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1760,18 +1767,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ResumeAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_PauseAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_PauseAudioStreamDevice(IntPtr stream);
-    private delegate bool PauseAudioStreamDeviceNative(IntPtr stream);
-    private static PauseAudioStreamDeviceNative PauseAudioStreamDeviceNativeFunction = SDL_PauseAudioStreamDevice;
-
     public static bool PauseAudioStreamDevice(IntPtr stream)
     {
         return PauseAudioStreamDeviceNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ResumeAudioStreamDevice(IntPtr stream);
+    private delegate bool ResumeAudioStreamDeviceNative(IntPtr stream);
+    private static ResumeAudioStreamDeviceNative ResumeAudioStreamDeviceNativeFunction = SDL_ResumeAudioStreamDevice;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ResumeAudioStreamDevice(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1789,18 +1796,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="PauseAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ResumeAudioStreamDevice"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ResumeAudioStreamDevice(IntPtr stream);
-    private delegate bool ResumeAudioStreamDeviceNative(IntPtr stream);
-    private static ResumeAudioStreamDeviceNative ResumeAudioStreamDeviceNativeFunction = SDL_ResumeAudioStreamDevice;
-
     public static bool ResumeAudioStreamDevice(IntPtr stream)
     {
         return ResumeAudioStreamDeviceNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AudioStreamDevicePaused"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_AudioStreamDevicePaused(IntPtr stream);
+    private delegate bool AudioStreamDevicePausedNative(IntPtr stream);
+    private static AudioStreamDevicePausedNative AudioStreamDevicePausedNativeFunction = SDL_AudioStreamDevicePaused;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AudioStreamDevicePaused(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1815,18 +1822,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.10.</since>
     /// <seealso cref="PauseAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AudioStreamDevicePaused"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_AudioStreamDevicePaused(IntPtr stream);
-    private delegate bool AudioStreamDevicePausedNative(IntPtr stream);
-    private static AudioStreamDevicePausedNative AudioStreamDevicePausedNativeFunction = SDL_AudioStreamDevicePaused;
-
     public static bool AudioStreamDevicePaused(IntPtr stream)
     {
         return AudioStreamDevicePausedNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_LockAudioStream(IntPtr stream);
+    private delegate bool LockAudioStreamNative(IntPtr stream);
+    private static LockAudioStreamNative LockAudioStreamNativeFunction = SDL_LockAudioStream;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LockAudioStream(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1848,18 +1855,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="UnlockAudioStream"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LockAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_LockAudioStream(IntPtr stream);
-    private delegate bool LockAudioStreamNative(IntPtr stream);
-    private static LockAudioStreamNative LockAudioStreamNativeFunction = SDL_LockAudioStream;
-
     public static bool LockAudioStream(IntPtr stream)
     {
         return LockAudioStreamNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UnlockAudioStream(IntPtr stream);
+    private delegate bool UnlockAudioStreamNative(IntPtr stream);
+    private static UnlockAudioStreamNative UnlockAudioStreamNativeFunction = SDL_UnlockAudioStream;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UnlockAudioStream(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1873,18 +1880,18 @@ public static partial class SDL
     /// previously called <see cref="LockAudioStream"/>.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="LockAudioStream"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnlockAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UnlockAudioStream(IntPtr stream);
-    private delegate bool UnlockAudioStreamNative(IntPtr stream);
-    private static UnlockAudioStreamNative UnlockAudioStreamNativeFunction = SDL_UnlockAudioStream;
-
     public static bool UnlockAudioStream(IntPtr stream)
     {
         return UnlockAudioStreamNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamGetCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamGetCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata);
+    private delegate bool SetAudioStreamCallbackNative(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata);
+    private static SetAudioStreamCallbackNative SetAudioStreamGetCallbackNativeFunction = SDL_SetAudioStreamGetCallback;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamGetCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);</code>
     /// <summary>
@@ -1920,18 +1927,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetAudioStreamPutCallback"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamGetCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamGetCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata);
-    private delegate bool SetAudioStreamCallbackNative(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata);
-    private static SetAudioStreamCallbackNative SetAudioStreamGetCallbackNativeFunction = SDL_SetAudioStreamGetCallback;
-
     public static bool SetAudioStreamGetCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata)
     {
         return SetAudioStreamGetCallbackNativeFunction(stream, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamPutCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamPutCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata);
+    private static SetAudioStreamCallbackNative SetAudioStreamPutCallbackNativeFunction = SDL_SetAudioStreamPutCallback;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioStreamPutCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);</code>
     /// <summary>
@@ -1966,17 +1972,17 @@ public static partial class SDL
     /// personal use.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information. This only fails if <c>stream</c> is <c>null</c>.</returns>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamPutCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioStreamPutCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata);
-    private static SetAudioStreamCallbackNative SetAudioStreamPutCallbackNativeFunction = SDL_SetAudioStreamPutCallback;
-
     public static bool SetAudioStreamPutCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata)
     {
         return SetAudioStreamPutCallbackNativeFunction(stream, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyAudioStream(IntPtr stream);
+    private delegate void DestroyAudioStreamNative(IntPtr stream);
+    private static DestroyAudioStreamNative DestroyAudioStreamNativeFunction = SDL_DestroyAudioStream;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyAudioStream(SDL_AudioStream *stream);</code>
     /// <summary>
@@ -1992,17 +1998,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateAudioStream(nint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAudioStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyAudioStream(IntPtr stream);
-    private delegate void DestroyAudioStreamNative(IntPtr stream);
-    private static DestroyAudioStreamNative DestroyAudioStreamNativeFunction = SDL_DestroyAudioStream;
-
     public static void DestroyAudioStream(IntPtr stream)
     {
         DestroyAudioStreamNativeFunction(stream);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_OpenAudioDeviceStream(uint devid, in AudioSpec spec, AudioStreamCallback? callback, IntPtr userdata);
+    private delegate IntPtr OpenAudioDeviceStreamWithSpecNative(uint devid, in AudioSpec spec, AudioStreamCallback? callback, IntPtr userdata);
+    private static OpenAudioDeviceStreamWithSpecNative OpenAudioDeviceStreamWithSpecNativeFunction = SDL_OpenAudioDeviceStream;
 
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata);</code>
     /// <summary>
@@ -2052,17 +2058,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_OpenAudioDeviceStream(uint devid, in AudioSpec spec, AudioStreamCallback? callback, IntPtr userdata);
-    private delegate IntPtr OpenAudioDeviceStreamWithSpecNative(uint devid, in AudioSpec spec, AudioStreamCallback? callback, IntPtr userdata);
-    private static OpenAudioDeviceStreamWithSpecNative OpenAudioDeviceStreamWithSpecNativeFunction = SDL_OpenAudioDeviceStream;
-
     public static IntPtr OpenAudioDeviceStream(uint devid, in AudioSpec spec, AudioStreamCallback? callback, IntPtr userdata)
     {
         return OpenAudioDeviceStreamWithSpecNativeFunction(devid, in spec, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_OpenAudioDeviceStream(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
+    private delegate IntPtr OpenAudioDeviceStreamWithPointerNative(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
+    private static OpenAudioDeviceStreamWithPointerNative OpenAudioDeviceStreamWithPointerNativeFunction = SDL_OpenAudioDeviceStream;
 
     /// <code>extern SDL_DECLSPEC SDL_AudioStream * SDLCALL SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata);</code>
     /// <summary>
@@ -2112,17 +2118,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenAudioDeviceStream"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_OpenAudioDeviceStream(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
-    private delegate IntPtr OpenAudioDeviceStreamWithPointerNative(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata);
-    private static OpenAudioDeviceStreamWithPointerNative OpenAudioDeviceStreamWithPointerNativeFunction = SDL_OpenAudioDeviceStream;
-
     public static IntPtr OpenAudioDeviceStream(uint devid, IntPtr spec, AudioStreamCallback? callback, IntPtr userdata)
     {
         return OpenAudioDeviceStreamWithPointerNativeFunction(devid, spec, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioPostmixCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioPostmixCallback(uint devid, AudioPostmixCallback? callback, IntPtr userdata);
+    private delegate bool SetAudioPostmixCallbackNative(uint devid, AudioPostmixCallback? callback, IntPtr userdata);
+    private static SetAudioPostmixCallbackNative SetAudioPostmixCallbackNativeFunction = SDL_SetAudioPostmixCallback;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);</code>
     /// <summary>
@@ -2165,18 +2172,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioPostmixCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetAudioPostmixCallback(uint devid, AudioPostmixCallback? callback, IntPtr userdata);
-    private delegate bool SetAudioPostmixCallbackNative(uint devid, AudioPostmixCallback? callback, IntPtr userdata);
-    private static SetAudioPostmixCallbackNative SetAudioPostmixCallbackNativeFunction = SDL_SetAudioPostmixCallback;
-
     public static bool SetAudioPostmixCallback(uint devid, AudioPostmixCallback? callback, IntPtr userdata)
     {
         return SetAudioPostmixCallbackNativeFunction(devid, callback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadWAV_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_LoadWAVIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
+    private delegate bool LoadWAVIONative(IntPtr src, bool closeio, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
+    private static LoadWAVIONative LoadWAVIONativeFunction = SDL_LoadWAVIO;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LoadWAV_IO(SDL_IOStream *src, bool closeio, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);</code>
     /// <summary>
@@ -2242,18 +2249,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="LoadWAV"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadWAV_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_LoadWAVIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
-    private delegate bool LoadWAVIONative(IntPtr src, bool closeio, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
-    private static LoadWAVIONative LoadWAVIONativeFunction = SDL_LoadWAVIO;
-
     public static bool LoadWAVIO(IntPtr src, bool closeio, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen)
     {
         return LoadWAVIONativeFunction(src, closeio, out spec, out audioBuf, out audioLen);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadWAV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_LoadWAV([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
+    private delegate bool LoadWAVNative(string path, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
+    private static LoadWAVNative LoadWAVNativeFunction = SDL_LoadWAV;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LoadWAV(const char *path, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);</code>
     /// <summary>
@@ -2282,18 +2289,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="Free"/>
     /// <seealso cref="LoadWAVIO"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadWAV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_LoadWAV([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
-    private delegate bool LoadWAVNative(string path, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen);
-    private static LoadWAVNative LoadWAVNativeFunction = SDL_LoadWAV;
-
     public static bool LoadWAV(string path, out AudioSpec spec, out IntPtr audioBuf, out uint audioLen)
     {
         return LoadWAVNativeFunction(path, out spec, out audioBuf, out audioLen);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MixAudio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_MixAudio(IntPtr dst, IntPtr src, AudioFormat format, uint len, float volume);
+    private delegate bool MixAudioNative(IntPtr dst, IntPtr src, AudioFormat format, uint len, float volume);
+    private static MixAudioNative MixAudioNativeFunction = SDL_MixAudio;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_MixAudio(Uint8 *dst, const Uint8 *src, SDL_AudioFormat format, Uint32 len, float volume);</code>
     /// <summary>
@@ -2323,18 +2330,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MixAudio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_MixAudio(IntPtr dst, IntPtr src, AudioFormat format, uint len, float volume);
-    private delegate bool MixAudioNative(IntPtr dst, IntPtr src, AudioFormat format, uint len, float volume);
-    private static MixAudioNative MixAudioNativeFunction = SDL_MixAudio;
-
     public static bool MixAudio(IntPtr dst, IntPtr src, AudioFormat format, uint len, float volume)
     {
         return MixAudioNativeFunction(dst, src, format, len, volume);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertAudioSamples"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ConvertAudioSamples(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen);
+    private delegate bool ConvertAudioSamplesNative(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen);
+    private static ConvertAudioSamplesNative ConvertAudioSamplesNativeFunction = SDL_ConvertAudioSamples;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ConvertAudioSamples(const SDL_AudioSpec *src_spec, const Uint8 *src_data, int src_len, const SDL_AudioSpec *dst_spec, Uint8 **dst_data, int *dst_len);</code>
     /// <summary>
@@ -2360,13 +2367,6 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ConvertAudioSamples"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ConvertAudioSamples(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen);
-    private delegate bool ConvertAudioSamplesNative(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen);
-    private static ConvertAudioSamplesNative ConvertAudioSamplesNativeFunction = SDL_ConvertAudioSamples;
-
     public static bool ConvertAudioSamples(in AudioSpec srcSpec, IntPtr srcData, int srcLen, in AudioSpec dstSpec, out IntPtr dstData, out int dstLen)
     {
         return ConvertAudioSamplesNativeFunction(in srcSpec, srcData, srcLen, in dstSpec, out dstData, out dstLen);
@@ -2395,6 +2395,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSilenceValueForFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetSilenceValueForFormat(AudioFormat format);
+    private delegate int GetSilenceValueForFormatNative(AudioFormat format);
+    private static GetSilenceValueForFormatNative GetSilenceValueForFormatNativeFunction = SDL_GetSilenceValueForFormat;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetSilenceValueForFormat(SDL_AudioFormat format);</code>
     /// <summary>
     /// <para>Get the appropriate memset value for silencing an audio format.</para>
@@ -2406,12 +2412,6 @@ public static partial class SDL
     /// <returns>a byte value that can be passed to memset.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSilenceValueForFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSilenceValueForFormat(AudioFormat format);
-    private delegate int GetSilenceValueForFormatNative(AudioFormat format);
-    private static GetSilenceValueForFormatNative GetSilenceValueForFormatNativeFunction = SDL_GetSilenceValueForFormat;
-
     public static int GetSilenceValueForFormat(AudioFormat format)
     {
         return GetSilenceValueForFormatNativeFunction(format);

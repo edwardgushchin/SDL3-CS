@@ -84,6 +84,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial TouchDeviceType SDL_GetTouchDeviceType(ulong touchID);
+    private delegate TouchDeviceType GetTouchDeviceTypeNativeDelegate(ulong touchID);
+    private static GetTouchDeviceTypeNativeDelegate GetTouchDeviceTypeNativeFunction = SDL_GetTouchDeviceType;
+
     /// <code>extern SDL_DECLSPEC SDL_TouchDeviceType SDLCALL SDL_GetTouchDeviceType(SDL_TouchID touchID);</code>
     /// <summary>
     /// Get the type of the given touch device.
@@ -91,12 +97,6 @@ public static partial class SDL
     /// <param name="touchID">the ID of a touch device.</param>
     /// <returns>touch device type.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetTouchDeviceType"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial TouchDeviceType SDL_GetTouchDeviceType(ulong touchID);
-    private delegate TouchDeviceType GetTouchDeviceTypeNativeDelegate(ulong touchID);
-    private static GetTouchDeviceTypeNativeDelegate GetTouchDeviceTypeNativeFunction = SDL_GetTouchDeviceType;
-
     public static TouchDeviceType GetTouchDeviceType(ulong touchID)
     {
         return GetTouchDeviceTypeNativeFunction(touchID);

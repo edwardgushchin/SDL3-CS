@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumVideoDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumVideoDrivers();
+    private delegate int GetNumVideoDriversNativeDelegate();
+    private static GetNumVideoDriversNativeDelegate GetNumVideoDriversNativeFunction = SDL_GetNumVideoDrivers;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumVideoDrivers(void);</code>
     /// <summary>
     /// Get the number of video drivers compiled into SDL.
@@ -37,12 +43,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetVideoDriver"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumVideoDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetNumVideoDrivers();
-    private delegate int GetNumVideoDriversNativeDelegate();
-    private static GetNumVideoDriversNativeDelegate GetNumVideoDriversNativeFunction = SDL_GetNumVideoDrivers;
-
     public static int GetNumVideoDrivers()
     {
         return GetNumVideoDriversNativeFunction();
@@ -101,6 +101,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemTheme"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial SystemTheme SDL_GetSystemTheme();
+    private delegate SystemTheme GetSystemThemeNativeDelegate();
+    private static GetSystemThemeNativeDelegate GetSystemThemeNativeFunction = SDL_GetSystemTheme;
+
     /// <code>extern SDL_DECLSPEC SDL_SystemTheme SDLCALL SDL_GetSystemTheme(void);</code>
     /// <summary>
     /// Get the current system theme.
@@ -108,12 +114,6 @@ public static partial class SDL
     /// <returns>the current system theme, light, dark, or unknown.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemTheme"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial SystemTheme SDL_GetSystemTheme();
-    private delegate SystemTheme GetSystemThemeNativeDelegate();
-    private static GetSystemThemeNativeDelegate GetSystemThemeNativeFunction = SDL_GetSystemTheme;
-
     public static SystemTheme GetSystemTheme()
     {
         return GetSystemThemeNativeFunction();
@@ -151,6 +151,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimaryDisplay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetPrimaryDisplay();
+    private delegate uint GetPrimaryDisplayNativeDelegate();
+    private static GetPrimaryDisplayNativeDelegate GetPrimaryDisplayNativeFunction = SDL_GetPrimaryDisplay;
+
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetPrimaryDisplay(void);</code>
     /// <summary>
     /// Return the primary display.
@@ -160,17 +166,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPrimaryDisplay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetPrimaryDisplay();
-    private delegate uint GetPrimaryDisplayNativeDelegate();
-    private static GetPrimaryDisplayNativeDelegate GetPrimaryDisplayNativeFunction = SDL_GetPrimaryDisplay;
-
     public static uint GetPrimaryDisplay()
     {
         return GetPrimaryDisplayNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetDisplayProperties(uint displayID);
+    private delegate uint GetDisplayPropertiesNativeDelegate(uint displayID);
+    private static GetDisplayPropertiesNativeDelegate GetDisplayPropertiesNativeFunction = SDL_GetDisplayProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetDisplayProperties(SDL_DisplayID displayID);</code>
     /// <summary>
@@ -206,12 +212,6 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayProperties(uint displayID);
-    private delegate uint GetDisplayPropertiesNativeDelegate(uint displayID);
-    private static GetDisplayPropertiesNativeDelegate GetDisplayPropertiesNativeFunction = SDL_GetDisplayProperties;
-
     public static uint GetDisplayProperties(uint displayID)
     {
         return GetDisplayPropertiesNativeFunction(displayID);
@@ -240,6 +240,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayBounds"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetDisplayBounds(uint displayID, out Rect rect);
+    private delegate bool GetDisplayBoundsNativeDelegate(uint displayID, out Rect rect);
+    private static GetDisplayBoundsNativeDelegate GetDisplayBoundsNativeFunction = SDL_GetDisplayBounds;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDisplayBounds(SDL_DisplayID displayID, SDL_Rect *rect);</code>
     /// <summary>
     /// <para>Get the desktop area represented by a display.</para>
@@ -254,18 +261,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayUsableBounds"/>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayBounds"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetDisplayBounds(uint displayID, out Rect rect);
-    private delegate bool GetDisplayBoundsNativeDelegate(uint displayID, out Rect rect);
-    private static GetDisplayBoundsNativeDelegate GetDisplayBoundsNativeFunction = SDL_GetDisplayBounds;
-
     public static bool GetDisplayBounds(uint displayID, out Rect rect)
     {
         return GetDisplayBoundsNativeFunction(displayID, out rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayUsableBounds"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetDisplayUsableBounds(uint displayID, out Rect rect);
+    private delegate bool GetDisplayUsableBoundsNativeDelegate(uint displayID, out Rect rect);
+    private static GetDisplayUsableBoundsNativeDelegate GetDisplayUsableBoundsNativeFunction = SDL_GetDisplayUsableBounds;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetDisplayUsableBounds(SDL_DisplayID displayID, SDL_Rect *rect);</code>
     /// <summary>
@@ -286,18 +293,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayUsableBounds"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetDisplayUsableBounds(uint displayID, out Rect rect);
-    private delegate bool GetDisplayUsableBoundsNativeDelegate(uint displayID, out Rect rect);
-    private static GetDisplayUsableBoundsNativeDelegate GetDisplayUsableBoundsNativeFunction = SDL_GetDisplayUsableBounds;
-
     public static bool GetDisplayUsableBounds(uint displayID, out Rect rect)
     {
         return GetDisplayUsableBoundsNativeFunction(displayID, out rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNaturalDisplayOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial DisplayOrientation SDL_GetNaturalDisplayOrientation(uint displayID);
+    private delegate DisplayOrientation GetNaturalDisplayOrientationNativeDelegate(uint displayID);
+    private static GetNaturalDisplayOrientationNativeDelegate GetNaturalDisplayOrientationNativeFunction = SDL_GetNaturalDisplayOrientation;
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayOrientation SDLCALL SDL_GetNaturalDisplayOrientation(SDL_DisplayID displayID);</code>
     /// <summary>
@@ -309,17 +315,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNaturalDisplayOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial DisplayOrientation SDL_GetNaturalDisplayOrientation(uint displayID);
-    private delegate DisplayOrientation GetNaturalDisplayOrientationNativeDelegate(uint displayID);
-    private static GetNaturalDisplayOrientationNativeDelegate GetNaturalDisplayOrientationNativeFunction = SDL_GetNaturalDisplayOrientation;
-
     public static DisplayOrientation GetNaturalDisplayOrientation(uint displayID)
     {
         return GetNaturalDisplayOrientationNativeFunction(displayID);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDisplayOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial DisplayOrientation SDL_GetCurrentDisplayOrientation(uint displayID);
+    private delegate DisplayOrientation GetCurrentDisplayOrientationNativeDelegate(uint displayID);
+    private static GetCurrentDisplayOrientationNativeDelegate GetCurrentDisplayOrientationNativeFunction = SDL_GetCurrentDisplayOrientation;
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayOrientation SDLCALL SDL_GetCurrentDisplayOrientation(SDL_DisplayID displayID);</code>
     /// <summary>
@@ -331,17 +337,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCurrentDisplayOrientation"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial DisplayOrientation SDL_GetCurrentDisplayOrientation(uint displayID);
-    private delegate DisplayOrientation GetCurrentDisplayOrientationNativeDelegate(uint displayID);
-    private static GetCurrentDisplayOrientationNativeDelegate GetCurrentDisplayOrientationNativeFunction = SDL_GetCurrentDisplayOrientation;
-
     public static DisplayOrientation GetCurrentDisplayOrientation(uint displayID)
     {
         return GetCurrentDisplayOrientationNativeFunction(displayID);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayContentScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetDisplayContentScale(uint displayID);
+    private delegate float GetDisplayContentScaleNativeDelegate(uint displayID);
+    private static GetDisplayContentScaleNativeDelegate GetDisplayContentScaleNativeFunction = SDL_GetDisplayContentScale;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetDisplayContentScale(SDL_DisplayID displayID);</code>
     /// <summary>
@@ -363,12 +369,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowDisplayScale"/>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayContentScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetDisplayContentScale(uint displayID);
-    private delegate float GetDisplayContentScaleNativeDelegate(uint displayID);
-    private static GetDisplayContentScaleNativeDelegate GetDisplayContentScaleNativeFunction = SDL_GetDisplayContentScale;
-
     public static float GetDisplayContentScale(uint displayID)
     {
         return GetDisplayContentScaleNativeFunction(displayID);
@@ -418,6 +418,15 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClosestFullscreenDisplayMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate,
+        [MarshalAs(UnmanagedType.I1)] bool includeHighDensityModes, out DisplayMode closest);
+    private delegate bool GetClosestFullscreenDisplayModeNativeDelegate(uint displayID, int w, int h, float refreshRate,
+        bool includeHighDensityModes, out DisplayMode closest);
+    private static GetClosestFullscreenDisplayModeNativeDelegate GetClosestFullscreenDisplayModeNativeFunction = SDL_GetClosestFullscreenDisplayMode;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetClosestFullscreenDisplayMode(SDL_DisplayID displayID, int w, int h, float refresh_rate, bool include_high_density_modes, SDL_DisplayMode *closest);</code>
     /// <summary>
     /// <para>Get the closest match to the requested display mode.</para>
@@ -443,15 +452,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplays"/>
     /// <seealso cref="GetFullscreenDisplayModes"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetClosestFullscreenDisplayMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate,
-        [MarshalAs(UnmanagedType.I1)] bool includeHighDensityModes, out DisplayMode closest);
-    private delegate bool GetClosestFullscreenDisplayModeNativeDelegate(uint displayID, int w, int h, float refreshRate,
-        bool includeHighDensityModes, out DisplayMode closest);
-    private static GetClosestFullscreenDisplayModeNativeDelegate GetClosestFullscreenDisplayModeNativeFunction = SDL_GetClosestFullscreenDisplayMode;
-
     public static bool GetClosestFullscreenDisplayMode(uint displayID, int w, int h, float refreshRate,
         [MarshalAs(UnmanagedType.I1)] bool includeHighDensityModes, out DisplayMode closest)
     {
@@ -507,6 +507,12 @@ public static partial class SDL
         PointerToStructure<DisplayMode>(GetCurrentDisplayModeNativeFunction(displayID));
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetDisplayForPoint(Point point);
+    private delegate uint GetDisplayForPointNativeDelegate(Point point);
+    private static GetDisplayForPointNativeDelegate GetDisplayForPointNativeFunction = SDL_GetDisplayForPoint;
+
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForPoint(const SDL_Point *point);</code>
     /// <summary>
     /// Get the display containing a point.
@@ -518,17 +524,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForPoint(Point point);
-    private delegate uint GetDisplayForPointNativeDelegate(Point point);
-    private static GetDisplayForPointNativeDelegate GetDisplayForPointNativeFunction = SDL_GetDisplayForPoint;
-
     public static uint GetDisplayForPoint(Point point)
     {
         return GetDisplayForPointNativeFunction(point);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetDisplayForRect(Rect rect);
+    private delegate uint GetDisplayForRectNativeDelegate(Rect rect);
+    private static GetDisplayForRectNativeDelegate GetDisplayForRectNativeFunction = SDL_GetDisplayForRect;
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForRect(const SDL_Rect *rect);</code>
     /// <summary>
@@ -542,17 +548,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForRect(Rect rect);
-    private delegate uint GetDisplayForRectNativeDelegate(Rect rect);
-    private static GetDisplayForRectNativeDelegate GetDisplayForRectNativeFunction = SDL_GetDisplayForRect;
-
     public static uint GetDisplayForRect(Rect rect)
     {
         return GetDisplayForRectNativeFunction(rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetDisplayForWindow(IntPtr window);
+    private delegate uint GetDisplayForWindowNativeDelegate(IntPtr window);
+    private static GetDisplayForWindowNativeDelegate GetDisplayForWindowNativeFunction = SDL_GetDisplayForWindow;
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForWindow(SDL_Window *window);</code>
     /// <summary>
@@ -566,17 +572,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForWindow(IntPtr window);
-    private delegate uint GetDisplayForWindowNativeDelegate(IntPtr window);
-    private static GetDisplayForWindowNativeDelegate GetDisplayForWindowNativeFunction = SDL_GetDisplayForWindow;
-
     public static uint GetDisplayForWindow(IntPtr window)
     {
         return GetDisplayForWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelDensity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetWindowPixelDensity(IntPtr window);
+    private delegate float GetWindowPixelDensityNativeDelegate(IntPtr window);
+    private static GetWindowPixelDensityNativeDelegate GetWindowPixelDensityNativeFunction = SDL_GetWindowPixelDensity;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowPixelDensity(SDL_Window *window);</code>
     /// <summary>
@@ -591,17 +597,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowDisplayScale"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelDensity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowPixelDensity(IntPtr window);
-    private delegate float GetWindowPixelDensityNativeDelegate(IntPtr window);
-    private static GetWindowPixelDensityNativeDelegate GetWindowPixelDensityNativeFunction = SDL_GetWindowPixelDensity;
-
     public static float GetWindowPixelDensity(IntPtr window)
     {
         return GetWindowPixelDensityNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowDisplayScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetWindowDisplayScale(IntPtr window);
+    private delegate float GetWindowDisplayScaleNativeDelegate(IntPtr window);
+    private static GetWindowDisplayScaleNativeDelegate GetWindowDisplayScaleNativeFunction = SDL_GetWindowDisplayScale;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowDisplayScale(SDL_Window *window);</code>
     /// <summary>
@@ -621,17 +627,18 @@ public static partial class SDL
     /// more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowDisplayScale"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowDisplayScale(IntPtr window);
-    private delegate float GetWindowDisplayScaleNativeDelegate(IntPtr window);
-    private static GetWindowDisplayScaleNativeDelegate GetWindowDisplayScaleNativeFunction = SDL_GetWindowDisplayScale;
-
     public static float GetWindowDisplayScale(IntPtr window)
     {
         return GetWindowDisplayScaleNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowFullscreenModePointer(IntPtr window, IntPtr mode);
+    private delegate bool SetWindowFullscreenModePointerNativeDelegate(IntPtr window, IntPtr mode);
+    private static SetWindowFullscreenModePointerNativeDelegate SetWindowFullscreenModePointerNativeFunction = SDL_SetWindowFullscreenModePointer;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
     /// <summary>
@@ -660,18 +667,18 @@ public static partial class SDL
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowFullscreenModePointer(IntPtr window, IntPtr mode);
-    private delegate bool SetWindowFullscreenModePointerNativeDelegate(IntPtr window, IntPtr mode);
-    private static SetWindowFullscreenModePointerNativeDelegate SetWindowFullscreenModePointerNativeFunction = SDL_SetWindowFullscreenModePointer;
-
     public static bool SetWindowFullscreenMode(IntPtr window, IntPtr mode)
     {
         return SetWindowFullscreenModePointerNativeFunction(window, mode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowFullscreenModeMode(IntPtr window, in DisplayMode mode);
+    private delegate bool SetWindowFullscreenModeModeNativeDelegate(IntPtr window, in DisplayMode mode);
+    private static SetWindowFullscreenModeModeNativeDelegate SetWindowFullscreenModeModeNativeFunction = SDL_SetWindowFullscreenModeMode;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);</code>
     /// <summary>
@@ -700,13 +707,6 @@ public static partial class SDL
     /// <seealso cref="GetWindowFullscreenMode"/>
     /// <seealso cref="SetWindowFullscreen"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreenMode"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowFullscreenModeMode(IntPtr window, in DisplayMode mode);
-    private delegate bool SetWindowFullscreenModeModeNativeDelegate(IntPtr window, in DisplayMode mode);
-    private static SetWindowFullscreenModeModeNativeDelegate SetWindowFullscreenModeModeNativeFunction = SDL_SetWindowFullscreenModeMode;
-
     public static bool SetWindowFullscreenMode(IntPtr window, DisplayMode mode)
     {
         return SetWindowFullscreenModeModeNativeFunction(window, in mode);
@@ -733,6 +733,12 @@ public static partial class SDL
         PointerToStructure<DisplayMode>(GetWindowFullscreenModeNativeFunction(window));
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowICCProfile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindowICCProfile(IntPtr window, out UIntPtr size);
+    private delegate IntPtr GetWindowICCProfileNativeDelegate(IntPtr window, out UIntPtr size);
+    private static GetWindowICCProfileNativeDelegate GetWindowICCProfileNativeFunction = SDL_GetWindowICCProfile;
+
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_GetWindowICCProfile(SDL_Window *window, size_t *size);</code>
     /// <summary>
     /// <para>Get the raw ICC profile data for the screen the window is currently on.</para>
@@ -745,17 +751,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <see cref="GetError"/> for more information. This should be freed with
     /// <see cref="Free"/> when it is no longer needed.</returns>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowICCProfile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowICCProfile(IntPtr window, out UIntPtr size);
-    private delegate IntPtr GetWindowICCProfileNativeDelegate(IntPtr window, out UIntPtr size);
-    private static GetWindowICCProfileNativeDelegate GetWindowICCProfileNativeFunction = SDL_GetWindowICCProfile;
-
     public static IntPtr GetWindowICCProfile(IntPtr window, out UIntPtr size)
     {
         return GetWindowICCProfileNativeFunction(window, out size);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial PixelFormat SDL_GetWindowPixelFormat(IntPtr window);
+    private delegate PixelFormat GetWindowPixelFormatNativeDelegate(IntPtr window);
+    private static GetWindowPixelFormatNativeDelegate GetWindowPixelFormatNativeFunction = SDL_GetWindowPixelFormat;
 
     /// <code>extern SDL_DECLSPEC SDL_PixelFormat SDLCALL SDL_GetWindowPixelFormat(SDL_Window *window);</code>
     /// <summary>
@@ -767,12 +773,6 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPixelFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial PixelFormat SDL_GetWindowPixelFormat(IntPtr window);
-    private delegate PixelFormat GetWindowPixelFormatNativeDelegate(IntPtr window);
-    private static GetWindowPixelFormatNativeDelegate GetWindowPixelFormatNativeFunction = SDL_GetWindowPixelFormat;
-
     public static PixelFormat GetWindowPixelFormat(IntPtr window)
     {
         return GetWindowPixelFormatNativeFunction(window);
@@ -810,6 +810,12 @@ public static partial class SDL
         }
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, WindowFlags flags);
+    private delegate IntPtr CreateWindowNativeDelegate(string title, int w, int h, WindowFlags flags);
+    private static CreateWindowNativeDelegate CreateWindowNativeFunction = SDL_CreateWindow;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_CreateWindow(const char *title, int w, int h, SDL_WindowFlags flags);</code>
     /// <summary>
@@ -886,17 +892,17 @@ public static partial class SDL
     /// <seealso cref="CreatePopupWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
     /// <seealso cref="DestroyWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, WindowFlags flags);
-    private delegate IntPtr CreateWindowNativeDelegate(string title, int w, int h, WindowFlags flags);
-    private static CreateWindowNativeDelegate CreateWindowNativeFunction = SDL_CreateWindow;
-
     public static IntPtr CreateWindow([MarshalAs(UnmanagedType.LPUTF8Str)] string title, int w, int h, WindowFlags flags)
     {
         return CreateWindowNativeFunction(title, w, h, flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreatePopupWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreatePopupWindow(IntPtr parent, int offsetX, int offsetY, int w, int h, WindowFlags flags);
+    private delegate IntPtr CreatePopupWindowNativeDelegate(IntPtr parent, int offsetX, int offsetY, int w, int h, WindowFlags flags);
+    private static CreatePopupWindowNativeDelegate CreatePopupWindowNativeFunction = SDL_CreatePopupWindow;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_CreatePopupWindow(SDL_Window *parent, int offset_x, int offset_y, int w, int h, SDL_WindowFlags flags);</code>
     /// <summary>
@@ -962,17 +968,17 @@ public static partial class SDL
     /// <seealso cref="CreateWindowWithProperties"/>
     /// <seealso cref="DestroyWindow"/>
     /// <seealso cref="GetWindowParent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreatePopupWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreatePopupWindow(IntPtr parent, int offsetX, int offsetY, int w, int h, WindowFlags flags);
-    private delegate IntPtr CreatePopupWindowNativeDelegate(IntPtr parent, int offsetX, int offsetY, int w, int h, WindowFlags flags);
-    private static CreatePopupWindowNativeDelegate CreatePopupWindowNativeFunction = SDL_CreatePopupWindow;
-
     public static IntPtr CreatePopupWindow(IntPtr parent, int offsetX, int offsetY, int w, int h, WindowFlags flags)
     {
         return CreatePopupWindowNativeFunction(parent, offsetX, offsetY, w, h, flags);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindowWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateWindowWithProperties(uint props);
+    private delegate IntPtr CreateWindowWithPropertiesNativeDelegate(uint props);
+    private static CreateWindowWithPropertiesNativeDelegate CreateWindowWithPropertiesNativeFunction = SDL_CreateWindowWithProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_CreateWindowWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
@@ -1118,17 +1124,17 @@ public static partial class SDL
     /// <seealso cref="CreateProperties"/>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="DestroyWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateWindowWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateWindowWithProperties(uint props);
-    private delegate IntPtr CreateWindowWithPropertiesNativeDelegate(uint props);
-    private static CreateWindowWithPropertiesNativeDelegate CreateWindowWithPropertiesNativeFunction = SDL_CreateWindowWithProperties;
-
     public static IntPtr CreateWindowWithProperties(uint props)
     {
         return CreateWindowWithPropertiesNativeFunction(props);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetWindowID(IntPtr window);
+    private delegate uint GetWindowIDNativeDelegate(IntPtr window);
+    private static GetWindowIDNativeDelegate GetWindowIDNativeFunction = SDL_GetWindowID;
 
     /// <code>extern SDL_DECLSPEC SDL_WindowID SDLCALL SDL_GetWindowID(SDL_Window *window);</code>
     /// <summary>
@@ -1142,17 +1148,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFromID"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetWindowID(IntPtr window);
-    private delegate uint GetWindowIDNativeDelegate(IntPtr window);
-    private static GetWindowIDNativeDelegate GetWindowIDNativeFunction = SDL_GetWindowID;
-
     public static uint GetWindowID(IntPtr window)
     {
         return GetWindowIDNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindowFromID(uint id);
+    private delegate IntPtr GetWindowFromIDNativeDelegate(uint id);
+    private static GetWindowFromIDNativeDelegate GetWindowFromIDNativeFunction = SDL_GetWindowFromID;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetWindowFromID(SDL_WindowID id);</code>
     /// <summary>
@@ -1166,17 +1172,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowID"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFromID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowFromID(uint id);
-    private delegate IntPtr GetWindowFromIDNativeDelegate(uint id);
-    private static GetWindowFromIDNativeDelegate GetWindowFromIDNativeFunction = SDL_GetWindowFromID;
-
     public static IntPtr GetWindowFromID(uint id)
     {
         return GetWindowFromIDNativeFunction(id);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindowParent(IntPtr window);
+    private delegate IntPtr GetWindowParentNativeDelegate(IntPtr window);
+    private static GetWindowParentNativeDelegate GetWindowParentNativeFunction = SDL_GetWindowParent;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetWindowParent(SDL_Window *window);</code>
     /// <summary>
@@ -1188,17 +1194,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreatePopupWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowParent(IntPtr window);
-    private delegate IntPtr GetWindowParentNativeDelegate(IntPtr window);
-    private static GetWindowParentNativeDelegate GetWindowParentNativeFunction = SDL_GetWindowParent;
-
     public static IntPtr GetWindowParent(IntPtr window)
     {
         return GetWindowParentNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetWindowProperties(IntPtr window);
+    private delegate uint GetWindowPropertiesNativeDelegate(IntPtr window);
+    private static GetWindowPropertiesNativeDelegate GetWindowPropertiesNativeFunction = SDL_GetWindowProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetWindowProperties(SDL_Window *window);</code>
     /// <summary>
@@ -1338,17 +1344,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetWindowProperties(IntPtr window);
-    private delegate uint GetWindowPropertiesNativeDelegate(IntPtr window);
-    private static GetWindowPropertiesNativeDelegate GetWindowPropertiesNativeFunction = SDL_GetWindowProperties;
-
     public static uint GetWindowProperties(IntPtr window)
     {
         return GetWindowPropertiesNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFlags"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial WindowFlags SDL_GetWindowFlags(IntPtr window);
+    private delegate WindowFlags GetWindowFlagsNativeDelegate(IntPtr window);
+    private static GetWindowFlagsNativeDelegate GetWindowFlagsNativeFunction = SDL_GetWindowFlags;
 
     /// <code>extern SDL_DECLSPEC SDL_WindowFlags SDLCALL SDL_GetWindowFlags(SDL_Window *window);</code>
     /// <summary>
@@ -1366,17 +1372,18 @@ public static partial class SDL
     /// <seealso cref="SetWindowMouseGrab"/>
     /// <seealso cref="SetWindowFillDocument"/>
     /// <seealso cref="ShowWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowFlags"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial WindowFlags SDL_GetWindowFlags(IntPtr window);
-    private delegate WindowFlags GetWindowFlagsNativeDelegate(IntPtr window);
-    private static GetWindowFlagsNativeDelegate GetWindowFlagsNativeFunction = SDL_GetWindowFlags;
-
     public static WindowFlags GetWindowFlags(IntPtr window)
     {
         return GetWindowFlagsNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
+    private delegate bool SetWindowTitleNativeDelegate(IntPtr window, string title);
+    private static SetWindowTitleNativeDelegate SetWindowTitleNativeFunction = SDL_SetWindowTitle;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowTitle(SDL_Window *window, const char *title);</code>
     /// <summary>
@@ -1390,13 +1397,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowTitle"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowTitle"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title);
-    private delegate bool SetWindowTitleNativeDelegate(IntPtr window, string title);
-    private static SetWindowTitleNativeDelegate SetWindowTitleNativeFunction = SDL_SetWindowTitle;
-
     public static bool SetWindowTitle(IntPtr window, [MarshalAs(UnmanagedType.LPUTF8Str)] string title)
     {
         return SetWindowTitleNativeFunction(window, title);
@@ -1425,6 +1425,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowIcon(IntPtr window, IntPtr icon);
+    private delegate bool SetWindowIconNativeDelegate(IntPtr window, IntPtr icon);
+    private static SetWindowIconNativeDelegate SetWindowIconNativeFunction = SDL_SetWindowIcon;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);</code>
     /// <summary>
     /// <para>Set the icon for a window.</para>
@@ -1446,18 +1453,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AddSurfaceAlternateImage"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowIcon(IntPtr window, IntPtr icon);
-    private delegate bool SetWindowIconNativeDelegate(IntPtr window, IntPtr icon);
-    private static SetWindowIconNativeDelegate SetWindowIconNativeFunction = SDL_SetWindowIcon;
-
     public static bool SetWindowIcon(IntPtr window, IntPtr icon)
     {
         return SetWindowIconNativeFunction(window, icon);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowPosition(IntPtr window, int x, int y);
+    private delegate bool SetWindowPositionNativeDelegate(IntPtr window, int x, int y);
+    private static SetWindowPositionNativeDelegate SetWindowPositionNativeFunction = SDL_SetWindowPosition;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowPosition(SDL_Window *window, int x, int y);</code>
     /// <summary>
@@ -1491,18 +1498,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowPosition"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowPosition(IntPtr window, int x, int y);
-    private delegate bool SetWindowPositionNativeDelegate(IntPtr window, int x, int y);
-    private static SetWindowPositionNativeDelegate SetWindowPositionNativeFunction = SDL_SetWindowPosition;
-
     public static bool SetWindowPosition(IntPtr window, int x, int y)
     {
         return SetWindowPositionNativeFunction(window, x, y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowPosition(IntPtr window, out int x, out int y);
+    private delegate bool GetWindowPositionNativeDelegate(IntPtr window, out int x, out int y);
+    private static GetWindowPositionNativeDelegate GetWindowPositionNativeFunction = SDL_GetWindowPosition;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);</code>
     /// <summary>
@@ -1522,18 +1529,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowPosition"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowPosition(IntPtr window, out int x, out int y);
-    private delegate bool GetWindowPositionNativeDelegate(IntPtr window, out int x, out int y);
-    private static GetWindowPositionNativeDelegate GetWindowPositionNativeFunction = SDL_GetWindowPosition;
-
     public static bool GetWindowPosition(IntPtr window, out int x, out int y)
     {
         return GetWindowPositionNativeFunction(window, out x, out y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowSize(IntPtr window, int w, int h);
+    private delegate bool SetWindowSizeNativeDelegate(IntPtr window, int w, int h);
+    private static SetWindowSizeNativeDelegate SetWindowSizeNativeFunction = SDL_SetWindowSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowSize(SDL_Window *window, int w, int h);</code>
     /// <summary>
@@ -1563,18 +1570,18 @@ public static partial class SDL
     /// <seealso cref="GetWindowSize"/>
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowSize(IntPtr window, int w, int h);
-    private delegate bool SetWindowSizeNativeDelegate(IntPtr window, int w, int h);
-    private static SetWindowSizeNativeDelegate SetWindowSizeNativeFunction = SDL_SetWindowSize;
-
     public static bool SetWindowSize(IntPtr window, int w, int h)
     {
         return SetWindowSizeNativeFunction(window, w, h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowSize(IntPtr window, out int w, out int h);
+    private delegate bool GetWindowSizeNativeDelegate(IntPtr window, out int w, out int h);
+    private static GetWindowSizeNativeDelegate GetWindowSizeNativeFunction = SDL_GetWindowSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
@@ -1594,18 +1601,18 @@ public static partial class SDL
     /// <seealso cref="GetWindowSizeInPixels"/>
     /// <seealso cref="SetWindowSize"/>
     /// <seealso cref="EventType.WindowResized"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowSize(IntPtr window, out int w, out int h);
-    private delegate bool GetWindowSizeNativeDelegate(IntPtr window, out int w, out int h);
-    private static GetWindowSizeNativeDelegate GetWindowSizeNativeFunction = SDL_GetWindowSize;
-
     public static bool GetWindowSize(IntPtr window, out int w, out int h)
     {
         return GetWindowSizeNativeFunction(window, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSafeArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowSafeArea(IntPtr window, out Rect rect);
+    private delegate bool GetWindowSafeAreaNativeDelegate(IntPtr window, out Rect rect);
+    private static GetWindowSafeAreaNativeDelegate GetWindowSafeAreaNativeFunction = SDL_GetWindowSafeArea;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);</code>
     /// <summary>
@@ -1624,18 +1631,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSafeArea"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowSafeArea(IntPtr window, out Rect rect);
-    private delegate bool GetWindowSafeAreaNativeDelegate(IntPtr window, out Rect rect);
-    private static GetWindowSafeAreaNativeDelegate GetWindowSafeAreaNativeFunction = SDL_GetWindowSafeArea;
-
     public static bool GetWindowSafeArea(IntPtr window, out Rect rect)
     {
         return GetWindowSafeAreaNativeFunction(window, out rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowAspectRatio(IntPtr window, float minAspect, float maxAspect);
+    private delegate bool SetWindowAspectRatioNativeDelegate(IntPtr window, float minAspect, float maxAspect);
+    private static SetWindowAspectRatioNativeDelegate SetWindowAspectRatioNativeFunction = SDL_SetWindowAspectRatio;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowAspectRatio(SDL_Window *window, float min_aspect, float max_aspect);</code>
     /// <summary>
@@ -1669,18 +1676,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowAspectRatio"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowAspectRatio(IntPtr window, float minAspect, float maxAspect);
-    private delegate bool SetWindowAspectRatioNativeDelegate(IntPtr window, float minAspect, float maxAspect);
-    private static SetWindowAspectRatioNativeDelegate SetWindowAspectRatioNativeFunction = SDL_SetWindowAspectRatio;
-
     public static bool SetWindowAspectRatio(IntPtr window, float minAspect, float maxAspect)
     {
         return SetWindowAspectRatioNativeFunction(window, minAspect, maxAspect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect);
+    private delegate bool GetWindowAspectRatioNativeDelegate(IntPtr window, out float minAspect, out float maxAspect);
+    private static GetWindowAspectRatioNativeDelegate GetWindowAspectRatioNativeFunction = SDL_GetWindowAspectRatio;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);</code>
     /// <summary>
@@ -1696,18 +1703,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowAspectRatio"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowAspectRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect);
-    private delegate bool GetWindowAspectRatioNativeDelegate(IntPtr window, out float minAspect, out float maxAspect);
-    private static GetWindowAspectRatioNativeDelegate GetWindowAspectRatioNativeFunction = SDL_GetWindowAspectRatio;
-
     public static bool GetWindowAspectRatio(IntPtr window, out float minAspect, out float maxAspect)
     {
         return GetWindowAspectRatioNativeFunction(window, out minAspect, out maxAspect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
+    private delegate bool GetWindowBordersSizeNativeDelegate(IntPtr window, out int top, out int left, out int bottom, out int right);
+    private static GetWindowBordersSizeNativeDelegate GetWindowBordersSizeNativeFunction = SDL_GetWindowBordersSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);</code>
     /// <summary>
@@ -1738,18 +1745,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowBordersSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right);
-    private delegate bool GetWindowBordersSizeNativeDelegate(IntPtr window, out int top, out int left, out int bottom, out int right);
-    private static GetWindowBordersSizeNativeDelegate GetWindowBordersSizeNativeFunction = SDL_GetWindowBordersSize;
-
     public static bool GetWindowBordersSize(IntPtr window, out int top, out int left, out int bottom, out int right)
     {
         return GetWindowBordersSizeNativeFunction(window, out top, out left, out bottom, out right);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSizeInPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowSizeInPixels(IntPtr window, out int w, out int h);
+    private delegate bool GetWindowSizeInPixelsNativeDelegate(IntPtr window, out int w, out int h);
+    private static GetWindowSizeInPixelsNativeDelegate GetWindowSizeInPixelsNativeFunction = SDL_GetWindowSizeInPixels;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
@@ -1766,18 +1773,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="GetWindowSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSizeInPixels"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowSizeInPixels(IntPtr window, out int w, out int h);
-    private delegate bool GetWindowSizeInPixelsNativeDelegate(IntPtr window, out int w, out int h);
-    private static GetWindowSizeInPixelsNativeDelegate GetWindowSizeInPixelsNativeFunction = SDL_GetWindowSizeInPixels;
-
     public static bool GetWindowSizeInPixels(IntPtr window, out int w, out int h)
     {
         return GetWindowSizeInPixelsNativeFunction(window, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowMinimumSize(IntPtr window, int minW, int minH);
+    private delegate bool SetWindowMinimumSizeNativeDelegate(IntPtr window, int minW, int minH);
+    private static SetWindowMinimumSizeNativeDelegate SetWindowMinimumSizeNativeFunction = SDL_SetWindowMinimumSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h);</code>
     /// <summary>
@@ -1792,18 +1799,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowMinimumSize(IntPtr window, int minW, int minH);
-    private delegate bool SetWindowMinimumSizeNativeDelegate(IntPtr window, int minW, int minH);
-    private static SetWindowMinimumSizeNativeDelegate SetWindowMinimumSizeNativeFunction = SDL_SetWindowMinimumSize;
-
     public static bool SetWindowMinimumSize(IntPtr window, int minW, int minH)
     {
         return SetWindowMinimumSizeNativeFunction(window, minW, minH);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowMinimumSize(IntPtr window, out int w, out int h);
+    private delegate bool GetWindowMinimumSizeNativeDelegate(IntPtr window, out int w, out int h);
+    private static GetWindowMinimumSizeNativeDelegate GetWindowMinimumSizeNativeFunction = SDL_GetWindowMinimumSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
@@ -1820,18 +1827,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMinimumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowMinimumSize(IntPtr window, out int w, out int h);
-    private delegate bool GetWindowMinimumSizeNativeDelegate(IntPtr window, out int w, out int h);
-    private static GetWindowMinimumSizeNativeDelegate GetWindowMinimumSizeNativeFunction = SDL_GetWindowMinimumSize;
-
     public static bool GetWindowMinimumSize(IntPtr window, out int w, out int h)
     {
         return GetWindowMinimumSizeNativeFunction(window, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowMaximumSize(IntPtr window, int maxWidth, int maxHeight);
+    private delegate bool SetWindowMaximumSizeNativeDelegate(IntPtr window, int maxWidth, int maxHeight);
+    private static SetWindowMaximumSizeNativeDelegate SetWindowMaximumSizeNativeFunction = SDL_SetWindowMaximumSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h);</code>
     /// <summary>
@@ -1846,18 +1853,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowMaximumSize"/>
     /// <seealso cref="SetWindowMinimumSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowMaximumSize(IntPtr window, int maxWidth, int maxHeight);
-    private delegate bool SetWindowMaximumSizeNativeDelegate(IntPtr window, int maxWidth, int maxHeight);
-    private static SetWindowMaximumSizeNativeDelegate SetWindowMaximumSizeNativeFunction = SDL_SetWindowMaximumSize;
-
     public static bool SetWindowMaximumSize(IntPtr window, int maxWidth, int maxHeight)
     {
         return SetWindowMaximumSizeNativeFunction(window, maxWidth, maxHeight);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowMaximumSize(IntPtr window, out int w, out int h);
+    private delegate bool GetWindowMaximumSizeNativeDelegate(IntPtr window, out int w, out int h);
+    private static GetWindowMaximumSizeNativeDelegate GetWindowMaximumSizeNativeFunction = SDL_GetWindowMaximumSize;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);</code>
     /// <summary>
@@ -1874,18 +1881,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowMinimumSize"/>
     /// <seealso cref="SetWindowMaximumSize"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMaximumSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowMaximumSize(IntPtr window, out int w, out int h);
-    private delegate bool GetWindowMaximumSizeNativeDelegate(IntPtr window, out int w, out int h);
-    private static GetWindowMaximumSizeNativeDelegate GetWindowMaximumSizeNativeFunction = SDL_GetWindowMaximumSize;
-
     public static bool GetWindowMaximumSize(IntPtr window, out int w, out int h)
     {
         return GetWindowMaximumSizeNativeFunction(window, out w, out h);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowBordered"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowBordered(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool bordered);
+    private delegate bool SetWindowBorderedNativeDelegate(IntPtr window, bool bordered);
+    private static SetWindowBorderedNativeDelegate SetWindowBorderedNativeFunction = SDL_SetWindowBordered;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowBordered(SDL_Window *window, bool bordered);</code>
     /// <summary>
@@ -1902,18 +1909,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFlags"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowBordered"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowBordered(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool bordered);
-    private delegate bool SetWindowBorderedNativeDelegate(IntPtr window, bool bordered);
-    private static SetWindowBorderedNativeDelegate SetWindowBorderedNativeFunction = SDL_SetWindowBordered;
-
     public static bool SetWindowBordered(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool bordered)
     {
         return SetWindowBorderedNativeFunction(window, bordered);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowResizable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowResizable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool resizable);
+    private delegate bool SetWindowResizableNativeDelegate(IntPtr window, bool resizable);
+    private static SetWindowResizableNativeDelegate SetWindowResizableNativeFunction = SDL_SetWindowResizable;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowResizable(SDL_Window *window, bool resizable);</code>
     /// <summary>
@@ -1930,18 +1937,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFlags"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowResizable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowResizable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool resizable);
-    private delegate bool SetWindowResizableNativeDelegate(IntPtr window, bool resizable);
-    private static SetWindowResizableNativeDelegate SetWindowResizableNativeFunction = SDL_SetWindowResizable;
-
     public static bool SetWindowResizable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool resizable)
     {
         return SetWindowResizableNativeFunction(window, resizable);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAlwaysOnTop"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool onTop);
+    private delegate bool SetWindowAlwaysOnTopNativeDelegate(IntPtr window, bool onTop);
+    private static SetWindowAlwaysOnTopNativeDelegate SetWindowAlwaysOnTopNativeFunction = SDL_SetWindowAlwaysOnTop;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowAlwaysOnTop(SDL_Window *window, bool on_top);</code>
     /// <summary>
@@ -1956,18 +1963,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowFlags"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowAlwaysOnTop"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool onTop);
-    private delegate bool SetWindowAlwaysOnTopNativeDelegate(IntPtr window, bool onTop);
-    private static SetWindowAlwaysOnTopNativeDelegate SetWindowAlwaysOnTopNativeFunction = SDL_SetWindowAlwaysOnTop;
-
     public static bool SetWindowAlwaysOnTop(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool onTop)
     {
         return SetWindowAlwaysOnTopNativeFunction(window, onTop);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFillDocument"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowFillDocument(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fill);
+    private delegate bool SetWindowFillDocumentNativeDelegate(IntPtr window, bool fill);
+    private static SetWindowFillDocumentNativeDelegate SetWindowFillDocumentNativeFunction = SDL_SetWindowFillDocument;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFillDocument(SDL_Window *window, bool fill);</code>
     /// <summary>
@@ -1990,18 +1997,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFillDocument"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowFillDocument(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fill);
-    private delegate bool SetWindowFillDocumentNativeDelegate(IntPtr window, bool fill);
-    private static SetWindowFillDocumentNativeDelegate SetWindowFillDocumentNativeFunction = SDL_SetWindowFillDocument;
-
     public static bool SetWindowFillDocument(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fill)
     {
         return SetWindowFillDocumentNativeFunction(window, fill);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ShowWindow(IntPtr window);
+    private delegate bool ShowWindowNativeDelegate(IntPtr window);
+    private static ShowWindowNativeDelegate ShowWindowNativeFunction = SDL_ShowWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2014,18 +2021,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HideWindow"/>
     /// <seealso cref="RaiseWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ShowWindow(IntPtr window);
-    private delegate bool ShowWindowNativeDelegate(IntPtr window);
-    private static ShowWindowNativeDelegate ShowWindowNativeFunction = SDL_ShowWindow;
-
     public static bool ShowWindow(IntPtr window)
     {
         return ShowWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HideWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HideWindow(IntPtr window);
+    private delegate bool HideWindowNativeDelegate(IntPtr window);
+    private static HideWindowNativeDelegate HideWindowNativeFunction = SDL_HideWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HideWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2038,18 +2045,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ShowWindow"/>
     /// <seealso cref="WindowFlags.Hidden"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HideWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HideWindow(IntPtr window);
-    private delegate bool HideWindowNativeDelegate(IntPtr window);
-    private static HideWindowNativeDelegate HideWindowNativeFunction = SDL_HideWindow;
-
     public static bool HideWindow(IntPtr window)
     {
         return HideWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RaiseWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RaiseWindow(IntPtr window);
+    private delegate bool RaiseWindowNativeDelegate(IntPtr window);
+    private static RaiseWindowNativeDelegate RaiseWindowNativeFunction = SDL_RaiseWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RaiseWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2066,18 +2073,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RaiseWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RaiseWindow(IntPtr window);
-    private delegate bool RaiseWindowNativeDelegate(IntPtr window);
-    private static RaiseWindowNativeDelegate RaiseWindowNativeFunction = SDL_RaiseWindow;
-
     public static bool RaiseWindow(IntPtr window)
     {
         return RaiseWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MaximizeWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_MaximizeWindow(IntPtr window);
+    private delegate bool MaximizeWindowNativeDelegate(IntPtr window);
+    private static MaximizeWindowNativeDelegate MaximizeWindowNativeFunction = SDL_MaximizeWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_MaximizeWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2104,18 +2111,18 @@ public static partial class SDL
     /// <seealso cref="MinimizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MaximizeWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_MaximizeWindow(IntPtr window);
-    private delegate bool MaximizeWindowNativeDelegate(IntPtr window);
-    private static MaximizeWindowNativeDelegate MaximizeWindowNativeFunction = SDL_MaximizeWindow;
-
     public static bool MaximizeWindow(IntPtr window)
     {
         return MaximizeWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MinimizeWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_MinimizeWindow(IntPtr window);
+    private delegate bool MinimizeWindowNativeDelegate(IntPtr window);
+    private static MinimizeWindowNativeDelegate MinimizeWindowNativeFunction = SDL_MinimizeWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_MinimizeWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2138,18 +2145,18 @@ public static partial class SDL
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_MinimizeWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_MinimizeWindow(IntPtr window);
-    private delegate bool MinimizeWindowNativeDelegate(IntPtr window);
-    private static MinimizeWindowNativeDelegate MinimizeWindowNativeFunction = SDL_MinimizeWindow;
-
     public static bool MinimizeWindow(IntPtr window)
     {
         return MinimizeWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RestoreWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RestoreWindow(IntPtr window);
+    private delegate bool RestoreWindowNativeDelegate(IntPtr window);
+    private static RestoreWindowNativeDelegate RestoreWindowNativeFunction = SDL_RestoreWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RestoreWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2173,18 +2180,18 @@ public static partial class SDL
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="MinimizeWindow"/>
     /// <seealso cref="SyncWindow"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RestoreWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RestoreWindow(IntPtr window);
-    private delegate bool RestoreWindowNativeDelegate(IntPtr window);
-    private static RestoreWindowNativeDelegate RestoreWindowNativeFunction = SDL_RestoreWindow;
-
     public static bool RestoreWindow(IntPtr window)
     {
         return RestoreWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreen"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowFullscreen(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fullscreen);
+    private delegate bool SetWindowFullscreenNativeDelegate(IntPtr window, bool fullscreen);
+    private static SetWindowFullscreenNativeDelegate SetWindowFullscreenNativeFunction = SDL_SetWindowFullscreen;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFullscreen(SDL_Window *window, bool fullscreen);</code>
     /// <summary>
@@ -2210,18 +2217,18 @@ public static partial class SDL
     /// <seealso cref="SetWindowFullscreenMode(nint, nint)"/>
     /// <seealso cref="SyncWindow"/>
     /// <seealso cref="WindowFlags.Fullscreen"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFullscreen"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowFullscreen(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fullscreen);
-    private delegate bool SetWindowFullscreenNativeDelegate(IntPtr window, bool fullscreen);
-    private static SetWindowFullscreenNativeDelegate SetWindowFullscreenNativeFunction = SDL_SetWindowFullscreen;
-
     public static bool SetWindowFullscreen(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool fullscreen)
     {
         return SetWindowFullscreenNativeFunction(window, fullscreen);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SyncWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SyncWindow(IntPtr window);
+    private delegate bool SyncWindowNativeDelegate(IntPtr window);
+    private static SyncWindowNativeDelegate SyncWindowNativeFunction = SDL_SyncWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SyncWindow(SDL_Window *window);</code>
     /// <summary>
@@ -2247,18 +2254,18 @@ public static partial class SDL
     /// <seealso cref="MaximizeWindow"/>
     /// <seealso cref="RestoreWindow"/>
     /// <seealso cref="Hints.VideoSyncWindowOperations"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SyncWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SyncWindow(IntPtr window);
-    private delegate bool SyncWindowNativeDelegate(IntPtr window);
-    private static SyncWindowNativeDelegate SyncWindowNativeFunction = SDL_SyncWindow;
-
     public static bool SyncWindow(IntPtr window)
     {
         return SyncWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowHasSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_WindowHasSurface(IntPtr window);
+    private delegate bool WindowHasSurfaceNativeDelegate(IntPtr window);
+    private static WindowHasSurfaceNativeDelegate WindowHasSurfaceNativeFunction = SDL_WindowHasSurface;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WindowHasSurface(SDL_Window *window);</code>
     /// <summary>
@@ -2270,18 +2277,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSurface"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WindowHasSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_WindowHasSurface(IntPtr window);
-    private delegate bool WindowHasSurfaceNativeDelegate(IntPtr window);
-    private static WindowHasSurfaceNativeDelegate WindowHasSurfaceNativeFunction = SDL_WindowHasSurface;
-
     public static bool WindowHasSurface(IntPtr window)
     {
         return WindowHasSurfaceNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindowSurface(IntPtr window);
+    private delegate IntPtr GetWindowSurfaceNativeDelegate(IntPtr window);
+    private static GetWindowSurfaceNativeDelegate GetWindowSurfaceNativeFunction = SDL_GetWindowSurface;
 
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_GetWindowSurface(SDL_Window *window);</code>
     /// <summary>
@@ -2303,17 +2309,18 @@ public static partial class SDL
     /// <seealso cref="WindowHasSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
     /// <seealso cref="UpdateWindowSurfaceRects"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowSurface(IntPtr window);
-    private delegate IntPtr GetWindowSurfaceNativeDelegate(IntPtr window);
-    private static GetWindowSurfaceNativeDelegate GetWindowSurfaceNativeFunction = SDL_GetWindowSurface;
-
     public static IntPtr GetWindowSurface(IntPtr window)
     {
         return GetWindowSurfaceNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowSurfaceVSync(IntPtr window, int vsync);
+    private delegate bool SetWindowSurfaceVSyncNativeDelegate(IntPtr window, int vsync);
+    private static SetWindowSurfaceVSyncNativeDelegate SetWindowSurfaceVSyncNativeFunction = SDL_SetWindowSurfaceVSync;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowSurfaceVSync(SDL_Window *window, int vsync);</code>
     /// <summary>
@@ -2334,18 +2341,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSurfaceVSync"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowSurfaceVSync(IntPtr window, int vsync);
-    private delegate bool SetWindowSurfaceVSyncNativeDelegate(IntPtr window, int vsync);
-    private static SetWindowSurfaceVSyncNativeDelegate SetWindowSurfaceVSyncNativeFunction = SDL_SetWindowSurfaceVSync;
-
     public static bool SetWindowSurfaceVSync(IntPtr window, int vsync)
     {
         return SetWindowSurfaceVSyncNativeFunction(window, vsync);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowSurfaceVSync(IntPtr window, out int vsync);
+    private delegate bool GetWindowSurfaceVSyncNativeDelegate(IntPtr window, out int vsync);
+    private static GetWindowSurfaceVSyncNativeDelegate GetWindowSurfaceVSyncNativeFunction = SDL_GetWindowSurfaceVSync;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowSurfaceVSync(SDL_Window *window, int *vsync);</code>
     /// <summary>
@@ -2359,18 +2366,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowSurfaceVSync"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowSurfaceVSync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowSurfaceVSync(IntPtr window, out int vsync);
-    private delegate bool GetWindowSurfaceVSyncNativeDelegate(IntPtr window, out int vsync);
-    private static GetWindowSurfaceVSyncNativeDelegate GetWindowSurfaceVSyncNativeFunction = SDL_GetWindowSurfaceVSync;
-
     public static bool GetWindowSurfaceVSync(IntPtr window, out int vsync)
     {
         return GetWindowSurfaceVSyncNativeFunction(window, out vsync);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateWindowSurface(IntPtr window);
+    private delegate bool UpdateWindowSurfaceNativeDelegate(IntPtr window);
+    private static UpdateWindowSurfaceNativeDelegate UpdateWindowSurfaceNativeFunction = SDL_UpdateWindowSurface;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateWindowSurface(SDL_Window *window);</code>
     /// <summary>
@@ -2386,18 +2393,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="UpdateWindowSurfaceRects"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UpdateWindowSurface(IntPtr window);
-    private delegate bool UpdateWindowSurfaceNativeDelegate(IntPtr window);
-    private static UpdateWindowSurfaceNativeDelegate UpdateWindowSurfaceNativeFunction = SDL_UpdateWindowSurface;
-
     public static bool UpdateWindowSurface(IntPtr window)
     {
         return UpdateWindowSurfaceNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_UpdateWindowSurfaceRects(IntPtr window, Rect[] rects, int numrects);
+    private delegate bool UpdateWindowSurfaceRectsNativeDelegate(IntPtr window, Rect[] rects, int numrects);
+    private static UpdateWindowSurfaceRectsNativeDelegate UpdateWindowSurfaceRectsNativeFunction = SDL_UpdateWindowSurfaceRects;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_UpdateWindowSurfaceRects(SDL_Window *window, const SDL_Rect *rects, int numrects);</code>
     /// <summary>
@@ -2420,18 +2427,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="UpdateWindowSurface"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateWindowSurfaceRects"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_UpdateWindowSurfaceRects(IntPtr window, Rect[] rects, int numrects);
-    private delegate bool UpdateWindowSurfaceRectsNativeDelegate(IntPtr window, Rect[] rects, int numrects);
-    private static UpdateWindowSurfaceRectsNativeDelegate UpdateWindowSurfaceRectsNativeFunction = SDL_UpdateWindowSurfaceRects;
-
     public static bool UpdateWindowSurfaceRects(IntPtr window, Rect[] rects, int numrects)
     {
         return UpdateWindowSurfaceRectsNativeFunction(window, rects, numrects);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_DestroyWindowSurface(IntPtr window);
+    private delegate bool DestroyWindowSurfaceNativeDelegate(IntPtr window);
+    private static DestroyWindowSurfaceNativeDelegate DestroyWindowSurfaceNativeFunction = SDL_DestroyWindowSurface;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_DestroyWindowSurface(SDL_Window *window);</code>
     /// <summary>
@@ -2444,18 +2451,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowSurface"/>
     /// <seealso cref="WindowHasSurface"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_DestroyWindowSurface(IntPtr window);
-    private delegate bool DestroyWindowSurfaceNativeDelegate(IntPtr window);
-    private static DestroyWindowSurfaceNativeDelegate DestroyWindowSurfaceNativeFunction = SDL_DestroyWindowSurface;
-
     public static bool DestroyWindowSurface(IntPtr window)
     {
         return DestroyWindowSurfaceNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowKeyboardGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed);
+    private delegate bool SetWindowKeyboardGrabNativeDelegate(IntPtr window, bool grabbed);
+    private static SetWindowKeyboardGrabNativeDelegate SetWindowKeyboardGrabNativeFunction = SDL_SetWindowKeyboardGrab;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowKeyboardGrab(SDL_Window *window, bool grabbed);</code>
     /// <summary>
@@ -2481,18 +2488,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowKeyboardGrab(nint)"/>
     /// <seealso cref="SetWindowMouseGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowKeyboardGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed);
-    private delegate bool SetWindowKeyboardGrabNativeDelegate(IntPtr window, bool grabbed);
-    private static SetWindowKeyboardGrabNativeDelegate SetWindowKeyboardGrabNativeFunction = SDL_SetWindowKeyboardGrab;
-
     public static bool SetWindowKeyboardGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed)
     {
         return SetWindowKeyboardGrabNativeFunction(window, grabbed);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowMouseGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed);
+    private delegate bool SetWindowMouseGrabNativeDelegate(IntPtr window, bool grabbed);
+    private static SetWindowMouseGrabNativeDelegate SetWindowMouseGrabNativeFunction = SDL_SetWindowMouseGrab;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMouseGrab(SDL_Window *window, bool grabbed);</code>
     /// <summary>
@@ -2508,18 +2515,18 @@ public static partial class SDL
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowMouseGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed);
-    private delegate bool SetWindowMouseGrabNativeDelegate(IntPtr window, bool grabbed);
-    private static SetWindowMouseGrabNativeDelegate SetWindowMouseGrabNativeFunction = SDL_SetWindowMouseGrab;
-
     public static bool SetWindowMouseGrab(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool grabbed)
     {
         return SetWindowMouseGrabNativeFunction(window, grabbed);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowKeyboardGrab(IntPtr window);
+    private delegate bool GetWindowKeyboardGrabNativeDelegate(IntPtr window);
+    private static GetWindowKeyboardGrabNativeDelegate GetWindowKeyboardGrabNativeFunction = SDL_GetWindowKeyboardGrab;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowKeyboardGrab(SDL_Window *window);</code>
     /// <summary>
@@ -2530,18 +2537,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowKeyboardGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowKeyboardGrab(IntPtr window);
-    private delegate bool GetWindowKeyboardGrabNativeDelegate(IntPtr window);
-    private static GetWindowKeyboardGrabNativeDelegate GetWindowKeyboardGrabNativeFunction = SDL_GetWindowKeyboardGrab;
-
     public static bool GetWindowKeyboardGrab(IntPtr window)
     {
         return GetWindowKeyboardGrabNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetWindowMouseGrab(IntPtr window);
+    private delegate bool GetWindowMouseGrabNativeDelegate(IntPtr window);
+    private static GetWindowMouseGrabNativeDelegate GetWindowMouseGrabNativeFunction = SDL_GetWindowMouseGrab;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetWindowMouseGrab(SDL_Window *window);</code>
     /// <summary>
@@ -2555,18 +2562,17 @@ public static partial class SDL
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
     /// <seealso cref="SetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseGrab"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetWindowMouseGrab(IntPtr window);
-    private delegate bool GetWindowMouseGrabNativeDelegate(IntPtr window);
-    private static GetWindowMouseGrabNativeDelegate GetWindowMouseGrabNativeFunction = SDL_GetWindowMouseGrab;
-
     public static bool GetWindowMouseGrab(IntPtr window)
     {
         return GetWindowMouseGrabNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGrabbedWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetGrabbedWindow();
+    private delegate IntPtr GetGrabbedWindowNativeDelegate();
+    private static GetGrabbedWindowNativeDelegate GetGrabbedWindowNativeFunction = SDL_GetGrabbedWindow;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GetGrabbedWindow(void);</code>
     /// <summary>
@@ -2577,34 +2583,12 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowMouseGrab"/>
     /// <seealso cref="SetWindowKeyboardGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGrabbedWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetGrabbedWindow();
-    private delegate IntPtr GetGrabbedWindowNativeDelegate();
-    private static GetGrabbedWindowNativeDelegate GetGrabbedWindowNativeFunction = SDL_GetGrabbedWindow;
-
     public static IntPtr GetGrabbedWindow()
     {
         return GetGrabbedWindowNativeFunction();
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);</code>
-    /// <summary>
-    /// <para>Confines the cursor to the specified area of a window.</para>
-    /// <para>Note that this does NOT grab the cursor, it only defines the area a cursor
-    /// is restricted to when the window has mouse focus.</para>
-    /// </summary>
-    /// <param name="window">the window that will be associated with the barrier.</param>
-    /// <param name="rect">a rectangle area in window-relative coordinates. If <c>null</c> the
-    /// barrier for the specified window will be destroyed.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetWindowMouseRect"/>
-    /// <seealso cref="GetWindowMouseGrab"/>
-    /// <seealso cref="SetWindowMouseGrab"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2612,11 +2596,34 @@ public static partial class SDL
     private delegate bool SetWindowMouseRectPointerNativeDelegate(IntPtr window, IntPtr rect);
     private static SetWindowMouseRectPointerNativeDelegate SetWindowMouseRectPointerNativeFunction = SDL_SetWindowMouseRectPointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);</code>
+    /// <summary>
+    /// <para>Confines the cursor to the specified area of a window.</para>
+    /// <para>Note that this does NOT grab the cursor, it only defines the area a cursor
+    /// is restricted to when the window has mouse focus.</para>
+    /// </summary>
+    /// <param name="window">the window that will be associated with the barrier.</param>
+    /// <param name="rect">a rectangle area in window-relative coordinates. If <c>null</c> the
+    /// barrier for the specified window will be destroyed.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetWindowMouseRect"/>
+    /// <seealso cref="GetWindowMouseGrab"/>
+    /// <seealso cref="SetWindowMouseGrab"/>
     public static bool SetWindowMouseRect(IntPtr window, IntPtr rect)
     {
         return SetWindowMouseRectPointerNativeFunction(window, rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowMouseRectRect(IntPtr window, in Rect rect);
+    private delegate bool SetWindowMouseRectRectNativeDelegate(IntPtr window, in Rect rect);
+    private static SetWindowMouseRectRectNativeDelegate SetWindowMouseRectRectNativeFunction = SDL_SetWindowMouseRectRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);</code>
     /// <summary>
@@ -2634,18 +2641,17 @@ public static partial class SDL
     /// <seealso cref="GetWindowMouseRect"/>
     /// <seealso cref="GetWindowMouseGrab"/>
     /// <seealso cref="SetWindowMouseGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowMouseRectRect(IntPtr window, in Rect rect);
-    private delegate bool SetWindowMouseRectRectNativeDelegate(IntPtr window, in Rect rect);
-    private static SetWindowMouseRectRectNativeDelegate SetWindowMouseRectRectNativeFunction = SDL_SetWindowMouseRectRect;
-
     public static bool SetWindowMouseRect(IntPtr window, in Rect rect)
     {
         return SetWindowMouseRectRectNativeFunction(window, in rect);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetWindowMouseRect(IntPtr window);
+    private delegate IntPtr GetWindowMouseRectNativeDelegate(IntPtr window);
+    private static GetWindowMouseRectNativeDelegate GetWindowMouseRectNativeFunction = SDL_GetWindowMouseRect;
 
     /// <code>extern SDL_DECLSPEC const SDL_Rect * SDLCALL SDL_GetWindowMouseRect(SDL_Window *window);</code>
     /// <summary>
@@ -2659,17 +2665,18 @@ public static partial class SDL
     /// <seealso cref="SetWindowMouseRect(nint, nint)"/>
     /// <seealso cref="GetWindowMouseGrab"/>
     /// <seealso cref="SetWindowMouseGrab"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowMouseRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GetWindowMouseRect(IntPtr window);
-    private delegate IntPtr GetWindowMouseRectNativeDelegate(IntPtr window);
-    private static GetWindowMouseRectNativeDelegate GetWindowMouseRectNativeFunction = SDL_GetWindowMouseRect;
-
     public static IntPtr GetWindowMouseRect(IntPtr window)
     {
         return GetWindowMouseRectNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowOpacity(IntPtr window, float opacity);
+    private delegate bool SetWindowOpacityNativeDelegate(IntPtr window, float opacity);
+    private static SetWindowOpacityNativeDelegate SetWindowOpacityNativeFunction = SDL_SetWindowOpacity;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowOpacity(SDL_Window *window, float opacity);</code>
     /// <summary>
@@ -2685,18 +2692,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetWindowOpacity"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowOpacity(IntPtr window, float opacity);
-    private delegate bool SetWindowOpacityNativeDelegate(IntPtr window, float opacity);
-    private static SetWindowOpacityNativeDelegate SetWindowOpacityNativeFunction = SDL_SetWindowOpacity;
-
     public static bool SetWindowOpacity(IntPtr window, float opacity)
     {
         return SetWindowOpacityNativeFunction(window, opacity);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetWindowOpacity(IntPtr window);
+    private delegate float GetWindowOpacityNativeDelegate(IntPtr window);
+    private static GetWindowOpacityNativeDelegate GetWindowOpacityNativeFunction = SDL_GetWindowOpacity;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowOpacity(SDL_Window *window);</code>
     /// <summary>
@@ -2710,17 +2716,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowOpacity"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowOpacity"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowOpacity(IntPtr window);
-    private delegate float GetWindowOpacityNativeDelegate(IntPtr window);
-    private static GetWindowOpacityNativeDelegate GetWindowOpacityNativeFunction = SDL_GetWindowOpacity;
-
     public static float GetWindowOpacity(IntPtr window)
     {
         return GetWindowOpacityNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowParent(IntPtr window, IntPtr parent);
+    private delegate bool SetWindowParentNativeDelegate(IntPtr window, IntPtr parent);
+    private static SetWindowParentNativeDelegate SetWindowParentNativeFunction = SDL_SetWindowParent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowParent(SDL_Window *window, SDL_Window *parent);</code>
     /// <summary>
@@ -2746,18 +2753,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowModal"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowParent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowParent(IntPtr window, IntPtr parent);
-    private delegate bool SetWindowParentNativeDelegate(IntPtr window, IntPtr parent);
-    private static SetWindowParentNativeDelegate SetWindowParentNativeFunction = SDL_SetWindowParent;
-
     public static bool SetWindowParent(IntPtr window, IntPtr parent)
     {
         return SetWindowParentNativeFunction(window, parent);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowModal"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowModal(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool modal);
+    private delegate bool SetWindowModalNativeDelegate(IntPtr window, bool modal);
+    private static SetWindowModalNativeDelegate SetWindowModalNativeFunction = SDL_SetWindowModal;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowModal(SDL_Window *window, bool modal);</code>
     /// <summary>
@@ -2773,18 +2780,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="SetWindowParent"/>
     /// <seealso cref="WindowFlags.Modal"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowModal"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowModal(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool modal);
-    private delegate bool SetWindowModalNativeDelegate(IntPtr window, bool modal);
-    private static SetWindowModalNativeDelegate SetWindowModalNativeFunction = SDL_SetWindowModal;
-
     public static bool SetWindowModal(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool modal)
     {
         return SetWindowModalNativeFunction(window, modal);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFocusable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowFocusable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool focusable);
+    private delegate bool SetWindowFocusableNativeDelegate(IntPtr window, bool focusable);
+    private static SetWindowFocusableNativeDelegate SetWindowFocusableNativeFunction = SDL_SetWindowFocusable;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowFocusable(SDL_Window *window, bool focusable);</code>
     /// <summary>
@@ -2796,18 +2803,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowFocusable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowFocusable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool focusable);
-    private delegate bool SetWindowFocusableNativeDelegate(IntPtr window, bool focusable);
-    private static SetWindowFocusableNativeDelegate SetWindowFocusableNativeFunction = SDL_SetWindowFocusable;
-
     public static bool SetWindowFocusable(IntPtr window, [MarshalAs(UnmanagedType.I1)] bool focusable)
     {
         return SetWindowFocusableNativeFunction(window, focusable);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindowSystemMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ShowWindowSystemMenu(IntPtr window, int x, int y);
+    private delegate bool ShowWindowSystemMenuNativeDelegate(IntPtr window, int x, int y);
+    private static ShowWindowSystemMenuNativeDelegate ShowWindowSystemMenuNativeFunction = SDL_ShowWindowSystemMenu;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ShowWindowSystemMenu(SDL_Window *window, int x, int y);</code>
     /// <summary>
@@ -2828,18 +2835,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ShowWindowSystemMenu"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ShowWindowSystemMenu(IntPtr window, int x, int y);
-    private delegate bool ShowWindowSystemMenuNativeDelegate(IntPtr window, int x, int y);
-    private static ShowWindowSystemMenuNativeDelegate ShowWindowSystemMenuNativeFunction = SDL_ShowWindowSystemMenu;
-
     public static bool ShowWindowSystemMenu(IntPtr window, int x, int y)
     {
         return ShowWindowSystemMenuNativeFunction(window, x, y);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowHitTest"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowHitTest(IntPtr window, HitTest? callback, IntPtr callbackData);
+    private delegate bool SetWindowHitTestNativeDelegate(IntPtr window, HitTest? callback, IntPtr callbackData);
+    private static SetWindowHitTestNativeDelegate SetWindowHitTestNativeFunction = SDL_SetWindowHitTest;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowHitTest(SDL_Window *window, SDL_HitTest callback, void *callback_data);</code>
     /// <summary>
@@ -2875,18 +2882,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowHitTest"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowHitTest(IntPtr window, HitTest? callback, IntPtr callbackData);
-    private delegate bool SetWindowHitTestNativeDelegate(IntPtr window, HitTest? callback, IntPtr callbackData);
-    private static SetWindowHitTestNativeDelegate SetWindowHitTestNativeFunction = SDL_SetWindowHitTest;
-
     public static bool SetWindowHitTest(IntPtr window, HitTest? callback, IntPtr callbackData)
     {
         return SetWindowHitTestNativeFunction(window, callback, callbackData);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowShape"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowShape(IntPtr window, IntPtr shape);
+    private delegate bool SetWindowShapeNativeDelegate(IntPtr window, IntPtr shape);
+    private static SetWindowShapeNativeDelegate SetWindowShapeNativeFunction = SDL_SetWindowShape;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowShape(SDL_Window *window, SDL_Surface *shape);</code>
     /// <summary>
@@ -2909,18 +2916,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowShape"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowShape(IntPtr window, IntPtr shape);
-    private delegate bool SetWindowShapeNativeDelegate(IntPtr window, IntPtr shape);
-    private static SetWindowShapeNativeDelegate SetWindowShapeNativeFunction = SDL_SetWindowShape;
-
     public static bool SetWindowShape(IntPtr window, IntPtr shape)
     {
         return SetWindowShapeNativeFunction(window, shape);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlashWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_FlashWindow(IntPtr window, FlashOperation operation);
+    private delegate bool FlashWindowNativeDelegate(IntPtr window, FlashOperation operation);
+    private static FlashWindowNativeDelegate FlashWindowNativeFunction = SDL_FlashWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_FlashWindow(SDL_Window *window, SDL_FlashOperation operation);</code>
     /// <summary>
@@ -2932,18 +2939,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_FlashWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_FlashWindow(IntPtr window, FlashOperation operation);
-    private delegate bool FlashWindowNativeDelegate(IntPtr window, FlashOperation operation);
-    private static FlashWindowNativeDelegate FlashWindowNativeFunction = SDL_FlashWindow;
-
     public static bool FlashWindow(IntPtr window, FlashOperation operation)
     {
         return FlashWindowNativeFunction(window, operation);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowProgressState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowProgressState(IntPtr window, ProgressState state);
+    private delegate bool SetWindowProgressStateNativeDelegate(IntPtr window, ProgressState state);
+    private static SetWindowProgressStateNativeDelegate SetWindowProgressStateNativeFunction = SDL_SetWindowProgressState;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowProgressState(SDL_Window *window, SDL_ProgressState state);</code>
     /// <summary>
@@ -2956,18 +2963,17 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowProgressState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowProgressState(IntPtr window, ProgressState state);
-    private delegate bool SetWindowProgressStateNativeDelegate(IntPtr window, ProgressState state);
-    private static SetWindowProgressStateNativeDelegate SetWindowProgressStateNativeFunction = SDL_SetWindowProgressState;
-
     public static bool SetWindowProgressState(IntPtr window, ProgressState state)
     {
         return SetWindowProgressStateNativeFunction(window, state);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProgressState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial ProgressState SDL_GetWindowProgressState(IntPtr window);
+    private delegate ProgressState GetWindowProgressStateNativeDelegate(IntPtr window);
+    private static GetWindowProgressStateNativeDelegate GetWindowProgressStateNativeFunction = SDL_GetWindowProgressState;
 
     /// <code>extern SDL_DECLSPEC SDL_ProgressState SDLCALL SDL_GetWindowProgressState(SDL_Window *window);</code>
     /// <summary>
@@ -2978,17 +2984,18 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProgressState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ProgressState SDL_GetWindowProgressState(IntPtr window);
-    private delegate ProgressState GetWindowProgressStateNativeDelegate(IntPtr window);
-    private static GetWindowProgressStateNativeDelegate GetWindowProgressStateNativeFunction = SDL_GetWindowProgressState;
-
     public static ProgressState GetWindowProgressState(IntPtr window)
     {
         return GetWindowProgressStateNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowProgressValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetWindowProgressValue(IntPtr window, float value);
+    private delegate bool SetWindowProgressValueNativeDelegate(IntPtr window, float value);
+    private static SetWindowProgressValueNativeDelegate SetWindowProgressValueNativeFunction = SDL_SetWindowProgressValue;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetWindowProgressValue(SDL_Window *window, float value);</code>
     /// <summary>
@@ -3001,18 +3008,17 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetWindowProgressValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetWindowProgressValue(IntPtr window, float value);
-    private delegate bool SetWindowProgressValueNativeDelegate(IntPtr window, float value);
-    private static SetWindowProgressValueNativeDelegate SetWindowProgressValueNativeFunction = SDL_SetWindowProgressValue;
-
     public static bool SetWindowProgressValue(IntPtr window, float value)
     {
         return SetWindowProgressValueNativeFunction(window, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProgressValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_GetWindowProgressValue(IntPtr window);
+    private delegate float GetWindowProgressValueNativeDelegate(IntPtr window);
+    private static GetWindowProgressValueNativeDelegate GetWindowProgressValueNativeFunction = SDL_GetWindowProgressValue;
 
     /// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetWindowProgressValue(SDL_Window *window);</code>
     /// <summary>
@@ -3023,17 +3029,17 @@ public static partial class SDL
     /// failure; call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetWindowProgressValue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_GetWindowProgressValue(IntPtr window);
-    private delegate float GetWindowProgressValueNativeDelegate(IntPtr window);
-    private static GetWindowProgressValueNativeDelegate GetWindowProgressValueNativeFunction = SDL_GetWindowProgressValue;
-
     public static float GetWindowProgressValue(IntPtr window)
     {
         return GetWindowProgressValueNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyWindow(IntPtr window);
+    private delegate void DestroyWindowNativeDelegate(IntPtr window);
+    private static DestroyWindowNativeDelegate DestroyWindowNativeFunction = SDL_DestroyWindow;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyWindow(SDL_Window *window);</code>
     /// <summary>
@@ -3050,17 +3056,18 @@ public static partial class SDL
     /// <seealso cref="CreatePopupWindow"/>
     /// <seealso cref="CreateWindow"/>
     /// <seealso cref="CreateWindowWithProperties"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyWindow(IntPtr window);
-    private delegate void DestroyWindowNativeDelegate(IntPtr window);
-    private static DestroyWindowNativeDelegate DestroyWindowNativeFunction = SDL_DestroyWindow;
-
     public static void DestroyWindow(IntPtr window)
     {
         DestroyWindowNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ScreenSaverEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ScreenSaverEnabled();
+    private delegate bool ScreenSaverEnabledNativeDelegate();
+    private static ScreenSaverEnabledNativeDelegate ScreenSaverEnabledNativeFunction = SDL_ScreenSaverEnabled;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ScreenSaverEnabled(void);</code>
     /// <summary>
@@ -3073,18 +3080,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DisableScreenSaver"/>
     /// <seealso cref="EnableScreenSaver"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ScreenSaverEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ScreenSaverEnabled();
-    private delegate bool ScreenSaverEnabledNativeDelegate();
-    private static ScreenSaverEnabledNativeDelegate ScreenSaverEnabledNativeFunction = SDL_ScreenSaverEnabled;
-
     public static bool ScreenSaverEnabled()
     {
         return ScreenSaverEnabledNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnableScreenSaver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_EnableScreenSaver();
+    private delegate bool EnableScreenSaverNativeDelegate();
+    private static EnableScreenSaverNativeDelegate EnableScreenSaverNativeFunction = SDL_EnableScreenSaver;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_EnableScreenSaver(void);</code>
     /// <summary>
@@ -3096,18 +3103,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DisableScreenSaver"/>
     /// <seealso cref="ScreenSaverEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnableScreenSaver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_EnableScreenSaver();
-    private delegate bool EnableScreenSaverNativeDelegate();
-    private static EnableScreenSaverNativeDelegate EnableScreenSaverNativeFunction = SDL_EnableScreenSaver;
-
     public static bool EnableScreenSaver()
     {
         return EnableScreenSaverNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DisableScreenSaver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_DisableScreenSaver();
+    private delegate bool DisableScreenSaverNativeDelegate();
+    private static DisableScreenSaverNativeDelegate DisableScreenSaverNativeFunction = SDL_DisableScreenSaver;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_DisableScreenSaver(void);</code>
     /// <summary>
@@ -3123,18 +3130,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EnableScreenSaver"/>
     /// <seealso cref="ScreenSaverEnabled"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DisableScreenSaver"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_DisableScreenSaver();
-    private delegate bool DisableScreenSaverNativeDelegate();
-    private static DisableScreenSaverNativeDelegate DisableScreenSaverNativeFunction = SDL_DisableScreenSaver;
-
     public static bool DisableScreenSaver()
     {
         return DisableScreenSaverNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_LoadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_LoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string? path);
+    private delegate bool GLLoadLibraryNativeDelegate(string? path);
+    private static GLLoadLibraryNativeDelegate GLLoadLibraryNativeFunction = SDL_GL_LoadLibrary;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_LoadLibrary(const char *path);</code>
     /// <summary>
@@ -3153,19 +3160,19 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLGetProcAddress"/>
     /// <seealso cref="GLUnloadLibrary"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_LoadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_LoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string? path);
-    private delegate bool GLLoadLibraryNativeDelegate(string? path);
-    private static GLLoadLibraryNativeDelegate GLLoadLibraryNativeFunction = SDL_GL_LoadLibrary;
-
     public static bool GLLoadLibrary([MarshalAs(UnmanagedType.LPUTF8Str)] string? path)
     {
         return GLLoadLibraryNativeFunction(path);
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GL_GetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
+    private delegate IntPtr GLGetProcAddressNativeDelegate(string proc);
+    private static GLGetProcAddressNativeDelegate GLGetProcAddressNativeFunction = SDL_GL_GetProcAddress;
+
+    //public static partial FunctionPointer? GLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_GL_GetProcAddress(const char *proc);</code>
     /// <summary>
     /// <para>Get an OpenGL function by name.</para>
@@ -3212,19 +3219,19 @@ public static partial class SDL
     /// <see cref="GLExtensionSupported"/>
     /// <see cref="GLLoadLibrary"/>
     /// <see cref="GLUnloadLibrary"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GL_GetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
-    private delegate IntPtr GLGetProcAddressNativeDelegate(string proc);
-    private static GLGetProcAddressNativeDelegate GLGetProcAddressNativeFunction = SDL_GL_GetProcAddress;
-
-    //public static partial FunctionPointer? GLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
     public static IntPtr GLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc)
     {
         return GLGetProcAddressNativeFunction(proc);
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_EGL_GetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
+    private delegate IntPtr EGLGetProcAddressNativeDelegate(string proc);
+    private static EGLGetProcAddressNativeDelegate EGLGetProcAddressNativeFunction = SDL_EGL_GetProcAddress;
+
+    //public static partial FunctionPointer? EGLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
     /// <code>extern SDL_DECLSPEC SDL_FunctionPointer SDLCALL SDL_EGL_GetProcAddress(const char *proc);</code>
     /// <summary>
     /// <para>Get an EGL library function by name.</para>
@@ -3238,18 +3245,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="EGLGetCurrentDisplay"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetProcAddress"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_EGL_GetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
-    private delegate IntPtr EGLGetProcAddressNativeDelegate(string proc);
-    private static EGLGetProcAddressNativeDelegate EGLGetProcAddressNativeFunction = SDL_EGL_GetProcAddress;
-
-    //public static partial FunctionPointer? EGLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc);
     public static IntPtr EGLGetProcAddress([MarshalAs(UnmanagedType.LPUTF8Str)] string proc)
     {
         return EGLGetProcAddressNativeFunction(proc);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GL_UnloadLibrary();
+    private delegate void GLUnloadLibraryNativeDelegate();
+    private static GLUnloadLibraryNativeDelegate GLUnloadLibraryNativeFunction = SDL_GL_UnloadLibrary;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GL_UnloadLibrary(void);</code>
     /// <summary>
@@ -3258,17 +3264,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLLoadLibrary"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GL_UnloadLibrary();
-    private delegate void GLUnloadLibraryNativeDelegate();
-    private static GLUnloadLibraryNativeDelegate GLUnloadLibraryNativeFunction = SDL_GL_UnloadLibrary;
-
     public static void GLUnloadLibrary()
     {
         GLUnloadLibraryNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_ExtensionSupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_ExtensionSupported([MarshalAs(UnmanagedType.LPUTF8Str)] string extension);
+    private delegate bool GLExtensionSupportedNativeDelegate(string extension);
+    private static GLExtensionSupportedNativeDelegate GLExtensionSupportedNativeFunction = SDL_GL_ExtensionSupported;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_ExtensionSupported(const char *extension);</code>
     /// <summary>
@@ -3287,18 +3294,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <returns><c>true</c> if the extension is supported, <c>false</c> otherwise.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_ExtensionSupported"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_ExtensionSupported([MarshalAs(UnmanagedType.LPUTF8Str)] string extension);
-    private delegate bool GLExtensionSupportedNativeDelegate(string extension);
-    private static GLExtensionSupportedNativeDelegate GLExtensionSupportedNativeFunction = SDL_GL_ExtensionSupported;
-
     public static bool GLExtensionSupported([MarshalAs(UnmanagedType.LPUTF8Str)] string extension)
     {
         return GLExtensionSupportedNativeFunction(extension);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_ResetAttributes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GL_ResetAttributes();
+    private delegate void GLResetAttributesNativeDelegate();
+    private static GLResetAttributesNativeDelegate GLResetAttributesNativeFunction = SDL_GL_ResetAttributes;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GL_ResetAttributes(void);</code>
     /// <summary>
@@ -3308,17 +3314,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLGetAttribute"/>
     /// <seealso cref="GLSetAttribute"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_ResetAttributes"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GL_ResetAttributes();
-    private delegate void GLResetAttributesNativeDelegate();
-    private static GLResetAttributesNativeDelegate GLResetAttributesNativeFunction = SDL_GL_ResetAttributes;
-
     public static void GLResetAttributes()
     {
         GLResetAttributesNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SetAttribute"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_SetAttribute(GLAttr attr, int value);
+    private delegate bool GLSetAttributeNativeDelegate(GLAttr attr, int value);
+    private static GLSetAttributeNativeDelegate GLSetAttributeNativeFunction = SDL_GL_SetAttribute;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_SetAttribute(SDL_GLAttr attr, int value);</code>
     /// <summary>
@@ -3337,18 +3344,18 @@ public static partial class SDL
     /// <seealso cref="GLCreateContext"/>
     /// <seealso cref="GLGetAttribute"/>
     /// <seealso cref="GLResetAttributes"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SetAttribute"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_SetAttribute(GLAttr attr, int value);
-    private delegate bool GLSetAttributeNativeDelegate(GLAttr attr, int value);
-    private static GLSetAttributeNativeDelegate GLSetAttributeNativeFunction = SDL_GL_SetAttribute;
-
     public static bool GLSetAttribute(GLAttr attr, int value)
     {
         return GLSetAttributeNativeFunction(attr, value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetAttribute"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_GetAttribute(GLAttr attr, out int value);
+    private delegate bool GLGetAttributeNativeDelegate(GLAttr attr, out int value);
+    private static GLGetAttributeNativeDelegate GLGetAttributeNativeFunction = SDL_GL_GetAttribute;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_GetAttribute(SDL_GLAttr attr, int *value);</code>
     /// <summary>
@@ -3363,18 +3370,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLResetAttributes"/>
     /// <seealso cref="GLSetAttribute"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetAttribute"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_GetAttribute(GLAttr attr, out int value);
-    private delegate bool GLGetAttributeNativeDelegate(GLAttr attr, out int value);
-    private static GLGetAttributeNativeDelegate GLGetAttributeNativeFunction = SDL_GL_GetAttribute;
-
     public static bool GLGetAttribute(GLAttr attr, out int value)
     {
         return GLGetAttributeNativeFunction(attr, out value);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_CreateContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GL_CreateContext(IntPtr window);
+    private delegate IntPtr GLCreateContextNativeDelegate(IntPtr window);
+    private static GLCreateContextNativeDelegate GLCreateContextNativeFunction = SDL_GL_CreateContext;
 
     /// <code>extern SDL_DECLSPEC SDL_GLContext SDLCALL SDL_GL_CreateContext(SDL_Window *window);</code>
     /// <summary>
@@ -3397,17 +3403,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLDestroyContext"/>
     /// <seealso cref="GLMakeCurrent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_CreateContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GL_CreateContext(IntPtr window);
-    private delegate IntPtr GLCreateContextNativeDelegate(IntPtr window);
-    private static GLCreateContextNativeDelegate GLCreateContextNativeFunction = SDL_GL_CreateContext;
-
     public static IntPtr GLCreateContext(IntPtr window)
     {
         return GLCreateContextNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_MakeCurrent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_MakeCurrent(IntPtr window, IntPtr context);
+    private delegate bool GLMakeCurrentNativeDelegate(IntPtr window, IntPtr context);
+    private static GLMakeCurrentNativeDelegate GLMakeCurrentNativeFunction = SDL_GL_MakeCurrent;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_MakeCurrent(SDL_Window *window, SDL_GLContext context);</code>
     /// <summary>
@@ -3421,18 +3428,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLCreateContext"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_MakeCurrent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_MakeCurrent(IntPtr window, IntPtr context);
-    private delegate bool GLMakeCurrentNativeDelegate(IntPtr window, IntPtr context);
-    private static GLMakeCurrentNativeDelegate GLMakeCurrentNativeFunction = SDL_GL_MakeCurrent;
-
     public static bool GLMakeCurrent(IntPtr window, IntPtr context)
     {
         return GLMakeCurrentNativeFunction(window, context);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GL_GetCurrentWindow();
+    private delegate IntPtr GLGetCurrentWindowNativeDelegate();
+    private static GLGetCurrentWindowNativeDelegate GLGetCurrentWindowNativeFunction = SDL_GL_GetCurrentWindow;
 
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_GL_GetCurrentWindow(void);</code>
     /// <summary>
@@ -3442,17 +3448,17 @@ public static partial class SDL
     /// call <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GL_GetCurrentWindow();
-    private delegate IntPtr GLGetCurrentWindowNativeDelegate();
-    private static GLGetCurrentWindowNativeDelegate GLGetCurrentWindowNativeFunction = SDL_GL_GetCurrentWindow;
-
     public static IntPtr GLGetCurrentWindow()
     {
         return GLGetCurrentWindowNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GL_GetCurrentContext();
+    private delegate IntPtr GLGetCurrentContextNativeDelegate();
+    private static GLGetCurrentContextNativeDelegate GLGetCurrentContextNativeFunction = SDL_GL_GetCurrentContext;
 
     /// <code>extern SDL_DECLSPEC SDL_GLContext SDLCALL SDL_GL_GetCurrentContext(void);</code>
     /// <summary>
@@ -3463,17 +3469,17 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLMakeCurrent"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetCurrentContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_GL_GetCurrentContext();
-    private delegate IntPtr GLGetCurrentContextNativeDelegate();
-    private static GLGetCurrentContextNativeDelegate GLGetCurrentContextNativeFunction = SDL_GL_GetCurrentContext;
-
     public static IntPtr GLGetCurrentContext()
     {
         return GLGetCurrentContextNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetCurrentDisplay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_EGL_GetCurrentDisplay();
+    private delegate IntPtr EGLGetCurrentDisplayNativeDelegate();
+    private static EGLGetCurrentDisplayNativeDelegate EGLGetCurrentDisplayNativeFunction = SDL_EGL_GetCurrentDisplay;
 
     /// <code>extern SDL_DECLSPEC SDL_EGLDisplay SDLCALL SDL_EGL_GetCurrentDisplay(void);</code>
     /// <summary>
@@ -3483,17 +3489,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetCurrentDisplay"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_EGL_GetCurrentDisplay();
-    private delegate IntPtr EGLGetCurrentDisplayNativeDelegate();
-    private static EGLGetCurrentDisplayNativeDelegate EGLGetCurrentDisplayNativeFunction = SDL_EGL_GetCurrentDisplay;
-
     public static IntPtr EGLGetCurrentDisplay()
     {
         return EGLGetCurrentDisplayNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetCurrentConfig"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_EGL_GetCurrentConfig();
+    private delegate IntPtr EGLGetCurrentConfigNativeDelegate();
+    private static EGLGetCurrentConfigNativeDelegate EGLGetCurrentConfigNativeFunction = SDL_EGL_GetCurrentConfig;
 
     /// <code>extern SDL_DECLSPEC SDL_EGLConfig SDLCALL SDL_EGL_GetCurrentConfig(void);</code>
     /// <summary>
@@ -3503,17 +3509,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetCurrentConfig"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_EGL_GetCurrentConfig();
-    private delegate IntPtr EGLGetCurrentConfigNativeDelegate();
-    private static EGLGetCurrentConfigNativeDelegate EGLGetCurrentConfigNativeFunction = SDL_EGL_GetCurrentConfig;
-
     public static IntPtr EGLGetCurrentConfig()
     {
         return EGLGetCurrentConfigNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_EGL_GetWindowSurface(IntPtr window);
+    private delegate IntPtr EGLGetWindowSurfaceNativeDelegate(IntPtr window);
+    private static EGLGetWindowSurfaceNativeDelegate EGLGetWindowSurfaceNativeFunction = SDL_EGL_GetWindowSurface;
 
     /// <code>extern SDL_DECLSPEC SDL_EGLSurface SDLCALL SDL_EGL_GetWindowSurface(SDL_Window *window);</code>
     /// <summary>
@@ -3524,17 +3530,19 @@ public static partial class SDL
     /// failure.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_GetWindowSurface"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_EGL_GetWindowSurface(IntPtr window);
-    private delegate IntPtr EGLGetWindowSurfaceNativeDelegate(IntPtr window);
-    private static EGLGetWindowSurfaceNativeDelegate EGLGetWindowSurfaceNativeFunction = SDL_EGL_GetWindowSurface;
-
     public static IntPtr EGLGetWindowSurface(IntPtr window)
     {
         return EGLGetWindowSurfaceNativeFunction(window);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_SetAttributeCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_EGL_SetAttributeCallbacks(EGLAttribArrayCallback? platformAttribCallback,
+        EGLIntArrayCallback? surfaceAttribCallback, EGLIntArrayCallback? contextAttribCallback, IntPtr userdata);
+    private delegate void EGLSetAttributeCallbacksNativeDelegate(EGLAttribArrayCallback? platformAttribCallback,
+        EGLIntArrayCallback? surfaceAttribCallback, EGLIntArrayCallback? contextAttribCallback, IntPtr userdata);
+    private static EGLSetAttributeCallbacksNativeDelegate EGLSetAttributeCallbacksNativeFunction = SDL_EGL_SetAttributeCallbacks;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_EGL_SetAttributeCallbacks(SDL_EGLAttribArrayCallback platformAttribCallback,
     /// SDL_EGLIntArrayCallback surfaceAttribCallback,
@@ -3554,20 +3562,19 @@ public static partial class SDL
     /// <param name="userdata">a pointer that is passed to the callbacks.</param>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_EGL_SetAttributeCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_EGL_SetAttributeCallbacks(EGLAttribArrayCallback? platformAttribCallback,
-        EGLIntArrayCallback? surfaceAttribCallback, EGLIntArrayCallback? contextAttribCallback, IntPtr userdata);
-    private delegate void EGLSetAttributeCallbacksNativeDelegate(EGLAttribArrayCallback? platformAttribCallback,
-        EGLIntArrayCallback? surfaceAttribCallback, EGLIntArrayCallback? contextAttribCallback, IntPtr userdata);
-    private static EGLSetAttributeCallbacksNativeDelegate EGLSetAttributeCallbacksNativeFunction = SDL_EGL_SetAttributeCallbacks;
-
     public static void EGLSetAttributeCallbacks(EGLAttribArrayCallback? platformAttribCallback,
         EGLIntArrayCallback? surfaceAttribCallback, EGLIntArrayCallback? contextAttribCallback, IntPtr userdata)
     {
         EGLSetAttributeCallbacksNativeFunction(platformAttribCallback, surfaceAttribCallback, contextAttribCallback, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SetSwapInterval"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_SetSwapInterval(int interval);
+    private delegate bool GLSetSwapIntervalNativeDelegate(int interval);
+    private static GLSetSwapIntervalNativeDelegate GLSetSwapIntervalNativeFunction = SDL_GL_SetSwapInterval;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_SetSwapInterval(int interval);</code>
     /// <summary>
@@ -3592,18 +3599,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLGetSwapInterval"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SetSwapInterval"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_SetSwapInterval(int interval);
-    private delegate bool GLSetSwapIntervalNativeDelegate(int interval);
-    private static GLSetSwapIntervalNativeDelegate GLSetSwapIntervalNativeFunction = SDL_GL_SetSwapInterval;
-
     public static bool GLSetSwapInterval(int interval)
     {
         return GLSetSwapIntervalNativeFunction(interval);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetSwapInterval"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_GetSwapInterval(out int interval);
+    private delegate bool GLGetSwapIntervalNativeDelegate(out int interval);
+    private static GLGetSwapIntervalNativeDelegate GLGetSwapIntervalNativeFunction = SDL_GL_GetSwapInterval;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_GetSwapInterval(int *interval);</code>
     /// <summary>
@@ -3620,18 +3627,18 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLSetSwapInterval"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_GetSwapInterval"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_GetSwapInterval(out int interval);
-    private delegate bool GLGetSwapIntervalNativeDelegate(out int interval);
-    private static GLGetSwapIntervalNativeDelegate GLGetSwapIntervalNativeFunction = SDL_GL_GetSwapInterval;
-
     public static bool GLGetSwapInterval(out int interval)
     {
         return GLGetSwapIntervalNativeFunction(out interval);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SwapWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_SwapWindow(IntPtr window);
+    private delegate bool GLSwapWindowNativeDelegate(IntPtr window);
+    private static GLSwapWindowNativeDelegate GLSwapWindowNativeFunction = SDL_GL_SwapWindow;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_SwapWindow(SDL_Window *window);</code>
     /// <summary>
@@ -3647,20 +3654,20 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_SwapWindow"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_SwapWindow(IntPtr window);
-    private delegate bool GLSwapWindowNativeDelegate(IntPtr window);
-    private static GLSwapWindowNativeDelegate GLSwapWindowNativeFunction = SDL_GL_SwapWindow;
-
     public static bool GLSwapWindow(IntPtr window)
     {
         return GLSwapWindowNativeFunction(window);
     }
 
 
-    //extern SDL_DECLSPEC bool SDLCALL SDL_GL_DestroyContext(SDL_GLContext context);
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_DestroyContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GL_DestroyContext(IntPtr window);
+    private delegate bool GLDestroyContextNativeDelegate(IntPtr window);
+    private static GLDestroyContextNativeDelegate GLDestroyContextNativeFunction = SDL_GL_DestroyContext;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GL_DestroyContext(SDL_GLContext context);</code>
     /// <summary>
     /// Delete an OpenGL context.
     /// </summary>
@@ -3670,13 +3677,6 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GLCreateContext"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GL_DestroyContext"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GL_DestroyContext(IntPtr window);
-    private delegate bool GLDestroyContextNativeDelegate(IntPtr window);
-    private static GLDestroyContextNativeDelegate GLDestroyContextNativeFunction = SDL_GL_DestroyContext;
-
     public static bool GLDestroyContext(IntPtr window)
     {
         return GLDestroyContextNativeFunction(window);

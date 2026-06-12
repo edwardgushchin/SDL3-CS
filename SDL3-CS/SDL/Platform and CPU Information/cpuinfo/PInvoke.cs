@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumLogicalCPUCores"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumLogicalCPUCores();
+    private delegate int GetNumLogicalCPUCoresNativeDelegate();
+    private static GetNumLogicalCPUCoresNativeDelegate GetNumLogicalCPUCoresNativeFunction = SDL_GetNumLogicalCPUCores;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumLogicalCPUCores(void);</code>
     /// <summary>
     /// Get the number of logical CPU cores available.
@@ -38,17 +44,17 @@ public static partial class SDL
     /// may be more than the number of physical cores.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumLogicalCPUCores"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetNumLogicalCPUCores();
-    private delegate int GetNumLogicalCPUCoresNativeDelegate();
-    private static GetNumLogicalCPUCoresNativeDelegate GetNumLogicalCPUCoresNativeFunction = SDL_GetNumLogicalCPUCores;
-
     public static int GetNumLogicalCPUCores()
     {
         return GetNumLogicalCPUCoresNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCPUCacheLineSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetCPUCacheLineSize();
+    private delegate int GetCPUCacheLineSizeNativeDelegate();
+    private static GetCPUCacheLineSizeNativeDelegate GetCPUCacheLineSizeNativeFunction = SDL_GetCPUCacheLineSize;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetCPUCacheLineSize(void);</code>
     /// <summary>
@@ -59,17 +65,18 @@ public static partial class SDL
     /// <returns>the L1 cache line size of the CPU, in bytes.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCPUCacheLineSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetCPUCacheLineSize();
-    private delegate int GetCPUCacheLineSizeNativeDelegate();
-    private static GetCPUCacheLineSizeNativeDelegate GetCPUCacheLineSizeNativeFunction = SDL_GetCPUCacheLineSize;
-
     public static int GetCPUCacheLineSize()
     {
         return GetCPUCacheLineSizeNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAltiVec"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasAltiVec();
+    private delegate bool HasAltiVecNativeDelegate();
+    private static HasAltiVecNativeDelegate HasAltiVecNativeFunction = SDL_HasAltiVec;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAltiVec(void);</code>
     /// <summary>
@@ -81,18 +88,18 @@ public static partial class SDL
     ///
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAltiVec"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasAltiVec();
-    private delegate bool HasAltiVecNativeDelegate();
-    private static HasAltiVecNativeDelegate HasAltiVecNativeFunction = SDL_HasAltiVec;
-
     public static bool HasAltiVec()
     {
         return HasAltiVecNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMMX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasMMX();
+    private delegate bool HasMMXNativeDelegate();
+    private static HasMMXNativeDelegate HasMMXNativeFunction = SDL_HasMMX;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasMMX(void);</code>
     /// <summary>
@@ -102,18 +109,18 @@ public static partial class SDL
     /// <returns><c>true</c> if the CPU has MMX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasMMX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasMMX();
-    private delegate bool HasMMXNativeDelegate();
-    private static HasMMXNativeDelegate HasMMXNativeFunction = SDL_HasMMX;
-
     public static bool HasMMX()
     {
         return HasMMXNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasSSE();
+    private delegate bool HasSSENativeDelegate();
+    private static HasSSENativeDelegate HasSSENativeFunction = SDL_HasSSE;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE(void);</code>
     /// <summary>
@@ -127,18 +134,18 @@ public static partial class SDL
     /// <seealso cref="HasSSE3"/>
     /// <seealso cref="HasSSE41"/>
     /// <seealso cref="HasSSE42"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasSSE();
-    private delegate bool HasSSENativeDelegate();
-    private static HasSSENativeDelegate HasSSENativeFunction = SDL_HasSSE;
-
     public static bool HasSSE()
     {
         return HasSSENativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasSSE2();
+    private delegate bool HasSSE2NativeDelegate();
+    private static HasSSE2NativeDelegate HasSSE2NativeFunction = SDL_HasSSE2;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE2(void);</code>
     /// <summary>
@@ -152,18 +159,18 @@ public static partial class SDL
     /// <seealso cref="HasSSE3"/>
     /// <seealso cref="HasSSE41"/>
     /// <seealso cref="HasSSE42"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasSSE2();
-    private delegate bool HasSSE2NativeDelegate();
-    private static HasSSE2NativeDelegate HasSSE2NativeFunction = SDL_HasSSE2;
-
     public static bool HasSSE2()
     {
         return HasSSE2NativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE3"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasSSE3();
+    private delegate bool HasSSE3NativeDelegate();
+    private static HasSSE3NativeDelegate HasSSE3NativeFunction = SDL_HasSSE3;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE3(void);</code>
     /// <summary>
@@ -177,18 +184,18 @@ public static partial class SDL
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE41"/>
     /// <seealso cref="HasSSE42"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE3"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasSSE3();
-    private delegate bool HasSSE3NativeDelegate();
-    private static HasSSE3NativeDelegate HasSSE3NativeFunction = SDL_HasSSE3;
-
     public static bool HasSSE3()
     {
         return HasSSE3NativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE41"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasSSE41();
+    private delegate bool HasSSE41NativeDelegate();
+    private static HasSSE41NativeDelegate HasSSE41NativeFunction = SDL_HasSSE41;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE41(void);</code>
     /// <summary>
@@ -202,18 +209,18 @@ public static partial class SDL
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE3"/>
     /// <seealso cref="HasSSE42"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE41"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasSSE41();
-    private delegate bool HasSSE41NativeDelegate();
-    private static HasSSE41NativeDelegate HasSSE41NativeFunction = SDL_HasSSE41;
-
     public static bool HasSSE41()
     {
         return HasSSE41NativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE42"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasSSE42();
+    private delegate bool HasSSE42NativeDelegate();
+    private static HasSSE42NativeDelegate HasSSE42NativeFunction = SDL_HasSSE42;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSSE42(void);</code>
     /// <summary>
@@ -227,18 +234,18 @@ public static partial class SDL
     /// <seealso cref="HasSSE2"/>
     /// <seealso cref="HasSSE3"/>
     /// <seealso cref="HasSSE41"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSSE42"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasSSE42();
-    private delegate bool HasSSE42NativeDelegate();
-    private static HasSSE42NativeDelegate HasSSE42NativeFunction = SDL_HasSSE42;
-
     public static bool HasSSE42()
     {
         return HasSSE42NativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasAVX();
+    private delegate bool HasAVXNativeDelegate();
+    private static HasAVXNativeDelegate HasAVXNativeFunction = SDL_HasAVX;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAVX(void);</code>
     /// <summary>
@@ -250,18 +257,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasAVX2"/>
     /// <seealso cref="HasAVX512F"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasAVX();
-    private delegate bool HasAVXNativeDelegate();
-    private static HasAVXNativeDelegate HasAVXNativeFunction = SDL_HasAVX;
-
     public static bool HasAVX()
     {
         return HasAVXNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasAVX2();
+    private delegate bool HasAVX2NativeDelegate();
+    private static HasAVX2NativeDelegate HasAVX2NativeFunction = SDL_HasAVX2;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAVX2(void);</code>
     /// <summary>
@@ -273,18 +280,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasAVX"/>
     /// <seealso cref="HasAVX512F"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasAVX2();
-    private delegate bool HasAVX2NativeDelegate();
-    private static HasAVX2NativeDelegate HasAVX2NativeFunction = SDL_HasAVX2;
-
     public static bool HasAVX2()
     {
         return HasAVX2NativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX512F"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasAVX512F();
+    private delegate bool HasAVX512FNativeDelegate();
+    private static HasAVX512FNativeDelegate HasAVX512FNativeFunction = SDL_HasAVX512F;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasAVX512F(void);</code>
     /// <summary>
@@ -296,18 +303,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasAVX"/>
     /// <seealso cref="HasAVX2"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasAVX512F"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasAVX512F();
-    private delegate bool HasAVX512FNativeDelegate();
-    private static HasAVX512FNativeDelegate HasAVX512FNativeFunction = SDL_HasAVX512F;
-
     public static bool HasAVX512F()
     {
         return HasAVX512FNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasARMSIMD"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasARMSIMD();
+    private delegate bool HasARMSIMDNativeDelegate();
+    private static HasARMSIMDNativeDelegate HasARMSIMDNativeFunction = SDL_HasARMSIMD;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasARMSIMD(void);</code>
     /// <summary>
@@ -319,18 +326,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasNEON"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasARMSIMD"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasARMSIMD();
-    private delegate bool HasARMSIMDNativeDelegate();
-    private static HasARMSIMDNativeDelegate HasARMSIMDNativeFunction = SDL_HasARMSIMD;
-
     public static bool HasARMSIMD()
     {
         return HasARMSIMDNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasNEON"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasNEON();
+    private delegate bool HasNEONNativeDelegate();
+    private static HasNEONNativeDelegate HasNEONNativeFunction = SDL_HasNEON;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasNEON(void);</code>
     /// <summary>
@@ -340,18 +347,18 @@ public static partial class SDL
     /// <returns><c>true</c> if the CPU has ARM NEON features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasNEON"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasNEON();
-    private delegate bool HasNEONNativeDelegate();
-    private static HasNEONNativeDelegate HasNEONNativeFunction = SDL_HasNEON;
-
     public static bool HasNEON()
     {
         return HasNEONNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLSX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasLSX();
+    private delegate bool HasLSXNativeDelegate();
+    private static HasLSXNativeDelegate HasLSXNativeFunction = SDL_HasLSX;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasLSX(void);</code>
     /// <summary>
@@ -362,18 +369,18 @@ public static partial class SDL
     /// <returns><c>true</c> if the CPU has LOONGARCH LSX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLSX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasLSX();
-    private delegate bool HasLSXNativeDelegate();
-    private static HasLSXNativeDelegate HasLSXNativeFunction = SDL_HasLSX;
-
     public static bool HasLSX()
     {
         return HasLSXNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLASX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasLASX();
+    private delegate bool HasLASXNativeDelegate();
+    private static HasLASXNativeDelegate HasLASXNativeFunction = SDL_HasLASX;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasLASX(void);</code>
     /// <summary>
@@ -384,18 +391,17 @@ public static partial class SDL
     /// <returns><c>true</c> if the CPU has LOONGARCH LASX features or <c>false</c> if not.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLASX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasLASX();
-    private delegate bool HasLASXNativeDelegate();
-    private static HasLASXNativeDelegate HasLASXNativeFunction = SDL_HasLASX;
-
     public static bool HasLASX()
     {
         return HasLASXNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemRAM"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetSystemRAM();
+    private delegate int GetSystemRAMNativeDelegate();
+    private static GetSystemRAMNativeDelegate GetSystemRAMNativeFunction = SDL_GetSystemRAM;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetSystemRAM(void);</code>
     /// <summary>
@@ -404,17 +410,17 @@ public static partial class SDL
     /// <returns>the amount of RAM configured in the system in MiB.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemRAM"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSystemRAM();
-    private delegate int GetSystemRAMNativeDelegate();
-    private static GetSystemRAMNativeDelegate GetSystemRAMNativeFunction = SDL_GetSystemRAM;
-
     public static int GetSystemRAM()
     {
         return GetSystemRAMNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSIMDAlignment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial UIntPtr SDL_GetSIMDAlignment();
+    private delegate UIntPtr GetSIMDAlignmentNativeDelegate();
+    private static GetSIMDAlignmentNativeDelegate GetSIMDAlignmentNativeFunction = SDL_GetSIMDAlignment;
 
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_GetSIMDAlignment(void);</code>
     /// <summary>
@@ -434,17 +440,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AlignedAlloc"/>
     /// <seealso cref="AlignedFree"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSIMDAlignment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial UIntPtr SDL_GetSIMDAlignment();
-    private delegate UIntPtr GetSIMDAlignmentNativeDelegate();
-    private static GetSIMDAlignmentNativeDelegate GetSIMDAlignmentNativeFunction = SDL_GetSIMDAlignment;
-
     public static UIntPtr GetSIMDAlignment()
     {
         return GetSIMDAlignmentNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemPageSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetSystemPageSize();
+    private delegate int GetSystemPageSizeNativeDelegate();
+    private static GetSystemPageSizeNativeDelegate GetSystemPageSizeNativeFunction = SDL_GetSystemPageSize;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetSystemPageSize(void);</code>
     /// <summary>
@@ -461,12 +467,6 @@ public static partial class SDL
     /// determine this information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSystemPageSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetSystemPageSize();
-    private delegate int GetSystemPageSizeNativeDelegate();
-    private static GetSystemPageSizeNativeDelegate GetSystemPageSizeNativeFunction = SDL_GetSystemPageSize;
-
     public static int GetSystemPageSize()
     {
         return GetSystemPageSizeNativeFunction();

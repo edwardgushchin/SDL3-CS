@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetVersion();
+    private delegate int GetVersionNative();
+    private static GetVersionNative GetVersionNativeFunction = SDL_GetVersion;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetVersion(void);</code>
     /// <summary>
     /// <para>Get the version of SDL that is linked against your program.</para>
@@ -42,12 +48,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRevision"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetVersion();
-    private delegate int GetVersionNative();
-    private static GetVersionNative GetVersionNativeFunction = SDL_GetVersion;
-
     public static int GetVersion()
     {
         return GetVersionNativeFunction();

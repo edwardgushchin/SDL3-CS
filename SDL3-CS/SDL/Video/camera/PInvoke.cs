@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumCameraDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumCameraDrivers();
+    private delegate int GetNumCameraDriversNativeDelegate();
+    private static GetNumCameraDriversNativeDelegate GetNumCameraDriversNativeFunction = SDL_GetNumCameraDrivers;
+
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumCameraDrivers(void);</code>
     /// <summary>
     /// <para>Use this function to get the number of built-in camera drivers.</para>
@@ -45,12 +51,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameraDriver"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumCameraDrivers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetNumCameraDrivers();
-    private delegate int GetNumCameraDriversNativeDelegate();
-    private static GetNumCameraDriversNativeDelegate GetNumCameraDriversNativeFunction = SDL_GetNumCameraDrivers;
-
     public static int GetNumCameraDrivers()
     {
         return GetNumCameraDriversNativeFunction();
@@ -214,6 +214,12 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial CameraPosition SDL_GetCameraPosition(uint instanceId);
+    private delegate CameraPosition GetCameraPositionNativeDelegate(uint instanceId);
+    private static GetCameraPositionNativeDelegate GetCameraPositionNativeFunction = SDL_GetCameraPosition;
+
     /// <code>extern SDL_DECLSPEC SDL_CameraPosition SDLCALL SDL_GetCameraPosition(SDL_CameraID instance_id);</code>
     /// <summary>
     /// <para>Get the position of the camera in relation to the system.</para>
@@ -227,12 +233,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPosition"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial CameraPosition SDL_GetCameraPosition(uint instanceId);
-    private delegate CameraPosition GetCameraPositionNativeDelegate(uint instanceId);
-    private static GetCameraPositionNativeDelegate GetCameraPositionNativeFunction = SDL_GetCameraPosition;
-
     public static CameraPosition GetCameraPosition(uint instanceId)
     {
         return GetCameraPositionNativeFunction(instanceId);
@@ -240,54 +240,60 @@ public static partial class SDL
 
 
 
-    /// <code>extern SDL_DECLSPEC SDL_Camera * SDLCALL SDL_OpenCamera(SDL_CameraID instance_id, const SDL_CameraSpec *spec);</code>
-    /// <summary>
-    /// <para>Open a video recording device (a "camera").</para>
-    /// <para>You can open the device with any reasonable spec, and if the hardware can't
-    /// directly support it, it will convert data seamlessly to the requested
-    /// format. This might incur overhead, including scaling of image data.</para>
-    /// <para>If you would rather accept whatever format the device offers, you can pass
-    /// a <c>null</c> spec here and it will choose one for you (and you can use
-    /// <see cref="Surface"/>'s conversion/scaling functions directly if necessary).</para>
-    /// <para>You can call <see cref="GetCameraFormat"/> to get the actual data format if passing
-    /// a <c>null</c> spec here. You can see the exact specs a device can support without
-    /// conversion with <see cref="GetCameraSupportedFormats"/>.</para>
-    /// <para>SDL will not attempt to emulate framerate; it will try to set the hardware
-    /// to the rate closest to the requested speed, but it won't attempt to limit
-    /// or duplicate frames artificially; call <see cref="GetCameraFormat"/> to see the
-    /// actual framerate of the opened the device, and check your timestamps if
-    /// this is crucial to your app!</para>
-    /// <para>Note that the camera is not usable until the user approves its use! On some
-    /// platforms, the operating system will prompt the user to permit access to
-    /// the camera, and they can choose Yes or No at that point. Until they do, the
-    /// camera will not be usable. The app should either wait for an
-    /// <see cref="EventType.CameraDeviceApproved"/> (or <see cref="EventType.CameraDeviceDenied"/>) event,
-    /// or poll <see cref="GetCameraPermissionState"/> occasionally until it returns
-    /// non-zero. On platforms that don't require explicit user approval (and
-    /// perhaps in places where the user previously permitted access), the approval
-    /// event might come immediately, but it might come seconds, minutes, or hours
-    /// later!</para>
-    /// </summary>
-    /// <param name="instanceId">the camera device instance ID.</param>
-    /// <param name="spec">the desired format for data the device will provide. Can be
-    /// <c>null</c>.</param>
-    /// <returns>an SDL_Camera object or <c>null</c> on failure; call <see cref="GetError"/> for
-    /// more information.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetCameras"/>
-    /// <seealso cref="GetCameraFormat"/>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_OpenCamera(uint instanceId, IntPtr spec);
     private delegate IntPtr OpenCameraWithPointerNativeDelegate(uint instanceId, IntPtr spec);
     private static OpenCameraWithPointerNativeDelegate OpenCameraWithPointerNativeFunction = SDL_OpenCamera;
 
+    /// <code>extern SDL_DECLSPEC SDL_Camera * SDLCALL SDL_OpenCamera(SDL_CameraID instance_id, const SDL_CameraSpec *spec);</code>
+    /// <summary>
+    /// <para>Open a video recording device (a "camera").</para>
+    /// <para>You can open the device with any reasonable spec, and if the hardware can't
+    /// directly support it, it will convert data seamlessly to the requested
+    /// format. This might incur overhead, including scaling of image data.</para>
+    /// <para>If you would rather accept whatever format the device offers, you can pass
+    /// a <c>null</c> spec here and it will choose one for you (and you can use
+    /// <see cref="Surface"/>'s conversion/scaling functions directly if necessary).</para>
+    /// <para>You can call <see cref="GetCameraFormat"/> to get the actual data format if passing
+    /// a <c>null</c> spec here. You can see the exact specs a device can support without
+    /// conversion with <see cref="GetCameraSupportedFormats"/>.</para>
+    /// <para>SDL will not attempt to emulate framerate; it will try to set the hardware
+    /// to the rate closest to the requested speed, but it won't attempt to limit
+    /// or duplicate frames artificially; call <see cref="GetCameraFormat"/> to see the
+    /// actual framerate of the opened the device, and check your timestamps if
+    /// this is crucial to your app!</para>
+    /// <para>Note that the camera is not usable until the user approves its use! On some
+    /// platforms, the operating system will prompt the user to permit access to
+    /// the camera, and they can choose Yes or No at that point. Until they do, the
+    /// camera will not be usable. The app should either wait for an
+    /// <see cref="EventType.CameraDeviceApproved"/> (or <see cref="EventType.CameraDeviceDenied"/>) event,
+    /// or poll <see cref="GetCameraPermissionState"/> occasionally until it returns
+    /// non-zero. On platforms that don't require explicit user approval (and
+    /// perhaps in places where the user previously permitted access), the approval
+    /// event might come immediately, but it might come seconds, minutes, or hours
+    /// later!</para>
+    /// </summary>
+    /// <param name="instanceId">the camera device instance ID.</param>
+    /// <param name="spec">the desired format for data the device will provide. Can be
+    /// <c>null</c>.</param>
+    /// <returns>an SDL_Camera object or <c>null</c> on failure; call <see cref="GetError"/> for
+    /// more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetCameras"/>
+    /// <seealso cref="GetCameraFormat"/>
     public static IntPtr OpenCamera(uint instanceId, IntPtr spec)
     {
         return OpenCameraWithPointerNativeFunction(instanceId, spec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_OpenCamera(uint instanceId, in CameraSpec spec);
+    private delegate IntPtr OpenCameraWithSpecNativeDelegate(uint instanceId, in CameraSpec spec);
+    private static OpenCameraWithSpecNativeDelegate OpenCameraWithSpecNativeFunction = SDL_OpenCamera;
 
     /// <code>extern SDL_DECLSPEC SDL_Camera * SDLCALL SDL_OpenCamera(SDL_CameraID instance_id, const SDL_CameraSpec *spec);</code>
     /// <summary>
@@ -326,17 +332,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetCameras"/>
     /// <seealso cref="GetCameraFormat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_OpenCamera(uint instanceId, in CameraSpec spec);
-    private delegate IntPtr OpenCameraWithSpecNativeDelegate(uint instanceId, in CameraSpec spec);
-    private static OpenCameraWithSpecNativeDelegate OpenCameraWithSpecNativeFunction = SDL_OpenCamera;
-
     public static IntPtr OpenCamera(uint instanceId, in CameraSpec spec)
     {
         return OpenCameraWithSpecNativeFunction(instanceId, in spec);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPermissionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial CameraPermissionState SDL_GetCameraPermissionState(IntPtr camera);
+    private delegate CameraPermissionState GetCameraPermissionStateNativeDelegate(IntPtr camera);
+    private static GetCameraPermissionStateNativeDelegate GetCameraPermissionStateNativeFunction = SDL_GetCameraPermissionState;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetCameraPermissionState(SDL_Camera *camera);</code>
     /// <summary>
@@ -364,17 +370,17 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
     /// <seealso cref="CloseCamera"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraPermissionState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial CameraPermissionState SDL_GetCameraPermissionState(IntPtr camera);
-    private delegate CameraPermissionState GetCameraPermissionStateNativeDelegate(IntPtr camera);
-    private static GetCameraPermissionStateNativeDelegate GetCameraPermissionStateNativeFunction = SDL_GetCameraPermissionState;
-
     public static CameraPermissionState GetCameraPermissionState(IntPtr camera)
     {
         return GetCameraPermissionStateNativeFunction(camera);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetCameraID(IntPtr camera);
+    private delegate uint GetCameraIDNativeDelegate(IntPtr camera);
+    private static GetCameraIDNativeDelegate GetCameraIDNativeFunction = SDL_GetCameraID;
 
     /// <code>extern SDL_DECLSPEC SDL_CameraID SDLCALL SDL_GetCameraID(SDL_Camera *camera);</code>
     /// <summary>
@@ -386,17 +392,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraID"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetCameraID(IntPtr camera);
-    private delegate uint GetCameraIDNativeDelegate(IntPtr camera);
-    private static GetCameraIDNativeDelegate GetCameraIDNativeFunction = SDL_GetCameraID;
-
     public static uint GetCameraID(IntPtr camera)
     {
         return GetCameraIDNativeFunction(camera);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial uint SDL_GetCameraProperties(IntPtr camera);
+    private delegate uint GetCameraPropertiesNativeDelegate(IntPtr camera);
+    private static GetCameraPropertiesNativeDelegate GetCameraPropertiesNativeFunction = SDL_GetCameraProperties;
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL SDL_GetCameraProperties(SDL_Camera *camera);</code>
     /// <summary>
@@ -407,17 +413,17 @@ public static partial class SDL
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetCameraProperties(IntPtr camera);
-    private delegate uint GetCameraPropertiesNativeDelegate(IntPtr camera);
-    private static GetCameraPropertiesNativeDelegate GetCameraPropertiesNativeFunction = SDL_GetCameraProperties;
-
     public static uint GetCameraProperties(IntPtr camera)
     {
         return GetCameraPropertiesNativeFunction(camera);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetCameraFormat(IntPtr camera, out CameraSpec spec);
+    private delegate int GetCameraFormatNativeDelegate(IntPtr camera, out CameraSpec spec);
+    private static GetCameraFormatNativeDelegate GetCameraFormatNativeFunction = SDL_GetCameraFormat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetCameraFormat(SDL_Camera *camera, SDL_CameraSpec *spec);</code>
     /// <summary>
@@ -438,18 +444,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetCameraFormat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_GetCameraFormat(IntPtr camera, out CameraSpec spec);
-    private delegate int GetCameraFormatNativeDelegate(IntPtr camera, out CameraSpec spec);
-    private static GetCameraFormatNativeDelegate GetCameraFormatNativeFunction = SDL_GetCameraFormat;
-
     public static int GetCameraFormat(IntPtr camera, out CameraSpec spec)
     {
         return GetCameraFormatNativeFunction(camera, out spec);
     }
 
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AcquireCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_AcquireCameraFrame(IntPtr camera, out ulong timestampNS);
+    private delegate IntPtr AcquireCameraFrameNativeDelegate(IntPtr camera, out ulong timestampNS);
+    private static AcquireCameraFrameNativeDelegate AcquireCameraFrameNativeFunction = SDL_AcquireCameraFrame;
 
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_AcquireCameraFrame(SDL_Camera *camera, Uint64 *timestampNS);</code>
     /// <summary>
@@ -483,17 +489,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="ReleaseCameraFrame"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AcquireCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_AcquireCameraFrame(IntPtr camera, out ulong timestampNS);
-    private delegate IntPtr AcquireCameraFrameNativeDelegate(IntPtr camera, out ulong timestampNS);
-    private static AcquireCameraFrameNativeDelegate AcquireCameraFrameNativeFunction = SDL_AcquireCameraFrame;
-
     public static IntPtr AcquireCameraFrame(IntPtr camera, out ulong timestampNS)
     {
         return AcquireCameraFrameNativeFunction(camera, out timestampNS);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_ReleaseCameraFrame(IntPtr camera, IntPtr frame);
+    private delegate void ReleaseCameraFrameNativeDelegate(IntPtr camera, IntPtr frame);
+    private static ReleaseCameraFrameNativeDelegate ReleaseCameraFrameNativeFunction = SDL_ReleaseCameraFrame;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseCameraFrame(SDL_Camera *camera, SDL_Surface *frame);</code>
     /// <summary>
@@ -514,17 +520,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AcquireCameraFrame"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReleaseCameraFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_ReleaseCameraFrame(IntPtr camera, IntPtr frame);
-    private delegate void ReleaseCameraFrameNativeDelegate(IntPtr camera, IntPtr frame);
-    private static ReleaseCameraFrameNativeDelegate ReleaseCameraFrameNativeFunction = SDL_ReleaseCameraFrame;
-
     public static void ReleaseCameraFrame(IntPtr camera, IntPtr frame)
     {
         ReleaseCameraFrameNativeFunction(camera, frame);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_CloseCamera(IntPtr camera);
+    private delegate void CloseCameraNativeDelegate(IntPtr camera);
+    private static CloseCameraNativeDelegate CloseCameraNativeFunction = SDL_CloseCamera;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_CloseCamera(SDL_Camera *camera);</code>
     /// <summary>
@@ -536,12 +542,6 @@ public static partial class SDL
     /// thread may reference <c>device</c> once this function is called.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="OpenCamera(uint, nint)"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseCamera"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_CloseCamera(IntPtr camera);
-    private delegate void CloseCameraNativeDelegate(IntPtr camera);
-    private static CloseCameraNativeDelegate CloseCameraNativeFunction = SDL_CloseCamera;
-
     public static void CloseCamera(IntPtr camera)
     {
         CloseCameraNativeFunction(camera);

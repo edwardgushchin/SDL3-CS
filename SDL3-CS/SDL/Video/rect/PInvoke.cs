@@ -120,6 +120,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasRectIntersection(in Rect a, in Rect b);
+    private delegate bool HasRectIntersectionNativeDelegate(in Rect a, in Rect b);
+    private static HasRectIntersectionNativeDelegate HasRectIntersectionNativeFunction = SDL_HasRectIntersection;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);</code>
     /// <summary>
     /// <para>Determine whether two rectangles intersect.</para>
@@ -131,18 +138,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRectIntersection"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasRectIntersection(in Rect a, in Rect b);
-    private delegate bool HasRectIntersectionNativeDelegate(in Rect a, in Rect b);
-    private static HasRectIntersectionNativeDelegate HasRectIntersectionNativeFunction = SDL_HasRectIntersection;
-
     public static bool HasRectIntersection(in Rect a, in Rect b)
     {
         return HasRectIntersectionNativeFunction(in a, in b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectIntersection(in Rect a, in Rect b, out Rect result);
+    private delegate bool GetRectIntersectionNativeDelegate(in Rect a, in Rect b, out Rect result);
+    private static GetRectIntersectionNativeDelegate GetRectIntersectionNativeFunction = SDL_GetRectIntersection;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);</code>
     /// <summary>
@@ -157,18 +164,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasRectIntersection"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectIntersection(in Rect a, in Rect b, out Rect result);
-    private delegate bool GetRectIntersectionNativeDelegate(in Rect a, in Rect b, out Rect result);
-    private static GetRectIntersectionNativeDelegate GetRectIntersectionNativeFunction = SDL_GetRectIntersection;
-
     public static bool GetRectIntersection(in Rect a, in Rect b, out Rect result)
     {
         return GetRectIntersectionNativeFunction(in a, in b, out result);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectUnion(in Rect a, in Rect b, out Rect result);
+    private delegate bool GetRectUnionNativeDelegate(in Rect a, in Rect b, out Rect result);
+    private static GetRectUnionNativeDelegate GetRectUnionNativeFunction = SDL_GetRectUnion;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);</code>
     /// <summary>
@@ -182,35 +189,12 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectUnion(in Rect a, in Rect b, out Rect result);
-    private delegate bool GetRectUnionNativeDelegate(in Rect a, in Rect b, out Rect result);
-    private static GetRectUnionNativeDelegate GetRectUnionNativeFunction = SDL_GetRectUnion;
-
     public static bool GetRectUnion(in Rect a, in Rect b, out Rect result)
     {
         return GetRectUnionNativeFunction(in a, in b, out result);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);</code>
-    /// <summary>
-    /// <para>Calculate a minimal rectangle enclosing a set of points.</para>
-    /// <para>If <c>clip</c> is not <c>null</c> then only points inside of the clipping rectangle are
-    /// considered.</para>
-    /// </summary>
-    /// <param name="points">an array of <see cref="Point"/> structures representing points to be
-    /// enclosed.</param>
-    /// <param name="count">the number of structures in the <c>points</c> array.</param>
-    /// <param name="clip">an <see cref="Rect"/> used for clipping or <c>null</c> to enclose all points.</param>
-    /// <param name="result">an <see cref="Rect"/> structure filled in with the minimal enclosing
-    /// rectangle.</param>
-    /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
-    /// outside of the clipping rectangle.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -218,11 +202,34 @@ public static partial class SDL
     private delegate bool GetRectEnclosingPointsPointerNativeDelegate(Point[] points, int count, IntPtr clip, out Rect result);
     private static GetRectEnclosingPointsPointerNativeDelegate GetRectEnclosingPointsPointerNativeFunction = SDL_GetRectEnclosingPointsPointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);</code>
+    /// <summary>
+    /// <para>Calculate a minimal rectangle enclosing a set of points.</para>
+    /// <para>If <c>clip</c> is not <c>null</c> then only points inside of the clipping rectangle are
+    /// considered.</para>
+    /// </summary>
+    /// <param name="points">an array of <see cref="Point"/> structures representing points to be
+    /// enclosed.</param>
+    /// <param name="count">the number of structures in the <c>points</c> array.</param>
+    /// <param name="clip">an <see cref="Rect"/> used for clipping or <c>null</c> to enclose all points.</param>
+    /// <param name="result">an <see cref="Rect"/> structure filled in with the minimal enclosing
+    /// rectangle.</param>
+    /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
+    /// outside of the clipping rectangle.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static bool GetRectEnclosingPoints(Point[] points, int count, IntPtr clip, out Rect result)
     {
         return GetRectEnclosingPointsPointerNativeFunction(points, count, clip, out result);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectEnclosingPointsClip([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, in Rect clip, out Rect result);
+    private delegate bool GetRectEnclosingPointsClipNativeDelegate(Point[] points, int count, in Rect clip, out Rect result);
+    private static GetRectEnclosingPointsClipNativeDelegate GetRectEnclosingPointsClipNativeFunction = SDL_GetRectEnclosingPointsClip;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);</code>
     /// <summary>
@@ -240,18 +247,18 @@ public static partial class SDL
     /// outside of the clipping rectangle.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectEnclosingPointsClip([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Point[] points, int count, in Rect clip, out Rect result);
-    private delegate bool GetRectEnclosingPointsClipNativeDelegate(Point[] points, int count, in Rect clip, out Rect result);
-    private static GetRectEnclosingPointsClipNativeDelegate GetRectEnclosingPointsClipNativeFunction = SDL_GetRectEnclosingPointsClip;
-
     public static bool GetRectEnclosingPoints(Point[] points, int count, in Rect clip, out Rect result)
     {
         return GetRectEnclosingPointsClipNativeFunction(points, count, in clip, out result);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectAndLineIntersection(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
+    private delegate bool GetRectAndLineIntersectionNativeDelegate(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
+    private static GetRectAndLineIntersectionNativeDelegate GetRectAndLineIntersectionNativeFunction = SDL_GetRectAndLineIntersection;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);</code>
     /// <summary>
@@ -270,13 +277,6 @@ public static partial class SDL
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersection"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectAndLineIntersection(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
-    private delegate bool GetRectAndLineIntersectionNativeDelegate(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2);
-    private static GetRectAndLineIntersectionNativeDelegate GetRectAndLineIntersectionNativeFunction = SDL_GetRectAndLineIntersection;
-
     public static bool GetRectAndLineIntersection(in Rect rect, ref int x1, ref int y1, ref int x2, ref int y2)
     {
         return GetRectAndLineIntersectionNativeFunction(in rect, ref x1, ref y1, ref x2, ref y2);
@@ -385,6 +385,13 @@ public static partial class SDL
     public static bool RectsEqualFloat(in FRect? a, in FRect? b) => RectsEqualEpsilon(a, b, FloatEpsilon);
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_HasRectIntersectionFloat(in FRect a, in FRect b);
+    private delegate bool HasRectIntersectionFloatNativeDelegate(in FRect a, in FRect b);
+    private static HasRectIntersectionFloatNativeDelegate HasRectIntersectionFloatNativeFunction = SDL_HasRectIntersectionFloat;
+
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);</code>
     /// <summary>
     /// <para>Determine whether two rectangles intersect with float precision.</para>
@@ -396,18 +403,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRectIntersectionFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasRectIntersectionFloat(in FRect a, in FRect b);
-    private delegate bool HasRectIntersectionFloatNativeDelegate(in FRect a, in FRect b);
-    private static HasRectIntersectionFloatNativeDelegate HasRectIntersectionFloatNativeFunction = SDL_HasRectIntersectionFloat;
-
     public static bool HasRectIntersectionFloat(in FRect a, in FRect b)
     {
         return HasRectIntersectionFloatNativeFunction(in a, in b);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectIntersectionFloat(in FRect a, in FRect b, out FRect result);
+    private delegate bool GetRectIntersectionFloatNativeDelegate(in FRect a, in FRect b, out FRect result);
+    private static GetRectIntersectionFloatNativeDelegate GetRectIntersectionFloatNativeFunction = SDL_GetRectIntersectionFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);</code>
     /// <summary>
@@ -422,18 +429,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="HasRectIntersectionFloat"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectIntersectionFloat(in FRect a, in FRect b, out FRect result);
-    private delegate bool GetRectIntersectionFloatNativeDelegate(in FRect a, in FRect b, out FRect result);
-    private static GetRectIntersectionFloatNativeDelegate GetRectIntersectionFloatNativeFunction = SDL_GetRectIntersectionFloat;
-
     public static bool GetRectIntersectionFloat(in FRect a, in FRect b, out FRect result)
     {
         return GetRectIntersectionFloatNativeFunction(in a, in b, out result);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectUnionFloat(in FRect a, in FRect b, out FRect result);
+    private delegate bool GetRectUnionFloatNativeDelegate(in FRect a, in FRect b, out FRect result);
+    private static GetRectUnionFloatNativeDelegate GetRectUnionFloatNativeFunction = SDL_GetRectUnionFloat;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);</code>
     /// <summary>
@@ -447,36 +454,12 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectUnionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectUnionFloat(in FRect a, in FRect b, out FRect result);
-    private delegate bool GetRectUnionFloatNativeDelegate(in FRect a, in FRect b, out FRect result);
-    private static GetRectUnionFloatNativeDelegate GetRectUnionFloatNativeFunction = SDL_GetRectUnionFloat;
-
     public static bool GetRectUnionFloat(in FRect a, in FRect b, out FRect result)
     {
         return GetRectUnionFloatNativeFunction(in a, in b, out result);
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);</code>
-    /// <summary>
-    /// <para>Calculate a minimal rectangle enclosing a set of points with float
-    /// precision.</para>
-    /// <para>If <c>clip</c> is not <c>null</c> then only points inside of the clipping rectangle are
-    /// considered.</para>
-    /// </summary>
-    /// <param name="points">an array of <see cref="FPoint"/> structures representing points to be
-    /// enclosed.</param>
-    /// <param name="count">the number of structures in the <c>points</c> array.</param>
-    /// <param name="clip">an <see cref="FRect"/> used for clipping or <c>null</c> to enclose all points.</param>
-    /// <param name="result">an <see cref="FRect"/> structure filled in with the minimal enclosing
-    /// rectangle.</param>
-    /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
-    /// outside of the clipping rectangle.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -484,11 +467,35 @@ public static partial class SDL
     private delegate bool GetRectEnclosingPointsFloatPointerNativeDelegate(FPoint[] points, int count, IntPtr clip, out FRect result);
     private static GetRectEnclosingPointsFloatPointerNativeDelegate GetRectEnclosingPointsFloatPointerNativeFunction = SDL_GetRectEnclosingPointsFloatPointer;
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);</code>
+    /// <summary>
+    /// <para>Calculate a minimal rectangle enclosing a set of points with float
+    /// precision.</para>
+    /// <para>If <c>clip</c> is not <c>null</c> then only points inside of the clipping rectangle are
+    /// considered.</para>
+    /// </summary>
+    /// <param name="points">an array of <see cref="FPoint"/> structures representing points to be
+    /// enclosed.</param>
+    /// <param name="count">the number of structures in the <c>points</c> array.</param>
+    /// <param name="clip">an <see cref="FRect"/> used for clipping or <c>null</c> to enclose all points.</param>
+    /// <param name="result">an <see cref="FRect"/> structure filled in with the minimal enclosing
+    /// rectangle.</param>
+    /// <returns><c>true</c> if any points were enclosed or <c>false</c> if all the points were
+    /// outside of the clipping rectangle.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
     public static bool GetRectEnclosingPointsFloat(FPoint[] points, int count, IntPtr clip, out FRect result)
     {
         return GetRectEnclosingPointsFloatPointerNativeFunction(points, count, clip, out result);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectEnclosingPointsFloatClip([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, in FRect clip, out FRect result);
+    private delegate bool GetRectEnclosingPointsFloatClipNativeDelegate(FPoint[] points, int count, in FRect clip, out FRect result);
+    private static GetRectEnclosingPointsFloatClipNativeDelegate GetRectEnclosingPointsFloatClipNativeFunction = SDL_GetRectEnclosingPointsFloatClip;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);</code>
     /// <summary>
@@ -507,18 +514,18 @@ public static partial class SDL
     /// outside of the clipping rectangle.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectEnclosingPointsFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectEnclosingPointsFloatClip([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FPoint[] points, int count, in FRect clip, out FRect result);
-    private delegate bool GetRectEnclosingPointsFloatClipNativeDelegate(FPoint[] points, int count, in FRect clip, out FRect result);
-    private static GetRectEnclosingPointsFloatClipNativeDelegate GetRectEnclosingPointsFloatClipNativeFunction = SDL_GetRectEnclosingPointsFloatClip;
-
     public static bool GetRectEnclosingPointsFloat(FPoint[] points, int count, in FRect clip, out FRect result)
     {
         return GetRectEnclosingPointsFloatClipNativeFunction(points, count, in clip, out result);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRectAndLineIntersectionFloat(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
+    private delegate bool GetRectAndLineIntersectionFloatNativeDelegate(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
+    private static GetRectAndLineIntersectionFloatNativeDelegate GetRectAndLineIntersectionFloatNativeFunction = SDL_GetRectAndLineIntersectionFloat;
 
     /// <summary>
     /// <para>Calculate the intersection of a rectangle and line segment with float
@@ -537,13 +544,6 @@ public static partial class SDL
     /// <returns><c>true</c> if there is an intersection, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRectAndLineIntersectionFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetRectAndLineIntersectionFloat(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
-    private delegate bool GetRectAndLineIntersectionFloatNativeDelegate(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2);
-    private static GetRectAndLineIntersectionFloatNativeDelegate GetRectAndLineIntersectionFloatNativeFunction = SDL_GetRectAndLineIntersectionFloat;
-
     public static bool GetRectAndLineIntersectionFloat(in FRect rect, ref float x1, ref float y1, ref float x2, ref float y2)
     {
         return GetRectAndLineIntersectionFloatNativeFunction(in rect, ref x1, ref y1, ref x2, ref y2);

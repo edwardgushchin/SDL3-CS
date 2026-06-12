@@ -29,6 +29,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AsyncIOFromFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_AsyncIOFromFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, [MarshalAs(UnmanagedType.LPUTF8Str)] string mode);
+    private delegate IntPtr AsyncIOFromFileNative(string file, string mode);
+    private static AsyncIOFromFileNative AsyncIOFromFileNativeFunction = SDL_AsyncIOFromFile;
+
     /// <code>extern SDL_DECLSPEC SDL_AsyncIO * SDLCALL SDL_AsyncIOFromFile(const char *file, const char *mode);</code>
     /// <summary>
     /// <para>Use this function to create a new SDL_AsyncIO object for reading from
@@ -62,17 +68,17 @@ public static partial class SDL
     /// <seealso cref="CloseAsyncIO"/>
     /// <seealso cref="ReadAsyncIO"/>
     /// <seealso cref="WriteAsyncIO"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AsyncIOFromFile"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_AsyncIOFromFile([MarshalAs(UnmanagedType.LPUTF8Str)] string file, [MarshalAs(UnmanagedType.LPUTF8Str)] string mode);
-    private delegate IntPtr AsyncIOFromFileNative(string file, string mode);
-    private static AsyncIOFromFileNative AsyncIOFromFileNativeFunction = SDL_AsyncIOFromFile;
-
     public static IntPtr AsyncIOFromFile(string file, string mode)
     {
         return AsyncIOFromFileNativeFunction(file, mode);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAsyncIOSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial long SDL_GetAsyncIOSize(IntPtr asyncio);
+    private delegate long GetAsyncIOSizeNative(IntPtr asyncio);
+    private static GetAsyncIOSizeNative GetAsyncIOSizeNativeFunction = SDL_GetAsyncIOSize;
 
     /// <code>extern SDL_DECLSPEC Sint64 SDLCALL SDL_GetAsyncIOSize(SDL_AsyncIO *asyncio);</code>
     /// <summary>
@@ -86,17 +92,18 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAsyncIOSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial long SDL_GetAsyncIOSize(IntPtr asyncio);
-    private delegate long GetAsyncIOSizeNative(IntPtr asyncio);
-    private static GetAsyncIOSizeNative GetAsyncIOSizeNativeFunction = SDL_GetAsyncIOSize;
-
     public static long GetAsyncIOSize(IntPtr asyncio)
     {
         return GetAsyncIOSizeNativeFunction(asyncio);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_ReadAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
+    private delegate bool ReadAsyncIONative(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
+    private static ReadAsyncIONative ReadAsyncIONativeFunction = SDL_ReadAsyncIO;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);</code>
     /// <summary>
@@ -127,18 +134,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WriteAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_ReadAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
-    private delegate bool ReadAsyncIONative(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
-    private static ReadAsyncIONative ReadAsyncIONativeFunction = SDL_ReadAsyncIO;
-
     public static bool ReadAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata)
     {
         return ReadAsyncIONativeFunction(asyncio, ptr, offset, size, queue, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_WriteAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
+    private delegate bool WriteAsyncIONative(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
+    private static WriteAsyncIONative WriteAsyncIONativeFunction = SDL_WriteAsyncIO;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WriteAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);</code>
     /// <summary>
@@ -168,18 +175,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="ReadAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_WriteAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
-    private delegate bool WriteAsyncIONative(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata);
-    private static WriteAsyncIONative WriteAsyncIONativeFunction = SDL_WriteAsyncIO;
-
     public static bool WriteAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata)
     {
         return WriteAsyncIONativeFunction(asyncio, ptr, offset, size, queue, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_CloseAsyncIO(IntPtr asyncio, [MarshalAs(UnmanagedType.I1)] bool flush, IntPtr queue, IntPtr userdata);
+    private delegate bool CloseAsyncIONative(IntPtr asyncio, bool flush, IntPtr queue, IntPtr userdata);
+    private static CloseAsyncIONative CloseAsyncIONativeFunction = SDL_CloseAsyncIO;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_CloseAsyncIO(SDL_AsyncIO *asyncio, bool flush, SDL_AsyncIOQueue *queue, void *userdata);</code>
     /// <summary>
@@ -220,18 +227,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, but two
     /// threads should not attempt to close the same object.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CloseAsyncIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_CloseAsyncIO(IntPtr asyncio, [MarshalAs(UnmanagedType.I1)] bool flush, IntPtr queue, IntPtr userdata);
-    private delegate bool CloseAsyncIONative(IntPtr asyncio, bool flush, IntPtr queue, IntPtr userdata);
-    private static CloseAsyncIONative CloseAsyncIONativeFunction = SDL_CloseAsyncIO;
-
     public static bool CloseAsyncIO(IntPtr asyncio, bool flush, IntPtr queue, IntPtr userdata)
     {
         return CloseAsyncIONativeFunction(asyncio, flush, queue, userdata);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateAsyncIOQueue();
+    private delegate IntPtr CreateAsyncIOQueueNative();
+    private static CreateAsyncIOQueueNative CreateAsyncIOQueueNativeFunction = SDL_CreateAsyncIOQueue;
 
     /// <code>extern SDL_DECLSPEC SDL_AsyncIOQueue * SDLCALL SDL_CreateAsyncIOQueue(void);</code>
     /// <summary>
@@ -246,17 +252,17 @@ public static partial class SDL
     /// <seealso cref="DestroyAsyncIOQueue"/>
     /// <seealso cref="GetAsyncIOResult"/>
     /// <seealso cref="WaitAsyncIOResult"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateAsyncIOQueue();
-    private delegate IntPtr CreateAsyncIOQueueNative();
-    private static CreateAsyncIOQueueNative CreateAsyncIOQueueNativeFunction = SDL_CreateAsyncIOQueue;
-
     public static IntPtr CreateAsyncIOQueue()
     {
         return CreateAsyncIOQueueNativeFunction();
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_DestroyAsyncIOQueue(IntPtr queue);
+    private delegate void DestroyAsyncIOQueueNative(IntPtr queue);
+    private static DestroyAsyncIOQueueNative DestroyAsyncIOQueueNativeFunction = SDL_DestroyAsyncIOQueue;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DestroyAsyncIOQueue(SDL_AsyncIOQueue *queue);</code>
     /// <summary>
@@ -280,17 +286,18 @@ public static partial class SDL
     /// no other thread is waiting on the queue with
     /// <see cref="WaitAsyncIOResult"/>.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DestroyAsyncIOQueue(IntPtr queue);
-    private delegate void DestroyAsyncIOQueueNative(IntPtr queue);
-    private static DestroyAsyncIOQueueNative DestroyAsyncIOQueueNativeFunction = SDL_DestroyAsyncIOQueue;
-
     public static void DestroyAsyncIOQueue(IntPtr queue)
     {
         DestroyAsyncIOQueueNativeFunction(queue);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAsyncIOResult"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome);
+    private delegate bool GetAsyncIOResultNative(IntPtr queue, out AsyncIOOutcome outcome);
+    private static GetAsyncIOResultNative GetAsyncIOResultNativeFunction = SDL_GetAsyncIOResult;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome);</code>
     /// <summary>
@@ -310,18 +317,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WaitAsyncIOResult"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetAsyncIOResult"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome);
-    private delegate bool GetAsyncIOResultNative(IntPtr queue, out AsyncIOOutcome outcome);
-    private static GetAsyncIOResultNative GetAsyncIOResultNativeFunction = SDL_GetAsyncIOResult;
-
     public static bool GetAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome)
     {
         return GetAsyncIOResultNativeFunction(queue, out outcome);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitAsyncIOResult"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_WaitAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome, int timeoutMS);
+    private delegate bool WaitAsyncIOResultNative(IntPtr queue, out AsyncIOOutcome outcome, int timeoutMS);
+    private static WaitAsyncIOResultNative WaitAsyncIOResultNativeFunction = SDL_WaitAsyncIOResult;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome, Sint32 timeoutMS);</code>
     /// <summary>
@@ -355,18 +362,17 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SignalAsyncIOQueue"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_WaitAsyncIOResult"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_WaitAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome, int timeoutMS);
-    private delegate bool WaitAsyncIOResultNative(IntPtr queue, out AsyncIOOutcome outcome, int timeoutMS);
-    private static WaitAsyncIOResultNative WaitAsyncIOResultNativeFunction = SDL_WaitAsyncIOResult;
-
     public static bool WaitAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome, int timeoutMS)
     {
         return WaitAsyncIOResultNativeFunction(queue, out outcome, timeoutMS);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SignalAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_SignalAsyncIOQueue(IntPtr queue);
+    private delegate void SignalAsyncIOQueueNative(IntPtr queue);
+    private static SignalAsyncIOQueueNative SignalAsyncIOQueueNativeFunction = SDL_SignalAsyncIOQueue;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SignalAsyncIOQueue(SDL_AsyncIOQueue *queue);</code>
     /// <summary>
@@ -385,17 +391,18 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="WaitAsyncIOResult"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SignalAsyncIOQueue"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SignalAsyncIOQueue(IntPtr queue);
-    private delegate void SignalAsyncIOQueueNative(IntPtr queue);
-    private static SignalAsyncIOQueueNative SignalAsyncIOQueueNativeFunction = SDL_SignalAsyncIOQueue;
-
     public static void SignalAsyncIOQueue(IntPtr queue)
     {
         SignalAsyncIOQueueNativeFunction(queue);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFileAsync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_LoadFileAsync([MarshalAs(UnmanagedType.LPUTF8Str)] string file, IntPtr queue, IntPtr userdata);
+    private delegate bool LoadFileAsyncNative(string file, IntPtr queue, IntPtr userdata);
+    private static LoadFileAsyncNative LoadFileAsyncNativeFunction = SDL_LoadFileAsync;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_LoadFileAsync(const char *file, SDL_AsyncIOQueue *queue, void *userdata);</code>
     /// <summary>
@@ -422,13 +429,6 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0.</since>
     /// <see cref="LoadFileIO"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadFileAsync"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_LoadFileAsync([MarshalAs(UnmanagedType.LPUTF8Str)] string file, IntPtr queue, IntPtr userdata);
-    private delegate bool LoadFileAsyncNative(string file, IntPtr queue, IntPtr userdata);
-    private static LoadFileAsyncNative LoadFileAsyncNativeFunction = SDL_LoadFileAsync;
-
     public static bool LoadFileAsync(string file, IntPtr queue, IntPtr userdata)
     {
         return LoadFileAsyncNativeFunction(file, queue, userdata);
