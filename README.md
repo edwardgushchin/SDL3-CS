@@ -78,6 +78,19 @@ dotnet add package SDL3-CS.Native.Mixer
 dotnet add package SDL3-CS.Native.Shadercross
 ```
 
+### Current NuGet Release
+
+| Package | Version | Native component |
+|---------|---------|------------------|
+| `SDL3-CS` | `3.4.2.1` | Managed wrapper for SDL 3.4.2 |
+| `SDL3-CS.Native` | `3.4.2.1` | SDL 3.4.2 |
+| `SDL3-CS.Native.Image` | `3.4.4.1` | SDL_image 3.4.4 |
+| `SDL3-CS.Native.Mixer` | `3.2.4.1` | SDL_mixer 3.2.4 |
+| `SDL3-CS.Native.TTF` | `3.2.2.1` | SDL_ttf 3.2.2 |
+| `SDL3-CS.Native.Shadercross` | `3.0.0.1` | SDL_shadercross 3.0.0 |
+
+The native packages are built through GitHub Actions for these RIDs: `win-x86`, `win-x64`, `win-arm64`, `linux-x64`, `linux-arm64`, `osx-x64`, `osx-arm64`, `android-arm`, `android-arm64`, `android-x86`, `android-x64`, `ios-arm64`, `iossimulator-arm64`, `iossimulator-x64`, `tvos-arm64`, `tvossimulator-arm64`, and `tvossimulator-x64`.
+
 ## 🎓 Examples
 
 ```C#
@@ -138,8 +151,8 @@ More examples can be found [here](https://github.com/edwardgushchin/SDL3-CS/tree
 | [SDL3](SDL3-CS/SDL)                       | ![Ready](https://img.shields.io/badge/Ready-008000)   |
 | [SDL_image](SDL3-CS/Image)                | ![Ready](https://img.shields.io/badge/Ready-008000)   |
 | [SDL_mixer](SDL3-CS/Mixer)                | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-| [SDL_tff](SDL3-CS/TTF)                    | ![Ready](https://img.shields.io/badge/Ready-008000)   |
-| [SDL_shadercross](SDL3-CS/TTFShaderCross) | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [SDL_ttf](SDL3-CS/TTF)                    | ![Ready](https://img.shields.io/badge/Ready-008000)   |
+| [SDL_shadercross](SDL3-CS/ShaderCross)    | ![Ready](https://img.shields.io/badge/Ready-008000)   |
 
 
 ## 🤝 Feedback and Contributions
