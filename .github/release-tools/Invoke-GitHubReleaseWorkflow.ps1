@@ -3,7 +3,7 @@
 param(
     [int] $PackageRevision = -1,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
-    [string] $WorkflowPath = (Join-Path (Join-Path (Join-Path $PSScriptRoot '..') '.github') 'workflows\release-native-packages.yml'),
+    [string] $WorkflowPath = (Join-Path (Join-Path $PSScriptRoot '..') 'workflows\release-native-packages.yml'),
     [string] $Branch,
     [int] $BuildParallelLevel = 2,
     [string] $Repository,
