@@ -30,10 +30,18 @@ $InstallRoot = Resolve-ReleasePath $InstallRoot
 $projectPath = Resolve-ReleasePath (Get-ReleaseNativePackageProjectForRid -Manifest $manifest -Component $componentInfo -Rid $Rid)
 $projectDir = Split-Path -Parent $projectPath
 $destination = Join-Path $projectDir "lib/$Rid"
-$resolvedProjectDir = (Resolve-Path -LiteralPath $projectDir).Path
-$resolvedDestinationParent = (Resolve-Path -LiteralPath (Split-Path -Parent $destination)).Path
+$resolvedProjectDir = [System.IO.Path]::GetFullPath((Resolve-Path -LiteralPath $projectDir).Path).TrimEnd(
+    [System.IO.Path]::DirectorySeparatorChar,
+    [System.IO.Path]::AltDirectorySeparatorChar)
+$resolvedDestinationParent = [System.IO.Path]::GetFullPath((Split-Path -Parent $destination)).TrimEnd(
+    [System.IO.Path]::DirectorySeparatorChar,
+    [System.IO.Path]::AltDirectorySeparatorChar)
+$resolvedProjectDirPrefix = "$resolvedProjectDir$([System.IO.Path]::DirectorySeparatorChar)"
 
-if (-not $resolvedDestinationParent.StartsWith($resolvedProjectDir, [System.StringComparison]::OrdinalIgnoreCase)) {
+if (
+    $resolvedDestinationParent -ne $resolvedProjectDir -and
+    -not $resolvedDestinationParent.StartsWith($resolvedProjectDirPrefix, [System.StringComparison]::OrdinalIgnoreCase)
+) {
     throw "Destination parent is outside package project: $resolvedDestinationParent"
 }
 

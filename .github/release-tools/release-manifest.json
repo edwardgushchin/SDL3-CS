@@ -639,6 +639,9 @@
         "-DSDLMIXER_TESTS=OFF"
       ],
       "ridCmakeArgs": {
+        "linux-arm64": [
+          "-DSDLMIXER_MP3_MPG123=OFF"
+        ],
         "android-arm": [
           "-DSDLMIXER_GME=OFF"
         ],

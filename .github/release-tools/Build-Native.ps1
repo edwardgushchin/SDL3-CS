@@ -316,7 +316,7 @@ function Invoke-SdlShadercrossSpirvCrossBuild {
         $configureArgs += @('-G', 'Ninja')
     }
     elseif ($RidInfo.os -eq 'windows') {
-        $configureArgs += @('-G', 'Visual Studio 17 2022', '-A', $RidInfo.vsArchitecture)
+        $configureArgs += @('-G', (Get-ReleaseVisualStudioCMakeGenerator), '-A', $RidInfo.vsArchitecture)
     }
 
     foreach ($arg in @($RidInfo.cmakeArgs)) {
@@ -398,7 +398,7 @@ function Invoke-CMakeBuild {
         $configureArgs += @('-G', 'Ninja')
     }
     elseif ($RidInfo.os -eq 'windows') {
-        $configureArgs += @('-G', 'Visual Studio 17 2022', '-A', $RidInfo.vsArchitecture)
+        $configureArgs += @('-G', (Get-ReleaseVisualStudioCMakeGenerator), '-A', $RidInfo.vsArchitecture)
     }
 
     foreach ($arg in @($RidInfo.cmakeArgs)) {
@@ -436,15 +436,22 @@ function Invoke-CMakeBuild {
             }
         }
     }
+    elseif ($RidInfo.os -eq 'android' -and $ComponentInfo.id -eq 'SDL_image') {
+        $configureArgs += '-DSDLIMAGE_DEPS_SHARED=OFF'
+    }
     elseif ($RidInfo.os -eq 'android' -and $ComponentInfo.id -eq 'SDL_shadercross') {
         $configureArgs += '-DSDLSHADERCROSS_INSTALL_RUNTIME=OFF'
     }
 
-    if ($RidInfo.os -eq 'windows') {
+    $nasmPath = $null
+    $perlPath = $null
+    if ($RidInfo.os -eq 'windows' -or ($RidInfo.os -eq 'android' -and $RidInfo.arch -in @('x86', 'x64'))) {
         $nasmPath = Get-ReleaseNasmPath
         if ($nasmPath) {
             $configureArgs += "-DCMAKE_ASM_NASM_COMPILER=$nasmPath"
         }
+    }
+    if ($RidInfo.os -eq 'windows') {
         $perlPath = Get-ReleasePerlPath
     }
 
@@ -461,13 +468,13 @@ function Invoke-CMakeBuild {
 
     $oldPath = $env:PATH
     try {
-        if ($RidInfo.os -eq 'windows' -and $nasmPath) {
+        if ($nasmPath) {
             $nasmDir = Split-Path -Parent $nasmPath
-            $env:PATH = "$nasmDir;$oldPath"
+            $env:PATH = "$nasmDir$([System.IO.Path]::PathSeparator)$oldPath"
         }
         if ($RidInfo.os -eq 'windows' -and $perlPath) {
             $perlDir = Split-Path -Parent $perlPath
-            $env:PATH = "$perlDir;$env:PATH"
+            $env:PATH = "$perlDir$([System.IO.Path]::PathSeparator)$env:PATH"
         }
 
         Invoke-ReleaseCommand -FilePath $cmakePath -Arguments $configureArgs -DryRun:$DryRun

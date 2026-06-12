@@ -113,6 +113,45 @@ foreach ($package in $nativePackages) {
     }
 }
 
+if ((@($manifest.components | Where-Object { $_.id -eq 'SDL' }).Count -eq 1) -and ($rids -contains 'tvossimulator-arm64')) {
+    $collectTempRoot = Join-Path ([System.IO.Path]::GetTempPath()) "sdl3cs-collect-native-artifacts-$([System.Guid]::NewGuid().ToString('N'))"
+
+    try {
+        $collectManifestPath = Join-Path $collectTempRoot 'release-manifest.json'
+        $collectInstallRoot = Join-Path $collectTempRoot 'empty-install'
+        $collectPackageDir = Join-Path $collectTempRoot 'SDL3-CS.tvOS'
+        $collectPackageProject = Join-Path $collectPackageDir 'SDL3-CS.tvOS.csproj'
+
+        New-Item -ItemType Directory -Force -Path $collectInstallRoot, $collectPackageDir | Out-Null
+        Set-Content -LiteralPath $collectPackageProject -Value '<Project Sdk="Microsoft.NET.Sdk" />' -Encoding UTF8
+
+        $collectManifest = Get-Content -LiteralPath (Resolve-ReleasePath $ManifestPath) -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 64
+        $collectTvOsPlatform = @($collectManifest.nativePackagePlatforms | Where-Object { $_.id -eq 'tvOS' })[0]
+        if (-not $collectTvOsPlatform.PSObject.Properties.Name.Contains('packageProjectOverrides')) {
+            $collectTvOsPlatform | Add-Member -MemberType NoteProperty -Name packageProjectOverrides -Value ([pscustomobject]@{})
+        }
+
+        $collectTvOsPlatform.packageProjectOverrides | Add-Member -MemberType NoteProperty -Name SDL -Value $collectPackageProject -Force
+        $collectManifest | ConvertTo-Json -Depth 64 | Set-Content -LiteralPath $collectManifestPath -Encoding UTF8
+
+        & (Join-Path $PSScriptRoot 'Collect-NativeArtifacts.ps1') `
+            -Component SDL `
+            -Rid tvossimulator-arm64 `
+            -ManifestPath $collectManifestPath `
+            -InstallRoot $collectInstallRoot `
+            -AllowEmpty `
+            -DryRun *> $null
+    }
+    catch {
+        $errors.Add("Collect-NativeArtifacts.ps1 must support missing destination parents in dry-run: $($_.Exception.Message)")
+    }
+    finally {
+        if (Test-Path -LiteralPath $collectTempRoot) {
+            Remove-Item -LiteralPath $collectTempRoot -Recurse -Force
+        }
+    }
+}
+
 $rows | Sort-Object Platform, Component | Format-Table -AutoSize
 
 if ($errors.Count -gt 0) {
