@@ -686,14 +686,16 @@
         ],
         "android-arm": [
           "-DSDLMIXER_GME=OFF",
-          "-DSDLMIXER_WAVPACK=OFF"
+          "-DSDLMIXER_WAVPACK=OFF",
+          "-DSDLMIXER_FLAC=OFF"
         ],
         "android-arm64": [
           "-DSDLMIXER_GME=OFF"
         ],
         "android-x86": [
           "-DSDLMIXER_GME=OFF",
-          "-DSDLMIXER_WAVPACK=OFF"
+          "-DSDLMIXER_WAVPACK=OFF",
+          "-DSDLMIXER_FLAC=OFF"
         ],
         "android-x64": [
           "-DSDLMIXER_GME=OFF"
@@ -959,15 +961,15 @@
         ],
         "ios": [
           "lib/libSDL3_shadercross*.a",
-          "lib/libspirv-cross-c*.a",
+          "lib/libspirv-cross*.a",
           "**/libSDL3_shadercross*.a",
-          "**/libspirv-cross-c*.a"
+          "**/libspirv-cross*.a"
         ],
         "tvos": [
           "lib/libSDL3_shadercross*.a",
-          "lib/libspirv-cross-c*.a",
+          "lib/libspirv-cross*.a",
           "**/libSDL3_shadercross*.a",
-          "**/libspirv-cross-c*.a"
+          "**/libspirv-cross*.a"
         ],
         "macos": [
           "lib/libSDL3_shadercross*.dylib*",
