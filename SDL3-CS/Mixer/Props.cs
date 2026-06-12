@@ -30,8 +30,9 @@ public static partial class Mixer
         public const string AudioLoadIOStreamPointer = "SDL_mixer.audio.load.iostream";
         public const string AudioLoadCloseIOBoolean = "SDL_mixer.audio.load.closeio";
         public const string AudioLoadPreDecodeBoolean = "SDL_mixer.audio.load.predecode";
-        public const string AudioLoadPreferredMixerPointer = "SDL_mixer.audio.load.Preferredmixer";
-        public const string AudioLoadSkipMetadataTagsBoolean = "SDL_mixer.audio.load.SkipMetadatatags";
+        public const string AudioLoadPreferredMixerPointer = "SDL_mixer.audio.load.preferred_mixer";
+        public const string AudioLoadSkipMetadataTagsBoolean = "SDL_mixer.audio.load.skip_metadata_tags";
+        public const string AudioLoadIgnoreLoopsBoolean = "SDL_mixer.audio.load.ignore_loops";
         public const string AudioDecoderString = "SDL_mixer.audio.decoder";
 
         public const string MetadataTitleString = "SDL_mixer.metadata.title";
@@ -50,14 +51,14 @@ public static partial class Mixer
         public const string PlayStartFrameNumber = "SDL_mixer.play.start_frame";
         public const string PlayStartMillisecondNumber = "SDL_mixer.play.start_millisecond";
         public const string PlayStartOrderNumber = "SDL_mixer.play.start_order";
-        public const string PlayLoopStartFrameNumber = "SDL_mixer.play.Loopstart_frame";
-        public const string PlayLoopStartMillisecondNumber = "SDL_mixer.play.Loopstart_millisecond";
+        public const string PlayLoopStartFrameNumber = "SDL_mixer.play.loop_start_frame";
+        public const string PlayLoopStartMillisecondNumber = "SDL_mixer.play.loop_start_millisecond";
         public const string PlayFadeInFramesNumber = "SDL_mixer.play.fade_in_frames";
         public const string PlayFadeInMillisecondsNumber = "SDL_mixer.play.fade_in_milliseconds";
         public const string PlayFadeInStartGainFloat = "SDL_mixer.play.fade_in_start_gain";
         public const string PlayAppendSilenceFramesNumber = "SDL_mixer.play.append_silence_frames";
         public const string PlayAppendSilenceMillisecondsNumber = "SDL_mixer.play.append_silence_milliseconds";
-        public const string PlayHaltWhenExhaustedBoolean = "SDL_mixer.play.halt_when-exhausted";
+        public const string PlayHaltWhenExhaustedBoolean = "SDL_mixer.play.halt_when_exhausted";
 
         public const string MixerDeviceNumber = "SDL_mixer.mixer.device";
     }

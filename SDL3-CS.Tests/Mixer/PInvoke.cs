@@ -228,6 +228,21 @@ internal static class PInvokeTests
         }
     }
 
+    public static void Props_MatchSdlMixer324PropertyNames()
+    {
+        TestAssert.Equal("SDL_mixer.audio.load.iostream", SDL3.Mixer.Props.AudioLoadIOStreamPointer, "Mixer.Props.AudioLoadIOStreamPointer must match MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER.");
+        TestAssert.Equal("SDL_mixer.audio.load.closeio", SDL3.Mixer.Props.AudioLoadCloseIOBoolean, "Mixer.Props.AudioLoadCloseIOBoolean must match MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN.");
+        TestAssert.Equal("SDL_mixer.audio.load.predecode", SDL3.Mixer.Props.AudioLoadPreDecodeBoolean, "Mixer.Props.AudioLoadPreDecodeBoolean must match MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN.");
+        TestAssert.Equal("SDL_mixer.audio.load.preferred_mixer", SDL3.Mixer.Props.AudioLoadPreferredMixerPointer, "Mixer.Props.AudioLoadPreferredMixerPointer must match MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER.");
+        TestAssert.Equal("SDL_mixer.audio.load.skip_metadata_tags", SDL3.Mixer.Props.AudioLoadSkipMetadataTagsBoolean, "Mixer.Props.AudioLoadSkipMetadataTagsBoolean must match MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN.");
+        TestAssert.Equal("SDL_mixer.audio.load.ignore_loops", SDL3.Mixer.Props.AudioLoadIgnoreLoopsBoolean, "Mixer.Props.AudioLoadIgnoreLoopsBoolean must match MIX_PROP_AUDIO_LOAD_IGNORE_LOOPS_BOOLEAN.");
+        TestAssert.Equal("SDL_mixer.audio.decoder", SDL3.Mixer.Props.AudioDecoderString, "Mixer.Props.AudioDecoderString must match MIX_PROP_AUDIO_DECODER_STRING.");
+
+        TestAssert.Equal("SDL_mixer.play.loop_start_frame", SDL3.Mixer.Props.PlayLoopStartFrameNumber, "Mixer.Props.PlayLoopStartFrameNumber must match MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER.");
+        TestAssert.Equal("SDL_mixer.play.loop_start_millisecond", SDL3.Mixer.Props.PlayLoopStartMillisecondNumber, "Mixer.Props.PlayLoopStartMillisecondNumber must match MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER.");
+        TestAssert.Equal("SDL_mixer.play.halt_when_exhausted", SDL3.Mixer.Props.PlayHaltWhenExhaustedBoolean, "Mixer.Props.PlayHaltWhenExhaustedBoolean must match MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN.");
+    }
+
     public static void LoadAudioNoCopy_ReturnsAudioForPinnedWavData()
     {
         MethodInfo? method = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.LoadAudioNoCopy), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr), typeof(IntPtr), typeof(nuint), typeof(bool)]);

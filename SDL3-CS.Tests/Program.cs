@@ -989,6 +989,8 @@ SDL3.Tests.Mixer.PInvokeTests.LoadAudio_ReturnsAudioForWavFile();
 Console.WriteLine("Mixer.LoadAudio binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.LoadAudioWithProperties_ReturnsAudioForWavStreamProperties();
 Console.WriteLine("Mixer.LoadAudioWithProperties binding test passed.");
+SDL3.Tests.Mixer.PInvokeTests.Props_MatchSdlMixer324PropertyNames();
+Console.WriteLine("Mixer.Props SDL_mixer 3.2.4 property constants test passed.");
 SDL3.Tests.Mixer.PInvokeTests.LoadAudioNoCopy_ReturnsAudioForPinnedWavData();
 Console.WriteLine("Mixer.LoadAudioNoCopy binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.LoadRawAudioIO_ReturnsNullForNullInputs();
