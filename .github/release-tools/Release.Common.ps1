@@ -560,6 +560,28 @@ function Get-ReleaseVisualStudioPath {
     return $path
 }
 
+function Get-ReleaseVisualStudioCMakeGenerator {
+    $fallbackGenerator = 'Visual Studio 17 2022'
+
+    if (-not $IsWindows) {
+        return $fallbackGenerator
+    }
+
+    $vs = Get-ReleaseVisualStudioPath
+    if (-not $vs) {
+        return $fallbackGenerator
+    }
+
+    if ($vs -match 'Microsoft Visual Studio[\\/](?<major>\d+)[\\/]') {
+        switch ($Matches.major) {
+            '18' { return 'Visual Studio 18 2026' }
+            '17' { return 'Visual Studio 17 2022' }
+        }
+    }
+
+    return $fallbackGenerator
+}
+
 function Get-ReleaseVisualStudioHostToolset {
     $hostArch = Get-ReleaseHostArch
     switch ($hostArch) {
