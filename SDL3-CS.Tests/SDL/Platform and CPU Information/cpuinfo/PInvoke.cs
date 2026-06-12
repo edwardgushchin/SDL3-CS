@@ -26,7 +26,6 @@ internal static class PInvokeTests
         HasAVX512F_ReturnsNativeValues();
         HasARMSIMD_ReturnsNativeValues();
         HasNEON_ReturnsNativeValues();
-        HasSVE2_ReturnsNativeValues();
         HasLSX_ReturnsNativeValues();
         HasLASX_ReturnsNativeValues();
         GetSystemRAM_ReturnsNativeValue();
@@ -116,11 +115,6 @@ internal static class PInvokeTests
     public static void HasNEON_ReturnsNativeValues()
     {
         AssertBooleanWrapper("HasNEONNativeFunction", SDL3.SDL.HasNEON, "SDL.HasNEON");
-    }
-
-    public static void HasSVE2_ReturnsNativeValues()
-    {
-        AssertBooleanWrapper("HasSVE2NativeFunction", SDL3.SDL.HasSVE2, "SDL.HasSVE2");
     }
 
     public static void HasLSX_ReturnsNativeValues()

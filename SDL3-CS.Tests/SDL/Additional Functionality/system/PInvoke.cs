@@ -324,18 +324,6 @@ internal static class PInvokeTests
         TestAssert.Equal(112, capturedParam, "SDL.SendAndroidMessage must forward param.");
     }
 
-    public static void IsPhone_ReturnsNativeValue()
-    {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_IsPhone");
-        AssertSdlLibraryImport(nativeMethod, "SDL_IsPhone");
-        AssertBoolReturnMarshal(nativeMethod);
-
-        using NativeHookScope _ = NativeHookScope.Install("IsPhoneNativeFunction", nameof(CaptureTrue));
-        bool result = SDL3.SDL.IsPhone();
-
-        TestAssert.Equal(true, result, "SDL.IsPhone must return the native hook value.");
-    }
-
     public static void IsTablet_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_IsTablet");

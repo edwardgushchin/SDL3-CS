@@ -4,13 +4,13 @@ This package contains native SDL libraries for SDL3-CS.
 
 ## Version Information
 
-| Package | SDL3 Version |
+| Package | Native library version |
 |---------|--------------|
-| SDL3-CS.Native | 3.4.2 |
-| SDL3-CS.Native.Image | 3.4.2 |
-| SDL3-CS.Native.Mixer | 3.4.2 |
-| SDL3-CS.Native.TTF | 3.4.2 |
-| SDL3-CS.Native.Shadercross | 3.4.2 |
+| SDL3-CS.Native | SDL 3.4.10 |
+| SDL3-CS.Native.Image | SDL_image 3.4.0 |
+| SDL3-CS.Native.Mixer | SDL_mixer 3.2.0 |
+| SDL3-CS.Native.TTF | SDL_ttf 3.3.0 |
+| SDL3-CS.Native.Shadercross | SDL_shadercross 3.0.0 |
 
 ## Platform Support
 

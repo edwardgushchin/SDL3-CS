@@ -29,9 +29,6 @@ internal static class PInvokeTests
     private static IntPtr capturedPixels;
     private static IntPtr capturedState;
     private static IntPtr capturedCreateInfo;
-    private static IntPtr capturedSamplerBindingsPointer;
-    private static IntPtr capturedStorageTexturesPointer;
-    private static IntPtr capturedStorageBuffersPointer;
     private static IntPtr capturedData;
     private static IntPtr capturedYPlane;
     private static IntPtr capturedUPlane;
@@ -82,9 +79,6 @@ internal static class PInvokeTests
     private static SDL3.SDL.FColor[]? capturedColors;
     private static float[]? capturedUV;
     private static byte[]? capturedByteIndices;
-    private static SDL3.SDL.GPUTextureSamplerBinding[]? capturedSamplerBindings;
-    private static IntPtr[]? capturedStorageTextures;
-    private static IntPtr[]? capturedStorageBuffers;
     private static SDL3.SDL.Rect capturedRect;
     private static SDL3.SDL.Rect nextRect;
     private static SDL3.SDL.FRect capturedFRect;
@@ -179,7 +173,6 @@ internal static class PInvokeTests
         RenderTextureAddressReadPresentDestroyFlushAndMetalFunctions_ForwardInputsOutputsAndReturnNativeValues();
         VulkanVSyncDebugTextAndDefaultTextureScaleFunctions_ForwardInputsOutputsAndReturnNativeValues();
         GpuRenderStateFunctions_ForwardPointersArraysAndReturnNativeValues();
-        GdkRendererFunctions_ForwardRenderer();
     }
 
     public static void NativeEntryPoints_KeepExpectedLibraryImportMetadata()
@@ -349,17 +342,9 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_SetDefaultTextureScaleMode"), "SDL_SetDefaultTextureScaleMode");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetDefaultTextureScaleMode"), "SDL_GetDefaultTextureScaleMode");
         AssertNativeImport(GetNativeMethod("SDL_CreateGPURenderState"), "SDL_CreateGPURenderState");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateSamplerBindingsPointer"), "SDL_SetGPURenderStateSamplerBindings");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateSamplerBindingsArray"), "SDL_SetGPURenderStateSamplerBindings");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateStorageTexturesPointer"), "SDL_SetGPURenderStateStorageTextures");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateStorageTexturesArray"), "SDL_SetGPURenderStateStorageTextures");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateStorageBuffersPointer"), "SDL_SetGPURenderStateStorageBuffers");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateStorageBuffersArray"), "SDL_SetGPURenderStateStorageBuffers");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateFragmentUniforms"), "SDL_SetGPURenderStateFragmentUniforms");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderState"), "SDL_SetGPURenderState");
         AssertNativeImport(GetNativeMethod("SDL_DestroyGPURenderState"), "SDL_DestroyGPURenderState");
-        AssertNativeImport(GetNativeMethod("SDL_GDKSuspendRenderer"), "SDL_GDKSuspendRenderer");
-        AssertNativeImport(GetNativeMethod("SDL_GDKResumeRenderer"), "SDL_GDKResumeRenderer");
     }
 
     public static void RenderDriverFunctions_ForwardAndConvertStrings()
@@ -2256,85 +2241,6 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
-        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateSamplerBindingsPointerNativeFunction", nameof(CaptureSetGPURenderStateSamplerBindingsPointer)))
-        {
-            bool result = SDL3.SDL.SetGPURenderStateSamplerBindings((IntPtr)0xA021, 2, (IntPtr)0xA022);
-
-            TestAssert.Equal(true, result, "SDL.SetGPURenderStateSamplerBindings pointer overload must return the native hook value.");
-            TestAssert.Equal((IntPtr)0xA021, capturedState, "SDL.SetGPURenderStateSamplerBindings pointer overload must forward state.");
-            TestAssert.Equal(2, capturedCount, "SDL.SetGPURenderStateSamplerBindings pointer overload must forward count.");
-            TestAssert.Equal((IntPtr)0xA022, capturedSamplerBindingsPointer, "SDL.SetGPURenderStateSamplerBindings pointer overload must forward bindings pointer.");
-        }
-
-        ResetCaptureState();
-        nextBool = true;
-        SDL3.SDL.GPUTextureSamplerBinding[] samplerBindings =
-        [
-            new() { Texture = (IntPtr)0xA031, Sampler = (IntPtr)0xA032 },
-            new() { Texture = (IntPtr)0xA033, Sampler = (IntPtr)0xA034 },
-        ];
-        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateSamplerBindingsArrayNativeFunction", nameof(CaptureSetGPURenderStateSamplerBindingsArray)))
-        {
-            bool result = SDL3.SDL.SetGPURenderStateSamplerBindings((IntPtr)0xA035, samplerBindings.Length, samplerBindings);
-
-            TestAssert.Equal(true, result, "SDL.SetGPURenderStateSamplerBindings array overload must return the native hook value.");
-            TestAssert.Equal((IntPtr)0xA035, capturedState, "SDL.SetGPURenderStateSamplerBindings array overload must forward state.");
-            TestAssert.Equal(2, capturedCount, "SDL.SetGPURenderStateSamplerBindings array overload must forward count.");
-            TestAssert.Equal(samplerBindings, capturedSamplerBindings, "SDL.SetGPURenderStateSamplerBindings array overload must forward the same array.");
-        }
-
-        ResetCaptureState();
-        nextBool = true;
-        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageTexturesPointerNativeFunction", nameof(CaptureSetGPURenderStateStorageTexturesPointer)))
-        {
-            bool result = SDL3.SDL.SetGPURenderStateStorageTextures((IntPtr)0xA041, 3, (IntPtr)0xA042);
-
-            TestAssert.Equal(true, result, "SDL.SetGPURenderStateStorageTextures pointer overload must return the native hook value.");
-            TestAssert.Equal((IntPtr)0xA041, capturedState, "SDL.SetGPURenderStateStorageTextures pointer overload must forward state.");
-            TestAssert.Equal(3, capturedCount, "SDL.SetGPURenderStateStorageTextures pointer overload must forward count.");
-            TestAssert.Equal((IntPtr)0xA042, capturedStorageTexturesPointer, "SDL.SetGPURenderStateStorageTextures pointer overload must forward textures pointer.");
-        }
-
-        ResetCaptureState();
-        nextBool = true;
-        IntPtr[] storageTextures = [(IntPtr)0xA051, (IntPtr)0xA052];
-        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageTexturesArrayNativeFunction", nameof(CaptureSetGPURenderStateStorageTexturesArray)))
-        {
-            bool result = SDL3.SDL.SetGPURenderStateStorageTextures((IntPtr)0xA053, storageTextures.Length, storageTextures);
-
-            TestAssert.Equal(true, result, "SDL.SetGPURenderStateStorageTextures array overload must return the native hook value.");
-            TestAssert.Equal((IntPtr)0xA053, capturedState, "SDL.SetGPURenderStateStorageTextures array overload must forward state.");
-            TestAssert.Equal(2, capturedCount, "SDL.SetGPURenderStateStorageTextures array overload must forward count.");
-            TestAssert.Equal(storageTextures, capturedStorageTextures, "SDL.SetGPURenderStateStorageTextures array overload must forward the same array.");
-        }
-
-        ResetCaptureState();
-        nextBool = true;
-        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageBuffersPointerNativeFunction", nameof(CaptureSetGPURenderStateStorageBuffersPointer)))
-        {
-            bool result = SDL3.SDL.SetGPURenderStateStorageBuffers((IntPtr)0xA061, 4, (IntPtr)0xA062);
-
-            TestAssert.Equal(true, result, "SDL.SetGPURenderStateStorageBuffers pointer overload must return the native hook value.");
-            TestAssert.Equal((IntPtr)0xA061, capturedState, "SDL.SetGPURenderStateStorageBuffers pointer overload must forward state.");
-            TestAssert.Equal(4, capturedCount, "SDL.SetGPURenderStateStorageBuffers pointer overload must forward count.");
-            TestAssert.Equal((IntPtr)0xA062, capturedStorageBuffersPointer, "SDL.SetGPURenderStateStorageBuffers pointer overload must forward buffers pointer.");
-        }
-
-        ResetCaptureState();
-        nextBool = true;
-        IntPtr[] storageBuffers = [(IntPtr)0xA071, (IntPtr)0xA072, (IntPtr)0xA073];
-        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageBuffersArrayNativeFunction", nameof(CaptureSetGPURenderStateStorageBuffersArray)))
-        {
-            bool result = SDL3.SDL.SetGPURenderStateStorageBuffers((IntPtr)0xA074, storageBuffers.Length, storageBuffers);
-
-            TestAssert.Equal(true, result, "SDL.SetGPURenderStateStorageBuffers array overload must return the native hook value.");
-            TestAssert.Equal((IntPtr)0xA074, capturedState, "SDL.SetGPURenderStateStorageBuffers array overload must forward state.");
-            TestAssert.Equal(3, capturedCount, "SDL.SetGPURenderStateStorageBuffers array overload must forward count.");
-            TestAssert.Equal(storageBuffers, capturedStorageBuffers, "SDL.SetGPURenderStateStorageBuffers array overload must forward the same array.");
-        }
-
-        ResetCaptureState();
-        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateFragmentUniformsNativeFunction", nameof(CaptureSetGPURenderStateFragmentUniforms)))
         {
             bool result = SDL3.SDL.SetGPURenderStateFragmentUniforms((IntPtr)0xA081, 5u, (IntPtr)0xA082, 16u);
@@ -2362,23 +2268,6 @@ internal static class PInvokeTests
         SDL3.SDL.DestroyGPURenderState((IntPtr)0xA0A1);
 
         TestAssert.Equal((IntPtr)0xA0A1, capturedState, "SDL.DestroyGPURenderState must forward state.");
-    }
-
-    public static void GdkRendererFunctions_ForwardRenderer()
-    {
-        ResetCaptureState();
-        using (NativeHookScope _ = NativeHookScope.Install("GDKSuspendRendererNativeFunction", nameof(CaptureRendererOnlyVoid)))
-        {
-            SDL3.SDL.GDKSuspendRenderer((IntPtr)0xB001);
-
-            TestAssert.Equal((IntPtr)0xB001, capturedRenderer, "SDL.GDKSuspendRenderer must forward renderer.");
-        }
-
-        ResetCaptureState();
-        using NativeHookScope resume = NativeHookScope.Install("GDKResumeRendererNativeFunction", nameof(CaptureRendererOnlyVoid));
-        SDL3.SDL.GDKResumeRenderer((IntPtr)0xB011);
-
-        TestAssert.Equal((IntPtr)0xB011, capturedRenderer, "SDL.GDKResumeRenderer must forward renderer.");
     }
 
     private static int CaptureGetNumRenderDrivers()
@@ -3529,54 +3418,6 @@ internal static class PInvokeTests
         return nextPointer;
     }
 
-    private static bool CaptureSetGPURenderStateSamplerBindingsPointer(IntPtr state, int numSamplerBindings, IntPtr samplerBindings)
-    {
-        capturedState = state;
-        capturedCount = numSamplerBindings;
-        capturedSamplerBindingsPointer = samplerBindings;
-        return nextBool;
-    }
-
-    private static bool CaptureSetGPURenderStateSamplerBindingsArray(IntPtr state, int numSamplerBindings, SDL3.SDL.GPUTextureSamplerBinding[] samplerBindings)
-    {
-        capturedState = state;
-        capturedCount = numSamplerBindings;
-        capturedSamplerBindings = samplerBindings;
-        return nextBool;
-    }
-
-    private static bool CaptureSetGPURenderStateStorageTexturesPointer(IntPtr state, int numStorageTextures, IntPtr storageTextures)
-    {
-        capturedState = state;
-        capturedCount = numStorageTextures;
-        capturedStorageTexturesPointer = storageTextures;
-        return nextBool;
-    }
-
-    private static bool CaptureSetGPURenderStateStorageTexturesArray(IntPtr state, int numStorageTextures, IntPtr[] storageTextures)
-    {
-        capturedState = state;
-        capturedCount = numStorageTextures;
-        capturedStorageTextures = storageTextures;
-        return nextBool;
-    }
-
-    private static bool CaptureSetGPURenderStateStorageBuffersPointer(IntPtr state, int numStorageBuffers, IntPtr storageBuffers)
-    {
-        capturedState = state;
-        capturedCount = numStorageBuffers;
-        capturedStorageBuffersPointer = storageBuffers;
-        return nextBool;
-    }
-
-    private static bool CaptureSetGPURenderStateStorageBuffersArray(IntPtr state, int numStorageBuffers, IntPtr[] storageBuffers)
-    {
-        capturedState = state;
-        capturedCount = numStorageBuffers;
-        capturedStorageBuffers = storageBuffers;
-        return nextBool;
-    }
-
     private static bool CaptureSetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length)
     {
         capturedState = state;
@@ -3996,9 +3837,6 @@ internal static class PInvokeTests
         capturedPixels = IntPtr.Zero;
         capturedState = IntPtr.Zero;
         capturedCreateInfo = IntPtr.Zero;
-        capturedSamplerBindingsPointer = IntPtr.Zero;
-        capturedStorageTexturesPointer = IntPtr.Zero;
-        capturedStorageBuffersPointer = IntPtr.Zero;
         capturedData = IntPtr.Zero;
         capturedYPlane = IntPtr.Zero;
         capturedUPlane = IntPtr.Zero;
@@ -4049,9 +3887,6 @@ internal static class PInvokeTests
         capturedColors = null;
         capturedUV = null;
         capturedByteIndices = null;
-        capturedSamplerBindings = null;
-        capturedStorageTextures = null;
-        capturedStorageBuffers = null;
         capturedRect = default;
         nextRect = default;
         capturedFRect = default;

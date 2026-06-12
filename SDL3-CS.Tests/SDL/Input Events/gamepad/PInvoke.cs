@@ -22,7 +22,6 @@ internal static class PInvokeTests
     private static SDL3.SDL.GamepadAxis capturedAxis;
     private static SDL3.SDL.GamepadButton capturedButton;
     private static SDL3.SDL.SensorType capturedSensorType;
-    private static SDL3.SDL.GamepadCapSenseType capturedCapSenseType;
     private static ushort capturedLowFrequencyRumble;
     private static ushort capturedHighFrequencyRumble;
     private static ushort capturedLeftRumble;
@@ -143,8 +142,6 @@ internal static class PInvokeTests
         GamepadSensorEnabled_ForwardsGamepadSensorAndReturnsNativeValue();
         GetGamepadSensorDataRate_ForwardsGamepadSensorAndReturnsNativeValue();
         GetGamepadSensorData_ForwardsGamepadSensorDataAndReturnsNativeValue();
-        GamepadHasCapSense_ForwardsGamepadCapSenseAndReturnsNativeValue();
-        GetGamepadCapSense_ForwardsGamepadCapSenseAndReturnsNativeValue();
         RumbleGamepad_ForwardsRumbleValuesAndReturnsNativeValue();
         RumbleGamepadTriggers_ForwardsTriggerRumbleValuesAndReturnsNativeValue();
         SetGamepadLED_ForwardsColorAndReturnsNativeValue();
@@ -1356,42 +1353,6 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadSensorData must call the native hook once.");
     }
 
-    public static void GamepadHasCapSense_ForwardsGamepadCapSenseAndReturnsNativeValue()
-    {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_GamepadHasCapSense");
-        AssertSdlImport(nativeMethod, "SDL_GamepadHasCapSense");
-        AssertBoolReturnMarshal(nativeMethod);
-
-        ResetCaptureState();
-        nextBool = true;
-
-        using NativeHookScope _ = NativeHookScope.Install("GamepadHasCapSenseNativeFunction", nameof(CaptureGamepadCapSenseBool));
-        bool result = SDL3.SDL.GamepadHasCapSense((IntPtr)0x5C01, SDL3.SDL.GamepadCapSenseType.LeftGrip);
-
-        TestAssert.Equal(true, result, "SDL.GamepadHasCapSense must return the native hook value.");
-        TestAssert.Equal((IntPtr)0x5C01, capturedGamepad, "SDL.GamepadHasCapSense must forward gamepad.");
-        TestAssert.Equal(SDL3.SDL.GamepadCapSenseType.LeftGrip, capturedCapSenseType, "SDL.GamepadHasCapSense must forward capsense type.");
-        TestAssert.Equal(1, capturedCallCount, "SDL.GamepadHasCapSense must call the native hook once.");
-    }
-
-    public static void GetGamepadCapSense_ForwardsGamepadCapSenseAndReturnsNativeValue()
-    {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_GetGamepadCapSense");
-        AssertSdlImport(nativeMethod, "SDL_GetGamepadCapSense");
-        AssertBoolReturnMarshal(nativeMethod);
-
-        ResetCaptureState();
-        nextBool = true;
-
-        using NativeHookScope _ = NativeHookScope.Install("GetGamepadCapSenseNativeFunction", nameof(CaptureGamepadCapSenseBool));
-        bool result = SDL3.SDL.GetGamepadCapSense((IntPtr)0x5C02, SDL3.SDL.GamepadCapSenseType.RightStick);
-
-        TestAssert.Equal(true, result, "SDL.GetGamepadCapSense must return the native hook value.");
-        TestAssert.Equal((IntPtr)0x5C02, capturedGamepad, "SDL.GetGamepadCapSense must forward gamepad.");
-        TestAssert.Equal(SDL3.SDL.GamepadCapSenseType.RightStick, capturedCapSenseType, "SDL.GetGamepadCapSense must forward capsense type.");
-        TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadCapSense must call the native hook once.");
-    }
-
     public static void RumbleGamepad_ForwardsRumbleValuesAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_RumbleGamepad");
@@ -2074,14 +2035,6 @@ internal static class PInvokeTests
         return nextBool;
     }
 
-    private static bool CaptureGamepadCapSenseBool(IntPtr gamepad, SDL3.SDL.GamepadCapSenseType type)
-    {
-        capturedCallCount++;
-        capturedGamepad = gamepad;
-        capturedCapSenseType = type;
-        return nextBool;
-    }
-
     private static bool CaptureRumbleGamepad(IntPtr gamepad, ushort lowFrequencyRumble, ushort highFrequencyRumble, uint durationMs)
     {
         capturedCallCount++;
@@ -2204,7 +2157,6 @@ internal static class PInvokeTests
         capturedAxis = SDL3.SDL.GamepadAxis.Invalid;
         capturedButton = SDL3.SDL.GamepadButton.Invalid;
         capturedSensorType = SDL3.SDL.SensorType.Invalid;
-        capturedCapSenseType = SDL3.SDL.GamepadCapSenseType.Invalid;
         capturedLowFrequencyRumble = 0;
         capturedHighFrequencyRumble = 0;
         capturedLeftRumble = 0;

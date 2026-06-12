@@ -592,27 +592,6 @@ public partial class SDL
         return SendAndroidMessageNativeFunction(command, param);
     }
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsPhone(void);</code>
-    /// <summary>
-    /// <para>Query if the current device is a phone.</para>
-    /// <para>If SDL can't determine this, it will return <c>false</c>.</para>
-    /// </summary>
-    /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsPhone"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_IsPhone();
-    private delegate bool IsPhoneNative();
-    private static IsPhoneNative IsPhoneNativeFunction = SDL_IsPhone;
-
-    public static bool IsPhone()
-    {
-        return IsPhoneNativeFunction();
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsTablet(void);</code>
     /// <summary>
     /// <para>Query if the current device is a tablet.</para>

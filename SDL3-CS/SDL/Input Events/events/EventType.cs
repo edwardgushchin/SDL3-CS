@@ -471,15 +471,6 @@ public static partial class SDL
         /// </summary>
         GamepadSteamHandleUpdated,
 
-        /// <summary>
-        /// Gamepad capsense was touched
-        /// </summary>
-        GamepadCapSenseTouch,
-
-        /// <summary>
-        /// Gamepad capsense was released
-        /// </summary>
-        GamepadCapSenseRelease,
         #endregion
 
         #region Touch events
@@ -626,13 +617,6 @@ public static partial class SDL
         /// A camera device has been denied for use by the user.
         /// </summary>
         CameraDeviceDenied,
-        #endregion
-
-        #region Notification events
-        /// <summary>
-        /// A user response to a system notification was received.
-        /// </summary>
-        NotificationActionInvoked = 0x1500,
         #endregion
 
         #region Render events

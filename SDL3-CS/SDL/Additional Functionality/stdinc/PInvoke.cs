@@ -24,7 +24,6 @@
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace SDL3;
 
@@ -64,7 +63,7 @@ public partial class SDL
     /// <para>If the allocation is successful, the returned pointer is guaranteed to be
     /// aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
     /// C11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use
-    /// <see cref="AlignedAllocZero"/> if you need to allocate memory aligned to an
+    /// <see cref="AlignedAlloc"/> if you need to allocate memory aligned to an
     /// alignment greater than this guarantee.</para>
     /// </summary>
     /// <param name="nmemb">the number of elements in the array.</param>
@@ -240,47 +239,17 @@ public partial class SDL
     public static partial IntPtr AlignedAlloc(UIntPtr alignment, UIntPtr size);
 
 
-    /// <code>extern SDL_DECLSPEC SDL_MALLOC void * SDLCALL SDL_aligned_alloc_zero(size_t alignment, size_t size);</code>
-    /// <summary>
-    /// <para>Allocate zero-initialized memory aligned to a specific alignment.</para>
-    /// <para>The memory returned by this function must be freed with <see cref="AlignedFree"/>,
-    /// _not_ <see cref="Free"/>.</para>
-    /// <para>If <c>alignment</c> is less than the size of <c>void *</c>, it will be increased to
-    /// match that.</para>
-    /// <para>The returned memory address will be a multiple of the alignment value, and
-    /// the size of the memory allocated will be a multiple of the alignment value.</para>
-    /// </summary>
-    /// <param name="alignment">the alignment of the memory.</param>
-    /// <param name="size">the size to allocate.</param>
-    /// <returns>a pointer to the aligned memory, or <c>null</c> if allocation failed.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="AlignedFree"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc_zero"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_AlignedAllocZero(UIntPtr alignment, UIntPtr size);
-    private delegate IntPtr AlignedAllocZeroNative(UIntPtr alignment, UIntPtr size);
-    private static AlignedAllocZeroNative AlignedAllocZeroNativeFunction = SDL_AlignedAllocZero;
-
-    public static IntPtr AlignedAllocZero(UIntPtr alignment, UIntPtr size)
-    {
-        return AlignedAllocZeroNativeFunction(alignment, size);
-    }
-
-
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_aligned_free(void *mem);</code>
     /// <summary>
-    /// <para>Free memory allocated by <see cref="AlignedAlloc"/> or <see cref="AlignedAllocZero"/>.</para>
+    /// <para>Free memory allocated by <see cref="AlignedAlloc"/>.</para>
     /// <para>The pointer is no longer valid after this call and cannot be dereferenced
     /// anymore.</para>
     /// <para>If <c>mem</c> is <c>null</c>, this function does nothing.</para>
     /// </summary>
-    /// <param name="mem">a pointer previously returned by <see cref="AlignedAlloc"/> or
-    /// <see cref="AlignedAllocZero"/>, or <c>null</c>.</param>
+    /// <param name="mem">a pointer previously returned by <see cref="AlignedAlloc"/>, or <c>null</c>.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AlignedAlloc"/>
-    /// <seealso cref="AlignedAllocZero"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_free"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AlignedFree(IntPtr mem);
 
@@ -615,143 +584,6 @@ public partial class SDL
     /// <seealso cref="RandFR"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_bits_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint RandBitsR(ref ulong state);
-
-
-    /// <code>extern SDL_DECLSPEC unsigned long SDLCALL SDL_wcstoul(const wchar_t *str, wchar_t **endp, int base);</code>
-    /// <summary>
-    /// <para>Parse an <c>unsigned long</c> from a wide string.</para>
-    /// <para>If <c>str</c> starts with whitespace, then those whitespace characters are
-    /// skipped before attempting to parse the number.</para>
-    /// <para>If the parsed number does not fit inside an <c>unsigned long</c>, the result is
-    /// clamped to the minimum and maximum representable <c>unsigned long</c> values.</para>
-    /// </summary>
-    /// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
-    /// <param name="endp">If not <c>null</c>, the address of the first invalid wide character
-    /// (i.e. the next character after the parsed number) will be
-    /// written to this pointer.</param>
-    /// <param name="base">The base of the integer to read. Supported values are 0 and 2
-    /// to 36 inclusive. If 0, the base will be inferred from the
-    /// number's prefix (0x for hexadecimal, 0 for octal, decimal
-    /// otherwise).</param>
-    /// <returns>the parsed <c>unsigned long</c>, or 0 if no number could be parsed.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_strtoul">SDL_strtoul</seealso>
-    public static CULong Wcstoul(string str, IntPtr endp, int @base)
-    {
-        var strPtr = WCharStringMarshaller.ConvertToUnmanaged(str);
-
-        try
-        {
-            return WcstoulNativeFunction(strPtr, endp, @base);
-        }
-        finally
-        {
-            WCharStringMarshaller.Free(strPtr);
-        }
-    }
-
-    private delegate CULong WcstoulNative(IntPtr str, IntPtr endp, int @base);
-    private static WcstoulNative WcstoulNativeFunction = SDL_wcstoul;
-
-    [ExcludeFromCodeCoverage]
-    private static CULong SDL_wcstoul(IntPtr strPtr, IntPtr endp, int @base)
-    {
-        // C unsigned long is 32-bit on Windows/ILP32 and 64-bit on LP64 Unix.
-        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || IntPtr.Size == 4
-            ? new CULong(SDL_wcstoul32(strPtr, endp, @base))
-            : new CULong((UIntPtr)SDL_wcstoul64(strPtr, endp, @base));
-    }
-
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoul"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_wcstoul32(IntPtr str, IntPtr endp, int @base);
-
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoul"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_wcstoul64(IntPtr str, IntPtr endp, int @base);
-
-
-    /// <code>extern SDL_DECLSPEC long long SDLCALL SDL_wcstoll(const wchar_t *str, wchar_t **endp, int base);</code>
-    /// <summary>
-    /// <para>Parse a <c>long long</c> from a wide string.</para>
-    /// <para>If <c>str</c> starts with whitespace, then those whitespace characters are
-    /// skipped before attempting to parse the number.</para>
-    /// <para>If the parsed number does not fit inside a <c>long long</c>, the result is
-    /// clamped to the minimum and maximum representable <c>long long</c> values.</para>
-    /// </summary>
-    /// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
-    /// <param name="endp">If not <c>null</c>, the address of the first invalid wide character
-    /// (i.e. the next character after the parsed number) will be
-    /// written to this pointer.</param>
-    /// <param name="base">The base of the integer to read. Supported values are 0 and 2
-    /// to 36 inclusive. If 0, the base will be inferred from the
-    /// number's prefix (0x for hexadecimal, 0 for octal, decimal
-    /// otherwise).</param>
-    /// <returns>the parsed <c>long long</c>, or 0 if no number could be parsed.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_strtoll">SDL_strtoll</seealso>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoll"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial long SDL_Wcstoll(IntPtr str, IntPtr endp, int @base);
-    private delegate long WcstollNative(IntPtr str, IntPtr endp, int @base);
-    private static WcstollNative WcstollNativeFunction = SDL_Wcstoll;
-
-    public static long Wcstoll(string str, IntPtr endp, int @base)
-    {
-        var strPtr = WCharStringMarshaller.ConvertToUnmanaged(str);
-
-        try
-        {
-            return WcstollNativeFunction(strPtr, endp, @base);
-        }
-        finally
-        {
-            WCharStringMarshaller.Free(strPtr);
-        }
-    }
-
-
-    /// <code>extern SDL_DECLSPEC unsigned long long SDLCALL SDL_wcstoull(const wchar_t *str, wchar_t **endp, int base);</code>
-    /// <summary>
-    /// <para>Parse an <c>unsigned long long</c> from a wide string.</para>
-    /// <para>If <c>str</c> starts with whitespace, then those whitespace characters are
-    /// skipped before attempting to parse the number.</para>
-    /// <para>If the parsed number does not fit inside an <c>unsigned long long</c>, the
-    /// result is clamped to the minimum and maximum representable <c>unsigned long
-    /// long</c> values.</para>
-    /// </summary>
-    /// <param name="str">The <c>null</c>-terminated wide string to read. Must not be <c>null</c>.</param>
-    /// <param name="endp">If not <c>null</c>, the address of the first invalid wide character
-    /// (i.e. the next character after the parsed number) will be
-    /// written to this pointer.</param>
-    /// <param name="base">The base of the integer to read. Supported values are 0 and 2
-    /// to 36 inclusive. If 0, the base will be inferred from the
-    /// number's prefix (0x for hexadecimal, 0 for octal, decimal
-    /// otherwise).</param>
-    /// <returns>the parsed <c>unsigned long long</c>, or 0 if no number could be
-    /// parsed.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso href="https://wiki.libsdl.org/SDL3/SDL_strtoull">SDL_strtoull</seealso>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_wcstoull"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_Wcstoull(IntPtr str, IntPtr endp, int @base);
-    private delegate ulong WcstoullNative(IntPtr str, IntPtr endp, int @base);
-    private static WcstoullNative WcstoullNativeFunction = SDL_Wcstoull;
-
-    public static ulong Wcstoull(string str, IntPtr endp, int @base)
-    {
-        var strPtr = WCharStringMarshaller.ConvertToUnmanaged(str);
-
-        try
-        {
-            return WcstoullNativeFunction(strPtr, endp, @base);
-        }
-        finally
-        {
-            WCharStringMarshaller.Free(strPtr);
-        }
-    }
 
 
     /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_memset(SDL_OUT_BYTECAP(len) void *dst, int c, size_t len);</code>

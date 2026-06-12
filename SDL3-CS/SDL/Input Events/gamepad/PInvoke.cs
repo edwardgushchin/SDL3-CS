@@ -1717,52 +1717,6 @@ public static partial class SDL
     }
 
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GamepadHasCapSense(SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type);</code>
-    /// <summary>
-    /// Return whether a gamepad has a particular capsense.
-    /// </summary>
-    /// <param name="gamepad">the gamepad to query.</param>
-    /// <param name="type">the type of capsense to query.</param>
-    /// <returns><c>true</c> if the capsense exists, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="GetGamepadCapSense"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GamepadHasCapSense"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GamepadHasCapSense(IntPtr gamepad, GamepadCapSenseType type);
-    private delegate bool GamepadHasCapSenseNativeDelegate(IntPtr gamepad, GamepadCapSenseType type);
-    private static GamepadHasCapSenseNativeDelegate GamepadHasCapSenseNativeFunction = SDL_GamepadHasCapSense;
-
-    public static bool GamepadHasCapSense(IntPtr gamepad, GamepadCapSenseType type)
-    {
-        return GamepadHasCapSenseNativeFunction(gamepad, type);
-    }
-
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGamepadCapSense(SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type);</code>
-    /// <summary>
-    /// Get the current state of a capsense on a gamepad.
-    /// </summary>
-    /// <param name="gamepad">a gamepad.</param>
-    /// <param name="type">the type of capsense to query.</param>
-    /// <returns><c>true</c> if the capsense is touched, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="GamepadHasCapSense"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadCapSense"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetGamepadCapSense(IntPtr gamepad, GamepadCapSenseType type);
-    private delegate bool GetGamepadCapSenseNativeDelegate(IntPtr gamepad, GamepadCapSenseType type);
-    private static GetGamepadCapSenseNativeDelegate GetGamepadCapSenseNativeFunction = SDL_GetGamepadCapSense;
-
-    public static bool GetGamepadCapSense(IntPtr gamepad, GamepadCapSenseType type)
-    {
-        return GetGamepadCapSenseNativeFunction(gamepad, type);
-    }
-
-
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RumbleGamepad(SDL_Gamepad *gamepad, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms);</code>
     /// <summary>
     /// <para>Start a rumble effect on a gamepad.</para>

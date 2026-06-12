@@ -86,7 +86,6 @@ internal static class PInvokeTests
         SurfacePaletteAlternateImageAndLockFunctions_ForwardInputsOutputsAndManageNativeArrays();
         SurfaceLoadAndBmpSaveFunctions_ForwardInputsAndReturnNativeValues();
         SurfacePngLoadAndSaveFunctions_ForwardInputsAndReturnNativeValues();
-        SurfaceJpgLoadFunctions_ForwardInputsAndReturnNativeValues();
         SurfaceRleColorBlendAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues();
         SurfaceTransformAndConversionFunctions_ForwardInputsAndReturnNativeValues();
         SurfaceConvertPixelsFunctions_ForwardInputsOutputsAndReturnNativeValues();
@@ -148,12 +147,6 @@ internal static class PInvokeTests
         MethodInfo savePng = GetNativeMethod("SDL_SavePNG");
         AssertNativeBoolImport(savePng, "SDL_SavePNG");
         AssertStringParameterMarshal(savePng, 1);
-        MethodInfo loadJpgIO = GetNativeMethod("SDL_LoadJPGIO");
-        AssertNativeImport(loadJpgIO, "SDL_LoadJPG_IO");
-        AssertBoolParameterMarshal(loadJpgIO, 1);
-        MethodInfo loadJpg = GetNativeMethod("SDL_LoadJPG");
-        AssertNativeImport(loadJpg, "SDL_LoadJPG");
-        AssertStringParameterMarshal(loadJpg, 0);
         MethodInfo setSurfaceRLE = GetNativeMethod("SDL_SetSurfaceRLE");
         AssertNativeBoolImport(setSurfaceRLE, "SDL_SetSurfaceRLE");
         AssertBoolParameterMarshal(setSurfaceRLE, 1);
@@ -556,28 +549,6 @@ internal static class PInvokeTests
         TestAssert.Equal(true, saved, "SDL.SavePNG must return the native hook value.");
         TestAssert.Equal((IntPtr)0x4031, capturedSurface, "SDL.SavePNG must forward surface.");
         TestAssert.Equal("surface-out.png", capturedFile, "SDL.SavePNG must forward file.");
-    }
-
-    public static void SurfaceJpgLoadFunctions_ForwardInputsAndReturnNativeValues()
-    {
-        ResetCaptureState();
-        nextPointer = (IntPtr)0x5001;
-        using (NativeHookScope _ = NativeHookScope.Install("LoadJPGIONativeFunction", nameof(CaptureLoadJPGIO)))
-        {
-            IntPtr result = SDL3.SDL.LoadJPGIO((IntPtr)0x5002, true);
-
-            TestAssert.Equal((IntPtr)0x5001, result, "SDL.LoadJPGIO must return the native hook value.");
-            TestAssert.Equal((IntPtr)0x5002, capturedSrc, "SDL.LoadJPGIO must forward source stream.");
-            TestAssert.Equal(true, capturedCloseIO, "SDL.LoadJPGIO must forward closeio.");
-        }
-
-        ResetCaptureState();
-        nextPointer = (IntPtr)0x5011;
-        using NativeHookScope loadJpg = NativeHookScope.Install("LoadJPGNativeFunction", nameof(CaptureLoadJPG));
-        IntPtr loaded = SDL3.SDL.LoadJPG("surface.jpg");
-
-        TestAssert.Equal((IntPtr)0x5011, loaded, "SDL.LoadJPG must return the native hook value.");
-        TestAssert.Equal("surface.jpg", capturedFile, "SDL.LoadJPG must forward file.");
     }
 
     public static void SurfaceRleColorBlendAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues()
@@ -1690,19 +1661,6 @@ internal static class PInvokeTests
         capturedSurface = surface;
         capturedFile = file;
         return nextBool;
-    }
-
-    private static IntPtr CaptureLoadJPGIO(IntPtr src, bool closeio)
-    {
-        capturedSrc = src;
-        capturedCloseIO = closeio;
-        return nextPointer;
-    }
-
-    private static IntPtr CaptureLoadJPG(string file)
-    {
-        capturedFile = file;
-        return nextPointer;
     }
 
     private static bool CaptureSetSurfaceRLE(IntPtr surface, bool enabled)

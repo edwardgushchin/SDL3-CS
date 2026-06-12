@@ -54,24 +54,6 @@ public static partial class SDL
         public const string AllowAltTabWhileGrabbed = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
         
         /// <summary>
-        /// <para>A variable to control whether we allow persistent folder access on Android
-        /// when using the SDL select folder dialog.</para>
-        /// <para>If set to <c>"1"</c>, the selected folder will be accessible persistently
-        /// across app launches. That allows the user to only have to select the directory
-        /// once, and then the app can access it again in the future without needing to ask
-        /// the user to select it again.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: Persistent folder access is not allowed. (default)</item>
-        /// <item><c>"1"</c>: Persistent folder access is allowed.</item>
-        /// </list>
-        /// </summary>
-        /// <remarks>This hint should be set before the SDL folder selection dialog is shown,
-        /// and can be changed between dialog invocations.</remarks>
-        /// <since>This hint is available since SDL 3.6.0.</since>
-        public const string AndroidAllowPersistentFolderAccess = "SDL_ANDROID_ALLOW_PERSISTENT_FOLDER_ACCESS";
-
-        /// <summary>
         /// <para>A variable to control whether the SDL activity is allowed to be re-created.</para>
         /// <para>If this hint is <c>true</c>, the activity can be recreated on demand by the OS,
         /// and Java static data and C++ static data remain with their current values.
@@ -407,20 +389,6 @@ public static partial class SDL
         public const string AudioDriver = "SDL_AUDIO_DRIVER";
 
         /// <summary>
-        /// <para>Specify whether this audio stream should duck other audio.</para>
-        /// <para>On Apple platforms, this hint controls whether other audio streams are
-        /// ducked (reduced in volume) while your application is in the foreground.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: Other audio will not be ducked. (default)</item>
-        /// <item><c>"1"</c>: Other audio will be ducked.</item>
-        /// </list>
-        /// </summary>
-        /// <remarks>This hint should be set before an audio device is opened.</remarks>
-        /// <since>This hint is available since SDL 3.6.0.</since>
-        public const string AudioDuckOthers = "SDL_AUDIO_DUCK_OTHERS";
-        
-        /// <summary>
         /// <para>A variable controlling the audio rate when using the dummy audio driver.</para>
         /// <para>The dummy audio driver normally simulates real-time for the audio rate that
         /// was specified, but you can use this variable to adjust this rate higher or
@@ -621,20 +589,6 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string DisplayUsableBounds = "SDL_DISPLAY_USABLE_BOUNDS";
-
-        /// <summary>
-        /// <para>A variable that enables a fast framebuffer path on DOS.</para>
-        /// <para>When set to <c>"1"</c>, <see cref="UpdateWindowSurface"/> copies the system-RAM surface
-        /// directly to VRAM and skips software cursor compositing and vsync.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: Use the normal path with cursor compositing and vsync. (default)</item>
-        /// <item><c>"1"</c>: Use the fast direct-to-VRAM path when available.</item>
-        /// </list>
-        /// </summary>
-        /// <remarks>This hint must be set before the first call to <see cref="GetWindowSurface"/>.</remarks>
-        /// <since>This hint is available since SDL 3.6.0.</since>
-        public const string DosAllowDirectFramebuffer = "SDL_DOS_ALLOW_DIRECT_FRAMEBUFFER";
 
         /// <summary>
         /// <para>Set the level of checking for invalid parameters passed to SDL functions.</para>
@@ -975,19 +929,6 @@ public static partial class SDL
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string GPUDriver = "SDL_GPU_DRIVER";
 
-        /// <summary>
-        /// <para>A variable that specifies the library name to use when loading the OpenXR
-        /// loader.</para>
-        /// <para>By default, SDL will try the system default name, but on some platforms
-        /// like Windows, debug builds of the OpenXR loader have a different name, and
-        /// are not always directly compatible with release applications. Setting this
-        /// hint allows you to compensate for this difference in your app when
-        /// applicable.</para>
-        /// </summary>
-        /// <remarks>This hint should be set before the OpenXR loader is loaded. For example,
-        /// creating an OpenXR GPU device will load the OpenXR loader.</remarks>
-        public const string OpenXRLibrary = "SDL_OPENXR_LIBRARY";
-        
         /// <summary>
         /// <para>A variable to control whether SDL_hid_enumerate() enumerates all HID
         /// devices or only controllers.</para>

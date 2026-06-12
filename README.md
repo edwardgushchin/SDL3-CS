@@ -13,7 +13,7 @@
 <p align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/.NET-7.0,_8.0,_9.0,_10.0-512BD4">
     <img alt="Static Badge" src="https://img.shields.io/badge/Language-C%23_14-239120">
-    <img alt="Static Badge" src="https://img.shields.io/badge/SDL3-3.4.2-239120">
+    <img alt="Static Badge" src="https://img.shields.io/badge/SDL3-3.4.10-239120">
 </p>
 
 <p align="center">
@@ -39,14 +39,14 @@ This is SDL3#, a C# wrapper for SDL3.
 
 | SDL3-CS Version | SDL3 Version | Minimum glibc (Linux) | Notes |
 |-----------------|--------------|----------------------|-------|
-| 3.4.2.x         | 3.4.2        | 2.28 (Ubuntu 18.04+) | Current stable |
-| 3.4.0.x         | 3.4.0        | 2.28 (Ubuntu 18.04+) | Previous stable |
+| 3.4.10.x        | 3.4.10       | 2.28 (Ubuntu 18.04+) | Current stable |
+| 3.4.2.x         | 3.4.2        | 2.28 (Ubuntu 18.04+) | Previous stable |
 
-> **Note:** The version numbering scheme follows SDL3's versioning. For example, SDL3-CS version `3.4.2.x` is designed for SDL3 version `3.4.2`.
+> **Note:** The version numbering scheme follows SDL3's versioning. For example, SDL3-CS version `3.4.10.x` is designed for SDL3 version `3.4.10`.
 
 ### Building Native Libraries on Linux
 
-If you're building native libraries in a custom environment (e.g., Docker, Steam Runtime SDK), ensure you're building against SDL3 version **3.4.2**. The native packages (`SDL3-CS.Native*`) contain pre-built binaries for common platforms, but custom builds should match this version.
+If you're building native libraries in a custom environment (e.g., Docker, Steam Runtime SDK), ensure you're building against SDL3 version **3.4.10**. The native packages (`SDL3-CS.Native*`) contain pre-built binaries for common platforms, but custom builds should match this version.
 
 For more detailed version information, see [VERSIONS.md](VERSIONS.md).
 
