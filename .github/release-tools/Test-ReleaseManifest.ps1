@@ -404,6 +404,13 @@ foreach ($component in $manifest.components) {
         if ($sdlMacOsPatterns -notcontains 'lib/libSDL3*.dylib*') {
             Add-ValidationError "Component SDL artifactPatterns.macos must include versioned libSDL3*.dylib* files."
         }
+
+        foreach ($appleStaticKey in @('ios', 'tvos')) {
+            $sdlApplePatterns = @($component.artifactPatterns.$appleStaticKey)
+            if ($sdlApplePatterns -notcontains 'lib/libSDL3-CSMainStubs.a') {
+                Add-ValidationError "Component SDL artifactPatterns.$appleStaticKey must include libSDL3-CSMainStubs.a for Apple static main/callback weak symbols."
+            }
+        }
     }
 
     if ($component.id -eq 'SDL_image') {
