@@ -7,6 +7,8 @@ param(
     [string[]] $Rids,
     [string] $ScratchRoot,
     [string] $TargetFrameworkVersion = 'net10.0',
+    [ValidateSet('Debug', 'Release')]
+    [string] $Configuration = 'Debug',
     [switch] $DryRun
 )
 
@@ -197,7 +199,7 @@ $packageReferences
         })
         Write-Host "[dry-run] create Apple consumer project for $rid at $projectPath"
         Write-Host "[dry-run] dotnet restore $projectPath -r $rid --configfile <generated NuGet.config>"
-        Write-Host "[dry-run] dotnet build $projectPath -c Release -f $targetFramework -r $rid --no-restore"
+        Write-Host "[dry-run] dotnet build $projectPath -c $Configuration -f $targetFramework -r $rid --no-restore"
         continue
     }
 
@@ -224,7 +226,7 @@ $packageReferences
         throw "dotnet restore failed for Apple consumer RID '$rid' with exit code $LASTEXITCODE."
     }
 
-    & dotnet build $projectPath -c Release -f $targetFramework -r $rid --no-restore
+    & dotnet build $projectPath -c $Configuration -f $targetFramework -r $rid --no-restore
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet build failed for Apple consumer RID '$rid' with exit code $LASTEXITCODE."
     }
