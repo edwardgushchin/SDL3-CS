@@ -19,8 +19,4 @@
     <PropertyGroup>
         <LangVersion>14.0</LangVersion>
     </PropertyGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\SDL3-CS\SDL3-CS.csproj" />
-      <ProjectReference Include="..\..\SDL3-CS.NativePackages\SDL3-CS.Android\SDL3-CS.Android.csproj" />
-    </ItemGroup>
 </Project>

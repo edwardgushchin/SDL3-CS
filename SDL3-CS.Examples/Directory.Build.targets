@@ -1,0 +1,48 @@
+<Project>
+  <PropertyGroup>
+    <SDL3CSExampleIsAndroid Condition="$([System.String]::Copy('$(TargetFramework)').Contains('-android'))">true</SDL3CSExampleIsAndroid>
+    <SDL3CSExampleUseLocalWrapper Condition="'$(SDL3CSExampleUseLocalWrapper)' == ''">true</SDL3CSExampleUseLocalWrapper>
+    <SDL3CSExampleUseNativeRuntime Condition="'$(SDL3CSExampleUseNativeRuntime)' == '' and '$(SDL3CSExampleIsAndroid)' != 'true'">true</SDL3CSExampleUseNativeRuntime>
+    <SDL3CSExampleUseAndroidRuntime Condition="'$(SDL3CSExampleUseAndroidRuntime)' == '' and '$(SDL3CSExampleIsAndroid)' == 'true'">true</SDL3CSExampleUseAndroidRuntime>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(SDL3CSExampleUseLocalWrapper)' == 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\SDL3-CS\SDL3-CS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\**\*.cs" LinkBase="Common" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SDL3CSExampleUseLocalWrapper)' != 'true'">
+    <PackageReference Include="SDL3-CS" Version="$(SDL3CSVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SDL3CSExampleUseAndroidRuntime)' == 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\SDL3-CS.NativePackages\SDL3-CS.Android\SDL3-CS.Android.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SDL3CSExampleUseNativeRuntime)' == 'true' and $([System.OperatingSystem]::IsWindows())">
+    <PackageReference Include="SDL3-CS.Windows" Version="$(SDL3CSVersion)" />
+    <PackageReference Include="SDL3-CS.Windows.Image" Version="$(SDL3CSImageVersion)" Condition="'$(SDL3CSExampleUseImage)' == 'true'" />
+    <PackageReference Include="SDL3-CS.Windows.Mixer" Version="$(SDL3CSMixerVersion)" Condition="'$(SDL3CSExampleUseMixer)' == 'true'" />
+    <PackageReference Include="SDL3-CS.Windows.TTF" Version="$(SDL3CSTTFVersion)" Condition="'$(SDL3CSExampleUseTTF)' == 'true'" />
+    <PackageReference Include="SDL3-CS.Windows.Shadercross" Version="$(SDL3CSShadercrossVersion)" Condition="'$(SDL3CSExampleUseShadercross)' == 'true'" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SDL3CSExampleUseNativeRuntime)' == 'true' and $([System.OperatingSystem]::IsLinux())">
+    <PackageReference Include="SDL3-CS.Linux" Version="$(SDL3CSVersion)" />
+    <PackageReference Include="SDL3-CS.Linux.Image" Version="$(SDL3CSImageVersion)" Condition="'$(SDL3CSExampleUseImage)' == 'true'" />
+    <PackageReference Include="SDL3-CS.Linux.Mixer" Version="$(SDL3CSMixerVersion)" Condition="'$(SDL3CSExampleUseMixer)' == 'true'" />
+    <PackageReference Include="SDL3-CS.Linux.TTF" Version="$(SDL3CSTTFVersion)" Condition="'$(SDL3CSExampleUseTTF)' == 'true'" />
+    <PackageReference Include="SDL3-CS.Linux.Shadercross" Version="$(SDL3CSShadercrossVersion)" Condition="'$(SDL3CSExampleUseShadercross)' == 'true'" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SDL3CSExampleUseNativeRuntime)' == 'true' and $([System.OperatingSystem]::IsMacOS())">
+    <PackageReference Include="SDL3-CS.MacOS" Version="$(SDL3CSVersion)" />
+    <PackageReference Include="SDL3-CS.MacOS.Image" Version="$(SDL3CSImageVersion)" Condition="'$(SDL3CSExampleUseImage)' == 'true'" />
+    <PackageReference Include="SDL3-CS.MacOS.Mixer" Version="$(SDL3CSMixerVersion)" Condition="'$(SDL3CSExampleUseMixer)' == 'true'" />
+    <PackageReference Include="SDL3-CS.MacOS.TTF" Version="$(SDL3CSTTFVersion)" Condition="'$(SDL3CSExampleUseTTF)' == 'true'" />
+    <PackageReference Include="SDL3-CS.MacOS.Shadercross" Version="$(SDL3CSShadercrossVersion)" Condition="'$(SDL3CSExampleUseShadercross)' == 'true'" />
+  </ItemGroup>
+</Project>
