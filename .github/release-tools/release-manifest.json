@@ -466,10 +466,12 @@
           "**/libSDL3.so*"
         ],
         "ios": [
+          "lib/libSDL3-CSMainStubs.a",
           "lib/libSDL3*.a",
           "**/libSDL3*.a"
         ],
         "tvos": [
+          "lib/libSDL3-CSMainStubs.a",
           "lib/libSDL3*.a",
           "**/libSDL3*.a"
         ],

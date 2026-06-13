@@ -110,6 +110,157 @@ function Get-ReleaseCMakePathForBuild {
     return $cmakePath
 }
 
+function Get-NativeRidCMakeArgumentValue {
+    param(
+        [Parameter(Mandatory)]
+        [object] $RidInfo,
+
+        [Parameter(Mandatory)]
+        [string] $Name
+    )
+
+    $prefix = "-D$Name="
+    foreach ($argument in @($RidInfo.cmakeArgs)) {
+        if ($argument.StartsWith($prefix, [System.StringComparison]::Ordinal)) {
+            return $argument.Substring($prefix.Length)
+        }
+    }
+
+    return $null
+}
+
+function Get-AppleDeploymentMinimumFlag {
+    param(
+        [Parameter(Mandatory)]
+        [string] $AppleSdk,
+
+        [Parameter(Mandatory)]
+        [string] $DeploymentTarget
+    )
+
+    switch ($AppleSdk) {
+        'iphoneos' { return "-miphoneos-version-min=$DeploymentTarget" }
+        'iphonesimulator' { return "-mios-simulator-version-min=$DeploymentTarget" }
+        'appletvos' { return "-mtvos-version-min=$DeploymentTarget" }
+        'appletvsimulator' { return "-mtvos-simulator-version-min=$DeploymentTarget" }
+        default { throw "Unsupported Apple SDK '$AppleSdk' for SDL main stub build." }
+    }
+}
+
+function Add-SdlAppleMainStubArchive {
+    param(
+        [Parameter(Mandatory)]
+        [object] $RidInfo,
+
+        [Parameter(Mandatory)]
+        [string] $BuildRoot,
+
+        [Parameter(Mandatory)]
+        [string] $InstallRoot,
+
+        [switch] $DryRun
+    )
+
+    if ($RidInfo.os -notin @('ios', 'tvos')) {
+        return
+    }
+
+    $appleSdk = if ($RidInfo.PSObject.Properties.Name.Contains('appleSdk') -and $RidInfo.appleSdk) {
+        [string] $RidInfo.appleSdk
+    }
+    else {
+        Get-NativeRidCMakeArgumentValue -RidInfo $RidInfo -Name 'CMAKE_OSX_SYSROOT'
+    }
+    $architecture = Get-NativeRidCMakeArgumentValue -RidInfo $RidInfo -Name 'CMAKE_OSX_ARCHITECTURES'
+    $deploymentTarget = Get-NativeRidCMakeArgumentValue -RidInfo $RidInfo -Name 'CMAKE_OSX_DEPLOYMENT_TARGET'
+
+    if (-not $appleSdk -or -not $architecture -or -not $deploymentTarget) {
+        throw "RID '$($RidInfo.rid)' must define Apple SDK, architecture and deployment target to build SDL main stubs."
+    }
+
+    $stubRoot = Join-Path $BuildRoot 'SDL3-CSMainStubs'
+    $sourcePath = Join-Path $stubRoot 'SDL3-CSMainStubs.c'
+    $objectPath = Join-Path $stubRoot 'SDL3-CSMainStubs.o'
+    $libDir = Join-Path $InstallRoot 'lib'
+    $archivePath = Join-Path $libDir 'libSDL3-CSMainStubs.a'
+
+    if ($DryRun) {
+        Write-Host "[dry-run] build Apple SDL main weak stub archive $archivePath for $($RidInfo.rid)"
+        return
+    }
+
+    New-Item -ItemType Directory -Force -Path $stubRoot, $libDir | Out-Null
+    Set-Content -LiteralPath $sourcePath -Encoding UTF8 -Value @'
+typedef enum SDL_AppResult
+{
+    SDL_APP_CONTINUE = 0,
+    SDL_APP_SUCCESS = 1,
+    SDL_APP_FAILURE = 2
+} SDL_AppResult;
+
+__attribute__((weak, visibility("default"))) SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
+{
+    (void) argc;
+    (void) argv;
+    if (appstate != 0) {
+        *appstate = 0;
+    }
+    return SDL_APP_CONTINUE;
+}
+
+__attribute__((weak, visibility("default"))) SDL_AppResult SDL_AppIterate(void *appstate)
+{
+    (void) appstate;
+    return SDL_APP_CONTINUE;
+}
+
+__attribute__((weak, visibility("default"))) SDL_AppResult SDL_AppEvent(void *appstate, void *event)
+{
+    (void) appstate;
+    (void) event;
+    return SDL_APP_CONTINUE;
+}
+
+__attribute__((weak, visibility("default"))) void SDL_AppQuit(void *appstate, SDL_AppResult result)
+{
+    (void) appstate;
+    (void) result;
+}
+
+__attribute__((weak, visibility("default"))) int SDL_main(int argc, char *argv[])
+{
+    (void) argc;
+    (void) argv;
+    return 0;
+}
+'@
+
+    $deploymentFlag = Get-AppleDeploymentMinimumFlag -AppleSdk $appleSdk -DeploymentTarget $deploymentTarget
+    Invoke-ReleaseCommand -FilePath 'xcrun' -Arguments @(
+        '-sdk', $appleSdk,
+        'clang',
+        '-arch', $architecture,
+        $deploymentFlag,
+        '-c', $sourcePath,
+        '-o', $objectPath
+    ) -DryRun:$DryRun
+
+    if (Test-Path -LiteralPath $archivePath -PathType Leaf) {
+        Remove-Item -LiteralPath $archivePath -Force
+    }
+    Invoke-ReleaseCommand -FilePath 'xcrun' -Arguments @(
+        '-sdk', $appleSdk,
+        'ar',
+        'rcs',
+        $archivePath,
+        $objectPath
+    ) -DryRun:$DryRun
+
+    if (-not (Test-Path -LiteralPath $archivePath -PathType Leaf)) {
+        throw "Apple SDL main weak stub archive was not created: $archivePath"
+    }
+}
+
 function Test-SdlShadercrossDxcBinaries {
     param(
         [Parameter(Mandatory)]
@@ -579,6 +730,9 @@ $buildList.Add($componentInfo.id)
 foreach ($componentId in $buildList) {
     $item = Get-ReleaseComponent -Manifest $manifest -Component $componentId
     Invoke-CMakeBuild -Manifest $manifest -ComponentInfo $item -RidInfo $ridInfo -SourceRootPath $sourceRootPath -BuildRoot $buildRoot -InstallRoot $installRoot -BuildConfiguration $Configuration -ResolvedBuildParallelLevel $resolvedBuildParallelLevel -CleanBuild:$Clean -DryRun:$DryRun
+    if ($item.id -eq 'SDL') {
+        Add-SdlAppleMainStubArchive -RidInfo $ridInfo -BuildRoot $buildRoot -InstallRoot $installRoot -DryRun:$DryRun
+    }
     Repair-KnownNativeSourceMutation -ComponentInfo $item -SourceRootPath $sourceRootPath -DryRun:$DryRun
 }
 
