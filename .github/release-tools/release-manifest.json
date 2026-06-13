@@ -513,28 +513,36 @@
           "-DSDLIMAGE_AVIF=OFF"
         ],
         "ios-arm64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "iossimulator-arm64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "iossimulator-x64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "osx-arm64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "osx-x64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "tvos-arm64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "tvossimulator-arm64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ],
         "tvossimulator-x64": [
-          "-DSDLIMAGE_WEBP=OFF"
+          "-DSDLIMAGE_WEBP=OFF",
+          "-DSDLIMAGE_AVIF=OFF"
         ]
       },
       "artifactPatterns": {
@@ -580,42 +588,24 @@
         ],
         "ios": [
           "lib/libSDL3_image*.a",
-          "lib/libaom*.a",
-          "lib/libdav1d*.a",
-          "lib/libavif*.a",
           "lib/libpng16*.a",
           "lib/libz*.a",
           "**/libSDL3_image*.a",
-          "**/libaom*.a",
-          "**/libdav1d*.a",
-          "**/libavif*.a",
           "**/libpng16*.a",
           "**/libz*.a"
         ],
         "tvos": [
           "lib/libSDL3_image*.a",
-          "lib/libaom*.a",
-          "lib/libdav1d*.a",
-          "lib/libavif*.a",
           "lib/libpng16*.a",
           "lib/libz*.a",
           "**/libSDL3_image*.a",
-          "**/libaom*.a",
-          "**/libdav1d*.a",
-          "**/libavif*.a",
           "**/libpng16*.a",
           "**/libz*.a"
         ],
         "macos": [
           "lib/libSDL3_image*.dylib*",
-          "lib/libaom*.dylib*",
-          "lib/libdav1d*.dylib*",
-          "lib/libavif*.dylib*",
           "lib/libpng16*.dylib*",
           "**/libSDL3_image*.dylib*",
-          "**/libaom*.dylib*",
-          "**/libdav1d*.dylib*",
-          "**/libavif*.dylib*",
           "**/libpng16*.dylib*"
         ]
       }

@@ -432,18 +432,21 @@ foreach ($component in $manifest.components) {
             if ($ridArgs -notcontains '-DSDLIMAGE_WEBP=OFF') {
                 Add-ValidationError "Component SDL_image must disable WEBP for $appleRid to avoid vendored libwebp MACOSX_BUNDLE install failures."
             }
+            if ($ridArgs -notcontains '-DSDLIMAGE_AVIF=OFF') {
+                Add-ValidationError "Component SDL_image must disable AVIF for $appleRid to avoid vendored libaom non-Mach-O static archive failures."
+            }
         }
 
         $appleImageDisabledPatterns = @{
-            ios = @('lib/libwebp*.a', 'lib/libwebpdemux*.a', 'lib/libwebpmux*.a', 'lib/libtiff*.a', '**/libwebp*.a', '**/libwebpdemux*.a', '**/libwebpmux*.a', '**/libtiff*.a')
-            tvos = @('lib/libwebp*.a', 'lib/libwebpdemux*.a', 'lib/libwebpmux*.a', 'lib/libtiff*.a', '**/libwebp*.a', '**/libwebpdemux*.a', '**/libwebpmux*.a', '**/libtiff*.a')
-            macos = @('lib/libwebp*.dylib*', 'lib/libwebpdemux*.dylib*', 'lib/libwebpmux*.dylib*', 'lib/libtiff*.dylib*', '**/libwebp*.dylib*', '**/libwebpdemux*.dylib*', '**/libwebpmux*.dylib*', '**/libtiff*.dylib*')
+            ios = @('lib/libaom*.a', 'lib/libdav1d*.a', 'lib/libavif*.a', 'lib/libwebp*.a', 'lib/libwebpdemux*.a', 'lib/libwebpmux*.a', 'lib/libtiff*.a', '**/libaom*.a', '**/libdav1d*.a', '**/libavif*.a', '**/libwebp*.a', '**/libwebpdemux*.a', '**/libwebpmux*.a', '**/libtiff*.a')
+            tvos = @('lib/libaom*.a', 'lib/libdav1d*.a', 'lib/libavif*.a', 'lib/libwebp*.a', 'lib/libwebpdemux*.a', 'lib/libwebpmux*.a', 'lib/libtiff*.a', '**/libaom*.a', '**/libdav1d*.a', '**/libavif*.a', '**/libwebp*.a', '**/libwebpdemux*.a', '**/libwebpmux*.a', '**/libtiff*.a')
+            macos = @('lib/libaom*.dylib*', 'lib/libdav1d*.dylib*', 'lib/libavif*.dylib*', 'lib/libwebp*.dylib*', 'lib/libwebpdemux*.dylib*', 'lib/libwebpmux*.dylib*', 'lib/libtiff*.dylib*', '**/libaom*.dylib*', '**/libdav1d*.dylib*', '**/libavif*.dylib*', '**/libwebp*.dylib*', '**/libwebpdemux*.dylib*', '**/libwebpmux*.dylib*', '**/libtiff*.dylib*')
         }
         foreach ($appleImageKey in $appleImageDisabledPatterns.Keys) {
             $patterns = @($component.artifactPatterns.$appleImageKey)
             foreach ($disabledPattern in @($appleImageDisabledPatterns[$appleImageKey])) {
                 if ($patterns -contains $disabledPattern) {
-                    Add-ValidationError "Component SDL_image artifactPatterns.$appleImageKey must not require '$disabledPattern'; Apple image bundles do not install WebP/TIFF artifacts."
+                    Add-ValidationError "Component SDL_image artifactPatterns.$appleImageKey must not require '$disabledPattern'; Apple image bundles disable AVIF/WebP/TIFF artifacts."
                 }
             }
         }
