@@ -48,9 +48,17 @@ foreach ($componentId in $Components) {
         $artifactKey = Get-ReleaseOsArtifactKey -RidInfo $ridInfo
         $patterns = @($component.artifactPatterns.$artifactKey)
         $leafPatterns = Get-PackageArtifactLeafPatterns -Patterns $patterns
+        $excludedLeafPatterns = @()
+        if ($component.PSObject.Properties.Name -contains 'ridArtifactPatternExcludes' -and $component.ridArtifactPatternExcludes.PSObject.Properties.Name -contains $rid) {
+            $excludedLeafPatterns = @($component.ridArtifactPatternExcludes.PSObject.Properties[$rid].Value)
+        }
         $ridRoot = Join-Path $packageRoot "lib\$rid"
 
         foreach ($leafPattern in $leafPatterns) {
+            if ($excludedLeafPatterns -contains $leafPattern) {
+                continue
+            }
+
             $matches = @(Get-ReleaseFilesByPattern -Root $ridRoot -Pattern $leafPattern)
             $rows.Add([pscustomobject]@{
                 Component = $component.id
