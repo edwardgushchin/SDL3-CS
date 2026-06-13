@@ -47,18 +47,36 @@ $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $Pac
 foreach ($package in $packages) {
     $projectPath = Resolve-ReleasePath $package.Project
     $expectedPackagePath = Join-Path $OutputDir "$($package.Id).$($package.PackageVersion).nupkg"
-    $args = @(
-        'pack', $projectPath,
-        '-c', $Configuration,
-        '-o', $OutputDir,
+    $packProperties = @(
         "-p:PackageVersion=$($package.PackageVersion)",
         "-p:PackageId=$($package.Id)"
     )
+    if ($package.Kind -eq 'managed') {
+        $packProperties += '-p:GeneratePackageOnBuild=false'
+    }
     if ($package.Kind -eq 'native' -and $package.NativePackagePlatform) {
-        $args += "-p:NativePackagePlatform=$($package.NativePackagePlatform)"
+        $packProperties += "-p:NativePackagePlatform=$($package.NativePackagePlatform)"
     }
 
-    if ($NoBuild) {
+    $packWithoutBuild = [bool] $NoBuild
+    if ($package.Kind -eq 'managed' -and -not $NoBuild) {
+        $buildArgs = @(
+            'build', $projectPath,
+            '-c', $Configuration
+        ) + $packProperties
+
+        Write-Host "Building $($package.Id) $($package.PackageVersion)"
+        Invoke-ReleaseCommand -FilePath 'dotnet' -Arguments $buildArgs -DryRun:$DryRun
+        $packWithoutBuild = $true
+    }
+
+    $args = @(
+        'pack', $projectPath,
+        '-c', $Configuration,
+        '-o', $OutputDir
+    ) + $packProperties
+
+    if ($packWithoutBuild) {
         $args += '--no-build'
     }
 
