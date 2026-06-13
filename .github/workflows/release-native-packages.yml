@@ -320,10 +320,10 @@ jobs:
       matrix:
         include:
           - name: arm64 simulators
-            runner: macos-15
+            runner: macos-26
             rids: iossimulator-arm64,tvossimulator-arm64
           - name: x64 simulators
-            runner: macos-15-intel
+            runner: macos-26-intel
             rids: iossimulator-x64,tvossimulator-x64
 
     steps:
@@ -338,6 +338,13 @@ jobs:
             9.0.x
             8.0.x
             7.0.x
+
+      - name: Select Xcode 26.5
+        shell: bash
+        run: |
+          set -eux
+          sudo xcode-select -s /Applications/Xcode_26.5.app
+          xcodebuild -version
 
       - name: Install Apple .NET workloads
         shell: bash
