@@ -41,7 +41,10 @@ if (-not (Test-Path -LiteralPath $publishScript -PathType Leaf)) {
 $text = Get-Content -LiteralPath $publishScript -Raw -Encoding UTF8
 
 Assert-PublishScriptContains -Text $text -Expected '[switch] $KeepGitHubReleaseDraft' -Description 'keep-draft publish option'
+Assert-PublishScriptContains -Text $text -Expected '$ReleaseNotesDir' -Description 'release notes directory option'
 Assert-PublishScriptContains -Text $text -Expected "'release', 'create'" -Description 'GitHub release create command'
+Assert-PublishScriptContains -Text $text -Expected "'--notes-file'" -Description 'GitHub release notes file command'
+Assert-PublishScriptContains -Text $text -Expected 'release-notes' -Description 'default release notes directory'
 Assert-PublishScriptContains -Text $text -Expected "'--draft'" -Description 'GitHub release draft flag'
 Assert-PublishScriptContains -Text $text -Expected "'--draft=false'" -Description 'GitHub release publish command'
 Assert-PublishScriptContains -Text $text -Expected 'if ($KeepGitHubReleaseDraft)' -Description 'keep-draft branch'
