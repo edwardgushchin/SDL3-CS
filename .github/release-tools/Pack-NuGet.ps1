@@ -51,7 +51,8 @@ foreach ($package in $packages) {
         "-p:PackageVersion=$($package.PackageVersion)",
         "-p:PackageId=$($package.Id)"
     )
-    if ($package.Kind -eq 'managed') {
+    $requiresBuildBeforePack = $package.Kind -eq 'managed' -or $package.Id -eq 'SDL3-CS.Android'
+    if ($requiresBuildBeforePack) {
         $packProperties += '-p:GeneratePackageOnBuild=false'
     }
     if ($package.Kind -eq 'native' -and $package.NativePackagePlatform) {
@@ -59,7 +60,7 @@ foreach ($package in $packages) {
     }
 
     $packWithoutBuild = [bool] $NoBuild
-    if ($package.Kind -eq 'managed' -and -not $NoBuild) {
+    if ($requiresBuildBeforePack -and -not $NoBuild) {
         $buildArgs = @(
             'build', $projectPath,
             '-c', $Configuration
