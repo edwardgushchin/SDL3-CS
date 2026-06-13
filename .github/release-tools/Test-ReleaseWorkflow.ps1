@@ -115,6 +115,9 @@ Assert-WorkflowContains -Text $workflowText -Expected "-StatePath 'artifacts/rel
 
 Assert-WorkflowContains -Text $workflowText -Expected 'apple-consumer:' -Description 'Apple consumer validation job'
 Assert-WorkflowContains -Text $workflowText -Expected 'needs: assemble' -Description 'Apple consumer job dependency'
+Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26' -Description 'Apple arm64 consumer macOS 26 runner'
+Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26-intel' -Description 'Apple x64 consumer macOS 26 Intel runner'
+Assert-WorkflowContains -Text $workflowText -Expected 'xcode-select -s /Applications/Xcode_26.5.app' -Description 'Apple consumer Xcode 26.5 selection'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos' -Description 'Apple .NET workload installation'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AppleConsumerPackageBuild.ps1' -Description 'Apple consumer package build validation'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-arm64,tvossimulator-arm64' -Description 'Apple arm64 simulator consumer RID matrix'
