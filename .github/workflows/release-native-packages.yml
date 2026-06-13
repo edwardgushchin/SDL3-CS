@@ -315,6 +315,7 @@ jobs:
     name: Apple consumer ${{ matrix.name }}
     needs: assemble
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -365,7 +366,8 @@ jobs:
           ./.github/release-tools/Test-AppleConsumerPackageBuild.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -PackageDir 'artifacts/release/nuget' `
-            -Rids $rids
+            -Rids $rids `
+            -Configuration Debug
 
   android-consumer:
     name: Android consumer packages

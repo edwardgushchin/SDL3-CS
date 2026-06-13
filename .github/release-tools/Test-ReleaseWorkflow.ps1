@@ -117,9 +117,11 @@ Assert-WorkflowContains -Text $workflowText -Expected 'apple-consumer:' -Descrip
 Assert-WorkflowContains -Text $workflowText -Expected 'needs: assemble' -Description 'Apple consumer job dependency'
 Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26' -Description 'Apple arm64 consumer macOS 26 runner'
 Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26-intel' -Description 'Apple x64 consumer macOS 26 Intel runner'
+Assert-WorkflowContains -Text $workflowText -Expected 'timeout-minutes: 45' -Description 'Apple consumer timeout'
 Assert-WorkflowContains -Text $workflowText -Expected 'xcode-select -s /Applications/Xcode_26.5.app' -Description 'Apple consumer Xcode 26.5 selection'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos' -Description 'Apple .NET workload installation'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AppleConsumerPackageBuild.ps1' -Description 'Apple consumer package build validation'
+Assert-WorkflowContains -Text $workflowText -Expected '-Configuration Debug' -Description 'Apple consumer Debug build configuration'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-arm64,tvossimulator-arm64' -Description 'Apple arm64 simulator consumer RID matrix'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-x64,tvossimulator-x64' -Description 'Apple x64 simulator consumer RID matrix'
 
