@@ -576,16 +576,6 @@
         ],
         "android": [
           "lib/libSDL3_image.so*",
-          "lib/libpng16.so*",
-          "lib/libwebp.so*",
-          "lib/libwebpdemux.so*",
-          "lib/libwebpmux.so*",
-          "lib/libtiff.so*",
-          "**/libpng16.so*",
-          "**/libwebp.so*",
-          "**/libwebpdemux.so*",
-          "**/libwebpmux.so*",
-          "**/libtiff.so*",
           "**/libSDL3_image.so*"
         ],
         "ios": [

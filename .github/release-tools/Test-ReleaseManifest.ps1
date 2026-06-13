@@ -409,6 +409,12 @@ foreach ($component in $manifest.components) {
             }
         }
 
+        foreach ($bundledAndroidPattern in @('lib/libpng16.so*', 'lib/libwebp.so*', 'lib/libwebpdemux.so*', 'lib/libwebpmux.so*', 'lib/libtiff.so*', '**/libpng16.so*', '**/libwebp.so*', '**/libwebpdemux.so*', '**/libwebpmux.so*', '**/libtiff.so*')) {
+            if ($androidPatterns -contains $bundledAndroidPattern) {
+                Add-ValidationError "Component SDL_image artifactPatterns.android must not require '$bundledAndroidPattern'; Android bundles only install libSDL3_image.so."
+            }
+        }
+
         foreach ($appleRid in @('ios-arm64', 'iossimulator-arm64', 'iossimulator-x64', 'osx-arm64', 'osx-x64', 'tvos-arm64', 'tvossimulator-arm64', 'tvossimulator-x64')) {
             $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$appleRid].Value)
             if ($ridArgs -notcontains '-DSDLIMAGE_WEBP=OFF') {
