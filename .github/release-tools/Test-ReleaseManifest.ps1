@@ -402,6 +402,13 @@ foreach ($component in $manifest.components) {
             }
         }
 
+        $androidPatterns = @($component.artifactPatterns.android)
+        foreach ($disabledAvifPattern in @('lib/libaom.so*', 'lib/libdav1d.so*', 'lib/libavif.so*', '**/libaom.so*', '**/libdav1d.so*', '**/libavif.so*')) {
+            if ($androidPatterns -contains $disabledAvifPattern) {
+                Add-ValidationError "Component SDL_image artifactPatterns.android must not require '$disabledAvifPattern' while Android AVIF is disabled."
+            }
+        }
+
         foreach ($appleRid in @('ios-arm64', 'iossimulator-arm64', 'iossimulator-x64', 'osx-arm64', 'osx-x64', 'tvos-arm64', 'tvossimulator-arm64', 'tvossimulator-x64')) {
             $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$appleRid].Value)
             if ($ridArgs -notcontains '-DSDLIMAGE_WEBP=OFF') {
