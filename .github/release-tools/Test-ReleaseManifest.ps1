@@ -375,6 +375,18 @@ foreach ($component in $manifest.components) {
         }
     }
 
+    if ($component.PSObject.Properties.Name.Contains('ridArtifactPatternExcludes')) {
+        foreach ($ridExcludeSet in $component.ridArtifactPatternExcludes.PSObject.Properties) {
+            if ($ridIds -notcontains $ridExcludeSet.Name) {
+                Add-ValidationError "Component $($component.id) has ridArtifactPatternExcludes for unknown RID '$($ridExcludeSet.Name)'."
+            }
+
+            if (@($ridExcludeSet.Value).Count -eq 0) {
+                Add-ValidationError "Component $($component.id) has empty ridArtifactPatternExcludes for RID '$($ridExcludeSet.Name)'."
+            }
+        }
+    }
+
     $artifactKeys = @($manifest.rids | ForEach-Object { Get-ReleaseOsArtifactKey -RidInfo $_ } | Select-Object -Unique)
     foreach ($key in $artifactKeys) {
         if (-not $component.artifactPatterns.PSObject.Properties.Name.Contains($key)) {
@@ -422,6 +434,20 @@ foreach ($component in $manifest.components) {
             }
         }
 
+        $appleImageDisabledPatterns = @{
+            ios = @('lib/libwebp*.a', 'lib/libwebpdemux*.a', 'lib/libwebpmux*.a', 'lib/libtiff*.a', '**/libwebp*.a', '**/libwebpdemux*.a', '**/libwebpmux*.a', '**/libtiff*.a')
+            tvos = @('lib/libwebp*.a', 'lib/libwebpdemux*.a', 'lib/libwebpmux*.a', 'lib/libtiff*.a', '**/libwebp*.a', '**/libwebpdemux*.a', '**/libwebpmux*.a', '**/libtiff*.a')
+            macos = @('lib/libwebp*.dylib*', 'lib/libwebpdemux*.dylib*', 'lib/libwebpmux*.dylib*', 'lib/libtiff*.dylib*', '**/libwebp*.dylib*', '**/libwebpdemux*.dylib*', '**/libwebpmux*.dylib*', '**/libtiff*.dylib*')
+        }
+        foreach ($appleImageKey in $appleImageDisabledPatterns.Keys) {
+            $patterns = @($component.artifactPatterns.$appleImageKey)
+            foreach ($disabledPattern in @($appleImageDisabledPatterns[$appleImageKey])) {
+                if ($patterns -contains $disabledPattern) {
+                    Add-ValidationError "Component SDL_image artifactPatterns.$appleImageKey must not require '$disabledPattern'; Apple image bundles do not install WebP/TIFF artifacts."
+                }
+            }
+        }
+
         foreach ($appleStaticKey in @('ios', 'tvos')) {
             $patterns = @($component.artifactPatterns.$appleStaticKey)
             foreach ($requiredPattern in @('lib/libz*.a', '**/libz*.a')) {
@@ -444,6 +470,28 @@ foreach ($component in $manifest.components) {
             $ridArgs = @($component.ridCmakeArgs.PSObject.Properties[$flacDisabledRid].Value)
             if ($ridArgs -notcontains '-DSDLMIXER_FLAC=OFF') {
                 Add-ValidationError "Component SDL_mixer must disable FLAC for $flacDisabledRid to avoid vendored FLAC fseeko/ftello Android 32-bit failures."
+            }
+        }
+
+        $requiredMixerExcludes = @{
+            'android-arm' = @('libFLAC.so*', 'libgme.so*', 'libwavpack.so*')
+            'android-arm64' = @('libgme.so*')
+            'android-x86' = @('libFLAC.so*', 'libgme.so*', 'libwavpack.so*')
+            'android-x64' = @('libgme.so*')
+            'linux-arm64' = @('libmpg123.so*')
+            'osx-arm64' = @('libwavpack*.dylib*')
+            'osx-x64' = @('libwavpack*.dylib*')
+        }
+        foreach ($rid in $requiredMixerExcludes.Keys) {
+            $excludes = @()
+            if ($component.PSObject.Properties.Name.Contains('ridArtifactPatternExcludes') -and $component.ridArtifactPatternExcludes.PSObject.Properties.Name.Contains($rid)) {
+                $excludes = @($component.ridArtifactPatternExcludes.PSObject.Properties[$rid].Value)
+            }
+
+            foreach ($requiredExclude in @($requiredMixerExcludes[$rid])) {
+                if ($excludes -notcontains $requiredExclude) {
+                    Add-ValidationError "Component SDL_mixer ridArtifactPatternExcludes.$rid must exclude '$requiredExclude' because that dependency is disabled for the RID."
+                }
             }
         }
     }

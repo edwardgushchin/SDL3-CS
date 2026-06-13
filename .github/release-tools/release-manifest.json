@@ -585,20 +585,12 @@
           "lib/libavif*.a",
           "lib/libpng16*.a",
           "lib/libz*.a",
-          "lib/libwebp*.a",
-          "lib/libwebpdemux*.a",
-          "lib/libwebpmux*.a",
-          "lib/libtiff*.a",
           "**/libSDL3_image*.a",
           "**/libaom*.a",
           "**/libdav1d*.a",
           "**/libavif*.a",
           "**/libpng16*.a",
-          "**/libz*.a",
-          "**/libwebp*.a",
-          "**/libwebpdemux*.a",
-          "**/libwebpmux*.a",
-          "**/libtiff*.a"
+          "**/libz*.a"
         ],
         "tvos": [
           "lib/libSDL3_image*.a",
@@ -607,20 +599,12 @@
           "lib/libavif*.a",
           "lib/libpng16*.a",
           "lib/libz*.a",
-          "lib/libwebp*.a",
-          "lib/libwebpdemux*.a",
-          "lib/libwebpmux*.a",
-          "lib/libtiff*.a",
           "**/libSDL3_image*.a",
           "**/libaom*.a",
           "**/libdav1d*.a",
           "**/libavif*.a",
           "**/libpng16*.a",
-          "**/libz*.a",
-          "**/libwebp*.a",
-          "**/libwebpdemux*.a",
-          "**/libwebpmux*.a",
-          "**/libtiff*.a"
+          "**/libz*.a"
         ],
         "macos": [
           "lib/libSDL3_image*.dylib*",
@@ -628,19 +612,11 @@
           "lib/libdav1d*.dylib*",
           "lib/libavif*.dylib*",
           "lib/libpng16*.dylib*",
-          "lib/libwebp*.dylib*",
-          "lib/libwebpdemux*.dylib*",
-          "lib/libwebpmux*.dylib*",
-          "lib/libtiff*.dylib*",
           "**/libSDL3_image*.dylib*",
           "**/libaom*.dylib*",
           "**/libdav1d*.dylib*",
           "**/libavif*.dylib*",
-          "**/libpng16*.dylib*",
-          "**/libwebp*.dylib*",
-          "**/libwebpdemux*.dylib*",
-          "**/libwebpmux*.dylib*",
-          "**/libtiff*.dylib*"
+          "**/libpng16*.dylib*"
         ]
       }
     },
@@ -838,6 +814,33 @@
           "**/libvorbis*.dylib*",
           "**/libvorbisfile*.dylib*",
           "**/libwavpack*.dylib*"
+        ]
+      },
+      "ridArtifactPatternExcludes": {
+        "android-arm": [
+          "libFLAC.so*",
+          "libgme.so*",
+          "libwavpack.so*"
+        ],
+        "android-arm64": [
+          "libgme.so*"
+        ],
+        "android-x86": [
+          "libFLAC.so*",
+          "libgme.so*",
+          "libwavpack.so*"
+        ],
+        "android-x64": [
+          "libgme.so*"
+        ],
+        "linux-arm64": [
+          "libmpg123.so*"
+        ],
+        "osx-arm64": [
+          "libwavpack*.dylib*"
+        ],
+        "osx-x64": [
+          "libwavpack*.dylib*"
         ]
       }
     },
