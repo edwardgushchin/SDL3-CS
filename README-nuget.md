@@ -34,7 +34,7 @@ Published NuGet packages can lag behind a release branch while native packages a
 
 ## 📚 Documentation
 
-Project documentation is intended to live in the [SDL3-CS Wiki](https://github.com/edwardgushchin/SDL3-CS/wiki). If the wiki link redirects to the repository home page, use [VERSIONS.md](https://github.com/edwardgushchin/SDL3-CS/blob/main/VERSIONS.md), the examples, and the release documentation in the repository until the wiki content is published.
+Project documentation lives in the [SDL3-CS Wiki](https://github.com/edwardgushchin/SDL3-CS/wiki). Use the wiki, examples, and [GitHub Releases](https://github.com/edwardgushchin/SDL3-CS/releases) for version notes, migration guidance, platform details, and release documentation.
 
 For upstream SDL API documentation, see the official [SDL3 Wiki](https://wiki.libsdl.org/SDL3/FrontPage).
 

@@ -78,11 +78,11 @@ This source tree targets the following release lines:
 
 `{Platform}` is one of `Windows`, `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
 
-Published NuGet packages can lag behind a release branch while native packages are being assembled. The NuGet badge and package pages are authoritative for what is currently published. For detailed version notes, migration guidance, glibc requirements, and custom native builds, see [VERSIONS.md](VERSIONS.md).
+Published NuGet packages can lag behind a release branch while native packages are being assembled. The NuGet badge, package pages, and [GitHub Releases](https://github.com/edwardgushchin/SDL3-CS/releases) are authoritative for what is currently published.
 
 ## 📚 Documentation
 
-Project documentation is intended to live in the [SDL3-CS Wiki](https://github.com/edwardgushchin/SDL3-CS/wiki). If the wiki link redirects to the repository home page, the wiki content has not been published yet; use [VERSIONS.md](VERSIONS.md), the examples, and the release documentation in this repository until then.
+Project documentation lives in the [SDL3-CS Wiki](https://github.com/edwardgushchin/SDL3-CS/wiki). Use the wiki, examples, and [GitHub Releases](https://github.com/edwardgushchin/SDL3-CS/releases) for version notes, migration guidance, platform details, and release documentation.
 
 For upstream SDL API documentation, see the official [SDL3 Wiki](https://wiki.libsdl.org/SDL3/FrontPage).
 
