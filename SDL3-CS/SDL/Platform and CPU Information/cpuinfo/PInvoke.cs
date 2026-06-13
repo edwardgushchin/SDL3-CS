@@ -354,27 +354,6 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasSVE2"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_HasSVE2();
-    private delegate bool HasSVE2NativeDelegate();
-    private static HasSVE2NativeDelegate HasSVE2NativeFunction = SDL_HasSVE2;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_HasSVE2(void);</code>
-    /// <summary>
-    /// <para>Determine whether the CPU has SVE2 (Scalable Vector Extension 2).</para>
-    /// <para>This is only relevant on ARM64 Linux. On other platforms it always returns
-    /// <c>false</c>.</para>
-    /// </summary>
-    /// <returns><c>true</c> if the CPU has SVE2, <c>false</c> otherwise.</returns>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    public static bool HasSVE2()
-    {
-        return HasSVE2NativeFunction();
-    }
-
-
-    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_HasLSX"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_HasLSX();

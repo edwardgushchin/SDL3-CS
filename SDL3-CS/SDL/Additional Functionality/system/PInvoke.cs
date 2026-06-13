@@ -517,9 +517,9 @@ public partial class SDL
     /// specific entitlement, the callback will still fire, probably on the current
     /// thread and before this function returns.</para>
     /// <para>If the request submission fails, this function returns <c>false</c> and the
-    /// callback will NOT be called, but this should only happen in catastrophic
-    /// conditions, like memory running out. Normally there will be a yes or no to
-    /// the request through the callback.</para>
+    /// <c>callback</c> will NOT be called, but this should only happen in catastrophic
+    /// <c>conditions</c>, like memory running out. Normally there will be a yes or no to
+    /// <c>the request</c> through the callback.</para>
     /// <para>For the <c>permission</c> parameter, choose a value from here:</para>
     /// <para>https://developer.android.com/reference/android/Manifest.permission</para>
     /// </summary>
@@ -593,27 +593,6 @@ public partial class SDL
     }
 
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsPhone"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_IsPhone();
-    private delegate bool IsPhoneNative();
-    private static IsPhoneNative IsPhoneNativeFunction = SDL_IsPhone;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsPhone(void);</code>
-    /// <summary>
-    /// <para>Query if the current device is a phone.</para>
-    /// <para>If SDL can't determine this, it will return <c>false</c>.</para>
-    /// </summary>
-    /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    public static bool IsPhone()
-    {
-        return IsPhoneNativeFunction();
-    }
-
-
-    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsTablet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_IsTablet();
@@ -667,7 +646,7 @@ public partial class SDL
     /// </summary>
     /// <returns>the application sandbox environment or <see cref="Sandbox.None"/> if the
     /// application is not running in a sandbox environment.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.6.</since>
     public static Sandbox GetSandbox()
     {
         return GetSandboxNativeFunction();
@@ -866,7 +845,6 @@ public partial class SDL
     /// <param name="outTaskQueue">a pointer to be filled in with task queue handle.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call SDL_GetError() for more
     /// information.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
     public static bool GetGDKTaskQueue(out IntPtr outTaskQueue)
     {
         return GetGDKTaskQueueNativeFunction(out outTaskQueue);

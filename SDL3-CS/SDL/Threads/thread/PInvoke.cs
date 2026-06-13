@@ -317,7 +317,7 @@ public static partial class SDL
 	/// <param name="thread">the thread to query.</param>
 	/// <returns>the current state of a thread, or <see cref="ThreadState.Unknown"/> if the thread
 	/// isn't valid.</returns>
-	/// <since>This function is available since SDL 3.2.0.</since>
+	/// <since>This function is available since SDL 3.1.8.</since>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <seealso cref="ThreadState"/>
 	public static ThreadState GetThreadState(IntPtr thread)

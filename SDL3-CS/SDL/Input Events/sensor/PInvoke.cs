@@ -319,7 +319,6 @@ public static partial class SDL
     /// <para>This needs to be called from the thread that initialized the sensor
     /// subsystem.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.2.0.</since>
     public static void UpdateSensors()
     {
         UpdateSensorsNativeFunction();

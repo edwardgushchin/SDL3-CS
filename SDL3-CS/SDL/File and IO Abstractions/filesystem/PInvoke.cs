@@ -430,7 +430,7 @@ public static partial class SDL
     /// platform-dependent notation. <c>null</c> if there's a problem. This
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     public static string? GetCurrentDirectory()
     {
         var value = GetCurrentDirectoryNativeFunction();

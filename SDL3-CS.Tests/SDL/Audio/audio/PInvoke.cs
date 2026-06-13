@@ -333,6 +333,10 @@ internal static class PInvokeTests
         AssertBoolReturnMarshal(nativeMethod);
         AssertArrayParameterMarshal(nativeMethod, "streams", 2);
 
+        MethodInfo pointerNativeMethod = GetNativeMethod("SDL_BindAudioStreamsPointer");
+        AssertSdlLibraryImport(pointerNativeMethod, "SDL_BindAudioStreams");
+        AssertBoolReturnMarshal(pointerNativeMethod);
+
         nextBool = true;
         IntPtr[] streams = [(IntPtr)201, (IntPtr)202];
         using NativeHookScope _ = NativeHookScope.Install("BindAudioStreamsNativeFunction", nameof(CaptureBindAudioStreams));
@@ -344,6 +348,16 @@ internal static class PInvokeTests
         TestAssert.NotNull(capturedStreams, "SDL.BindAudioStreams must forward streams.");
         TestAssert.Equal((IntPtr)201, capturedStreams![0], "SDL.BindAudioStreams must forward stream 0.");
         TestAssert.Equal((IntPtr)202, capturedStreams[1], "SDL.BindAudioStreams must forward stream 1.");
+
+        nextBool = true;
+        using NativeHookScope pointerHook = NativeHookScope.Install("BindAudioStreamsPointerNativeFunction", nameof(CaptureBindAudioStreamsPointer));
+        result = SDL3.SDL.BindAudioStreams(199, streams.AsSpan(1), 1);
+
+        TestAssert.Equal(true, result, "SDL.BindAudioStreams(ReadOnlySpan<IntPtr>) must return the native hook value.");
+        TestAssert.Equal(199u, capturedDevice, "SDL.BindAudioStreams(ReadOnlySpan<IntPtr>) must forward device ID.");
+        TestAssert.Equal(1, capturedNumStreams, "SDL.BindAudioStreams(ReadOnlySpan<IntPtr>) must forward stream count.");
+        TestAssert.NotNull(capturedStreams, "SDL.BindAudioStreams(ReadOnlySpan<IntPtr>) must forward streams.");
+        TestAssert.Equal((IntPtr)202, capturedStreams![0], "SDL.BindAudioStreams(ReadOnlySpan<IntPtr>) must forward stream slice item 0.");
     }
 
     public static void BindAudioStream_ForwardsDeviceAndStream()
@@ -367,6 +381,9 @@ internal static class PInvokeTests
         AssertSdlLibraryImport(nativeMethod, "SDL_UnbindAudioStreams");
         AssertArrayParameterMarshal(nativeMethod, "streams", 1);
 
+        MethodInfo pointerNativeMethod = GetNativeMethod("SDL_UnbindAudioStreamsPointer");
+        AssertSdlLibraryImport(pointerNativeMethod, "SDL_UnbindAudioStreams");
+
         IntPtr[] streams = [(IntPtr)205, (IntPtr)206];
         capturedCallCount = 0;
         using NativeHookScope _ = NativeHookScope.Install("UnbindAudioStreamsNativeFunction", nameof(CaptureUnbindAudioStreams));
@@ -382,6 +399,14 @@ internal static class PInvokeTests
         TestAssert.Equal(2, capturedCallCount, "SDL.UnbindAudioStreams must also forward null stream arrays.");
         TestAssert.Equal<IntPtr[]?>(null, capturedStreams, "SDL.UnbindAudioStreams must forward null streams.");
         TestAssert.Equal(0, capturedNumStreams, "SDL.UnbindAudioStreams must forward zero count for null streams.");
+
+        using NativeHookScope pointerHook = NativeHookScope.Install("UnbindAudioStreamsPointerNativeFunction", nameof(CaptureUnbindAudioStreamsPointer));
+        SDL3.SDL.UnbindAudioStreams(streams.AsSpan(1), 1);
+
+        TestAssert.Equal(3, capturedCallCount, "SDL.UnbindAudioStreams(ReadOnlySpan<IntPtr>) must call native hook once.");
+        TestAssert.Equal(1, capturedNumStreams, "SDL.UnbindAudioStreams(ReadOnlySpan<IntPtr>) must forward stream count.");
+        TestAssert.NotNull(capturedStreams, "SDL.UnbindAudioStreams(ReadOnlySpan<IntPtr>) must forward streams.");
+        TestAssert.Equal((IntPtr)206, capturedStreams![0], "SDL.UnbindAudioStreams(ReadOnlySpan<IntPtr>) must forward stream slice item 0.");
     }
 
     public static void UnbindAudioStream_ForwardsStream()
@@ -626,6 +651,10 @@ internal static class PInvokeTests
         AssertBoolReturnMarshal(nativeMethod);
         AssertArrayParameterMarshal(nativeMethod, "chmap", 2);
 
+        MethodInfo pointerNativeMethod = GetNativeMethod("SDL_SetAudioStreamInputChannelMapPointer");
+        AssertSdlLibraryImport(pointerNativeMethod, "SDL_SetAudioStreamInputChannelMap");
+        AssertBoolReturnMarshal(pointerNativeMethod);
+
         nextBool = true;
         int[] chmap = [1, 0];
         using NativeHookScope _ = NativeHookScope.Install("SetAudioStreamInputChannelMapNativeFunction", nameof(CaptureSetAudioStreamChannelMap));
@@ -642,6 +671,16 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)402, capturedStream, "SDL.SetAudioStreamInputChannelMap must forward stream for null map.");
         TestAssert.Equal<int[]?>(null, capturedChannelMap, "SDL.SetAudioStreamInputChannelMap must forward null channel map.");
         TestAssert.Equal(0, capturedCount, "SDL.SetAudioStreamInputChannelMap must forward zero count for null map.");
+
+        nextBool = true;
+        using NativeHookScope pointerHook = NativeHookScope.Install("SetAudioStreamInputChannelMapPointerNativeFunction", nameof(CaptureSetAudioStreamChannelMapPointer));
+        result = SDL3.SDL.SetAudioStreamInputChannelMap((IntPtr)400, chmap.AsSpan(1), 1);
+
+        TestAssert.Equal(true, result, "SDL.SetAudioStreamInputChannelMap(ReadOnlySpan<int>) must return the native hook value.");
+        TestAssert.Equal((IntPtr)400, capturedStream, "SDL.SetAudioStreamInputChannelMap(ReadOnlySpan<int>) must forward stream.");
+        TestAssert.Equal(1, capturedCount, "SDL.SetAudioStreamInputChannelMap(ReadOnlySpan<int>) must forward count.");
+        TestAssert.NotNull(capturedChannelMap, "SDL.SetAudioStreamInputChannelMap(ReadOnlySpan<int>) must forward channel map.");
+        TestAssert.Equal(0, capturedChannelMap![0], "SDL.SetAudioStreamInputChannelMap(ReadOnlySpan<int>) must forward slice item 0.");
     }
 
     public static void SetAudioStreamOutputChannelMap_ForwardsStreamMapAndCount()
@@ -650,6 +689,10 @@ internal static class PInvokeTests
         AssertSdlLibraryImport(nativeMethod, "SDL_SetAudioStreamOutputChannelMap");
         AssertBoolReturnMarshal(nativeMethod);
         AssertArrayParameterMarshal(nativeMethod, "chmap", 2);
+
+        MethodInfo pointerNativeMethod = GetNativeMethod("SDL_SetAudioStreamOutputChannelMapPointer");
+        AssertSdlLibraryImport(pointerNativeMethod, "SDL_SetAudioStreamOutputChannelMap");
+        AssertBoolReturnMarshal(pointerNativeMethod);
 
         nextBool = true;
         int[] chmap = [2, 1, 0];
@@ -663,6 +706,17 @@ internal static class PInvokeTests
         TestAssert.Equal(2, capturedChannelMap![0], "SDL.SetAudioStreamOutputChannelMap must forward channel map item 0.");
         TestAssert.Equal(1, capturedChannelMap[1], "SDL.SetAudioStreamOutputChannelMap must forward channel map item 1.");
         TestAssert.Equal(0, capturedChannelMap[2], "SDL.SetAudioStreamOutputChannelMap must forward channel map item 2.");
+
+        nextBool = true;
+        using NativeHookScope pointerHook = NativeHookScope.Install("SetAudioStreamOutputChannelMapPointerNativeFunction", nameof(CaptureSetAudioStreamChannelMapPointer));
+        result = SDL3.SDL.SetAudioStreamOutputChannelMap((IntPtr)399, chmap.AsSpan(1), 2);
+
+        TestAssert.Equal(true, result, "SDL.SetAudioStreamOutputChannelMap(ReadOnlySpan<int>) must return the native hook value.");
+        TestAssert.Equal((IntPtr)399, capturedStream, "SDL.SetAudioStreamOutputChannelMap(ReadOnlySpan<int>) must forward stream.");
+        TestAssert.Equal(2, capturedCount, "SDL.SetAudioStreamOutputChannelMap(ReadOnlySpan<int>) must forward count.");
+        TestAssert.NotNull(capturedChannelMap, "SDL.SetAudioStreamOutputChannelMap(ReadOnlySpan<int>) must forward channel map.");
+        TestAssert.Equal(1, capturedChannelMap![0], "SDL.SetAudioStreamOutputChannelMap(ReadOnlySpan<int>) must forward slice item 0.");
+        TestAssert.Equal(0, capturedChannelMap[1], "SDL.SetAudioStreamOutputChannelMap(ReadOnlySpan<int>) must forward slice item 1.");
     }
 
     public static void PutAudioStreamData_WithPointer_ForwardsBufferAndLength()
@@ -718,6 +772,17 @@ internal static class PInvokeTests
         TestAssert.NotNull(capturedByteBuffer, "SDL.PutAudioStreamData(byte[]) must forward buffer.");
         TestAssert.Equal((byte)1, capturedByteBuffer![0], "SDL.PutAudioStreamData(byte[]) must forward buffer item 0.");
         TestAssert.Equal((byte)4, capturedByteBuffer[3], "SDL.PutAudioStreamData(byte[]) must forward buffer item 3.");
+
+        nextBool = true;
+        using NativeHookScope pointerHook = NativeHookScope.Install("PutAudioStreamDataWithPointerNativeFunction", nameof(CapturePutAudioStreamDataWithPointerBytes));
+        result = SDL3.SDL.PutAudioStreamData((IntPtr)398, buffer.AsSpan(1, 2), 2);
+
+        TestAssert.Equal(true, result, "SDL.PutAudioStreamData(ReadOnlySpan<byte>) must return the native hook value.");
+        TestAssert.Equal((IntPtr)398, capturedStream, "SDL.PutAudioStreamData(ReadOnlySpan<byte>) must forward stream.");
+        TestAssert.Equal(2, capturedLen, "SDL.PutAudioStreamData(ReadOnlySpan<byte>) must forward length.");
+        TestAssert.NotNull(capturedByteBuffer, "SDL.PutAudioStreamData(ReadOnlySpan<byte>) must forward buffer.");
+        TestAssert.Equal((byte)2, capturedByteBuffer![0], "SDL.PutAudioStreamData(ReadOnlySpan<byte>) must forward slice item 0.");
+        TestAssert.Equal((byte)3, capturedByteBuffer[1], "SDL.PutAudioStreamData(ReadOnlySpan<byte>) must forward slice item 1.");
     }
 
     public static void PutAudioStreamPlanarData_ForwardsChannelBuffersAndCounts()
@@ -726,6 +791,10 @@ internal static class PInvokeTests
         AssertSdlDllImport(nativeMethod, "SDL_PutAudioStreamPlanarData");
         AssertBoolReturnMarshal(nativeMethod);
         AssertPointerArrayParameterMarshal(nativeMethod, "channelBuffers");
+
+        MethodInfo pointerNativeMethod = GetNativeMethod("SDL_PutAudioStreamPlanarDataPointer");
+        AssertSdlDllImport(pointerNativeMethod, "SDL_PutAudioStreamPlanarData");
+        AssertBoolReturnMarshal(pointerNativeMethod);
 
         nextBool = true;
         IntPtr[] channelBuffers = [(IntPtr)410, IntPtr.Zero, (IntPtr)411];
@@ -740,6 +809,18 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)410, capturedChannelBuffers![0], "SDL.PutAudioStreamPlanarData must forward channel buffer 0.");
         TestAssert.Equal(IntPtr.Zero, capturedChannelBuffers[1], "SDL.PutAudioStreamPlanarData must forward null channel buffer.");
         TestAssert.Equal((IntPtr)411, capturedChannelBuffers[2], "SDL.PutAudioStreamPlanarData must forward channel buffer 2.");
+
+        nextBool = true;
+        using NativeHookScope pointerHook = NativeHookScope.Install("PutAudioStreamPlanarDataPointerNativeFunction", nameof(CapturePutAudioStreamPlanarDataPointer));
+        result = SDL3.SDL.PutAudioStreamPlanarData((IntPtr)397, channelBuffers.AsSpan(1), 2, 64);
+
+        TestAssert.Equal(true, result, "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must return the native hook value.");
+        TestAssert.Equal((IntPtr)397, capturedStream, "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must forward stream.");
+        TestAssert.Equal(2, capturedNumChannels, "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must forward channel count.");
+        TestAssert.Equal(64, capturedNumSamples, "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must forward sample count.");
+        TestAssert.NotNull(capturedChannelBuffers, "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must forward channel buffers.");
+        TestAssert.Equal(IntPtr.Zero, capturedChannelBuffers![0], "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must forward null channel buffer.");
+        TestAssert.Equal((IntPtr)411, capturedChannelBuffers[1], "SDL.PutAudioStreamPlanarData(ReadOnlySpan<IntPtr>) must forward channel buffer 1.");
     }
 
     public static void GetAudioStreamData_WithPointer_ReturnsNativeValue()
@@ -773,6 +854,16 @@ internal static class PInvokeTests
         TestAssert.Equal(3, capturedLen, "SDL.GetAudioStreamData(byte[]) must forward length.");
         TestAssert.NotNull(capturedByteBuffer, "SDL.GetAudioStreamData(byte[]) must forward buffer.");
         TestAssert.Equal((byte)0, capturedByteBuffer![0], "SDL.GetAudioStreamData(byte[]) must forward buffer item 0.");
+
+        nextInt = 2;
+        using NativeHookScope pointerHook = NativeHookScope.Install("GetAudioStreamDataWithPointerNativeFunction", nameof(CaptureGetAudioStreamDataWithPointerFill));
+        result = SDL3.SDL.GetAudioStreamData((IntPtr)396, buffer.AsSpan(1, 2), 2);
+
+        TestAssert.Equal(2, result, "SDL.GetAudioStreamData(Span<byte>) must return the native hook value.");
+        TestAssert.Equal((IntPtr)396, capturedStream, "SDL.GetAudioStreamData(Span<byte>) must forward stream.");
+        TestAssert.Equal(2, capturedLen, "SDL.GetAudioStreamData(Span<byte>) must forward length.");
+        TestAssert.Equal((byte)0x5A, buffer[1], "SDL.GetAudioStreamData(Span<byte>) must expose native writes to the span slice.");
+        TestAssert.Equal((byte)0xA5, buffer[2], "SDL.GetAudioStreamData(Span<byte>) must expose native writes to the span slice.");
     }
 
     public static void GetAudioStreamAvailable_ReturnsNativeValue()
@@ -1150,6 +1241,14 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureBindAudioStreamsPointer(uint devid, IntPtr streams, int numStream)
+    {
+        capturedDevice = devid;
+        capturedStreams = CopyUnmanaged<IntPtr>(streams, numStream);
+        capturedNumStreams = numStream;
+        return nextBool;
+    }
+
     private static bool CaptureBindAudioStream(uint devid, IntPtr stream)
     {
         capturedDevice = devid;
@@ -1160,6 +1259,13 @@ internal static class PInvokeTests
     private static void CaptureUnbindAudioStreams(IntPtr[]? streams, int numStreams)
     {
         capturedStreams = streams;
+        capturedNumStreams = numStreams;
+        capturedCallCount++;
+    }
+
+    private static void CaptureUnbindAudioStreamsPointer(IntPtr streams, int numStreams)
+    {
+        capturedStreams = CopyUnmanaged<IntPtr>(streams, numStreams);
         capturedNumStreams = numStreams;
         capturedCallCount++;
     }
@@ -1255,10 +1361,27 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureSetAudioStreamChannelMapPointer(IntPtr stream, IntPtr chmap, int count)
+    {
+        capturedStream = stream;
+        capturedChannelMap = CopyUnmanaged<int>(chmap, count);
+        capturedCount = count;
+        return nextBool;
+    }
+
     private static bool CapturePutAudioStreamDataWithPointer(IntPtr stream, IntPtr buf, int len)
     {
         capturedStream = stream;
         capturedBufferPointer = buf;
+        capturedLen = len;
+        return nextBool;
+    }
+
+    private static bool CapturePutAudioStreamDataWithPointerBytes(IntPtr stream, IntPtr buf, int len)
+    {
+        capturedStream = stream;
+        capturedBufferPointer = buf;
+        capturedByteBuffer = CopyUnmanaged<byte>(buf, len);
         capturedLen = len;
         return nextBool;
     }
@@ -1290,11 +1413,33 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CapturePutAudioStreamPlanarDataPointer(IntPtr stream, IntPtr channelBuffers, int numChannels, int numSamples)
+    {
+        capturedStream = stream;
+        capturedChannelBuffers = CopyUnmanaged<IntPtr>(channelBuffers, numChannels);
+        capturedNumChannels = numChannels;
+        capturedNumSamples = numSamples;
+        return nextBool;
+    }
+
     private static int CaptureGetAudioStreamDataWithPointer(IntPtr stream, IntPtr buf, int len)
     {
         capturedStream = stream;
         capturedBufferPointer = buf;
         capturedLen = len;
+        return nextInt;
+    }
+
+    private static unsafe int CaptureGetAudioStreamDataWithPointerFill(IntPtr stream, IntPtr buf, int len)
+    {
+        capturedStream = stream;
+        capturedBufferPointer = buf;
+        capturedLen = len;
+
+        Span<byte> buffer = new((void*)buf, len);
+        buffer[0] = 0x5A;
+        buffer[1] = 0xA5;
+
         return nextInt;
     }
 
@@ -1458,6 +1603,18 @@ internal static class PInvokeTests
         TestAssert.True(pointer != IntPtr.Zero, "Test int array allocation must succeed.");
         Marshal.Copy(values, 0, pointer, values.Length);
         return pointer;
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
     }
 
     private static string? CaptureUtf8String(Func<string?> action, string value)

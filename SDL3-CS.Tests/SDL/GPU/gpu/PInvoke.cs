@@ -43,6 +43,8 @@ internal static class PInvokeTests
     private static SDL3.SDL.GPUStorageTextureReadWriteBinding[]? capturedStorageTextureBindings;
     private static uint capturedNumStorageTextureBindings;
     private static SDL3.SDL.GPUStorageBufferReadWriteBinding[]? capturedStorageBufferBindings;
+    private static IntPtr capturedStorageTextureBindingsPointer;
+    private static IntPtr capturedStorageBufferBindingsPointer;
     private static uint capturedNumStorageBufferBindings;
     private static uint capturedGroupCountX;
     private static uint capturedGroupCountY;
@@ -144,31 +146,43 @@ internal static class PInvokeTests
         AcquireGPUCommandBuffer_ForwardsDeviceAndReturnsNativePointer();
         PushGPUVertexUniformDataPointer_ForwardsArguments();
         PushGPUVertexUniformDataArray_ForwardsArguments();
+        PushGPUVertexUniformDataSpan_ForwardsArguments();
         PushGPUFragmentUniformDataPointer_ForwardsArguments();
         PushGPUFragmentUniformDataArray_ForwardsArguments();
+        PushGPUFragmentUniformDataSpan_ForwardsArguments();
         PushGPUComputeUniformDataPointer_ForwardsArguments();
         PushGPUComputeUniformDataArray_ForwardsArguments();
+        PushGPUComputeUniformDataSpan_ForwardsArguments();
         BeginGPURenderPassPointer_ForwardsArgumentsAndReturnsNativePointer();
         BeginGPURenderPassColorTargetsPointer_ForwardsEmptyAndNonEmptyArrays();
+        BeginGPURenderPassColorTargetsSpan_ForwardsArgumentsAndReturnsNativePointer();
         BeginGPURenderPassDepthStencil_ForwardsArgumentsAndReturnsNativePointer();
         BeginGPURenderPassColorTargetsDepthStencil_ForwardsEmptyAndNonEmptyArrays();
+        BeginGPURenderPassColorTargetsDepthStencilSpan_ForwardsArgumentsAndReturnsNativePointer();
         BindGPUGraphicsPipeline_ForwardsRenderPassAndPipeline();
         SetGPUViewport_ForwardsViewport();
         SetGPUScissor_ForwardsScissor();
         SetGPUBlendConstants_ForwardsBlendConstants();
         SetGPUStencilReference_ForwardsReference();
         BindGPUVertexBuffersArray_ForwardsEmptyAndNonEmptyArrays();
+        BindGPUVertexBuffersSpan_ForwardsArguments();
         BindGPUVertexBuffersPointer_ForwardsArguments();
         BindGPUIndexBuffer_ForwardsBindingAndIndexElementSize();
         BindGPUVertexSamplersArray_ForwardsEmptyAndNonEmptyArrays();
+        BindGPUVertexSamplersSpan_ForwardsArguments();
         BindGPUVertexSamplersPointer_ForwardsArguments();
         BindGPUVertexStorageTextures_ForwardsPointerArray();
+        BindGPUVertexStorageTexturesSpan_ForwardsPointerArray();
         BindGPUVertexStorageBuffers_ForwardsPointerArray();
+        BindGPUVertexStorageBuffersSpan_ForwardsPointerArray();
         BindGPUFragmentSamplersArray_ForwardsArguments();
+        BindGPUFragmentSamplersSpan_ForwardsArguments();
         BindGPUFragmentSamplersPointer_ForwardsArguments();
         BindGPUFragmentStorageTexturesArray_ForwardsPointerArray();
+        BindGPUFragmentStorageTexturesSpan_ForwardsPointerArray();
         BindGPUFragmentStorageTexturesPointer_ForwardsArguments();
         BindGPUFragmentStorageBuffersArray_ForwardsPointerArray();
+        BindGPUFragmentStorageBuffersSpan_ForwardsPointerArray();
         BindGPUFragmentStorageBuffersPointer_ForwardsArguments();
         DrawGPUIndexedPrimitives_ForwardsArguments();
         DrawGPUPrimitives_ForwardsArguments();
@@ -176,12 +190,17 @@ internal static class PInvokeTests
         DrawGPUIndexedPrimitivesIndirect_ForwardsArguments();
         EndGPURenderPass_ForwardsRenderPass();
         BeginGPUComputePass_ForwardsBindingsAndReturnsNativePointer();
+        BeginGPUComputePassPointer_ForwardsBindingsAndReturnsNativePointer();
+        BeginGPUComputePassSpan_ForwardsBindingsAndReturnsNativePointer();
         BindGPUComputePipeline_ForwardsComputePassAndPipeline();
         BindGPUComputeSamplersArray_ForwardsArguments();
+        BindGPUComputeSamplersSpan_ForwardsArguments();
         BindGPUComputeSamplersPointer_ForwardsArguments();
         BindGPUComputeStorageTexturesArray_ForwardsPointerArray();
+        BindGPUComputeStorageTexturesSpan_ForwardsPointerArray();
         BindGPUComputeStorageTexturesPointer_ForwardsArguments();
         BindGPUComputeStorageBuffersArray_ForwardsPointerArray();
+        BindGPUComputeStorageBuffersSpan_ForwardsPointerArray();
         BindGPUComputeStorageBuffersPointer_ForwardsArguments();
         DispatchGPUCompute_ForwardsGroupCounts();
         DispatchGPUComputeIndirect_ForwardsArguments();
@@ -216,6 +235,7 @@ internal static class PInvokeTests
         WaitForGPUIdle_ForwardsDeviceAndReturnsNativeValue();
         WaitForGPUFencesArray_ForwardsArgumentsAndReturnsNativeValue();
         WaitForGPUFencesPointer_ForwardsArgumentsAndReturnsNativeValue();
+        WaitForGPUFencesSpan_ForwardsArgumentsAndReturnsNativeValue();
         QueryGPUFence_ForwardsArgumentsAndReturnsNativeValue();
         ReleaseGPUFence_ForwardsArguments();
         GPUTextureFormatTexelBlockSize_ForwardsFormatAndReturnsNativeValue();
@@ -708,6 +728,11 @@ internal static class PInvokeTests
         AssertUniformArrayMethod("PushGPUVertexUniformData", "SDL_PushGPUVertexUniformData", "PushGPUVertexUniformDataArrayNativeFunction", InvokePushGPUVertexUniformDataArray);
     }
 
+    public static void PushGPUVertexUniformDataSpan_ForwardsArguments()
+    {
+        AssertUniformSpanMethod("PushGPUVertexUniformData", "SDL_PushGPUVertexUniformData", "PushGPUVertexUniformDataPointerNativeFunction", InvokePushGPUVertexUniformDataSpan);
+    }
+
     public static void PushGPUFragmentUniformDataPointer_ForwardsArguments()
     {
         AssertUniformPointerMethod("PushGPUFragmentUniformData", "SDL_PushGPUFragmentUniformData", "PushGPUFragmentUniformDataPointerNativeFunction", InvokePushGPUFragmentUniformDataPointer);
@@ -718,6 +743,11 @@ internal static class PInvokeTests
         AssertUniformArrayMethod("PushGPUFragmentUniformData", "SDL_PushGPUFragmentUniformData", "PushGPUFragmentUniformDataArrayNativeFunction", InvokePushGPUFragmentUniformDataArray);
     }
 
+    public static void PushGPUFragmentUniformDataSpan_ForwardsArguments()
+    {
+        AssertUniformSpanMethod("PushGPUFragmentUniformData", "SDL_PushGPUFragmentUniformData", "PushGPUFragmentUniformDataPointerNativeFunction", InvokePushGPUFragmentUniformDataSpan);
+    }
+
     public static void PushGPUComputeUniformDataPointer_ForwardsArguments()
     {
         AssertUniformPointerMethod("PushGPUComputeUniformData", "SDL_PushGPUComputeUniformData", "PushGPUComputeUniformDataPointerNativeFunction", InvokePushGPUComputeUniformDataPointer);
@@ -726,6 +756,11 @@ internal static class PInvokeTests
     public static void PushGPUComputeUniformDataArray_ForwardsArguments()
     {
         AssertUniformArrayMethod("PushGPUComputeUniformData", "SDL_PushGPUComputeUniformData", "PushGPUComputeUniformDataArrayNativeFunction", InvokePushGPUComputeUniformDataArray);
+    }
+
+    public static void PushGPUComputeUniformDataSpan_ForwardsArguments()
+    {
+        AssertUniformSpanMethod("PushGPUComputeUniformData", "SDL_PushGPUComputeUniformData", "PushGPUComputeUniformDataPointerNativeFunction", InvokePushGPUComputeUniformDataSpan);
     }
 
     public static void BeginGPURenderPassPointer_ForwardsArgumentsAndReturnsNativePointer()
@@ -785,6 +820,27 @@ internal static class PInvokeTests
         TestAssert.Equal<uint>(1, capturedNumColorTargets, "SDL.BeginGPURenderPass array overload must forward numColorTargets for non-empty arrays.");
         TestAssert.Equal((IntPtr)2207, capturedDepthStencilTargetInfo, "SDL.BeginGPURenderPass array overload must forward depthStencilTargetInfo for non-empty arrays.");
         TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPURenderPass array overload must call native hook once for non-empty arrays.");
+    }
+
+    public static void BeginGPURenderPassColorTargetsSpan_ForwardsArgumentsAndReturnsNativePointer()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)2211;
+        using NativeHookScope _ = NativeHookScope.Install("BeginGPURenderPassPointerNativeFunction", nameof(CaptureBeginGPURenderPassPointer));
+        SDL3.SDL.GPUColorTargetInfo[] targets =
+        [
+            new() { Texture = (IntPtr)2212, MipLevel = 1, LayerOrDepthPlane = 2 },
+            new() { Texture = (IntPtr)2213, MipLevel = 3, LayerOrDepthPlane = 4 }
+        ];
+
+        IntPtr result = SDL3.SDL.BeginGPURenderPass((IntPtr)2214, targets.AsSpan(1), 1, (IntPtr)2215);
+
+        TestAssert.Equal((IntPtr)2211, result, "SDL.BeginGPURenderPass span overload must return native render pass.");
+        TestAssert.Equal((IntPtr)2214, capturedCommandBuffer, "SDL.BeginGPURenderPass span overload must forward commandBuffer.");
+        TestAssert.True(capturedColorTargetInfos != IntPtr.Zero, "SDL.BeginGPURenderPass span overload must pin non-empty colorTargetInfos.");
+        TestAssert.Equal<uint>(1, capturedNumColorTargets, "SDL.BeginGPURenderPass span overload must forward numColorTargets.");
+        TestAssert.Equal((IntPtr)2215, capturedDepthStencilTargetInfo, "SDL.BeginGPURenderPass span overload must forward depthStencilTargetInfo.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPURenderPass span overload must call native hook once.");
     }
 
     public static void BeginGPURenderPassDepthStencil_ForwardsArgumentsAndReturnsNativePointer()
@@ -849,6 +905,28 @@ internal static class PInvokeTests
         TestAssert.Equal<uint>(1, capturedNumColorTargets, "SDL.BeginGPURenderPass array depth-stencil overload must forward numColorTargets for non-empty arrays.");
         TestAssert.Equal(depthStencil.Texture, capturedDepthStencilInfo.Texture, "SDL.BeginGPURenderPass array depth-stencil overload must forward depthStencilTargetInfo for non-empty arrays.");
         TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPURenderPass array depth-stencil overload must call native hook once for non-empty arrays.");
+    }
+
+    public static void BeginGPURenderPassColorTargetsDepthStencilSpan_ForwardsArgumentsAndReturnsNativePointer()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)2411;
+        using NativeHookScope _ = NativeHookScope.Install("BeginGPURenderPassDepthStencilNativeFunction", nameof(CaptureBeginGPURenderPassDepthStencil));
+        SDL3.SDL.GPUColorTargetInfo[] targets =
+        [
+            new() { Texture = (IntPtr)2412, MipLevel = 1, LayerOrDepthPlane = 2 },
+            new() { Texture = (IntPtr)2413, MipLevel = 3, LayerOrDepthPlane = 4 }
+        ];
+        SDL3.SDL.GPUDepthStencilTargetInfo depthStencil = CreateDepthStencilInfo((IntPtr)2414);
+
+        IntPtr result = SDL3.SDL.BeginGPURenderPass((IntPtr)2415, targets.AsSpan(1), 1, in depthStencil);
+
+        TestAssert.Equal((IntPtr)2411, result, "SDL.BeginGPURenderPass span depth-stencil overload must return native render pass.");
+        TestAssert.Equal((IntPtr)2415, capturedCommandBuffer, "SDL.BeginGPURenderPass span depth-stencil overload must forward commandBuffer.");
+        TestAssert.True(capturedColorTargetInfos != IntPtr.Zero, "SDL.BeginGPURenderPass span depth-stencil overload must pin non-empty colorTargetInfos.");
+        TestAssert.Equal<uint>(1, capturedNumColorTargets, "SDL.BeginGPURenderPass span depth-stencil overload must forward numColorTargets.");
+        TestAssert.Equal(depthStencil.Texture, capturedDepthStencilInfo.Texture, "SDL.BeginGPURenderPass span depth-stencil overload must forward depthStencilTargetInfo.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPURenderPass span depth-stencil overload must call native hook once.");
     }
 
     public static void BindGPUGraphicsPipeline_ForwardsRenderPassAndPipeline()
@@ -964,6 +1042,23 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.BindGPUVertexBuffers array overload must call native hook once for non-empty arrays.");
     }
 
+    public static void BindGPUVertexBuffersSpan_ForwardsArguments()
+    {
+        SDL3.SDL.GPUBufferBinding[] bindings =
+        [
+            new() { Buffer = (IntPtr)3211, Offset = 16 },
+            new() { Buffer = (IntPtr)3212, Offset = 32 }
+        ];
+
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUVertexBuffers",
+            "SDL_BindGPUVertexBuffers",
+            "BindGPUVertexBuffersPointerNativeFunction",
+            "bindings",
+            bindings,
+            InvokeBindGPUVertexBuffersSpan);
+    }
+
     public static void BindGPUVertexBuffersPointer_ForwardsArguments()
     {
         AssertRenderPassSlotPointerMethod("BindGPUVertexBuffers", "SDL_BindGPUVertexBuffers", "BindGPUVertexBuffersPointerNativeFunction", "bindings");
@@ -1017,6 +1112,23 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.BindGPUVertexSamplers array overload must call native hook once for non-empty arrays.");
     }
 
+    public static void BindGPUVertexSamplersSpan_ForwardsArguments()
+    {
+        SDL3.SDL.GPUTextureSamplerBinding[] bindings =
+        [
+            new() { Texture = (IntPtr)3411, Sampler = (IntPtr)3412 },
+            new() { Texture = (IntPtr)3413, Sampler = (IntPtr)3414 }
+        ];
+
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUVertexSamplers",
+            "SDL_BindGPUVertexSamplers",
+            "BindGPUVertexSamplersPointerNativeFunction",
+            "textureSamplerBindings",
+            bindings,
+            InvokeBindGPUVertexSamplersSpan);
+    }
+
     public static void BindGPUVertexSamplersPointer_ForwardsArguments()
     {
         AssertRenderPassSlotPointerMethod("BindGPUVertexSamplers", "SDL_BindGPUVertexSamplers", "BindGPUVertexSamplersPointerNativeFunction", "textureSamplerBindings");
@@ -1027,9 +1139,31 @@ internal static class PInvokeTests
         AssertRenderPassSlotPointerArrayMethod("BindGPUVertexStorageTextures", "SDL_BindGPUVertexStorageTextures", "BindGPUVertexStorageTexturesNativeFunction", InvokeBindGPUVertexStorageTextures);
     }
 
+    public static void BindGPUVertexStorageTexturesSpan_ForwardsPointerArray()
+    {
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUVertexStorageTextures",
+            "SDL_BindGPUVertexStorageTextures",
+            "BindGPUVertexStorageTexturesPointerNativeFunction",
+            "storageTextures",
+            new[] { (IntPtr)3421, (IntPtr)3422 },
+            InvokeBindGPUVertexStorageTexturesSpan);
+    }
+
     public static void BindGPUVertexStorageBuffers_ForwardsPointerArray()
     {
         AssertRenderPassSlotPointerArrayMethod("BindGPUVertexStorageBuffers", "SDL_BindGPUVertexStorageBuffers", "BindGPUVertexStorageBuffersNativeFunction", InvokeBindGPUVertexStorageBuffers);
+    }
+
+    public static void BindGPUVertexStorageBuffersSpan_ForwardsPointerArray()
+    {
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUVertexStorageBuffers",
+            "SDL_BindGPUVertexStorageBuffers",
+            "BindGPUVertexStorageBuffersPointerNativeFunction",
+            "storageBuffers",
+            new[] { (IntPtr)3431, (IntPtr)3432 },
+            InvokeBindGPUVertexStorageBuffersSpan);
     }
 
     public static void BindGPUFragmentSamplersArray_ForwardsArguments()
@@ -1053,6 +1187,23 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.BindGPUFragmentSamplers array overload must call native hook once.");
     }
 
+    public static void BindGPUFragmentSamplersSpan_ForwardsArguments()
+    {
+        SDL3.SDL.GPUTextureSamplerBinding[] bindings =
+        [
+            new() { Texture = (IntPtr)3511, Sampler = (IntPtr)3512 },
+            new() { Texture = (IntPtr)3513, Sampler = (IntPtr)3514 }
+        ];
+
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUFragmentSamplers",
+            "SDL_BindGPUFragmentSamplers",
+            "BindGPUFragmentSamplersPointerNativeFunction",
+            "textureSamplerBindings",
+            bindings,
+            InvokeBindGPUFragmentSamplersSpan);
+    }
+
     public static void BindGPUFragmentSamplersPointer_ForwardsArguments()
     {
         AssertRenderPassSlotPointerMethod("BindGPUFragmentSamplers", "SDL_BindGPUFragmentSamplers", "BindGPUFragmentSamplersPointerNativeFunction", "textureSamplerBindings");
@@ -1063,6 +1214,17 @@ internal static class PInvokeTests
         AssertRenderPassSlotPointerArrayMethod("BindGPUFragmentStorageTextures", "SDL_BindGPUFragmentStorageTextures", "BindGPUFragmentStorageTexturesArrayNativeFunction", InvokeBindGPUFragmentStorageTexturesArray);
     }
 
+    public static void BindGPUFragmentStorageTexturesSpan_ForwardsPointerArray()
+    {
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUFragmentStorageTextures",
+            "SDL_BindGPUFragmentStorageTextures",
+            "BindGPUFragmentStorageTexturesPointerNativeFunction",
+            "storageTextures",
+            new[] { (IntPtr)3521, (IntPtr)3522 },
+            InvokeBindGPUFragmentStorageTexturesSpan);
+    }
+
     public static void BindGPUFragmentStorageTexturesPointer_ForwardsArguments()
     {
         AssertRenderPassSlotPointerMethod("BindGPUFragmentStorageTextures", "SDL_BindGPUFragmentStorageTextures", "BindGPUFragmentStorageTexturesPointerNativeFunction", "storageTextures");
@@ -1071,6 +1233,17 @@ internal static class PInvokeTests
     public static void BindGPUFragmentStorageBuffersArray_ForwardsPointerArray()
     {
         AssertRenderPassSlotPointerArrayMethod("BindGPUFragmentStorageBuffers", "SDL_BindGPUFragmentStorageBuffers", "BindGPUFragmentStorageBuffersArrayNativeFunction", InvokeBindGPUFragmentStorageBuffersArray);
+    }
+
+    public static void BindGPUFragmentStorageBuffersSpan_ForwardsPointerArray()
+    {
+        AssertRenderPassSlotSpanMethod(
+            "BindGPUFragmentStorageBuffers",
+            "SDL_BindGPUFragmentStorageBuffers",
+            "BindGPUFragmentStorageBuffersPointerNativeFunction",
+            "storageBuffers",
+            new[] { (IntPtr)3531, (IntPtr)3532 },
+            InvokeBindGPUFragmentStorageBuffersSpan);
     }
 
     public static void BindGPUFragmentStorageBuffersPointer_ForwardsArguments()
@@ -1141,7 +1314,13 @@ internal static class PInvokeTests
 
     public static void BeginGPUComputePass_ForwardsBindingsAndReturnsNativePointer()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_BeginGPUComputePass");
+        MethodInfo nativeMethod = GetNativeMethod(
+            "SDL_BeginGPUComputePass",
+            typeof(IntPtr),
+            typeof(SDL3.SDL.GPUStorageTextureReadWriteBinding[]),
+            typeof(uint),
+            typeof(SDL3.SDL.GPUStorageBufferReadWriteBinding[]),
+            typeof(uint));
         AssertSdlLibraryImport(nativeMethod, "SDL_BeginGPUComputePass");
 
         ResetCaptureState();
@@ -1165,6 +1344,59 @@ internal static class PInvokeTests
         TestAssert.True(ReferenceEquals(bufferBindings, capturedStorageBufferBindings), "SDL.BeginGPUComputePass must forward storageBufferBindings.");
         TestAssert.Equal<uint>(1, capturedNumStorageBufferBindings, "SDL.BeginGPUComputePass must forward numStorageBufferBindings.");
         TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPUComputePass must call native hook once.");
+    }
+
+    public static void BeginGPUComputePassPointer_ForwardsBindingsAndReturnsNativePointer()
+    {
+        MethodInfo nativeMethod = GetNativeMethod(
+            "SDL_BeginGPUComputePass",
+            typeof(IntPtr),
+            typeof(IntPtr),
+            typeof(uint),
+            typeof(IntPtr),
+            typeof(uint));
+        AssertSdlLibraryImport(nativeMethod, "SDL_BeginGPUComputePass");
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)4211;
+        using NativeHookScope _ = NativeHookScope.Install("BeginGPUComputePassPointerNativeFunction", nameof(CaptureBeginGPUComputePassPointer));
+
+        IntPtr result = SDL3.SDL.BeginGPUComputePass((IntPtr)4212, (IntPtr)4213, 2, (IntPtr)4214, 3);
+
+        TestAssert.Equal((IntPtr)4211, result, "SDL.BeginGPUComputePass pointer overload must return native compute pass.");
+        TestAssert.Equal((IntPtr)4212, capturedCommandBuffer, "SDL.BeginGPUComputePass pointer overload must forward commandBuffer.");
+        TestAssert.Equal((IntPtr)4213, capturedStorageTextureBindingsPointer, "SDL.BeginGPUComputePass pointer overload must forward storageTextureBindings.");
+        TestAssert.Equal<uint>(2, capturedNumStorageTextureBindings, "SDL.BeginGPUComputePass pointer overload must forward texture binding count.");
+        TestAssert.Equal((IntPtr)4214, capturedStorageBufferBindingsPointer, "SDL.BeginGPUComputePass pointer overload must forward storageBufferBindings.");
+        TestAssert.Equal<uint>(3, capturedNumStorageBufferBindings, "SDL.BeginGPUComputePass pointer overload must forward buffer binding count.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPUComputePass pointer overload must call native hook once.");
+    }
+
+    public static void BeginGPUComputePassSpan_ForwardsBindingsAndReturnsNativePointer()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)4221;
+        using NativeHookScope _ = NativeHookScope.Install("BeginGPUComputePassPointerNativeFunction", nameof(CaptureBeginGPUComputePassPointer));
+        SDL3.SDL.GPUStorageTextureReadWriteBinding[] textureBindings =
+        [
+            new() { Texture = (IntPtr)4222, MipLevel = 1, Layer = 2, Cycle = 1 },
+            new() { Texture = (IntPtr)4223, MipLevel = 3, Layer = 4, Cycle = 0 }
+        ];
+        SDL3.SDL.GPUStorageBufferReadWriteBinding[] bufferBindings =
+        [
+            new() { Buffer = (IntPtr)4224, Cycle = 1 },
+            new() { Buffer = (IntPtr)4225, Cycle = 0 }
+        ];
+
+        IntPtr result = SDL3.SDL.BeginGPUComputePass((IntPtr)4226, textureBindings.AsSpan(1), 1, bufferBindings.AsSpan(1), 1);
+
+        TestAssert.Equal((IntPtr)4221, result, "SDL.BeginGPUComputePass span overload must return native compute pass.");
+        TestAssert.Equal((IntPtr)4226, capturedCommandBuffer, "SDL.BeginGPUComputePass span overload must forward commandBuffer.");
+        TestAssert.True(capturedStorageTextureBindingsPointer != IntPtr.Zero, "SDL.BeginGPUComputePass span overload must pin storageTextureBindings.");
+        TestAssert.Equal<uint>(1, capturedNumStorageTextureBindings, "SDL.BeginGPUComputePass span overload must forward texture binding count.");
+        TestAssert.True(capturedStorageBufferBindingsPointer != IntPtr.Zero, "SDL.BeginGPUComputePass span overload must pin storageBufferBindings.");
+        TestAssert.Equal<uint>(1, capturedNumStorageBufferBindings, "SDL.BeginGPUComputePass span overload must forward buffer binding count.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.BeginGPUComputePass span overload must call native hook once.");
     }
 
     public static void BindGPUComputePipeline_ForwardsComputePassAndPipeline()
@@ -1203,6 +1435,23 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.BindGPUComputeSamplers array overload must call native hook once.");
     }
 
+    public static void BindGPUComputeSamplersSpan_ForwardsArguments()
+    {
+        SDL3.SDL.GPUTextureSamplerBinding[] bindings =
+        [
+            new() { Texture = (IntPtr)4411, Sampler = (IntPtr)4412 },
+            new() { Texture = (IntPtr)4413, Sampler = (IntPtr)4414 }
+        ];
+
+        AssertComputePassSlotSpanMethod(
+            "BindGPUComputeSamplers",
+            "SDL_BindGPUComputeSamplers",
+            "BindGPUComputeSamplersPointerNativeFunction",
+            "textureSamplerBindings",
+            bindings,
+            InvokeBindGPUComputeSamplersSpan);
+    }
+
     public static void BindGPUComputeSamplersPointer_ForwardsArguments()
     {
         AssertComputePassSlotPointerMethod("BindGPUComputeSamplers", "SDL_BindGPUComputeSamplers", "BindGPUComputeSamplersPointerNativeFunction", "textureSamplerBindings");
@@ -1213,6 +1462,17 @@ internal static class PInvokeTests
         AssertComputePassSlotPointerArrayMethod("BindGPUComputeStorageTextures", "SDL_BindGPUComputeStorageTextures", "BindGPUComputeStorageTexturesArrayNativeFunction", InvokeBindGPUComputeStorageTexturesArray);
     }
 
+    public static void BindGPUComputeStorageTexturesSpan_ForwardsPointerArray()
+    {
+        AssertComputePassSlotSpanMethod(
+            "BindGPUComputeStorageTextures",
+            "SDL_BindGPUComputeStorageTextures",
+            "BindGPUComputeStorageTexturesPointerNativeFunction",
+            "storageTextures",
+            new[] { (IntPtr)4421, (IntPtr)4422 },
+            InvokeBindGPUComputeStorageTexturesSpan);
+    }
+
     public static void BindGPUComputeStorageTexturesPointer_ForwardsArguments()
     {
         AssertComputePassSlotPointerMethod("BindGPUComputeStorageTextures", "SDL_BindGPUComputeStorageTextures", "BindGPUComputeStorageTexturesPointerNativeFunction", "storageTextures");
@@ -1221,6 +1481,17 @@ internal static class PInvokeTests
     public static void BindGPUComputeStorageBuffersArray_ForwardsPointerArray()
     {
         AssertComputePassSlotPointerArrayMethod("BindGPUComputeStorageBuffers", "SDL_BindGPUComputeStorageBuffers", "BindGPUComputeStorageBuffersArrayNativeFunction", InvokeBindGPUComputeStorageBuffersArray);
+    }
+
+    public static void BindGPUComputeStorageBuffersSpan_ForwardsPointerArray()
+    {
+        AssertComputePassSlotSpanMethod(
+            "BindGPUComputeStorageBuffers",
+            "SDL_BindGPUComputeStorageBuffers",
+            "BindGPUComputeStorageBuffersPointerNativeFunction",
+            "storageBuffers",
+            new[] { (IntPtr)4431, (IntPtr)4432 },
+            InvokeBindGPUComputeStorageBuffersSpan);
     }
 
     public static void BindGPUComputeStorageBuffersPointer_ForwardsArguments()
@@ -1841,6 +2112,23 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.WaitForGPUFences pointer overload must call native hook once.");
     }
 
+    public static void WaitForGPUFencesSpan_ForwardsArgumentsAndReturnsNativeValue()
+    {
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope _ = NativeHookScope.Install("WaitForGPUFencesPointerNativeFunction", nameof(CaptureWaitForGPUFencesPointer));
+        IntPtr[] fences = [(IntPtr)7711, (IntPtr)7712];
+
+        bool result = SDL3.SDL.WaitForGPUFences((IntPtr)7713, true, fences.AsSpan(1), 1);
+
+        TestAssert.Equal(true, result, "SDL.WaitForGPUFences span overload must return native bool value.");
+        TestAssert.Equal((IntPtr)7713, capturedDevice, "SDL.WaitForGPUFences span overload must forward device.");
+        TestAssert.True(capturedWaitAll, "SDL.WaitForGPUFences span overload must forward waitAll.");
+        TestAssert.True(capturedFences != IntPtr.Zero, "SDL.WaitForGPUFences span overload must pin fences.");
+        TestAssert.Equal<uint>(1, capturedNumFences, "SDL.WaitForGPUFences span overload must forward numFences.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.WaitForGPUFences span overload must call native hook once.");
+    }
+
     public static void QueryGPUFence_ForwardsArgumentsAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_QueryGPUFence");
@@ -1997,6 +2285,8 @@ internal static class PInvokeTests
         capturedStorageTextureBindings = null;
         capturedNumStorageTextureBindings = 0;
         capturedStorageBufferBindings = null;
+        capturedStorageTextureBindingsPointer = IntPtr.Zero;
+        capturedStorageBufferBindingsPointer = IntPtr.Zero;
         capturedNumStorageBufferBindings = 0;
         capturedGroupCountX = 0;
         capturedGroupCountY = 0;
@@ -2226,6 +2516,16 @@ internal static class PInvokeTests
         capturedCallCount++;
     }
 
+    private static void CaptureUniformPointerBytes(IntPtr commandBuffer, uint slotIndex, IntPtr data, uint length)
+    {
+        capturedCommandBuffer = commandBuffer;
+        capturedSlotIndex = slotIndex;
+        capturedData = data;
+        capturedDataArray = CopyUnmanaged<byte>(data, checked((int)length));
+        capturedLength = length;
+        capturedCallCount++;
+    }
+
     private static void CaptureUniformArray(IntPtr commandBuffer, uint slotIndex, byte[] data, uint length)
     {
         capturedCommandBuffer = commandBuffer;
@@ -2372,6 +2672,22 @@ internal static class PInvokeTests
         capturedStorageTextureBindings = storageTextureBindings;
         capturedNumStorageTextureBindings = numStorageTextureBindings;
         capturedStorageBufferBindings = storageBufferBindings;
+        capturedNumStorageBufferBindings = numStorageBufferBindings;
+        capturedCallCount++;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureBeginGPUComputePassPointer(
+        IntPtr commandBuffer,
+        IntPtr storageTextureBindings,
+        uint numStorageTextureBindings,
+        IntPtr storageBufferBindings,
+        uint numStorageBufferBindings)
+    {
+        capturedCommandBuffer = commandBuffer;
+        capturedStorageTextureBindingsPointer = storageTextureBindings;
+        capturedNumStorageTextureBindings = numStorageTextureBindings;
+        capturedStorageBufferBindingsPointer = storageBufferBindings;
         capturedNumStorageBufferBindings = numStorageBufferBindings;
         capturedCallCount++;
         return nextPointer;
@@ -2713,12 +3029,22 @@ internal static class PInvokeTests
         SDL3.SDL.PushGPUVertexUniformData(commandBuffer, slotIndex, data, length);
     }
 
+    private static void InvokePushGPUVertexUniformDataSpan(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length)
+    {
+        SDL3.SDL.PushGPUVertexUniformData(commandBuffer, slotIndex, data, length);
+    }
+
     private static void InvokePushGPUFragmentUniformDataPointer(IntPtr commandBuffer, uint slotIndex, IntPtr data, uint length)
     {
         SDL3.SDL.PushGPUFragmentUniformData(commandBuffer, slotIndex, data, length);
     }
 
     private static void InvokePushGPUFragmentUniformDataArray(IntPtr commandBuffer, uint slotIndex, byte[] data, uint length)
+    {
+        SDL3.SDL.PushGPUFragmentUniformData(commandBuffer, slotIndex, data, length);
+    }
+
+    private static void InvokePushGPUFragmentUniformDataSpan(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length)
     {
         SDL3.SDL.PushGPUFragmentUniformData(commandBuffer, slotIndex, data, length);
     }
@@ -2733,7 +3059,27 @@ internal static class PInvokeTests
         SDL3.SDL.PushGPUComputeUniformData(commandBuffer, slotIndex, data, length);
     }
 
+    private static void InvokePushGPUComputeUniformDataSpan(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length)
+    {
+        SDL3.SDL.PushGPUComputeUniformData(commandBuffer, slotIndex, data, length);
+    }
+
+    private static void InvokeBindGPUVertexBuffersSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<SDL3.SDL.GPUBufferBinding> bindings, uint numBindings)
+    {
+        SDL3.SDL.BindGPUVertexBuffers(renderPass, firstSlot, bindings, numBindings);
+    }
+
+    private static void InvokeBindGPUVertexSamplersSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<SDL3.SDL.GPUTextureSamplerBinding> bindings, uint numBindings)
+    {
+        SDL3.SDL.BindGPUVertexSamplers(renderPass, firstSlot, bindings, numBindings);
+    }
+
     private static void InvokeBindGPUVertexStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] pointers, uint numBindings)
+    {
+        SDL3.SDL.BindGPUVertexStorageTextures(renderPass, firstSlot, pointers, numBindings);
+    }
+
+    private static void InvokeBindGPUVertexStorageTexturesSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> pointers, uint numBindings)
     {
         SDL3.SDL.BindGPUVertexStorageTextures(renderPass, firstSlot, pointers, numBindings);
     }
@@ -2743,12 +3089,32 @@ internal static class PInvokeTests
         SDL3.SDL.BindGPUVertexStorageBuffers(renderPass, firstSlot, pointers, numBindings);
     }
 
+    private static void InvokeBindGPUVertexStorageBuffersSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> pointers, uint numBindings)
+    {
+        SDL3.SDL.BindGPUVertexStorageBuffers(renderPass, firstSlot, pointers, numBindings);
+    }
+
+    private static void InvokeBindGPUFragmentSamplersSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<SDL3.SDL.GPUTextureSamplerBinding> bindings, uint numBindings)
+    {
+        SDL3.SDL.BindGPUFragmentSamplers(renderPass, firstSlot, bindings, numBindings);
+    }
+
     private static void InvokeBindGPUFragmentStorageTexturesArray(IntPtr renderPass, uint firstSlot, IntPtr[] pointers, uint numBindings)
     {
         SDL3.SDL.BindGPUFragmentStorageTextures(renderPass, firstSlot, pointers, numBindings);
     }
 
+    private static void InvokeBindGPUFragmentStorageTexturesSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> pointers, uint numBindings)
+    {
+        SDL3.SDL.BindGPUFragmentStorageTextures(renderPass, firstSlot, pointers, numBindings);
+    }
+
     private static void InvokeBindGPUFragmentStorageBuffersArray(IntPtr renderPass, uint firstSlot, IntPtr[] pointers, uint numBindings)
+    {
+        SDL3.SDL.BindGPUFragmentStorageBuffers(renderPass, firstSlot, pointers, numBindings);
+    }
+
+    private static void InvokeBindGPUFragmentStorageBuffersSpan(IntPtr renderPass, uint firstSlot, ReadOnlySpan<IntPtr> pointers, uint numBindings)
     {
         SDL3.SDL.BindGPUFragmentStorageBuffers(renderPass, firstSlot, pointers, numBindings);
     }
@@ -2768,7 +3134,22 @@ internal static class PInvokeTests
         SDL3.SDL.BindGPUComputeStorageTextures(computePass, firstSlot, pointers, numBindings);
     }
 
+    private static void InvokeBindGPUComputeSamplersSpan(IntPtr computePass, uint firstSlot, ReadOnlySpan<SDL3.SDL.GPUTextureSamplerBinding> bindings, uint numBindings)
+    {
+        SDL3.SDL.BindGPUComputeSamplers(computePass, firstSlot, bindings, numBindings);
+    }
+
+    private static void InvokeBindGPUComputeStorageTexturesSpan(IntPtr computePass, uint firstSlot, ReadOnlySpan<IntPtr> pointers, uint numBindings)
+    {
+        SDL3.SDL.BindGPUComputeStorageTextures(computePass, firstSlot, pointers, numBindings);
+    }
+
     private static void InvokeBindGPUComputeStorageBuffersArray(IntPtr computePass, uint firstSlot, IntPtr[] pointers, uint numBindings)
+    {
+        SDL3.SDL.BindGPUComputeStorageBuffers(computePass, firstSlot, pointers, numBindings);
+    }
+
+    private static void InvokeBindGPUComputeStorageBuffersSpan(IntPtr computePass, uint firstSlot, ReadOnlySpan<IntPtr> pointers, uint numBindings)
     {
         SDL3.SDL.BindGPUComputeStorageBuffers(computePass, firstSlot, pointers, numBindings);
     }
@@ -2890,6 +3271,12 @@ internal static class PInvokeTests
         };
     }
 
+    private delegate void UniformSpanInvoker(IntPtr commandBuffer, uint slotIndex, ReadOnlySpan<byte> data, uint length);
+
+    private delegate void RenderPassSlotSpanInvoker<T>(IntPtr renderPass, uint firstSlot, ReadOnlySpan<T> values, uint numBindings) where T : unmanaged;
+
+    private delegate void ComputePassSlotSpanInvoker<T>(IntPtr computePass, uint firstSlot, ReadOnlySpan<T> values, uint numBindings) where T : unmanaged;
+
     private static void AssertUniformPointerMethod(
         string publicName,
         string nativeName,
@@ -2934,6 +3321,31 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} array overload must call native hook once.");
     }
 
+    private static void AssertUniformSpanMethod(
+        string publicName,
+        string nativeName,
+        string hookFieldName,
+        UniformSpanInvoker invoke)
+    {
+        MethodInfo nativeMethod = GetNativeMethod(nativeName, typeof(IntPtr), typeof(uint), typeof(IntPtr), typeof(uint));
+        AssertSdlLibraryImport(nativeMethod, nativeName);
+
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install(hookFieldName, nameof(CaptureUniformPointerBytes));
+        byte[] data = [1, 2, 3, 4];
+
+        invoke((IntPtr)3102, 4, data.AsSpan(1, 2), 2);
+
+        TestAssert.Equal((IntPtr)3102, capturedCommandBuffer, $"SDL.{publicName} span overload must forward commandBuffer.");
+        TestAssert.Equal<uint>(4, capturedSlotIndex, $"SDL.{publicName} span overload must forward slotIndex.");
+        TestAssert.True(capturedData != IntPtr.Zero, $"SDL.{publicName} span overload must pin data.");
+        TestAssert.Equal<uint>(2, capturedLength, $"SDL.{publicName} span overload must forward length.");
+        TestAssert.NotNull(capturedDataArray, $"SDL.{publicName} span overload must forward readable data.");
+        TestAssert.Equal((byte)2, capturedDataArray![0], $"SDL.{publicName} span overload must forward slice item 0.");
+        TestAssert.Equal((byte)3, capturedDataArray[1], $"SDL.{publicName} span overload must forward slice item 1.");
+        TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} span overload must call native hook once.");
+    }
+
     private static void AssertRenderPassSlotPointerMethod(string publicName, string nativeName, string hookFieldName, string pointerParameterName)
     {
         MethodInfo nativeMethod = GetNativeMethod(nativeName, typeof(IntPtr), typeof(uint), typeof(IntPtr), typeof(uint));
@@ -2971,6 +3383,29 @@ internal static class PInvokeTests
         TestAssert.True(ReferenceEquals(pointers, capturedPointerArray), $"SDL.{publicName} array overload must forward pointer array.");
         TestAssert.Equal<uint>((uint)pointers.Length, capturedNumBindings, $"SDL.{publicName} array overload must forward numBindings.");
         TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} array overload must call native hook once.");
+    }
+
+    private static void AssertRenderPassSlotSpanMethod<T>(
+        string publicName,
+        string nativeName,
+        string hookFieldName,
+        string pointerParameterName,
+        T[] values,
+        RenderPassSlotSpanInvoker<T> invoke) where T : unmanaged
+    {
+        MethodInfo nativeMethod = GetNativeMethod(nativeName, typeof(IntPtr), typeof(uint), typeof(IntPtr), typeof(uint));
+        AssertSdlLibraryImport(nativeMethod, nativeName);
+
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install(hookFieldName, nameof(CaptureRenderPassSlotPointer));
+
+        invoke((IntPtr)4004, 11, values.AsSpan(1), 1);
+
+        TestAssert.Equal((IntPtr)4004, capturedRenderPass, $"SDL.{publicName} span overload must forward renderPass.");
+        TestAssert.Equal<uint>(11, capturedFirstSlot, $"SDL.{publicName} span overload must forward firstSlot.");
+        TestAssert.True(capturedBindings != IntPtr.Zero, $"SDL.{publicName} span overload must pin {pointerParameterName}.");
+        TestAssert.Equal<uint>(1, capturedNumBindings, $"SDL.{publicName} span overload must forward numBindings.");
+        TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} span overload must call native hook once.");
     }
 
     private static void AssertDrawIndirectMethod(
@@ -3031,6 +3466,29 @@ internal static class PInvokeTests
         TestAssert.True(ReferenceEquals(pointers, capturedPointerArray), $"SDL.{publicName} array overload must forward pointer array.");
         TestAssert.Equal<uint>((uint)pointers.Length, capturedNumBindings, $"SDL.{publicName} array overload must forward numBindings.");
         TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} array overload must call native hook once.");
+    }
+
+    private static void AssertComputePassSlotSpanMethod<T>(
+        string publicName,
+        string nativeName,
+        string hookFieldName,
+        string pointerParameterName,
+        T[] values,
+        ComputePassSlotSpanInvoker<T> invoke) where T : unmanaged
+    {
+        MethodInfo nativeMethod = GetNativeMethod(nativeName, typeof(IntPtr), typeof(uint), typeof(IntPtr), typeof(uint));
+        AssertSdlLibraryImport(nativeMethod, nativeName);
+
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install(hookFieldName, nameof(CaptureComputePassSlotPointer));
+
+        invoke((IntPtr)4904, 14, values.AsSpan(1), 1);
+
+        TestAssert.Equal((IntPtr)4904, capturedComputePass, $"SDL.{publicName} span overload must forward computePass.");
+        TestAssert.Equal<uint>(14, capturedFirstSlot, $"SDL.{publicName} span overload must forward firstSlot.");
+        TestAssert.True(capturedBindings != IntPtr.Zero, $"SDL.{publicName} span overload must pin {pointerParameterName}.");
+        TestAssert.Equal<uint>(1, capturedNumBindings, $"SDL.{publicName} span overload must forward numBindings.");
+        TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} span overload must call native hook once.");
     }
 
     private static void AssertPropsPointerMethod(string publicName, string nativeName, string hookFieldName, uint props, IntPtr expected)
@@ -3125,6 +3583,18 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)1901, capturedDevice, $"SDL.{publicName} must forward device.");
         TestAssert.Equal((IntPtr)1902, capturedResource, $"SDL.{publicName} must forward {parameterName}.");
         TestAssert.Equal(1, capturedCallCount, $"SDL.{publicName} must call native hook once.");
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
     }
 
     private static object? InvokePublic(string methodName, params object[] arguments)

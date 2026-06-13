@@ -179,7 +179,7 @@ public static partial class SDL
     /// </summary>
     /// <param name="ns">the number of nanoseconds to delay.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="Delay"/>
     /// <seealso cref="DelayNS"/>
     public static void DelayPrecise(ulong ns)

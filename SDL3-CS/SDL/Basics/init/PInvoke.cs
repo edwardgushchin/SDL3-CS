@@ -207,7 +207,7 @@ public static partial class SDL
     /// </summary>
     /// <returns><c>true</c> if this thread is the main thread, or <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="RunOnMainThread"/>
     public static bool IsMainThread()
     {

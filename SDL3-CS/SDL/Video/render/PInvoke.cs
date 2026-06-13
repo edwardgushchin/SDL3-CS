@@ -2745,6 +2745,26 @@ public static partial class SDL
         return RenderPointsArrayNativeFunction(renderer, points, count);
     }
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
+    /// <summary>
+    /// Draw multiple points on the current rendering target at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple points.</param>
+    /// <param name="points">the points to draw.</param>
+    /// <param name="count">the number of points to draw.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderPoint"/>
+    public static unsafe bool RenderPoints(IntPtr renderer, ReadOnlySpan<FPoint> points, int count)
+    {
+        fixed (FPoint* pPoints = points)
+        {
+            return RenderPoints(renderer, (IntPtr)pPoints, count);
+        }
+    }
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderPoints"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -2821,6 +2841,27 @@ public static partial class SDL
     public static bool RenderLines(IntPtr renderer, FPoint[] points, int count)
     {
         return RenderLinesArrayNativeFunction(renderer, points, count);
+    }
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);</code>
+    /// <summary>
+    /// Draw a series of connected lines on the current rendering target at
+    /// subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple lines.</param>
+    /// <param name="points">the points along the lines.</param>
+    /// <param name="count">the number of points, drawing count-1 lines.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderLine"/>
+    public static unsafe bool RenderLines(IntPtr renderer, ReadOnlySpan<FPoint> points, int count)
+    {
+        fixed (FPoint* pPoints = points)
+        {
+            return RenderLines(renderer, (IntPtr)pPoints, count);
+        }
     }
 
     [ExcludeFromCodeCoverage]
@@ -2922,6 +2963,27 @@ public static partial class SDL
     public static bool RenderRects(IntPtr renderer, FRect[] rects, int count)
     {
         return RenderRectsArrayNativeFunction(renderer, rects, count);
+    }
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
+    /// <summary>
+    /// Draw some number of rectangles on the current rendering target at subpixel
+    /// precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should draw multiple rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
+    /// <param name="count">the number of rectangles.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <see cref="RenderRect(nint, nint)"/>
+    public static unsafe bool RenderRects(IntPtr renderer, ReadOnlySpan<FRect> rects, int count)
+    {
+        fixed (FRect* pRects = rects)
+        {
+            return RenderRects(renderer, (IntPtr)pRects, count);
+        }
     }
 
     [ExcludeFromCodeCoverage]
@@ -3026,6 +3088,28 @@ public static partial class SDL
     public static bool RenderFillRects(IntPtr renderer, FRect[] rects, int count)
     {
         return RenderFillRectsArrayNativeFunction(renderer, rects, count);
+    }
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);</code>
+    /// <summary>
+    /// Fill some number of rectangles on the current rendering target with the
+    /// drawing color at subpixel precision.
+    /// </summary>
+    /// <param name="renderer">the renderer which should fill multiple rectangles.</param>
+    /// <param name="rects">a pointer to an array of destination rectangles.</param>
+    /// <param name="count">the number of rectangles.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderFillRect(nint, nint)"/>
+    /// <seealso cref="RenderFillRect(nint, in FRect)"/>
+    public static unsafe bool RenderFillRects(IntPtr renderer, ReadOnlySpan<FRect> rects, int count)
+    {
+        fixed (FRect* pRects = rects)
+        {
+            return RenderFillRects(renderer, (IntPtr)pRects, count);
+        }
     }
 
 
@@ -4196,7 +4280,7 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
-    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
     /// target at subpixel precision.</para>
     /// <para>The pixels in the texture are split into a 3x3 grid, using the different
     /// corner sizes for each corner, and the sides and center making up the
@@ -4238,7 +4322,7 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
-    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
     /// target at subpixel precision.</para>
     /// <para>The pixels in the texture are split into a 3x3 grid, using the different
     /// corner sizes for each corner, and the sides and center making up the
@@ -4280,7 +4364,7 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);</code>
     /// <summary>
-    /// <para>Perform a scaled copy using the 9-grid algorithm to the current rendering
+    /// <para>erform a scaled copy using the 9-grid algorithm to the current rendering
     /// target at subpixel precision.</para>
     /// <para>The pixels in the texture are split into a 3x3 grid, using the different
     /// corner sizes for each corner, and the sides and center making up the
@@ -4536,6 +4620,43 @@ public static partial class SDL
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderGeometryPointers(IntPtr renderer, IntPtr texture, IntPtr vertices, int numVertices, IntPtr indices, int numIndices);
+    private delegate bool RenderGeometryPointersNativeDelegate(IntPtr renderer, IntPtr texture, IntPtr vertices, int numVertices, IntPtr indices, int numIndices);
+    private static RenderGeometryPointersNativeDelegate RenderGeometryPointersNativeFunction = SDL_RenderGeometryPointers;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
+    /// <summary>
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex array.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="vertices">vertices.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
+    /// array, if <c>null</c> all vertices will be rendered in sequential
+    /// order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
+    public static unsafe bool RenderGeometry(IntPtr renderer, IntPtr texture, ReadOnlySpan<Vertex> vertices, int numVertices, IntPtr indices, int numIndices)
+    {
+        fixed (Vertex* pVertices = vertices)
+        {
+            return RenderGeometryPointersNativeFunction(renderer, texture, (IntPtr)pVertices, numVertices, indices, numIndices);
+        }
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderGeometry"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderGeometryArrayIndices(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
     private delegate bool RenderGeometryArrayIndicesNativeDelegate(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices);
     private static RenderGeometryArrayIndicesNativeDelegate RenderGeometryArrayIndicesNativeFunction = SDL_RenderGeometryArrayIndices;
@@ -4564,6 +4685,37 @@ public static partial class SDL
     public static bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices)
     {
         return RenderGeometryArrayIndicesNativeFunction(renderer, texture, vertices, numVertices, indices, numIndices);
+    }
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);</code>
+    /// <summary>
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex array.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="vertices">vertices.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
+    /// array, if <c>null</c> all vertices will be rendered in sequential
+    /// order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
+    public static unsafe bool RenderGeometry(IntPtr renderer, IntPtr texture, ReadOnlySpan<Vertex> vertices, int numVertices, ReadOnlySpan<int> indices, int numIndices)
+    {
+        fixed (Vertex* pVertices = vertices)
+        fixed (int* pIndices = indices)
+        {
+            return RenderGeometryPointersNativeFunction(renderer, texture, (IntPtr)pVertices, numVertices, (IntPtr)pIndices, numIndices);
+        }
     }
 
     #endregion
@@ -4723,6 +4875,57 @@ public static partial class SDL
     {
         fixed (float* pXy = xy)
         fixed (FColor* pColor = color)
+        fixed (float* pUV = uv)
+        {
+            if (indices.Length == 0)
+            {
+                return RenderGeometryRaw(renderer, texture, (IntPtr)pXy, xyStride,
+                    (IntPtr)pColor, colorStride, (IntPtr)pUV, uvStride,
+                    numVertices, IntPtr.Zero, 0, 0);
+            }
+
+            fixed (TIndex* pIndices = indices)
+            {
+                return RenderGeometryRaw(renderer, texture, (IntPtr)pXy, xyStride,
+                    (IntPtr)pColor, colorStride, (IntPtr)pUV, uvStride,
+                    numVertices, (IntPtr)pIndices, numIndices, sizeIndices);
+            }
+        }
+    }
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);</code>
+    /// <summary>
+    /// <para>Render a list of triangles, optionally using a texture and indices into the
+    /// vertex arrays.</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
+    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="texture">(optional) The SDL texture to use.</param>
+    /// <param name="xy">vertex positions.</param>
+    /// <param name="xyStride">byte size to move from one element to the next element.</param>
+    /// <param name="color">vertex colors as consecutive float components matching <see cref="FColor"/> layout.</param>
+    /// <param name="colorStride">byte size to move from one element to the next element.</param>
+    /// <param name="uv">vertex normalized texture coordinates.</param>
+    /// <param name="uvStride">byte size to move from one element to the next element.</param>
+    /// <param name="numVertices">number of vertices.</param>
+    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
+    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="numIndices">number of indices.</param>
+    /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode"/>
+    public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, ReadOnlySpan<float> xy,
+        int xyStride, ReadOnlySpan<float> color, int colorStride, ReadOnlySpan<float> uv, int uvStride,
+        int numVertices, ReadOnlySpan<TIndex> indices, int numIndices, int sizeIndices) where TIndex : unmanaged
+    {
+        fixed (float* pXy = xy)
+        fixed (float* pColor = color)
         fixed (float* pUV = uv)
         {
             if (indices.Length == 0)
@@ -5163,7 +5366,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="RenderDebugTextFormat"/>
     /// <seealso cref="DebugTextFontCharacterSize"/>
     public static bool RenderDebugText(IntPtr renderer, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string str)
@@ -5282,194 +5485,6 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateSamplerBindings"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateSamplerBindingsPointer(IntPtr state, int numSamplerBindings, IntPtr samplerBindings);
-    private delegate bool SetGPURenderStateSamplerBindingsPointerNativeDelegate(IntPtr state, int numSamplerBindings, IntPtr samplerBindings);
-    private static SetGPURenderStateSamplerBindingsPointerNativeDelegate SetGPURenderStateSamplerBindingsPointerNativeFunction = SDL_SetGPURenderStateSamplerBindingsPointer;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateSamplerBindings(SDL_GPURenderState *state, int num_sampler_bindings, const SDL_GPUTextureSamplerBinding *sampler_bindings);</code>
-    /// <summary>
-    /// <para>Set sampler bindings variables in a custom GPU render state.</para>
-    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
-    /// during draw call execution.</para>
-    /// </summary>
-    /// <param name="state">the state to modify.</param>
-    /// <param name="numSamplerBindings">the number of additional fragment samplers to
-    /// bind.</param>
-    /// <param name="samplerBindings">additional fragment samplers to bind.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetGPURenderState"/>
-    /// <seealso cref="DestroyGPURenderState"/>
-    /// <seealso cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
-    public static bool SetGPURenderStateSamplerBindings(IntPtr state, int numSamplerBindings, IntPtr samplerBindings)
-    {
-        return SetGPURenderStateSamplerBindingsPointerNativeFunction(state, numSamplerBindings, samplerBindings);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateSamplerBindings"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateSamplerBindingsArray(IntPtr state, int numSamplerBindings, GPUTextureSamplerBinding[] samplerBindings);
-    private delegate bool SetGPURenderStateSamplerBindingsArrayNativeDelegate(IntPtr state, int numSamplerBindings, GPUTextureSamplerBinding[] samplerBindings);
-    private static SetGPURenderStateSamplerBindingsArrayNativeDelegate SetGPURenderStateSamplerBindingsArrayNativeFunction = SDL_SetGPURenderStateSamplerBindingsArray;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateSamplerBindings(SDL_GPURenderState *state, int num_sampler_bindings, const SDL_GPUTextureSamplerBinding *sampler_bindings);</code>
-    /// <summary>
-    /// <para>Set sampler bindings variables in a custom GPU render state.</para>
-    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
-    /// during draw call execution.</para>
-    /// </summary>
-    /// <param name="state">the state to modify.</param>
-    /// <param name="numSamplerBindings">the number of additional fragment samplers to
-    /// bind.</param>
-    /// <param name="samplerBindings">additional fragment samplers to bind.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetGPURenderState"/>
-    /// <seealso cref="DestroyGPURenderState"/>
-    /// <seealso cref="BindGPUFragmentSamplers(nint, uint, GPUTextureSamplerBinding[], uint)"/>
-    public static bool SetGPURenderStateSamplerBindings(IntPtr state, int numSamplerBindings, GPUTextureSamplerBinding[] samplerBindings)
-    {
-        return SetGPURenderStateSamplerBindingsArrayNativeFunction(state, numSamplerBindings, samplerBindings);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateStorageTexturesPointer(IntPtr state, int numStorageTextures, IntPtr storageTextures);
-    private delegate bool SetGPURenderStateStorageTexturesPointerNativeDelegate(IntPtr state, int numStorageTextures, IntPtr storageTextures);
-    private static SetGPURenderStateStorageTexturesPointerNativeDelegate SetGPURenderStateStorageTexturesPointerNativeFunction = SDL_SetGPURenderStateStorageTexturesPointer;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageTextures(SDL_GPURenderState *state, int num_storage_textures, SDL_GPUTexture *const *storage_textures);</code>
-    /// <summary>
-    /// <para>Set storage textures variables in a custom GPU render state.</para>
-    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
-    /// during draw call execution.</para>
-    /// </summary>
-    /// <param name="state">the state to modify.</param>
-    /// <param name="numStorageTextures">the number of storage textures to bind.</param>
-    /// <param name="storageTextures">storage textures to bind.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetGPURenderState"/>
-    /// <seealso cref="DestroyGPURenderState"/>
-    /// <seealso cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
-    public static bool SetGPURenderStateStorageTextures(IntPtr state, int numStorageTextures, IntPtr storageTextures)
-    {
-        return SetGPURenderStateStorageTexturesPointerNativeFunction(state, numStorageTextures, storageTextures);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateStorageTexturesArray(IntPtr state, int numStorageTextures, IntPtr[] storageTextures);
-    private delegate bool SetGPURenderStateStorageTexturesArrayNativeDelegate(IntPtr state, int numStorageTextures, IntPtr[] storageTextures);
-    private static SetGPURenderStateStorageTexturesArrayNativeDelegate SetGPURenderStateStorageTexturesArrayNativeFunction = SDL_SetGPURenderStateStorageTexturesArray;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageTextures(SDL_GPURenderState *state, int num_storage_textures, SDL_GPUTexture *const *storage_textures);</code>
-    /// <summary>
-    /// <para>Set storage textures variables in a custom GPU render state.</para>
-    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
-    /// during draw call execution.</para>
-    /// </summary>
-    /// <param name="state">the state to modify.</param>
-    /// <param name="numStorageTextures">the number of storage textures to bind.</param>
-    /// <param name="storageTextures">storage textures to bind.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetGPURenderState"/>
-    /// <seealso cref="DestroyGPURenderState"/>
-    /// <seealso cref="BindGPUFragmentStorageTextures(nint, uint, IntPtr[], uint)"/>
-    public static bool SetGPURenderStateStorageTextures(IntPtr state, int numStorageTextures, IntPtr[] storageTextures)
-    {
-        return SetGPURenderStateStorageTexturesArrayNativeFunction(state, numStorageTextures, storageTextures);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateStorageBuffersPointer(IntPtr state, int numStorageBuffers, IntPtr storageBuffers);
-    private delegate bool SetGPURenderStateStorageBuffersPointerNativeDelegate(IntPtr state, int numStorageBuffers, IntPtr storageBuffers);
-    private static SetGPURenderStateStorageBuffersPointerNativeDelegate SetGPURenderStateStorageBuffersPointerNativeFunction = SDL_SetGPURenderStateStorageBuffersPointer;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageBuffers(SDL_GPURenderState *state, int num_storage_buffers, SDL_GPUBuffer *const *storage_buffers);</code>
-    /// <summary>
-    /// <para>Set storage buffers variables in a custom GPU render state.</para>
-    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
-    /// during draw call execution.</para>
-    /// </summary>
-    /// <param name="state">the state to modify.</param>
-    /// <param name="numStorageBuffers">the number of storage buffers to bind.</param>
-    /// <param name="storageBuffers">storage buffers to bind.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetGPURenderState"/>
-    /// <seealso cref="DestroyGPURenderState"/>
-    /// <seealso cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
-    public static bool SetGPURenderStateStorageBuffers(IntPtr state, int numStorageBuffers, IntPtr storageBuffers)
-    {
-        return SetGPURenderStateStorageBuffersPointerNativeFunction(state, numStorageBuffers, storageBuffers);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetGPURenderStateStorageBuffersArray(IntPtr state, int numStorageBuffers, IntPtr[] storageBuffers);
-    private delegate bool SetGPURenderStateStorageBuffersArrayNativeDelegate(IntPtr state, int numStorageBuffers, IntPtr[] storageBuffers);
-    private static SetGPURenderStateStorageBuffersArrayNativeDelegate SetGPURenderStateStorageBuffersArrayNativeFunction = SDL_SetGPURenderStateStorageBuffersArray;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageBuffers(SDL_GPURenderState *state, int num_storage_buffers, SDL_GPUBuffer *const *storage_buffers);</code>
-    /// <summary>
-    /// <para>Set storage buffers variables in a custom GPU render state.</para>
-    /// <para>The data is copied and will be bound using <see cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
-    /// during draw call execution.</para>
-    /// </summary>
-    /// <param name="state">the state to modify.</param>
-    /// <param name="numStorageBuffers">the number of storage buffers to bind.</param>
-    /// <param name="storageBuffers">storage buffers to bind.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
-    /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateGPURenderState"/>
-    /// <seealso cref="SetGPURenderState"/>
-    /// <seealso cref="DestroyGPURenderState"/>
-    /// <seealso cref="BindGPUFragmentStorageBuffers(nint, uint, IntPtr[], uint)"/>
-    public static bool SetGPURenderStateStorageBuffers(IntPtr state, int numStorageBuffers, IntPtr[] storageBuffers)
-    {
-        return SetGPURenderStateStorageBuffersArrayNativeFunction(state, numStorageBuffers, storageBuffers);
-    }
-
-
-    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateFragmentUniforms"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length);
@@ -5504,7 +5519,7 @@ public static partial class SDL
     private delegate bool SetGPURenderStateNativeDelegate(IntPtr renderer, IntPtr state);
     private static SetGPURenderStateNativeDelegate SetGPURenderStateNativeFunction = SDL_SetGPURenderState;
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderState(SDL_Renderer *renderer, SDL_GPURenderState *state);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderGPUState(SDL_Renderer *renderer, SDL_GPURenderState *state);</code>
     /// <summary>
     /// <para>Set custom GPU render state.</para>
     /// <para>This function sets custom GPU render state for subsequent draw calls. This
@@ -5543,48 +5558,4 @@ public static partial class SDL
     }
 
 
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GDKSuspendRenderer(IntPtr renderer);
-    private delegate void GDKSuspendRendererNativeDelegate(IntPtr renderer);
-    private static GDKSuspendRendererNativeDelegate GDKSuspendRendererNativeFunction = SDL_GDKSuspendRenderer;
-
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendRenderer(SDL_Renderer *renderer);</code>
-    /// <summary>
-    /// <para>Call this to suspend Render operations on Xbox after receiving the
-    /// <see cref="EventType.DidEnterBackground"/> event.</para>
-    /// <para>Do NOT call any SDL_Render functions after calling this function! This must
-    /// also be called before calling <see cref="GDKSuspendComplete"/>.</para>
-    /// <para>This function MUST be called on the application's render thread.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should suspend operation.</param>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="AddEventWatch"/>
-    public static void GDKSuspendRenderer(IntPtr renderer)
-    {
-        GDKSuspendRendererNativeFunction(renderer);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKResumeRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_GDKResumeRenderer(IntPtr renderer);
-    private delegate void GDKResumeRendererNativeDelegate(IntPtr renderer);
-    private static GDKResumeRendererNativeDelegate GDKResumeRendererNativeFunction = SDL_GDKResumeRenderer;
-
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKResumeRenderer(SDL_Renderer *renderer);</code>
-    /// <summary>
-    /// <para>Call this to resume Render operations on Xbox after receiving the
-    /// <see cref="EventType.WillEnterForeground"/> event.</para>
-    /// <para>When resuming, this function MUST be called before calling any other
-    /// SDL_Render functions.</para>
-    /// <para>This function MUST be called on the application's render thread.</para>
-    /// </summary>
-    /// <param name="renderer">the renderer which should resume operation.</param>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="AddEventWatch"/>
-    public static void GDKResumeRenderer(IntPtr renderer)
-    {
-        GDKResumeRendererNativeFunction(renderer);
-    }
 }

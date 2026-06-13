@@ -685,6 +685,7 @@ public static partial class TTF
         return GetFontHintingNativeFunction(font);
     }
 
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontSDF"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -983,6 +984,7 @@ public static partial class TTF
         return FontIsFixedWidthNativeFunction(font);
     }
 
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(FontLibrary, EntryPoint = "TTF_FontIsScalable"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1224,6 +1226,7 @@ public static partial class TTF
         return GetGlyphScriptNativeFunction(ch);
     }
 
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(FontLibrary, EntryPoint = "TTF_SetFontLanguage"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1415,6 +1418,7 @@ public static partial class TTF
     {
         return GetGlyphMetricsNativeFunction(font, ch, out minx, out maxx, out miny, out maxy, out advance);
     }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetGlyphKerning"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

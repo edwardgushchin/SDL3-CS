@@ -36,6 +36,7 @@ internal static class PInvokeTests
         PumpEvents_CallsNativeHook();
         PeepEventsPointer_ForwardsArgumentsAndReturnsNativeValue();
         PeepEventsArray_ForwardsArgumentsAndReturnsNativeValue();
+        PeepEventsSpan_ForwardsPinnedBufferAndReturnsNativeValue();
         HasEvent_ForwardsTypeAndReturnsNativeValue();
         HasEvents_ForwardsRangeAndReturnsNativeValue();
         FlushEvent_ForwardsType();
@@ -56,7 +57,9 @@ internal static class PInvokeTests
         GetWindowFromEvent_ForwardsEventAndReturnsNativePointer();
         SDL_GetEventDescription_UsesExpectedNativeMetadata();
         GetEventDescriptionEvent_ForwardsEventBufferAndReturnsNativeValue();
+        GetEventDescriptionEventSpan_ForwardsEventBufferAndReturnsNativeValue();
         GetEventDescriptionPointer_ForwardsPointerBufferAndReturnsNativeValue();
+        GetEventDescriptionPointerSpan_ForwardsPointerBufferAndReturnsNativeValue();
     }
 
     public static void PumpEvents_CallsNativeHook()
@@ -112,6 +115,24 @@ internal static class PInvokeTests
         TestAssert.Equal<uint>(30, capturedMinType, "SDL.PeepEvents array overload must forward minType.");
         TestAssert.Equal<uint>(40, capturedMaxType, "SDL.PeepEvents array overload must forward maxType.");
         TestAssert.Equal(1, capturedCallCount, "SDL.PeepEvents array overload must call native hook once.");
+    }
+
+    public static void PeepEventsSpan_ForwardsPinnedBufferAndReturnsNativeValue()
+    {
+        ResetCaptureState();
+        nextInt = 1;
+        using NativeHookScope _ = NativeHookScope.Install("PeepEventsPointerNativeFunction", nameof(CapturePeepEventsPointer));
+        SDL3.SDL.Event[] events = [CreateEvent(33), CreateEvent(34)];
+
+        int result = SDL3.SDL.PeepEvents(events.AsSpan(), events.Length, SDL3.SDL.EventAction.GetEvent, 31, 41);
+
+        TestAssert.Equal(1, result, "SDL.PeepEvents span overload must return native count.");
+        TestAssert.True(capturedEventsPointer != IntPtr.Zero, "SDL.PeepEvents span overload must pin and forward events.");
+        TestAssert.Equal(2, capturedNumEvents, "SDL.PeepEvents span overload must forward numevents.");
+        TestAssert.Equal(SDL3.SDL.EventAction.GetEvent, capturedAction, "SDL.PeepEvents span overload must forward action.");
+        TestAssert.Equal<uint>(31, capturedMinType, "SDL.PeepEvents span overload must forward minType.");
+        TestAssert.Equal<uint>(41, capturedMaxType, "SDL.PeepEvents span overload must forward maxType.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.PeepEvents span overload must call native hook once.");
     }
 
     public static void HasEvent_ForwardsTypeAndReturnsNativeValue()
@@ -459,6 +480,24 @@ internal static class PInvokeTests
         TestAssert.Equal(2, capturedCallCount, "SDL.GetEventDescription(Event) must call native hook for both buffer branches.");
     }
 
+    public static void GetEventDescriptionEventSpan_ForwardsEventBufferAndReturnsNativeValue()
+    {
+        ResetCaptureState();
+        nextInt = 18;
+        using NativeHookScope _ = NativeHookScope.Install("GetEventDescriptionNativeFunction", nameof(CaptureGetEventDescription));
+        SDL3.SDL.Event @event = CreateEvent(242);
+        byte[] buffer = new byte[24];
+
+        int result = SDL3.SDL.GetEventDescription(in @event, buffer.AsSpan(), buffer.Length);
+
+        TestAssert.Equal(18, result, "SDL.GetEventDescription(Event, Span<byte>) must return native byte count.");
+        TestAssert.True(capturedEventPointer != IntPtr.Zero, "SDL.GetEventDescription(Event, Span<byte>) must allocate and forward an event pointer.");
+        TestAssert.Equal<uint>(242, capturedEvent.Type, "SDL.GetEventDescription(Event, Span<byte>) must marshal event into native pointer.");
+        TestAssert.True(capturedBuffer != IntPtr.Zero, "SDL.GetEventDescription(Event, Span<byte>) must pin the buffer.");
+        TestAssert.Equal(24, capturedBufferLength, "SDL.GetEventDescription(Event, Span<byte>) must forward buflen.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.GetEventDescription(Event, Span<byte>) must call native hook once.");
+    }
+
     public static void GetEventDescriptionPointer_ForwardsPointerBufferAndReturnsNativeValue()
     {
         ResetCaptureState();
@@ -486,6 +525,32 @@ internal static class PInvokeTests
             TestAssert.Equal(IntPtr.Zero, capturedBuffer, "SDL.GetEventDescription(IntPtr) must forward null buffer as zero pointer.");
             TestAssert.Equal(0, capturedBufferLength, "SDL.GetEventDescription(IntPtr) must forward zero buflen.");
             TestAssert.Equal(2, capturedCallCount, "SDL.GetEventDescription(IntPtr) must call native hook for both buffer branches.");
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(eventPtr);
+        }
+    }
+
+    public static void GetEventDescriptionPointerSpan_ForwardsPointerBufferAndReturnsNativeValue()
+    {
+        ResetCaptureState();
+        nextInt = 16;
+        using NativeHookScope _ = NativeHookScope.Install("GetEventDescriptionNativeFunction", nameof(CaptureGetEventDescription));
+        IntPtr eventPtr = Marshal.AllocHGlobal(Marshal.SizeOf<SDL3.SDL.Event>());
+        Marshal.StructureToPtr(CreateEvent(252), eventPtr, false);
+        byte[] buffer = new byte[20];
+
+        try
+        {
+            int result = SDL3.SDL.GetEventDescription(in eventPtr, buffer.AsSpan(), buffer.Length);
+
+            TestAssert.Equal(16, result, "SDL.GetEventDescription(IntPtr, Span<byte>) must return native byte count.");
+            TestAssert.Equal(eventPtr, capturedEventPointer, "SDL.GetEventDescription(IntPtr, Span<byte>) must forward event pointer.");
+            TestAssert.Equal<uint>(252, capturedEvent.Type, "SDL.GetEventDescription(IntPtr, Span<byte>) must pass event pointer content to native hook.");
+            TestAssert.True(capturedBuffer != IntPtr.Zero, "SDL.GetEventDescription(IntPtr, Span<byte>) must pin the buffer.");
+            TestAssert.Equal(20, capturedBufferLength, "SDL.GetEventDescription(IntPtr, Span<byte>) must forward buflen.");
+            TestAssert.Equal(1, capturedCallCount, "SDL.GetEventDescription(IntPtr, Span<byte>) must call native hook once.");
         }
         finally
         {

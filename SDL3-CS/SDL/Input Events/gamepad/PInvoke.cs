@@ -40,7 +40,7 @@ public static partial class SDL
     /// <para>Add support for gamepads that SDL is unaware of or change the binding of an
     /// existing gamepad.</para>
     /// <para>The mapping string has the format "GUID,name,mapping", where GUID is the
-    /// string value from <see cref="GUIDToString"/>, name is the human readable string for
+    /// string value from <see cref="GUIDToString(GUID, byte[], int)"/>, name is the human readable string for
     /// the device and mappings are gamepad mappings to joystick ones. Under
     /// Windows there is a reserved GUID of "xinput" that covers all XInput
     /// devices. The mapping format for joystick is:</para>
@@ -462,7 +462,7 @@ public static partial class SDL
     /// this function returns a zero GUID.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GUIDToString"/>
+    /// <seealso cref="GUIDToString(GUID, byte[], int)"/>
     /// <seealso cref="GetGamepads"/>
     public static GUID GetGamepadGUIDForID(uint instanceID)
     {
@@ -878,7 +878,6 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="GetGamepadPlayerIndex"/>
     public static bool SetGamepadPlayerIndex(IntPtr gamepad, int playerIndex)
     {
@@ -1612,7 +1611,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetGamepadSensorData"/>
+    /// <seealso cref="GetGamepadSensorData(nint, SensorType, out float[], int)"/>
     /// <seealso cref="GetGamepadSensorDataRate"/>
     /// <seealso cref="SetGamepadSensorEnabled"/>
     public static bool GamepadHasSensor(IntPtr gamepad, SensorType type)
@@ -1717,50 +1716,20 @@ public static partial class SDL
         return GetGamepadSensorDataNativeFunction(gamepad, type, out data, numValues);
     }
 
-
     [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GamepadHasCapSense"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GamepadHasCapSense(IntPtr gamepad, GamepadCapSenseType type);
-    private delegate bool GamepadHasCapSenseNativeDelegate(IntPtr gamepad, GamepadCapSenseType type);
-    private static GamepadHasCapSenseNativeDelegate GamepadHasCapSenseNativeFunction = SDL_GamepadHasCapSense;
+    private static partial bool SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private delegate bool GetGamepadSensorDataPointerNativeDelegate(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private static GetGamepadSensorDataPointerNativeDelegate GetGamepadSensorDataPointerNativeFunction = SDL_GetGamepadSensorData;
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GamepadHasCapSense(SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type);</code>
-    /// <summary>
-    /// Return whether a gamepad has a particular capsense.
-    /// </summary>
-    /// <param name="gamepad">the gamepad to query.</param>
-    /// <param name="type">the type of capsense to query.</param>
-    /// <returns><c>true</c> if the capsense exists, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="GetGamepadCapSense"/>
-    public static bool GamepadHasCapSense(IntPtr gamepad, GamepadCapSenseType type)
+    /// <inheritdoc cref="GetGamepadSensorData(nint, SensorType, out float[], int)"/>
+    public static unsafe bool GetGamepadSensorData(IntPtr gamepad, SensorType type, Span<float> data, int numValues)
     {
-        return GamepadHasCapSenseNativeFunction(gamepad, type);
-    }
-
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadCapSense"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetGamepadCapSense(IntPtr gamepad, GamepadCapSenseType type);
-    private delegate bool GetGamepadCapSenseNativeDelegate(IntPtr gamepad, GamepadCapSenseType type);
-    private static GetGamepadCapSenseNativeDelegate GetGamepadCapSenseNativeFunction = SDL_GetGamepadCapSense;
-
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGamepadCapSense(SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type);</code>
-    /// <summary>
-    /// Get the current state of a capsense on a gamepad.
-    /// </summary>
-    /// <param name="gamepad">a gamepad.</param>
-    /// <param name="type">the type of capsense to query.</param>
-    /// <returns><c>true</c> if the capsense is touched, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="GamepadHasCapSense"/>
-    public static bool GetGamepadCapSense(IntPtr gamepad, GamepadCapSenseType type)
-    {
-        return GetGamepadCapSenseNativeFunction(gamepad, type);
+        fixed (float* pData = data)
+        {
+            return GetGamepadSensorDataPointerNativeFunction(gamepad, type, (IntPtr)pData, numValues);
+        }
     }
 
 
@@ -1904,6 +1873,15 @@ public static partial class SDL
     public static bool SendGamepadEffect(IntPtr gamepad, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] data, int size)
     {
         return SendGamepadEffectArrayNativeFunction(gamepad, data, size);
+    }
+
+    /// <inheritdoc cref="SendGamepadEffect(nint, byte[], int)"/>
+    public static unsafe bool SendGamepadEffect(IntPtr gamepad, ReadOnlySpan<byte> data, int size)
+    {
+        fixed (byte* pData = data)
+        {
+            return SendGamepadEffectPointerNativeFunction(gamepad, (IntPtr)pData, size);
+        }
     }
 
 

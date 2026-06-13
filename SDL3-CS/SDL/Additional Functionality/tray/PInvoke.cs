@@ -35,7 +35,7 @@ public partial class SDL
     private delegate IntPtr CreateTrayNative(IntPtr icon, string? tooltip);
     private static CreateTrayNative CreateTrayNativeFunction = SDL_CreateTray;
 
-    /// <code>extern SDL_DECLSPEC SDL_Tray * SDLCALL SDL_CreateTray(SDL_Surface *icon, const char *tooltip);</code>
+    /// <code>extern SDL_DECLSPEC SDL_Tray *SDLCALL SDL_CreateTray(SDL_Surface *icon, const char *tooltip);</code>
     /// <summary>
     /// <para>Create an icon to be placed in the operating system's tray, or equivalent.</para>
     /// <para>Many platforms advise not using a system tray unless persistence is a
@@ -48,8 +48,7 @@ public partial class SDL
     /// UTF-8 encoding. Not supported on all platforms. May be <c>null</c>.</param>
     /// <returns>The newly created system tray icon.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
-    /// <seealso cref="CreateTrayWithProperties"/>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTrayMenu"/>
     /// <seealso cref="GetTrayMenu"/>
     /// <seealso cref="DestroyTray"/>
@@ -58,54 +57,6 @@ public partial class SDL
         return CreateTrayNativeFunction(icon, tooltip);
     }
 
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTrayWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial IntPtr SDL_CreateTrayWithProperties(uint props);
-    private delegate IntPtr CreateTrayWithPropertiesNative(uint props);
-    private static CreateTrayWithPropertiesNative CreateTrayWithPropertiesNativeFunction = SDL_CreateTrayWithProperties;
-
-    /// <code>extern SDL_DECLSPEC SDL_Tray * SDLCALL SDL_CreateTrayWithProperties(SDL_PropertiesID props);</code>
-    /// <summary>
-    /// <para>Create an icon to be placed in the operating system's tray, or equivalent.</para>
-    /// <para>Many platforms advise not using a system tray unless persistence is a
-    /// necessary feature. Avoid needlessly creating a tray icon, as the user may
-    /// feel like it clutters their interface.</para>
-    /// <para>Using tray icons require the video subsystem.</para>
-    /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TrayCreateIconPointer"/>: an SDL_Surface to be used as the
-    /// tray icon. May be <c>null</c>.</item>
-    /// <item><see cref="Props.TrayCreateTooltipString"/>: a tooltip to be displayed when the
-    /// mouse hovers the icon in UTF-8 encoding. Not supported on all platforms.
-    /// May be <c>null</c>.</item>
-    /// <item><see cref="Props.TrayCreateUserdataPointer"/>: an optional pointer to associate
-    /// with the tray, which will be passed to click callbacks. May be <c>null</c>.</item>
-    /// <item><see cref="Props.TrayCreateLeftClickCallbackPointer"/>: an
-    /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is left-clicked.
-    /// Not supported on all platforms. The callback should return <c>true</c> to show
-    /// the default menu, or <c>false</c> to skip showing it. May be <c>null</c>.</item>
-    /// <item><see cref="Props.TrayCreateRightClickCallbackPointer"/>: an
-    /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is right-clicked.
-    /// Not supported on all platforms. The callback should return <c>true</c> to show
-    /// the default menu, or <c>false</c> to skip showing it. May be <c>null</c>.</item>
-    /// <item><see cref="Props.TrayCreateMiddleClickCallbackPointer"/>: an
-    /// <see cref="TrayClickCallback"/> to be invoked when the tray icon is middle-clicked.
-    /// Not supported on all platforms. May be <c>null</c>.</item>
-    /// </list>
-    /// </summary>
-    /// <param name="props">the properties to use.</param>
-    /// <returns>The newly created system tray icon.</returns>
-    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="CreateTray"/>
-    /// <seealso cref="CreateTrayMenu"/>
-    /// <seealso cref="GetTrayMenu"/>
-    /// <seealso cref="DestroyTray"/>
-    public static IntPtr CreateTrayWithProperties(uint props)
-    {
-        return CreateTrayWithPropertiesNativeFunction(props);
-    }
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -121,7 +72,7 @@ public partial class SDL
     /// <param name="icon">the new icon. May be <c>null</c>.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
     public static void SetTrayIcon(IntPtr tray, IntPtr icon)
     {
@@ -143,7 +94,7 @@ public partial class SDL
     /// <param name="tooltip">the new tooltip in UTF-8 encoding. May be <c>null</c>.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
     public static void SetTrayTooltip(IntPtr tray, string? tooltip)
     {
@@ -169,7 +120,7 @@ public partial class SDL
     /// <returns>the newly created menu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
     /// <seealso cref="GetTrayMenu"/>
     /// <seealso cref="GetTrayMenuParentTray"/>
@@ -197,7 +148,7 @@ public partial class SDL
     /// <returns>the newly created menu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTraySubmenu"/>
     /// <seealso cref="GetTrayMenuParentEntry"/>
@@ -226,7 +177,7 @@ public partial class SDL
     /// <returns>the newly created menu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
     /// <seealso cref="CreateTrayMenu"/>
     public static IntPtr GetTrayMenu(IntPtr tray)
@@ -254,7 +205,7 @@ public partial class SDL
     /// <returns>the newly created menu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="CreateTraySubmenu"/>
     public static IntPtr GetTraySubmenu(IntPtr entry)
@@ -280,7 +231,7 @@ public partial class SDL
     /// entries in the menu is called.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="RemoveTrayEntry"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     public static IntPtr[]? GetTrayEntries(IntPtr menu, out int size)
@@ -311,7 +262,7 @@ public partial class SDL
     /// <param name="entry">The entry to be deleted.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     public static void RemoveTrayEntry(IntPtr entry)
@@ -342,7 +293,7 @@ public partial class SDL
     /// <returns>the newly created entry, or <c>null</c> if pos is out of bounds.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="TrayEntryFlags"/>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="RemoveTrayEntry"/>
@@ -371,7 +322,7 @@ public partial class SDL
     /// <param name="label">the new label for the entry in UTF-8 encoding.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryLabel"/>
@@ -395,7 +346,7 @@ public partial class SDL
     /// <returns>the label of the entry in UTF-8 encoding.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryLabel"/>
@@ -422,7 +373,7 @@ public partial class SDL
     /// otherwise.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryChecked"/>
@@ -448,7 +399,7 @@ public partial class SDL
     /// <returns><c>true</c> if the entry is checked; <c>false</c> otherwise.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryChecked"/>
@@ -473,7 +424,7 @@ public partial class SDL
     /// otherwise.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="GetTrayEntryEnabled"/>
@@ -498,7 +449,7 @@ public partial class SDL
     /// <returns><c>true</c> if the entry is enabled; <c>false</c> otherwise.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     /// <seealso cref="SetTrayEntryEnabled"/>
@@ -524,7 +475,7 @@ public partial class SDL
     /// it will be invoked.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="GetTrayEntries"/>
     /// <seealso cref="InsertTrayEntryAt"/>
     public static void SetTrayEntryCallback(IntPtr entry, TrayCallback callback, IntPtr userdata)
@@ -546,7 +497,7 @@ public partial class SDL
     /// <param name="entry">The entry to activate.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.10.</since>
     public static void ClickTrayEntry(IntPtr entry)
     {
         ClickTrayEntryNativeFunction(entry);
@@ -567,7 +518,7 @@ public partial class SDL
     /// <param name="tray">the tray icon to be destroyed.</param>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTray"/>
     public static void DestroyTray(IntPtr tray)
     {
@@ -589,7 +540,7 @@ public partial class SDL
     /// <returns>the parent menu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="InsertTrayEntryAt"/>
     public static IntPtr GetTrayEntryParent(IntPtr entry)
     {
@@ -614,7 +565,7 @@ public partial class SDL
     /// <returns>the parent entry, or <c>null</c> if this menu is not a submenu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTraySubmenu"/>
     /// <seealso cref="GetTrayMenuParentTray"/>
     public static IntPtr GetTrayMenuParentEntry(IntPtr menu)
@@ -640,7 +591,7 @@ public partial class SDL
     /// <returns>the parent tray, or <c>null</c> if this menu is a submenu.</returns>
     /// <threadsafety>This function should be called on the thread that created the
     /// tray.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="CreateTrayMenu"/>
     /// <seealso cref="GetTrayMenuParentEntry"/>
     public static IntPtr GetTrayMenuParentTray(IntPtr menu)
@@ -655,7 +606,7 @@ public partial class SDL
     private delegate void UpdateTraysNative();
     private static UpdateTraysNative UpdateTraysNativeFunction = SDL_UpdateTrays;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_UpdateTrays(void);</code>
+    /// extern SDL_DECLSPEC void SDLCALL SDL_UpdateTrays(void);
     /// <summary>
     /// <para>Update the trays.</para>
     /// <para>This is called automatically by the event loop and is only needed if you're

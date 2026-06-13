@@ -157,11 +157,6 @@ public static partial class SDL
         [FieldOffset(0)] public GamepadSensorEvent GSensor;
 
         /// <summary>
-        /// Gamepad capsense event data
-        /// </summary>
-        [FieldOffset(0)] public GamepadCapSenseEvent GCapSense;
-
-        /// <summary>
         /// Audio device event data
         /// </summary>
         [FieldOffset(0)] public AudioDeviceEvent ADevice;
@@ -238,11 +233,6 @@ public static partial class SDL
         /// </summary>
         [FieldOffset(0)] public ClipboardEvent Clipboard;
 
-        /// <summary>
-        /// Notification event data
-        /// </summary>
-        [FieldOffset(0)] public NotificationEvent Notification;
-        
         /// <summary>
         /// This is necessary for ABI compatibility between Visual C++ and GCC.
         /// Visual C++ will respect the push pack pragma and use 52 bytes (size of

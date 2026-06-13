@@ -684,7 +684,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>Do not use the same SDL_IOStream from two threads at once.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SaveFile"/>
     /// <seealso cref="LoadFileIO"/>
     public static bool SaveFileIO(IntPtr src, IntPtr data, UIntPtr datasize, bool closeio)
@@ -711,7 +711,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SaveFileIO"/>
     /// <seealso cref="LoadFile"/>
     public static bool SaveFile(string file, IntPtr data, UIntPtr datasize)

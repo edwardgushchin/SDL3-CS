@@ -448,7 +448,7 @@ public static partial class SDL
     /// </summary>
     /// <returns>the default log output callback. It should be called with <c>null</c> for the userdata argument.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.6.</since>
     /// <seealso cref="SetLogOutputFunction"/>
     /// <seealso cref="GetLogOutputFunction"/>
     public static LogOutputFunction GetDefaultLogOutputFunction()

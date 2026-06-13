@@ -272,7 +272,7 @@ public static partial class SDL
     private delegate IntPtr GetAudioDeviceChannelMapNative(uint devid, out int count);
     private static GetAudioDeviceChannelMapNative GetAudioDeviceChannelMapNativeFunction = SDL_GetAudioDeviceChannelMap;
 
-    /// <code>extern SDL_DECLSPEC int * SDLCALL SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int *count);</code>
+    /// <c>extern SDL_DECLSPEC int * SDLCALL SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int *count);</c>
     /// <summary>
     /// <para>Get the current channel map of an audio device.</para>
     /// <para>Channel maps are optional; most things do not need them, instead passing
@@ -287,7 +287,7 @@ public static partial class SDL
     /// should be freed with <see cref="Free"/> when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamInputChannelMap"/>
+    /// <seealso cref="SetAudioStreamInputChannelMap(nint, int[], int)"/>
     public static int[]? GetAudioDeviceChannelMap(uint devid, out int count)
     {
         var ptr = GetAudioDeviceChannelMapNativeFunction(devid, out count);
@@ -475,7 +475,7 @@ public static partial class SDL
     /// <param name="devid">the device ID to query.</param>
     /// <returns><c>true</c> if devid is a physical device, <c>false</c> if it is logical.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     public static bool IsAudioDevicePhysical(uint devid)
     {
         return IsAudioDevicePhysicalNativeFunction(devid);
@@ -727,12 +727,28 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="BindAudioStreams"/>
+    /// <seealso cref="BindAudioStreams(uint, nint[], int)"/>
     /// <seealso cref="UnbindAudioStream"/>
     /// <seealso cref="GetAudioStreamDevice"/>
     public static bool BindAudioStreams(uint devid, IntPtr[] streams, int numStream)
     {
         return BindAudioStreamsNativeFunction(devid, streams, numStream);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_BindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_BindAudioStreamsPointer(uint devid, IntPtr streams, int numStream);
+    private delegate bool BindAudioStreamsPointerNative(uint devid, IntPtr streams, int numStream);
+    private static BindAudioStreamsPointerNative BindAudioStreamsPointerNativeFunction = SDL_BindAudioStreamsPointer;
+
+    /// <inheritdoc cref="BindAudioStreams(uint, nint[], int)"/>
+    public static unsafe bool BindAudioStreams(uint devid, ReadOnlySpan<IntPtr> streams, int numStream)
+    {
+        fixed (IntPtr* pStreams = streams)
+        {
+            return BindAudioStreamsPointerNativeFunction(devid, (IntPtr)pStreams, numStream);
+        }
     }
 
 
@@ -755,7 +771,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="BindAudioStreams"/>
+    /// <seealso cref="BindAudioStreams(uint, nint[], int)"/>
     /// <seealso cref="UnbindAudioStream"/>
     /// <seealso cref="GetAudioStreamDevice"/>
     public static bool BindAudioStream(uint devid, IntPtr stream)
@@ -783,10 +799,25 @@ public static partial class SDL
     /// <param name="numStreams">number streams listed in the <c>streams</c> array.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="BindAudioStreams"/>
+    /// <seealso cref="BindAudioStreams(uint, nint[], int)"/>
     public static void UnbindAudioStreams(IntPtr[]? streams, int numStreams)
     {
         UnbindAudioStreamsNativeFunction(streams, numStreams);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_UnbindAudioStreams"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_UnbindAudioStreamsPointer(IntPtr streams, int numStreams);
+    private delegate void UnbindAudioStreamsPointerNative(IntPtr streams, int numStreams);
+    private static UnbindAudioStreamsPointerNative UnbindAudioStreamsPointerNativeFunction = SDL_UnbindAudioStreamsPointer;
+
+    /// <inheritdoc cref="UnbindAudioStreams(nint[], int)"/>
+    public static unsafe void UnbindAudioStreams(ReadOnlySpan<IntPtr> streams, int numStreams)
+    {
+        fixed (IntPtr* pStreams = streams)
+        {
+            UnbindAudioStreamsPointerNativeFunction((IntPtr)pStreams, numStreams);
+        }
     }
 
 
@@ -831,7 +862,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="BindAudioStream"/>
-    /// <seealso cref="BindAudioStreams"/>
+    /// <seealso cref="BindAudioStreams(uint, nint[], int)"/>
     public static uint GetAudioStreamDevice(IntPtr stream)
     {
         return GetAudioStreamDeviceNativeFunction(stream);
@@ -1194,7 +1225,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamInputChannelMap"/>
+    /// <seealso cref="SetAudioStreamInputChannelMap(nint, int[], int)"/>
     public static int[]? GetAudioStreamInputChannelMap(IntPtr stream, out int count)
     {
         var ptr = GetAudioStreamInputChannelMapNativeFunction(stream, out count);
@@ -1232,7 +1263,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, as it holds
     /// a stream-specific mutex while running.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamInputChannelMap"/>
+    /// <seealso cref="SetAudioStreamInputChannelMap(nint, int[], int)"/>
     public static int[]? GetAudioStreamOutputChannelMap(IntPtr stream, out int count)
     {
         var ptr = GetAudioStreamOutputChannelMapNativeFunction(stream, out count);
@@ -1300,10 +1331,26 @@ public static partial class SDL
     /// stream's format to have a different number of channels from a
     /// different thread at the same time, though!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamOutputChannelMap"/>
+    /// <seealso cref="SetAudioStreamOutputChannelMap(nint, int[], int)"/>
     public static bool SetAudioStreamInputChannelMap(IntPtr stream, int[]? chmap, int count)
     {
         return SetAudioStreamInputChannelMapNativeFunction(stream, chmap, count);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamInputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamInputChannelMapPointer(IntPtr stream, IntPtr chmap, int count);
+    private delegate bool SetAudioStreamInputChannelMapPointerNative(IntPtr stream, IntPtr chmap, int count);
+    private static SetAudioStreamInputChannelMapPointerNative SetAudioStreamInputChannelMapPointerNativeFunction = SDL_SetAudioStreamInputChannelMapPointer;
+
+    /// <inheritdoc cref="SetAudioStreamInputChannelMap(nint, int[], int)"/>
+    public static unsafe bool SetAudioStreamInputChannelMap(IntPtr stream, ReadOnlySpan<int> chmap, int count)
+    {
+        fixed (int* pChmap = chmap)
+        {
+            return SetAudioStreamInputChannelMapPointerNativeFunction(stream, (IntPtr)pChmap, count);
+        }
     }
 
 
@@ -1357,10 +1404,26 @@ public static partial class SDL
     /// stream's format to have a different number of channels from a
     /// a different thread at the same time, though!</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetAudioStreamInputChannelMap"/>
+    /// <seealso cref="SetAudioStreamInputChannelMap(nint, int[], int)"/>
     public static bool SetAudioStreamOutputChannelMap(IntPtr stream, int[]? chmap, int count)
     {
         return SetAudioStreamOutputChannelMapNativeFunction(stream, chmap, count);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetAudioStreamOutputChannelMap"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetAudioStreamOutputChannelMapPointer(IntPtr stream, IntPtr chmap, int count);
+    private delegate bool SetAudioStreamOutputChannelMapPointerNative(IntPtr stream, IntPtr chmap, int count);
+    private static SetAudioStreamOutputChannelMapPointerNative SetAudioStreamOutputChannelMapPointerNativeFunction = SDL_SetAudioStreamOutputChannelMapPointer;
+
+    /// <inheritdoc cref="SetAudioStreamOutputChannelMap(nint, int[], int)"/>
+    public static unsafe bool SetAudioStreamOutputChannelMap(IntPtr stream, ReadOnlySpan<int> chmap, int count)
+    {
+        fixed (int* pChmap = chmap)
+        {
+            return SetAudioStreamOutputChannelMapPointerNativeFunction(stream, (IntPtr)pChmap, count);
+        }
     }
 
 
@@ -1487,6 +1550,15 @@ public static partial class SDL
         return PutAudioStreamDataWithBytesNativeFunction(stream, buf, len);
     }
 
+    /// <inheritdoc cref="PutAudioStreamData(nint, byte[], int)"/>
+    public static unsafe bool PutAudioStreamData(IntPtr stream, ReadOnlySpan<byte> buf, int len)
+    {
+        fixed (byte* pBuf = buf)
+        {
+            return PutAudioStreamData(stream, (IntPtr)pBuf, len);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [DllImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamPlanarData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1543,6 +1615,22 @@ public static partial class SDL
     public static bool PutAudioStreamPlanarData(IntPtr stream, IntPtr[] channelBuffers, int numChannels, int numSamples)
     {
         return PutAudioStreamPlanarDataNativeFunction(stream, channelBuffers, numChannels, numSamples);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [DllImport(SDLLibrary, EntryPoint = "SDL_PutAudioStreamPlanarData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool SDL_PutAudioStreamPlanarDataPointer(IntPtr stream, IntPtr channelBuffers, int numChannels, int numSamples);
+    private delegate bool PutAudioStreamPlanarDataPointerNative(IntPtr stream, IntPtr channelBuffers, int numChannels, int numSamples);
+    private static PutAudioStreamPlanarDataPointerNative PutAudioStreamPlanarDataPointerNativeFunction = SDL_PutAudioStreamPlanarDataPointer;
+
+    /// <inheritdoc cref="PutAudioStreamPlanarData(nint, nint[], int, int)"/>
+    public static unsafe bool PutAudioStreamPlanarData(IntPtr stream, ReadOnlySpan<IntPtr> channelBuffers, int numChannels, int numSamples)
+    {
+        fixed (IntPtr* pChannelBuffers = channelBuffers)
+        {
+            return PutAudioStreamPlanarDataPointerNativeFunction(stream, (IntPtr)pChannelBuffers, numChannels, numSamples);
+        }
     }
 
 
@@ -1613,6 +1701,15 @@ public static partial class SDL
     public static int GetAudioStreamData(IntPtr stream, byte[] buf, int len)
     {
         return GetAudioStreamDataWithBytesNativeFunction(stream, buf, len);
+    }
+
+    /// <inheritdoc cref="GetAudioStreamData(nint, byte[], int)"/>
+    public static unsafe int GetAudioStreamData(IntPtr stream, Span<byte> buf, int len)
+    {
+        fixed (byte* pBuf = buf)
+        {
+            return GetAudioStreamData(stream, (IntPtr)pBuf, len);
+        }
     }
 
 
@@ -1819,7 +1916,7 @@ public static partial class SDL
     /// <param name="stream">the audio stream associated with the audio device to query.</param>
     /// <returns><c>true</c> if device is valid and paused, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.10.</since>
     /// <seealso cref="PauseAudioStreamDevice"/>
     /// <seealso cref="ResumeAudioStreamDevice"/>
     public static bool AudioStreamDevicePaused(IntPtr stream)
@@ -1972,7 +2069,6 @@ public static partial class SDL
     /// personal use.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information. This only fails if <c>stream</c> is <c>null</c>.</returns>
-    /// <since>This function is available since SDL 3.2.0.</since>
     public static bool SetAudioStreamPutCallback(IntPtr stream, AudioStreamCallback? callback, IntPtr userdata)
     {
         return SetAudioStreamPutCallbackNativeFunction(stream, callback, userdata);

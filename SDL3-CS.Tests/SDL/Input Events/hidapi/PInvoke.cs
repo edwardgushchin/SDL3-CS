@@ -16,6 +16,7 @@ internal static class PInvokeTests
     private static string? capturedSerialNumber;
     private static string? capturedPath;
     private static byte[]? capturedData;
+    private static IntPtr capturedDataPointer;
     private static UIntPtr capturedLength;
     private static int capturedMilliseconds;
     private static int capturedNonblock;
@@ -40,12 +41,18 @@ internal static class PInvokeTests
         HIDOpenPath_ForwardsPathAndReturnsNativePointer();
         HIDGetProperties_ForwardsDeviceAndReturnsNativeValue();
         HIDWrite_ForwardsDeviceDataLengthAndReturnsNativeValue();
+        HIDWriteSpan_ForwardsDevicePinnedDataLengthAndReturnsNativeValue();
         HIDReadTimeout_ForwardsDeviceLengthTimeoutOutputsDataAndReturnsNativeValue();
+        HIDReadTimeoutSpan_ForwardsDeviceBufferLengthTimeoutAndReturnsNativeValue();
         HIDRead_ForwardsDeviceLengthOutputsDataAndReturnsNativeValue();
+        HIDReadSpan_ForwardsDeviceBufferLengthAndReturnsNativeValue();
         HIDSetNonBlocking_ForwardsDeviceNonblockAndReturnsNativeValue();
         HIDSendFeatureReport_ForwardsDeviceDataLengthAndReturnsNativeValue();
+        HIDSendFeatureReportSpan_ForwardsDevicePinnedDataLengthAndReturnsNativeValue();
         HIDGetFeatureReport_ForwardsDeviceLengthOutputsDataAndReturnsNativeValue();
+        HIDGetFeatureReportSpan_ForwardsDeviceBufferLengthAndReturnsNativeValue();
         HidGetInputReport_ForwardsDeviceLengthOutputsDataAndReturnsNativeValue();
+        HidGetInputReportSpan_ForwardsDeviceBufferLengthAndReturnsNativeValue();
         HIDClose_ForwardsDeviceAndReturnsNativeValue();
         SDL_hid_get_manufacturer_string_UsesExpectedNativeMetadata();
         HIDGetManufacturerString_ReturnsWideStringAndNativeValue();
@@ -57,6 +64,7 @@ internal static class PInvokeTests
         HIDGetIndexedString_ReturnsWideStringAndNativeValue();
         HIDGetDeviceInfo_ForwardsDeviceAndReturnsNativePointer();
         HIDGetReportDescriptor_ForwardsDeviceBufferSizeAndReturnsNativeValue();
+        HIDGetReportDescriptorSpan_ForwardsDeviceBufferSizeAndReturnsNativeValue();
         HIDBLEScan_ForwardsActive();
     }
 
@@ -190,7 +198,7 @@ internal static class PInvokeTests
 
     public static void HIDWrite_ForwardsDeviceDataLengthAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_write");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_write", typeof(IntPtr), typeof(byte[]), typeof(UIntPtr));
         AssertSdlImport(nativeMethod, "SDL_hid_write");
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 2);
 
@@ -205,9 +213,25 @@ internal static class PInvokeTests
         AssertDeviceDataLength("SDL.HIDWrite", (IntPtr)0x7202, data, (UIntPtr)4);
     }
 
+    public static void HIDWriteSpan_ForwardsDevicePinnedDataLengthAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_write", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr));
+        AssertSdlImport(nativeMethod, "SDL_hid_write");
+
+        ResetCaptureState();
+        nextInt = 4;
+        byte[] data = [9, 8, 7, 6];
+
+        using NativeHookScope _ = NativeHookScope.Install("HIDWritePointerNativeFunction", nameof(CaptureDeviceDataPointerInt));
+        int result = SDL3.SDL.HIDWrite((IntPtr)0x720A, data.AsSpan(), (UIntPtr)data.Length);
+
+        TestAssert.Equal(4, result, "SDL.HIDWrite span overload must return the native hook value.");
+        AssertDevicePointerDataLength("SDL.HIDWrite span overload", (IntPtr)0x720A, data, (UIntPtr)4);
+    }
+
     public static void HIDReadTimeout_ForwardsDeviceLengthTimeoutOutputsDataAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_read_timeout");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_read_timeout", typeof(IntPtr), typeof(byte[]).MakeByRefType(), typeof(UIntPtr), typeof(int));
         AssertSdlImport(nativeMethod, "SDL_hid_read_timeout");
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 2);
         AssertOutParameter(nativeMethod, "data");
@@ -227,9 +251,31 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.HIDReadTimeout must call the native hook once.");
     }
 
+    public static void HIDReadTimeoutSpan_ForwardsDeviceBufferLengthTimeoutAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_read_timeout", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_hid_read_timeout");
+
+        ResetCaptureState();
+        nextInt = 3;
+        nextData = [1, 3, 5];
+        byte[] data = new byte[3];
+
+        using NativeHookScope _ = NativeHookScope.Install("HIDReadTimeoutPointerNativeFunction", nameof(CaptureDeviceDataPointerTimeout));
+        int result = SDL3.SDL.HIDReadTimeout((IntPtr)0x720B, data.AsSpan(), (UIntPtr)data.Length, 750);
+
+        TestAssert.Equal(3, result, "SDL.HIDReadTimeout span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x720B, capturedDevice, "SDL.HIDReadTimeout span overload must forward device.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, "SDL.HIDReadTimeout span overload must pin data.");
+        TestAssert.Equal((UIntPtr)3, capturedLength, "SDL.HIDReadTimeout span overload must forward length.");
+        TestAssert.Equal(750, capturedMilliseconds, "SDL.HIDReadTimeout span overload must forward timeout.");
+        AssertBytes([1, 3, 5], data, "SDL.HIDReadTimeout span overload must write to caller buffer.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.HIDReadTimeout span overload must call the native hook once.");
+    }
+
     public static void HIDRead_ForwardsDeviceLengthOutputsDataAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_read");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_read", typeof(IntPtr), typeof(byte[]).MakeByRefType(), typeof(UIntPtr));
         AssertSdlImport(nativeMethod, "SDL_hid_read");
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 2);
         AssertOutParameter(nativeMethod, "data");
@@ -246,6 +292,27 @@ internal static class PInvokeTests
         TestAssert.Equal((UIntPtr)2, capturedLength, "SDL.HIDRead must forward length.");
         AssertBytes([4, 5], data, "SDL.HIDRead must output data.");
         TestAssert.Equal(1, capturedCallCount, "SDL.HIDRead must call the native hook once.");
+    }
+
+    public static void HIDReadSpan_ForwardsDeviceBufferLengthAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_read", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr));
+        AssertSdlImport(nativeMethod, "SDL_hid_read");
+
+        ResetCaptureState();
+        nextInt = 2;
+        nextData = [8, 9];
+        byte[] data = new byte[2];
+
+        using NativeHookScope _ = NativeHookScope.Install("HIDReadPointerNativeFunction", nameof(CaptureDeviceDataPointerOut));
+        int result = SDL3.SDL.HIDRead((IntPtr)0x720C, data.AsSpan(), (UIntPtr)data.Length);
+
+        TestAssert.Equal(2, result, "SDL.HIDRead span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x720C, capturedDevice, "SDL.HIDRead span overload must forward device.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, "SDL.HIDRead span overload must pin data.");
+        TestAssert.Equal((UIntPtr)2, capturedLength, "SDL.HIDRead span overload must forward length.");
+        AssertBytes([8, 9], data, "SDL.HIDRead span overload must write to caller buffer.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.HIDRead span overload must call the native hook once.");
     }
 
     public static void HIDSetNonBlocking_ForwardsDeviceNonblockAndReturnsNativeValue()
@@ -267,7 +334,7 @@ internal static class PInvokeTests
 
     public static void HIDSendFeatureReport_ForwardsDeviceDataLengthAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_send_feature_report");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_send_feature_report", typeof(IntPtr), typeof(byte[]), typeof(UIntPtr));
         AssertSdlImport(nativeMethod, "SDL_hid_send_feature_report");
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 2);
 
@@ -282,9 +349,25 @@ internal static class PInvokeTests
         AssertDeviceDataLength("SDL.HIDSendFeatureReport", (IntPtr)0x7206, data, (UIntPtr)5);
     }
 
+    public static void HIDSendFeatureReportSpan_ForwardsDevicePinnedDataLengthAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_send_feature_report", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr));
+        AssertSdlImport(nativeMethod, "SDL_hid_send_feature_report");
+
+        ResetCaptureState();
+        nextInt = 3;
+        byte[] data = [5, 4, 3];
+
+        using NativeHookScope _ = NativeHookScope.Install("HIDSendFeatureReportPointerNativeFunction", nameof(CaptureDeviceDataPointerInt));
+        int result = SDL3.SDL.HIDSendFeatureReport((IntPtr)0x720D, data.AsSpan(), (UIntPtr)data.Length);
+
+        TestAssert.Equal(3, result, "SDL.HIDSendFeatureReport span overload must return the native hook value.");
+        AssertDevicePointerDataLength("SDL.HIDSendFeatureReport span overload", (IntPtr)0x720D, data, (UIntPtr)3);
+    }
+
     public static void HIDGetFeatureReport_ForwardsDeviceLengthOutputsDataAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_feature_report");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_feature_report", typeof(IntPtr), typeof(byte[]).MakeByRefType(), typeof(UIntPtr));
         AssertSdlImport(nativeMethod, "SDL_hid_get_feature_report");
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 2);
         AssertOutParameter(nativeMethod, "data");
@@ -303,9 +386,30 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.HIDGetFeatureReport must call the native hook once.");
     }
 
+    public static void HIDGetFeatureReportSpan_ForwardsDeviceBufferLengthAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_feature_report", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr));
+        AssertSdlImport(nativeMethod, "SDL_hid_get_feature_report");
+
+        ResetCaptureState();
+        nextInt = 4;
+        nextData = [6, 7, 8, 9];
+        byte[] data = new byte[4];
+
+        using NativeHookScope _ = NativeHookScope.Install("HIDGetFeatureReportPointerNativeFunction", nameof(CaptureDeviceDataPointerOut));
+        int result = SDL3.SDL.HIDGetFeatureReport((IntPtr)0x720E, data.AsSpan(), (UIntPtr)data.Length);
+
+        TestAssert.Equal(4, result, "SDL.HIDGetFeatureReport span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x720E, capturedDevice, "SDL.HIDGetFeatureReport span overload must forward device.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, "SDL.HIDGetFeatureReport span overload must pin data.");
+        TestAssert.Equal((UIntPtr)4, capturedLength, "SDL.HIDGetFeatureReport span overload must forward length.");
+        AssertBytes([6, 7, 8, 9], data, "SDL.HIDGetFeatureReport span overload must write to caller buffer.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.HIDGetFeatureReport span overload must call the native hook once.");
+    }
+
     public static void HidGetInputReport_ForwardsDeviceLengthOutputsDataAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_input_report");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_input_report", typeof(IntPtr), typeof(byte[]).MakeByRefType(), typeof(UIntPtr));
         AssertSdlImport(nativeMethod, "SDL_hid_get_input_report");
         AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 2);
         AssertOutParameter(nativeMethod, "data");
@@ -322,6 +426,27 @@ internal static class PInvokeTests
         TestAssert.Equal((UIntPtr)2, capturedLength, "SDL.HidGetInputReport must forward length.");
         AssertBytes([3, 2], data, "SDL.HidGetInputReport must output data.");
         TestAssert.Equal(1, capturedCallCount, "SDL.HidGetInputReport must call the native hook once.");
+    }
+
+    public static void HidGetInputReportSpan_ForwardsDeviceBufferLengthAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_input_report", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr));
+        AssertSdlImport(nativeMethod, "SDL_hid_get_input_report");
+
+        ResetCaptureState();
+        nextInt = 2;
+        nextData = [1, 0];
+        byte[] data = new byte[2];
+
+        using NativeHookScope _ = NativeHookScope.Install("HidGetInputReportPointerNativeFunction", nameof(CaptureDeviceDataPointerOut));
+        int result = SDL3.SDL.HidGetInputReport((IntPtr)0x720F, data.AsSpan(), (UIntPtr)data.Length);
+
+        TestAssert.Equal(2, result, "SDL.HidGetInputReport span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x720F, capturedDevice, "SDL.HidGetInputReport span overload must forward device.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, "SDL.HidGetInputReport span overload must pin data.");
+        TestAssert.Equal((UIntPtr)2, capturedLength, "SDL.HidGetInputReport span overload must forward length.");
+        AssertBytes([1, 0], data, "SDL.HidGetInputReport span overload must write to caller buffer.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.HidGetInputReport span overload must call the native hook once.");
     }
 
     public static void HIDClose_ForwardsDeviceAndReturnsNativeValue()
@@ -436,7 +561,7 @@ internal static class PInvokeTests
 
     public static void HIDGetReportDescriptor_ForwardsDeviceBufferSizeAndReturnsNativeValue()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_report_descriptor");
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_report_descriptor", typeof(IntPtr), typeof(byte[]), typeof(UIntPtr));
         AssertSdlImport(nativeMethod, "SDL_hid_get_report_descriptor");
         AssertArrayParameterMarshal(nativeMethod, "buf", UnmanagedType.LPArray, 2);
 
@@ -449,6 +574,27 @@ internal static class PInvokeTests
 
         TestAssert.Equal(3, result, "SDL.HIDGetReportDescriptor must return the native hook value.");
         AssertDeviceDataLength("SDL.HIDGetReportDescriptor", (IntPtr)0x7403, buffer, (UIntPtr)3);
+    }
+
+    public static void HIDGetReportDescriptorSpan_ForwardsDeviceBufferSizeAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_hid_get_report_descriptor", typeof(IntPtr), typeof(IntPtr), typeof(UIntPtr));
+        AssertSdlImport(nativeMethod, "SDL_hid_get_report_descriptor");
+
+        ResetCaptureState();
+        nextInt = 3;
+        nextData = [2, 4, 6];
+        byte[] buffer = new byte[3];
+
+        using NativeHookScope _ = NativeHookScope.Install("HIDGetReportDescriptorPointerNativeFunction", nameof(CaptureDeviceDataPointerOut));
+        int result = SDL3.SDL.HIDGetReportDescriptor((IntPtr)0x7404, buffer.AsSpan(), (UIntPtr)buffer.Length);
+
+        TestAssert.Equal(3, result, "SDL.HIDGetReportDescriptor span overload must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7404, capturedDevice, "SDL.HIDGetReportDescriptor span overload must forward device.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, "SDL.HIDGetReportDescriptor span overload must pin buffer.");
+        TestAssert.Equal((UIntPtr)3, capturedLength, "SDL.HIDGetReportDescriptor span overload must forward buffer size.");
+        AssertBytes([2, 4, 6], buffer, "SDL.HIDGetReportDescriptor span overload must write to caller buffer.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.HIDGetReportDescriptor span overload must call the native hook once.");
     }
 
     public static void HIDBLEScan_ForwardsActive()
@@ -488,6 +634,15 @@ internal static class PInvokeTests
         TestAssert.Equal(device, capturedDevice, $"{apiName} must forward device.");
         TestAssert.Equal(data, capturedData, $"{apiName} must forward the same data array.");
         TestAssert.Equal(length, capturedLength, $"{apiName} must forward length.");
+        TestAssert.Equal(1, capturedCallCount, $"{apiName} must call the native hook once.");
+    }
+
+    private static void AssertDevicePointerDataLength(string apiName, IntPtr device, byte[] data, UIntPtr length)
+    {
+        TestAssert.Equal(device, capturedDevice, $"{apiName} must forward device.");
+        TestAssert.True(capturedDataPointer != IntPtr.Zero, $"{apiName} must pin data.");
+        TestAssert.Equal(length, capturedLength, $"{apiName} must forward length.");
+        AssertBytes(data, capturedData ?? [], $"{apiName} must forward bytes.");
         TestAssert.Equal(1, capturedCallCount, $"{apiName} must call the native hook once.");
     }
 
@@ -591,6 +746,37 @@ internal static class PInvokeTests
         return nextInt;
     }
 
+    private static int CaptureDeviceDataPointerInt(IntPtr dev, IntPtr data, UIntPtr length)
+    {
+        capturedCallCount++;
+        capturedDevice = dev;
+        capturedDataPointer = data;
+        capturedLength = length;
+        capturedData = CopyBytes(data, checked((int)length.ToUInt64()));
+        return nextInt;
+    }
+
+    private static int CaptureDeviceDataPointerTimeout(IntPtr dev, IntPtr data, UIntPtr length, int milliseconds)
+    {
+        capturedCallCount++;
+        capturedDevice = dev;
+        capturedDataPointer = data;
+        capturedLength = length;
+        capturedMilliseconds = milliseconds;
+        WriteBytes(data, nextData);
+        return nextInt;
+    }
+
+    private static int CaptureDeviceDataPointerOut(IntPtr dev, IntPtr data, UIntPtr length)
+    {
+        capturedCallCount++;
+        capturedDevice = dev;
+        capturedDataPointer = data;
+        capturedLength = length;
+        WriteBytes(data, nextData);
+        return nextInt;
+    }
+
     private static int CaptureHIDSetNonBlocking(IntPtr dev, int nonblock)
     {
         capturedCallCount++;
@@ -655,6 +841,7 @@ internal static class PInvokeTests
         capturedSerialNumber = null;
         capturedPath = null;
         capturedData = null;
+        capturedDataPointer = IntPtr.Zero;
         capturedLength = UIntPtr.Zero;
         capturedMilliseconds = 0;
         capturedNonblock = 0;
@@ -669,10 +856,35 @@ internal static class PInvokeTests
         nextWideString = null;
     }
 
+    private static byte[] CopyBytes(IntPtr source, int length)
+    {
+        if (source == IntPtr.Zero || length == 0)
+            return [];
+
+        byte[] bytes = new byte[length];
+        Marshal.Copy(source, bytes, 0, length);
+        return bytes;
+    }
+
+    private static void WriteBytes(IntPtr destination, byte[]? bytes)
+    {
+        if (destination == IntPtr.Zero || bytes is null || bytes.Length == 0)
+            return;
+
+        Marshal.Copy(bytes, 0, destination, bytes.Length);
+    }
+
     private static MethodInfo GetNativeMethod(string methodName)
     {
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
         TestAssert.NotNull(method, $"SDL.{methodName} method must be private static.");
+        return method!;
+    }
+
+    private static MethodInfo GetNativeMethod(string methodName, params Type[] parameterTypes)
+    {
+        MethodInfo? method = typeof(SDL3.SDL).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, parameterTypes);
+        TestAssert.NotNull(method, $"SDL.{methodName} overload must be private static.");
         return method!;
     }
 

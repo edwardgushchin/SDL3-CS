@@ -15,7 +15,6 @@ internal static class PInvokeTests
     private static IntPtr nextEntriesPointer;
     private static string? capturedTooltip;
     private static string? capturedLabel;
-    private static uint capturedProperties;
     private static int capturedPosition;
     private static int nextEntriesCount;
     private static bool capturedBoolean;
@@ -35,18 +34,6 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)301, result, "SDL.CreateTray must return the native hook pointer.");
         TestAssert.Equal((IntPtr)201, capturedIcon, "SDL.CreateTray must forward icon.");
         TestAssert.Equal("tip", capturedTooltip, "SDL.CreateTray must forward tooltip.");
-    }
-
-    public static void CreateTrayWithProperties_ForwardsProperties()
-    {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateTrayWithProperties");
-        AssertSdlLibraryImport(nativeMethod, "SDL_CreateTrayWithProperties");
-
-        using NativeHookScope _ = NativeHookScope.Install("CreateTrayWithPropertiesNativeFunction", nameof(CaptureCreateTrayWithProperties));
-        IntPtr result = SDL3.SDL.CreateTrayWithProperties(202);
-
-        TestAssert.Equal((IntPtr)302, result, "SDL.CreateTrayWithProperties must return the native hook pointer.");
-        TestAssert.Equal(202u, capturedProperties, "SDL.CreateTrayWithProperties must forward props.");
     }
 
     public static void SetTrayIcon_ForwardsTrayAndIcon()
@@ -268,12 +255,6 @@ internal static class PInvokeTests
         capturedIcon = icon;
         capturedTooltip = tooltip;
         return (IntPtr)301;
-    }
-
-    private static IntPtr CaptureCreateTrayWithProperties(uint props)
-    {
-        capturedProperties = props;
-        return (IntPtr)302;
     }
 
     private static void CaptureSetTrayIcon(IntPtr tray, IntPtr icon)

@@ -193,6 +193,7 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_GetWindowSurfaceVSync"), "SDL_GetWindowSurfaceVSync");
         AssertNativeBoolImport(GetNativeMethod("SDL_UpdateWindowSurface"), "SDL_UpdateWindowSurface");
         AssertNativeBoolImport(GetNativeMethod("SDL_UpdateWindowSurfaceRects"), "SDL_UpdateWindowSurfaceRects");
+        AssertNativeBoolImport(GetNativeMethod("SDL_UpdateWindowSurfaceRectsPointer"), "SDL_UpdateWindowSurfaceRects");
         AssertNativeBoolImport(GetNativeMethod("SDL_DestroyWindowSurface"), "SDL_DestroyWindowSurface");
         MethodInfo setWindowKeyboardGrab = GetNativeMethod("SDL_SetWindowKeyboardGrab");
         AssertNativeBoolImport(setWindowKeyboardGrab, "SDL_SetWindowKeyboardGrab");
@@ -1264,6 +1265,20 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("UpdateWindowSurfaceRectsPointerNativeFunction", nameof(CaptureUpdateWindowSurfaceRectsPointer)))
+        {
+            bool actual = SDL3.SDL.UpdateWindowSurfaceRects((IntPtr)0xC09, rects.AsSpan(1), 1);
+
+            TestAssert.Equal(true, actual, "SDL.UpdateWindowSurfaceRects(ReadOnlySpan<Rect>) must return native success value.");
+            TestAssert.Equal((IntPtr)0xC09, capturedWindow, "SDL.UpdateWindowSurfaceRects(ReadOnlySpan<Rect>) must forward window.");
+            TestAssert.Equal(1, capturedNumRects, "SDL.UpdateWindowSurfaceRects(ReadOnlySpan<Rect>) must forward numrects.");
+            TestAssert.NotNull(capturedRects, "SDL.UpdateWindowSurfaceRects(ReadOnlySpan<Rect>) must forward rect span.");
+            TestAssert.Equal(1, capturedRects!.Length, "SDL.UpdateWindowSurfaceRects(ReadOnlySpan<Rect>) must preserve span length.");
+            AssertRect(rects[1], capturedRects[0], "SDL.UpdateWindowSurfaceRects(ReadOnlySpan<Rect>) must forward rect slice item 0.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("DestroyWindowSurfaceNativeFunction", nameof(CaptureWindowReturnBool)))
         {
             bool actual = SDL3.SDL.DestroyWindowSurface((IntPtr)0xC08);
@@ -2068,6 +2083,14 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureUpdateWindowSurfaceRectsPointer(IntPtr window, IntPtr rects, int numrects)
+    {
+        capturedWindow = window;
+        capturedRects = CopyUnmanaged<SDL3.SDL.Rect>(rects, numrects);
+        capturedNumRects = numrects;
+        return nextBool;
+    }
+
     private static bool CaptureSetWindowMouseRectPointer(IntPtr window, IntPtr rect)
     {
         capturedWindow = window;
@@ -2425,6 +2448,18 @@ internal static class PInvokeTests
     {
         ExcludeFromCodeCoverageAttribute? attribute = method.GetCustomAttribute<ExcludeFromCodeCoverageAttribute>();
         TestAssert.NotNull(attribute, $"SDL.{method.Name} native stub must be excluded from code coverage.");
+    }
+
+    private static unsafe T[] CopyUnmanaged<T>(IntPtr pointer, int count) where T : unmanaged
+    {
+        if (pointer == IntPtr.Zero || count <= 0)
+        {
+            return [];
+        }
+
+        T[] result = new T[count];
+        new ReadOnlySpan<T>((void*)pointer, count).CopyTo(result);
+        return result;
     }
 
     private sealed class NativeHookScope : IDisposable

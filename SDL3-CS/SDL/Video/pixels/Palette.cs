@@ -31,7 +31,7 @@ public static partial class SDL
     /// A set of indexed colors representing a palette.
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
-    /// <seealso cref="SDL.SetPaletteColors"/>
+    /// <seealso cref="SDL.SetPaletteColors(nint, Color[], int, int)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct Palette
     {

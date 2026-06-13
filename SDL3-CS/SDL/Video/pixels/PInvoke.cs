@@ -148,7 +148,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="DestroyPalette"/>
-    /// <seealso cref="SetPaletteColors"/>
+    /// <seealso cref="SetPaletteColors(nint, Color[], int, int)"/>
     /// <seealso cref="SetSurfacePalette"/>
     public static IntPtr CreatePalette(int ncolors)
     {
@@ -179,6 +179,22 @@ public static partial class SDL
     public static bool SetPaletteColors(IntPtr palette, Color[] colors, int firstcolor, int ncolors)
     {
         return SetPaletteColorsNativeFunction(palette, colors, firstcolor, ncolors);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetPaletteColors"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetPaletteColorsPointer(IntPtr palette, IntPtr colors, int firstcolor, int ncolors);
+    private delegate bool SetPaletteColorsPointerNativeDelegate(IntPtr palette, IntPtr colors, int firstcolor, int ncolors);
+    private static SetPaletteColorsPointerNativeDelegate SetPaletteColorsPointerNativeFunction = SDL_SetPaletteColorsPointer;
+
+    /// <inheritdoc cref="SetPaletteColors(nint, Color[], int, int)"/>
+    public static unsafe bool SetPaletteColors(IntPtr palette, ReadOnlySpan<Color> colors, int firstcolor, int ncolors)
+    {
+        fixed (Color* pColors = colors)
+        {
+            return SetPaletteColorsPointerNativeFunction(palette, (IntPtr)pColors, firstcolor, ncolors);
+        }
     }
 
 
@@ -233,7 +249,6 @@ public static partial class SDL
     /// <returns>a pixel value.</returns>
     /// <threadsafety>It is safe to call this function from any thread, as long as
     /// the palette is not modified.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
     public static uint MapRGB(IntPtr format, IntPtr palette, byte r, byte g, byte b)
     {
         return MapRGBNativeFunction(format, palette, r, g, b);

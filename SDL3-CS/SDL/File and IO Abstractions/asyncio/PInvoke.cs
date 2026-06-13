@@ -91,7 +91,7 @@ public static partial class SDL
     /// negative error code on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     public static long GetAsyncIOSize(IntPtr asyncio)
     {
         return GetAsyncIOSizeNativeFunction(asyncio);
@@ -131,7 +131,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WriteAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
     public static bool ReadAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata)
@@ -172,7 +172,7 @@ public static partial class SDL
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="ReadAsyncIO"/>
     /// <seealso cref="CreateAsyncIOQueue"/>
     public static bool WriteAsyncIO(IntPtr asyncio, IntPtr ptr, ulong offset, ulong size, IntPtr queue, IntPtr userdata)
@@ -226,7 +226,7 @@ public static partial class SDL
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread, but two
     /// threads should not attempt to close the same object.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     public static bool CloseAsyncIO(IntPtr asyncio, bool flush, IntPtr queue, IntPtr userdata)
     {
         return CloseAsyncIONativeFunction(asyncio, flush, queue, userdata);
@@ -248,7 +248,7 @@ public static partial class SDL
     /// <returns>a new task queue object or <c>null</c> if there was an error; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="DestroyAsyncIOQueue"/>
     /// <seealso cref="GetAsyncIOResult"/>
     /// <seealso cref="WaitAsyncIOResult"/>
@@ -285,7 +285,7 @@ public static partial class SDL
     /// <threadsafety>It is safe to call this function from any thread, so long as
     /// no other thread is waiting on the queue with
     /// <see cref="WaitAsyncIOResult"/>.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     public static void DestroyAsyncIOQueue(IntPtr queue)
     {
         DestroyAsyncIOQueueNativeFunction(queue);
@@ -315,7 +315,7 @@ public static partial class SDL
     /// <c>null</c>.</param>
     /// <returns><c>true</c> if a task has completed, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="WaitAsyncIOResult"/>
     public static bool GetAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome)
     {
@@ -360,7 +360,7 @@ public static partial class SDL
     /// indefinitely.</param>
     /// <returns><c>true</c> if task has completed, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <since>This function is available since SDL 3.1.8.</since>
     /// <seealso cref="SignalAsyncIOQueue"/>
     public static bool WaitAsyncIOResult(IntPtr queue, out AsyncIOOutcome outcome, int timeoutMS)
     {

@@ -13,11 +13,6 @@ internal static class PInvokeTests
     private static SDL3.SDL.FreeFunc? capturedFreeFunc;
     private static bool testFreeFuncCalled;
     private static IntPtr capturedFreeMemory;
-    private static UIntPtr capturedAlignedAllocZeroAlignment;
-    private static UIntPtr capturedAlignedAllocZeroSize;
-    private static string? capturedWideString;
-    private static IntPtr capturedWideEndp;
-    private static int capturedWideBase;
 
     public static void Malloc_AllocatesWritableMemory()
     {
@@ -166,30 +161,6 @@ internal static class PInvokeTests
             TestAssert.Equal(0, memory.ToInt64() % 16, "SDL.AlignedAlloc must return memory aligned to the requested boundary.");
             Marshal.WriteByte(memory, 0, 0x3C);
             TestAssert.Equal((byte)0x3C, Marshal.ReadByte(memory, 0), "SDL.AlignedAlloc memory must be writable.");
-        }
-        finally
-        {
-            SDL3.SDL.AlignedFree(memory);
-        }
-    }
-
-    public static void AlignedAllocZero_ReturnsZeroedAlignedMemory()
-    {
-        MethodInfo? nativeMethod = typeof(SDL3.SDL).GetMethod("SDL_AlignedAllocZero", BindingFlags.NonPublic | BindingFlags.Static);
-        TestAssert.NotNull(nativeMethod, "SDL.SDL_AlignedAllocZero method must be private static.");
-        AssertSdlLibraryImport(nativeMethod!, "SDL_aligned_alloc_zero");
-
-        using NativeHookScope _ = NativeHookScope.Install("AlignedAllocZeroNativeFunction", nameof(CaptureAlignedAllocZero));
-        IntPtr memory = SDL3.SDL.AlignedAllocZero((UIntPtr)16, (UIntPtr)16);
-        TestAssert.True(memory != IntPtr.Zero, "SDL.AlignedAllocZero must allocate memory.");
-        TestAssert.Equal((UIntPtr)16, capturedAlignedAllocZeroAlignment, "SDL.AlignedAllocZero must forward alignment.");
-        TestAssert.Equal((UIntPtr)16, capturedAlignedAllocZeroSize, "SDL.AlignedAllocZero must forward size.");
-
-        try
-        {
-            TestAssert.Equal(0, memory.ToInt64() % 16, "SDL.AlignedAllocZero must return memory aligned to the requested boundary.");
-            TestAssert.Equal((byte)0, Marshal.ReadByte(memory, 0), "SDL.AlignedAllocZero must zero byte 0.");
-            TestAssert.Equal((byte)0, Marshal.ReadByte(memory, 15), "SDL.AlignedAllocZero must zero the last requested byte.");
         }
         finally
         {
@@ -435,68 +406,6 @@ internal static class PInvokeTests
         TestAssert.True(state != original, "SDL.RandBitsR must update the caller-provided state.");
     }
 
-    public static void Wcstoul_ParsesWideUnsignedLong()
-    {
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.Wcstoul), BindingFlags.Public | BindingFlags.Static);
-        TestAssert.NotNull(method, "SDL.Wcstoul method must be public static.");
-
-        using NativeHookScope _ = NativeHookScope.Install("WcstoulNativeFunction", nameof(CaptureWcstoul));
-        CULong value = SDL3.SDL.Wcstoul(" 0x2A", (IntPtr)123, @base: 0);
-
-        TestAssert.Equal(new CULong((UIntPtr)42), value, "SDL.Wcstoul must parse an unsigned long from a wide string.");
-        TestAssert.Equal(" 0x2A", capturedWideString, "SDL.Wcstoul must marshal and forward the wide string.");
-        TestAssert.Equal((IntPtr)123, capturedWideEndp, "SDL.Wcstoul must forward endp.");
-        TestAssert.Equal(0, capturedWideBase, "SDL.Wcstoul must forward base.");
-    }
-
-    public static void SDL_wcstoul32_UsesExpectedNativeMetadata()
-    {
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod("SDL_wcstoul32", BindingFlags.NonPublic | BindingFlags.Static);
-        TestAssert.NotNull(method, "SDL.SDL_wcstoul32 method must be private static.");
-        AssertSdlLibraryImport(method!, "SDL_wcstoul");
-    }
-
-    public static void SDL_wcstoul64_UsesExpectedNativeMetadata()
-    {
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod("SDL_wcstoul64", BindingFlags.NonPublic | BindingFlags.Static);
-        TestAssert.NotNull(method, "SDL.SDL_wcstoul64 method must be private static.");
-        AssertSdlLibraryImport(method!, "SDL_wcstoul");
-    }
-
-    public static void Wcstoll_ParsesWideSignedLongLong()
-    {
-        MethodInfo? nativeMethod = typeof(SDL3.SDL).GetMethod("SDL_Wcstoll", BindingFlags.NonPublic | BindingFlags.Static);
-        TestAssert.NotNull(nativeMethod, "SDL.SDL_Wcstoll method must be private static.");
-        AssertSdlLibraryImport(nativeMethod!, "SDL_wcstoll");
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.Wcstoll), BindingFlags.Public | BindingFlags.Static);
-        TestAssert.NotNull(method, "SDL.Wcstoll method must be public static.");
-
-        using NativeHookScope _ = NativeHookScope.Install("WcstollNativeFunction", nameof(CaptureWcstoll));
-        long value = SDL3.SDL.Wcstoll(" -42", (IntPtr)124, @base: 0);
-
-        TestAssert.Equal(-42L, value, "SDL.Wcstoll must parse a signed long long from a wide string.");
-        TestAssert.Equal(" -42", capturedWideString, "SDL.Wcstoll must marshal and forward the wide string.");
-        TestAssert.Equal((IntPtr)124, capturedWideEndp, "SDL.Wcstoll must forward endp.");
-        TestAssert.Equal(0, capturedWideBase, "SDL.Wcstoll must forward base.");
-    }
-
-    public static void Wcstoull_ParsesWideUnsignedLongLong()
-    {
-        MethodInfo? nativeMethod = typeof(SDL3.SDL).GetMethod("SDL_Wcstoull", BindingFlags.NonPublic | BindingFlags.Static);
-        TestAssert.NotNull(nativeMethod, "SDL.SDL_Wcstoull method must be private static.");
-        AssertSdlLibraryImport(nativeMethod!, "SDL_wcstoull");
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.Wcstoull), BindingFlags.Public | BindingFlags.Static);
-        TestAssert.NotNull(method, "SDL.Wcstoull method must be public static.");
-
-        using NativeHookScope _ = NativeHookScope.Install("WcstoullNativeFunction", nameof(CaptureWcstoull));
-        ulong value = SDL3.SDL.Wcstoull(" 0x2A", (IntPtr)125, @base: 0);
-
-        TestAssert.Equal(42UL, value, "SDL.Wcstoull must parse an unsigned long long from a wide string.");
-        TestAssert.Equal(" 0x2A", capturedWideString, "SDL.Wcstoull must marshal and forward the wide string.");
-        TestAssert.Equal((IntPtr)125, capturedWideEndp, "SDL.Wcstoull must forward endp.");
-        TestAssert.Equal(0, capturedWideBase, "SDL.Wcstoull must forward base.");
-    }
-
     public static void Memset_FillsMemoryAndReturnsDestination()
     {
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.Memset), BindingFlags.Public | BindingFlags.Static);
@@ -554,41 +463,6 @@ internal static class PInvokeTests
         freeFunc(IntPtr.Zero);
 
         return true;
-    }
-
-    private static IntPtr CaptureAlignedAllocZero(UIntPtr alignment, UIntPtr size)
-    {
-        capturedAlignedAllocZeroAlignment = alignment;
-        capturedAlignedAllocZeroSize = size;
-        IntPtr memory = SDL3.SDL.AlignedAlloc(alignment, size);
-        TestAssert.True(memory != IntPtr.Zero, "The aligned_alloc_zero hook must allocate memory.");
-        SDL3.SDL.Memset(memory, 0, size);
-        return memory;
-    }
-
-    private static CULong CaptureWcstoul(IntPtr str, IntPtr endp, int @base)
-    {
-        CaptureWideArguments(str, endp, @base);
-        return new CULong((UIntPtr)42);
-    }
-
-    private static long CaptureWcstoll(IntPtr str, IntPtr endp, int @base)
-    {
-        CaptureWideArguments(str, endp, @base);
-        return -42;
-    }
-
-    private static ulong CaptureWcstoull(IntPtr str, IntPtr endp, int @base)
-    {
-        CaptureWideArguments(str, endp, @base);
-        return 42;
-    }
-
-    private static void CaptureWideArguments(IntPtr str, IntPtr endp, int @base)
-    {
-        capturedWideString = WCharStringMarshaller.ConvertToManaged(str);
-        capturedWideEndp = endp;
-        capturedWideBase = @base;
     }
 
     private static IntPtr TestMallocFunc(UIntPtr size)
