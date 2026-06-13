@@ -135,6 +135,8 @@ foreach ($repository in $manifest.repositories) {
     $sourceRef = if ($repository.PSObject.Properties.Name.Contains('sourceRef') -and $repository.sourceRef) { $repository.sourceRef } else { $sourceRefBySourceFolder[$repository.name] }
     $upstreamHead = $null
     $upstreamCurrent = $null
+    $forkMainHead = $null
+    $forkMainCurrent = $null
     $ahead = $null
     $behind = $null
 
@@ -172,7 +174,9 @@ foreach ($repository in $manifest.repositories) {
         }
     }
     elseif ($RequireUpToDate) {
-        $errors.Add("Native fork $($repository.name) has no matching remote tracking ref for branch '$branch'.")
+        if (-not $sourceRef -or $fullHead -ne $sourceRef) {
+            $errors.Add("Native fork $($repository.name) has no matching remote tracking ref for branch '$branch' and is not at manifest sourceRef.")
+        }
     }
 
     if ($CheckUpstream) {
@@ -187,8 +191,18 @@ foreach ($repository in $manifest.repositories) {
             else {
                 $upstreamHead = $upstreamHeadFull.Substring(0, 12)
                 $upstreamCurrent = $fullHead -eq $upstreamHeadFull
-                if ($RequireUpstreamCurrent -and -not $upstreamCurrent) {
-                    $errors.Add("Native fork $($repository.name) is not at upstream main. Local $head, upstream $upstreamHead.")
+                if ($RequireUpstreamCurrent) {
+                    $forkMainHeadFull = Get-GitRemoteHead -Url $originUrl -Branch 'main'
+                    if (-not $forkMainHeadFull) {
+                        $errors.Add("Native fork $($repository.name) has no origin main ref at $originUrl.")
+                    }
+                    else {
+                        $forkMainHead = $forkMainHeadFull.Substring(0, 12)
+                        $forkMainCurrent = $forkMainHeadFull -eq $upstreamHeadFull
+                        if (-not $forkMainCurrent) {
+                            $errors.Add("Native fork $($repository.name) origin/main is not at upstream main. Fork main $forkMainHead, upstream $upstreamHead.")
+                        }
+                    }
                 }
             }
         }
@@ -220,6 +234,8 @@ foreach ($repository in $manifest.repositories) {
         Dirty = $dirtyCount
         UpstreamHead = $upstreamHead
         UpstreamCurrent = $upstreamCurrent
+        ForkMainHead = $forkMainHead
+        ForkMainCurrent = $forkMainCurrent
         Origin = $originUrl
         SourceRef = if ($sourceRef) { $sourceRef.Substring(0, 12) } else { $null }
     })
