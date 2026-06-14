@@ -492,5 +492,8 @@ jobs:
           if ('${{ inputs.publish_nuget }}' -eq 'true') {
             $params.NuGetPush = $true
           }
+          if ('${{ inputs.require_upstream_current }}' -eq 'true') {
+            $params.RequireUpstreamCurrent = $true
+          }
 
           ./.github/release-tools/Publish-Release.ps1 @params

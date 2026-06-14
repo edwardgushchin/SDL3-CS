@@ -14,6 +14,7 @@ param(
     [switch] $AllowExistingGitHubRelease,
     [switch] $AllowExistingNuGetPackages,
     [switch] $KeepGitHubReleaseDraft,
+    [switch] $RequireUpstreamCurrent,
     [switch] $DryRun
 )
 
@@ -88,7 +89,7 @@ if (-not $SkipReadinessValidation -and (-not $DryRun -or $ValidateReadinessInDry
         -FetchForks `
         -RequireForksUpToDate `
         -CheckUpstream `
-        -RequireUpstreamCurrent `
+        -RequireUpstreamCurrent:$RequireUpstreamCurrent `
         -SkipToolchainValidation `
         -FailOnError
 }
