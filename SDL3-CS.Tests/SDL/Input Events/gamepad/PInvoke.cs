@@ -142,8 +142,9 @@ internal static class PInvokeTests
         SetGamepadSensorEnabled_ForwardsGamepadSensorEnabledAndReturnsNativeValue();
         GamepadSensorEnabled_ForwardsGamepadSensorAndReturnsNativeValue();
         GetGamepadSensorDataRate_ForwardsGamepadSensorAndReturnsNativeValue();
-        GetGamepadSensorData_ForwardsGamepadSensorDataAndReturnsNativeValue();
+        GetGamepadSensorData_DoesNotExposeArrayOutOverload();
         GetGamepadSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue();
+        GetGamepadSensorDataSpan_RejectsInvalidNumValues();
         RumbleGamepad_ForwardsRumbleValuesAndReturnsNativeValue();
         RumbleGamepadTriggers_ForwardsTriggerRumbleValuesAndReturnsNativeValue();
         SetGamepadLED_ForwardsColorAndReturnsNativeValue();
@@ -1331,29 +1332,21 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadSensorDataRate must call the native hook once.");
     }
 
-    public static void GetGamepadSensorData_ForwardsGamepadSensorDataAndReturnsNativeValue()
+    public static void GetGamepadSensorData_DoesNotExposeArrayOutOverload()
     {
-        MethodInfo nativeMethod = GetNativeMethod("SDL_GetGamepadSensorData", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(float[]).MakeByRefType(), typeof(int));
-        AssertSdlImport(nativeMethod, "SDL_GetGamepadSensorData");
-        AssertBoolReturnMarshal(nativeMethod);
-        AssertArrayParameterMarshal(nativeMethod, "data", UnmanagedType.LPArray, 3);
+        Type[] arrayOutParameters = [typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(float[]).MakeByRefType(), typeof(int)];
 
-        ResetCaptureState();
-        nextBool = true;
-        nextFloatArray = [1.25f, 2.5f, 3.75f];
+        MethodInfo? publicArrayOut = FindMethod(
+            "GetGamepadSensorData",
+            BindingFlags.Public | BindingFlags.Static,
+            arrayOutParameters);
+        TestAssert.Equal<MethodInfo?>(null, publicArrayOut, "SDL.GetGamepadSensorData must not expose an out float[] overload.");
 
-        using NativeHookScope _ = NativeHookScope.Install("GetGamepadSensorDataNativeFunction", nameof(CaptureGamepadSensorData));
-        bool result = SDL3.SDL.GetGamepadSensorData((IntPtr)0x5B05, SDL3.SDL.SensorType.GyroL, out float[] data, 3);
-
-        TestAssert.Equal(true, result, "SDL.GetGamepadSensorData must return the native hook value.");
-        TestAssert.Equal((IntPtr)0x5B05, capturedGamepad, "SDL.GetGamepadSensorData must forward gamepad.");
-        TestAssert.Equal(SDL3.SDL.SensorType.GyroL, capturedSensorType, "SDL.GetGamepadSensorData must forward sensor type.");
-        TestAssert.Equal(3, capturedCount, "SDL.GetGamepadSensorData must forward numValues.");
-        TestAssert.Equal(3, data.Length, "SDL.GetGamepadSensorData must output all sensor values.");
-        TestAssert.Equal(1.25f, data[0], "SDL.GetGamepadSensorData must output value 0.");
-        TestAssert.Equal(2.5f, data[1], "SDL.GetGamepadSensorData must output value 1.");
-        TestAssert.Equal(3.75f, data[2], "SDL.GetGamepadSensorData must output value 2.");
-        TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadSensorData must call the native hook once.");
+        MethodInfo? nativeArrayOut = FindMethod(
+            "SDL_GetGamepadSensorData",
+            BindingFlags.NonPublic | BindingFlags.Static,
+            arrayOutParameters);
+        TestAssert.Equal<MethodInfo?>(null, nativeArrayOut, "SDL.SDL_GetGamepadSensorData must not bind the native float* buffer as out float[].");
     }
 
     public static void GetGamepadSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue()
@@ -1377,6 +1370,26 @@ internal static class PInvokeTests
         TestAssert.True(capturedFloatPointer != IntPtr.Zero, "SDL.GetGamepadSensorData span overload must pin data.");
         AssertFloats(nextFloatArray!, data, "SDL.GetGamepadSensorData span overload must write sensor values.");
         TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadSensorData span overload must call the native hook once.");
+    }
+
+    public static void GetGamepadSensorDataSpan_RejectsInvalidNumValues()
+    {
+        ResetCaptureState();
+        nextBool = true;
+        nextFloatArray = [];
+        float[] data = new float[2];
+
+        using NativeHookScope _ = NativeHookScope.Install("GetGamepadSensorDataPointerNativeFunction", nameof(CaptureGamepadSensorDataPointer));
+
+        AssertThrows<ArgumentOutOfRangeException>(
+            () => SDL3.SDL.GetGamepadSensorData((IntPtr)0x5B07, SDL3.SDL.SensorType.Gyro, data.AsSpan(), 3),
+            "SDL.GetGamepadSensorData span overload must reject numValues larger than data length.");
+
+        AssertThrows<ArgumentOutOfRangeException>(
+            () => SDL3.SDL.GetGamepadSensorData((IntPtr)0x5B08, SDL3.SDL.SensorType.Gyro, data.AsSpan(), -1),
+            "SDL.GetGamepadSensorData span overload must reject negative numValues.");
+
+        TestAssert.Equal(0, capturedCallCount, "SDL.GetGamepadSensorData span overload must validate numValues before calling native code.");
     }
 
     public static void RumbleGamepad_ForwardsRumbleValuesAndReturnsNativeValue()
@@ -2072,16 +2085,6 @@ internal static class PInvokeTests
         return nextFloat;
     }
 
-    private static bool CaptureGamepadSensorData(IntPtr gamepad, SDL3.SDL.SensorType type, out float[] data, int numValues)
-    {
-        capturedCallCount++;
-        capturedGamepad = gamepad;
-        capturedSensorType = type;
-        capturedCount = numValues;
-        data = nextFloatArray ?? [];
-        return nextBool;
-    }
-
     private static bool CaptureGamepadSensorDataPointer(IntPtr gamepad, SDL3.SDL.SensorType type, IntPtr data, int numValues)
     {
         capturedCallCount++;
@@ -2352,6 +2355,25 @@ internal static class PInvokeTests
         }
     }
 
+    private static void AssertThrows<TException>(Action action, string message)
+        where TException : Exception
+    {
+        try
+        {
+            action();
+        }
+        catch (TException)
+        {
+            return;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"{message} Expected exception {typeof(TException).Name}, got {ex.GetType().Name}.", ex);
+        }
+
+        throw new InvalidOperationException($"{message} Expected exception {typeof(TException).Name}.");
+    }
+
     private static MethodInfo GetNativeMethod(string methodName)
     {
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -2361,15 +2383,23 @@ internal static class PInvokeTests
 
     private static MethodInfo GetNativeMethod(string methodName, params Type[] parameterTypes)
     {
-        MethodInfo? method = typeof(SDL3.SDL).GetMethod(
+        MethodInfo? method = FindMethod(
             methodName,
             BindingFlags.NonPublic | BindingFlags.Static,
-            binder: null,
-            types: parameterTypes,
-            modifiers: null);
+            parameterTypes);
 
         TestAssert.NotNull(method, $"SDL.{methodName} overload must be private static.");
         return method!;
+    }
+
+    private static MethodInfo? FindMethod(string methodName, BindingFlags bindingFlags, params Type[] parameterTypes)
+    {
+        return typeof(SDL3.SDL).GetMethod(
+            methodName,
+            bindingFlags,
+            binder: null,
+            types: parameterTypes,
+            modifiers: null);
     }
 
     private static object? InvokePublic(string methodName, params object[] arguments)

@@ -1611,7 +1611,7 @@ public static partial class SDL
     /// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetGamepadSensorData(nint, SensorType, out float[], int)"/>
+    /// <seealso cref="GetGamepadSensorData(nint, SensorType, Span{float}, int)"/>
     /// <seealso cref="GetGamepadSensorDataRate"/>
     /// <seealso cref="SetGamepadSensorEnabled"/>
     public static bool GamepadHasSensor(IntPtr gamepad, SensorType type)
@@ -1689,13 +1689,12 @@ public static partial class SDL
         return GetGamepadSensorDataRateNativeFunction(gamepad, type);
     }
 
-
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out float[] data, int numValues);
-    private delegate bool GetGamepadSensorDataNativeDelegate(IntPtr gamepad, SensorType type, out float[] data, int numValues);
-    private static GetGamepadSensorDataNativeDelegate GetGamepadSensorDataNativeFunction = SDL_GetGamepadSensorData;
+    private static partial bool SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private delegate bool GetGamepadSensorDataPointerNativeDelegate(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
+    private static GetGamepadSensorDataPointerNativeDelegate GetGamepadSensorDataPointerNativeFunction = SDL_GetGamepadSensorData;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGamepadSensorData(SDL_Gamepad *gamepad, SDL_SensorType type, float *data, int num_values);</code>
     /// <summary>
@@ -1705,30 +1704,30 @@ public static partial class SDL
     /// </summary>
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="type">the type of sensor to query.</param>
-    /// <param name="data">a pointer filled with the current sensor state.</param>
-    /// <param name="numValues">the number of values to write to data.</param>
+    /// <param name="data">the destination buffer filled with the current sensor state.</param>
+    /// <param name="numValues">the number of values to write to <c>data</c>.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static bool GetGamepadSensorData(IntPtr gamepad, SensorType type, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out float[] data, int numValues)
+    public static bool GetGamepadSensorData(IntPtr gamepad, SensorType type, Span<float> data, int numValues)
     {
-        return GetGamepadSensorDataNativeFunction(gamepad, type, out data, numValues);
-    }
-
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGamepadSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GetGamepadSensorData(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
-    private delegate bool GetGamepadSensorDataPointerNativeDelegate(IntPtr gamepad, SensorType type, IntPtr data, int numValues);
-    private static GetGamepadSensorDataPointerNativeDelegate GetGamepadSensorDataPointerNativeFunction = SDL_GetGamepadSensorData;
-
-    /// <inheritdoc cref="GetGamepadSensorData(nint, SensorType, out float[], int)"/>
-    public static unsafe bool GetGamepadSensorData(IntPtr gamepad, SensorType type, Span<float> data, int numValues)
-    {
-        fixed (float* pData = data)
+        if (numValues < 0)
         {
-            return GetGamepadSensorDataPointerNativeFunction(gamepad, type, (IntPtr)pData, numValues);
+            throw new ArgumentOutOfRangeException(nameof(numValues));
+        }
+
+        if (numValues > data.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(numValues));
+        }
+
+        unsafe
+        {
+            fixed (float* pData = data)
+            {
+                return GetGamepadSensorDataPointerNativeFunction(gamepad, type, (IntPtr)pData, numValues);
+            }
         }
     }
 

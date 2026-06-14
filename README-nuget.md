@@ -4,6 +4,17 @@ Modern C# bindings for SDL3 and its companion libraries.
 
 SDL3-CS gives .NET applications direct access to SDL3 APIs and pairs the managed wrapper with platform-specific native runtime packages for Windows, Linux, macOS, Android, iOS, and tvOS.
 
+Current stable release: [`SDL3-CS 3.4.10.2`](https://github.com/edwardgushchin/SDL3-CS/releases/tag/v3.4.10.2).
+
+| Package family | Version |
+|----------------|---------|
+| `SDL3-CS` | `3.4.10.2` |
+| `SDL3-CS.<Platform>` | `3.4.10.2` |
+| `SDL3-CS.<Platform>.Image` | `3.4.4.2` |
+| `SDL3-CS.<Platform>.Mixer` | `3.2.4.2` |
+| `SDL3-CS.<Platform>.TTF` | `3.2.2.2` |
+| `SDL3-CS.<Platform>.Shadercross` | `3.0.0.2` |
+
 ## 🚀 About
 
 The project provides:
