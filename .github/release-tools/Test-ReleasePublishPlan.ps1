@@ -41,6 +41,7 @@ if (-not (Test-Path -LiteralPath $publishScript -PathType Leaf)) {
 $text = Get-Content -LiteralPath $publishScript -Raw -Encoding UTF8
 
 Assert-PublishScriptContains -Text $text -Expected '[switch] $KeepGitHubReleaseDraft' -Description 'keep-draft publish option'
+Assert-PublishScriptContains -Text $text -Expected '[switch] $RequireUpstreamCurrent' -Description 'upstream-current publish option'
 Assert-PublishScriptContains -Text $text -Expected '$ReleaseNotesDir' -Description 'release notes directory option'
 Assert-PublishScriptContains -Text $text -Expected "'release', 'create'" -Description 'GitHub release create command'
 Assert-PublishScriptContains -Text $text -Expected "'--notes-file'" -Description 'GitHub release notes file command'
@@ -49,6 +50,7 @@ Assert-PublishScriptContains -Text $text -Expected "'--draft'" -Description 'Git
 Assert-PublishScriptContains -Text $text -Expected "'--draft=false'" -Description 'GitHub release publish command'
 Assert-PublishScriptContains -Text $text -Expected 'if ($KeepGitHubReleaseDraft)' -Description 'keep-draft branch'
 Assert-PublishScriptContains -Text $text -Expected 'if ($NuGetPush)' -Description 'NuGet push branch'
+Assert-PublishScriptContains -Text $text -Expected '-RequireUpstreamCurrent:$RequireUpstreamCurrent' -Description 'conditional upstream-current readiness flag'
 
 $draftCreateIndex = $text.IndexOf("'release', 'create'", [System.StringComparison]::Ordinal)
 $draftFlagIndex = if ($draftCreateIndex -ge 0) {

@@ -148,6 +148,7 @@ Assert-WorkflowContains -Text $workflowText -Expected 'user: edwardgushchin' -De
 Assert-WorkflowContains -Text $workflowText -Expected 'NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}' -Description 'publish job NuGet temporary API key handoff'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.GitHubRelease = $true' -Description 'publish job GitHub release flag'
 Assert-WorkflowContains -Text $workflowText -Expected '$params.NuGetPush = $true' -Description 'publish job NuGet push flag'
+Assert-WorkflowContains -Text $workflowText -Expected '$params.RequireUpstreamCurrent = $true' -Description 'publish job upstream current strict flag'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Publish-Release.ps1 @params' -Description 'publish script invocation'
 
 if ($workflowText.Contains('${{ secrets.NUGET_API_KEY }}', [System.StringComparison]::Ordinal)) {
@@ -157,6 +158,11 @@ if ($workflowText.Contains('${{ secrets.NUGET_API_KEY }}', [System.StringCompari
 $initializeCount = ([regex]::Matches($workflowText, [regex]::Escape('./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3'))).Count
 if ($initializeCount -lt 2) {
     Add-WorkflowError "Expected Initialize-NativeForks.ps1 to run in both native and assemble jobs, found $initializeCount occurrence(s)."
+}
+
+$strictUpstreamCount = ([regex]::Matches($workflowText, [regex]::Escape('$params.RequireUpstreamCurrent = $true'))).Count
+if ($strictUpstreamCount -lt 2) {
+    Add-WorkflowError "Expected require_upstream_current to flow into both assemble and publish jobs, found $strictUpstreamCount occurrence(s)."
 }
 
 $expectedRows = @($manifest.rids | ForEach-Object {

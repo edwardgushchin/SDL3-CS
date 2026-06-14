@@ -133,5 +133,6 @@ if ($PublishDryRun -or $GitHubRelease -or $NuGetPush) {
         -Repository $Repository `
         -GitHubRelease:$publishGitHub `
         -NuGetPush:$publishNuGet `
+        -RequireUpstreamCurrent:$RequireUpstreamCurrent `
         -DryRun:$publishIsDryRun
 }
