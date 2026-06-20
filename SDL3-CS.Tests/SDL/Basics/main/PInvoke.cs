@@ -46,6 +46,24 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.AppInit must call native hook once.");
     }
 
+    public static void AppInit_NullAndEmptyArgumentsForwardNull()
+    {
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install("AppInitNativeFunction", nameof(CaptureAppInit));
+
+        SDL3.SDL.AppInit(IntPtr.Zero, 0, null!);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.AppInit must forward zero argc for null argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.AppInit must forward null argv unchanged.");
+
+        string[] argv = [];
+        SDL3.SDL.AppInit(IntPtr.Zero, 0, argv);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.AppInit must forward zero argc for empty argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.AppInit must normalize empty argv to null before native marshalling.");
+        TestAssert.Equal(2, capturedCallCount, "SDL.AppInit must call native hook for both branches.");
+    }
+
     public static void AppIterate_ForwardsStateAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_AppIterate");
@@ -118,6 +136,24 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.Main must call native hook once.");
     }
 
+    public static void Main_NullAndEmptyArgumentsForwardNull()
+    {
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install("MainNativeFunction", nameof(CaptureMain));
+
+        SDL3.SDL.Main(0, null!);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.Main must forward zero argc for null argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.Main must forward null argv unchanged.");
+
+        string[] argv = [];
+        SDL3.SDL.Main(0, argv);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.Main must forward zero argc for empty argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.Main must normalize empty argv to null before native marshalling.");
+        TestAssert.Equal(2, capturedCallCount, "SDL.Main must call native hook for both branches.");
+    }
+
     public static void SetMainReady_CallsNativeHook()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_SetMainReady");
@@ -154,6 +190,25 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.RunApp must call native hook once.");
     }
 
+    public static void RunApp_NullAndEmptyArgumentsForwardNull()
+    {
+        ResetCaptureState();
+        SDL3.SDL.MainFunc mainFunction = HandleMain;
+        using NativeHookScope _ = NativeHookScope.Install("RunAppNativeFunction", nameof(CaptureRunApp));
+
+        SDL3.SDL.RunApp(0, null!, mainFunction, IntPtr.Zero);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.RunApp must forward zero argc for null argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.RunApp must forward null argv unchanged.");
+
+        string[] argv = [];
+        SDL3.SDL.RunApp(0, argv, mainFunction, IntPtr.Zero);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.RunApp must forward zero argc for empty argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.RunApp must normalize empty argv to null before native marshalling.");
+        TestAssert.Equal(2, capturedCallCount, "SDL.RunApp must call native hook for both branches.");
+    }
+
     public static void EnterAppMainCallbacks_ForwardsArgumentsAndCallbacksAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_EnterAppMainCallbacks");
@@ -183,6 +238,28 @@ internal static class PInvokeTests
         TestAssert.Equal(appevent, capturedAppEvent!, "SDL.EnterAppMainCallbacks must forward appevent.");
         TestAssert.Equal(appquit, capturedAppQuit!, "SDL.EnterAppMainCallbacks must forward appquit.");
         TestAssert.Equal(1, capturedCallCount, "SDL.EnterAppMainCallbacks must call native hook once.");
+    }
+
+    public static void EnterAppMainCallbacks_NullAndEmptyArgumentsForwardNull()
+    {
+        ResetCaptureState();
+        SDL3.SDL.AppInitFunc appinit = HandleAppInit;
+        SDL3.SDL.AppIterateFunc appiter = HandleAppIterate;
+        SDL3.SDL.AppEventFunc appevent = HandleAppEvent;
+        SDL3.SDL.AppQuitFunc appquit = HandleAppQuit;
+        using NativeHookScope _ = NativeHookScope.Install("EnterAppMainCallbacksNativeFunction", nameof(CaptureEnterAppMainCallbacks));
+
+        SDL3.SDL.EnterAppMainCallbacks(0, null!, appinit, appiter, appevent, appquit);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.EnterAppMainCallbacks must forward zero argc for null argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.EnterAppMainCallbacks must forward null argv unchanged.");
+
+        string[] argv = [];
+        SDL3.SDL.EnterAppMainCallbacks(0, argv, appinit, appiter, appevent, appquit);
+
+        TestAssert.Equal(0, capturedArgc, "SDL.EnterAppMainCallbacks must forward zero argc for empty argv.");
+        TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.EnterAppMainCallbacks must normalize empty argv to null before native marshalling.");
+        TestAssert.Equal(2, capturedCallCount, "SDL.EnterAppMainCallbacks must call native hook for both branches.");
     }
 
     public static void RegisterApp_ForwardsNameStyleHInstAndReturnsNativeValue()
@@ -261,7 +338,7 @@ internal static class PInvokeTests
         capturedCallCount = 0;
     }
 
-    private static SDL3.SDL.AppResult CaptureAppInit(IntPtr appstate, int argc, string[] argv)
+    private static SDL3.SDL.AppResult CaptureAppInit(IntPtr appstate, int argc, string[]? argv)
     {
         capturedAppstate = appstate;
         capturedArgc = argc;
@@ -293,7 +370,7 @@ internal static class PInvokeTests
         capturedCallCount++;
     }
 
-    private static int CaptureMain(int argc, string[] argv)
+    private static int CaptureMain(int argc, string[]? argv)
     {
         capturedArgc = argc;
         capturedArgv = argv;
@@ -306,7 +383,7 @@ internal static class PInvokeTests
         capturedCallCount++;
     }
 
-    private static int CaptureRunApp(int argc, string[] argv, SDL3.SDL.MainFunc mainFunction, IntPtr reserved)
+    private static int CaptureRunApp(int argc, string[]? argv, SDL3.SDL.MainFunc mainFunction, IntPtr reserved)
     {
         capturedArgc = argc;
         capturedArgv = argv;
@@ -318,7 +395,7 @@ internal static class PInvokeTests
 
     private static int CaptureEnterAppMainCallbacks(
         int argc,
-        string[] argv,
+        string[]? argv,
         SDL3.SDL.AppInitFunc appinit,
         SDL3.SDL.AppIterateFunc appiter,
         SDL3.SDL.AppEventFunc appevent,
@@ -353,12 +430,12 @@ internal static class PInvokeTests
         capturedCallCount++;
     }
 
-    private static int HandleMain(int argc, string[] argv)
+    private static int HandleMain(int argc, string[]? argv)
     {
         return 0;
     }
 
-    private static SDL3.SDL.AppResult HandleAppInit(IntPtr appstate, int argc, string[] argv)
+    private static SDL3.SDL.AppResult HandleAppInit(IntPtr appstate, int argc, string[]? argv)
     {
         return SDL3.SDL.AppResult.Continue;
     }
