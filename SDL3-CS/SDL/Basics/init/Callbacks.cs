@@ -38,12 +38,12 @@ public partial class SDL
     /// future use.</param>
     /// <param name="argc">the standard ANSI C main's argc; number of elements in <c>argv</c>.</param>
     /// <param name="argv">the standard ANSI C main's argv; array of command line
-    /// arguments.</param>
+    /// arguments, or <c>null</c> when <paramref name="argc"/> is <c>0</c>.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
     /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate AppResult AppInitFunc(IntPtr appstate, int argc, string[] argv);
+    public delegate AppResult AppInitFunc(IntPtr appstate, int argc, string[]? argv);
     
     
     /// <code>typedef SDL_AppResult (SDLCALL *SDL_AppIterate_func)(void *appstate);</code>

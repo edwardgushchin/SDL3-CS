@@ -31,8 +31,8 @@ public partial class SDL
 {
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial AppResult SDL_AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
-    private delegate AppResult AppInitNative(IntPtr appstate, int argc, string[] argv);
+    private static partial AppResult SDL_AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv);
+    private delegate AppResult AppInitNative(IntPtr appstate, int argc, string[]? argv);
     private static AppInitNative AppInitNativeFunction = SDL_AppInit;
 
     /// <code>extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppInit(void **appstate, int argc, char *argv[]);</code>
@@ -64,16 +64,16 @@ public partial class SDL
     /// future use.</param>
     /// <param name="argc">the standard ANSI C main's argc; number of elements in <c>argv</c>.</param>
     /// <param name="argv">the standard ANSI C main's argv; array of command line
-    /// arguments.</param>
+    /// arguments, or <c>null</c> when <paramref name="argc"/> is <c>0</c>.</param>
     /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="AppIterate"/>
     /// <seealso cref="AppEvent"/>
     /// <seealso cref="AppQuit"/>
-    public static AppResult AppInit(IntPtr appstate, int argc, string[] argv)
+    public static AppResult AppInit(IntPtr appstate, int argc, string[]? argv)
     {
-        return AppInitNativeFunction(appstate, argc, argv);
+        return AppInitNativeFunction(appstate, argc, NormalizeMainArgv(argv));
     }
 
 
@@ -180,8 +180,8 @@ public partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_main"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_main(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv);
-    private delegate int MainNative(int argc, string[] argv);
+    private static partial int SDL_main(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv);
+    private delegate int MainNative(int argc, string[]? argv);
     private static MainNative MainNativeFunction = SDL_main;
 
     /// <code>extern SDLMAIN_DECLSPEC int SDLCALL SDL_main(int argc, char *argv[]);</code>
@@ -201,15 +201,16 @@ public partial class SDL
     /// explanation.</para>
     /// </summary>
     /// <param name="argc">an ANSI-C style main function's argc.</param>
-    /// <param name="argv">an ANSI-C style main function's argv.</param>
+    /// <param name="argv">an ANSI-C style main function's argv, or <c>null</c> when
+    /// <paramref name="argc"/> is <c>0</c>.</param>
     /// <returns>an ANSI-C main return code; generally 0 is considered successful
     /// program completion, and small non-zero values are considered
     /// errors.</returns>
     /// <threadsafety>This is the program entry point.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static int Main(int argc, string[] argv)
+    public static int Main(int argc, string[]? argv)
     {
-        return MainNativeFunction(argc, argv);
+        return MainNativeFunction(argc, NormalizeMainArgv(argv));
     }
 
 
@@ -238,8 +239,8 @@ public partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, MainFunc mainFunction, IntPtr reserved);
-    private delegate int RunAppNative(int argc, string[] argv, MainFunc mainFunction, IntPtr reserved);
+    private static partial int SDL_RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv, MainFunc mainFunction, IntPtr reserved);
+    private delegate int RunAppNative(int argc, string[]? argv, MainFunc mainFunction, IntPtr reserved);
     private static RunAppNative RunAppNativeFunction = SDL_RunApp;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RunApp(int argc, char *argv[], SDL_main_func mainFunction, void *reserved);</code>
@@ -267,16 +268,16 @@ public partial class SDL
     /// <threadsafety>Generally this is called once, near startup, from the
     /// process's initial thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static int RunApp(int argc, string[] argv, MainFunc mainFunction, IntPtr reserved)
+    public static int RunApp(int argc, string[]? argv, MainFunc mainFunction, IntPtr reserved)
     {
-        return RunAppNativeFunction(argc, argv, mainFunction, reserved);
+        return RunAppNativeFunction(argc, NormalizeMainArgv(argv), mainFunction, reserved);
     }
 
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnterAppMainCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
-    private delegate int EnterAppMainCallbacksNative(int argc, string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
+    private static partial int SDL_EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
+    private delegate int EnterAppMainCallbacksNative(int argc, string[]? argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
     private static EnterAppMainCallbacksNative EnterAppMainCallbacksNativeFunction = SDL_EnterAppMainCallbacks;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_EnterAppMainCallbacks(int argc, char *argv[], SDL_AppInit_func appinit, SDL_AppIterate_func appiter, SDL_AppEvent_func appevent, SDL_AppQuit_func appquit);</code>
@@ -291,7 +292,8 @@ public partial class SDL
     /// _really_ know what you're doing.</para>
     /// </summary>
     /// <param name="argc">standard Unix main argc.</param>
-    /// <param name="argv">standard Unix main argv.</param>
+    /// <param name="argv">standard Unix main argv, or <c>null</c> when
+    /// <paramref name="argc"/> is <c>0</c>.</param>
     /// <param name="appinit">the application's <see cref="AppInit"/> function.</param>
     /// <param name="appiter">the application's <see cref="AppIterate"/> function.</param>
     /// <param name="appevent">the application's <see cref="AppEvent"/> function.</param>
@@ -300,9 +302,14 @@ public partial class SDL
     /// <threadsafety>It is not safe to call this anywhere except as the only
     /// function call in SDL_main.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static int EnterAppMainCallbacks(int argc, string[] argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit)
+    public static int EnterAppMainCallbacks(int argc, string[]? argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit)
     {
-        return EnterAppMainCallbacksNativeFunction(argc, argv, appinit, appiter, appevent, appquit);
+        return EnterAppMainCallbacksNativeFunction(argc, NormalizeMainArgv(argv), appinit, appiter, appevent, appquit);
+    }
+
+    private static string[]? NormalizeMainArgv(string[]? argv)
+    {
+        return argv is { Length: > 0 } ? argv : null;
     }
 
 

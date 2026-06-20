@@ -170,6 +170,12 @@ dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release
 - Stage, commit, push, tag, or open pull requests only when the user explicitly requests it. Stage only files related to the requested task.
 - Commit messages in this repository must be written in English. Conventional technical prefixes are allowed, but both the subject and any human-readable body text must be English.
 
+## Main Branch Integration Gate
+- Never cherry-pick, commit, merge, or otherwise write directly to `main` as an agent workflow shortcut.
+- Changes may reach `main` only through a pull request, and only when the user explicitly asks for that pull request in the current conversation.
+- When release branch work needs mainline parity, do not satisfy it by switching to `main` and cherry-picking locally. Document the missing parity in `TASKS.md` and the development diary, then wait for an explicit user request to open or prepare a pull request.
+- If the user asks to undo a direct local `main` change made by the agent, remove only the agent-created local change and preserve unrelated user work.
+
 ## Release Branch Mainline Parity
 - Any change made on a release branch must also exist on the main branch. Release branches must not contain release-only fixes, documentation updates, workflow changes, native source pin updates, or wrapper changes that are absent from main.
 - Before considering release branch work ready, verify that the same commits or equivalent changes are already present on main, or explicitly port them to main first. If parity cannot be verified, keep the release work open and document the missing mainline parity in `TASKS.md` and the development diary.

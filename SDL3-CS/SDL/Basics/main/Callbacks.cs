@@ -32,11 +32,12 @@ public static partial class SDL
     /// The prototype for the application's main() function
     /// </summary>
     /// <param name="argc">an ANSI-C style main function's argc.</param>
-    /// <param name="argv">an ANSI-C style main function's argv.</param>
+    /// <param name="argv">an ANSI-C style main function's argv, or <c>null</c> when
+    /// <paramref name="argc"/> is <c>0</c>.</param>
     /// <returns>an ANSI-C main return code; generally 0 is considered successful
     /// program completion, and small non-zero values are considered
     /// errors.</returns>
     /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int MainFunc(int argc, string[] argv);
+    public delegate int MainFunc(int argc, string[]? argv);
 }
