@@ -7,6 +7,6 @@ Bridge больше не хранится локально в примере. П
 Для сборки нужна Android-среда:
 
 ```powershell
-dotnet workload restore SDL3-CS.Examples\AndroidCircularColorFade\AndroidCircularColorFade.csproj
-dotnet build SDL3-CS.Examples\AndroidCircularColorFade\AndroidCircularColorFade.csproj -c Release
+dotnet workload restore SDL3-CS.Examples\Android\AndroidCircularColorFade\AndroidCircularColorFade.csproj
+dotnet build SDL3-CS.Examples\Android\AndroidCircularColorFade\AndroidCircularColorFade.csproj -c Release
 ```
