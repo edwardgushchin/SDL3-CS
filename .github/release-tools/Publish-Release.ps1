@@ -3,6 +3,7 @@
 param(
     [int] $PackageRevision = -1,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
+    [string] $ReleaseNotesDir = (Join-Path $PSScriptRoot 'release-notes'),
     [string] $PackageDir,
     [string] $Repository = 'edwardgushchin/SDL3-CS',
     [switch] $GitHubRelease,
@@ -34,6 +35,11 @@ $PackageDir = Resolve-ReleasePath $PackageDir
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
 $wrapper = @($packages | Where-Object { $_.Id -eq 'SDL3-CS' })[0]
 $tag = "v$($wrapper.PackageVersion)"
+$releaseNotesDirPath = Resolve-ReleasePath $ReleaseNotesDir
+$releaseNotesPath = Join-Path $releaseNotesDirPath "$tag.md"
+if (-not (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf)) {
+    $releaseNotesPath = Join-Path $releaseNotesDirPath "$($wrapper.PackageVersion).md"
+}
 
 $expectedPackagePaths = @($packages | ForEach-Object {
     Join-Path $PackageDir "$($_.Id).$($_.PackageVersion).nupkg"
@@ -103,7 +109,14 @@ if ($GitHubRelease) {
         throw "GitHub CLI 'gh' is required for -GitHubRelease."
     }
 
-    $args = @('release', 'create', $tag, '--repo', $Repository, '--title', "SDL3-CS $($wrapper.PackageVersion)", '--notes', "SDL3-CS release $($wrapper.PackageVersion)", '--draft')
+    $args = @('release', 'create', $tag, '--repo', $Repository, '--title', "SDL3-CS $($wrapper.PackageVersion)")
+    if (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf) {
+        $args += @('--notes-file', $releaseNotesPath)
+    }
+    else {
+        $args += @('--notes', "SDL3-CS release $($wrapper.PackageVersion)")
+    }
+    $args += '--draft'
     foreach ($pkg in $packagePaths) {
         $args += $pkg
     }
