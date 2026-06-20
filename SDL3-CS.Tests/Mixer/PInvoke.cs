@@ -150,6 +150,23 @@ internal static class PInvokeTests
         TestAssert.Equal(48_000, value.Freq, "Mixer.GetMixerFormat(IntPtr, IntPtr) must report the requested frequency.");
     }
 
+    public static void LockMixer_AndUnlockMixer_AcceptValidAndNullMixer()
+    {
+        MethodInfo? lockMethod = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.LockMixer), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr)]);
+        TestAssert.NotNull(lockMethod, "Mixer.LockMixer(IntPtr) method must be public static.");
+        AssertMixerLibraryImport(lockMethod!, "MIX_LockMixer");
+
+        MethodInfo? unlockMethod = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.UnlockMixer), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr)]);
+        TestAssert.NotNull(unlockMethod, "Mixer.UnlockMixer(IntPtr) method must be public static.");
+        AssertMixerLibraryImport(unlockMethod!, "MIX_UnlockMixer");
+
+        using MixerScope mixer = MixerScope.CreateMemoryMixer();
+        SDL3.Mixer.LockMixer(mixer.Handle);
+        SDL3.Mixer.UnlockMixer(mixer.Handle);
+        SDL3.Mixer.LockMixer(IntPtr.Zero);
+        SDL3.Mixer.UnlockMixer(IntPtr.Zero);
+    }
+
     public static void LoadAudioIO_ReturnsAudioForWavStream()
     {
         MethodInfo? method = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.LoadAudioIO), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr), typeof(IntPtr), typeof(bool), typeof(bool)]);
@@ -1291,6 +1308,22 @@ internal static class PInvokeTests
         callback(IntPtr.Zero, track.Handle);
         TestAssert.True(SDL3.Mixer.SetTrackStoppedCallback(track.Handle, callback, IntPtr.Zero), "Mixer.SetTrackStoppedCallback(IntPtr, TrackStoppedCallback, IntPtr) must set a callback for a valid track.");
         TestAssert.True(SDL3.Mixer.SetTrackStoppedCallback(track.Handle, null!, IntPtr.Zero), "Mixer.SetTrackStoppedCallback(IntPtr, null, IntPtr) must clear the track callback.");
+        GC.KeepAlive(callback);
+    }
+
+    public static void SetTrackRawCallback_SetsAndClearsCallback()
+    {
+        MethodInfo? method = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.SetTrackRawCallback), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr), typeof(SDL3.Mixer.TrackMixCallback), typeof(IntPtr)]);
+        TestAssert.NotNull(method, "Mixer.SetTrackRawCallback(IntPtr, TrackMixCallback, IntPtr) method must be public static.");
+        AssertMixerBoolReturnMethodMetadata(method!, "MIX_SetTrackRawCallback");
+        AssertCallbackParameter(method!, "cb", typeof(SDL3.Mixer.TrackMixCallback));
+
+        using MixerScope mixer = MixerScope.CreateMemoryMixer();
+        using TrackScope track = TrackScope.Create(mixer);
+        SDL3.Mixer.TrackMixCallback callback = (_, _, _, _, _) => { };
+        callback(IntPtr.Zero, track.Handle, IntPtr.Zero, IntPtr.Zero, 0);
+        TestAssert.True(SDL3.Mixer.SetTrackRawCallback(track.Handle, callback, IntPtr.Zero), "Mixer.SetTrackRawCallback(IntPtr, TrackMixCallback, IntPtr) must set a callback for a valid track.");
+        TestAssert.True(SDL3.Mixer.SetTrackRawCallback(track.Handle, null!, IntPtr.Zero), "Mixer.SetTrackRawCallback(IntPtr, null, IntPtr) must clear the track callback.");
         GC.KeepAlive(callback);
     }
 

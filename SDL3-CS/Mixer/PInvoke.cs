@@ -265,6 +265,65 @@ public partial class Mixer
     public static partial bool GetMixerFormat(IntPtr mixer, IntPtr spec);
 
 
+    /// <code>extern SDL_DECLSPEC void SDLCALL MIX_LockMixer(MIX_Mixer *mixer);</code>
+    /// <summary>
+    /// <para>Lock a mixer by obtaining its internal mutex.</para>
+    /// <para>While locked, the mixer will not be able to mix more audio or change its
+    /// internal state in another thread. Those other threads will block until the
+    /// mixer is unlocked again.</para>
+    /// <para>Under the hood, this function calls <see cref="SDL.LockMutex"/>, so all the same rules
+    /// apply: the lock can be recursive, it must be unlocked the same number of
+    /// times from the same thread that locked it, etc.</para>
+    /// <para>Just about every SDL_mixer API also locks the mixer while doing its work,
+    /// as does the SDL audio device thread while actual mixing is in progress, so
+    /// basic use of this library never requires the app to explicitly lock the
+    /// device to be thread safe. There are two scenarios where this can be useful,
+    /// however:</para>
+    /// <list type="bullet">
+    /// <item>The app has a provided a callback that the mixing thread might call,
+    /// and there is some app state that needs to be protected against race
+    /// conditions as changes are made and mixing progresses simultaneously. Any
+    /// lock can be used for this, but this is a conveniently-available lock.</item>
+    /// <item>The app wants to make multiple, atomic changes to the mix. For example,
+    /// to start several tracks at the exact same moment, one would lock the
+    /// mixer, call <see cref="PlayTrack"/> multiple times, and then unlock again; all the
+    /// tracks will start mixing on the same sample frame.</item>
+    /// </list>
+    /// <para>Each call to this function must be paired with a call to <see cref="UnlockMixer"/>
+    /// from the same thread. It is safe to lock a mixer multiple times; it remains
+    /// locked until the final matching unlock call.</para>
+    /// <para>Do not lock the mixer for significant amounts of time, or it can cause
+    /// audio dropouts. Just do simple things quickly and unlock again.</para>
+    /// <para>Locking a <c>null</c> mixer is a safe no-op.</para>
+    /// </summary>
+    /// <param name="mixer">the mixer to lock. May be <c>null</c>.</param>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="UnlockMixer"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_LockMixer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void LockMixer(IntPtr mixer);
+
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL MIX_UnlockMixer(MIX_Mixer *mixer);</code>
+    /// <summary>
+    /// <para>Unlock a mixer previously locked by a call to <see cref="LockMixer"/>.</para>
+    /// <para>While locked, the mixer will not be able to mix more audio or change its
+    /// internal state another thread. Those other threads will block until the
+    /// mixer is unlocked again.</para>
+    /// <para>Under the hood, this function calls <see cref="SDL.UnlockMutex"/>, so all the same
+    /// rules apply: the lock can be recursive, it must be unlocked the same number
+    /// of times from the same thread that locked it, etc.</para>
+    /// <para>Unlocking a <c>null</c> mixer is a safe no-op.</para>
+    /// </summary>
+    /// <param name="mixer">the mixer to unlock. May be <c>null</c>.</param>
+    /// <threadsafety>This call must be paired with a previous <see cref="LockMixer"/> call
+    /// on the same thread.</threadsafety>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="LockMixer"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_UnlockMixer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void UnlockMixer(IntPtr mixer);
+
+
     /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadAudio_IO(MIX_Mixer *mixer, SDL_IOStream *io, bool predecode, bool closeio);</code>
     /// <summary>
     /// Load audio for playback from an SDL_IOStream.
@@ -2209,6 +2268,35 @@ public partial class Mixer
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackStoppedCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SetTrackStoppedCallback(IntPtr track, TrackStoppedCallback cb, IntPtr userdata);
+
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackRawCallback(MIX_Track *track, MIX_TrackMixCallback cb, void *userdata);</code>
+    /// <summary>
+    /// <para>Set a callback that fires when a MIX_Track has initial decoded audio.</para>
+    /// <para>As a track needs to mix more data, it pulls from its input (a MIX_Audio, an
+    /// SDL_AudioStream, etc). This input might be a compressed file format, like
+    /// MP3, so a little more data is uncompressed from it.</para>
+    /// <para>Once the track has PCM data to start operating on, it can fire a callback
+    /// before _any_ changes to the raw PCM input have happened. This lets an app
+    /// view the data before it has gone through transformations such as gain, 3D
+    /// positioning, fading, etc. It can also change the data in any way it pleases
+    /// during this callback, and the mixer will continue as if this data came
+    /// directly from the input.</para>
+    /// <para>Each track has its own unique raw callback.</para>
+    /// <para>Passing a <c>null</c> callback here is legal; it disables this track's callback.</para>
+    /// </summary>
+    /// <param name="track">the track to assign this callback to.</param>
+    /// <param name="cb">the function to call when the track mixes. May be <c>null</c>.</param>
+    /// <param name="userdata">an opaque pointer provided to the callback for its own
+    /// personal use.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <since>This function is available since SDL_mixer 3.0.0.</since>
+    /// <seealso cref="TrackMixCallback"/>
+    /// <seealso cref="SetTrackCookedCallback"/>
+    [LibraryImport(MixerLibrary, EntryPoint = "MIX_SetTrackRawCallback"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool SetTrackRawCallback(IntPtr track, TrackMixCallback cb, IntPtr userdata);
 
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackCookedCallback(MIX_Track *track, MIX_TrackMixCallback cb, void *userdata);</code>

@@ -969,6 +969,8 @@ SDL3.Tests.Mixer.PInvokeTests.GetMixerProperties_ReturnsPropertiesForMemoryMixer
 Console.WriteLine("Mixer.GetMixerProperties binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.GetMixerFormat_ReturnsFormatForMemoryMixer();
 Console.WriteLine("Mixer.GetMixerFormat binding test passed.");
+SDL3.Tests.Mixer.PInvokeTests.LockMixer_AndUnlockMixer_AcceptValidAndNullMixer();
+Console.WriteLine("Mixer.LockMixer and Mixer.UnlockMixer binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.LoadAudioIO_ReturnsAudioForWavStream();
 Console.WriteLine("Mixer.LoadAudioIO binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.LoadAudio_ReturnsAudioForWavFile();
@@ -1117,6 +1119,8 @@ SDL3.Tests.Mixer.PInvokeTests.SetTrackGroup_AssignsAndClearsGroup();
 Console.WriteLine("Mixer.SetTrackGroup binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.SetTrackStoppedCallback_SetsAndClearsCallback();
 Console.WriteLine("Mixer.SetTrackStoppedCallback binding test passed.");
+SDL3.Tests.Mixer.PInvokeTests.SetTrackRawCallback_SetsAndClearsCallback();
+Console.WriteLine("Mixer.SetTrackRawCallback binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.SetTrackCookedCallback_SetsAndClearsCallback();
 Console.WriteLine("Mixer.SetTrackCookedCallback binding test passed.");
 SDL3.Tests.Mixer.PInvokeTests.SetGroupPostMixCallback_SetsAndClearsCallback();

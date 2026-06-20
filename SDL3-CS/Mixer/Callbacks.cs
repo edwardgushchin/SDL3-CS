@@ -77,37 +77,8 @@ public partial class Mixer
     /// <seealso cref="SetTrackCookedCallback"/>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void TrackMixCallback(IntPtr userdata, IntPtr track, IntPtr spec, IntPtr pcm, int samples);
-    
-    
-    /// <code>extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackRawCallback(MIX_Track *track, MIX_TrackMixCallback cb, void *userdata);</code>
-    /// <summary>
-    /// <para>Set a callback that fires when a MIX_Track has initial decoded audio.</para>
-    /// <para>As a track needs to mix more data, it pulls from its input (a MIX_Audio, an
-    /// SDL_AudioStream, etc). This input might be a compressed file format, like
-    /// MP3, so a little more data is uncompressed from it.</para>
-    /// <para>Once the track has PCM data to start operating on, it can fire a callback
-    /// before _any_ changes to the raw PCM input have happened. This lets an app
-    /// view the data before it has gone through transformations such as gain, 3D
-    /// positioning, fading, etc. It can also change the data in any way it pleases
-    /// during this callback, and the mixer will continue as if this data came
-    /// directly from the input.</para>
-    /// <para>Each track has its own unique raw callback.</para>
-    /// <para>Passing a <c>null</c> callback here is legal; it disables this track's callback.</para>
-    /// </summary>
-    /// <param name="track">the track to assign this callback to.</param>
-    /// <param name="cb">the function to call when the track mixes. May be <c>null</c>.</param>
-    /// <param name="userdata">an opaque pointer provided to the callback for its own
-    /// personal use.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
-    /// information.</returns>
-    /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    /// <seealso cref="TrackMixCallback"/>
-    /// <seealso cref="SetTrackCookedCallback"/>
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public delegate bool SetTrackRawCallback(IntPtr track, TrackMixCallback cb, IntPtr userdata);
-    
-    
+
+
     /// <code>typedef void (SDLCALL *MIX_GroupMixCallback)(void *userdata, MIX_Group *group, const SDL_AudioSpec *spec, float *pcm, int samples);</code>
     /// <summary>
     /// <para>A callback that fires when a MIX_Group has completed mixing.</para>
