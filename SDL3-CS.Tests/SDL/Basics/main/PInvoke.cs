@@ -103,7 +103,8 @@ internal static class PInvokeTests
     public static void AppEvent_ForwardsStateEventRefAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_AppEvent");
-        AssertDllImport(nativeMethod, "SDL_AppEvent");
+        AssertLibraryImport(nativeMethod, "SDL_AppEvent");
+        AssertPointerParameter(nativeMethod, "event", typeof(SDL3.SDL.Event));
 
         ResetCaptureState();
         nextAppResult = SDL3.SDL.AppResult.Failure;
@@ -377,11 +378,11 @@ internal static class PInvokeTests
         return nextAppResult;
     }
 
-    private static SDL3.SDL.AppResult CaptureAppEvent(IntPtr appstate, ref SDL3.SDL.Event @event)
+    private static unsafe SDL3.SDL.AppResult CaptureAppEvent(IntPtr appstate, SDL3.SDL.Event* @event)
     {
         capturedAppstate = appstate;
-        capturedEventType = @event.Type;
-        @event.Type = (uint)SDL3.SDL.EventType.Terminating;
+        capturedEventType = @event->Type;
+        @event->Type = (uint)SDL3.SDL.EventType.Terminating;
         capturedCallCount++;
         return nextAppResult;
     }
@@ -546,6 +547,13 @@ internal static class PInvokeTests
         ParameterInfo parameter = method.GetParameters().Single(param => param.Name == parameterName);
         TestAssert.True(parameter.ParameterType.IsByRef, $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must be passed by reference.");
         TestAssert.Equal(typeof(IntPtr), parameter.ParameterType.GetElementType(), $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must be a by-ref IntPtr.");
+    }
+
+    private static void AssertPointerParameter(MethodInfo method, string parameterName, Type elementType)
+    {
+        ParameterInfo parameter = method.GetParameters().Single(param => param.Name == parameterName);
+        TestAssert.True(parameter.ParameterType.IsPointer, $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must be passed as a native pointer.");
+        TestAssert.Equal(elementType, parameter.ParameterType.GetElementType(), $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must point to the expected element type.");
     }
 
     private static void AssertCallbackCdecl(Type callbackType, string callbackName)

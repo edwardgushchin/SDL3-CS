@@ -128,10 +128,10 @@ public partial class SDL
 
 
     [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static extern AppResult SDL_AppEvent(IntPtr appstate, ref Event @event);
-    private delegate AppResult AppEventNative(IntPtr appstate, ref Event @event);
-    private static AppEventNative AppEventNativeFunction = SDL_AppEvent;
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial AppResult SDL_AppEvent(IntPtr appstate, Event* @event);
+    private unsafe delegate AppResult AppEventNative(IntPtr appstate, Event* @event);
+    private static unsafe AppEventNative AppEventNativeFunction = SDL_AppEvent;
 
     /// <code>extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppEvent(void *appstate, SDL_Event *event);</code>
     /// <summary>
@@ -172,7 +172,13 @@ public partial class SDL
     /// <seealso cref="AppIterate"/>
     public static AppResult AppEvent(IntPtr appstate, ref Event @event)
     {
-        return AppEventNativeFunction(appstate, ref @event);
+        unsafe
+        {
+            fixed (Event* eventPtr = &@event)
+            {
+                return AppEventNativeFunction(appstate, eventPtr);
+            }
+        }
     }
 
 
