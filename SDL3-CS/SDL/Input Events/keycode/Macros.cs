@@ -30,6 +30,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <code>#define SDL_SCANCODE_TO_KEYCODE(X) (X | SDLK_SCANCODE_MASK)</code>
+    /// <summary>
+    /// <para>Convert a scancode value to the corresponding scancode-masked keycode value.</para>
+    /// </summary>
+    /// <param name="scancode">the scancode to convert.</param>
+    /// <returns>the keycode value for <paramref name="scancode"/>.</returns>
     [Macro]
     public static Keycode ScancodeToKeycode(Scancode scancode)
     {

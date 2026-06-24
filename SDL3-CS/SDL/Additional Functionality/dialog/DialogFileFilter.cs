@@ -48,6 +48,7 @@ public static partial class SDL
         public readonly IntPtr Name = Marshal.StringToCoTaskMemUTF8(name);
         public readonly IntPtr Pattern = Marshal.StringToCoTaskMemUTF8(pattern);
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             if (Name != IntPtr.Zero)

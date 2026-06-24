@@ -2093,6 +2093,7 @@ public partial class SDL
     private delegate IntPtr BeginGPUComputePassPointerNativeDelegate(IntPtr commandBuffer, IntPtr storageTextureBindings, uint numStorageTextureBindings, IntPtr storageBufferBindings, uint numStorageBufferBindings);
     private static BeginGPUComputePassPointerNativeDelegate BeginGPUComputePassPointerNativeFunction = SDL_BeginGPUComputePass;
 
+    /// <inheritdoc cref="BeginGPUComputePass(nint, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>
     public static IntPtr BeginGPUComputePass(IntPtr commandBuffer, IntPtr storageTextureBindings, uint numStorageTextureBindings, IntPtr storageBufferBindings, uint numStorageBufferBindings)
     {
         return BeginGPUComputePassPointerNativeFunction(commandBuffer, storageTextureBindings, numStorageTextureBindings, storageBufferBindings, numStorageBufferBindings);

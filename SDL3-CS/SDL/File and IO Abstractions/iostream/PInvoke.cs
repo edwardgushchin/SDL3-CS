@@ -525,6 +525,13 @@ public static partial class SDL
     }
 
 
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    // ReSharper disable once InconsistentNaming
+    private static partial UIntPtr SDL_IOprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
+    private delegate UIntPtr IOprintfNative(IntPtr context, string fmt);
+    private static IOprintfNative IOprintfNativeFunction = SDL_IOprintf;
+
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_IOprintf(SDL_IOStream *context, SDL_PRINTF_FORMAT_STRING const char *fmt, ...)  SDL_PRINTF_VARARG_FUNC(2);</code>
     /// <summary>
     /// <para>Print to an SDL_IOStream data stream.</para>
@@ -538,18 +545,18 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOvprintf"/>
     /// <seealso cref="WriteIO"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    // ReSharper disable once InconsistentNaming
-    private static partial UIntPtr SDL_IOprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
-    private delegate UIntPtr IOprintfNative(IntPtr context, string fmt);
-    private static IOprintfNative IOprintfNativeFunction = SDL_IOprintf;
-
     public static UIntPtr IOprintf(IntPtr context, string fmt)
     {
         return IOprintfNativeFunction(context, fmt);
     }
 
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOvprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    // ReSharper disable once InconsistentNaming
+    private static partial UIntPtr SDL_IOvprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
+    private delegate UIntPtr IOvprintfNative(IntPtr context, string fmt, string[] ap);
+    private static IOvprintfNative IOvprintfNativeFunction = SDL_IOvprintf;
 
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_IOvprintf(SDL_IOStream *context, SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap) SDL_PRINTF_VARARG_FUNCV(2);</code>
     /// <summary>
@@ -565,13 +572,6 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="IOprintf"/>
     /// <seealso cref="WriteIO"/>
-    [ExcludeFromCodeCoverage]
-    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IOvprintf"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    // ReSharper disable once InconsistentNaming
-    private static partial UIntPtr SDL_IOvprintf(IntPtr context, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] ap);
-    private delegate UIntPtr IOvprintfNative(IntPtr context, string fmt, string[] ap);
-    private static IOvprintfNative IOvprintfNativeFunction = SDL_IOvprintf;
-
     public static UIntPtr IOvprintf(IntPtr context, string fmt, string[] ap)
     {
         return IOvprintfNativeFunction(context, fmt, ap);

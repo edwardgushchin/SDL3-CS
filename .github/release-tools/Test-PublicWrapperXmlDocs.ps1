@@ -9,7 +9,8 @@ if (-not (Test-Path -LiteralPath $SourceRoot -PathType Container)) {
 }
 
 $resolvedSourceRoot = (Resolve-Path -LiteralPath $SourceRoot).Path
-$violations = New-Object System.Collections.Generic.List[object]
+$privateDocViolations = New-Object System.Collections.Generic.List[object]
+$missingPublicDocViolations = New-Object System.Collections.Generic.List[object]
 
 function Get-RelativePath {
     param(
@@ -27,15 +28,112 @@ function Get-RelativePath {
 function Test-PrivateMethodDeclaration {
     param(
         [Parameter(Mandatory)]
+        [AllowEmptyString()]
         [string] $Line
     )
 
     return $Line -match '^\s*private\b.*\(' -and $Line -notmatch '^\s*private\b.*\b(class|record|struct)\b'
 }
 
+function Test-PublicMethodDeclaration {
+    param(
+        [Parameter(Mandatory)]
+        [AllowEmptyString()]
+        [string] $Line
+    )
+
+    if ($Line -notmatch '^\s*public\b') {
+        return $false
+    }
+
+    if ($Line -match '^\s*public\s+(?:(?:static|partial|abstract|sealed|readonly|unsafe|ref)\s+)*(class|record|struct|interface|enum|delegate)\b') {
+        return $false
+    }
+
+    return $Line -match '^\s*public\s+(?:(?:static|partial|unsafe|extern|override|virtual|new|readonly|sealed|async)\s+)*(?:[\w@][\w@\.<>[\],?*]*\s+)+[\w@]+\s*\('
+}
+
+function Test-IgnorableBetweenDocAndDeclaration {
+    param(
+        [Parameter(Mandatory)]
+        [AllowEmptyString()]
+        [string] $Line
+    )
+
+    return $Line -match '^\s*$' -or
+        $Line -match '^\s*\[' -or
+        $Line -match '^\s*//(?!/)' -or
+        $Line -match '^\s*#pragma\b'
+}
+
+function Get-DeclarationLineIndex {
+    param(
+        [Parameter(Mandatory)]
+        [AllowEmptyString()]
+        [string[]] $Lines,
+
+        [Parameter(Mandatory)]
+        [int] $StartIndex
+    )
+
+    $targetLine = $StartIndex
+    while ($targetLine -lt $Lines.Count) {
+        if (Test-IgnorableBetweenDocAndDeclaration -Line $Lines[$targetLine]) {
+            $targetLine++
+            continue
+        }
+
+        break
+    }
+
+    return $targetLine
+}
+
+function Test-HasXmlDocumentation {
+    param(
+        [Parameter(Mandatory)]
+        [AllowEmptyString()]
+        [string[]] $Lines,
+
+        [Parameter(Mandatory)]
+        [int] $DeclarationIndex
+    )
+
+    $lineIndex = $DeclarationIndex - 1
+    while ($lineIndex -ge 0) {
+        $line = $Lines[$lineIndex]
+
+        if ($line -match '^\s*$' -or $line -match '^\s*//(?!/)' -or $line -match '^\s*#pragma\b') {
+            $lineIndex--
+            continue
+        }
+
+        if ($line -match '^\s*\]') {
+            while ($lineIndex -ge 0 -and $Lines[$lineIndex] -notmatch '^\s*\[') {
+                $lineIndex--
+            }
+
+            if ($lineIndex -ge 0) {
+                $lineIndex--
+            }
+
+            continue
+        }
+
+        if ($line -match '^\s*\[') {
+            $lineIndex--
+            continue
+        }
+
+        break
+    }
+
+    return $lineIndex -ge 0 -and $Lines[$lineIndex] -match '^\s*///'
+}
+
 Get-ChildItem -LiteralPath $resolvedSourceRoot -Recurse -Filter '*.cs' | ForEach-Object {
     $path = $_.FullName
-    $lines = Get-Content -LiteralPath $path
+    $lines = @(Get-Content -LiteralPath $path)
 
     for ($i = 0; $i -lt $lines.Count; $i++) {
         if ($lines[$i] -notmatch '^\s*///') {
@@ -47,24 +145,11 @@ Get-ChildItem -LiteralPath $resolvedSourceRoot -Recurse -Filter '*.cs' | ForEach
             $i++
         }
         $docEnd = $i - 1
-        $targetLine = $i
-        while ($targetLine -lt $lines.Count) {
-            if ($lines[$targetLine] -match '^\s*$') {
-                $targetLine++
-                continue
-            }
-
-            if ($lines[$targetLine] -match '^\s*\[') {
-                $targetLine++
-                continue
-            }
-
-            break
-        }
+        $targetLine = Get-DeclarationLineIndex -Lines $lines -StartIndex $i
 
         if ($targetLine -lt $lines.Count -and (Test-PrivateMethodDeclaration -Line $lines[$targetLine])) {
             $docLine = $lines[$docStart].Trim()
-            $violations.Add([pscustomobject]@{
+            $privateDocViolations.Add([pscustomobject]@{
                 File = Get-RelativePath -Path $path -Root $resolvedSourceRoot
                 DocLine = $docStart + 1
                 DeclarationLine = $targetLine + 1
@@ -75,14 +160,39 @@ Get-ChildItem -LiteralPath $resolvedSourceRoot -Recurse -Filter '*.cs' | ForEach
 
         $i = $docEnd
     }
+
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if (-not (Test-PublicMethodDeclaration -Line $lines[$i])) {
+            continue
+        }
+
+        if (Test-HasXmlDocumentation -Lines $lines -DeclarationIndex $i) {
+            continue
+        }
+
+        $missingPublicDocViolations.Add([pscustomobject]@{
+            File = Get-RelativePath -Path $path -Root $resolvedSourceRoot
+            DeclarationLine = $i + 1
+            Declaration = $lines[$i].Trim()
+        })
+    }
 }
 
-if ($violations.Count -gt 0) {
-    $violations |
+if ($privateDocViolations.Count -gt 0) {
+    $privateDocViolations |
         Sort-Object File, DocLine |
         Format-Table File, DocLine, DeclarationLine, Declaration -AutoSize
 
-    throw "Found $($violations.Count) XML documentation block(s) attached to private methods. Move user-facing documentation to the public wrapper API."
+    throw "Found $($privateDocViolations.Count) XML documentation block(s) attached to private methods. Move user-facing documentation to the public wrapper API."
+}
+
+if ($missingPublicDocViolations.Count -gt 0) {
+    $missingPublicDocViolations |
+        Sort-Object File, DeclarationLine |
+        Format-Table File, DeclarationLine, Declaration -AutoSize
+
+    throw "Found $($missingPublicDocViolations.Count) public method declaration(s) without XML documentation."
 }
 
 Write-Host 'Public wrapper XML documentation placement is valid.'
+Write-Host 'Public method XML documentation completeness is valid.'
