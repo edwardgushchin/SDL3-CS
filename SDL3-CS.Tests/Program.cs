@@ -108,6 +108,8 @@ SDL3.Tests.SDL.Basics.Main.PInvokeTests.AppInit_ForwardsStateArgumentsAndReturns
 Console.WriteLine("SDL.AppInit binding test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.AppInit_NullAndEmptyArgumentsForwardNull();
 Console.WriteLine("SDL.AppInit null and empty argv normalization test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.AppInitFunc_AllowsCallbackToAssignAppstate();
+Console.WriteLine("SDL.AppInitFunc appstate assignment test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.AppIterate_ForwardsStateAndReturnsNativeValue();
 Console.WriteLine("SDL.AppIterate binding test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.AppEvent_ForwardsStateEventRefAndReturnsNativeValue();

@@ -30,6 +30,12 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <code>#define SDL_BUTTON_MASK(X) (1u &lt;&lt; ((X)-1))</code>
+    /// <summary>
+    /// <para>Convert a mouse button number to the corresponding button bitmask.</para>
+    /// </summary>
+    /// <param name="x">the mouse button number to convert.</param>
+    /// <returns>the bitmask for <paramref name="x"/>.</returns>
     [Macro]
     public static uint ButtonMask(int x) => 1u << (x - 1);
 

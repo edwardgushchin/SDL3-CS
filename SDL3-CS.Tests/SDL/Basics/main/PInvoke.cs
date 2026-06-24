@@ -8,6 +8,7 @@ namespace SDL3.Tests.SDL.Basics.Main;
 internal static class PInvokeTests
 {
     private static IntPtr capturedAppstate;
+    private static IntPtr nextAppstate;
     private static int capturedArgc;
     private static string[]? capturedArgv;
     private static uint capturedEventType;
@@ -30,17 +31,21 @@ internal static class PInvokeTests
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_AppInit");
         AssertLibraryImport(nativeMethod, "SDL_AppInit");
+        AssertByRefIntPtrParameter(nativeMethod, "appstate");
         AssertStringArrayParameterMarshal(nativeMethod, "argv", UnmanagedType.LPArray, UnmanagedType.LPUTF8Str);
 
         ResetCaptureState();
         nextAppResult = SDL3.SDL.AppResult.Continue;
+        nextAppstate = (IntPtr)909;
         string[] argv = ["app", "--video"];
         using NativeHookScope _ = NativeHookScope.Install("AppInitNativeFunction", nameof(CaptureAppInit));
 
-        SDL3.SDL.AppResult result = SDL3.SDL.AppInit((IntPtr)101, argv.Length, argv);
+        IntPtr appstate = (IntPtr)101;
+        SDL3.SDL.AppResult result = SDL3.SDL.AppInit(ref appstate, argv.Length, argv);
 
         TestAssert.Equal(SDL3.SDL.AppResult.Continue, result, "SDL.AppInit must return native AppResult.");
-        TestAssert.Equal((IntPtr)101, capturedAppstate, "SDL.AppInit must forward appstate.");
+        TestAssert.Equal((IntPtr)101, capturedAppstate, "SDL.AppInit must forward initial appstate.");
+        TestAssert.Equal((IntPtr)909, appstate, "SDL.AppInit must preserve appstate mutations from the native callback.");
         TestAssert.Equal(argv.Length, capturedArgc, "SDL.AppInit must forward argc.");
         TestAssert.True(ReferenceEquals(argv, capturedArgv), "SDL.AppInit must forward argv array.");
         TestAssert.Equal(1, capturedCallCount, "SDL.AppInit must call native hook once.");
@@ -51,17 +56,32 @@ internal static class PInvokeTests
         ResetCaptureState();
         using NativeHookScope _ = NativeHookScope.Install("AppInitNativeFunction", nameof(CaptureAppInit));
 
-        SDL3.SDL.AppInit(IntPtr.Zero, 0, null!);
+        IntPtr appstate = IntPtr.Zero;
+        SDL3.SDL.AppInit(ref appstate, 0, null!);
 
         TestAssert.Equal(0, capturedArgc, "SDL.AppInit must forward zero argc for null argv.");
         TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.AppInit must forward null argv unchanged.");
 
         string[] argv = [];
-        SDL3.SDL.AppInit(IntPtr.Zero, 0, argv);
+        SDL3.SDL.AppInit(ref appstate, 0, argv);
 
         TestAssert.Equal(0, capturedArgc, "SDL.AppInit must forward zero argc for empty argv.");
         TestAssert.Equal<string[]?>(null, capturedArgv, "SDL.AppInit must normalize empty argv to null before native marshalling.");
         TestAssert.Equal(2, capturedCallCount, "SDL.AppInit must call native hook for both branches.");
+    }
+
+    public static void AppInitFunc_AllowsCallbackToAssignAppstate()
+    {
+        MethodInfo invoke = typeof(SDL3.SDL.AppInitFunc).GetMethod("Invoke")!;
+        AssertByRefIntPtrParameter(invoke, "appstate");
+
+        IntPtr appstate = IntPtr.Zero;
+        SDL3.SDL.AppInitFunc appinit = AssignAppstate;
+
+        SDL3.SDL.AppResult result = appinit(ref appstate, 0, null);
+
+        TestAssert.Equal(SDL3.SDL.AppResult.Continue, result, "SDL.AppInitFunc callback must return AppResult.");
+        TestAssert.Equal((IntPtr)5150, appstate, "SDL.AppInitFunc must allow managed callbacks to assign appstate.");
     }
 
     public static void AppIterate_ForwardsStateAndReturnsNativeValue()
@@ -83,7 +103,8 @@ internal static class PInvokeTests
     public static void AppEvent_ForwardsStateEventRefAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_AppEvent");
-        AssertDllImport(nativeMethod, "SDL_AppEvent");
+        AssertLibraryImport(nativeMethod, "SDL_AppEvent");
+        AssertPointerParameter(nativeMethod, "event", typeof(SDL3.SDL.Event));
 
         ResetCaptureState();
         nextAppResult = SDL3.SDL.AppResult.Failure;
@@ -215,6 +236,7 @@ internal static class PInvokeTests
         AssertLibraryImport(nativeMethod, "SDL_EnterAppMainCallbacks");
         AssertStringArrayParameterMarshal(nativeMethod, "argv", UnmanagedType.LPArray, UnmanagedType.LPUTF8Str);
         AssertCallbackCdecl(typeof(SDL3.SDL.AppInitFunc), "SDL.AppInitFunc");
+        AssertByRefIntPtrParameter(typeof(SDL3.SDL.AppInitFunc).GetMethod("Invoke")!, "appstate");
         AssertCallbackCdecl(typeof(SDL3.SDL.AppIterateFunc), "SDL.AppIterateFunc");
         AssertCallbackCdecl(typeof(SDL3.SDL.AppEventFunc), "SDL.AppEventFunc");
         AssertCallbackCdecl(typeof(SDL3.SDL.AppQuitFunc), "SDL.AppQuitFunc");
@@ -332,15 +354,17 @@ internal static class PInvokeTests
         capturedStyle = 0;
         capturedHInst = IntPtr.Zero;
         capturedReserved = IntPtr.Zero;
+        nextAppstate = IntPtr.Zero;
         nextAppResult = default;
         nextInt = 0;
         nextBool = false;
         capturedCallCount = 0;
     }
 
-    private static SDL3.SDL.AppResult CaptureAppInit(IntPtr appstate, int argc, string[]? argv)
+    private static SDL3.SDL.AppResult CaptureAppInit(ref IntPtr appstate, int argc, string[]? argv)
     {
         capturedAppstate = appstate;
+        appstate = nextAppstate;
         capturedArgc = argc;
         capturedArgv = argv;
         capturedCallCount++;
@@ -354,11 +378,11 @@ internal static class PInvokeTests
         return nextAppResult;
     }
 
-    private static SDL3.SDL.AppResult CaptureAppEvent(IntPtr appstate, ref SDL3.SDL.Event @event)
+    private static unsafe SDL3.SDL.AppResult CaptureAppEvent(IntPtr appstate, SDL3.SDL.Event* @event)
     {
         capturedAppstate = appstate;
-        capturedEventType = @event.Type;
-        @event.Type = (uint)SDL3.SDL.EventType.Terminating;
+        capturedEventType = @event->Type;
+        @event->Type = (uint)SDL3.SDL.EventType.Terminating;
         capturedCallCount++;
         return nextAppResult;
     }
@@ -435,8 +459,14 @@ internal static class PInvokeTests
         return 0;
     }
 
-    private static SDL3.SDL.AppResult HandleAppInit(IntPtr appstate, int argc, string[]? argv)
+    private static SDL3.SDL.AppResult HandleAppInit(ref IntPtr appstate, int argc, string[]? argv)
     {
+        return SDL3.SDL.AppResult.Continue;
+    }
+
+    private static SDL3.SDL.AppResult AssignAppstate(ref IntPtr appstate, int argc, string[]? argv)
+    {
+        appstate = (IntPtr)5150;
         return SDL3.SDL.AppResult.Continue;
     }
 
@@ -510,6 +540,20 @@ internal static class PInvokeTests
         TestAssert.NotNull(marshalAs, $"SDL.{method.Name} parameter {parameterName} must keep MarshalAs metadata.");
         TestAssert.Equal(unmanagedType, marshalAs!.Value, $"SDL.{method.Name} parameter {parameterName} must use expected array marshalling.");
         TestAssert.Equal(arraySubType, marshalAs.ArraySubType, $"SDL.{method.Name} parameter {parameterName} must keep UTF-8 string array marshalling.");
+    }
+
+    private static void AssertByRefIntPtrParameter(MethodInfo method, string parameterName)
+    {
+        ParameterInfo parameter = method.GetParameters().Single(param => param.Name == parameterName);
+        TestAssert.True(parameter.ParameterType.IsByRef, $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must be passed by reference.");
+        TestAssert.Equal(typeof(IntPtr), parameter.ParameterType.GetElementType(), $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must be a by-ref IntPtr.");
+    }
+
+    private static void AssertPointerParameter(MethodInfo method, string parameterName, Type elementType)
+    {
+        ParameterInfo parameter = method.GetParameters().Single(param => param.Name == parameterName);
+        TestAssert.True(parameter.ParameterType.IsPointer, $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must be passed as a native pointer.");
+        TestAssert.Equal(elementType, parameter.ParameterType.GetElementType(), $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must point to the expected element type.");
     }
 
     private static void AssertCallbackCdecl(Type callbackType, string callbackName)

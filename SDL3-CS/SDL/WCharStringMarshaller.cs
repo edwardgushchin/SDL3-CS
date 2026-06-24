@@ -42,6 +42,11 @@ public static class WCharStringMarshaller
 
     public static class WChar16 // Windows (UTF-16)
     {
+        /// <summary>
+        /// Converts a managed string to an unmanaged null-terminated UTF-16 buffer.
+        /// </summary>
+        /// <param name="managed">the managed string to convert, or <c>null</c>.</param>
+        /// <returns>a pointer to unmanaged UTF-16 data, or <see cref="IntPtr.Zero"/> for <c>null</c>.</returns>
         public static IntPtr ConvertToUnmanaged(string? managed)
         {
             if (managed is null)
@@ -53,16 +58,30 @@ public static class WCharStringMarshaller
             return ptr;
         }
 
+        /// <summary>
+        /// Converts an unmanaged null-terminated UTF-16 buffer to a managed string.
+        /// </summary>
+        /// <param name="unmanaged">a pointer to unmanaged UTF-16 data.</param>
+        /// <returns>the managed string, or <c>null</c> when <paramref name="unmanaged"/> is <see cref="IntPtr.Zero"/>.</returns>
         public static string? ConvertToManaged(IntPtr unmanaged)
         {
             return unmanaged == IntPtr.Zero ? null : Marshal.PtrToStringUni(unmanaged);
         }
 
+        /// <summary>
+        /// Frees unmanaged memory allocated by <see cref="ConvertToUnmanaged"/>.
+        /// </summary>
+        /// <param name="ptr">the unmanaged pointer to free.</param>
         public static void Free(IntPtr ptr) => Marshal.FreeHGlobal(ptr);
     }
 
     public static class WChar32 // Linux/macOS (UTF-32)
     {
+        /// <summary>
+        /// Converts a managed string to an unmanaged null-terminated UTF-32 buffer.
+        /// </summary>
+        /// <param name="managed">the managed string to convert, or <c>null</c>.</param>
+        /// <returns>a pointer to unmanaged UTF-32 data, or <see cref="IntPtr.Zero"/> for <c>null</c>.</returns>
         public static IntPtr ConvertToUnmanaged(string? managed)
         {
             if (managed is null)
@@ -74,11 +93,21 @@ public static class WCharStringMarshaller
             return ptr;
         }
 
+        /// <summary>
+        /// Converts an unmanaged null-terminated UTF-32 buffer to a managed string.
+        /// </summary>
+        /// <param name="unmanaged">a pointer to unmanaged UTF-32 data.</param>
+        /// <returns>the managed string, or <c>null</c> when <paramref name="unmanaged"/> is <see cref="IntPtr.Zero"/>.</returns>
         public static string? ConvertToManaged(IntPtr unmanaged)
         {
             return unmanaged == IntPtr.Zero ? null : PtrToStringUTF32(unmanaged);
         }
 
+        /// <summary>
+        /// Converts an unmanaged null-terminated UTF-32 buffer to a managed string.
+        /// </summary>
+        /// <param name="ptr">a pointer to unmanaged UTF-32 data.</param>
+        /// <returns>the managed string, or <c>null</c> when <paramref name="ptr"/> is <see cref="IntPtr.Zero"/>.</returns>
         public static string? PtrToStringUTF32(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
@@ -101,10 +130,16 @@ public static class WCharStringMarshaller
         }
 
 
+        /// <summary>
+        /// Frees unmanaged memory allocated by <see cref="ConvertToUnmanaged"/>.
+        /// </summary>
+        /// <param name="ptr">the unmanaged pointer to free.</param>
         public static void Free(IntPtr ptr) => Marshal.FreeHGlobal(ptr);
     }
 
-    // The size in bytes of a wide character for the current runtime
+    /// <summary>
+    /// The size in bytes of a wide character for the current runtime.
+    /// </summary>
     public static UIntPtr WCharSize
     {
         get => (UIntPtr)(
@@ -115,18 +150,32 @@ public static class WCharStringMarshaller
 
 
     // Выбираем реализацию в зависимости от платформы
+    /// <summary>
+    /// Converts a managed string to an unmanaged null-terminated wide-character buffer for the current runtime.
+    /// </summary>
+    /// <param name="managed">the managed string to convert, or <c>null</c>.</param>
+    /// <returns>a pointer to unmanaged wide-character data, or <see cref="IntPtr.Zero"/> for <c>null</c>.</returns>
     public static IntPtr ConvertToUnmanaged(string? managed)
     {
         return IsWindowsFunction() ?
             WChar16.ConvertToUnmanaged(managed) : WChar32.ConvertToUnmanaged(managed);
     }
 
+    /// <summary>
+    /// Converts an unmanaged null-terminated wide-character buffer for the current runtime to a managed string.
+    /// </summary>
+    /// <param name="unmanaged">a pointer to unmanaged wide-character data.</param>
+    /// <returns>the managed string, or <c>null</c> when <paramref name="unmanaged"/> is <see cref="IntPtr.Zero"/>.</returns>
     public static string? ConvertToManaged(IntPtr unmanaged)
     {
         return IsWindowsFunction() ?
             WChar16.ConvertToManaged(unmanaged) : WChar32.ConvertToManaged(unmanaged);
     }
 
+    /// <summary>
+    /// Frees unmanaged memory allocated by <see cref="ConvertToUnmanaged"/>.
+    /// </summary>
+    /// <param name="ptr">the unmanaged pointer to free.</param>
     public static void Free(IntPtr ptr)
     {
         Marshal.FreeHGlobal(ptr);

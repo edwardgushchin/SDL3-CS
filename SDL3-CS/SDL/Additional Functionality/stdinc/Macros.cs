@@ -27,6 +27,18 @@ namespace SDL3;
 
 public static partial class SDL
 {
+    /// <code>#define SDL_FOURCC(A, B, C, D)</code>
+    /// <summary>
+    /// <para>Define a four character code as a <see cref="uint"/>.</para>
+    /// </summary>
+    /// <param name="a">the first ASCII character.</param>
+    /// <param name="b">the second ASCII character.</param>
+    /// <param name="c">the third ASCII character.</param>
+    /// <param name="d">the fourth ASCII character.</param>
+    /// <returns>the four characters converted into a <see cref="uint"/>, one character
+    /// per-byte.</returns>
+    /// <threadsafety>It is safe to call this macro from any thread.</threadsafety>
+    /// <since>This macro is available since SDL 3.2.0.</since>
     [Macro]
 	public static uint FourCC(char a, char b, char c, char d)
 	{

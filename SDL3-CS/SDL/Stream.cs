@@ -116,6 +116,7 @@ public static partial class SDL
         /// <summary>The number of bytes available in the I/O stream.</summary>
         public int Length { get; }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             if (_disposed) return;
@@ -207,6 +208,7 @@ public static partial class SDL
             set => Seek(value, SeekOrigin.Begin);
         }
 
+        /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
         {
             ThrowIfDisposed();
@@ -227,6 +229,7 @@ public static partial class SDL
             }
         }
 
+        /// <inheritdoc/>
         public override void Write(byte[] buffer, int offset, int count)
         {
             ThrowIfDisposed();
@@ -248,6 +251,7 @@ public static partial class SDL
             }
         }
 
+        /// <inheritdoc/>
         public override long Seek(long offset, SeekOrigin origin)
         {
             ThrowIfDisposed();
@@ -264,11 +268,13 @@ public static partial class SDL
             return pos < 0 ? throw new IOException($"Failed to seek in SDL_IOStream: {GetError()}") : pos;
         }
 
+        /// <inheritdoc/>
         public override void Flush()
         {
             // SDL_IOStream is typically not buffered from the .NET side.
         }
 
+        /// <inheritdoc/>
         public override void SetLength(long value) =>
             throw new NotSupportedException("Changing the length of an SDL_IOStream is not supported.");
 

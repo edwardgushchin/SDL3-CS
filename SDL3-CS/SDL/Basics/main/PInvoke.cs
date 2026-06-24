@@ -31,8 +31,8 @@ public partial class SDL
 {
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial AppResult SDL_AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv);
-    private delegate AppResult AppInitNative(IntPtr appstate, int argc, string[]? argv);
+    private static partial AppResult SDL_AppInit(ref IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv);
+    private delegate AppResult AppInitNative(ref IntPtr appstate, int argc, string[]? argv);
     private static AppInitNative AppInitNativeFunction = SDL_AppInit;
 
     /// <code>extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppInit(void **appstate, int argc, char *argv[]);</code>
@@ -71,9 +71,9 @@ public partial class SDL
     /// <seealso cref="AppIterate"/>
     /// <seealso cref="AppEvent"/>
     /// <seealso cref="AppQuit"/>
-    public static AppResult AppInit(IntPtr appstate, int argc, string[]? argv)
+    public static AppResult AppInit(ref IntPtr appstate, int argc, string[]? argv)
     {
-        return AppInitNativeFunction(appstate, argc, NormalizeMainArgv(argv));
+        return AppInitNativeFunction(ref appstate, argc, NormalizeMainArgv(argv));
     }
 
 
@@ -105,7 +105,7 @@ public partial class SDL
     /// <para>The <c>appstate</c> parameter is an optional pointer provided by the app during
     /// <see cref="AppInit"/>. If the app never provided a pointer, this will be <c>null</c>.</para>
     /// <para>If this function returns <see cref="AppResult.Continue"/>, the app will continue normal
-    /// operation, receiving repeated calls to <see cref="AppIterate"/> and SDL_AppEvent for
+    /// operation, receiving repeated calls to <see cref="AppIterate"/> and <see cref="AppEvent"/> for
     /// the life of the program. If this function returns <see cref="AppResult.Failure"/>, SDL will
     /// call <see cref="AppQuit"/> and terminate the process with an exit code that reports
     /// an error to the platform. If it returns <see cref="AppResult.Success"/>, SDL calls
@@ -127,16 +127,58 @@ public partial class SDL
     }
 
 
-    //extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppEvent(void *appstate, SDL_Event *event);
     [ExcludeFromCodeCoverage]
-    [DllImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static extern AppResult SDL_AppEvent(IntPtr appstate, ref Event @event);
-    private delegate AppResult AppEventNative(IntPtr appstate, ref Event @event);
-    private static AppEventNative AppEventNativeFunction = SDL_AppEvent;
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppEvent"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static unsafe partial AppResult SDL_AppEvent(IntPtr appstate, Event* @event);
+    private unsafe delegate AppResult AppEventNative(IntPtr appstate, Event* @event);
+    private static unsafe AppEventNative AppEventNativeFunction = SDL_AppEvent;
 
+    /// <code>extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppEvent(void *appstate, SDL_Event *event);</code>
+    /// <summary>
+    /// <para>App-implemented event entry point for SDL_MAIN_USE_CALLBACKS apps.</para>
+    /// <para>Apps implement this function when using SDL_MAIN_USE_CALLBACKS. If using a
+    /// standard "main" function, you should not supply this.</para>
+    /// <para>This function is called as needed by SDL after <see cref="AppInit"/> returns
+    /// <see cref="AppResult.Continue"/>. It is called once for each new event.</para>
+    /// <para>There is (currently) no guarantee about what thread this will be called
+    /// from; whatever thread pushes an event onto SDL's queue will trigger this
+    /// function. SDL is responsible for pumping the event queue between each call
+    /// to <see cref="AppIterate"/>, so in normal operation one should only get events in a
+    /// serial fashion, but be careful if you have a thread that explicitly calls
+    /// <see cref="PushEvent"/>. SDL itself will push events to the queue on the main thread.</para>
+    /// <para>Events sent to this function are not owned by the app; if you need to save
+    /// the data, you should copy it.</para>
+    /// <para>This function should not go into an infinite mainloop; it should handle the
+    /// provided event appropriately and return.</para>
+    /// <para>The <c>appstate</c> parameter is an optional pointer provided by the app during
+    /// <see cref="AppInit"/>. If the app never provided a pointer, this will be <c>null</c>.</para>
+    /// <para>If this function returns <see cref="AppResult.Continue"/>, the app will continue normal
+    /// operation, receiving repeated calls to <see cref="AppIterate"/> and <see cref="AppEvent"/> for
+    /// the life of the program. If this function returns <see cref="AppResult.Failure"/>, SDL will
+    /// call <see cref="AppQuit"/> and terminate the process with an exit code that reports
+    /// an error to the platform. If it returns <see cref="AppResult.Success"/>, SDL calls
+    /// <see cref="AppQuit"/> and terminates with an exit code that reports success to the
+    /// platform.</para>
+    /// </summary>
+    /// <param name="appstate">an optional pointer, provided by the app in <see cref="AppInit"/>.</param>
+    /// <param name="event">the new event for the app to examine.</param>
+    /// <returns><see cref="AppResult.Failure"/> to terminate with an error, <see cref="AppResult.Success"/> to
+    /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
+    /// <threadsafety>This function may get called concurrently with
+    /// <see cref="AppIterate"/> or <see cref="AppQuit"/> for events not pushed from
+    /// the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="AppInit"/>
+    /// <seealso cref="AppIterate"/>
     public static AppResult AppEvent(IntPtr appstate, ref Event @event)
     {
-        return AppEventNativeFunction(appstate, ref @event);
+        unsafe
+        {
+            fixed (Event* eventPtr = &@event)
+            {
+                return AppEventNativeFunction(appstate, eventPtr);
+            }
+        }
     }
 
 

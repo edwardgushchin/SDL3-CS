@@ -43,7 +43,7 @@ public partial class SDL
     /// terminate with success, <see cref="AppResult.Continue"/> to continue.</returns>
     /// <since>This datatype is available since SDL 3.2.0</since>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate AppResult AppInitFunc(IntPtr appstate, int argc, string[]? argv);
+    public delegate AppResult AppInitFunc(ref IntPtr appstate, int argc, string[]? argv);
     
     
     /// <code>typedef SDL_AppResult (SDLCALL *SDL_AppIterate_func)(void *appstate);</code>
