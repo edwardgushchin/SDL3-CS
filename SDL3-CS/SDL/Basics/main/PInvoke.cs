@@ -31,8 +31,8 @@ public partial class SDL
 {
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_AppInit"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial AppResult SDL_AppInit(IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv);
-    private delegate AppResult AppInitNative(IntPtr appstate, int argc, string[]? argv);
+    private static partial AppResult SDL_AppInit(ref IntPtr appstate, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv);
+    private delegate AppResult AppInitNative(ref IntPtr appstate, int argc, string[]? argv);
     private static AppInitNative AppInitNativeFunction = SDL_AppInit;
 
     /// <code>extern SDLMAIN_DECLSPEC SDL_AppResult SDLCALL SDL_AppInit(void **appstate, int argc, char *argv[]);</code>
@@ -71,9 +71,9 @@ public partial class SDL
     /// <seealso cref="AppIterate"/>
     /// <seealso cref="AppEvent"/>
     /// <seealso cref="AppQuit"/>
-    public static AppResult AppInit(IntPtr appstate, int argc, string[]? argv)
+    public static AppResult AppInit(ref IntPtr appstate, int argc, string[]? argv)
     {
-        return AppInitNativeFunction(appstate, argc, NormalizeMainArgv(argv));
+        return AppInitNativeFunction(ref appstate, argc, NormalizeMainArgv(argv));
     }
 
 
