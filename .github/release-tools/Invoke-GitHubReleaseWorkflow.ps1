@@ -62,6 +62,7 @@ if (-not $SkipLocalValidation) {
     & (Join-Path $PSScriptRoot 'Test-ReleaseManifest.ps1') -ManifestPath $ManifestPath -SkipSourceCheckoutValidation
     & (Join-Path $PSScriptRoot 'Test-ReleaseWorkflow.ps1') -ManifestPath $ManifestPath -WorkflowPath $WorkflowPath
     & (Join-Path $PSScriptRoot 'Test-ReleasePublishPlan.ps1')
+    & (Join-Path $PSScriptRoot 'Test-ReleaseNotes.ps1')
     & (Join-Path $PSScriptRoot 'Test-NativeForkInitializationPlan.ps1') -ManifestPath $ManifestPath
     & (Join-Path $PSScriptRoot 'Test-NativeBuildPlan.ps1') -ManifestPath $ManifestPath
     & (Join-Path $PSScriptRoot 'Test-NativePackageRidEntries.ps1') -ManifestPath $ManifestPath
