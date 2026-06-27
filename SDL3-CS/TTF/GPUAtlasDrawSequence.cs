@@ -69,5 +69,10 @@ public static partial class TTF
         /// The image type of this draw sequence
         /// </summary>
         public ImageType ImageType;
+
+        /// <summary>
+        /// The next sequence, or <c>null</c> in case of the last sequence
+        /// </summary>
+        public IntPtr Next;
     }
 }
