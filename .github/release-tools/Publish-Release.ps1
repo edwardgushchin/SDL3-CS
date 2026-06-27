@@ -111,6 +111,7 @@ if ($GitHubRelease) {
 
     $args = @('release', 'create', $tag, '--repo', $Repository, '--title', "SDL3-CS $($wrapper.PackageVersion)")
     if (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf) {
+        & (Join-Path $PSScriptRoot 'Test-ReleaseNotes.ps1') -ReleaseNotesPath $releaseNotesPath
         $args += @('--notes-file', $releaseNotesPath)
     }
     else {

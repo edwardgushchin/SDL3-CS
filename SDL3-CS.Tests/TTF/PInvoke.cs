@@ -98,6 +98,7 @@ internal static class PInvokeTests
 
     public static void RunAll()
     {
+        GPUAtlasDrawSequenceTests.RunAll();
         NativeEntryPoints_KeepExpectedLibraryImportMetadata();
         PropertyConstants_MatchSdlTtf322Header();
         VersionAndInitFunctions_ForwardOutputsAndReturnNativeValues();
