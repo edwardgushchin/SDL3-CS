@@ -47,6 +47,8 @@
   <a href="#-license">License</a>
 </p>
 
+<p align="center">⭐ <a href="https://github.com/edwardgushchin/SDL3-CS">Star us on GitHub</a> - it motivates us a lot!</p>
+
 ## 🚀 About
 
 SDL3# is a C# wrapper and native package set for SDL3. It gives .NET applications direct access to SDL3 APIs while keeping native runtime distribution predictable across desktop, mobile, and Apple TV targets.
