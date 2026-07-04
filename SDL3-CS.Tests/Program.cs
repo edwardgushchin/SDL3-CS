@@ -1,5 +1,7 @@
 using SDL3;
 
+SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
+Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.SDL.Basics.Assert.PInvokeTests.ReportAssertion_ForwardsDataStringsAndLine();
 Console.WriteLine("SDL.ReportAssertion binding test passed.");
 SDL3.Tests.SDL.Basics.Assert.PInvokeTests.SetAssertionHandler_ForwardsHandlerAndUserdata();

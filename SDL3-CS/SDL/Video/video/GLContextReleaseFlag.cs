@@ -31,7 +31,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
     [Flags]
-    public enum GLСontextReleaseFlag
+    public enum GLContextReleaseFlag
     {
         None   = 0x0000,
         Flush  = 0x0001

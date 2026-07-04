@@ -157,7 +157,7 @@ public static partial class SDL
         FrameBufferSRGBCapable,
         
         /// <summary>
-        /// sets context the release behavior. See <see cref="GLСontextReleaseFlag"/>; defaults to <see cref="GLСontextReleaseFlag.Flush"/>.
+        /// sets context the release behavior. See <see cref="GLContextReleaseFlag"/>; defaults to <see cref="GLContextReleaseFlag.Flush"/>.
         /// </summary>
         ContextReleaseBehavior,
         
