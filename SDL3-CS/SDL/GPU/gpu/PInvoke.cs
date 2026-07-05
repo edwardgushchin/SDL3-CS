@@ -3291,8 +3291,8 @@ public partial class SDL
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GPUTextureSupportsSampleCount"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_GPUTextureSupportsSampleCount(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleСount);
-    private delegate bool GPUTextureSupportsSampleCountNativeDelegate(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleСount);
+    private static partial bool SDL_GPUTextureSupportsSampleCount(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleCount);
+    private delegate bool GPUTextureSupportsSampleCountNativeDelegate(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleCount);
     private static GPUTextureSupportsSampleCountNativeDelegate GPUTextureSupportsSampleCountNativeFunction = SDL_GPUTextureSupportsSampleCount;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GPUTextureSupportsSampleCount(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count);</code>
@@ -3301,12 +3301,12 @@ public partial class SDL
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="format">the texture format to check.</param>
-    /// <param name="sampleСount">the sample count to check.</param>
+    /// <param name="sampleCount">the sample count to check.</param>
     /// <returns>whether the sample count is supported for this texture format.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static bool GPUTextureSupportsSampleCount(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleСount)
+    public static bool GPUTextureSupportsSampleCount(IntPtr device, GPUTextureFormat format, GPUSampleCount sampleCount)
     {
-        return GPUTextureSupportsSampleCountNativeFunction(device, format, sampleСount);
+        return GPUTextureSupportsSampleCountNativeFunction(device, format, sampleCount);
     }
 
 
