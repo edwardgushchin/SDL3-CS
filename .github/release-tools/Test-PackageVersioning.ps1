@@ -144,7 +144,7 @@ foreach ($package in @($managedPackageRows + $nativePackageRows)) {
         VersionPrefix = $versionPrefix
         PackageRevision = $PackageRevision
         PackageVersion = if ($computed.Count -eq 1) { $computed[0].PackageVersion } else { '' }
-        ExpectedNupkg = if ($computed.Count -eq 1) { "$($package.Id).$($computed[0].PackageVersion).nupkg" } else { '' }
+        ExpectedNupkg = if ($computed.Count -eq 1) { Get-ReleaseNuGetPackageFileName -Package $computed[0] } else { '' }
         Platform = if ($package.Kind -eq 'native') { $package.NativePackagePlatform } else { '' }
         Rids = if ($package.Kind -eq 'native') { (@($package.Rids) -join ',') } else { '' }
     })

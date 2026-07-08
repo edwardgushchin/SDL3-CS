@@ -118,7 +118,7 @@ function Test-NuGetPackageExists {
     )
 
     $lowerId = $PackageId.ToLowerInvariant()
-    $lowerVersion = $PackageVersion.ToLowerInvariant()
+    $lowerVersion = (Get-ReleaseNormalizedNuGetVersion -PackageVersion $PackageVersion).ToLowerInvariant()
     $uri = "https://api.nuget.org/v3-flatcontainer/$lowerId/$lowerVersion/$lowerId.$lowerVersion.nupkg"
 
     try {
@@ -161,7 +161,7 @@ if (-not $wrapper) {
 $tag = "v$($wrapper.PackageVersion)"
 
 foreach ($package in $packages) {
-    $packagePath = Join-Path $PackageDir "$($package.Id).$($package.PackageVersion).nupkg"
+    $packagePath = Get-ReleaseNuGetPackagePath -PackageDir $PackageDir -Package $package
     $status = if (Test-Path -LiteralPath $packagePath -PathType Leaf) { 'present' } else { 'missing' }
     if ($status -eq 'missing') {
         Add-PublishStateError "Expected package is missing before publish: $packagePath"

@@ -314,7 +314,7 @@ foreach ($requiredPackageId in $requiredPackageIds) {
 
 if (-not $DryRun) {
     foreach ($package in $packages) {
-        $packagePath = Join-Path $PackageDir "$($package.Id).$($package.PackageVersion).nupkg"
+        $packagePath = Get-ReleaseNuGetPackagePath -PackageDir $PackageDir -Package $package
         if (-not (Test-Path -LiteralPath $packagePath -PathType Leaf)) {
             throw "Expected NuGet package for Android consumer validation is missing: $packagePath"
         }

@@ -186,7 +186,7 @@ try {
     $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
     $expectedPackageEntries = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
     foreach ($package in $packages) {
-        [void] $expectedPackageEntries.Add("artifacts/release/nuget/$($package.Id).$($package.PackageVersion).nupkg")
+        [void] $expectedPackageEntries.Add("artifacts/release/nuget/$(Get-ReleaseNuGetPackageFileName -Package $package)")
     }
 
     $actualPackageEntries = @($entries.Keys | Where-Object {

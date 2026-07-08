@@ -42,7 +42,7 @@ if (-not (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf)) {
 }
 
 $expectedPackagePaths = @($packages | ForEach-Object {
-    Join-Path $PackageDir "$($_.Id).$($_.PackageVersion).nupkg"
+    Get-ReleaseNuGetPackagePath -PackageDir $PackageDir -Package $_
 })
 $missingPackagePaths = @($expectedPackagePaths | Where-Object { -not (Test-Path -LiteralPath $_ -PathType Leaf) })
 

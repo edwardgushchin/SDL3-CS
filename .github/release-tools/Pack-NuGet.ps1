@@ -46,7 +46,7 @@ if (-not $DryRun -and -not $SkipNativeBuildReceiptValidation) {
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
 foreach ($package in $packages) {
     $projectPath = Resolve-ReleasePath $package.Project
-    $expectedPackagePath = Join-Path $OutputDir "$($package.Id).$($package.PackageVersion).nupkg"
+    $expectedPackagePath = Get-ReleaseNuGetPackagePath -PackageDir $OutputDir -Package $package
     $packProperties = @(
         "-p:PackageVersion=$($package.PackageVersion)",
         "-p:PackageId=$($package.Id)"
