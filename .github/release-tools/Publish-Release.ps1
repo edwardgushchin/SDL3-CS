@@ -109,7 +109,8 @@ if ($GitHubRelease) {
         throw "GitHub CLI 'gh' is required for -GitHubRelease."
     }
 
-    $args = @('release', 'create', $tag, '--repo', $Repository, '--title', "SDL3-CS $($wrapper.PackageVersion)")
+    $releaseTarget = Invoke-ReleaseGitValue -RepositoryPath (Get-ReleaseRepoRoot) -Arguments @('rev-parse', 'HEAD')
+    $args = @('release', 'create', $tag, '--repo', $Repository, '--target', $releaseTarget, '--title', "SDL3-CS $($wrapper.PackageVersion)")
     if (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf) {
         & (Join-Path $PSScriptRoot 'Test-ReleaseNotes.ps1') -ReleaseNotesPath $releaseNotesPath
         $args += @('--notes-file', $releaseNotesPath)
