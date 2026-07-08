@@ -15,7 +15,7 @@
 
   <PropertyGroup Label="NuGet">
     <PackageId>SDL3-CS.Linux</PackageId>
-    <VersionPrefix>3.4.10</VersionPrefix>
+    <VersionPrefix>3.4.12</VersionPrefix>
     <Title>Linux SDL3 native runtime for SDL3-CS</Title>
     <Authors>Eduard Gushchin</Authors>
     <Company>Eduard Gushchin</Company>

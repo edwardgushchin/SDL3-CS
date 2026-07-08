@@ -46,7 +46,7 @@ dotnet add package SDL3-CS.Android.Shadercross
 
 | Package | Native component | Use when you need |
 |---------|------------------|-------------------|
-| `SDL3-CS.Android` | SDL 3.4.10 | Core SDL3 runtime assets. |
+| `SDL3-CS.Android` | SDL 3.4.12 | Core SDL3 runtime assets. |
 | `SDL3-CS.Android.Image` | SDL_image 3.4.4 | Image loading and saving. |
 | `SDL3-CS.Android.TTF` | SDL_ttf 3.2.2 | Font and text rendering APIs. |
 | `SDL3-CS.Android.Mixer` | SDL_mixer 3.2.4 | Music and mixer playback APIs. |

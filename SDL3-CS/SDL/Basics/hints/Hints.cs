@@ -661,6 +661,22 @@ public static partial class SDL
         /// <remarks>This hint must be set before <see cref="StartTextInput"/> is called</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string EnableScreenKeyboard = "SDL_ENABLE_SCREEN_KEYBOARD";
+
+        /// <summary>
+        /// <para>A variable that controls whether the Steam on-screen keyboard should be
+        /// shown when text input is active.</para>
+        /// <para>Steam will set this hint via environment variable for games launched in Big
+        /// Picture mode. To override this you should call <see cref="SetHintWithPriority"/>
+        /// with priority <see cref="HintPriority.Override"/>.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"0"</c>: Do not show the Steam on-screen keyboard.</item>
+        /// <item><c>"1"</c>: Show the Steam on-screen keyboard.</item>
+        /// </list>
+        /// </summary>
+        /// <remarks>This hint should be set before SDL is initialized.</remarks>
+        /// <since>This hint is available since SDL 3.4.12.</since>
+        public const string EnableSteamScreenKeyboard = "SDL_ENABLE_STEAM_SCREEN_KEYBOARD";
         
         /// <summary>
         /// <para>A variable containing a list of evdev devices to use if udev is not

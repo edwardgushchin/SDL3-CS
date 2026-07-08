@@ -44,6 +44,7 @@ public static partial class SDL
     /// adding/reading data on demand, and the app will often put/get data as
     /// appropriate, but the system goes on with the data currently available to it
     /// if this callback does nothing.</para>
+    /// <para>Do not call <see cref="DestroyAudioStream"/> on <c>stream</c> during this callback.</para>
     /// </summary>
     /// <param name="userdata">an opaque pointer provided by the app for their personal
     /// use.</param>
