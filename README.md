@@ -32,8 +32,8 @@
   <img alt="Linux x64 and arm64" src="https://img.shields.io/badge/Linux-x64%20%7C%20arm64-FCC624?style=flat-square">
   <img alt="macOS x64 and arm64" src="https://img.shields.io/badge/macOS-x64%20%7C%20arm64-000000?style=flat-square">
   <img alt="Android arm, arm64, x86, x64" src="https://img.shields.io/badge/Android-arm%20%7C%20arm64%20%7C%20x86%20%7C%20x64-3DDC84?style=flat-square">
-  <img alt="iOS device and simulator" src="https://img.shields.io/badge/iOS-device%20%7C%20simulator-lightgrey?style=flat-square">
-  <img alt="tvOS device and simulator" src="https://img.shields.io/badge/tvOS-device%20%7C%20simulator-lightgrey?style=flat-square">
+  <img alt="iOS device arm64 and simulator arm64/x64" src="https://img.shields.io/badge/iOS-device%20arm64%20%7C%20simulator%20arm64%2Fx64-lightgrey?style=flat-square">
+  <img alt="tvOS device arm64 and simulator arm64/x64" src="https://img.shields.io/badge/tvOS-device%20arm64%20%7C%20simulator%20arm64%2Fx64-lightgrey?style=flat-square">
 </p>
 
 <p align="center">
