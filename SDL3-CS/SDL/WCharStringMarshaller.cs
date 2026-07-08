@@ -149,7 +149,7 @@ public static class WCharStringMarshaller
     }
 
 
-    // Выбираем реализацию в зависимости от платформы
+    // Choose the runtime-specific implementation.
     /// <summary>
     /// Converts a managed string to an unmanaged null-terminated wide-character buffer for the current runtime.
     /// </summary>
