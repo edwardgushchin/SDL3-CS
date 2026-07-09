@@ -92,13 +92,14 @@ foreach ($package in $packages) {
         }
     }
 
-    $packagePath = Join-Path $PackageDir "$($package.Id).$($package.PackageVersion).nupkg"
+    $packageFileName = Get-ReleaseNuGetPackageFileName -Package $package
+    $packagePath = Join-Path $PackageDir $packageFileName
     if (-not (Test-Path -LiteralPath $packagePath -PathType Leaf)) {
         Add-ContentError "Expected NuGet package is missing: $packagePath"
         $rows.Add([pscustomobject]@{
             PackageId = $package.Id
             Scope = 'package'
-            Expected = "$($package.Id).$($package.PackageVersion).nupkg"
+            Expected = $packageFileName
             Count = 0
             Status = 'missing'
         })
@@ -110,7 +111,7 @@ foreach ($package in $packages) {
     $rows.Add([pscustomobject]@{
         PackageId = $package.Id
         Scope = 'package'
-        Expected = "$($package.Id).$($package.PackageVersion).nupkg"
+        Expected = $packageFileName
         Count = $entryNames.Count
         Status = 'present'
     })

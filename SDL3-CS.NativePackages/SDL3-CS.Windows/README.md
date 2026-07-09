@@ -3,7 +3,7 @@
 <p align="center">
   <img alt="Windows native package" src="https://img.shields.io/badge/platform-Windows-555?style=flat-square">
   <img alt="SDL3" src="https://img.shields.io/badge/component-SDL3-239120?style=flat-square">
-  <img alt="SDL 3.4.10" src="https://img.shields.io/badge/native-SDL%203.4.10-004880?style=flat-square">
+  <img alt="SDL 3.4.12" src="https://img.shields.io/badge/native-SDL%203.4.12-004880?style=flat-square">
 </p>
 
 `SDL3-CS.Windows` contains base SDL runtime libraries required by SDL3-CS applications for Windows applications that use SDL3-CS.
@@ -16,7 +16,7 @@ Use this package when a .NET application targets Windows and needs windowing, ev
 
 | Package | Native library version | Package line |
 |---------|------------------------|--------------|
-| `SDL3-CS.Windows` | SDL 3.4.10 | `3.4.10.x` |
+| `SDL3-CS.Windows` | SDL 3.4.12 | `3.4.12.x` |
 
 ## Supported Runtime Identifiers
 
@@ -44,7 +44,7 @@ dotnet add package SDL3-CS.Windows
 
 | Package | Native component | Use when you need |
 |---------|------------------|-------------------|
-| `SDL3-CS.Windows` | SDL 3.4.10 | Core SDL3 runtime assets. |
+| `SDL3-CS.Windows` | SDL 3.4.12 | Core SDL3 runtime assets. |
 | `SDL3-CS.Windows.Image` | SDL_image 3.4.4 | Image loading and saving. |
 | `SDL3-CS.Windows.TTF` | SDL_ttf 3.2.2 | Font and text rendering APIs. |
 | `SDL3-CS.Windows.Mixer` | SDL_mixer 3.2.4 | Music and mixer playback APIs. |

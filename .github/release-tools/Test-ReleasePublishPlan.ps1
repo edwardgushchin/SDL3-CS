@@ -44,6 +44,8 @@ Assert-PublishScriptContains -Text $text -Expected '[switch] $KeepGitHubReleaseD
 Assert-PublishScriptContains -Text $text -Expected '[switch] $RequireUpstreamCurrent' -Description 'upstream-current publish option'
 Assert-PublishScriptContains -Text $text -Expected '$ReleaseNotesDir' -Description 'release notes directory option'
 Assert-PublishScriptContains -Text $text -Expected "'release', 'create'" -Description 'GitHub release create command'
+Assert-PublishScriptContains -Text $text -Expected "'--target', `$releaseTarget" -Description 'GitHub release target commit command'
+Assert-PublishScriptContains -Text $text -Expected "Invoke-ReleaseGitValue -RepositoryPath (Get-ReleaseRepoRoot) -Arguments @('rev-parse', 'HEAD')" -Description 'GitHub release target commit discovery'
 Assert-PublishScriptContains -Text $text -Expected "'--notes-file'" -Description 'GitHub release notes file command'
 Assert-PublishScriptContains -Text $text -Expected 'Test-ReleaseNotes.ps1' -Description 'release notes body validation'
 Assert-PublishScriptContains -Text $text -Expected 'release-notes' -Description 'default release notes directory'

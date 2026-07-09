@@ -205,6 +205,66 @@ function Get-ReleasePackageVersion {
     return $Pattern.Replace('{nativeVersion}', $NativeVersion).Replace('{packageRevision}', $PackageRevision.ToString([System.Globalization.CultureInfo]::InvariantCulture))
 }
 
+function Get-ReleaseNormalizedNuGetVersion {
+    param(
+        [Parameter(Mandatory)]
+        [string] $PackageVersion
+    )
+
+    $version = $PackageVersion.Trim()
+    if ([string]::IsNullOrWhiteSpace($version)) {
+        throw "PackageVersion must not be empty."
+    }
+
+    $metadataIndex = $version.IndexOf('+')
+    if ($metadataIndex -ge 0) {
+        $version = $version.Substring(0, $metadataIndex)
+    }
+
+    $suffix = ''
+    $suffixIndex = $version.IndexOf('-')
+    if ($suffixIndex -ge 0) {
+        $suffix = $version.Substring($suffixIndex)
+        $version = $version.Substring(0, $suffixIndex)
+    }
+
+    $parts = @($version.Split('.'))
+    if ($parts.Count -eq 4 -and $parts[3] -eq '0') {
+        $version = "$($parts[0]).$($parts[1]).$($parts[2])"
+    }
+
+    return "$version$suffix"
+}
+
+function Get-ReleaseNuGetPackageFileName {
+    param(
+        [Parameter(Mandatory)]
+        [object] $Package
+    )
+
+    if (-not $Package.PSObject.Properties.Name.Contains('Id') -or [string]::IsNullOrWhiteSpace([string] $Package.Id)) {
+        throw "Package row must contain Id."
+    }
+    if (-not $Package.PSObject.Properties.Name.Contains('PackageVersion') -or [string]::IsNullOrWhiteSpace([string] $Package.PackageVersion)) {
+        throw "Package row must contain PackageVersion."
+    }
+
+    $normalizedVersion = Get-ReleaseNormalizedNuGetVersion -PackageVersion $Package.PackageVersion
+    return "$($Package.Id).$normalizedVersion.nupkg"
+}
+
+function Get-ReleaseNuGetPackagePath {
+    param(
+        [Parameter(Mandatory)]
+        [string] $PackageDir,
+
+        [Parameter(Mandatory)]
+        [object] $Package
+    )
+
+    return Join-Path $PackageDir (Get-ReleaseNuGetPackageFileName -Package $Package)
+}
+
 function Get-ReleaseNativePackagePlatforms {
     param(
         [Parameter(Mandatory)]

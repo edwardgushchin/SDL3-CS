@@ -1184,6 +1184,11 @@ if (SDL.Hints.VideoX11EnableXsyncExt != "SDL_VIDEO_X11_ENABLE_XSYNC_EXT")
     throw new InvalidOperationException("Unexpected VideoX11EnableXsyncExt hint value.");
 }
 
+if (SDL.Hints.EnableSteamScreenKeyboard != "SDL_ENABLE_STEAM_SCREEN_KEYBOARD")
+{
+    throw new InvalidOperationException("Unexpected EnableSteamScreenKeyboard hint value.");
+}
+
 if (SDL.Hints.WindowsRawKeyboardInputsink != "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK")
 {
     throw new InvalidOperationException("Unexpected WindowsRawKeyboardInputsink hint value.");

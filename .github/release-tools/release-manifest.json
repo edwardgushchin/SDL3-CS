@@ -441,9 +441,9 @@
       "id": "SDL",
       "repository": "https://github.com/edwardgushchin/SDL",
       "upstreamRepository": "https://github.com/libsdl-org/SDL",
-      "sourceRef": "8e37db5e797b6167f3a00d697d816a684bd259c7",
+      "sourceRef": "f87239e71e42da91ca317a12eefb82cfbf3393eb",
       "sourceFolder": "SDL",
-      "nativeVersion": "3.4.10",
+      "nativeVersion": "3.4.12",
       "packageNameSuffix": "",
       "dependencies": [],
       "cmakeArgs": [

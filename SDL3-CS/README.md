@@ -3,7 +3,7 @@
 <p align="center">
   <img alt=".NET 7, 8, 9, and 10" src="https://img.shields.io/badge/.NET-7.0%20%7C%208.0%20%7C%209.0%20%7C%2010.0-512BD4?style=flat-square">
   <img alt="C# 14" src="https://img.shields.io/badge/C%23-14-239120?style=flat-square">
-  <img alt="SDL target 3.4.10" src="https://img.shields.io/badge/SDL3%20target-3.4.10-239120?style=flat-square">
+  <img alt="SDL target 3.4.12" src="https://img.shields.io/badge/SDL3%20target-3.4.12-239120?style=flat-square">
   <img alt="NuGet package SDL3-CS" src="https://img.shields.io/badge/NuGet-SDL3--CS-004880?style=flat-square">
 </p>
 

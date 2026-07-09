@@ -3,7 +3,7 @@
 <p align="center">
   <img alt="Linux native package" src="https://img.shields.io/badge/platform-Linux-555?style=flat-square">
   <img alt="SDL3" src="https://img.shields.io/badge/component-SDL3-239120?style=flat-square">
-  <img alt="SDL 3.4.10" src="https://img.shields.io/badge/native-SDL%203.4.10-004880?style=flat-square">
+  <img alt="SDL 3.4.12" src="https://img.shields.io/badge/native-SDL%203.4.12-004880?style=flat-square">
 </p>
 
 `SDL3-CS.Linux` contains base SDL runtime libraries required by SDL3-CS applications for Linux applications that use SDL3-CS.
@@ -16,7 +16,7 @@ Use this package when a .NET application targets Linux and needs windowing, even
 
 | Package | Native library version | Package line |
 |---------|------------------------|--------------|
-| `SDL3-CS.Linux` | SDL 3.4.10 | `3.4.10.x` |
+| `SDL3-CS.Linux` | SDL 3.4.12 | `3.4.12.x` |
 
 ## Supported Runtime Identifiers
 
@@ -43,7 +43,7 @@ dotnet add package SDL3-CS.Linux
 
 | Package | Native component | Use when you need |
 |---------|------------------|-------------------|
-| `SDL3-CS.Linux` | SDL 3.4.10 | Core SDL3 runtime assets. |
+| `SDL3-CS.Linux` | SDL 3.4.12 | Core SDL3 runtime assets. |
 | `SDL3-CS.Linux.Image` | SDL_image 3.4.4 | Image loading and saving. |
 | `SDL3-CS.Linux.TTF` | SDL_ttf 3.2.2 | Font and text rendering APIs. |
 | `SDL3-CS.Linux.Mixer` | SDL_mixer 3.2.4 | Music and mixer playback APIs. |

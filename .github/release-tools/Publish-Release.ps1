@@ -42,7 +42,7 @@ if (-not (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf)) {
 }
 
 $expectedPackagePaths = @($packages | ForEach-Object {
-    Join-Path $PackageDir "$($_.Id).$($_.PackageVersion).nupkg"
+    Get-ReleaseNuGetPackagePath -PackageDir $PackageDir -Package $_
 })
 $missingPackagePaths = @($expectedPackagePaths | Where-Object { -not (Test-Path -LiteralPath $_ -PathType Leaf) })
 
@@ -109,7 +109,8 @@ if ($GitHubRelease) {
         throw "GitHub CLI 'gh' is required for -GitHubRelease."
     }
 
-    $args = @('release', 'create', $tag, '--repo', $Repository, '--title', "SDL3-CS $($wrapper.PackageVersion)")
+    $releaseTarget = Invoke-ReleaseGitValue -RepositoryPath (Get-ReleaseRepoRoot) -Arguments @('rev-parse', 'HEAD')
+    $args = @('release', 'create', $tag, '--repo', $Repository, '--target', $releaseTarget, '--title', "SDL3-CS $($wrapper.PackageVersion)")
     if (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf) {
         & (Join-Path $PSScriptRoot 'Test-ReleaseNotes.ps1') -ReleaseNotesPath $releaseNotesPath
         $args += @('--notes-file', $releaseNotesPath)
