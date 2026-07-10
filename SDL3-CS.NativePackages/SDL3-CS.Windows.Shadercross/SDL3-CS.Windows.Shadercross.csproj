@@ -44,6 +44,10 @@
 
   <ItemGroup>
     <None Include="../../LICENSE" Pack="true" PackagePath="\" />
+    <None Include="../ThirdPartyLicenses/DirectXShaderCompiler/LICENSE.TXT" Pack="true" PackagePath="licenses/DirectXShaderCompiler/LICENSE.TXT" />
+    <None Include="../ThirdPartyLicenses/DirectXShaderCompiler/LICENSE-LLVM.txt" Pack="true" PackagePath="licenses/DirectXShaderCompiler/LICENSE-LLVM.txt" />
+    <None Include="../ThirdPartyLicenses/DirectXShaderCompiler/LICENSE-MS.txt" Pack="true" PackagePath="licenses/DirectXShaderCompiler/LICENSE-MS.txt" />
+    <None Include="../ThirdPartyLicenses/DirectXShaderCompiler/ThirdPartyNotices.txt" Pack="true" PackagePath="licenses/DirectXShaderCompiler/ThirdPartyNotices.txt" />
     <None Include="../../logo.png" Pack="true" Visible="false" PackagePath="\" />
     <None Include="README.md" Pack="true" Visible="true" PackagePath="\" />
     <None Include="buildTransitive\SDL3-CS.Windows.Shadercross.targets" Pack="true" PackagePath="buildTransitive\$(PackageId).targets" />

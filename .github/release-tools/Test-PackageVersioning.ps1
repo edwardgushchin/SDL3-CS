@@ -44,6 +44,37 @@ function Test-SemVerCore {
     return $Version -match '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$'
 }
 
+function Get-ExpectedComponentPackageRevision {
+    param(
+        [Parameter(Mandatory)]
+        [object] $Manifest,
+
+        [Parameter(Mandatory)]
+        [string] $ComponentId,
+
+        [Parameter(Mandatory)]
+        [int] $ReleaseRevision
+    )
+
+    $effectiveRevision = $ReleaseRevision
+    if (-not $Manifest.versioning.PSObject.Properties.Name.Contains('componentPackageRevisionOverrides')) {
+        return $effectiveRevision
+    }
+
+    $releaseKey = $ReleaseRevision.ToString([System.Globalization.CultureInfo]::InvariantCulture)
+    $releaseOverride = $Manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties[$releaseKey]
+    if (-not $releaseOverride) {
+        return $effectiveRevision
+    }
+
+    $componentOverride = $releaseOverride.Value.PSObject.Properties[$ComponentId]
+    if ($componentOverride) {
+        $effectiveRevision = [int] $componentOverride.Value
+    }
+
+    return $effectiveRevision
+}
+
 $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
 if ($PackageRevision -lt 0) {
     $PackageRevision = [int] $manifest.versioning.packageRevisionDefault
@@ -66,6 +97,43 @@ else {
 
     if ($manifest.versioning.wrapperVersionComponent -ne 'SDL') {
         Add-VersioningError "Manifest wrapperVersionComponent must be 'SDL', actual: '$($manifest.versioning.wrapperVersionComponent)'."
+    }
+
+    if (-not $manifest.versioning.PSObject.Properties.Name.Contains('componentPackageRevisionOverrides')) {
+        Add-VersioningError "Manifest versioning must declare componentPackageRevisionOverrides for occupied component versions."
+    }
+    else {
+        $componentIds = @($manifest.components | ForEach-Object id)
+        foreach ($releaseOverride in $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties) {
+            if ($releaseOverride.Name -notmatch '^(0|[1-9]\d*)$') {
+                Add-VersioningError "componentPackageRevisionOverrides release key '$($releaseOverride.Name)' must be a non-negative integer."
+            }
+
+            foreach ($componentOverride in $releaseOverride.Value.PSObject.Properties) {
+                if ($componentIds -notcontains $componentOverride.Name) {
+                    Add-VersioningError "componentPackageRevisionOverrides.$($releaseOverride.Name) references unknown component '$($componentOverride.Name)'."
+                }
+                if ([int] $componentOverride.Value -lt 0) {
+                    Add-VersioningError "componentPackageRevisionOverrides.$($releaseOverride.Name).$($componentOverride.Name) must be non-negative."
+                }
+            }
+        }
+
+        $revisionOne = $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties['1']
+        if (-not $revisionOne) {
+            Add-VersioningError "componentPackageRevisionOverrides must declare release revision '1'."
+        }
+        else {
+            foreach ($componentId in @('SDL_image', 'SDL_mixer', 'SDL_ttf', 'SDL_shadercross')) {
+                $override = $revisionOne.Value.PSObject.Properties[$componentId]
+                if (-not $override -or [int] $override.Value -ne 7) {
+                    Add-VersioningError "componentPackageRevisionOverrides.1.$componentId must be 7 for public release v3.4.12.1."
+                }
+            }
+            if ($revisionOne.Value.PSObject.Properties['SDL']) {
+                Add-VersioningError "componentPackageRevisionOverrides.1 must not override core SDL revision 1."
+            }
+        }
     }
 }
 
@@ -132,9 +200,22 @@ foreach ($package in @($managedPackageRows + $nativePackageRows)) {
         continue
     }
 
-    $expectedPackageVersion = "$($package.ExpectedVersionPrefix).$PackageRevision"
+    $effectivePackageRevision = Get-ExpectedComponentPackageRevision `
+        -Manifest $manifest `
+        -ComponentId $package.VersionComponent `
+        -ReleaseRevision $PackageRevision
+    $expectedPackageVersion = "$($package.ExpectedVersionPrefix).$effectivePackageRevision"
     if ($computed[0].PackageVersion -ne $expectedPackageVersion) {
         Add-VersioningError "$($package.Id) computed PackageVersion '$($computed[0].PackageVersion)' does not match expected '$expectedPackageVersion'."
+    }
+
+    if (-not $computed[0].PSObject.Properties.Name.Contains('ReleaseRevision') -or
+        [int] $computed[0].ReleaseRevision -ne $PackageRevision) {
+        Add-VersioningError "$($package.Id) computed row must expose ReleaseRevision '$PackageRevision'."
+    }
+    if (-not $computed[0].PSObject.Properties.Name.Contains('PackageRevision') -or
+        [int] $computed[0].PackageRevision -ne $effectivePackageRevision) {
+        Add-VersioningError "$($package.Id) computed row must expose effective PackageRevision '$effectivePackageRevision'."
     }
 
     $rows.Add([pscustomobject]@{
@@ -142,7 +223,8 @@ foreach ($package in @($managedPackageRows + $nativePackageRows)) {
         Kind = $package.Kind
         VersionComponent = $package.VersionComponent
         VersionPrefix = $versionPrefix
-        PackageRevision = $PackageRevision
+        ReleaseRevision = $PackageRevision
+        PackageRevision = $effectivePackageRevision
         PackageVersion = if ($computed.Count -eq 1) { $computed[0].PackageVersion } else { '' }
         ExpectedNupkg = if ($computed.Count -eq 1) { Get-ReleaseNuGetPackageFileName -Package $computed[0] } else { '' }
         Platform = if ($package.Kind -eq 'native') { $package.NativePackagePlatform } else { '' }

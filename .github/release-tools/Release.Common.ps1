@@ -380,6 +380,45 @@ function Get-ReleaseNativePackageIdForRid {
     return Get-ReleaseNativePackageId -Component $Component -Platform $platform
 }
 
+function Get-ReleaseComponentPackageRevision {
+    param(
+        [Parameter(Mandatory)]
+        [object] $Manifest,
+
+        [Parameter(Mandatory)]
+        [string] $ComponentId,
+
+        [Parameter(Mandatory)]
+        [int] $ReleaseRevision
+    )
+
+    if ($ReleaseRevision -lt 0) {
+        throw "ReleaseRevision must be zero or greater."
+    }
+
+    $effectiveRevision = $ReleaseRevision
+    if (-not $Manifest.PSObject.Properties.Name.Contains('versioning') -or
+        -not $Manifest.versioning.PSObject.Properties.Name.Contains('componentPackageRevisionOverrides')) {
+        return $effectiveRevision
+    }
+
+    $releaseKey = $ReleaseRevision.ToString([System.Globalization.CultureInfo]::InvariantCulture)
+    $releaseOverride = $Manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties[$releaseKey]
+    if (-not $releaseOverride) {
+        return $effectiveRevision
+    }
+
+    $componentOverride = $releaseOverride.Value.PSObject.Properties[$ComponentId]
+    if ($componentOverride) {
+        $effectiveRevision = [int] $componentOverride.Value
+        if ($effectiveRevision -lt 0) {
+            throw "Component package revision override for release '$releaseKey', component '$ComponentId' must be zero or greater."
+        }
+    }
+
+    return $effectiveRevision
+}
+
 function Get-ReleasePackageVersions {
     param(
         [Parameter(Mandatory)]
@@ -399,18 +438,28 @@ function Get-ReleasePackageVersions {
 
     foreach ($managed in $Manifest.managedPackages) {
         $component = Get-ReleaseComponent -Manifest $Manifest -Component $managed.versionComponent
+        $effectivePackageRevision = Get-ReleaseComponentPackageRevision `
+            -Manifest $Manifest `
+            -ComponentId $component.id `
+            -ReleaseRevision $PackageRevision
         $rows.Add([pscustomobject]@{
             Id = $managed.id
             Project = $managed.project
             VersionComponent = $component.id
             NativeVersion = $component.nativeVersion
-            PackageVersion = Get-ReleasePackageVersion -NativeVersion $component.nativeVersion -PackageRevision $PackageRevision -Pattern $pattern
+            ReleaseRevision = $PackageRevision
+            PackageRevision = $effectivePackageRevision
+            PackageVersion = Get-ReleasePackageVersion -NativeVersion $component.nativeVersion -PackageRevision $effectivePackageRevision -Pattern $pattern
             Kind = 'managed'
         })
     }
 
     $nativePackagePlatforms = Get-ReleaseNativePackagePlatforms -Manifest $Manifest
     foreach ($component in $Manifest.components) {
+        $effectivePackageRevision = Get-ReleaseComponentPackageRevision `
+            -Manifest $Manifest `
+            -ComponentId $component.id `
+            -ReleaseRevision $PackageRevision
         foreach ($platform in $nativePackagePlatforms) {
             $id = Get-ReleaseNativePackageId -Component $component -Platform $platform
             $project = Get-ReleaseNativePackageProject -Component $component -Platform $platform
@@ -419,7 +468,9 @@ function Get-ReleasePackageVersions {
                 Project = $project
                 VersionComponent = $component.id
                 NativeVersion = $component.nativeVersion
-                PackageVersion = Get-ReleasePackageVersion -NativeVersion $component.nativeVersion -PackageRevision $PackageRevision -Pattern $pattern
+                ReleaseRevision = $PackageRevision
+                PackageRevision = $effectivePackageRevision
+                PackageVersion = Get-ReleasePackageVersion -NativeVersion $component.nativeVersion -PackageRevision $effectivePackageRevision -Pattern $pattern
                 Kind = 'native'
                 NativePackageBaseId = $platform.packageId
                 NativePackagePlatform = $platform.id

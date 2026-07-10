@@ -6,7 +6,15 @@
   "versioning": {
     "packageRevisionDefault": 0,
     "packageVersionPattern": "{nativeVersion}.{packageRevision}",
-    "wrapperVersionComponent": "SDL"
+    "wrapperVersionComponent": "SDL",
+    "componentPackageRevisionOverrides": {
+      "1": {
+        "SDL_image": 7,
+        "SDL_mixer": 7,
+        "SDL_ttf": 7,
+        "SDL_shadercross": 7
+      }
+    }
   },
   "platformCoverage": {
     "policy": "maximum-public-intersection",
@@ -927,9 +935,13 @@
         "linux": [
           "lib/libSDL3_shadercross.so*",
           "lib/libspirv-cross-c-shared.so*",
+          "lib/libdxcompiler.so*",
+          "lib/libdxil.so*",
           "lib/libvkd3d*.so*",
           "**/libSDL3_shadercross.so*",
           "**/libspirv-cross-c-shared.so*",
+          "**/libdxcompiler.so*",
+          "**/libdxil.so*",
           "**/libvkd3d*.so*"
         ],
         "android": [
@@ -953,9 +965,13 @@
         "macos": [
           "lib/libSDL3_shadercross*.dylib*",
           "lib/libspirv-cross-c-shared*.dylib*",
+          "lib/libdxcompiler*.dylib*",
+          "lib/libdxil*.dylib*",
           "lib/libvkd3d*.dylib*",
           "**/libSDL3_shadercross*.dylib*",
           "**/libspirv-cross-c-shared*.dylib*",
+          "**/libdxcompiler*.dylib*",
+          "**/libdxil*.dylib*",
           "**/libvkd3d*.dylib*"
         ]
       }
