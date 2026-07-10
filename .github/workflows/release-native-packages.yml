@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       package_revision:
-        description: Numeric SDL3-CS package revision appended to native versions.
+        description: Numeric SDL3-CS release revision; the manifest may remap occupied component package revisions.
         required: true
         default: "1"
       build_parallel_level:
@@ -192,6 +192,14 @@ jobs:
             $buildParams.AllowCrossCompile = $true
           }
           ./.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams
+
+      - name: Smoke test ShaderCross DXC runtime
+        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-')
+        shell: pwsh
+        run: |
+          ./.github/release-tools/Test-ShaderCrossDxcRuntime.ps1 `
+            -Rid '${{ matrix.rid }}' `
+            -InstallRoot 'artifacts/release/native/SDL_shadercross/${{ matrix.rid }}/install'
 
       - name: Upload native bundle
         uses: actions/upload-artifact@v4

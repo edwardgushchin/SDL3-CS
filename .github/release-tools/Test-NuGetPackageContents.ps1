@@ -120,6 +120,35 @@ foreach ($package in $packages) {
         continue
     }
 
+    if ($package.VersionComponent -eq 'SDL_shadercross' -and $package.NativePackagePlatform -in @('Windows', 'Linux', 'MacOS')) {
+        foreach ($licenseEntry in @(
+            'licenses/DirectXShaderCompiler/LICENSE.TXT',
+            'licenses/DirectXShaderCompiler/LICENSE-LLVM.txt',
+            'licenses/DirectXShaderCompiler/LICENSE-MS.txt',
+            'licenses/DirectXShaderCompiler/ThirdPartyNotices.txt'
+        )) {
+            if (-not $entrySet.Contains($licenseEntry)) {
+                Add-ContentError "$($package.Id) package is missing $licenseEntry."
+                $rows.Add([pscustomobject]@{
+                    PackageId = $package.Id
+                    Scope = 'license'
+                    Expected = $licenseEntry
+                    Count = 0
+                    Status = 'missing'
+                })
+            }
+            else {
+                $rows.Add([pscustomobject]@{
+                    PackageId = $package.Id
+                    Scope = 'license'
+                    Expected = $licenseEntry
+                    Count = 1
+                    Status = 'present'
+                })
+            }
+        }
+    }
+
     $nativeArtifactProject = if ($package.PSObject.Properties.Name.Contains('NativeArtifactProject') -and $package.NativeArtifactProject) {
         $package.NativeArtifactProject
     }

@@ -314,6 +314,44 @@ function Test-SdlShadercrossDxcBinaries {
     return $true
 }
 
+function Test-SdlShadercrossUnixDxcBinaries {
+    param(
+        [Parameter(Mandatory)]
+        [string] $DxcRoot
+    )
+
+    $groups = @(
+        @('include\dxc\dxcapi.h', 'linux\include\dxc\dxcapi.h'),
+        @('lib\libdxcompiler.so', 'linux\lib\libdxcompiler.so'),
+        @('lib\libdxil.so', 'linux\lib\libdxil.so')
+    )
+
+    foreach ($group in $groups) {
+        $found = $false
+        foreach ($relativePath in $group) {
+            if (Test-Path -LiteralPath (Join-Path $DxcRoot $relativePath) -PathType Leaf) {
+                $found = $true
+                break
+            }
+        }
+
+        if (-not $found) {
+            return $false
+        }
+    }
+
+    return $true
+}
+
+function Test-SdlShadercrossVendoredBuild {
+    param(
+        [Parameter(Mandatory)]
+        [object] $RidInfo
+    )
+
+    return $RidInfo.os -eq 'macos' -or ($RidInfo.os -eq 'linux' -and $RidInfo.arch -eq 'arm64')
+}
+
 function Get-SdlShadercrossDxcDownloadAsset {
     $explicitUrl = [Environment]::GetEnvironmentVariable('DXC_ZIP_URL')
     if ($explicitUrl) {
@@ -359,47 +397,83 @@ function Initialize-SdlShadercrossDxcBinaries {
         [switch] $DryRun
     )
 
-    if ($RidInfo.os -ne 'windows') {
+    $targetIsWindows = $RidInfo.os -eq 'windows'
+    $targetIsLinuxX64 = $RidInfo.os -eq 'linux' -and $RidInfo.arch -eq 'x64'
+    if (-not $targetIsWindows -and -not $targetIsLinuxX64) {
         return
     }
 
     $dxcRoot = Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'
-    if (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch) {
+    if ($targetIsWindows) {
+        if (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch) {
+            return
+        }
+
+        if ($DryRun) {
+            Write-Host "[dry-run] bootstrap DXC binaries into $dxcRoot"
+            return
+        }
+
+        New-Item -ItemType Directory -Force -Path $dxcRoot | Out-Null
+
+        $asset = Get-SdlShadercrossDxcDownloadAsset
+        $downloadRoot = Join-Path $BuildRoot '_downloads\DirectXShaderCompiler'
+        New-Item -ItemType Directory -Force -Path $downloadRoot | Out-Null
+
+        $zipPath = Join-Path $downloadRoot $asset.Name
+        Write-Host "Downloading DXC binaries: $($asset.Name)"
+        Invoke-WebRequest -Uri $asset.Url -OutFile $zipPath
+
+        $extractRoot = Join-Path $downloadRoot ([System.IO.Path]::GetFileNameWithoutExtension($asset.Name))
+        if (Test-Path -LiteralPath $extractRoot) {
+            Remove-Item -LiteralPath $extractRoot -Recurse -Force
+        }
+        New-Item -ItemType Directory -Force -Path $extractRoot | Out-Null
+        Expand-Archive -LiteralPath $zipPath -DestinationPath $extractRoot -Force
+
+        $payloadRoot = $extractRoot
+        $topFolder = @(Get-ChildItem -LiteralPath $extractRoot -Directory -Filter 'dxc_*' | Select-Object -First 1)
+        if ($topFolder.Count -eq 1 -and (Test-Path -LiteralPath (Join-Path $topFolder[0].FullName 'bin') -PathType Container)) {
+            $payloadRoot = $topFolder[0].FullName
+        }
+
+        Copy-Item -Path (Join-Path $payloadRoot '*') -Destination $dxcRoot -Recurse -Force
+
+        if (-not (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch)) {
+            throw "DXC binaries were downloaded but the expected $($RidInfo.arch) layout was not found under $dxcRoot."
+        }
+        return
+    }
+
+    if (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot) {
+        if ($DryRun) {
+            Write-Host "[dry-run] reuse pinned DXC binaries from $dxcRoot"
+        }
         return
     }
 
     if ($DryRun) {
-        Write-Host "[dry-run] bootstrap DXC binaries into $dxcRoot"
+        Write-Host "[dry-run] bootstrap pinned DXC binaries into $dxcRoot"
         return
     }
 
-    New-Item -ItemType Directory -Force -Path $dxcRoot | Out-Null
+    $downloadScript = Join-Path $SourcePath 'build-scripts\download-prebuilt-DirectXShaderCompiler.cmake'
+    if (-not (Test-Path -LiteralPath $downloadScript -PathType Leaf)) {
+        throw "Pinned SDL_shadercross DXC download script was not found: $downloadScript"
+    }
 
-    $asset = Get-SdlShadercrossDxcDownloadAsset
+    New-Item -ItemType Directory -Force -Path $dxcRoot | Out-Null
     $downloadRoot = Join-Path $BuildRoot '_downloads\DirectXShaderCompiler'
     New-Item -ItemType Directory -Force -Path $downloadRoot | Out-Null
+    $cmakePath = Get-ReleaseCMakePathForBuild
+    Invoke-ReleaseCommand -FilePath $cmakePath -Arguments @(
+        '-DCMAKE_SYSTEM_NAME=Linux',
+        "-DDXC_ROOT=$dxcRoot",
+        '-P', $downloadScript
+    ) -WorkingDirectory $downloadRoot
 
-    $zipPath = Join-Path $downloadRoot $asset.Name
-    Write-Host "Downloading DXC binaries: $($asset.Name)"
-    Invoke-WebRequest -Uri $asset.Url -OutFile $zipPath
-
-    $extractRoot = Join-Path $downloadRoot ([System.IO.Path]::GetFileNameWithoutExtension($asset.Name))
-    if (Test-Path -LiteralPath $extractRoot) {
-        Remove-Item -LiteralPath $extractRoot -Recurse -Force
-    }
-    New-Item -ItemType Directory -Force -Path $extractRoot | Out-Null
-    Expand-Archive -LiteralPath $zipPath -DestinationPath $extractRoot -Force
-
-    $payloadRoot = $extractRoot
-    $topFolder = @(Get-ChildItem -LiteralPath $extractRoot -Directory -Filter 'dxc_*' | Select-Object -First 1)
-    if ($topFolder.Count -eq 1 -and (Test-Path -LiteralPath (Join-Path $topFolder[0].FullName 'bin') -PathType Container)) {
-        $payloadRoot = $topFolder[0].FullName
-    }
-
-    Copy-Item -Path (Join-Path $payloadRoot '*') -Destination $dxcRoot -Recurse -Force
-
-    if (-not (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch)) {
-        throw "DXC binaries were downloaded but the expected $($RidInfo.arch) layout was not found under $dxcRoot."
+    if (-not (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot)) {
+        throw "Pinned DXC binaries were downloaded but the expected linux-x64 layout was not found under $dxcRoot."
     }
 }
 
@@ -533,9 +607,19 @@ function Invoke-CMakeBuild {
         New-Item -ItemType Directory -Force -Path $buildDir, $InstallRoot | Out-Null
     }
 
+    $shadercrossVendoredBuild = $false
     if ($ComponentInfo.id -eq 'SDL_shadercross') {
-        Invoke-SdlShadercrossSpirvCrossBuild -RidInfo $RidInfo -SourcePath $sourcePath -BuildRoot $BuildRoot -InstallRoot $InstallRoot -BuildConfiguration $BuildConfiguration -ResolvedBuildParallelLevel $ResolvedBuildParallelLevel -CleanBuild:$CleanBuild -DryRun:$DryRun
-        Initialize-SdlShadercrossDxcBinaries -SourcePath $sourcePath -RidInfo $RidInfo -BuildRoot $BuildRoot -DryRun:$DryRun
+        $shadercrossVendoredBuild = Test-SdlShadercrossVendoredBuild -RidInfo $RidInfo
+        if ($shadercrossVendoredBuild) {
+            $vendoredDxcSource = Join-Path $sourcePath 'external\DirectXShaderCompiler\CMakeLists.txt'
+            if (-not $DryRun -and -not (Test-Path -LiteralPath $vendoredDxcSource -PathType Leaf)) {
+                throw "Vendored DirectXShaderCompiler source was not found: $vendoredDxcSource. Update SDL_shadercross submodules before building."
+            }
+        }
+        else {
+            Invoke-SdlShadercrossSpirvCrossBuild -RidInfo $RidInfo -SourcePath $sourcePath -BuildRoot $BuildRoot -InstallRoot $InstallRoot -BuildConfiguration $BuildConfiguration -ResolvedBuildParallelLevel $ResolvedBuildParallelLevel -CleanBuild:$CleanBuild -DryRun:$DryRun
+            Initialize-SdlShadercrossDxcBinaries -SourcePath $sourcePath -RidInfo $RidInfo -BuildRoot $BuildRoot -DryRun:$DryRun
+        }
     }
 
     $configureArgs = @(
@@ -607,11 +691,13 @@ function Invoke-CMakeBuild {
     }
 
     if ($ComponentInfo.id -eq 'SDL_shadercross') {
-        if ($RidInfo.os -eq 'windows') {
-            $configureArgs += '-DSDLSHADERCROSS_DXC=ON'
-        }
-        else {
-            $configureArgs += '-DSDLSHADERCROSS_DXC=OFF'
+        $desktopDxc = $RidInfo.os -in @('windows', 'linux', 'macos')
+        $configureArgs += if ($desktopDxc) { '-DSDLSHADERCROSS_DXC=ON' } else { '-DSDLSHADERCROSS_DXC=OFF' }
+        $configureArgs += if ($shadercrossVendoredBuild) { '-DSDLSHADERCROSS_VENDORED=ON' } else { '-DSDLSHADERCROSS_VENDORED=OFF' }
+
+        if ($RidInfo.os -eq 'linux' -and $RidInfo.arch -eq 'x64') {
+            $dxcRoot = Join-Path $sourcePath 'external\DirectXShaderCompiler-binaries'
+            $configureArgs += "-DDirectXShaderCompiler_ROOT=$dxcRoot"
         }
     }
 
