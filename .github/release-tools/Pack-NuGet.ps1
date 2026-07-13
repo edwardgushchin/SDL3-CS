@@ -10,6 +10,7 @@ param(
     [switch] $SkipNativeArtifactValidation,
     [switch] $SkipNativeBuildReceiptValidation,
     [switch] $SkipNuGetPackageContentValidation,
+    [switch] $ManagedOnly,
     [switch] $DryRun
 )
 
@@ -27,7 +28,12 @@ if (-not $OutputDir) {
 }
 $OutputDir = Resolve-ReleasePath $OutputDir
 
-Write-Host "Native RID validation scope: $($Rids -join ', ')"
+if ($ManagedOnly) {
+    Write-Host 'Package scope: managed-only'
+}
+else {
+    Write-Host "Native RID validation scope: $($Rids -join ', ')"
+}
 
 & (Join-Path $PSScriptRoot 'Test-PackageVersioning.ps1') -PackageRevision $PackageRevision -ManifestPath $ManifestPath
 
@@ -35,15 +41,21 @@ if (-not $DryRun) {
     New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 }
 
-if (-not $DryRun -and -not $SkipNativeArtifactValidation) {
+if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeArtifactValidation) {
     & (Join-Path $PSScriptRoot 'Test-NativePackageArtifacts.ps1') -ManifestPath $ManifestPath -Rids $Rids
 }
 
-if (-not $DryRun -and -not $SkipNativeBuildReceiptValidation) {
+if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeBuildReceiptValidation) {
     & (Join-Path $PSScriptRoot 'Test-NativeBuildReceipts.ps1') -ManifestPath $ManifestPath -Rids $Rids
 }
 
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
+if ($ManagedOnly) {
+    $packages = @($packages | Where-Object { $_.Kind -eq 'managed' })
+}
+if (@($packages).Count -eq 0) {
+    throw 'Selected NuGet package scope is empty.'
+}
 foreach ($package in $packages) {
     $projectPath = Resolve-ReleasePath $package.Project
     $expectedPackagePath = Get-ReleaseNuGetPackagePath -PackageDir $OutputDir -Package $package
@@ -93,5 +105,6 @@ if (-not $DryRun -and -not $SkipNuGetPackageContentValidation) {
         -PackageRevision $PackageRevision `
         -ManifestPath $ManifestPath `
         -PackageDir $OutputDir `
-        -Rids $Rids
+        -Rids $Rids `
+        -ManagedOnly:$ManagedOnly
 }

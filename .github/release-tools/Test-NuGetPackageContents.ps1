@@ -5,7 +5,8 @@ param(
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
     [string] $PackageDir,
     [string[]] $Components,
-    [string[]] $Rids
+    [string[]] $Rids,
+    [switch] $ManagedOnly
 )
 
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
@@ -76,6 +77,42 @@ foreach ($rid in $Rids) {
 $errors = New-Object System.Collections.Generic.List[string]
 $rows = New-Object System.Collections.Generic.List[object]
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
+if ($ManagedOnly) {
+    $packages = @($packages | Where-Object { $_.Kind -eq 'managed' })
+}
+
+function Get-ZipEntryText {
+    param(
+        [Parameter(Mandatory)][string] $Path,
+        [Parameter(Mandatory)][string] $EntryName
+    )
+
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::OpenRead($Path)
+    try {
+        $entry = $zip.GetEntry($EntryName)
+        if (-not $entry) {
+            return $null
+        }
+
+        $stream = $entry.Open()
+        try {
+            $reader = [System.IO.StreamReader]::new($stream, [System.Text.Encoding]::UTF8, $true)
+            try {
+                return $reader.ReadToEnd()
+            }
+            finally {
+                $reader.Dispose()
+            }
+        }
+        finally {
+            $stream.Dispose()
+        }
+    }
+    finally {
+        $zip.Dispose()
+    }
+}
 
 foreach ($package in $packages) {
     $component = $null
@@ -117,6 +154,85 @@ foreach ($package in $packages) {
     })
 
     if ($package.Kind -ne 'native') {
+        $managedExpectedEntries = @(
+            'SDL3-CS.nuspec',
+            'CODE_OF_CONDUCT.md',
+            'LICENSE',
+            'README-nuget.md',
+            'README.md',
+            'SDL3-CS.xml',
+            'logo.png',
+            'lib/net7.0/SDL3-CS.dll',
+            'lib/net7.0/SDL3-CS.xml',
+            'lib/net8.0/SDL3-CS.dll',
+            'lib/net8.0/SDL3-CS.xml',
+            'lib/net9.0/SDL3-CS.dll',
+            'lib/net9.0/SDL3-CS.xml',
+            'lib/net10.0/SDL3-CS.dll',
+            'lib/net10.0/SDL3-CS.xml'
+        )
+        foreach ($expectedEntry in $managedExpectedEntries) {
+            $status = if ($entrySet.Contains($expectedEntry)) { 'present' } else { 'missing' }
+            if ($status -eq 'missing') {
+                Add-ContentError "$($package.Id) package is missing managed entry: $expectedEntry"
+            }
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'managed'
+                Expected = $expectedEntry
+                Count = if ($status -eq 'present') { 1 } else { 0 }
+                Status = $status
+            })
+        }
+
+        $runtimeEntries = @($entryNames | Where-Object { $_.StartsWith('runtimes/', [System.StringComparison]::Ordinal) })
+        foreach ($runtimeEntry in $runtimeEntries) {
+            Add-ContentError "$($package.Id) managed package must not contain runtime entry: $runtimeEntry"
+        }
+        $rows.Add([pscustomobject]@{
+            PackageId = $package.Id
+            Scope = 'managed-runtime'
+            Expected = 'no runtimes/* entries'
+            Count = $runtimeEntries.Count
+            Status = if ($runtimeEntries.Count -eq 0) { 'absent' } else { 'unexpected' }
+        })
+
+        try {
+            [xml] $nuspec = Get-ZipEntryText -Path $packagePath -EntryName 'SDL3-CS.nuspec'
+            $actualId = [string] $nuspec.package.metadata.id
+            $actualVersion = [string] $nuspec.package.metadata.version
+            $expectedVersion = Get-ReleaseNormalizedNuGetVersion -PackageVersion $package.PackageVersion
+            if ($actualId -ne $package.Id) {
+                Add-ContentError "$($package.Id) nuspec id '$actualId' does not match expected '$($package.Id)'."
+            }
+            if ($actualVersion -ne $expectedVersion) {
+                Add-ContentError "$($package.Id) nuspec version '$actualVersion' does not match expected '$expectedVersion'."
+            }
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'managed-metadata'
+                Expected = "$($package.Id) $expectedVersion"
+                Count = 1
+                Status = if ($actualId -eq $package.Id -and $actualVersion -eq $expectedVersion) { 'valid' } else { 'mismatch' }
+            })
+        }
+        catch {
+            Add-ContentError "$($package.Id) nuspec metadata could not be validated: $($_.Exception.Message)"
+        }
+
+        $readmeText = Get-ZipEntryText -Path $packagePath -EntryName 'README-nuget.md'
+        $releaseMarker = "SDL3-CS $($package.PackageVersion)"
+        $readmeIsCurrent = $readmeText -and $readmeText.Contains($releaseMarker, [System.StringComparison]::Ordinal)
+        if (-not $readmeIsCurrent) {
+            Add-ContentError "$($package.Id) package README does not identify managed release $($package.PackageVersion)."
+        }
+        $rows.Add([pscustomobject]@{
+            PackageId = $package.Id
+            Scope = 'managed-readme'
+            Expected = $releaseMarker
+            Count = if ($readmeIsCurrent) { 1 } else { 0 }
+            Status = if ($readmeIsCurrent) { 'valid' } else { 'mismatch' }
+        })
         continue
     }
 

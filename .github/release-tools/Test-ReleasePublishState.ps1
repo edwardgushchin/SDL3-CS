@@ -9,7 +9,8 @@ param(
     [switch] $NuGetPush,
     [switch] $SkipExternalStateCheck,
     [switch] $AllowExistingGitHubRelease,
-    [switch] $AllowExistingNuGetPackages
+    [switch] $AllowExistingNuGetPackages,
+    [switch] $ManagedOnly
 )
 
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
@@ -153,6 +154,9 @@ $PackageDir = Resolve-ReleasePath $PackageDir
 $errors = New-Object System.Collections.Generic.List[string]
 $rows = New-Object System.Collections.Generic.List[object]
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
+if ($ManagedOnly) {
+    $packages = @($packages | Where-Object { $_.Kind -eq 'managed' })
+}
 $wrapper = @($packages | Where-Object { $_.Id -eq 'SDL3-CS' })[0]
 if (-not $wrapper) {
     throw "Managed wrapper package SDL3-CS was not found in release manifest."
