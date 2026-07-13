@@ -164,6 +164,7 @@ internal static class PInvokeTests
         RenderTargetLogicalPresentationAndCoordinates_ForwardInputsOutputsAndReturnNativeValues();
         ConvertEventToRenderCoordinates_ForwardsRendererAndRefEvent();
         ViewportClipAndScaleFunctions_ForwardInputsOutputsAndReturnNativeValues();
+        SetRenderViewportRect_UsesPointerAbiWithNativeSoftwareRenderer();
         DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues();
         PrimitiveRenderingFunctions_ForwardCoordinatesPointersArraysAndRects();
         TextureRenderingFunctions_ForwardTextureRectsRotationCenterAndFlip();
@@ -245,7 +246,17 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderCoordinatesToWindow"), "SDL_RenderCoordinatesToWindow");
         AssertNativeBoolDllImport(GetNativeMethod("SDL_ConvertEventToRenderCoordinates"), "SDL_ConvertEventToRenderCoordinates");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderViewportPointer"), "SDL_SetRenderViewport");
-        AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderViewportRect"), "SDL_SetRenderViewport");
+        MethodInfo setRenderViewportRect = GetNativeMethod("SDL_SetRenderViewportRect");
+        AssertNativeBoolImport(setRenderViewportRect, "SDL_SetRenderViewport");
+        AssertInRectParameter(setRenderViewportRect, 1, "SDL_SetRenderViewportRect");
+
+        Type? setRenderViewportDelegate = typeof(SDL3.SDL).GetNestedType("SetRenderViewportRectNativeDelegate", BindingFlags.NonPublic);
+        TestAssert.NotNull(setRenderViewportDelegate, "SDL.SetRenderViewportRectNativeDelegate must remain available for the native hook.");
+        MethodInfo? setRenderViewportInvoke = setRenderViewportDelegate!.GetMethod("Invoke");
+        TestAssert.NotNull(setRenderViewportInvoke, "SDL.SetRenderViewportRectNativeDelegate.Invoke must exist.");
+        AssertInRectParameter(setRenderViewportInvoke!, 1, "SetRenderViewportRectNativeDelegate.Invoke");
+
+        AssertInRectParameter(GetPublicSetRenderViewportRectMethod(), 1, "SetRenderViewport(IntPtr, in Rect)");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRenderViewport"), "SDL_GetRenderViewport");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderViewportSet"), "SDL_RenderViewportSet");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRenderSafeArea"), "SDL_GetRenderSafeArea");
@@ -1075,11 +1086,18 @@ internal static class PInvokeTests
         nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("SetRenderViewportRectNativeFunction", nameof(CaptureSetRenderViewportRect)))
         {
-            bool result = SDL3.SDL.SetRenderViewport((IntPtr)0x6011, viewport);
+            bool result = SDL3.SDL.SetRenderViewport((IntPtr)0x6011, in viewport);
 
-            TestAssert.Equal(true, result, "SDL.SetRenderViewport(Rect) must return the native hook value.");
-            TestAssert.Equal((IntPtr)0x6011, capturedRenderer, "SDL.SetRenderViewport(Rect) must forward renderer.");
-            AssertRect(viewport, capturedRect, "SDL.SetRenderViewport(Rect) must forward rect.");
+            TestAssert.Equal(true, result, "SDL.SetRenderViewport(in Rect) must return the native hook success value.");
+            TestAssert.Equal((IntPtr)0x6011, capturedRenderer, "SDL.SetRenderViewport(in Rect) must forward renderer.");
+            AssertRect(viewport, capturedRect, "SDL.SetRenderViewport(in Rect) must forward rect.");
+
+            nextBool = false;
+            result = SDL3.SDL.SetRenderViewport((IntPtr)0x6012, in viewport);
+
+            TestAssert.Equal(false, result, "SDL.SetRenderViewport(in Rect) must return the native hook failure value.");
+            TestAssert.Equal((IntPtr)0x6012, capturedRenderer, "SDL.SetRenderViewport(in Rect) must forward renderer on failure.");
+            AssertRect(viewport, capturedRect, "SDL.SetRenderViewport(in Rect) must forward rect on failure.");
         }
 
         ResetCaptureState();
@@ -1183,6 +1201,37 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)0x60A1, capturedRenderer, "SDL.GetRenderScale must forward renderer.");
         TestAssert.Equal(3.5f, scalex, "SDL.GetRenderScale must output x scale.");
         TestAssert.Equal(4.5f, scaley, "SDL.GetRenderScale must output y scale.");
+    }
+
+    public static void SetRenderViewportRect_UsesPointerAbiWithNativeSoftwareRenderer()
+    {
+        IntPtr surface = SDL3.SDL.CreateSurface(64, 64, SDL3.SDL.PixelFormat.ARGB8888);
+        TestAssert.True(surface != IntPtr.Zero, $"SDL.CreateSurface must succeed for the SetRenderViewport native ABI test: {SDL3.SDL.GetError()}");
+
+        try
+        {
+            IntPtr renderer = SDL3.SDL.CreateSoftwareRenderer(surface);
+            TestAssert.True(renderer != IntPtr.Zero, $"SDL.CreateSoftwareRenderer must succeed for the SetRenderViewport native ABI test: {SDL3.SDL.GetError()}");
+
+            try
+            {
+                SDL3.SDL.Rect expected = CreateRect(1, 2, 30, 40);
+                bool setResult = SDL3.SDL.SetRenderViewport(renderer, in expected);
+                TestAssert.True(setResult, $"SDL.SetRenderViewport(in Rect) must succeed against native SDL: {SDL3.SDL.GetError()}");
+
+                bool getResult = SDL3.SDL.GetRenderViewport(renderer, out SDL3.SDL.Rect actual);
+                TestAssert.True(getResult, $"SDL.GetRenderViewport must succeed after the native typed call: {SDL3.SDL.GetError()}");
+                AssertRect(expected, actual, "SDL.SetRenderViewport(in Rect) must pass a native pointer to all Rect fields.");
+            }
+            finally
+            {
+                SDL3.SDL.DestroyRenderer(renderer);
+            }
+        }
+        finally
+        {
+            SDL3.SDL.DestroySurface(surface);
+        }
     }
 
     public static void DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues()
@@ -2776,7 +2825,7 @@ internal static class PInvokeTests
         return nextBool;
     }
 
-    private static bool CaptureSetRenderViewportRect(IntPtr renderer, SDL3.SDL.Rect rect)
+    private static bool CaptureSetRenderViewportRect(IntPtr renderer, in SDL3.SDL.Rect rect)
     {
         capturedRenderer = renderer;
         capturedRect = rect;
@@ -4150,6 +4199,25 @@ internal static class PInvokeTests
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
         TestAssert.NotNull(method, $"SDL.{methodName} method must be private static.");
         return method!;
+    }
+
+    private static MethodInfo GetPublicSetRenderViewportRectMethod()
+    {
+        MethodInfo? method = typeof(SDL3.SDL).GetMethod(
+            nameof(SDL3.SDL.SetRenderViewport),
+            BindingFlags.Public | BindingFlags.Static,
+            binder: null,
+            types: [typeof(IntPtr), typeof(SDL3.SDL.Rect).MakeByRefType()],
+            modifiers: null);
+        TestAssert.NotNull(method, "SDL.SetRenderViewport(IntPtr, in Rect) must expose a by-ref Rect parameter.");
+        return method!;
+    }
+
+    private static void AssertInRectParameter(MethodInfo method, int index, string memberName)
+    {
+        ParameterInfo parameter = method.GetParameters()[index];
+        TestAssert.Equal(typeof(SDL3.SDL.Rect).MakeByRefType(), parameter.ParameterType, $"SDL.{memberName} rect parameter must be by-ref.");
+        TestAssert.True(parameter.IsIn, $"SDL.{memberName} rect parameter must keep in metadata.");
     }
 
     private static void AssertNativeImport(MethodInfo method, string entryPoint)

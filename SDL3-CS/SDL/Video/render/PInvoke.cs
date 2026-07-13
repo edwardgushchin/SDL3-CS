@@ -2156,8 +2156,8 @@ public static partial class SDL
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewport"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_SetRenderViewportRect(IntPtr renderer, Rect rect);
-    private delegate bool SetRenderViewportRectNativeDelegate(IntPtr renderer, Rect rect);
+    private static partial bool SDL_SetRenderViewportRect(IntPtr renderer, in Rect rect);
+    private delegate bool SetRenderViewportRectNativeDelegate(IntPtr renderer, in Rect rect);
     private static SetRenderViewportRectNativeDelegate SetRenderViewportRectNativeFunction = SDL_SetRenderViewportRect;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
@@ -2169,17 +2169,16 @@ public static partial class SDL
     /// <para>The area's width and height must be >= 0.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
-    /// <param name="rect">the <see cref="Rect"/> structure representing the drawing area, or <c>null</c>
-    /// to set the viewport to the entire target.</param>
+    /// <param name="rect">the <see cref="Rect"/> structure representing the drawing area.</param>
     /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
     /// information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderViewport"/>
     /// <seealso cref="RenderViewportSet"/>
-    public static bool SetRenderViewport(IntPtr renderer, Rect rect)
+    public static bool SetRenderViewport(IntPtr renderer, in Rect rect)
     {
-        return SetRenderViewportRectNativeFunction(renderer, rect);
+        return SetRenderViewportRectNativeFunction(renderer, in rect);
     }
 
 
