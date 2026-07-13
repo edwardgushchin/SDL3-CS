@@ -137,7 +137,7 @@ Assert-WorkflowContains -Text $workflowText -Expected 'Build Android consumer ap
 Assert-WorkflowContains -Text $workflowText -Expected 'publish:' -Description 'publish job'
 Assert-WorkflowContains -Text $workflowText -Expected '- apple-consumer' -Description 'publish job Apple consumer dependency'
 Assert-WorkflowContains -Text $workflowText -Expected '- android-consumer' -Description 'publish job Android consumer dependency'
-Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ inputs.publish_github || inputs.publish_nuget }}' -Description 'publish job gated condition'
+Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ !inputs.managed_only && (inputs.publish_github || inputs.publish_nuget) }}' -Description 'full publish job gated condition'
 Assert-WorkflowContains -Text $workflowText -Expected 'environment: production' -Description 'publish job Trusted Publishing environment'
 Assert-WorkflowContains -Text $workflowText -Expected 'name: release-assembly-state' -Description 'publish job assembly state download'
 Assert-WorkflowContains -Text $workflowText -Expected "Expand-Archive -LiteralPath 'artifacts/release/state/release-assembly-state.zip'" -Description 'publish job assembly state import'
