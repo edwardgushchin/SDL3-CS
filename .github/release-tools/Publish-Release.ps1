@@ -2,6 +2,8 @@
 [CmdletBinding()]
 param(
     [int] $PackageRevision = -1,
+    [int] $NativePackageRevision = -1,
+    [string] $BaseReleaseRef,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
     [string] $ReleaseNotesDir = (Join-Path $PSScriptRoot 'release-notes'),
     [string] $PackageDir,
@@ -16,6 +18,7 @@ param(
     [switch] $AllowExistingNuGetPackages,
     [switch] $KeepGitHubReleaseDraft,
     [switch] $RequireUpstreamCurrent,
+    [switch] $ManagedOnly,
     [switch] $DryRun
 )
 
@@ -25,6 +28,12 @@ $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
 if ($PackageRevision -lt 0) {
     $PackageRevision = [int] $manifest.versioning.packageRevisionDefault
 }
+if ($ManagedOnly -and [string]::IsNullOrWhiteSpace($BaseReleaseRef)) {
+    throw 'BaseReleaseRef is required for managed-only publication.'
+}
+if ($ManagedOnly -and $NativePackageRevision -lt 0) {
+    throw 'NativePackageRevision is required for managed-only publication.'
+}
 if (-not $PackageDir) {
     $PackageDir = Join-Path (Resolve-ReleasePath $manifest.artifactsRoot) 'nuget'
 }
@@ -33,6 +42,9 @@ $PackageDir = Resolve-ReleasePath $PackageDir
 & (Join-Path $PSScriptRoot 'Test-PackageVersioning.ps1') -PackageRevision $PackageRevision -ManifestPath $ManifestPath
 
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
+if ($ManagedOnly) {
+    $packages = @($packages | Where-Object { $_.Kind -eq 'managed' })
+}
 $wrapper = @($packages | Where-Object { $_.Id -eq 'SDL3-CS' })[0]
 $tag = "v$($wrapper.PackageVersion)"
 $releaseNotesDirPath = Resolve-ReleasePath $ReleaseNotesDir
@@ -58,7 +70,8 @@ elseif (-not $DryRun -or $ValidateReadinessInDryRun) {
     & (Join-Path $PSScriptRoot 'Test-NuGetPackageContents.ps1') `
         -PackageRevision $PackageRevision `
         -ManifestPath $ManifestPath `
-        -PackageDir $PackageDir
+        -PackageDir $PackageDir `
+        -ManagedOnly:$ManagedOnly
 }
 else {
     Write-Host "[dry-run] NuGet package content validation skipped. Pass -ValidateReadinessInDryRun to validate package contents during dry-run."
@@ -82,22 +95,34 @@ if (-not $SkipPublishStateValidation -and $missingPackagePaths.Count -eq 0) {
         -NuGetPush:$NuGetPush `
         -SkipExternalStateCheck:$skipExternalStateCheck `
         -AllowExistingGitHubRelease:$AllowExistingGitHubRelease `
-        -AllowExistingNuGetPackages:$AllowExistingNuGetPackages
+        -AllowExistingNuGetPackages:$AllowExistingNuGetPackages `
+        -ManagedOnly:$ManagedOnly
 }
 elseif ($SkipPublishStateValidation) {
     Write-Host "Release publish state validation skipped."
 }
 
 if (-not $SkipReadinessValidation -and (-not $DryRun -or $ValidateReadinessInDryRun)) {
-    & (Join-Path $PSScriptRoot 'Test-ReleaseReadiness.ps1') `
-        -PackageRevision $PackageRevision `
-        -ManifestPath $ManifestPath `
-        -FetchForks `
-        -RequireForksUpToDate `
-        -CheckUpstream `
-        -RequireUpstreamCurrent:$RequireUpstreamCurrent `
-        -SkipToolchainValidation `
-        -FailOnError
+    if ($ManagedOnly) {
+        & (Join-Path $PSScriptRoot 'Test-ManagedReleaseScope.ps1') `
+            -PackageRevision $PackageRevision `
+            -NativePackageRevision $NativePackageRevision `
+            -BaseRef $BaseReleaseRef `
+            -ManifestPath $ManifestPath `
+            -CheckNuGet
+        & (Join-Path $PSScriptRoot 'Test-PublicWrapperXmlDocs.ps1') -SourceRoot (Resolve-ReleasePath 'SDL3-CS')
+    }
+    else {
+        & (Join-Path $PSScriptRoot 'Test-ReleaseReadiness.ps1') `
+            -PackageRevision $PackageRevision `
+            -ManifestPath $ManifestPath `
+            -FetchForks `
+            -RequireForksUpToDate `
+            -CheckUpstream `
+            -RequireUpstreamCurrent:$RequireUpstreamCurrent `
+            -SkipToolchainValidation `
+            -FailOnError
+    }
 }
 elseif ($DryRun -and -not $ValidateReadinessInDryRun) {
     Write-Host "[dry-run] readiness validation skipped. Pass -ValidateReadinessInDryRun to run strict publish readiness during dry-run."
