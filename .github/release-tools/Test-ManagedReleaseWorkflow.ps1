@@ -1,7 +1,7 @@
 #requires -Version 7.0
 [CmdletBinding()]
 param(
-    [string] $WorkflowPath = '.github/workflows/release-managed-package.yml'
+    [string] $WorkflowPath = '.github/workflows/release-native-packages.yml'
 )
 
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
@@ -45,13 +45,21 @@ else {
     $workflowText = Get-Content -LiteralPath $workflowFile -Raw -Encoding UTF8
 }
 
+$obsoleteWorkflow = Resolve-ReleasePath '.github/workflows/release-managed-package.yml'
+if (Test-Path -LiteralPath $obsoleteWorkflow -PathType Leaf) {
+    Add-ManagedWorkflowError "Obsolete standalone managed release workflow must be removed: $obsoleteWorkflow"
+}
+
 foreach ($expected in @(
     'workflow_dispatch:',
+    'managed_only:',
     'package_revision:',
     'native_package_revision:',
     'base_release_ref:',
     'publish_github:',
     'publish_nuget:',
+    '  managed-build:',
+    '  managed-publish:',
     'fetch-depth: 0',
     './.github/release-tools/Test-ManagedReleaseScope.ps1',
     '-CheckNuGet',
@@ -68,6 +76,9 @@ foreach ($expected in @(
     'environment: production',
     "NATIVE_PACKAGE_REVISION: `${{ inputs.native_package_revision }}",
     "BASE_RELEASE_REF: `${{ inputs.base_release_ref }}",
+    "if: `${{ inputs.managed_only }}",
+    "if: `${{ inputs.managed_only && (inputs.publish_github || inputs.publish_nuget) }}",
+    "if: `${{ !inputs.managed_only && (inputs.publish_github || inputs.publish_nuget) }}",
     'NativePackageRevision = [int]$env:NATIVE_PACKAGE_REVISION',
     'BaseReleaseRef = $env:BASE_RELEASE_REF',
     'ManagedOnly = $true',
@@ -81,21 +92,34 @@ foreach ($publishInput in @('publish_github', 'publish_nuget')) {
         Add-ManagedWorkflowError "Workflow input '$publishInput' must default to false."
     }
 }
+if ($workflowText -notmatch '(?ms)^\s{6}managed_only\s*:\s*\r?\n.*?^\s{8}default:\s+false\s*$') {
+    Add-ManagedWorkflowError "Workflow input 'managed_only' must default to false."
+}
 
-foreach ($forbidden in @(
-    'native_matrix',
-    'Invoke-NativeHostBuild.ps1',
-    'Initialize-NativeForks.ps1',
-    'native-bundle-',
-    'dotnet workload install android',
-    'dotnet workload install ios',
-    'dotnet workload install tvos',
-    'Test-AppleConsumerPackageBuild.ps1',
-    'Test-AndroidConsumerPackageBuild.ps1',
-    "NativePackageRevision = [int]'`${{ inputs.native_package_revision }}'",
-    "BaseReleaseRef = '`${{ inputs.base_release_ref }}'"
-)) {
-    Assert-TextExcludes -Text $workflowText -Forbidden $forbidden -Description 'managed release workflow'
+$managedStart = $workflowText.IndexOf('  managed-build:', [System.StringComparison]::Ordinal)
+if ($managedStart -ge 0) {
+    $managedText = $workflowText.Substring($managedStart)
+    foreach ($forbidden in @(
+        'native_matrix',
+        'Invoke-NativeHostBuild.ps1',
+        'Initialize-NativeForks.ps1',
+        'native-bundle-',
+        'dotnet workload install android',
+        'dotnet workload install ios',
+        'dotnet workload install tvos',
+        'Test-AppleConsumerPackageBuild.ps1',
+        'Test-AndroidConsumerPackageBuild.ps1',
+        "NativePackageRevision = [int]'`${{ inputs.native_package_revision }}'",
+        "BaseReleaseRef = '`${{ inputs.base_release_ref }}'"
+    )) {
+        Assert-TextExcludes -Text $managedText -Forbidden $forbidden -Description 'managed-only jobs'
+    }
+}
+
+$nativeSkipCondition = "if: `${{ !inputs.managed_only }}"
+$nativeSkipCount = ([regex]::Matches($workflowText, [regex]::Escape($nativeSkipCondition))).Count
+if ($nativeSkipCount -lt 5) {
+    Add-ManagedWorkflowError "Expected at least 5 full-release jobs guarded by '$nativeSkipCondition', got $nativeSkipCount."
 }
 
 $scriptExpectations = [ordered]@{
@@ -105,7 +129,7 @@ $scriptExpectations = [ordered]@{
     'Publish-Release.ps1' = @('[switch] $ManagedOnly', '-ManagedOnly:$ManagedOnly', 'Test-ManagedReleaseScope.ps1')
     'Test-ManagedReleaseScope.ps1' = @('SDL3-CS.NativePackages/', 'native-forks/', 'release-manifest.json', '[switch] $CheckNuGet')
     'Restore-ManagedReleaseTestRuntime.ps1' = @('runtimes/$Rid/native/', 'Invoke-WebRequest', '[switch] $DryRun')
-    'Invoke-ManagedReleaseWorkflow.ps1' = @('release-managed-package.yml', 'base_release_ref=', 'native_package_revision=', '[switch] $Run')
+    'Invoke-ManagedReleaseWorkflow.ps1' = @('release-native-packages.yml', 'managed_only=true', 'base_release_ref=', 'native_package_revision=', '[switch] $Run')
 }
 
 foreach ($scriptName in $scriptExpectations.Keys) {
