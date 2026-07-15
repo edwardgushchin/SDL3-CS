@@ -86,9 +86,9 @@ internal static class PInvokeTests
     private static SDL3.SDL.FRect capturedSourceFRect;
     private static SDL3.SDL.FRect capturedDestinationFRect;
     private static SDL3.SDL.FPoint capturedCenterFPoint;
-    private static SDL3.SDL.FRect capturedOriginFRect;
-    private static SDL3.SDL.FRect capturedRightFRect;
-    private static SDL3.SDL.FRect capturedDownFRect;
+    private static SDL3.SDL.FPoint capturedOriginFPoint;
+    private static SDL3.SDL.FPoint capturedRightFPoint;
+    private static SDL3.SDL.FPoint capturedDownFPoint;
     private static SDL3.SDL.FRect nextFRect;
     private static SDL3.SDL.WindowFlags capturedWindowFlags;
     private static SDL3.SDL.PixelFormat capturedPixelFormat;
@@ -168,7 +168,8 @@ internal static class PInvokeTests
         DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues();
         PrimitiveRenderingFunctions_ForwardCoordinatesPointersArraysAndRects();
         TextureRenderingFunctions_ForwardTextureRectsRotationCenterAndFlip();
-        TextureAffineRenderingFunctions_ForwardPointerAndRectCombinations();
+        TextureAffineSignatures_UseFRectForSourceAndFPointForDestinationPoints();
+        TextureAffineRenderingFunctions_ForwardPointerRectAndPointCombinations();
         TextureTiledRenderingFunctions_ForwardTextureRectsAndScale();
         Texture9GridRenderingFunctions_ForwardTextureRectsScalesAndTileScale();
         GeometryRenderingFunctions_ForwardVerticesRawArraysAndGenericSpans();
@@ -302,21 +303,21 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureRotatedSourceRectCenterPoint"), "SDL_RenderTextureRotated");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureRotatedRectsCenterPoint"), "SDL_RenderTextureRotated");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffinePointers"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineDownRect"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineRightRect"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineRightDownRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginRect"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginDownRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginRightRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginRightDownRects"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineDownPoint"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineRightPoint"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineRightDownPoints"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginPoint"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginDownPoints"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginRightPoints"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineOriginRightDownPoints"), "SDL_RenderTextureAffine");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceRect"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceDownRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceRightRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceRightDownRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginDownRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginRightRects"), "SDL_RenderTextureAffine");
-        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginRightDownRects"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceDownPoint"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceRightPoint"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceRightDownPoints"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginPoint"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginDownPoints"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginRightPoints"), "SDL_RenderTextureAffine");
+        AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureAffineSourceOriginRightDownPoints"), "SDL_RenderTextureAffine");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureTiledPointers"), "SDL_RenderTextureTiled");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureTiledSourceRect"), "SDL_RenderTextureTiled");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderTextureTiledDestinationRect"), "SDL_RenderTextureTiled");
@@ -1720,7 +1721,7 @@ internal static class PInvokeTests
         AssertFPoint(center, capturedCenterFPoint, "SDL.RenderTextureRotated(in FRect, in FRect, in FPoint) must forward center.");
     }
 
-    public static void TextureAffineRenderingFunctions_ForwardPointerAndRectCombinations()
+    public static void TextureAffineRenderingFunctions_ForwardPointerRectAndPointCombinations()
     {
         IntPtr renderer = (IntPtr)0xA001;
         IntPtr texture = (IntPtr)0xA002;
@@ -1729,18 +1730,18 @@ internal static class PInvokeTests
         IntPtr rightPointer = (IntPtr)0xA005;
         IntPtr downPointer = (IntPtr)0xA006;
         SDL3.SDL.FRect source = CreateFRect(1.5f, 2.5f, 3.5f, 4.5f);
-        SDL3.SDL.FRect origin = CreateFRect(5.5f, 6.5f, 7.5f, 8.5f);
-        SDL3.SDL.FRect right = CreateFRect(9.5f, 10.5f, 11.5f, 12.5f);
-        SDL3.SDL.FRect down = CreateFRect(13.5f, 14.5f, 15.5f, 16.5f);
+        SDL3.SDL.FPoint origin = CreateFPoint(5.5f, 6.5f);
+        SDL3.SDL.FPoint right = CreateFPoint(9.5f, 10.5f);
+        SDL3.SDL.FPoint down = CreateFPoint(13.5f, 14.5f);
 
         void RunAffineCase(
             string fieldName,
             string methodName,
             Func<bool> invoke,
             bool sourceUsesRect,
-            bool originUsesRect,
-            bool rightUsesRect,
-            bool downUsesRect,
+            bool originUsesPoint,
+            bool rightUsesPoint,
+            bool downUsesPoint,
             string message)
         {
             ResetCaptureState();
@@ -1756,13 +1757,34 @@ internal static class PInvokeTests
                 sourceUsesRect,
                 sourcePointer,
                 source,
-                originUsesRect,
+                originUsesPoint,
                 originPointer,
                 origin,
-                rightUsesRect,
+                rightUsesPoint,
                 rightPointer,
                 right,
-                downUsesRect,
+                downUsesPoint,
+                downPointer,
+                down,
+                message);
+
+            ResetCaptureState();
+            nextBool = false;
+            bool failureResult = invoke();
+            TestAssert.Equal(false, failureResult, $"{message} must return the native hook failure value.");
+            AssertAffineState(
+                renderer,
+                texture,
+                sourceUsesRect,
+                sourcePointer,
+                source,
+                originUsesPoint,
+                originPointer,
+                origin,
+                rightUsesPoint,
+                rightPointer,
+                right,
+                downUsesPoint,
                 downPointer,
                 down,
                 message);
@@ -1779,74 +1801,74 @@ internal static class PInvokeTests
             "SDL.RenderTextureAffine(IntPtr, IntPtr, IntPtr, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineDownRectNativeFunction",
-            nameof(CaptureRenderTextureAffineDownRect),
+            "RenderTextureAffineDownPointNativeFunction",
+            nameof(CaptureRenderTextureAffineDownPoint),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, originPointer, rightPointer, in down),
             false,
             false,
             false,
             true,
-            "SDL.RenderTextureAffine(IntPtr, IntPtr, IntPtr, in FRect)");
+            "SDL.RenderTextureAffine(IntPtr, IntPtr, IntPtr, in FPoint)");
 
         RunAffineCase(
-            "RenderTextureAffineRightRectNativeFunction",
-            nameof(CaptureRenderTextureAffineRightRect),
+            "RenderTextureAffineRightPointNativeFunction",
+            nameof(CaptureRenderTextureAffineRightPoint),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, originPointer, in right, downPointer),
             false,
             false,
             true,
             false,
-            "SDL.RenderTextureAffine(IntPtr, IntPtr, in FRect, IntPtr)");
+            "SDL.RenderTextureAffine(IntPtr, IntPtr, in FPoint, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineRightDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineRightDownRects),
+            "RenderTextureAffineRightDownPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineRightDownPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, originPointer, in right, in down),
             false,
             false,
             true,
             true,
-            "SDL.RenderTextureAffine(IntPtr, IntPtr, in FRect, in FRect)");
+            "SDL.RenderTextureAffine(IntPtr, IntPtr, in FPoint, in FPoint)");
 
         RunAffineCase(
-            "RenderTextureAffineOriginRectNativeFunction",
-            nameof(CaptureRenderTextureAffineOriginRect),
+            "RenderTextureAffineOriginPointNativeFunction",
+            nameof(CaptureRenderTextureAffineOriginPoint),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, in origin, rightPointer, downPointer),
             false,
             true,
             false,
             false,
-            "SDL.RenderTextureAffine(IntPtr, in FRect, IntPtr, IntPtr)");
+            "SDL.RenderTextureAffine(IntPtr, in FPoint, IntPtr, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineOriginDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineOriginDownRects),
+            "RenderTextureAffineOriginDownPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineOriginDownPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, in origin, rightPointer, in down),
             false,
             true,
             false,
             true,
-            "SDL.RenderTextureAffine(IntPtr, in FRect, IntPtr, in FRect)");
+            "SDL.RenderTextureAffine(IntPtr, in FPoint, IntPtr, in FPoint)");
 
         RunAffineCase(
-            "RenderTextureAffineOriginRightRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineOriginRightRects),
+            "RenderTextureAffineOriginRightPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineOriginRightPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, in origin, in right, downPointer),
             false,
             true,
             true,
             false,
-            "SDL.RenderTextureAffine(IntPtr, in FRect, in FRect, IntPtr)");
+            "SDL.RenderTextureAffine(IntPtr, in FPoint, in FPoint, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineOriginRightDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineOriginRightDownRects),
+            "RenderTextureAffineOriginRightDownPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineOriginRightDownPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, sourcePointer, in origin, in right, in down),
             false,
             true,
             true,
             true,
-            "SDL.RenderTextureAffine(IntPtr, in FRect, in FRect, in FRect)");
+            "SDL.RenderTextureAffine(IntPtr, in FPoint, in FPoint, in FPoint)");
 
         RunAffineCase(
             "RenderTextureAffineSourceRectNativeFunction",
@@ -1859,74 +1881,74 @@ internal static class PInvokeTests
             "SDL.RenderTextureAffine(in FRect, IntPtr, IntPtr, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceDownRects),
+            "RenderTextureAffineSourceDownPointNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceDownPoint),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, originPointer, rightPointer, in down),
             true,
             false,
             false,
             true,
-            "SDL.RenderTextureAffine(in FRect, IntPtr, IntPtr, in FRect)");
+            "SDL.RenderTextureAffine(in FRect, IntPtr, IntPtr, in FPoint)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceRightRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceRightRects),
+            "RenderTextureAffineSourceRightPointNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceRightPoint),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, originPointer, in right, downPointer),
             true,
             false,
             true,
             false,
-            "SDL.RenderTextureAffine(in FRect, IntPtr, in FRect, IntPtr)");
+            "SDL.RenderTextureAffine(in FRect, IntPtr, in FPoint, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceRightDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceRightDownRects),
+            "RenderTextureAffineSourceRightDownPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceRightDownPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, originPointer, in right, in down),
             true,
             false,
             true,
             true,
-            "SDL.RenderTextureAffine(in FRect, IntPtr, in FRect, in FRect)");
+            "SDL.RenderTextureAffine(in FRect, IntPtr, in FPoint, in FPoint)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceOriginRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceOriginRects),
+            "RenderTextureAffineSourceOriginPointNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceOriginPoint),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, in origin, rightPointer, downPointer),
             true,
             true,
             false,
             false,
-            "SDL.RenderTextureAffine(in FRect, in FRect, IntPtr, IntPtr)");
+            "SDL.RenderTextureAffine(in FRect, in FPoint, IntPtr, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceOriginDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceOriginDownRects),
+            "RenderTextureAffineSourceOriginDownPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceOriginDownPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, in origin, rightPointer, in down),
             true,
             true,
             false,
             true,
-            "SDL.RenderTextureAffine(in FRect, in FRect, IntPtr, in FRect)");
+            "SDL.RenderTextureAffine(in FRect, in FPoint, IntPtr, in FPoint)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceOriginRightRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceOriginRightRects),
+            "RenderTextureAffineSourceOriginRightPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceOriginRightPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, in origin, in right, downPointer),
             true,
             true,
             true,
             false,
-            "SDL.RenderTextureAffine(in FRect, in FRect, in FRect, IntPtr)");
+            "SDL.RenderTextureAffine(in FRect, in FPoint, in FPoint, IntPtr)");
 
         RunAffineCase(
-            "RenderTextureAffineSourceOriginRightDownRectsNativeFunction",
-            nameof(CaptureRenderTextureAffineSourceOriginRightDownRects),
+            "RenderTextureAffineSourceOriginRightDownPointsNativeFunction",
+            nameof(CaptureRenderTextureAffineSourceOriginRightDownPoints),
             () => SDL3.SDL.RenderTextureAffine(renderer, texture, in source, in origin, in right, in down),
             true,
             true,
             true,
             true,
-            "SDL.RenderTextureAffine(in FRect, in FRect, in FRect, in FRect)");
+            "SDL.RenderTextureAffine(in FRect, in FPoint, in FPoint, in FPoint)");
     }
 
     public static void TextureTiledRenderingFunctions_ForwardTextureRectsAndScale()
@@ -3202,73 +3224,73 @@ internal static class PInvokeTests
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineDownRect(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineDownPoint(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, IntPtr right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
         capturedOriginPointer = origin;
         capturedRightPointer = right;
-        capturedDownFRect = down;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineRightRect(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in SDL3.SDL.FRect right, IntPtr down)
+    private static bool CaptureRenderTextureAffineRightPoint(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in SDL3.SDL.FPoint right, IntPtr down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
         capturedOriginPointer = origin;
-        capturedRightFRect = right;
+        capturedRightFPoint = right;
         capturedDownPointer = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineRightDownRects(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in SDL3.SDL.FRect right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineRightDownPoints(IntPtr renderer, IntPtr texture, IntPtr srcrect, IntPtr origin, in SDL3.SDL.FPoint right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
         capturedOriginPointer = origin;
-        capturedRightFRect = right;
-        capturedDownFRect = down;
+        capturedRightFPoint = right;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineOriginRect(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FRect origin, IntPtr right, IntPtr down)
+    private static bool CaptureRenderTextureAffineOriginPoint(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FPoint origin, IntPtr right, IntPtr down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
-        capturedOriginFRect = origin;
+        capturedOriginFPoint = origin;
         capturedRightPointer = right;
         capturedDownPointer = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineOriginDownRects(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FRect origin, IntPtr right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineOriginDownPoints(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FPoint origin, IntPtr right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
-        capturedOriginFRect = origin;
+        capturedOriginFPoint = origin;
         capturedRightPointer = right;
-        capturedDownFRect = down;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineOriginRightRects(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FRect origin, in SDL3.SDL.FRect right, IntPtr down)
+    private static bool CaptureRenderTextureAffineOriginRightPoints(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FPoint origin, in SDL3.SDL.FPoint right, IntPtr down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
-        capturedOriginFRect = origin;
-        capturedRightFRect = right;
+        capturedOriginFPoint = origin;
+        capturedRightFPoint = right;
         capturedDownPointer = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineOriginRightDownRects(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FRect origin, in SDL3.SDL.FRect right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineOriginRightDownPoints(IntPtr renderer, IntPtr texture, IntPtr srcrect, in SDL3.SDL.FPoint origin, in SDL3.SDL.FPoint right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceRectPointer = srcrect;
-        capturedOriginFRect = origin;
-        capturedRightFRect = right;
-        capturedDownFRect = down;
+        capturedOriginFPoint = origin;
+        capturedRightFPoint = right;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
@@ -3282,73 +3304,73 @@ internal static class PInvokeTests
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceDownRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, IntPtr origin, IntPtr right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineSourceDownPoint(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, IntPtr origin, IntPtr right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
         capturedOriginPointer = origin;
         capturedRightPointer = right;
-        capturedDownFRect = down;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceRightRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, IntPtr origin, in SDL3.SDL.FRect right, IntPtr down)
+    private static bool CaptureRenderTextureAffineSourceRightPoint(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, IntPtr origin, in SDL3.SDL.FPoint right, IntPtr down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
         capturedOriginPointer = origin;
-        capturedRightFRect = right;
+        capturedRightFPoint = right;
         capturedDownPointer = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceRightDownRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, IntPtr origin, in SDL3.SDL.FRect right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineSourceRightDownPoints(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, IntPtr origin, in SDL3.SDL.FPoint right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
         capturedOriginPointer = origin;
-        capturedRightFRect = right;
-        capturedDownFRect = down;
+        capturedRightFPoint = right;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceOriginRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FRect origin, IntPtr right, IntPtr down)
+    private static bool CaptureRenderTextureAffineSourceOriginPoint(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FPoint origin, IntPtr right, IntPtr down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
-        capturedOriginFRect = origin;
+        capturedOriginFPoint = origin;
         capturedRightPointer = right;
         capturedDownPointer = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceOriginDownRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FRect origin, IntPtr right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineSourceOriginDownPoints(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FPoint origin, IntPtr right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
-        capturedOriginFRect = origin;
+        capturedOriginFPoint = origin;
         capturedRightPointer = right;
-        capturedDownFRect = down;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceOriginRightRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FRect origin, in SDL3.SDL.FRect right, IntPtr down)
+    private static bool CaptureRenderTextureAffineSourceOriginRightPoints(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FPoint origin, in SDL3.SDL.FPoint right, IntPtr down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
-        capturedOriginFRect = origin;
-        capturedRightFRect = right;
+        capturedOriginFPoint = origin;
+        capturedRightFPoint = right;
         capturedDownPointer = down;
         return nextBool;
     }
 
-    private static bool CaptureRenderTextureAffineSourceOriginRightDownRects(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FRect origin, in SDL3.SDL.FRect right, in SDL3.SDL.FRect down)
+    private static bool CaptureRenderTextureAffineSourceOriginRightDownPoints(IntPtr renderer, IntPtr texture, in SDL3.SDL.FRect srcrect, in SDL3.SDL.FPoint origin, in SDL3.SDL.FPoint right, in SDL3.SDL.FPoint down)
     {
         CaptureAffineBase(renderer, texture);
         capturedSourceFRect = srcrect;
-        capturedOriginFRect = origin;
-        capturedRightFRect = right;
-        capturedDownFRect = down;
+        capturedOriginFPoint = origin;
+        capturedRightFPoint = right;
+        capturedDownFPoint = down;
         return nextBool;
     }
 
@@ -3954,15 +3976,15 @@ internal static class PInvokeTests
         bool sourceUsesRect,
         IntPtr sourcePointer,
         SDL3.SDL.FRect sourceRect,
-        bool originUsesRect,
+        bool originUsesPoint,
         IntPtr originPointer,
-        SDL3.SDL.FRect originRect,
-        bool rightUsesRect,
+        SDL3.SDL.FPoint originPoint,
+        bool rightUsesPoint,
         IntPtr rightPointer,
-        SDL3.SDL.FRect rightRect,
-        bool downUsesRect,
+        SDL3.SDL.FPoint rightPoint,
+        bool downUsesPoint,
         IntPtr downPointer,
-        SDL3.SDL.FRect downRect,
+        SDL3.SDL.FPoint downPoint,
         string message)
     {
         TestAssert.Equal(renderer, capturedRenderer, $"{message} must forward renderer.");
@@ -3977,27 +3999,27 @@ internal static class PInvokeTests
             TestAssert.Equal(sourcePointer, capturedSourceRectPointer, $"{message} must forward source pointer.");
         }
 
-        if (originUsesRect)
+        if (originUsesPoint)
         {
-            AssertFRect(originRect, capturedOriginFRect, $"{message} must forward origin rect.");
+            AssertFPoint(originPoint, capturedOriginFPoint, $"{message} must forward origin point.");
         }
         else
         {
             TestAssert.Equal(originPointer, capturedOriginPointer, $"{message} must forward origin pointer.");
         }
 
-        if (rightUsesRect)
+        if (rightUsesPoint)
         {
-            AssertFRect(rightRect, capturedRightFRect, $"{message} must forward right rect.");
+            AssertFPoint(rightPoint, capturedRightFPoint, $"{message} must forward right point.");
         }
         else
         {
             TestAssert.Equal(rightPointer, capturedRightPointer, $"{message} must forward right pointer.");
         }
 
-        if (downUsesRect)
+        if (downUsesPoint)
         {
-            AssertFRect(downRect, capturedDownFRect, $"{message} must forward down rect.");
+            AssertFPoint(downPoint, capturedDownFPoint, $"{message} must forward down point.");
         }
         else
         {
@@ -4131,9 +4153,9 @@ internal static class PInvokeTests
         capturedSourceFRect = default;
         capturedDestinationFRect = default;
         capturedCenterFPoint = default;
-        capturedOriginFRect = default;
-        capturedRightFRect = default;
-        capturedDownFRect = default;
+        capturedOriginFPoint = default;
+        capturedRightFPoint = default;
+        capturedDownFPoint = default;
         nextFRect = default;
         capturedWindowFlags = default;
         capturedPixelFormat = default;
@@ -4201,6 +4223,61 @@ internal static class PInvokeTests
         return method!;
     }
 
+    public static void TextureAffineSignatures_UseFRectForSourceAndFPointForDestinationPoints()
+    {
+        Type pointer = typeof(IntPtr);
+        Type sourceRect = typeof(SDL3.SDL.FRect).MakeByRefType();
+        Type point = typeof(SDL3.SDL.FPoint).MakeByRefType();
+        (string Suffix, Type[] ParameterTypes)[] cases =
+        [
+            ("Pointers", [pointer, pointer, pointer, pointer, pointer, pointer]),
+            ("DownPoint", [pointer, pointer, pointer, pointer, pointer, point]),
+            ("RightPoint", [pointer, pointer, pointer, pointer, point, pointer]),
+            ("RightDownPoints", [pointer, pointer, pointer, pointer, point, point]),
+            ("OriginPoint", [pointer, pointer, pointer, point, pointer, pointer]),
+            ("OriginDownPoints", [pointer, pointer, pointer, point, pointer, point]),
+            ("OriginRightPoints", [pointer, pointer, pointer, point, point, pointer]),
+            ("OriginRightDownPoints", [pointer, pointer, pointer, point, point, point]),
+            ("SourceRect", [pointer, pointer, sourceRect, pointer, pointer, pointer]),
+            ("SourceDownPoint", [pointer, pointer, sourceRect, pointer, pointer, point]),
+            ("SourceRightPoint", [pointer, pointer, sourceRect, pointer, point, pointer]),
+            ("SourceRightDownPoints", [pointer, pointer, sourceRect, pointer, point, point]),
+            ("SourceOriginPoint", [pointer, pointer, sourceRect, point, pointer, pointer]),
+            ("SourceOriginDownPoints", [pointer, pointer, sourceRect, point, pointer, point]),
+            ("SourceOriginRightPoints", [pointer, pointer, sourceRect, point, point, pointer]),
+            ("SourceOriginRightDownPoints", [pointer, pointer, sourceRect, point, point, point]),
+        ];
+
+        foreach ((string suffix, Type[] parameterTypes) in cases)
+        {
+            string nativeName = $"SDL_RenderTextureAffine{suffix}";
+            MethodInfo nativeMethod = GetNativeMethod(nativeName);
+            AssertNativeBoolImport(nativeMethod, "SDL_RenderTextureAffine");
+            AssertAffineParameterContract(nativeMethod, parameterTypes, nativeName);
+
+            string delegateName = $"RenderTextureAffine{suffix}NativeDelegate";
+            Type? delegateType = typeof(SDL3.SDL).GetNestedType(delegateName, BindingFlags.NonPublic);
+            TestAssert.NotNull(delegateType, $"SDL.{delegateName} must exist.");
+            MethodInfo? invoke = delegateType!.GetMethod("Invoke");
+            TestAssert.NotNull(invoke, $"SDL.{delegateName}.Invoke must exist.");
+            AssertAffineParameterContract(invoke!, parameterTypes, $"{delegateName}.Invoke");
+
+            string fieldName = $"RenderTextureAffine{suffix}NativeFunction";
+            FieldInfo? hookField = typeof(SDL3.SDL).GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
+            TestAssert.NotNull(hookField, $"SDL.{fieldName} must exist.");
+            TestAssert.Equal(delegateType, hookField!.FieldType, $"SDL.{fieldName} must use {delegateName}.");
+
+            MethodInfo? publicMethod = typeof(SDL3.SDL).GetMethod(
+                nameof(SDL3.SDL.RenderTextureAffine),
+                BindingFlags.Public | BindingFlags.Static,
+                binder: null,
+                types: parameterTypes,
+                modifiers: null);
+            TestAssert.NotNull(publicMethod, $"SDL.RenderTextureAffine overload for {suffix} must exist.");
+            AssertAffineParameterContract(publicMethod!, parameterTypes, $"RenderTextureAffine({suffix})");
+        }
+    }
+
     private static MethodInfo GetPublicSetRenderViewportRectMethod()
     {
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(
@@ -4218,6 +4295,20 @@ internal static class PInvokeTests
         ParameterInfo parameter = method.GetParameters()[index];
         TestAssert.Equal(typeof(SDL3.SDL.Rect).MakeByRefType(), parameter.ParameterType, $"SDL.{memberName} rect parameter must be by-ref.");
         TestAssert.True(parameter.IsIn, $"SDL.{memberName} rect parameter must keep in metadata.");
+    }
+
+    private static void AssertAffineParameterContract(MethodInfo method, Type[] expectedTypes, string memberName)
+    {
+        ParameterInfo[] parameters = method.GetParameters();
+        TestAssert.Equal(expectedTypes.Length, parameters.Length, $"SDL.{memberName} must keep the expected parameter count.");
+
+        for (int index = 0; index < expectedTypes.Length; index++)
+        {
+            Type expectedType = expectedTypes[index];
+            ParameterInfo parameter = parameters[index];
+            TestAssert.Equal(expectedType, parameter.ParameterType, $"SDL.{memberName} parameter {index} must use {expectedType}.");
+            TestAssert.Equal(expectedType.IsByRef, parameter.IsIn, $"SDL.{memberName} parameter {index} must keep exact in metadata.");
+        }
     }
 
     private static void AssertNativeImport(MethodInfo method, string entryPoint)
