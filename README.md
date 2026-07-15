@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.nuget.org/packages/SDL3-CS/3.4.12.2">
-    <img alt="NuGet SDL3-CS 3.4.12.2" src="https://img.shields.io/badge/nuget-v3.4.12.2-004880?style=flat-square">
+  <a href="https://www.nuget.org/packages/SDL3-CS/3.4.12.3">
+    <img alt="NuGet SDL3-CS 3.4.12.3" src="https://img.shields.io/badge/nuget-v3.4.12.3-004880?style=flat-square">
   </a>
   <a href="https://www.nuget.org/packages/SDL3-CS">
     <img alt="NuGet SDL3-CS downloads" src="https://img.shields.io/nuget/dt/SDL3-CS?style=flat-square">
