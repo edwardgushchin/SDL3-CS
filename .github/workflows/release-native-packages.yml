@@ -217,7 +217,7 @@ jobs:
             -InstallRoot 'artifacts/release/native/SDL_shadercross/${{ matrix.rid }}/install'
 
       - name: Upload native bundle
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: native-bundle-${{ matrix.rid }}
           path: artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip
@@ -322,14 +322,14 @@ jobs:
             -StatePath 'artifacts/release/release-assembly-state.zip'
 
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: nuget-packages
           path: artifacts/release/nuget/*.nupkg
           if-no-files-found: error
 
       - name: Upload release assembly state
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-assembly-state
           path: artifacts/release/release-assembly-state.zip
@@ -609,7 +609,7 @@ jobs:
             -ManagedOnly
 
       - name: Upload managed NuGet package
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: managed-nuget-package
           path: artifacts/release/nuget/SDL3-CS.*.nupkg
