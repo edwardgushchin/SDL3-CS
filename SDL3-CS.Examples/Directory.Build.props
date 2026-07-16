@@ -7,7 +7,7 @@
     <Configurations Condition="'$(Configurations)' == ''">Debug;Release;Prerelease</Configurations>
     <Platforms Condition="'$(Platforms)' == ''">AnyCPU</Platforms>
     <LangVersion Condition="'$(LangVersion)' == ''">14</LangVersion>
-    <SDL3CSVersion>3.4.10.1</SDL3CSVersion>
+    <SDL3CSVersion>3.4.12.1</SDL3CSVersion>
     <SDL3CSImageVersion>3.4.4.1</SDL3CSImageVersion>
     <SDL3CSMixerVersion>3.2.4.1</SDL3CSMixerVersion>
     <SDL3CSTTFVersion>3.2.2.1</SDL3CSTTFVersion>
