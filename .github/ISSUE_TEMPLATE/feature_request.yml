@@ -1,0 +1,79 @@
+name: Feature or binding request
+description: Propose a managed binding, package, tooling, or documentation improvement.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the user need and the smallest useful change. For new bindings, link the exact upstream declaration and version.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I searched the existing issues and discussions for this request.
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - SDL core bindings
+        - Render or GPU
+        - SDL_image
+        - SDL_mixer
+        - SDL_ttf
+        - SDL_shadercross
+        - Native packages
+        - Release tooling
+        - Examples or documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What are you trying to accomplish, and what is currently missing?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the API or behavior you would like to see.
+    validations:
+      required: true
+
+  - type: input
+    id: upstream
+    attributes:
+      label: Upstream reference
+      description: Link the relevant SDL declaration, documentation, release, commit, or issue when applicable.
+      placeholder: "https://github.com/libsdl-org/SDL/..."
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe workarounds or alternative designs you considered.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add code examples, ABI notes, screenshots, or compatibility constraints.
+
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow the project's Code of Conduct.
+          required: true

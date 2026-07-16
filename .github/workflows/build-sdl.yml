@@ -3,6 +3,9 @@ name: Build SDL
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build SDL for ${{ matrix.os }} (${{ matrix.arch_label }})
@@ -44,7 +47,7 @@ jobs:
 
     steps:
       - name: Checkout SDL
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: edwardgushchin/SDL
           ref: release-3.4.2
@@ -126,7 +129,7 @@ jobs:
 
       # ---------- Artifacts ----------
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: SDL-${{ matrix.os }}-${{ matrix.arch_label }}
           path: |

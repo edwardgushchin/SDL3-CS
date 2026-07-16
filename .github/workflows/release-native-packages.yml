@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Build matrix from release manifest
         id: native-matrix
@@ -91,10 +91,10 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             10.0.x
@@ -217,7 +217,7 @@ jobs:
             -InstallRoot 'artifacts/release/native/SDL_shadercross/${{ matrix.rid }}/install'
 
       - name: Upload native bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: native-bundle-${{ matrix.rid }}
           path: artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip
@@ -233,10 +233,10 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             10.0.x
@@ -253,7 +253,7 @@ jobs:
         run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
       - name: Download native bundles
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: native-bundle-*
           path: artifacts/release/bundles
@@ -322,14 +322,14 @@ jobs:
             -StatePath 'artifacts/release/release-assembly-state.zip'
 
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: nuget-packages
           path: artifacts/release/nuget/*.nupkg
           if-no-files-found: error
 
       - name: Upload release assembly state
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-assembly-state
           path: artifacts/release/release-assembly-state.zip
@@ -354,10 +354,10 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             10.0.x
@@ -379,7 +379,7 @@ jobs:
           dotnet workload install ios tvos --source https://api.nuget.org/v3/index.json
 
       - name: Download NuGet packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: nuget-packages
           path: artifacts/release/nuget
@@ -402,10 +402,10 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             10.0.x
@@ -420,7 +420,7 @@ jobs:
           dotnet workload install android --source https://api.nuget.org/v3/index.json
 
       - name: Download NuGet packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: nuget-packages
           path: artifacts/release/nuget
@@ -448,10 +448,10 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             10.0.x
@@ -464,7 +464,7 @@ jobs:
         run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
       - name: Download release assembly state
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: release-assembly-state
           path: artifacts/release/state
@@ -499,7 +499,7 @@ jobs:
 
       - name: NuGet trusted publishing login
         if: ${{ inputs.publish_nuget }}
-        uses: NuGet/login@v1
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
         id: nuget_login
         with:
           user: edwardgushchin
@@ -531,12 +531,12 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS with release history
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
       - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             10.0.x
@@ -609,7 +609,7 @@ jobs:
             -ManagedOnly
 
       - name: Upload managed NuGet package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: managed-nuget-package
           path: artifacts/release/nuget/SDL3-CS.*.nupkg
@@ -626,24 +626,24 @@ jobs:
 
     steps:
       - name: Checkout SDL3-CS with release history
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 10.0.x
 
       - name: Download managed NuGet package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: managed-nuget-package
           path: artifacts/release/nuget
 
       - name: NuGet trusted publishing login
         if: ${{ inputs.publish_nuget }}
-        uses: NuGet/login@v1
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
         id: managed_nuget_login
         with:
           user: edwardgushchin

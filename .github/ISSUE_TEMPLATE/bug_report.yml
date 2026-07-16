@@ -1,0 +1,108 @@
+name: Bug report
+description: Report a reproducible problem in SDL3-CS bindings or packages.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a problem. Search existing issues first and do not include security-sensitive information here.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I searched the existing issues and did not find a duplicate.
+          required: true
+        - label: This is not a security vulnerability. I will use the private reporting process for security issues.
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of SDL3-CS is affected?
+      options:
+        - SDL core bindings
+        - Render or GPU
+        - SDL_image
+        - SDL_mixer
+        - SDL_ttf
+        - SDL_shadercross
+        - Native packages
+        - Release tooling
+        - Examples or documentation
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: SDL3-CS version
+      description: Provide the exact NuGet package version or commit SHA.
+      placeholder: "3.4.12.3"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the OS, architecture, .NET version, target framework, RID, and native packages.
+      placeholder: |
+        OS: Windows 11 x64
+        .NET SDK/runtime: 10.0.x
+        Target framework: net10.0
+        RID: win-x64
+        Native packages: SDL3-CS.Windows 3.4.12.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Explain what happened and why it appears to be a defect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide the smallest code sample and exact steps that reproduce the issue.
+      render: csharp
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or error output
+      description: Paste complete, redacted logs or compiler output if available.
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add links, screenshots, upstream SDL references, or other useful context.
+
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow the project's Code of Conduct.
+          required: true
