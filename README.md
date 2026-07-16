@@ -9,6 +9,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/edwardgushchin/SDL3-CS/actions/workflows/ci.yml">
+    <img alt="CI" src="https://github.com/edwardgushchin/SDL3-CS/actions/workflows/ci.yml/badge.svg?branch=main">
+  </a>
   <a href="https://www.nuget.org/packages/SDL3-CS/3.4.12.3">
     <img alt="NuGet SDL3-CS 3.4.12.3" src="https://img.shields.io/badge/nuget-v3.4.12.3-004880?style=flat-square">
   </a>
@@ -209,7 +212,9 @@ More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushch
 
 Found a bug or have an idea? Open an [issue](https://github.com/edwardgushchin/SDL3-CS/issues) or start a [discussion](https://github.com/edwardgushchin/SDL3-CS/discussions).
 
-Please follow the [Code of Conduct](CODE_OF_CONDUCT.md) in all project interactions.
+Before contributing, read the [contribution guide](CONTRIBUTING.md). Please follow the [Code of Conduct](CODE_OF_CONDUCT.md) in all project interactions.
+
+For usage help, see the [support guide](SUPPORT.md). Report suspected vulnerabilities privately according to the [security policy](SECURITY.md); do not disclose them in a public issue.
 
 You can contact the maintainer at [eduardgushchin@yandex.ru](mailto:eduardgushchin@yandex.ru) or join the [Telegram chat](https://t.me/sdl3cs) for questions and feedback.
 

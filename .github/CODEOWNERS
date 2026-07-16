@@ -1,0 +1,7 @@
+# Default ownership for repository changes.
+* @edwardgushchin
+
+# Release and automation changes require maintainer review.
+/.github/workflows/ @edwardgushchin
+/.github/release-tools/ @edwardgushchin
+/SDL3-CS.Native*/ @edwardgushchin

@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - "release-*"
+  push:
+    branches:
+      - main
+      - "release-*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+
+jobs:
+  managed:
+    name: Managed build and tests
+    runs-on: windows-2025
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+            8.0.x
+            7.0.x
+
+      - name: Restore managed projects
+        shell: pwsh
+        run: |
+          dotnet restore .\SDL3-CS\SDL3-CS.csproj --force --no-cache
+          dotnet restore .\SDL3-CS.Tests\SDL3-CS.Tests.csproj --force --no-cache
+
+      - name: Build managed wrapper and tests
+        shell: pwsh
+        run: |
+          dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release --no-restore /p:GeneratePackageOnBuild=false
+          dotnet build .\SDL3-CS.Tests\SDL3-CS.Tests.csproj -c Release --no-restore
+
+      - name: Restore published native runtime for managed tests
+        shell: pwsh
+        run: |
+          ./.github/release-tools/Restore-ManagedReleaseTestRuntime.ps1 `
+            -NativePackageRevision 1 `
+            -Rid win-x64 `
+            -Destination 'SDL3-CS.Tests/bin/Release/net8.0'
+
+      - name: Run managed wrapper tests
+        shell: pwsh
+        run: dotnet run --project .\SDL3-CS.Tests\SDL3-CS.Tests.csproj -c Release --no-build --no-restore
+
+      - name: Audit public wrapper XML documentation
+        shell: pwsh
+        run: ./.github/release-tools/Test-PublicWrapperXmlDocs.ps1 -SourceRoot .\SDL3-CS

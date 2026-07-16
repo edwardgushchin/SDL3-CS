@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage questions and troubleshooting
+    url: https://github.com/edwardgushchin/SDL3-CS/discussions
+    about: Ask the community for help using SDL3-CS.
+  - name: Security vulnerability
+    url: https://github.com/edwardgushchin/SDL3-CS/security/advisories/new
+    about: Report suspected vulnerabilities privately. Do not open a public issue.
+  - name: SDL3-CS documentation
+    url: https://github.com/edwardgushchin/SDL3-CS/wiki
+    about: Read setup, platform, and API guidance.

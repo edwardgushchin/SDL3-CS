@@ -3,6 +3,9 @@ name: Build SDL_ttf
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build SDL_ttf for ${{ matrix.os }} (${{ matrix.arch_label }})
@@ -51,7 +54,7 @@ jobs:
 
     steps:
       - name: Checkout SDL
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: edwardgushchin/SDL
           fetch-depth: 1
@@ -59,7 +62,7 @@ jobs:
           path: SDL
 
       - name: Checkout SDL_ttf
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: edwardgushchin/SDL_ttf
           fetch-depth: 1
@@ -91,7 +94,7 @@ jobs:
 
       # ---------- Cache ----------
       - name: Cache install prefix
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ${{ env.INSTALL_PREFIX }}
           key: install-prefix-ttf-${{ matrix.os }}-${{ matrix.arch_label }}-v2
@@ -189,7 +192,7 @@ jobs:
 
       # ---------- Artifacts (raw) ----------
       - name: Upload raw artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: SDL_ttf-${{ matrix.os }}-${{ matrix.arch_label }}
           path: |
@@ -207,7 +210,7 @@ jobs:
 
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
 
       - name: Prepare directory structure
         run: |
@@ -245,7 +248,7 @@ jobs:
         run: zip -r SDL_ttf-libs.zip lib
 
       - name: Upload final packed archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: SDL_ttf-libs
           path: SDL_ttf-libs.zip
