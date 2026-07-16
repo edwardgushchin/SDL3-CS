@@ -253,7 +253,7 @@ public static partial class SDL
     /// <seealso cref="CreateRendererWithProperties"/>
     /// <seealso cref="GetGPURendererDevice"/>
     /// <seealso cref="CreateGPUShader"/>
-    /// <seealso cref="CreateGPURenderState"/>
+    /// <seealso cref="CreateGPURenderState(nint, in GPURenderStateCreateInfo)"/>
     /// <seealso cref="SetGPURenderState"/>
     public static IntPtr CreateGPURenderer(IntPtr device, IntPtr window)
     {
@@ -5468,7 +5468,7 @@ public static partial class SDL
     /// <para>Create custom GPU render state.</para>
     /// </summary>
     /// <param name="renderer">the renderer to use.</param>
-    /// <param name="createinfo">a struct describing the GPU render state to create.</param>
+    /// <param name="createinfo">a pointer to a <see cref="GPURenderStateCreateInfo"/> describing the GPU render state to create.</param>
     /// <returns>a custom GPU render state or <c>null</c> on failure; call <see cref="GetError"/>
     /// for more information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
@@ -5480,6 +5480,17 @@ public static partial class SDL
     public static IntPtr CreateGPURenderState(IntPtr renderer, IntPtr createinfo)
     {
         return CreateGPURenderStateNativeFunction(renderer, createinfo);
+    }
+
+    /// <inheritdoc cref="CreateGPURenderState(nint, nint)"/>
+    /// <param name="renderer">the renderer to use.</param>
+    /// <param name="createinfo">a <see cref="GPURenderStateCreateInfo"/> describing the GPU render state to create.</param>
+    public static unsafe IntPtr CreateGPURenderState(IntPtr renderer, in GPURenderStateCreateInfo createinfo)
+    {
+        fixed (GPURenderStateCreateInfo* createInfoPointer = &createinfo)
+        {
+            return CreateGPURenderStateNativeFunction(renderer, (IntPtr)createInfoPointer);
+        }
     }
 
 

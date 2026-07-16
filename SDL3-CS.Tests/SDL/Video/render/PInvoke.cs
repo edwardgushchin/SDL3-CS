@@ -29,6 +29,7 @@ internal static class PInvokeTests
     private static IntPtr capturedPixels;
     private static IntPtr capturedState;
     private static IntPtr capturedCreateInfo;
+    private static SDL3.SDL.GPURenderStateCreateInfo capturedGPURenderStateCreateInfo;
     private static IntPtr capturedData;
     private static IntPtr capturedYPlane;
     private static IntPtr capturedUPlane;
@@ -175,6 +176,8 @@ internal static class PInvokeTests
         GeometryRenderingFunctions_ForwardVerticesRawArraysAndGenericSpans();
         RenderTextureAddressReadPresentDestroyFlushAndMetalFunctions_ForwardInputsOutputsAndReturnNativeValues();
         VulkanVSyncDebugTextAndDefaultTextureScaleFunctions_ForwardInputsOutputsAndReturnNativeValues();
+        GPURenderStateCreateInfoTests.Layout_MatchesSdl3412Abi();
+        CreateGPURenderStateTypedOverload_UsesInParameterAndForwardsAllFields();
         GpuRenderStateFunctions_ForwardPointersArraysAndReturnNativeValues();
     }
 
@@ -2414,6 +2417,52 @@ internal static class PInvokeTests
         TestAssert.Equal(SDL3.SDL.ScaleMode.Nearest, scaleMode, "SDL.GetDefaultTextureScaleMode must write scale mode.");
     }
 
+    public static void CreateGPURenderStateTypedOverload_UsesInParameterAndForwardsAllFields()
+    {
+        MethodInfo? typedMethod = typeof(SDL3.SDL).GetMethod(
+            nameof(SDL3.SDL.CreateGPURenderState),
+            BindingFlags.Public | BindingFlags.Static,
+            binder: null,
+            types: [typeof(IntPtr), typeof(SDL3.SDL.GPURenderStateCreateInfo).MakeByRefType()],
+            modifiers: null);
+        TestAssert.NotNull(typedMethod, "SDL.CreateGPURenderState(IntPtr, in GPURenderStateCreateInfo) must exist.");
+
+        ParameterInfo createInfoParameter = typedMethod!.GetParameters()[1];
+        TestAssert.Equal(typeof(SDL3.SDL.GPURenderStateCreateInfo).MakeByRefType(), createInfoParameter.ParameterType, "SDL.CreateGPURenderState typed createinfo must be by-ref.");
+        TestAssert.True(createInfoParameter.IsIn, "SDL.CreateGPURenderState typed createinfo must keep in metadata.");
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0xA101;
+        SDL3.SDL.GPURenderStateCreateInfo createInfo = new()
+        {
+            FragmentShader = (IntPtr)0xA111,
+            NumSamplerBindings = 2,
+            SamplerBindings = (IntPtr)0xA112,
+            NumStorageTextures = 3,
+            StorageTextures = (IntPtr)0xA113,
+            NumStorageBuffers = 4,
+            StorageBuffers = (IntPtr)0xA114,
+            Props = 0xA115u
+        };
+
+        using (NativeHookScope _ = NativeHookScope.Install("CreateGPURenderStateNativeFunction", nameof(CaptureCreateGPURenderStateCreateInfo)))
+        {
+            IntPtr result = SDL3.SDL.CreateGPURenderState((IntPtr)0xA110, in createInfo);
+
+            TestAssert.Equal((IntPtr)0xA101, result, "SDL.CreateGPURenderState typed overload must return the native hook value.");
+            TestAssert.Equal((IntPtr)0xA110, capturedRenderer, "SDL.CreateGPURenderState typed overload must forward renderer.");
+            TestAssert.True(capturedCreateInfo != IntPtr.Zero, "SDL.CreateGPURenderState typed overload must pass a create-info pointer.");
+            TestAssert.Equal(createInfo.FragmentShader, capturedGPURenderStateCreateInfo.FragmentShader, "SDL.CreateGPURenderState must forward FragmentShader.");
+            TestAssert.Equal(createInfo.NumSamplerBindings, capturedGPURenderStateCreateInfo.NumSamplerBindings, "SDL.CreateGPURenderState must forward NumSamplerBindings.");
+            TestAssert.Equal(createInfo.SamplerBindings, capturedGPURenderStateCreateInfo.SamplerBindings, "SDL.CreateGPURenderState must forward SamplerBindings.");
+            TestAssert.Equal(createInfo.NumStorageTextures, capturedGPURenderStateCreateInfo.NumStorageTextures, "SDL.CreateGPURenderState must forward NumStorageTextures.");
+            TestAssert.Equal(createInfo.StorageTextures, capturedGPURenderStateCreateInfo.StorageTextures, "SDL.CreateGPURenderState must forward StorageTextures.");
+            TestAssert.Equal(createInfo.NumStorageBuffers, capturedGPURenderStateCreateInfo.NumStorageBuffers, "SDL.CreateGPURenderState must forward NumStorageBuffers.");
+            TestAssert.Equal(createInfo.StorageBuffers, capturedGPURenderStateCreateInfo.StorageBuffers, "SDL.CreateGPURenderState must forward StorageBuffers.");
+            TestAssert.Equal(createInfo.Props, capturedGPURenderStateCreateInfo.Props, "SDL.CreateGPURenderState must forward Props.");
+        }
+    }
+
     public static void GpuRenderStateFunctions_ForwardPointersArraysAndReturnNativeValues()
     {
         ResetCaptureState();
@@ -3660,6 +3709,14 @@ internal static class PInvokeTests
         return nextPointer;
     }
 
+    private static IntPtr CaptureCreateGPURenderStateCreateInfo(IntPtr renderer, IntPtr createinfo)
+    {
+        capturedRenderer = renderer;
+        capturedCreateInfo = createinfo;
+        capturedGPURenderStateCreateInfo = Marshal.PtrToStructure<SDL3.SDL.GPURenderStateCreateInfo>(createinfo);
+        return nextPointer;
+    }
+
     private static bool CaptureSetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length)
     {
         capturedState = state;
@@ -4096,6 +4153,7 @@ internal static class PInvokeTests
         capturedPixels = IntPtr.Zero;
         capturedState = IntPtr.Zero;
         capturedCreateInfo = IntPtr.Zero;
+        capturedGPURenderStateCreateInfo = default;
         capturedData = IntPtr.Zero;
         capturedYPlane = IntPtr.Zero;
         capturedUPlane = IntPtr.Zero;
