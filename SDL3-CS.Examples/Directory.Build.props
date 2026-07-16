@@ -9,7 +9,7 @@
     <LangVersion Condition="'$(LangVersion)' == ''">14</LangVersion>
     <SDL3CSVersion>3.4.10.1</SDL3CSVersion>
     <SDL3CSImageVersion>3.4.4.1</SDL3CSImageVersion>
-    <SDL3CSMixerVersion>3.2.4.1</SDL3CSMixerVersion>
+    <SDL3CSMixerVersion>3.2.4.7</SDL3CSMixerVersion>
     <SDL3CSTTFVersion>3.2.2.1</SDL3CSTTFVersion>
     <SDL3CSShadercrossVersion>3.0.0.1</SDL3CSShadercrossVersion>
   </PropertyGroup>
