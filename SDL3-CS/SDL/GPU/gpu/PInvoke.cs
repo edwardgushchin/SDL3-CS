@@ -2627,8 +2627,8 @@ public partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DownloadFromGPUBuffer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_DownloadFromGPUBuffer(IntPtr copyPass, in GPUTextureRegion source, in GPUTransferBufferLocation destination);
-    private delegate void DownloadFromGPUBufferNativeDelegate(IntPtr copyPass, in GPUTextureRegion source, in GPUTransferBufferLocation destination);
+    private static partial void SDL_DownloadFromGPUBuffer(IntPtr copyPass, in GPUBufferRegion source, in GPUTransferBufferLocation destination);
+    private delegate void DownloadFromGPUBufferNativeDelegate(IntPtr copyPass, in GPUBufferRegion source, in GPUTransferBufferLocation destination);
     private static DownloadFromGPUBufferNativeDelegate DownloadFromGPUBufferNativeFunction = SDL_DownloadFromGPUBuffer;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_DownloadFromGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferRegion *source, const SDL_GPUTransferBufferLocation *destination);</code>
@@ -2641,7 +2641,7 @@ public partial class SDL
     /// <param name="source">the source buffer with offset and size.</param>
     /// <param name="destination">the destination transfer buffer with offset.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    public static void DownloadFromGPUBuffer(IntPtr copyPass, in GPUTextureRegion source, in GPUTransferBufferLocation destination)
+    public static void DownloadFromGPUBuffer(IntPtr copyPass, in GPUBufferRegion source, in GPUTransferBufferLocation destination)
     {
         DownloadFromGPUBufferNativeFunction(copyPass, in source, in destination);
     }
