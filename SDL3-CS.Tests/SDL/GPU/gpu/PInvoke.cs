@@ -1742,17 +1742,22 @@ internal static class PInvokeTests
         AssertSdlLibraryImport(nativeMethod, "SDL_DownloadFromGPUBuffer");
         AssertByRefParameter(nativeMethod, "source");
         AssertByRefParameter(nativeMethod, "destination");
+        ParameterInfo sourceParameter = nativeMethod.GetParameters().Single(parameter => parameter.Name == "source");
+        TestAssert.Equal(typeof(SDL3.SDL.GPUBufferRegion).MakeByRefType(), sourceParameter.ParameterType, "SDL_DownloadFromGPUBuffer source must be a by-ref GPUBufferRegion.");
 
         ResetCaptureState();
         using NativeHookScope _ = NativeHookScope.Install("DownloadFromGPUBufferNativeFunction", nameof(CaptureDownloadFromGPUBuffer));
-        SDL3.SDL.GPUTextureRegion source = CreateTextureRegion((IntPtr)5801);
+        SDL3.SDL.GPUBufferRegion source = CreateBufferRegion((IntPtr)5801);
         SDL3.SDL.GPUTransferBufferLocation destination = CreateTransferBufferLocation((IntPtr)5802);
 
         SDL3.SDL.DownloadFromGPUBuffer((IntPtr)5803, in source, in destination);
 
         TestAssert.Equal((IntPtr)5803, capturedCopyPass, "SDL.DownloadFromGPUBuffer must forward copyPass.");
-        TestAssert.Equal(source.Texture, capturedTextureRegion.Texture, "SDL.DownloadFromGPUBuffer must forward source region.");
+        TestAssert.Equal(source.Buffer, capturedBufferRegion.Buffer, "SDL.DownloadFromGPUBuffer must forward source buffer.");
+        TestAssert.Equal(source.Offset, capturedBufferRegion.Offset, "SDL.DownloadFromGPUBuffer must forward source offset.");
+        TestAssert.Equal(source.Size, capturedBufferRegion.Size, "SDL.DownloadFromGPUBuffer must forward source size.");
         TestAssert.Equal(destination.TransferBuffer, capturedTransferBufferLocation.TransferBuffer, "SDL.DownloadFromGPUBuffer must forward destination transfer buffer.");
+        TestAssert.Equal(destination.Offset, capturedTransferBufferLocation.Offset, "SDL.DownloadFromGPUBuffer must forward destination offset.");
         TestAssert.Equal(1, capturedCallCount, "SDL.DownloadFromGPUBuffer must call native hook once.");
     }
 
@@ -2835,10 +2840,10 @@ internal static class PInvokeTests
         capturedCallCount++;
     }
 
-    private static void CaptureDownloadFromGPUBuffer(IntPtr copyPass, in SDL3.SDL.GPUTextureRegion source, in SDL3.SDL.GPUTransferBufferLocation destination)
+    private static void CaptureDownloadFromGPUBuffer(IntPtr copyPass, in SDL3.SDL.GPUBufferRegion source, in SDL3.SDL.GPUTransferBufferLocation destination)
     {
         capturedCopyPass = copyPass;
-        capturedTextureRegion = source;
+        capturedBufferRegion = source;
         capturedTransferBufferLocation = destination;
         capturedCallCount++;
     }
