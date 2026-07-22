@@ -640,6 +640,10 @@ SDL3.Tests.SDL.Audio.Audio.PInvokeTests.CreateAudioStream_WithPointers_ForwardsS
 Console.WriteLine("SDL.CreateAudioStream(IntPtr, IntPtr) binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.CreateAudioStream_WithSpecs_ForwardsSpecs();
 Console.WriteLine("SDL.CreateAudioStream(in AudioSpec, in AudioSpec) binding test passed.");
+SDL3.Tests.SDL.Audio.Audio.PInvokeTests.CreateAudioStream_WithSourceSpecAndDestinationPointer_ForwardsSpecs();
+Console.WriteLine("SDL.CreateAudioStream(in AudioSpec, IntPtr) binding test passed.");
+SDL3.Tests.SDL.Audio.Audio.PInvokeTests.CreateAudioStream_WithSourcePointerAndDestinationSpec_ForwardsSpecs();
+Console.WriteLine("SDL.CreateAudioStream(IntPtr, in AudioSpec) binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioStreamProperties_ReturnsNativeValue();
 Console.WriteLine("SDL.GetAudioStreamProperties binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioStreamFormat_ForwardsStreamAndOutputs();
