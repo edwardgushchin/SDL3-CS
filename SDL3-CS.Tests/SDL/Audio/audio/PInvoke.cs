@@ -466,6 +466,38 @@ internal static class PInvokeTests
         AssertAudioSpec(dstSpec, capturedDstSpec, "SDL.CreateAudioStream(in AudioSpec, in AudioSpec) must forward dst spec.");
     }
 
+    public static void CreateAudioStream_WithSourceSpecAndDestinationPointer_ForwardsSpecs()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateAudioStream", [typeof(SDL3.SDL.AudioSpec).MakeByRefType(), typeof(IntPtr)]);
+        AssertSdlLibraryImport(nativeMethod, "SDL_CreateAudioStream");
+
+        nextPointer = (IntPtr)304;
+        SDL3.SDL.AudioSpec srcSpec = CreateAudioSpec(SDL3.SDL.AudioFormat.AudioS16LE, 1, 22050);
+
+        using NativeHookScope _ = NativeHookScope.Install("CreateAudioStreamWithSourceSpecAndDestinationPointerNativeFunction", nameof(CaptureCreateAudioStreamWithSourceSpecAndDestinationPointer));
+        IntPtr result = SDL3.SDL.CreateAudioStream(in srcSpec, IntPtr.Zero);
+
+        TestAssert.Equal((IntPtr)304, result, "SDL.CreateAudioStream(in AudioSpec, IntPtr) must return the native hook stream.");
+        AssertAudioSpec(srcSpec, capturedSrcSpec, "SDL.CreateAudioStream(in AudioSpec, IntPtr) must forward src spec.");
+        TestAssert.Equal(IntPtr.Zero, capturedDstSpecPointer, "SDL.CreateAudioStream(in AudioSpec, IntPtr) must forward dst spec pointer.");
+    }
+
+    public static void CreateAudioStream_WithSourcePointerAndDestinationSpec_ForwardsSpecs()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateAudioStream", [typeof(IntPtr), typeof(SDL3.SDL.AudioSpec).MakeByRefType()]);
+        AssertSdlLibraryImport(nativeMethod, "SDL_CreateAudioStream");
+
+        nextPointer = (IntPtr)305;
+        SDL3.SDL.AudioSpec dstSpec = CreateAudioSpec(SDL3.SDL.AudioFormat.AudioF32LE, 2, 48000);
+
+        using NativeHookScope _ = NativeHookScope.Install("CreateAudioStreamWithSourcePointerAndDestinationSpecNativeFunction", nameof(CaptureCreateAudioStreamWithSourcePointerAndDestinationSpec));
+        IntPtr result = SDL3.SDL.CreateAudioStream(IntPtr.Zero, in dstSpec);
+
+        TestAssert.Equal((IntPtr)305, result, "SDL.CreateAudioStream(IntPtr, in AudioSpec) must return the native hook stream.");
+        TestAssert.Equal(IntPtr.Zero, capturedSrcSpecPointer, "SDL.CreateAudioStream(IntPtr, in AudioSpec) must forward src spec pointer.");
+        AssertAudioSpec(dstSpec, capturedDstSpec, "SDL.CreateAudioStream(IntPtr, in AudioSpec) must forward dst spec.");
+    }
+
     public static void GetAudioStreamProperties_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_GetAudioStreamProperties");
@@ -1292,6 +1324,20 @@ internal static class PInvokeTests
     private static IntPtr CaptureCreateAudioStreamWithSpecs(in SDL3.SDL.AudioSpec srcSpec, in SDL3.SDL.AudioSpec dstSpec)
     {
         capturedSrcSpec = srcSpec;
+        capturedDstSpec = dstSpec;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureCreateAudioStreamWithSourceSpecAndDestinationPointer(in SDL3.SDL.AudioSpec srcSpec, IntPtr dstSpec)
+    {
+        capturedSrcSpec = srcSpec;
+        capturedDstSpecPointer = dstSpec;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureCreateAudioStreamWithSourcePointerAndDestinationSpec(IntPtr srcSpec, in SDL3.SDL.AudioSpec dstSpec)
+    {
+        capturedSrcSpecPointer = srcSpec;
         capturedDstSpec = dstSpec;
         return nextPointer;
     }
