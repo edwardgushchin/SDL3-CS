@@ -335,8 +335,22 @@ public static partial class SDL
     public static bool PointInRectFloat(in FPoint? p, in FRect? r)
     {
         return (p.HasValue && r.HasValue &&
-                p.Value.X >= r.Value.X && p.Value.X < (r.Value.X + r.Value.W) &&
-                p.Value.Y >= r.Value.Y && p.Value.Y < (r.Value.Y + r.Value.H));
+                p.Value.X >= r.Value.X && p.Value.X <= (r.Value.X + r.Value.W) &&
+                p.Value.Y >= r.Value.Y && p.Value.Y <= (r.Value.Y + r.Value.H));
+    }
+
+    /// <summary>
+    /// Determines whether a non-nullable point resides inside a floating point rectangle.
+    /// </summary>
+    /// <param name="p">the point to test.</param>
+    /// <param name="r">the rectangle to test.</param>
+    /// <returns><c>true</c> if <c>p</c> is contained by <c>r</c>, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This overload is available since SDL3-CS 3.4.12.4.</since>
+    public static bool PointInRectFloat(in FPoint p, in FRect r)
+    {
+        return (p.X >= r.X && p.X <= (r.X + r.W) &&
+                p.Y >= r.Y && p.Y <= (r.Y + r.H));
     }
 
 

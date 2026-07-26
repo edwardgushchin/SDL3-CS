@@ -32,7 +32,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="GetRectEnclosingPointsFloat(FPoint[], int, IntPtr, out FRect)"/>
-    /// <seealso cref="PointInRectFloat"/>
+    /// <seealso cref="PointInRectFloat(in FPoint, in FRect)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct FPoint
     {
