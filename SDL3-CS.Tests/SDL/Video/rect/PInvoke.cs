@@ -53,6 +53,7 @@ internal static class PInvokeTests
         GetRectEnclosingPoints_WithRectClipForwardsArrayClipAndResult();
         GetRectAndLineIntersection_ForwardsLineMutatesCoordinatesAndReturnsNativeValue();
         PointInRectFloat_ReturnsExpectedValuesForNullsAndEdges();
+        PointInRectFloat_NonNullableOverloadReturnsExpectedValuesForEdges();
         RectEmptyFloat_ReturnsExpectedValuesForNullAndNonPositiveSize();
         RectsEqualEpsilon_ReturnsExpectedValuesForNullsAndFieldDifferences();
         RectsEqualFloat_UsesDefaultEpsilon();
@@ -307,17 +308,47 @@ internal static class PInvokeTests
         SDL3.SDL.FPoint? topLeft = CreateFPoint(10.0f, 20.0f);
         SDL3.SDL.FPoint? beforeLeft = CreateFPoint(9.99f, 23.5f);
         SDL3.SDL.FPoint? rightEdge = CreateFPoint(15.0f, 23.5f);
+        SDL3.SDL.FPoint? afterRight = CreateFPoint(15.01f, 23.5f);
         SDL3.SDL.FPoint? aboveTop = CreateFPoint(12.5f, 19.99f);
         SDL3.SDL.FPoint? bottomEdge = CreateFPoint(12.5f, 26.0f);
+        SDL3.SDL.FPoint? belowBottom = CreateFPoint(12.5f, 26.01f);
+        SDL3.SDL.FPoint? bottomRight = CreateFPoint(15.0f, 26.0f);
 
         TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in noPoint, in rect), "SDL.PointInRectFloat must reject a null point.");
         TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in inside, in noRect), "SDL.PointInRectFloat must reject a null rect.");
         TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in inside, in rect), "SDL.PointInRectFloat must accept an interior point.");
         TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in topLeft, in rect), "SDL.PointInRectFloat must include the top-left edge.");
         TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in beforeLeft, in rect), "SDL.PointInRectFloat must reject points before the left edge.");
-        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in rightEdge, in rect), "SDL.PointInRectFloat must reject the right edge.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in rightEdge, in rect), "SDL.PointInRectFloat must include the right edge.");
+        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in afterRight, in rect), "SDL.PointInRectFloat must reject points after the right edge.");
         TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in aboveTop, in rect), "SDL.PointInRectFloat must reject points above the top edge.");
-        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in bottomEdge, in rect), "SDL.PointInRectFloat must reject the bottom edge.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in bottomEdge, in rect), "SDL.PointInRectFloat must include the bottom edge.");
+        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in belowBottom, in rect), "SDL.PointInRectFloat must reject points below the bottom edge.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in bottomRight, in rect), "SDL.PointInRectFloat must include the bottom-right corner.");
+    }
+
+    public static void PointInRectFloat_NonNullableOverloadReturnsExpectedValuesForEdges()
+    {
+        SDL3.SDL.FRect rect = CreateFRect(10.0f, 20.0f, 5.0f, 6.0f);
+        SDL3.SDL.FPoint inside = CreateFPoint(12.5f, 23.5f);
+        SDL3.SDL.FPoint topLeft = CreateFPoint(10.0f, 20.0f);
+        SDL3.SDL.FPoint rightEdge = CreateFPoint(15.0f, 23.5f);
+        SDL3.SDL.FPoint bottomEdge = CreateFPoint(12.5f, 26.0f);
+        SDL3.SDL.FPoint bottomRight = CreateFPoint(15.0f, 26.0f);
+        SDL3.SDL.FPoint beforeLeft = CreateFPoint(9.99f, 23.5f);
+        SDL3.SDL.FPoint afterRight = CreateFPoint(15.01f, 23.5f);
+        SDL3.SDL.FPoint aboveTop = CreateFPoint(12.5f, 19.99f);
+        SDL3.SDL.FPoint belowBottom = CreateFPoint(12.5f, 26.01f);
+
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in inside, in rect), "SDL.PointInRectFloat non-nullable overload must accept an interior point.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in topLeft, in rect), "SDL.PointInRectFloat non-nullable overload must include the top-left edge.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in rightEdge, in rect), "SDL.PointInRectFloat non-nullable overload must include the right edge.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in bottomEdge, in rect), "SDL.PointInRectFloat non-nullable overload must include the bottom edge.");
+        TestAssert.Equal(true, SDL3.SDL.PointInRectFloat(in bottomRight, in rect), "SDL.PointInRectFloat non-nullable overload must include the bottom-right corner.");
+        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in beforeLeft, in rect), "SDL.PointInRectFloat non-nullable overload must reject points before the left edge.");
+        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in afterRight, in rect), "SDL.PointInRectFloat non-nullable overload must reject points after the right edge.");
+        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in aboveTop, in rect), "SDL.PointInRectFloat non-nullable overload must reject points above the top edge.");
+        TestAssert.Equal(false, SDL3.SDL.PointInRectFloat(in belowBottom, in rect), "SDL.PointInRectFloat non-nullable overload must reject points below the bottom edge.");
     }
 
     public static void RectEmptyFloat_ReturnsExpectedValuesForNullAndNonPositiveSize()
