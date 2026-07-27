@@ -265,6 +265,29 @@ foreach ($package in $packages) {
         }
     }
 
+    if ($package.VersionComponent -eq 'SDL_image' -and $package.NativePackagePlatform -in @('Android', 'Linux', 'Windows')) {
+        $licenseEntry = 'licenses/libwebp/COPYING'
+        if (-not $entrySet.Contains($licenseEntry)) {
+            Add-ContentError "$($package.Id) package is missing $licenseEntry."
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'license'
+                Expected = $licenseEntry
+                Count = 0
+                Status = 'missing'
+            })
+        }
+        else {
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'license'
+                Expected = $licenseEntry
+                Count = 1
+                Status = 'present'
+            })
+        }
+    }
+
     $nativeArtifactProject = if ($package.PSObject.Properties.Name.Contains('NativeArtifactProject') -and $package.NativeArtifactProject) {
         $package.NativeArtifactProject
     }
