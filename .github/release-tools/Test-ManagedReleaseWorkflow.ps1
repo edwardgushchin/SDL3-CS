@@ -35,6 +35,18 @@ function Assert-TextExcludes {
     }
 }
 
+function Assert-TextMatches {
+    param(
+        [Parameter(Mandatory)][AllowEmptyString()][string] $Text,
+        [Parameter(Mandatory)][string] $Pattern,
+        [Parameter(Mandatory)][string] $Description
+    )
+
+    if ($Text -notmatch $Pattern) {
+        Add-ManagedWorkflowError "$Description is missing expected pattern: $Pattern"
+    }
+}
+
 $errors = New-Object System.Collections.Generic.List[string]
 $workflowFile = Resolve-ReleasePath $WorkflowPath
 $workflowText = ''
@@ -72,11 +84,10 @@ foreach ($expected in @(
     '-ManagedOnly',
     'name: managed-nuget-package',
     'path: artifacts/release/nuget/SDL3-CS.*.nupkg',
-    'uses: NuGet/login@v1',
     'environment: production',
     "NATIVE_PACKAGE_REVISION: `${{ inputs.native_package_revision }}",
     "BASE_RELEASE_REF: `${{ inputs.base_release_ref }}",
-    "if: `${{ inputs.managed_only }}",
+    "if: `${{ inputs.managed_only && !inputs.selective_native_repack }}",
     "if: `${{ inputs.managed_only && (inputs.publish_github || inputs.publish_nuget) }}",
     "if: `${{ !inputs.managed_only && (inputs.publish_github || inputs.publish_nuget) }}",
     'NativePackageRevision = [int]$env:NATIVE_PACKAGE_REVISION',
@@ -86,6 +97,10 @@ foreach ($expected in @(
 )) {
     Assert-TextContains -Text $workflowText -Expected $expected -Description 'managed release workflow'
 }
+Assert-TextMatches `
+    -Text $workflowText `
+    -Pattern '(?m)^\s+uses:\s+NuGet/login@[0-9a-f]{40}\s+#\s+v1\s*$' `
+    -Description 'managed release workflow SHA-pinned NuGet Trusted Publishing login action'
 
 foreach ($publishInput in @('publish_github', 'publish_nuget')) {
     if ($workflowText -notmatch "(?ms)^\s{6}$publishInput\s*:\s*\r?\n.*?^\s{8}default:\s+false\s*$") {

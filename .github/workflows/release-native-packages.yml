@@ -39,6 +39,24 @@ on:
         required: true
         type: boolean
         default: false
+      selective_native_repack:
+        description: Repack exact published native packages without running the native matrix.
+        required: true
+        type: boolean
+        default: false
+      previous_native_package_revision:
+        description: Published source revision for selective native package repack.
+        required: true
+        default: "7"
+      selective_package_ids:
+        description: Comma-separated exact native package IDs for selective repack.
+        required: true
+        default: SDL3-CS.Android.Image,SDL3-CS.Linux.Image,SDL3-CS.Windows.Image
+      publish_selective_nuget:
+        description: Publish validated selective native repacks through trusted publishing.
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -49,9 +67,32 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
 
 jobs:
+  validate-mode:
+    name: Validate release mode
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enforce exclusive release mode
+        shell: pwsh
+        run: |
+          $selective = '${{ inputs.selective_native_repack }}' -eq 'true'
+          $managed = '${{ inputs.managed_only }}' -eq 'true'
+          $normalPublish = '${{ inputs.publish_github }}' -eq 'true' -or '${{ inputs.publish_nuget }}' -eq 'true'
+          $selectivePublish = '${{ inputs.publish_selective_nuget }}' -eq 'true'
+          if ($selective -and -not $managed) {
+            throw 'Selective native repack requires managed_only=true so the full native matrix stays disabled.'
+          }
+          if ($selective -and $normalPublish) {
+            throw 'Selective native repack requires publish_github=false and publish_nuget=false.'
+          }
+          if (-not $selective -and $selectivePublish) {
+            throw 'publish_selective_nuget requires selective_native_repack=true.'
+          }
+
   plan:
     name: Plan native matrix
     if: ${{ !inputs.managed_only }}
+    needs: validate-mode
     runs-on: ubuntu-latest
     outputs:
       native_matrix: ${{ steps.native-matrix.outputs.native_matrix }}
@@ -526,7 +567,8 @@ jobs:
 
   managed-build:
     name: Build and validate managed package
-    if: ${{ inputs.managed_only }}
+    if: ${{ inputs.managed_only && !inputs.selective_native_repack }}
+    needs: validate-mode
     runs-on: windows-2025
 
     steps:
@@ -673,3 +715,105 @@ jobs:
           }
 
           ./.github/release-tools/Publish-Release.ps1 @params
+
+  selective-repack:
+    name: Repack selected published native packages
+    if: ${{ inputs.selective_native_repack }}
+    needs: validate-mode
+    runs-on: windows-2025
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Clone only selected published packages
+        shell: pwsh
+        env:
+          PACKAGE_REVISION: ${{ inputs.package_revision }}
+          PREVIOUS_PACKAGE_REVISION: ${{ inputs.previous_native_package_revision }}
+          PACKAGE_IDS: ${{ inputs.selective_package_ids }}
+        run: |
+          $ids = @($env:PACKAGE_IDS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+          ./.github/release-tools/New-NativePackageRepack.ps1 `
+            -PackageRevision ([int]$env:PACKAGE_REVISION) `
+            -PreviousPackageRevision ([int]$env:PREVIOUS_PACKAGE_REVISION) `
+            -PackageIds $ids `
+            -OutputDir 'artifacts/release/nuget'
+
+      - name: Prove package-only payload equivalence
+        shell: pwsh
+        env:
+          PACKAGE_REVISION: ${{ inputs.package_revision }}
+          PREVIOUS_PACKAGE_REVISION: ${{ inputs.previous_native_package_revision }}
+          PACKAGE_IDS: ${{ inputs.selective_package_ids }}
+        run: |
+          $ids = @($env:PACKAGE_IDS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+          $rids = @('android-arm', 'android-arm64', 'android-x86', 'android-x64', 'linux-x64', 'linux-arm64', 'win-x86', 'win-x64', 'win-arm64')
+          ./.github/release-tools/Test-NuGetPackageContents.ps1 `
+            -PackageRevision ([int]$env:PACKAGE_REVISION) `
+            -PackageIds $ids `
+            -Rids $rids `
+            -PackageDir 'artifacts/release/nuget'
+          ./.github/release-tools/Test-NativePackageRepack.ps1 `
+            -PackageRevision ([int]$env:PACKAGE_REVISION) `
+            -PreviousPackageRevision ([int]$env:PREVIOUS_PACKAGE_REVISION) `
+            -PackageIds $ids `
+            -PackageDir 'artifacts/release/nuget'
+          $packagePaths = @(Get-ChildItem -LiteralPath 'artifacts/release/nuget' -Filter '*.nupkg' -File | ForEach-Object FullName)
+          ./.github/release-tools/Test-ImageLibwebpLicenses.ps1 -PackagePaths $packagePaths
+
+      - name: Upload selected NuGet packages
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: selective-native-repack-packages
+          path: artifacts/release/nuget/*.nupkg
+          if-no-files-found: error
+
+  selective-publish:
+    name: Publish selected native packages
+    if: ${{ inputs.selective_native_repack && inputs.publish_selective_nuget }}
+    needs: selective-repack
+    runs-on: windows-2025
+    environment: production
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Download selected NuGet packages
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: selective-native-repack-packages
+          path: artifacts/release/nuget
+
+      - name: NuGet trusted publishing login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
+        id: selective_nuget_login
+        with:
+          user: edwardgushchin
+
+      - name: Publish only selected packages
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.selective_nuget_login.outputs.NUGET_API_KEY }}
+          PACKAGE_REVISION: ${{ inputs.package_revision }}
+          PREVIOUS_PACKAGE_REVISION: ${{ inputs.previous_native_package_revision }}
+          PACKAGE_IDS: ${{ inputs.selective_package_ids }}
+        run: |
+          $ids = @($env:PACKAGE_IDS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+          ./.github/release-tools/Publish-NativePackageRepack.ps1 `
+            -PackageRevision ([int]$env:PACKAGE_REVISION) `
+            -PreviousPackageRevision ([int]$env:PREVIOUS_PACKAGE_REVISION) `
+            -PackageIds $ids `
+            -PackageDir 'artifacts/release/nuget' `
+            -NuGetPush
