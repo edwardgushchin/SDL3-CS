@@ -4,6 +4,7 @@ param(
     [int] $PackageRevision = -1,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
     [string] $PackageDir,
+    [string[]] $PackageIds,
     [string[]] $Components,
     [string[]] $Rids,
     [switch] $ManagedOnly
@@ -76,9 +77,32 @@ foreach ($rid in $Rids) {
 
 $errors = New-Object System.Collections.Generic.List[string]
 $rows = New-Object System.Collections.Generic.List[object]
-$packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
+$packages = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision)
 if ($ManagedOnly) {
     $packages = @($packages | Where-Object { $_.Kind -eq 'managed' })
+}
+elseif ($PackageIds) {
+    $selectedIds = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    $selectedPackages = @()
+    foreach ($packageId in $PackageIds) {
+        if ([string]::IsNullOrWhiteSpace($packageId)) {
+            throw 'PackageIds must not contain empty values.'
+        }
+        if (-not $selectedIds.Add($packageId)) {
+            throw "PackageIds contains duplicate package id: $packageId"
+        }
+
+        $matches = @($packages | Where-Object { $_.Id -eq $packageId })
+        if ($matches.Count -ne 1) {
+            throw "PackageIds contains unknown package id: $packageId"
+        }
+        if ($matches[0].Kind -ne 'native') {
+            throw "PackageIds can select only native packages: $packageId"
+        }
+
+        $selectedPackages += $matches[0]
+    }
+    $packages = $selectedPackages
 }
 
 function Get-ZipEntryText {
@@ -143,7 +167,7 @@ foreach ($package in $packages) {
         continue
     }
 
-    $entryNames = Get-ZipEntryNames -Path $packagePath
+    $entryNames = @(Get-ZipEntryNames -Path $packagePath)
     $entrySet = New-EntrySet -EntryNames $entryNames
     $rows.Add([pscustomobject]@{
         PackageId = $package.Id

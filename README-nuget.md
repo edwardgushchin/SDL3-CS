@@ -4,13 +4,14 @@ SDL3-CS is a C# wrapper for SDL3. The managed `SDL3-CS` package contains the C# 
 
 ## Latest Release
 
-Current stable release: [`SDL3-CS 3.4.12.3`](https://www.nuget.org/packages/SDL3-CS/3.4.12.3).
+Current stable release: [`SDL3-CS 3.4.12.4`](https://www.nuget.org/packages/SDL3-CS/3.4.12.4).
 
 | Package family | Version |
 |----------------|---------|
-| `SDL3-CS` | `3.4.12.3` |
+| `SDL3-CS` | `3.4.12.4` |
 | `SDL3-CS.<Platform>` | `3.4.12.1` |
-| `SDL3-CS.<Platform>.Image` | `3.4.4.7` |
+| `SDL3-CS.{Android,Linux,Windows}.Image` | `3.4.4.8` |
+| `SDL3-CS.{iOS,MacOS,tvOS}.Image` | `3.4.4.7` |
 | `SDL3-CS.<Platform>.Mixer` | `3.2.4.7` |
 | `SDL3-CS.<Platform>.TTF` | `3.2.2.7` |
 | `SDL3-CS.<Platform>.Shadercross` | `3.0.0.7` |
