@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <None Include="../../LICENSE" Pack="true" PackagePath="\" />
+    <None Include="../ThirdPartyLicenses/libwebp/COPYING" Pack="true" PackagePath="licenses/libwebp" />
     <None Include="../../logo.png" Pack="true" Visible="false" PackagePath="\" />
     <None Include="README.md" Pack="true" Visible="true" PackagePath="\" />
     <None Include="buildTransitive\SDL3-CS.Android.Image.targets" Pack="true" PackagePath="buildTransitive\$(PackageId).targets" />
