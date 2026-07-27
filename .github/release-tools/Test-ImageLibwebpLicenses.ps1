@@ -23,6 +23,12 @@ $expectedPackagePath = 'licenses/libwebp'
 $expectedPackageEntry = 'licenses/libwebp/COPYING'
 $errors = New-Object System.Collections.Generic.List[string]
 
+function ConvertTo-NormalizedLicenseText {
+    param([Parameter(Mandatory)][AllowEmptyString()][string] $Text)
+
+    return $Text.Replace("`r`n", "`n").Replace("`r", "`n")
+}
+
 if (-not (Test-Path -LiteralPath $licensePath -PathType Leaf)) {
     $errors.Add("Missing libwebp license source: $licenseRelativePath")
 }
@@ -75,7 +81,9 @@ if ($PackagePaths) {
                 try {
                     $reader = [System.IO.StreamReader]::new($stream, [System.Text.Encoding]::UTF8, $true)
                     try {
-                        if ($reader.ReadToEnd() -ne $expectedLicenseText) {
+                        $actualLicenseText = $reader.ReadToEnd()
+                        if ((ConvertTo-NormalizedLicenseText -Text $actualLicenseText) -ne
+                            (ConvertTo-NormalizedLicenseText -Text $expectedLicenseText)) {
                             $errors.Add("Package libwebp license entry does not match source: $resolvedPackagePath -> $expectedPackageEntry")
                         }
                     }

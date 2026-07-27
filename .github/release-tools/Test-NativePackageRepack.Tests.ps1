@@ -6,10 +6,11 @@ $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $builder = Join-Path $PSScriptRoot 'New-NativePackageRepack.ps1'
 $validator = Join-Path $PSScriptRoot 'Test-NativePackageRepack.ps1'
 $publisher = Join-Path $PSScriptRoot 'Publish-NativePackageRepack.ps1'
+$imageLicenseValidator = Join-Path $PSScriptRoot 'Test-ImageLibwebpLicenses.ps1'
 $workflow = Join-Path $repoRoot '.github/workflows/release-native-packages.yml'
 $manifest = Join-Path $PSScriptRoot 'release-manifest.json'
 
-foreach ($requiredPath in @($builder, $validator, $publisher, $workflow, $manifest)) {
+foreach ($requiredPath in @($builder, $validator, $publisher, $imageLicenseValidator, $workflow, $manifest)) {
     if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
         throw "Selective native repack dependency was not found: $requiredPath"
     }
@@ -51,7 +52,8 @@ function New-PackageFixture {
         [Parameter(Mandatory)][string] $Path,
         [Parameter(Mandatory)][string] $Version,
         [Parameter(Mandatory)][byte[]] $NativeBytes,
-        [switch] $IncludeLibwebpLicense
+        [switch] $IncludeLibwebpLicense,
+        [byte[]] $LicenseBytes = [System.Text.Encoding]::UTF8.GetBytes('libwebp license')
     )
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -73,7 +75,7 @@ function New-PackageFixture {
                 '.signature.p7s' = [System.Text.Encoding]::UTF8.GetBytes('old signature')
             }
             if ($IncludeLibwebpLicense) {
-                $entries['licenses/libwebp/COPYING'] = [System.Text.Encoding]::UTF8.GetBytes('libwebp license')
+                $entries['licenses/libwebp/COPYING'] = $LicenseBytes
             }
 
             foreach ($item in $entries.GetEnumerator()) {
@@ -160,6 +162,7 @@ $targetDir = Join-Path $tempRoot 'target'
 New-Item -ItemType Directory -Force -Path $previousDir, $targetDir | Out-Null
 $previousPackage = Join-Path $previousDir 'SDL3-CS.Windows.Image.3.4.4.7.nupkg'
 $targetPackage = Join-Path $targetDir 'SDL3-CS.Windows.Image.3.4.4.8.nupkg'
+$crlfLicensePackage = Join-Path $targetDir 'crlf-license-fixture.nupkg'
 
 try {
     $unchangedBytes = [byte[]](1, 2, 3, 4, 5)
@@ -196,6 +199,16 @@ try {
     }
     Assert-TextContains -Text (Get-ZipEntryText -PackagePath $targetPackage -EntryName 'SDL3-CS.Windows.Image.nuspec') -Expected '<version>3.4.4.8</version>' -Description 'nuspec target version'
     Assert-TextContains -Text (Get-ZipEntryText -PackagePath $targetPackage -EntryName 'package/services/metadata/core-properties/test.psmdcp') -Expected '<version>3.4.4.8</version>' -Description 'core properties target version'
+
+    $sourceLicenseText = Get-Content -LiteralPath (Join-Path $repoRoot 'SDL3-CS.NativePackages/ThirdPartyLicenses/libwebp/COPYING') -Raw -Encoding UTF8
+    $crlfLicenseBytes = [System.Text.Encoding]::UTF8.GetBytes(($sourceLicenseText -replace "`r?`n", "`r`n"))
+    New-PackageFixture `
+        -Path $crlfLicensePackage `
+        -Version '3.4.4.8' `
+        -NativeBytes $unchangedBytes `
+        -IncludeLibwebpLicense `
+        -LicenseBytes $crlfLicenseBytes
+    & $imageLicenseValidator -PackagePaths $crlfLicensePackage
 
     Assert-ActionFails -Description 'unsafe additional package path' -Action {
         & $builder `
