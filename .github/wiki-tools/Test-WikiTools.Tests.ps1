@@ -198,4 +198,7 @@ finally {
     }
 }
 
+# Expected negative-path native commands can leave a non-zero status even when
+# every assertion passed. Do not leak that status into a calling CI shell.
+$global:LASTEXITCODE = 0
 Write-Host 'Wiki tooling tests passed.'
