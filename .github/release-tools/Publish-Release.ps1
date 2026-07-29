@@ -47,6 +47,7 @@ if ($ManagedOnly) {
 }
 $wrapper = @($packages | Where-Object { $_.Id -eq 'SDL3-CS' })[0]
 $tag = "v$($wrapper.PackageVersion)"
+$releaseTarget = Invoke-ReleaseGitValue -RepositoryPath (Get-ReleaseRepoRoot) -Arguments @('rev-parse', 'HEAD')
 $releaseNotesDirPath = Resolve-ReleasePath $ReleaseNotesDir
 $releaseNotesPath = Join-Path $releaseNotesDirPath "$tag.md"
 if (-not (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf)) {
@@ -82,6 +83,15 @@ $packagePaths = $expectedPackagePaths
 if (-not $GitHubRelease -and -not $NuGetPush) {
     Write-Host "No publish target selected. Pass -GitHubRelease and/or -NuGetPush. Use -DryRun to inspect commands."
     return
+}
+
+if (-not $DryRun -or $ValidateReadinessInDryRun) {
+    & (Join-Path (Join-Path $PSScriptRoot '..') 'wiki-tools\Test-PublishedApiWiki.ps1') `
+        -ExpectedManagedVersion $wrapper.PackageVersion `
+        -ExpectedSourceCommit $releaseTarget
+}
+else {
+    Write-Host '[dry-run] published Wiki freshness validation skipped. Pass -ValidateReadinessInDryRun to validate the live Wiki.'
 }
 
 if (-not $SkipPublishStateValidation -and $missingPackagePaths.Count -eq 0) {
@@ -134,7 +144,6 @@ if ($GitHubRelease) {
         throw "GitHub CLI 'gh' is required for -GitHubRelease."
     }
 
-    $releaseTarget = Invoke-ReleaseGitValue -RepositoryPath (Get-ReleaseRepoRoot) -Arguments @('rev-parse', 'HEAD')
     $args = @('release', 'create', $tag, '--repo', $Repository, '--target', $releaseTarget, '--title', "SDL3-CS $($wrapper.PackageVersion)")
     if (Test-Path -LiteralPath $releaseNotesPath -PathType Leaf) {
         & (Join-Path $PSScriptRoot 'Test-ReleaseNotes.ps1') -ReleaseNotesPath $releaseNotesPath
