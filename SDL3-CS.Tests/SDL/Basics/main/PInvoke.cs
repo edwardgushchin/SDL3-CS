@@ -5,7 +5,7 @@ using SDL3.Tests;
 
 namespace SDL3.Tests.SDL.Basics.Main;
 
-internal static class PInvokeTests
+internal static partial class PInvokeTests
 {
     private static IntPtr capturedAppstate;
     private static IntPtr nextAppstate;

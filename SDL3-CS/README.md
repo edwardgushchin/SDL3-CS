@@ -15,6 +15,7 @@
 - Add-on bindings for Image, TTF, Mixer, and ShaderCross namespaces.
 - C# representations of SDL enums, flags, structs, callbacks, opaque handles, and constants.
 - XML documentation generated from upstream SDL documentation and kept warning-clean by repository checks.
+- A managed SDL main-callback contract, runtime runner, and opt-in `Main` source generator.
 - NuGet package metadata for the managed `SDL3-CS` package.
 
 ## What This Project Does Not Ship
@@ -53,9 +54,12 @@ dotnet add package SDL3-CS.Windows
 
 Replace `Windows` with the native package family for the platform that will run the application. Add companion native packages such as `SDL3-CS.Windows.Image` only when the application uses those companion bindings.
 
+For a callback-based application, implement `SDL.IMainCallbacks<TSelf>` on a partial class and apply `[SDL.GenerateMain]`. The analyzer included in `SDL3-CS` generates `Main(string[] args)` and calls `SDL.RunMainCallbacks<TApp>`; direct calls to the runner are also supported.
+
 ## Source Layout
 
 - `SDL/` contains core SDL3 namespaces grouped by upstream SDL header categories.
+- `../SDL3-CS.Generators/` contains the opt-in managed main-callback entry-point generator shipped as an analyzer asset.
 - `Image/`, `TTF/`, `Mixer/`, and `ShaderCross/` contain companion library bindings.
 - Public wrapper methods carry XML documentation; private native entry points stay implementation-focused.
 - Unsafe and fixed-buffer shapes are used where SDL ABI compatibility requires them.

@@ -156,6 +156,37 @@ cd SDL3-CS
 dotnet build SDL3-CS.sln -c Release
 ```
 
+### Managed Main Callbacks
+
+SDL3-CS can generate the application entry point for SDL's main-callback lifecycle. Implement `SDL.IMainCallbacks<TSelf>` on a partial class and opt in with `[SDL.GenerateMain]`:
+
+```csharp
+using SDL3;
+
+[SDL.GenerateMain]
+internal sealed partial class Game : SDL.IMainCallbacks<Game>
+{
+    public static SDL.AppResult AppInit(out Game? appState, string[] args)
+    {
+        appState = new Game();
+        return SDL.AppResult.Continue;
+    }
+
+    public SDL.AppResult AppIterate() => SDL.AppResult.Continue;
+
+    public SDL.AppResult AppEvent(ref SDL.Event @event) =>
+        (SDL.EventType)@event.Type == SDL.EventType.Quit
+            ? SDL.AppResult.Success
+            : SDL.AppResult.Continue;
+
+    public void AppQuit(SDL.AppResult result)
+    {
+    }
+}
+```
+
+The package generator creates `Main(string[] args)` and calls `SDL.RunMainCallbacks<Game>`. The runner manages the native app-state handle, callback lifetime, argument conversion, cleanup, and managed exception boundary. The existing low-level callback APIs remain available for applications that need direct control.
+
 ## 🎓 Examples
 
 ```csharp

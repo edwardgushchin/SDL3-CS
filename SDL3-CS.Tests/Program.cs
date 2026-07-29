@@ -1,5 +1,12 @@
 using SDL3;
 
+if (args.SequenceEqual(["--main-callbacks-only"]))
+{
+    SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunManagedMainCallbackFocusedTests();
+    Console.WriteLine("SDL managed main callback focused tests passed.");
+    return;
+}
+
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();
@@ -136,6 +143,24 @@ SDL3.Tests.SDL.Basics.Main.PInvokeTests.EnterAppMainCallbacks_ForwardsArgumentsA
 Console.WriteLine("SDL.EnterAppMainCallbacks binding test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.EnterAppMainCallbacks_NullAndEmptyArgumentsForwardNull();
 Console.WriteLine("SDL.EnterAppMainCallbacks null and empty argv normalization test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_UsesManagedArgumentsAndForwardsLifecycle();
+Console.WriteLine("SDL.RunMainCallbacks managed lifecycle test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_NormalizesNullArgumentsAndSupportsEarlySuccess();
+Console.WriteLine("SDL.RunMainCallbacks null arguments and early success test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_RejectsContinueWithoutState();
+Console.WriteLine("SDL.RunMainCallbacks null-state contract test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_AllowsEarlyTerminationWithoutState();
+Console.WriteLine("SDL.RunMainCallbacks stateless early termination test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_ContainsAndRethrowsManagedCallbackExceptions();
+Console.WriteLine("SDL.RunMainCallbacks exception boundary test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_PerformsFallbackCleanupAndIgnoresDuplicateQuit();
+Console.WriteLine("SDL.RunMainCallbacks cleanup idempotency test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_CleansUpBeforeRethrowingNativeFailure();
+Console.WriteLine("SDL.RunMainCallbacks native failure cleanup test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_WaitsForActiveEventBeforeQuit();
+Console.WriteLine("SDL.RunMainCallbacks concurrent quit test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.ManagedMainCallbacks_PublicContractHasExpectedShape();
+Console.WriteLine("SDL managed main callbacks public contract test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.RegisterApp_ForwardsNameStyleHInstAndReturnsNativeValue();
 Console.WriteLine("SDL.RegisterApp binding test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.UnregisterApp_CallsNativeHook();

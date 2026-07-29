@@ -46,12 +46,29 @@ jobs:
         run: |
           dotnet restore .\SDL3-CS\SDL3-CS.csproj --force --no-cache
           dotnet restore .\SDL3-CS.Tests\SDL3-CS.Tests.csproj --force --no-cache
+          dotnet restore .\SDL3-CS.Generators.Tests\SDL3-CS.Generators.Tests.csproj --force --no-cache
 
       - name: Build managed wrapper and tests
         shell: pwsh
         run: |
           dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release --no-restore /p:GeneratePackageOnBuild=false
           dotnet build .\SDL3-CS.Tests\SDL3-CS.Tests.csproj -c Release --no-restore
+          dotnet build .\SDL3-CS.Generators.Tests\SDL3-CS.Generators.Tests.csproj -c Release --no-restore /p:GeneratePackageOnBuild=false
+
+      - name: Run managed main callback generator tests
+        shell: pwsh
+        run: dotnet run --project .\SDL3-CS.Generators.Tests\SDL3-CS.Generators.Tests.csproj -c Release --no-build --no-restore
+
+      - name: Validate managed main callback package consumer
+        shell: pwsh
+        run: |
+          dotnet pack .\SDL3-CS\SDL3-CS.csproj -c Release --no-restore `
+            /p:PackageVersion=0.0.0-ci `
+            /p:GeneratePackageOnBuild=false `
+            --output .\artifacts\managed-main-callbacks
+          .\.github\release-tools\Test-ManagedMainCallbacksPackage.ps1 `
+            -PackagePath .\artifacts\managed-main-callbacks\SDL3-CS.0.0.0-ci.nupkg `
+            -PackageVersion 0.0.0-ci
 
       - name: Restore published native runtime for managed tests
         shell: pwsh
