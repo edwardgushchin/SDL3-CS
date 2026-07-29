@@ -62,6 +62,11 @@ Invoke-ReadinessStep -Name 'Release publish plan' -Script {
     & (Join-Path $PSScriptRoot 'Test-ReleasePublishPlan.ps1')
 }
 
+Invoke-ReadinessStep -Name 'GitHub Wiki generation contract' -Script {
+    & (Join-Path (Join-Path $PSScriptRoot '..') 'wiki-tools\Test-WikiTools.Tests.ps1')
+    & (Join-Path (Join-Path $PSScriptRoot '..') 'wiki-tools\Test-WikiReleaseContract.Tests.ps1')
+}
+
 $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
 if ($PackageRevision -lt 0) {
     $PackageRevision = [int] $manifest.versioning.packageRevisionDefault

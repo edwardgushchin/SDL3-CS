@@ -86,6 +86,12 @@ jobs:
         shell: pwsh
         run: ./.github/release-tools/Test-PublicWrapperXmlDocs.ps1 -SourceRoot .\SDL3-CS
 
+      - name: Validate generated GitHub Wiki contract
+        shell: pwsh
+        run: |
+          ./.github/wiki-tools/Test-WikiTools.Tests.ps1
+          ./.github/wiki-tools/Test-WikiReleaseContract.Tests.ps1
+
   examples-desktop:
     name: Build desktop examples (${{ matrix.name }})
     runs-on: ${{ matrix.runner }}
