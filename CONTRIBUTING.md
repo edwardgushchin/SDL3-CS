@@ -8,6 +8,7 @@ Thank you for helping improve SDL3-CS. Contributions are welcome for managed bin
 - Search the [existing issues](https://github.com/edwardgushchin/SDL3-CS/issues) and [discussions](https://github.com/edwardgushchin/SDL3-CS/discussions) before opening a new report.
 - Use [GitHub Discussions](https://github.com/edwardgushchin/SDL3-CS/discussions) for usage questions. The [support guide](SUPPORT.md) explains where each type of request belongs.
 - Report suspected vulnerabilities privately as described in the [security policy](SECURITY.md).
+- Follow the [release policy](RELEASING.md) for changes assigned to a patch or hotfix release.
 - For a substantial API, ABI, packaging, or release change, open an issue first so the scope and upstream SDL baseline can be agreed on.
 
 ## Development Setup
