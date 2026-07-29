@@ -67,6 +67,37 @@ Replace `Windows` with `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
 
 Android applications use `MainActivity : Org.Libsdl.App.SDLActivity`, override `GetLibraries()`, and run SDL from the managed `Main()` override.
 
+## Managed Main Callbacks
+
+For SDL's callback-based application lifecycle, implement `SDL.IMainCallbacks<TSelf>` and apply `[SDL.GenerateMain]` to the partial application class:
+
+```csharp
+using SDL3;
+
+[SDL.GenerateMain]
+internal sealed partial class Game : SDL.IMainCallbacks<Game>
+{
+    public static SDL.AppResult AppInit(out Game? appState, string[] args)
+    {
+        appState = new Game();
+        return SDL.AppResult.Continue;
+    }
+
+    public SDL.AppResult AppIterate() => SDL.AppResult.Continue;
+
+    public SDL.AppResult AppEvent(ref SDL.Event @event) =>
+        (SDL.EventType)@event.Type == SDL.EventType.Quit
+            ? SDL.AppResult.Success
+            : SDL.AppResult.Continue;
+
+    public void AppQuit(SDL.AppResult result)
+    {
+    }
+}
+```
+
+`SDL3-CS` supplies the source generator through the package's analyzer assets. It creates the entry point and delegates to `SDL.RunMainCallbacks<TApp>`, which owns the managed/native state lifetime and contains managed exceptions until SDL returns control to the caller.
+
 ## Example
 
 ```csharp
