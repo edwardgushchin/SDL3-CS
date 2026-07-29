@@ -85,3 +85,53 @@ jobs:
       - name: Audit public wrapper XML documentation
         shell: pwsh
         run: ./.github/release-tools/Test-PublicWrapperXmlDocs.ps1 -SourceRoot .\SDL3-CS
+
+  examples-desktop:
+    name: Build desktop examples (${{ matrix.name }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            runner: windows-2025
+          - name: Linux
+            runner: ubuntu-latest
+          - name: macOS
+            runner: macos-15
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build all desktop examples
+        shell: pwsh
+        run: ./.github/release-tools/Test-ExampleProjects.ps1 -Configuration Release -Scope Desktop
+
+  examples-android:
+    name: Build Android example
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install Android .NET workload
+        shell: pwsh
+        run: dotnet workload install android --source https://api.nuget.org/v3/index.json
+
+      - name: Build all Android examples
+        shell: pwsh
+        run: ./.github/release-tools/Test-ExampleProjects.ps1 -Configuration Release -Scope Android
