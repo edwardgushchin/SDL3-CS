@@ -144,7 +144,7 @@ Assert-WorkflowContains -Text $workflowText -Expected "Expand-Archive -LiteralPa
 Assert-WorkflowContains -Text $workflowText -Expected '$statePaths = @(' -Description 'publish job assembly state cleanup list'
 Assert-WorkflowContains -Text $workflowText -Expected 'Remove-Item -LiteralPath $path -Recurse -Force' -Description 'publish job assembly state cleanup'
 Assert-WorkflowContains -Text $workflowText -Expected "-StatePath '.'" -Description 'publish job imported assembly state validation'
-Assert-WorkflowContains -Text $workflowText -Expected 'uses: NuGet/login@v1' -Description 'publish job NuGet Trusted Publishing login action'
+Assert-WorkflowRegex -Text $workflowText -Pattern '(?m)^\s+uses:\s+NuGet/login@[0-9a-f]{40}\s+#\s+v1\s*$' -Description 'publish job SHA-pinned NuGet Trusted Publishing login action'
 Assert-WorkflowContains -Text $workflowText -Expected 'id: nuget_login' -Description 'publish job NuGet Trusted Publishing login id'
 Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ inputs.publish_nuget }}' -Description 'publish job NuGet login gate'
 Assert-WorkflowContains -Text $workflowText -Expected 'user: edwardgushchin' -Description 'publish job NuGet Trusted Publishing user'
