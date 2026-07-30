@@ -24,7 +24,7 @@ dotnet restore .\SDL3-CS\SDL3-CS.csproj
 dotnet restore .\SDL3-CS.Tests\SDL3-CS.Tests.csproj
 ```
 
-Create a focused branch from the active development branch. Unless an issue or maintainer says otherwise, pull requests should target the current `release-*` branch; release branches are subsequently integrated into `main`.
+Create a focused, short-lived topic branch from the latest `main`. Pull requests should target `main`; delete the topic branch after it is merged.
 
 ## Binding Changes
 

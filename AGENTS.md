@@ -174,13 +174,15 @@ dotnet build .\SDL3-CS\SDL3-CS.csproj -c Release
 ## Main Branch Integration Gate
 - Never cherry-pick, commit, merge, or otherwise write directly to `main` as an agent workflow shortcut.
 - Changes may reach `main` only through a pull request, and only when the user explicitly asks for that pull request in the current conversation.
-- When release branch work needs mainline parity, do not satisfy it by switching to `main` and cherry-picking locally. Document the missing parity in `TASKS.md` and the development diary, then wait for an explicit user request to open or prepare a pull request.
+- Create every change on a short-lived topic branch from the latest `origin/main`, open a pull request to `main`, and merge only after the required review and CI checks succeed.
 - If the user asks to undo a direct local `main` change made by the agent, remove only the agent-created local change and preserve unrelated user work.
 
-## Release Branch Mainline Parity
-- Any change made on a release branch must also exist on the main branch. Release branches must not contain release-only fixes, documentation updates, workflow changes, native source pin updates, or wrapper changes that are absent from main.
-- Before considering release branch work ready, verify that the same commits or equivalent changes are already present on main, or explicitly port them to main first. If parity cannot be verified, keep the release work open and document the missing mainline parity in `TASKS.md` and the development diary.
-- This rule applies to project source, release tooling, GitHub Actions workflows, native package metadata, wrapper code, XML documentation, specifications, implementation documentation, tests, and agent instructions.
+## Short-Lived SDL3-CS Branch Lifecycle
+- `main` is the only persistent branch in the SDL3-CS wrapper repository. Do not create or retain persistent wrapper `release-*` or `preview-*` branches.
+- Product changes, documentation, release tooling, workflows, native source pins, specifications, and tests must be developed on a short-lived topic branch created from the latest `origin/main` and integrated through a pull request to `main`.
+- Delete the topic branch after the pull request is merged. Git tags and GitHub Releases preserve published history; working branches do not serve as release archives.
+- A release must be built and published from an exact verified commit from `main`. Confirm that every milestone change is an ancestor of that commit and that required pull-request and `main` CI checks succeeded for the same contents.
+- The native fork release branches required below are an explicit exception: they preserve exact upstream tag commits in the separate SDL-family fork repositories and are not SDL3-CS wrapper development branches.
 
 ## Native Fork And Wrapper Alignment Policy
 - Native repositories used by release tooling include `SDL`, `SDL_image`, `SDL_mixer`, `SDL_ttf`, and `SDL_shadercross`.
