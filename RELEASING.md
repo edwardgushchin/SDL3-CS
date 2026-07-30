@@ -29,20 +29,20 @@ Documentation, workflow-only changes, and GitHub Actions updates do not require 
 
 A `severity: critical` issue overrides the regular schedule. An emergency release must contain the minimum necessary change, regression tests, and only compatible accompanying fixes that have already passed verification. The reason for the expedited release and any residual risks must be stated in the release notes.
 
-Mandatory checks must not be skipped, branch parity must not be violated, and unverified packages must not be published even for an emergency hotfix. If a safe fix is not yet ready, the maintainer communicates the status and any available temporary mitigation instead of publishing a knowingly defective package.
+Mandatory checks must not be skipped, the exact release commit must be verified, and unverified packages must not be published even for an emergency hotfix. If a safe fix is not yet ready, the maintainer communicates the status and any available temporary mitigation instead of publishing a knowingly defective package.
 
-## Branches and Main Parity
+## Branches and Main
 
 Changes for the current release line follow this path:
 
-1. The fix, documentation, and tests are created and committed on the active `release-*` branch.
-2. The `release-*` branch is pushed to GitHub.
-3. A pull request is opened from `release-*` into `main`; direct writes to `main` are prohibited.
-4. The pull request is merged only after successful CI and review of the applicable changes.
-5. Before publication, confirm that the release commit or an equivalent change is already present in `main`.
-6. The release is published from the verified release branch only after an explicit maintainer decision.
+1. Create a short-lived topic branch from the latest `origin/main` for each coherent change or tightly related group of changes.
+2. Commit the implementation, documentation, and tests on that topic branch and push it to GitHub.
+3. Open a pull request from the topic branch into `main`; direct writes to `main` are prohibited.
+4. Merge the pull request only after successful CI and review of the applicable changes, then delete the topic branch.
+5. Select the exact verified commit from `main` that contains every change assigned to the milestone and record its full 40-character SHA.
+6. Build, validate, tag, and publish the release from that exact commit.
 
-A release branch must not contain release-only fixes that are absent from `main`.
+`main` is the only persistent branch in the SDL3-CS wrapper repository. Git tags and GitHub Releases preserve published history; persistent wrapper `release-*` and `preview-*` branches are not used. Native SDL-family forks retain their exact upstream `release-*` branches as required by the native fork alignment policy; those branches are not wrapper development branches.
 
 ## Milestones and Labels
 
@@ -60,8 +60,8 @@ Before publication, the maintainer confirms that:
 - the milestone contains no open `release: blocker` items, and every included change has a clear status;
 - `severity: critical` and `severity: high` issues associated with the release are closed or explicitly deferred with a documented reason;
 - the specification, implementation documentation, wrapper, and automated tests are aligned for every runtime or API change;
-- CI for the target release branch and the pull request into `main` completed successfully;
-- the release branch and `main` have the required parity;
+- every included pull request is merged into `main`, and each included change is an ancestor of the selected release commit;
+- CI for the included pull requests and the selected exact `main` commit completed successfully;
 - the version, package scope, and release notes match the actual release contents;
 - the readiness check completed successfully:
 
@@ -75,7 +75,7 @@ For a managed-only release, only inapplicable native artifact or toolchain steps
 
 The public API reference in the GitHub Wiki is a generated release artifact. The public C# API and XML documentation from the exact release commit remain the source of truth.
 
-- The accumulation task creates and verifies a Wiki candidate after merge and main parity, but does not publish it.
+- The accumulation task creates and verifies a Wiki candidate after the pull request is merged and its exact `main` commit is confirmed, but does not publish it.
 - Before the production release, the release task rebuilds the exact release commit, generates the eight managed Wiki pages, and publishes them to `SDL3-CS.wiki.git` with a regular fast-forward push to `master`.
 - Every managed page must contain the same managed version, full source commit, and UTC generation timestamp.
 - After the push, a fresh read-only verification of the remote Wiki against the exact version, source commit, and SHA-256 content hash is mandatory.
@@ -91,6 +91,6 @@ The readiness review produces one of three outcomes:
 
 - `Release now` — the release threshold has been met, no blockers remain, and all mandatory checks have passed;
 - `Wait` — verified fixes are ready, but the regular threshold has not yet been met and there is no urgency;
-- `Blocked` — a blocker, failing CI, branch parity violation, or incomplete mandatory check is present.
+- `Blocked` — a blocker, failing CI, an unverifiable release commit, or an incomplete mandatory check is present.
 
 Scheduled tasks may collect facts and recommend an outcome, but they must not publish NuGet packages or a GitHub Release, perform a push or merge, or replace an explicit maintainer decision, except for the explicitly described fast-forward push of managed Wiki pages by the `sdl3-cs-2` task.

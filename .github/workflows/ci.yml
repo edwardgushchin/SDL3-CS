@@ -4,11 +4,9 @@ on:
   pull_request:
     branches:
       - main
-      - "release-*"
   push:
     branches:
       - main
-      - "release-*"
   workflow_dispatch:
 
 permissions:
@@ -91,6 +89,12 @@ jobs:
         run: |
           ./.github/wiki-tools/Test-WikiTools.Tests.ps1
           ./.github/wiki-tools/Test-WikiReleaseContract.Tests.ps1
+
+      - name: Validate trunk-based release lifecycle
+        shell: pwsh
+        run: |
+          ./.github/release-tools/Test-TrunkBasedReleaseLifecycle.Tests.ps1
+          ./.github/release-tools/Test-TrunkBasedReleaseLifecycle.ps1
 
   examples-desktop:
     name: Build desktop examples (${{ matrix.name }})

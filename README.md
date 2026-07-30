@@ -83,7 +83,7 @@ This source tree targets the following release lines:
 
 `{Platform}` is one of `Windows`, `Linux`, `MacOS`, `Android`, `iOS`, or `tvOS`.
 
-Published NuGet packages can lag behind a release branch while native packages are being assembled. The NuGet badge, package pages, and [GitHub Releases](https://github.com/edwardgushchin/SDL3-CS/releases) are authoritative for what is currently published.
+Published NuGet packages can lag behind the development state in `main` while native packages are being assembled. The NuGet badge, package pages, and [GitHub Releases](https://github.com/edwardgushchin/SDL3-CS/releases) are authoritative for what is currently published.
 
 ## 📚 Documentation
 
