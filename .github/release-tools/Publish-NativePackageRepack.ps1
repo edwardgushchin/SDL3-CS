@@ -6,6 +6,7 @@ param(
     [Parameter(Mandatory)][string[]] $PackageIds,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
     [string] $PackageDir,
+    [switch] $VersionOnly,
     [switch] $NuGetPush,
     [switch] $DryRun
 )
@@ -26,12 +27,17 @@ $PackageDir = Resolve-ReleasePath $PackageDir
     -ManifestPath $ManifestPath `
     -PackageDir $PackageDir `
     -PackageIds $PackageIds
-& (Join-Path $PSScriptRoot 'Test-NativePackageRepack.ps1') `
-    -PackageRevision $PackageRevision `
-    -PreviousPackageRevision $PreviousPackageRevision `
-    -PackageIds $PackageIds `
-    -ManifestPath $ManifestPath `
-    -PackageDir $PackageDir
+$repackValidation = @{
+    PackageRevision = $PackageRevision
+    PreviousPackageRevision = $PreviousPackageRevision
+    PackageIds = $PackageIds
+    ManifestPath = $ManifestPath
+    PackageDir = $PackageDir
+}
+if ($VersionOnly) {
+    $repackValidation.VersionOnly = $true
+}
+& (Join-Path $PSScriptRoot 'Test-NativePackageRepack.ps1') @repackValidation
 
 $allPackages = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision)
 $packages = @()

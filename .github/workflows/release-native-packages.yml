@@ -44,6 +44,14 @@ on:
         required: true
         type: boolean
         default: false
+      selective_repack_mode:
+        description: Repack content mode. Use version-only when only a common family revision is required.
+        required: true
+        type: choice
+        options:
+          - add-libwebp-license
+          - version-only
+        default: add-libwebp-license
       previous_native_package_revision:
         description: Published source revision for selective native package repack.
         required: true
@@ -76,6 +84,7 @@ jobs:
         shell: pwsh
         run: |
           $selective = '${{ inputs.selective_native_repack }}' -eq 'true'
+          $repackMode = '${{ inputs.selective_repack_mode }}'
           $managed = '${{ inputs.managed_only }}' -eq 'true'
           $normalPublish = '${{ inputs.publish_github }}' -eq 'true' -or '${{ inputs.publish_nuget }}' -eq 'true'
           $selectivePublish = '${{ inputs.publish_selective_nuget }}' -eq 'true'
@@ -87,6 +96,9 @@ jobs:
           }
           if (-not $selective -and $selectivePublish) {
             throw 'publish_selective_nuget requires selective_native_repack=true.'
+          }
+          if ($selective -and $repackMode -notin @('add-libwebp-license', 'version-only')) {
+            throw "Unsupported selective repack mode: $repackMode"
           }
 
   plan:
@@ -737,13 +749,19 @@ jobs:
           PACKAGE_REVISION: ${{ inputs.package_revision }}
           PREVIOUS_PACKAGE_REVISION: ${{ inputs.previous_native_package_revision }}
           PACKAGE_IDS: ${{ inputs.selective_package_ids }}
+          REPACK_MODE: ${{ inputs.selective_repack_mode }}
         run: |
           $ids = @($env:PACKAGE_IDS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-          ./.github/release-tools/New-NativePackageRepack.ps1 `
-            -PackageRevision ([int]$env:PACKAGE_REVISION) `
-            -PreviousPackageRevision ([int]$env:PREVIOUS_PACKAGE_REVISION) `
-            -PackageIds $ids `
-            -OutputDir 'artifacts/release/nuget'
+          $params = @{
+            PackageRevision = [int]$env:PACKAGE_REVISION
+            PreviousPackageRevision = [int]$env:PREVIOUS_PACKAGE_REVISION
+            PackageIds = $ids
+            OutputDir = 'artifacts/release/nuget'
+          }
+          if ($env:REPACK_MODE -eq 'version-only') {
+            $params.VersionOnly = $true
+          }
+          ./.github/release-tools/New-NativePackageRepack.ps1 @params
 
       - name: Prove package-only payload equivalence
         shell: pwsh
@@ -751,21 +769,30 @@ jobs:
           PACKAGE_REVISION: ${{ inputs.package_revision }}
           PREVIOUS_PACKAGE_REVISION: ${{ inputs.previous_native_package_revision }}
           PACKAGE_IDS: ${{ inputs.selective_package_ids }}
+          REPACK_MODE: ${{ inputs.selective_repack_mode }}
         run: |
           $ids = @($env:PACKAGE_IDS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-          $rids = @('android-arm', 'android-arm64', 'android-x86', 'android-x64', 'linux-x64', 'linux-arm64', 'win-x86', 'win-x64', 'win-arm64')
+          $manifest = Get-Content -LiteralPath '.github/release-tools/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
+          $rids = @($manifest.rids.rid)
           ./.github/release-tools/Test-NuGetPackageContents.ps1 `
             -PackageRevision ([int]$env:PACKAGE_REVISION) `
             -PackageIds $ids `
             -Rids $rids `
             -PackageDir 'artifacts/release/nuget'
-          ./.github/release-tools/Test-NativePackageRepack.ps1 `
-            -PackageRevision ([int]$env:PACKAGE_REVISION) `
-            -PreviousPackageRevision ([int]$env:PREVIOUS_PACKAGE_REVISION) `
-            -PackageIds $ids `
-            -PackageDir 'artifacts/release/nuget'
-          $packagePaths = @(Get-ChildItem -LiteralPath 'artifacts/release/nuget' -Filter '*.nupkg' -File | ForEach-Object FullName)
-          ./.github/release-tools/Test-ImageLibwebpLicenses.ps1 -PackagePaths $packagePaths
+          $validation = @{
+            PackageRevision = [int]$env:PACKAGE_REVISION
+            PreviousPackageRevision = [int]$env:PREVIOUS_PACKAGE_REVISION
+            PackageIds = $ids
+            PackageDir = 'artifacts/release/nuget'
+          }
+          if ($env:REPACK_MODE -eq 'version-only') {
+            $validation.VersionOnly = $true
+          }
+          ./.github/release-tools/Test-NativePackageRepack.ps1 @validation
+          if ($env:REPACK_MODE -eq 'add-libwebp-license') {
+            $packagePaths = @(Get-ChildItem -LiteralPath 'artifacts/release/nuget' -Filter '*.nupkg' -File | ForEach-Object FullName)
+            ./.github/release-tools/Test-ImageLibwebpLicenses.ps1 -PackagePaths $packagePaths
+          }
 
       - name: Upload selected NuGet packages
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -809,11 +836,17 @@ jobs:
           PACKAGE_REVISION: ${{ inputs.package_revision }}
           PREVIOUS_PACKAGE_REVISION: ${{ inputs.previous_native_package_revision }}
           PACKAGE_IDS: ${{ inputs.selective_package_ids }}
+          REPACK_MODE: ${{ inputs.selective_repack_mode }}
         run: |
           $ids = @($env:PACKAGE_IDS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-          ./.github/release-tools/Publish-NativePackageRepack.ps1 `
-            -PackageRevision ([int]$env:PACKAGE_REVISION) `
-            -PreviousPackageRevision ([int]$env:PREVIOUS_PACKAGE_REVISION) `
-            -PackageIds $ids `
-            -PackageDir 'artifacts/release/nuget' `
-            -NuGetPush
+          $params = @{
+            PackageRevision = [int]$env:PACKAGE_REVISION
+            PreviousPackageRevision = [int]$env:PREVIOUS_PACKAGE_REVISION
+            PackageIds = $ids
+            PackageDir = 'artifacts/release/nuget'
+            NuGetPush = $true
+          }
+          if ($env:REPACK_MODE -eq 'version-only') {
+            $params.VersionOnly = $true
+          }
+          ./.github/release-tools/Publish-NativePackageRepack.ps1 @params
