@@ -10,6 +10,7 @@ param(
     [string] $AdditionalFilePath = 'SDL3-CS.NativePackages/ThirdPartyLicenses/libwebp/COPYING',
     [string] $AdditionalPackagePath = 'licenses/libwebp/COPYING',
     [string] $RepositoryCommit,
+    [switch] $VersionOnly,
     [switch] $SkipSourceSignatureValidation
 )
 
@@ -111,17 +112,25 @@ New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 if ($PreviousPackageDir) {
     $PreviousPackageDir = Resolve-ReleasePath $PreviousPackageDir
 }
-$additionalFile = Resolve-ReleasePath $AdditionalFilePath
-if (-not (Test-Path -LiteralPath $additionalFile -PathType Leaf)) {
-    throw "Additional repack file was not found: $additionalFile"
+$additionalFile = $null
+if ($VersionOnly) {
+    if ($PSBoundParameters.ContainsKey('AdditionalFilePath') -or $PSBoundParameters.ContainsKey('AdditionalPackagePath')) {
+        throw 'VersionOnly cannot be combined with an additional file or package path.'
+    }
 }
-$additionalPackageSegments = @($AdditionalPackagePath.Replace('\', '/').Split('/'))
-if ([string]::IsNullOrWhiteSpace($AdditionalPackagePath) -or
-    $AdditionalPackagePath.StartsWith('/', [System.StringComparison]::Ordinal) -or
-    $additionalPackageSegments -contains '' -or
-    $additionalPackageSegments -contains '.' -or
-    $additionalPackageSegments -contains '..') {
-    throw "AdditionalPackagePath must be a safe relative package path: $AdditionalPackagePath"
+else {
+    $additionalFile = Resolve-ReleasePath $AdditionalFilePath
+    if (-not (Test-Path -LiteralPath $additionalFile -PathType Leaf)) {
+        throw "Additional repack file was not found: $additionalFile"
+    }
+    $additionalPackageSegments = @($AdditionalPackagePath.Replace('\', '/').Split('/'))
+    if ([string]::IsNullOrWhiteSpace($AdditionalPackagePath) -or
+        $AdditionalPackagePath.StartsWith('/', [System.StringComparison]::Ordinal) -or
+        $additionalPackageSegments -contains '' -or
+        $additionalPackageSegments -contains '.' -or
+        $additionalPackageSegments -contains '..') {
+        throw "AdditionalPackagePath must be a safe relative package path: $AdditionalPackagePath"
+    }
 }
 if (-not $RepositoryCommit) {
     $RepositoryCommit = (& git -C (Get-ReleaseRepoRoot) rev-parse HEAD 2>&1 | Out-String).Trim()
@@ -192,7 +201,7 @@ try {
 
         $sourceZip = [System.IO.Compression.ZipFile]::OpenRead($previousPath)
         try {
-            if ($sourceZip.GetEntry($AdditionalPackagePath)) {
+            if (-not $VersionOnly -and $sourceZip.GetEntry($AdditionalPackagePath)) {
                 throw "Previous package already contains target additional entry: $($previous.Id) -> $AdditionalPackagePath"
             }
             $targetStream = [System.IO.File]::Open($targetPath, [System.IO.FileMode]::CreateNew)
@@ -221,7 +230,7 @@ try {
                             Set-XmlElementValue -Xml $coreProperties -LocalName 'version' -Value $target.PackageVersion
                             $bytes = Convert-XmlToBytes -Xml $coreProperties
                         }
-                        elseif ($entryName -eq '[Content_Types].xml') {
+                        elseif (-not $VersionOnly -and $entryName -eq '[Content_Types].xml') {
                             [xml] $contentTypes = Convert-BytesToXml -Bytes $bytes
                             $namespace = $contentTypes.DocumentElement.NamespaceURI
                             $override = $contentTypes.CreateElement('Override', $namespace)
@@ -242,14 +251,16 @@ try {
                         }
                     }
 
-                    $additionalBytes = [System.IO.File]::ReadAllBytes($additionalFile)
-                    $additionalEntry = $targetZip.CreateEntry($AdditionalPackagePath, [System.IO.Compression.CompressionLevel]::Optimal)
-                    $additionalStream = $additionalEntry.Open()
-                    try {
-                        $additionalStream.Write($additionalBytes, 0, $additionalBytes.Length)
-                    }
-                    finally {
-                        $additionalStream.Dispose()
+                    if (-not $VersionOnly) {
+                        $additionalBytes = [System.IO.File]::ReadAllBytes($additionalFile)
+                        $additionalEntry = $targetZip.CreateEntry($AdditionalPackagePath, [System.IO.Compression.CompressionLevel]::Optimal)
+                        $additionalStream = $additionalEntry.Open()
+                        try {
+                            $additionalStream.Write($additionalBytes, 0, $additionalBytes.Length)
+                        }
+                        finally {
+                            $additionalStream.Dispose()
+                        }
                     }
                 }
                 finally {
@@ -274,6 +285,7 @@ try {
             Package = $target.Id
             SourceVersion = $previous.PackageVersion
             TargetVersion = $target.PackageVersion
+            Mode = if ($VersionOnly) { 'version-only' } else { 'content-add' }
             Output = $targetPath
         }
     }

@@ -144,9 +144,11 @@ foreach ($forbidden in @('Build-Native.ps1', 'Invoke-NativeHostBuild.ps1', 'Invo
 }
 foreach ($modeExpectation in @(
     'selective_native_repack:',
+    'selective_repack_mode:',
     'publish_selective_nuget:',
     "throw 'Selective native repack requires managed_only=true",
-    'if: ${{ inputs.managed_only && !inputs.selective_native_repack }}'
+    'if: ${{ inputs.managed_only && !inputs.selective_native_repack }}',
+    'VersionOnly = $true'
 )) {
     Assert-TextContains -Text $workflowText -Expected $modeExpectation -Description 'fail-closed selective release mode'
 }
@@ -159,9 +161,11 @@ if (-not $tempRoot.StartsWith($tempBase, [System.StringComparison]::OrdinalIgnor
 
 $previousDir = Join-Path $tempRoot 'previous'
 $targetDir = Join-Path $tempRoot 'target'
-New-Item -ItemType Directory -Force -Path $previousDir, $targetDir | Out-Null
+$versionOnlyDir = Join-Path $tempRoot 'version-only'
+New-Item -ItemType Directory -Force -Path $previousDir, $targetDir, $versionOnlyDir | Out-Null
 $previousPackage = Join-Path $previousDir 'SDL3-CS.Windows.Image.3.4.4.7.nupkg'
 $targetPackage = Join-Path $targetDir 'SDL3-CS.Windows.Image.3.4.4.8.nupkg'
+$versionOnlyPackage = Join-Path $versionOnlyDir 'SDL3-CS.Windows.Image.3.4.4.8.nupkg'
 $crlfLicensePackage = Join-Path $targetDir 'crlf-license-fixture.nupkg'
 
 try {
@@ -199,6 +203,40 @@ try {
     }
     Assert-TextContains -Text (Get-ZipEntryText -PackagePath $targetPackage -EntryName 'SDL3-CS.Windows.Image.nuspec') -Expected '<version>3.4.4.8</version>' -Description 'nuspec target version'
     Assert-TextContains -Text (Get-ZipEntryText -PackagePath $targetPackage -EntryName 'package/services/metadata/core-properties/test.psmdcp') -Expected '<version>3.4.4.8</version>' -Description 'core properties target version'
+
+    & $builder `
+        -PackageRevision 8 `
+        -PreviousPackageRevision 7 `
+        -PackageIds 'SDL3-CS.Windows.Image' `
+        -OutputDir $versionOnlyDir `
+        -PreviousPackageDir $previousDir `
+        -RepositoryCommit ('b' * 40) `
+        -VersionOnly `
+        -SkipSourceSignatureValidation
+
+    & $validator `
+        -PackageRevision 8 `
+        -PreviousPackageRevision 7 `
+        -PackageIds 'SDL3-CS.Windows.Image' `
+        -PackageDir $versionOnlyDir `
+        -PreviousPackageDir $previousDir `
+        -VersionOnly `
+        -SkipTargetAvailabilityCheck
+
+    $versionOnlyArchive = [System.IO.Compression.ZipFile]::OpenRead($versionOnlyPackage)
+    try {
+        if ($versionOnlyArchive.GetEntry('.signature.p7s')) {
+            throw 'Version-only repack must not preserve the source package signature.'
+        }
+        if ($versionOnlyArchive.GetEntry('licenses/libwebp/COPYING')) {
+            throw 'Version-only repack must not add the libwebp license.'
+        }
+    }
+    finally {
+        $versionOnlyArchive.Dispose()
+    }
+    Assert-TextContains -Text (Get-ZipEntryText -PackagePath $versionOnlyPackage -EntryName 'SDL3-CS.Windows.Image.nuspec') -Expected '<version>3.4.4.8</version>' -Description 'version-only nuspec target version'
+    Assert-TextContains -Text (Get-ZipEntryText -PackagePath $versionOnlyPackage -EntryName 'package/services/metadata/core-properties/test.psmdcp') -Expected '<version>3.4.4.8</version>' -Description 'version-only core properties target version'
 
     $sourceLicenseText = Get-Content -LiteralPath (Join-Path $repoRoot 'SDL3-CS.NativePackages/ThirdPartyLicenses/libwebp/COPYING') -Raw -Encoding UTF8
     $crlfLicenseBytes = [System.Text.Encoding]::UTF8.GetBytes(($sourceLicenseText -replace "`r?`n", "`r`n"))

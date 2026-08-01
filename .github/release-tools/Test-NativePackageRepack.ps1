@@ -8,6 +8,7 @@ param(
     [string] $PackageDir,
     [string] $PreviousPackageDir,
     [string[]] $RequiredEntries = @('licenses/libwebp/COPYING'),
+    [switch] $VersionOnly,
     [switch] $SkipTargetAvailabilityCheck
 )
 
@@ -77,11 +78,63 @@ function Test-ZipEntryExists {
     }
 }
 
+function Get-ZipStableContentMap {
+    param(
+        [Parameter(Mandatory)][string] $Path,
+        [Parameter(Mandatory)][string[]] $ExcludedEntries
+    )
+
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $excluded = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    foreach ($entryName in $ExcludedEntries) {
+        [void] $excluded.Add($entryName)
+    }
+    $map = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+    $zip = [System.IO.Compression.ZipFile]::OpenRead($Path)
+    try {
+        foreach ($entry in $zip.Entries) {
+            $name = $entry.FullName.Replace('\', '/')
+            if (-not $name -or $name.EndsWith('/', [System.StringComparison]::Ordinal) -or
+                $excluded.Contains($name) -or
+                $name.EndsWith('.nuspec', [System.StringComparison]::OrdinalIgnoreCase) -or
+                $name.EndsWith('.psmdcp', [System.StringComparison]::OrdinalIgnoreCase)) {
+                continue
+            }
+
+            $sha256 = [System.Security.Cryptography.SHA256]::Create()
+            try {
+                $stream = $entry.Open()
+                try {
+                    $hash = $sha256.ComputeHash($stream)
+                    $map[$name] = ([System.BitConverter]::ToString($hash) -replace '-', '').ToLowerInvariant()
+                }
+                finally {
+                    $stream.Dispose()
+                }
+            }
+            finally {
+                $sha256.Dispose()
+            }
+        }
+    }
+    finally {
+        $zip.Dispose()
+    }
+
+    return $map
+}
+
 if ($PackageRevision -lt 0 -or $PreviousPackageRevision -lt 0) {
     throw 'Package revisions must be zero or greater.'
 }
 if (-not $PackageIds -or $PackageIds.Count -eq 0) {
     throw 'PackageIds must select at least one native package.'
+}
+if ($VersionOnly) {
+    if ($PSBoundParameters.ContainsKey('RequiredEntries') -and @($RequiredEntries).Count -gt 0) {
+        throw 'VersionOnly cannot require additional package entries.'
+    }
+    $RequiredEntries = @()
 }
 
 $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
@@ -188,12 +241,34 @@ try {
             }
         }
 
+        $excludedStableEntries = @('.signature.p7s')
+        if (-not $VersionOnly) {
+            $excludedStableEntries += '[Content_Types].xml'
+            $excludedStableEntries += $RequiredEntries
+        }
+        $previousStableContent = Get-ZipStableContentMap -Path $previousPath -ExcludedEntries $excludedStableEntries
+        $targetStableContent = Get-ZipStableContentMap -Path $targetPath -ExcludedEntries $excludedStableEntries
+        foreach ($entryName in $previousStableContent.Keys) {
+            if (-not $targetStableContent.ContainsKey($entryName)) {
+                $errors.Add("Target package $($target.Id) is missing unchanged package entry: $entryName")
+            }
+            elseif ($targetStableContent[$entryName] -ne $previousStableContent[$entryName]) {
+                $errors.Add("Target package $($target.Id) changed package entry: $entryName")
+            }
+        }
+        foreach ($entryName in $targetStableContent.Keys) {
+            if (-not $previousStableContent.ContainsKey($entryName)) {
+                $errors.Add("Target package $($target.Id) added unexpected package entry: $entryName")
+            }
+        }
+
         $status = if (@($errors | Where-Object { $_ -like "*$($target.Id)*" }).Count -eq 0) { 'valid' } else { 'failed' }
         $rows.Add([pscustomobject]@{
             Package = $target.Id
             PreviousVersion = $previous.PackageVersion
             TargetVersion = $target.PackageVersion
             PayloadEntries = $targetPayload.Count
+            Mode = if ($VersionOnly) { 'version-only' } else { 'content-add' }
             Status = $status
         })
     }
