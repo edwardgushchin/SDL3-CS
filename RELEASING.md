@@ -71,6 +71,18 @@ pwsh .\.github\release-tools\Test-ReleaseReadiness.ps1 -FailOnError
 
 For a managed-only release, only inapplicable native artifact or toolchain steps may be skipped. The reason for each skip must follow from the milestone and the actual diff; managed build, tests, package validation, and release-scope validation remain mandatory.
 
+## Native Package Revision Consistency
+
+Every native component package family must use one package revision across all supported platforms. A component family includes all platform-specific packages that share the same native component and version, such as `SDL3-CS.<Platform>.Image` packages for one SDL_image version.
+
+- If any platform package requires a new revision because of a native binary, metadata, licensing, packaging, signing, or other package-content change, the same new revision must be reserved, produced, validated, and published for every supported platform package in that component family.
+- A platform whose native payload did not otherwise change must be repacked from its previously verified package. Its native binaries and source revision must remain unchanged; only the package revision and unavoidable NuGet metadata may differ.
+- Selective publication that leaves platform packages in the same component family on different revisions is prohibited.
+- If the intended revision is already occupied for any package ID in the component family, the release must use the next revision that is available for every package ID in that family.
+- Release readiness must verify that every supported platform package exists at the common revision before examples, shared dependency properties, release notes, or downstream consumers are updated to that revision and before the release is considered complete.
+
+A packaging-only revision does not change the component's upstream `nativeVersion` or source commit. It changes only the final package revision shared by the complete platform family.
+
 ## GitHub Wiki Freshness
 
 The public API reference in the GitHub Wiki is a generated release artifact. The public C# API and XML documentation from the exact release commit remain the source of truth.
