@@ -58,6 +58,87 @@ try {
     Assert-WorkflowValidationFails -Description 'unpinned NuGet/login action' -Action {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
+
+    $hardcodedNdkWorkflow = $workflowText.Replace(
+        'ndk_version="$SDL3CS_ANDROID_NDK_VERSION"',
+        'ndk_version="28.2.13676358"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $hardcodedNdkWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'hardcoded Android NDK version' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $environmentFallbackWorkflow = $workflowText.Replace(
+        'ndk="$ANDROID_HOME/ndk/$ndk_version"',
+        'ndk="${ANDROID_NDK_HOME:-$ANDROID_HOME/ndk/$ndk_version}"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $environmentFallbackWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'Android NDK environment fallback' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingRevisionGateWorkflow = $workflowText.Replace(
+        'test "$actual_ndk_version" = "$ndk_version"',
+        'test -n "$actual_ndk_version"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingRevisionGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Android NDK revision gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingPartialPublishGateWorkflow = $workflowText.Replace(
+        'Partial native RID scope requires all publish flags to be false.',
+        'Partial scope accepted.'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingPartialPublishGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing partial RID publish gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingSelectedRidHandoffWorkflow = $workflowText.Replace(
+        '$params.Rids = $selectedRids',
+        '$null = $selectedRids'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingSelectedRidHandoffWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing selected RID assembly handoff' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $latestBundletoolWorkflow = $workflowText.Replace(
+        'bundletool/releases/download/$BUNDLETOOL_VERSION',
+        'bundletool/releases/latest/download'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $latestBundletoolWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'latest bundletool fallback' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingBundletoolHashGateWorkflow = $workflowText.Replace(
+        'test "$actual_bundletool_sha256" = "$BUNDLETOOL_SHA256"',
+        'test -n "$actual_bundletool_sha256"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingBundletoolHashGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing bundletool SHA-256 gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $hardcodedSystemImageWorkflow = $workflowText.Replace(
+        'ANDROID_16KB_SYSTEM_IMAGE: ${{ needs.plan.outputs.android_16kb_system_image }}',
+        'ANDROID_16KB_SYSTEM_IMAGE: system-images;android-35;google_apis_ps16k;x86_64'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $hardcodedSystemImageWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'hardcoded Android 16 KB system image' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingRuntimeSmokeWorkflow = $workflowText.Replace(
+        './.github/release-tools/Test-Android16KbRuntime.ps1',
+        './.github/release-tools/Test-Android16KbRuntime-disabled.ps1'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingRuntimeSmokeWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing Android 16 KB runtime smoke' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
 }
 finally {
     if (Test-Path -LiteralPath $tempRoot) {

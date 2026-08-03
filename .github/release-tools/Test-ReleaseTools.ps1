@@ -82,7 +82,7 @@ if ($Rid) {
         }
         elseif ($ridInfo.os -eq 'android' -and (Get-ReleaseHostOs) -eq 'windows') {
             try {
-                Assert-ReleaseAndroidNdk | Out-Null
+                Assert-ReleaseAndroidNdk -Manifest $manifest | Out-Null
                 Assert-ReleaseNinja | Out-Null
             }
             catch {
@@ -114,7 +114,7 @@ if ($errors.Count -gt 0) {
     Git = $git
     GitHubCli = $gh
     Docker = $docker
-    AndroidNdk = Get-ReleaseAndroidNdkPath
+    AndroidNdk = Get-ReleaseAndroidNdkPath -Manifest $manifest
     VisualStudio = Get-ReleaseVisualStudioPath
     VisualStudioCompiler = if ($Rid -and $ridInfo.os -eq 'windows') { Get-ReleaseVisualStudioCompilerPath -RidInfo $ridInfo } else { $null }
     UnixBuildTools = $unixBuildTools

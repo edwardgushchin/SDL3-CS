@@ -61,6 +61,36 @@ foreach ($componentId in $Components) {
             $errors.Add("Receipt $componentId/$rid was created with an old schema and has no install collection validation.")
             $status = 'failed'
         }
+
+        $ridInfo = Get-ReleaseRid -Manifest $manifest -Rid $rid
+        if ($ridInfo.os -eq 'android') {
+            $expectedAndroidNdkVersion = Get-ReleaseAndroidNdkExpectedVersion -Manifest $manifest
+            if (-not $receipt.PSObject.Properties.Name.Contains('SchemaVersion') -or [int]$receipt.SchemaVersion -lt 3) {
+                $errors.Add("Receipt $componentId/$rid was created with an old schema and has no deterministic Android NDK evidence.")
+                $status = 'failed'
+            }
+            elseif (-not $receipt.PSObject.Properties.Name.Contains('Toolchain') -or -not $receipt.Toolchain) {
+                $errors.Add("Receipt $componentId/$rid has no toolchain evidence.")
+                $status = 'failed'
+            }
+            else {
+                if (-not $receipt.Toolchain.PSObject.Properties.Name.Contains('AndroidNdk') -or
+                    [string]::IsNullOrWhiteSpace([string]$receipt.Toolchain.AndroidNdk)) {
+                    $errors.Add("Receipt $componentId/$rid has no Android NDK path evidence.")
+                    $status = 'failed'
+                }
+                if (-not $receipt.Toolchain.PSObject.Properties.Name.Contains('AndroidNdkExpectedVersion') -or
+                    [string]$receipt.Toolchain.AndroidNdkExpectedVersion -ne $expectedAndroidNdkVersion) {
+                    $errors.Add("Receipt $componentId/$rid Android NDK expected version does not match manifest version $expectedAndroidNdkVersion.")
+                    $status = 'failed'
+                }
+                if (-not $receipt.Toolchain.PSObject.Properties.Name.Contains('AndroidNdkActualVersion') -or
+                    [string]$receipt.Toolchain.AndroidNdkActualVersion -ne $expectedAndroidNdkVersion) {
+                    $errors.Add("Receipt $componentId/$rid Android NDK actual version does not match manifest version $expectedAndroidNdkVersion.")
+                    $status = 'failed'
+                }
+            }
+        }
         if ($receipt.Component -ne $componentId) {
             $errors.Add("Receipt component mismatch for $componentId/$rid`: $($receipt.Component)")
             $status = 'failed'

@@ -10,6 +10,12 @@ param(
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
 
 $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
+$expectedAndroidNdkVersion = '28.2.13676358'
+if (-not $manifest.PSObject.Properties.Name.Contains('toolchains') -or
+    -not $manifest.toolchains.PSObject.Properties.Name.Contains('androidNdkVersion') -or
+    [string]$manifest.toolchains.androidNdkVersion -ne $expectedAndroidNdkVersion) {
+    throw "Native build plan requires manifest toolchains.androidNdkVersion '$expectedAndroidNdkVersion'."
+}
 if (-not $Components -or $Components.Count -eq 0) {
     $Components = @($manifest.components | ForEach-Object { $_.id })
 }
@@ -61,6 +67,101 @@ function Assert-NativePlanDoesNotContain {
     }
 }
 
+function Test-AndroidNdkResolutionContract {
+    param(
+        [Parameter(Mandatory)]
+        [object] $Manifest
+    )
+
+    $expectedVersion = Get-ReleaseAndroidNdkExpectedVersion -Manifest $Manifest
+    $environmentNames = @('ANDROID_NDK_HOME', 'ANDROID_NDK_ROOT', 'ANDROID_HOME', 'ANDROID_SDK_ROOT')
+    $savedEnvironment = @{}
+    foreach ($environmentName in $environmentNames) {
+        $savedEnvironment[$environmentName] = [Environment]::GetEnvironmentVariable($environmentName, [EnvironmentVariableTarget]::Process)
+    }
+
+    $tempBase = [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())
+    $tempRoot = [System.IO.Path]::GetFullPath((Join-Path $tempBase "sdl3-cs-android-ndk-contract-$([guid]::NewGuid().ToString('N'))"))
+    if (-not $tempRoot.StartsWith($tempBase, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Unsafe Android NDK contract test path: $tempRoot"
+    }
+
+    function New-AndroidNdkFixture {
+        param(
+            [Parameter(Mandatory)][string] $Path,
+            [Parameter(Mandatory)][string] $Version
+        )
+
+        New-Item -ItemType Directory -Force -Path (Join-Path $Path 'build/cmake') | Out-Null
+        Set-Content -LiteralPath (Join-Path $Path 'build/cmake/android.toolchain.cmake') -Value '# test toolchain' -Encoding UTF8
+        Set-Content -LiteralPath (Join-Path $Path 'source.properties') -Value @(
+            'Pkg.Desc = Android NDK',
+            "Pkg.Revision = $Version"
+        ) -Encoding UTF8
+    }
+
+    try {
+        $sdkRoot = Join-Path $tempRoot 'sdk'
+        $exactNdk = Join-Path $sdkRoot "ndk/$expectedVersion"
+        $wrongNdk = Join-Path $tempRoot 'wrong-ndk'
+        New-AndroidNdkFixture -Path $exactNdk -Version $expectedVersion
+        New-AndroidNdkFixture -Path $wrongNdk -Version '27.2.12479018'
+
+        [Environment]::SetEnvironmentVariable('ANDROID_NDK_HOME', $wrongNdk, [EnvironmentVariableTarget]::Process)
+        [Environment]::SetEnvironmentVariable('ANDROID_NDK_ROOT', $null, [EnvironmentVariableTarget]::Process)
+        [Environment]::SetEnvironmentVariable('ANDROID_HOME', $sdkRoot, [EnvironmentVariableTarget]::Process)
+        [Environment]::SetEnvironmentVariable('ANDROID_SDK_ROOT', $null, [EnvironmentVariableTarget]::Process)
+
+        $resolvedFromSdk = Get-ReleaseAndroidNdkPath -Manifest $Manifest
+        if ($resolvedFromSdk -ne (Resolve-Path -LiteralPath $exactNdk).Path) {
+            throw 'Android NDK resolver accepted a mismatched environment candidate or failed to select the exact SDK revision.'
+        }
+
+        [Environment]::SetEnvironmentVariable('ANDROID_HOME', $null, [EnvironmentVariableTarget]::Process)
+        if ($null -ne (Get-ReleaseAndroidNdkPath -Manifest $Manifest)) {
+            throw 'Android NDK resolver accepted a mismatched revision from ANDROID_NDK_HOME.'
+        }
+
+        $assertFailedClosed = $false
+        try {
+            Assert-ReleaseAndroidNdk -Manifest $Manifest | Out-Null
+        }
+        catch {
+            $assertFailedClosed = $true
+        }
+        if (-not $assertFailedClosed) {
+            throw 'Android NDK assertion did not fail closed when only a mismatched revision was available.'
+        }
+
+        [Environment]::SetEnvironmentVariable('ANDROID_NDK_HOME', $exactNdk, [EnvironmentVariableTarget]::Process)
+        $resolvedFromEnvironment = Assert-ReleaseAndroidNdk -Manifest $Manifest
+        if ($resolvedFromEnvironment -ne (Resolve-Path -LiteralPath $exactNdk).Path) {
+            throw 'Android NDK resolver did not accept an exact environment candidate.'
+        }
+    }
+    finally {
+        foreach ($environmentName in $environmentNames) {
+            [Environment]::SetEnvironmentVariable(
+                $environmentName,
+                $savedEnvironment[$environmentName],
+                [EnvironmentVariableTarget]::Process
+            )
+        }
+
+        if (Test-Path -LiteralPath $tempRoot) {
+            $resolvedTempRoot = [System.IO.Path]::GetFullPath($tempRoot)
+            if (-not $resolvedTempRoot.StartsWith($tempBase, [System.StringComparison]::OrdinalIgnoreCase) -or
+                -not ([System.IO.Path]::GetFileName($resolvedTempRoot)).StartsWith('sdl3-cs-android-ndk-contract-', [System.StringComparison]::Ordinal)) {
+                throw "Refusing to remove unsafe Android NDK contract test path: $resolvedTempRoot"
+            }
+
+            Remove-Item -LiteralPath $resolvedTempRoot -Recurse -Force
+        }
+    }
+}
+
+Test-AndroidNdkResolutionContract -Manifest $manifest
+
 foreach ($rid in $Rids) {
     $ridInfo = Get-ReleaseRid -Manifest $manifest -Rid $rid
 
@@ -93,6 +194,13 @@ foreach ($rid in $Rids) {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected 'pinned DXC binaries' -Context $context
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected '-DDirectXShaderCompiler_ROOT=' -Context $context
                 }
+            }
+
+            if ($ridInfo.os -eq 'android') {
+                Assert-NativePlanContains `
+                    -PlanOutput $planOutput `
+                    -Expected '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON' `
+                    -Context "$component/$rid dry-run plan"
             }
 
             $rows.Add([pscustomobject]@{

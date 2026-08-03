@@ -67,6 +67,9 @@ function Get-CMakeBuildArguments {
 function Resolve-NativeCMakeArgument {
     param(
         [Parameter(Mandatory)]
+        [object] $Manifest,
+
+        [Parameter(Mandatory)]
         [string] $Argument,
 
         [Parameter(Mandatory)]
@@ -77,13 +80,13 @@ function Resolve-NativeCMakeArgument {
 
     $resolved = $Argument.Replace('{installRoot}', $InstallRoot)
     if ($resolved.Contains('{androidNdk}')) {
-        $androidNdk = Get-ReleaseAndroidNdkPath
+        $androidNdk = Get-ReleaseAndroidNdkPath -Manifest $Manifest
         if (-not $androidNdk) {
             if ($DryRun) {
                 $androidNdk = '<androidNdk>'
             }
             else {
-                $androidNdk = Assert-ReleaseAndroidNdk
+                $androidNdk = Assert-ReleaseAndroidNdk -Manifest $Manifest
             }
         }
         $resolved = $resolved.Replace('{androidNdk}', $androidNdk.Replace('\', '/'))
@@ -480,6 +483,9 @@ function Initialize-SdlShadercrossDxcBinaries {
 function Invoke-SdlShadercrossSpirvCrossBuild {
     param(
         [Parameter(Mandatory)]
+        [object] $Manifest,
+
+        [Parameter(Mandatory)]
         [object] $RidInfo,
 
         [Parameter(Mandatory)]
@@ -545,7 +551,7 @@ function Invoke-SdlShadercrossSpirvCrossBuild {
     }
 
     foreach ($arg in @($RidInfo.cmakeArgs)) {
-        $configureArgs += Resolve-NativeCMakeArgument -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
+        $configureArgs += Resolve-NativeCMakeArgument -Manifest $Manifest -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
     }
 
     $cmakePath = Get-ReleaseCMakePathForBuild -DryRun:$DryRun
@@ -617,7 +623,7 @@ function Invoke-CMakeBuild {
             }
         }
         else {
-            Invoke-SdlShadercrossSpirvCrossBuild -RidInfo $RidInfo -SourcePath $sourcePath -BuildRoot $BuildRoot -InstallRoot $InstallRoot -BuildConfiguration $BuildConfiguration -ResolvedBuildParallelLevel $ResolvedBuildParallelLevel -CleanBuild:$CleanBuild -DryRun:$DryRun
+            Invoke-SdlShadercrossSpirvCrossBuild -Manifest $Manifest -RidInfo $RidInfo -SourcePath $sourcePath -BuildRoot $BuildRoot -InstallRoot $InstallRoot -BuildConfiguration $BuildConfiguration -ResolvedBuildParallelLevel $ResolvedBuildParallelLevel -CleanBuild:$CleanBuild -DryRun:$DryRun
             Initialize-SdlShadercrossDxcBinaries -SourcePath $sourcePath -RidInfo $RidInfo -BuildRoot $BuildRoot -DryRun:$DryRun
         }
     }
@@ -637,18 +643,18 @@ function Invoke-CMakeBuild {
     }
 
     foreach ($arg in @($RidInfo.cmakeArgs)) {
-        $configureArgs += Resolve-NativeCMakeArgument -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
+        $configureArgs += Resolve-NativeCMakeArgument -Manifest $Manifest -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
     }
 
     foreach ($arg in @($ComponentInfo.cmakeArgs)) {
-        $configureArgs += Resolve-NativeCMakeArgument -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
+        $configureArgs += Resolve-NativeCMakeArgument -Manifest $Manifest -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
     }
 
     if ($ComponentInfo.PSObject.Properties.Name.Contains('ridCmakeArgs')) {
         $ridCMakeArgsProperty = $ComponentInfo.ridCmakeArgs.PSObject.Properties[$RidInfo.rid]
         if ($ridCMakeArgsProperty) {
             foreach ($arg in @($ridCMakeArgsProperty.Value)) {
-                $configureArgs += Resolve-NativeCMakeArgument -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
+                $configureArgs += Resolve-NativeCMakeArgument -Manifest $Manifest -Argument $arg -InstallRoot $InstallRoot -DryRun:$DryRun
             }
         }
     }
@@ -777,7 +783,7 @@ if ($ridInfo.os -eq 'windows' -and -not $DryRun) {
     Assert-ReleaseVisualStudioCompiler -RidInfo $ridInfo | Out-Null
 }
 elseif ($ridInfo.os -eq 'android' -and (Get-ReleaseHostOs) -eq 'windows' -and -not $DryRun) {
-    Assert-ReleaseAndroidNdk | Out-Null
+    Assert-ReleaseAndroidNdk -Manifest $manifest | Out-Null
     Assert-ReleaseNinja | Out-Null
 }
 elseif ($ridInfo.os -ne 'windows' -and -not $DryRun) {
@@ -825,6 +831,12 @@ foreach ($componentId in $buildList) {
 if (-not $NoCollect) {
     & (Join-Path $PSScriptRoot 'Collect-NativeArtifacts.ps1') -Component $Component -Rid $Rid -ManifestPath $ManifestPath -InstallRoot $installRoot -CleanDestination -AllowEmpty:$DryRun -DryRun:$DryRun
     if (-not $DryRun) {
+        if ($ridInfo.os -eq 'android') {
+            $androidPackageProject = Resolve-ReleasePath (Get-ReleaseNativePackageProjectForRid -Manifest $manifest -Component $componentInfo -Rid $Rid)
+            $androidPackageRidRoot = Join-Path (Split-Path -Parent $androidPackageProject) "lib/$Rid"
+            & (Join-Path $PSScriptRoot 'Test-AndroidPageSizeCompatibility.ps1') -Path $androidPackageRidRoot
+        }
+
         & (Join-Path $PSScriptRoot 'Write-NativeBuildReceipt.ps1') -Component $Component -Rid $Rid -ManifestPath $ManifestPath -Configuration $Configuration
     }
 }

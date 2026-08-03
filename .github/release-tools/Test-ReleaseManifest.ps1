@@ -21,6 +21,55 @@ if ($ridIds.Count -ne ($ridIds | Select-Object -Unique).Count) {
     Add-ValidationError "RID values must be unique."
 }
 
+$requiredToolchains = [ordered]@{
+    androidNdkVersion = '28.2.13676358'
+    androidBuildToolsVersion = '35.0.0'
+    bundletoolVersion = '1.18.3'
+    bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
+    android16KbSystemImage = 'system-images;android-35;google_apis_ps16k;x86_64'
+}
+if (-not $manifest.PSObject.Properties.Name.Contains('toolchains') -or -not $manifest.toolchains) {
+    Add-ValidationError 'Manifest must declare toolchains.'
+}
+else {
+    foreach ($toolchain in $requiredToolchains.GetEnumerator()) {
+        if (-not $manifest.toolchains.PSObject.Properties.Name.Contains($toolchain.Key) -or
+            [string]::IsNullOrWhiteSpace([string]$manifest.toolchains.($toolchain.Key))) {
+            Add-ValidationError "Manifest must declare toolchains.$($toolchain.Key)."
+        }
+        elseif ([string]$manifest.toolchains.($toolchain.Key) -ne $toolchain.Value) {
+            Add-ValidationError "Manifest toolchains.$($toolchain.Key) must be '$($toolchain.Value)'."
+        }
+    }
+}
+
+$requiredRevisionFiveOverrides = [ordered]@{
+    SDL_image = 9
+    SDL_mixer = 8
+    SDL_ttf = 8
+    SDL_shadercross = 8
+}
+$revisionFiveOverride = $null
+if ($manifest.PSObject.Properties.Name.Contains('versioning') -and
+    $null -ne $manifest.versioning -and
+    $manifest.versioning.PSObject.Properties.Name.Contains('componentPackageRevisionOverrides')) {
+    $revisionFiveProperty = $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties['5']
+    if ($revisionFiveProperty) {
+        $revisionFiveOverride = $revisionFiveProperty.Value
+    }
+}
+if ($null -eq $revisionFiveOverride) {
+    Add-ValidationError 'Manifest versioning.componentPackageRevisionOverrides must declare release revision 5.'
+}
+else {
+    foreach ($componentOverride in $requiredRevisionFiveOverrides.GetEnumerator()) {
+        if (-not $revisionFiveOverride.PSObject.Properties.Name.Contains($componentOverride.Key) -or
+            [int]$revisionFiveOverride.($componentOverride.Key) -ne $componentOverride.Value) {
+            Add-ValidationError "Manifest release revision 5 override for $($componentOverride.Key) must be $($componentOverride.Value)."
+        }
+    }
+}
+
 $requiredRids = @('win-x86', 'win-x64', 'win-arm64', 'linux-x64', 'linux-arm64', 'osx-x64', 'osx-arm64', 'android-arm', 'android-arm64', 'android-x86', 'android-x64', 'ios-arm64', 'iossimulator-arm64', 'iossimulator-x64', 'tvos-arm64', 'tvossimulator-arm64', 'tvossimulator-x64')
 foreach ($rid in $requiredRids) {
     if ($ridIds -notcontains $rid) {
@@ -283,6 +332,12 @@ foreach ($rid in $manifest.rids) {
         }
         if (-not $rid.PSObject.Properties.Name.Contains('androidPlatform') -or -not $rid.androidPlatform) {
             Add-ValidationError "RID $($rid.rid) uses github-actions-android but has no androidPlatform."
+        }
+
+        $flexiblePageSizeArgument = '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
+        $flexiblePageSizeArgumentCount = @($rid.cmakeArgs | Where-Object { $_ -eq $flexiblePageSizeArgument }).Count
+        if ($flexiblePageSizeArgumentCount -ne 1) {
+            Add-ValidationError "RID $($rid.rid) must declare '$flexiblePageSizeArgument' exactly once."
         }
     }
 

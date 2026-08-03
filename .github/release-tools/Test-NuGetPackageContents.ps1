@@ -260,6 +260,36 @@ foreach ($package in $packages) {
         continue
     }
 
+    if ($package.NativePackagePlatform -eq 'Android') {
+        $androidNativeEntries = @($entryNames | Where-Object {
+            $_ -match '^runtimes/android-[^/]+/native/.+\.so(?:\..+)?$'
+        })
+        try {
+            if ($androidNativeEntries.Count -eq 0) {
+                throw "Android package '$($package.Id)' contains no native shared libraries to validate."
+            }
+
+            & (Join-Path $PSScriptRoot 'Test-AndroidPageSizeCompatibility.ps1') -Path $packagePath | Out-Host
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'android-page-size'
+                Expected = 'all packaged .so files are valid ELF; every ELF64 PT_LOAD alignment is >= 0x4000'
+                Count = $androidNativeEntries.Count
+                Status = 'valid'
+            })
+        }
+        catch {
+            Add-ContentError "$($package.Id) Android page-size compatibility validation failed: $($_.Exception.Message)"
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'android-page-size'
+                Expected = 'all packaged .so files are valid ELF; every ELF64 PT_LOAD alignment is >= 0x4000'
+                Count = 0
+                Status = 'failed'
+            })
+        }
+    }
+
     if ($package.VersionComponent -eq 'SDL_shadercross' -and $package.NativePackagePlatform -in @('Windows', 'Linux', 'MacOS')) {
         foreach ($licenseEntry in @(
             'licenses/DirectXShaderCompiler/LICENSE.TXT',

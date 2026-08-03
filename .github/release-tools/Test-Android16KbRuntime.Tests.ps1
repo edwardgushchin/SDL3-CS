@@ -1,0 +1,248 @@
+#requires -Version 7.0
+[CmdletBinding()]
+param()
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
+$validator = Join-Path $PSScriptRoot 'Test-Android16KbRuntime.ps1'
+if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) {
+    throw "Android 16 KB runtime validator was not found: $validator"
+}
+
+function Assert-RuntimeValidationFails {
+    param(
+        [Parameter(Mandatory)][string] $Description,
+        [Parameter(Mandatory)][string] $ExpectedMessage,
+        [Parameter(Mandatory)][scriptblock] $Action
+    )
+
+    $failed = $false
+    try {
+        & $Action
+    }
+    catch {
+        $failed = $true
+        if ($_.Exception.Message -notmatch $ExpectedMessage) {
+            throw "Android 16 KB runtime validation failed for '$Description' with an unexpected error: $($_.Exception.Message)"
+        }
+    }
+
+    if (-not $failed) {
+        throw "Expected Android 16 KB runtime validation to fail: $Description"
+    }
+}
+
+function Assert-CommandLogged {
+    param(
+        [Parameter(Mandatory)][string[]] $Commands,
+        [Parameter(Mandatory)][string] $Expected
+    )
+
+    if ($Commands -notcontains $Expected) {
+        throw "Fake adb command log is missing '$Expected'. Commands: $($Commands -join '; ')"
+    }
+}
+
+$tempBase = [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())
+$tempRoot = [System.IO.Path]::GetFullPath((Join-Path $tempBase "sdl3-cs-android-16kb-runtime-$([guid]::NewGuid().ToString('N'))"))
+if (-not $tempRoot.StartsWith($tempBase, [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "Unsafe temporary Android runtime test path: $tempRoot"
+}
+
+New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
+$fakeAdb = Join-Path $tempRoot 'fake-adb.ps1'
+$apkPath = Join-Path $tempRoot 'SDL3CSConsumer-Signed.apk'
+$commandLog = Join-Path $tempRoot 'adb-commands.log'
+$originalScenario = [Environment]::GetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO')
+$originalLog = [Environment]::GetEnvironmentVariable('SDL3CS_FAKE_ADB_LOG')
+
+try {
+    [System.IO.File]::WriteAllBytes($apkPath, [byte[]]@(0x50, 0x4b, 0x03, 0x04))
+
+    @'
+#requires -Version 7.0
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
+$scenario = [Environment]::GetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO')
+$logPath = [Environment]::GetEnvironmentVariable('SDL3CS_FAKE_ADB_LOG')
+$command = $args -join ' '
+if ($logPath) {
+    Add-Content -LiteralPath $logPath -Value $command -Encoding utf8NoBOM
+}
+
+switch -Regex ($command) {
+    '^get-state$' {
+        'device'
+        exit 0
+    }
+    '^shell getconf PAGE_SIZE$' {
+        if ($scenario -eq 'page-4096') { '4096' } else { '16384' }
+        exit 0
+    }
+    '^root$' {
+        'adbd is already running as root'
+        exit 0
+    }
+    '^wait-for-device$' {
+        exit 0
+    }
+    '^shell setprop bionic\.linker\.16kb\.app_compat\.enabled false$' {
+        if ($scenario -eq 'compat-set-failure') {
+            'Failed to set property'
+            exit 1
+        }
+        exit 0
+    }
+    '^shell getprop bionic\.linker\.16kb\.app_compat\.enabled$' {
+        if ($scenario -eq 'compat-read-mismatch') {
+            'true'
+            exit 0
+        }
+        'false'
+        exit 0
+    }
+    '^shell setprop pm\.16kb\.app_compat\.disabled true$' {
+        exit 0
+    }
+    '^shell getprop pm\.16kb\.app_compat\.disabled$' {
+        'true'
+        exit 0
+    }
+    '^install -r -t ' {
+        if ($scenario -eq 'install-failure') {
+            'Failure [INSTALL_FAILED_INVALID_APK]'
+            exit 1
+        }
+        'Success'
+        exit 0
+    }
+    '^logcat -c$' {
+        exit 0
+    }
+    '^shell am force-stop ' {
+        exit 0
+    }
+    '^shell am start -W -n ' {
+        if ($scenario -eq 'start-failure') {
+            'Error: Activity class does not exist.'
+            exit 1
+        }
+        'Status: ok'
+        exit 0
+    }
+    '^shell pidof ' {
+        '4242'
+        exit 0
+    }
+    '^logcat --pid=4242 -d -v brief$' {
+        if ($scenario -eq 'linker-log') {
+            'E/linker(4242): dlopen failed: library "libSDL3.so" not found'
+        }
+        else {
+            'I/SDL3CSConsumer(4242): SDL initialized'
+        }
+        exit 0
+    }
+    '^uninstall ' {
+        'Success'
+        exit 0
+    }
+    default {
+        "Unexpected fake adb command: $command"
+        exit 64
+    }
+}
+'@ | Set-Content -LiteralPath $fakeAdb -Encoding utf8NoBOM
+
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_LOG', $commandLog)
+
+    $failureScenarios = @(
+        @{ Name = 'page-4096'; ExpectedMessage = 'PAGE_SIZE is 4096 bytes' },
+        @{ Name = 'compat-set-failure'; ExpectedMessage = 'compatibility property.*could not be set' },
+        @{ Name = 'compat-read-mismatch'; ExpectedMessage = 'compatibility property.*Expected.*false.*got.*true' },
+        @{ Name = 'install-failure'; ExpectedMessage = 'adb install.*INSTALL_FAILED_INVALID_APK' },
+        @{ Name = 'start-failure'; ExpectedMessage = 'adb shell am start.*Activity class does not exist' },
+        @{ Name = 'linker-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' }
+    )
+    foreach ($failureScenario in $failureScenarios) {
+        $scenario = $failureScenario.Name
+        [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
+        [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', $scenario)
+
+        Assert-RuntimeValidationFails -Description $scenario -ExpectedMessage $failureScenario.ExpectedMessage -Action {
+            & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 *> $null
+        }
+
+        $commands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        Assert-CommandLogged -Commands $commands -Expected 'shell getconf PAGE_SIZE'
+
+        if ($scenario -eq 'page-4096' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
+            throw 'A 4096-byte page-size device reached APK installation instead of failing closed.'
+        }
+        if ($scenario -in @('compat-set-failure', 'compat-read-mismatch') -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
+            throw "A compatibility-property failure in scenario '$scenario' reached APK installation instead of failing closed."
+        }
+        if ($scenario -eq 'install-failure' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 1) {
+            throw 'The install-failure scenario did not exercise exactly one APK installation attempt.'
+        }
+        if ($scenario -eq 'start-failure' -and @($commands | Where-Object { $_ -like 'shell am start -W -n *' }).Count -ne 1) {
+            throw 'The start-failure scenario did not exercise exactly one activity launch attempt.'
+        }
+        if ($scenario -eq 'linker-log') {
+            Assert-CommandLogged -Commands $commands -Expected 'logcat --pid=4242 -d -v brief'
+        }
+        if ($scenario -in @('start-failure', 'linker-log')) {
+            Assert-CommandLogged -Commands $commands -Expected 'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
+        }
+    }
+
+    [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'success')
+    $result = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0
+
+    if ($result.Status -ne 'Passed' -or $result.PageSize -ne 16384 -or $result.ProcessId -ne 4242) {
+        throw "Unexpected Android 16 KB runtime validation result: $($result | ConvertTo-Json -Compress)"
+    }
+
+    $successCommands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    foreach ($expectedCommand in @(
+        'get-state',
+        'shell getconf PAGE_SIZE',
+        'root',
+        'wait-for-device',
+        'shell setprop bionic.linker.16kb.app_compat.enabled false',
+        'shell getprop bionic.linker.16kb.app_compat.enabled',
+        'shell setprop pm.16kb.app_compat.disabled true',
+        'shell getprop pm.16kb.app_compat.disabled',
+        'logcat -c',
+        'logcat --pid=4242 -d -v brief',
+        'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
+    )) {
+        Assert-CommandLogged -Commands $successCommands -Expected $expectedCommand
+    }
+
+    if (@($successCommands | Where-Object { $_ -like 'install -r -t *SDL3CSConsumer-Signed.apk' }).Count -ne 1) {
+        throw 'The successful runtime scenario did not install the signed APK exactly once.'
+    }
+    if (@($successCommands | Where-Object { $_ -eq 'shell am start -W -n com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity' }).Count -ne 1) {
+        throw 'The successful runtime scenario did not start the expected default Android activity exactly once.'
+    }
+
+    Write-Host 'Android 16 KB runtime tests passed.'
+}
+finally {
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', $originalScenario)
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_LOG', $originalLog)
+
+    if (Test-Path -LiteralPath $tempRoot) {
+        $resolvedTempRoot = [System.IO.Path]::GetFullPath($tempRoot)
+        if (-not $resolvedTempRoot.StartsWith($tempBase, [System.StringComparison]::OrdinalIgnoreCase) -or
+            -not ([System.IO.Path]::GetFileName($resolvedTempRoot)).StartsWith('sdl3-cs-android-16kb-runtime-', [System.StringComparison]::Ordinal)) {
+            throw "Refusing to remove unsafe temporary Android runtime test path: $resolvedTempRoot"
+        }
+
+        Remove-Item -LiteralPath $resolvedTempRoot -Recurse -Force
+    }
+}
