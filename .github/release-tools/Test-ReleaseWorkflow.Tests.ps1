@@ -104,6 +104,15 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $missingWikiBuildWorkflow = $workflowText.Replace(
+        'dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false',
+        'dotnet --info'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingWikiBuildWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing Wiki Release output build before readiness' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $latestBundletoolWorkflow = $workflowText.Replace(
         'bundletool/releases/download/$BUNDLETOOL_VERSION',
         'bundletool/releases/latest/download'

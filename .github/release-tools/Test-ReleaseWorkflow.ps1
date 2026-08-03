@@ -174,6 +174,7 @@ Assert-WorkflowContains -Text $workflowText -Expected '$params.RequireUpstreamCu
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-ReleaseAssembly.ps1 @params' -Description 'assembly script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'Install Android .NET workload for bridge package' -Description 'assembly Android bridge workload installation step'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install android --source https://api.nuget.org/v3/index.json' -Description 'assembly Android workload installation command'
+Assert-WorkflowContains -Text $workflowText -Expected 'dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false' -Description 'assembly Wiki Release output build'
 Assert-WorkflowContains -Text $workflowText -Expected 'path: artifacts/release/nuget/*.nupkg' -Description 'NuGet artifact upload'
 Assert-WorkflowContains -Text $workflowText -Expected 'release-assembly-state.zip' -Description 'release assembly state artifact'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-ReleaseAssemblyState.ps1' -Description 'release assembly state validation'

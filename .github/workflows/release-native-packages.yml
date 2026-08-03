@@ -401,6 +401,10 @@ jobs:
           path: artifacts/release/bundles
           merge-multiple: true
 
+      - name: Build wrapper Release output for Wiki contract
+        shell: pwsh
+        run: dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false
+
       - name: Assemble packages
         shell: pwsh
         env:
