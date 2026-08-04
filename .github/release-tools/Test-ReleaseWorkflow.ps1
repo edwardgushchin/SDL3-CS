@@ -92,6 +92,24 @@ foreach ($inputName in @('package_revision', 'build_parallel_level', 'require_up
     Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{6}$([regex]::Escape($inputName)):\s*\r?\n.*?^\s{8}required:\s+true" -Description "workflow input '$inputName'"
 }
 
+$manifestPackageRevisionDefault = 0
+$hasManifestPackageRevisionDefault = $manifest.PSObject.Properties.Name.Contains('versioning') -and
+    $null -ne $manifest.versioning -and
+    $manifest.versioning.PSObject.Properties.Name.Contains('packageRevisionDefault') -and
+    [int]::TryParse([string]$manifest.versioning.packageRevisionDefault, [ref]$manifestPackageRevisionDefault) -and
+    $manifestPackageRevisionDefault -ge 0
+if (-not $hasManifestPackageRevisionDefault) {
+    Add-WorkflowError 'Release manifest versioning.packageRevisionDefault must be a non-negative integer.'
+}
+else {
+    $packageRevisionDefaultPattern = '(?m)^[ ]{6}package_revision:[ \t]*\r?\n' +
+        '(?:^[ ]{8,}[^\r\n]*\r?\n)*?' +
+        '^[ ]{8}default:[ \t]+["'']?' +
+        [regex]::Escape([string]$manifestPackageRevisionDefault) +
+        '["'']?[ \t]*$'
+    Assert-WorkflowRegex -Text $workflowText -Pattern $packageRevisionDefaultPattern -Description 'package_revision default matching release manifest versioning.packageRevisionDefault'
+}
+
 foreach ($publishInput in @('publish_github', 'publish_nuget')) {
     Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{6}$([regex]::Escape($publishInput)):\s*\r?\n.*?^\s{8}default:\s+false" -Description "workflow input '$publishInput' default"
 }
