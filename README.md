@@ -12,8 +12,8 @@
   <a href="https://github.com/edwardgushchin/SDL3-CS/actions/workflows/ci.yml">
     <img alt="CI" src="https://github.com/edwardgushchin/SDL3-CS/actions/workflows/ci.yml/badge.svg?branch=main">
   </a>
-  <a href="https://www.nuget.org/packages/SDL3-CS/3.4.12.4">
-    <img alt="NuGet SDL3-CS 3.4.12.4" src="https://img.shields.io/badge/nuget-v3.4.12.4-004880?style=flat-square">
+  <a href="https://www.nuget.org/packages/SDL3-CS">
+    <img alt="NuGet SDL3-CS version" src="https://img.shields.io/nuget/v/SDL3-CS?style=flat-square">
   </a>
   <a href="https://www.nuget.org/packages/SDL3-CS">
     <img alt="NuGet SDL3-CS downloads" src="https://img.shields.io/nuget/dt/SDL3-CS?style=flat-square">

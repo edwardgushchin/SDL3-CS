@@ -45,6 +45,26 @@ if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeArtifactValidation)
     & (Join-Path $PSScriptRoot 'Test-NativePackageArtifacts.ps1') -ManifestPath $ManifestPath -Rids $Rids
 }
 
+if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeArtifactValidation) {
+    $androidPayloadRoots = @(
+        foreach ($componentInfo in @($manifest.components)) {
+            foreach ($rid in $Rids) {
+                $ridInfo = Get-ReleaseRid -Manifest $manifest -Rid $rid
+                if ($ridInfo.os -ne 'android') {
+                    continue
+                }
+
+                $packageProject = Resolve-ReleasePath (Get-ReleaseNativePackageProjectForRid -Manifest $manifest -Component $componentInfo -Rid $rid)
+                Join-Path (Split-Path -Parent $packageProject) "lib/$rid"
+            }
+        }
+    )
+
+    if ($androidPayloadRoots.Count -gt 0) {
+        & (Join-Path $PSScriptRoot 'Test-AndroidPageSizeCompatibility.ps1') -Path $androidPayloadRoots
+    }
+}
+
 if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeBuildReceiptValidation) {
     & (Join-Path $PSScriptRoot 'Test-NativeBuildReceipts.ps1') -ManifestPath $ManifestPath -Rids $Rids
 }
@@ -55,6 +75,13 @@ if ($ManagedOnly) {
 }
 if (@($packages).Count -eq 0) {
     throw 'Selected NuGet package scope is empty.'
+}
+$includesAndroidBridge = @($packages | Where-Object Id -EQ 'SDL3-CS.Android').Count -eq 1
+if ($includesAndroidBridge) {
+    & (Join-Path $PSScriptRoot 'Test-AndroidBridgeJar.ps1') -ManifestPath $ManifestPath
+    if ($NoBuild -and -not $DryRun) {
+        throw 'SDL3-CS.Android cannot be packed with -NoBuild because SDL3Bridge.jar is a binding compilation input.'
+    }
 }
 foreach ($package in $packages) {
     $projectPath = Resolve-ReleasePath $package.Project

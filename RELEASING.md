@@ -58,7 +58,7 @@ Every planned release has a separate milestone with the exact version and target
 Before publication, the maintainer confirms that:
 
 - the milestone contains no open `release: blocker` items, and every included change has a clear status;
-- `severity: critical` and `severity: high` issues associated with the release are closed or explicitly deferred with a documented reason;
+- every `severity: critical` or `severity: high` issue associated with the release is either already closed by a prior release, explicitly deferred with a documented reason, or open in the release milestone with a verified fix merged into the selected exact `main` commit, successful CI for the same contents, and Project status `Ready for release`;
 - the specification, implementation documentation, wrapper, and automated tests are aligned for every runtime or API change;
 - every included pull request is merged into `main`, and each included change is an ancestor of the selected release commit;
 - CI for the included pull requests and the selected exact `main` commit completed successfully;
@@ -76,7 +76,8 @@ For a managed-only release, only inapplicable native artifact or toolchain steps
 Every native component package family must use one package revision across all supported platforms. A component family includes all platform-specific packages that share the same native component and version, such as `SDL3-CS.<Platform>.Image` packages for one SDL_image version.
 
 - If any platform package requires a new revision because of a native binary, metadata, licensing, packaging, signing, or other package-content change, the same new revision must be reserved, produced, validated, and published for every supported platform package in that component family.
-- A platform whose native payload did not otherwise change must be repacked from its previously verified package. Its native binaries and source revision must remain unchanged; only the package revision and unavoidable NuGet metadata may differ.
+- A packaging-only revision must repack an unchanged platform from its previously verified package. Its native binaries and source revision must remain unchanged; only the package revision and unavoidable NuGet metadata may differ.
+- A release that contains a native binary or native toolchain change must rebuild and validate the complete native RID matrix from the exact manifest source revisions. A platform that is not directly affected by the change may receive newly built binaries, but its source revision and component scope must remain unchanged unless the milestone explicitly includes that update.
 - Selective publication that leaves platform packages in the same component family on different revisions is prohibited.
 - If the intended revision is already occupied for any package ID in the component family, the release must use the next revision that is available for every package ID in that family.
 - Release readiness must verify that every supported platform package exists at the common revision before examples, shared dependency properties, release notes, or downstream consumers are updated to that revision and before the release is considered complete.

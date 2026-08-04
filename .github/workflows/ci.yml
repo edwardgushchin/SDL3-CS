@@ -96,6 +96,30 @@ jobs:
           ./.github/release-tools/Test-TrunkBasedReleaseLifecycle.Tests.ps1
           ./.github/release-tools/Test-TrunkBasedReleaseLifecycle.ps1
 
+      - name: Validate Android 16 KB release contract
+        shell: pwsh
+        run: |
+          ./.github/release-tools/Test-AndroidBridgeJar.Tests.ps1
+          ./.github/release-tools/Test-AndroidBridgeJar.ps1
+          ./.github/release-tools/Test-AndroidPageSizeCompatibility.Tests.ps1
+          ./.github/release-tools/Test-Android16KbRuntime.Tests.ps1
+          $androidPayloadRoots = @(
+            Get-ChildItem -LiteralPath './SDL3-CS.NativePackages' -Directory |
+              Where-Object Name -Like 'SDL3-CS.Android*' |
+              ForEach-Object {
+                $libRoot = Join-Path $_.FullName 'lib'
+                if (-not (Test-Path -LiteralPath $libRoot -PathType Container)) {
+                  throw "Checked-in Android native package is missing its lib root: $libRoot"
+                }
+                $libRoot
+              }
+          )
+          if ($androidPayloadRoots.Count -eq 0) {
+            throw 'No checked-in Android native package lib roots were found.'
+          }
+          ./.github/release-tools/Test-AndroidPageSizeCompatibility.ps1 -Path $androidPayloadRoots
+          ./.github/release-tools/Test-ReleaseWorkflow.Tests.ps1
+
   examples-desktop:
     name: Build desktop examples (${{ matrix.name }})
     runs-on: ${{ matrix.runner }}

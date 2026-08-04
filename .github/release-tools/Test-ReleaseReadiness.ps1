@@ -78,6 +78,27 @@ if (-not $Components -or $Components.Count -eq 0) {
     $Components = @($manifest.components | ForEach-Object { $_.id })
 }
 
+$androidPayloadRoots = @(
+    foreach ($componentId in $Components) {
+        $componentInfo = Get-ReleaseComponent -Manifest $manifest -Component $componentId
+        foreach ($rid in $Rids) {
+            $ridInfo = Get-ReleaseRid -Manifest $manifest -Rid $rid
+            if ($ridInfo.os -ne 'android') {
+                continue
+            }
+
+            $packageProject = Resolve-ReleasePath (Get-ReleaseNativePackageProjectForRid -Manifest $manifest -Component $componentInfo -Rid $rid)
+            Join-Path (Split-Path -Parent $packageProject) "lib/$rid"
+        }
+    }
+)
+
+if ($androidPayloadRoots.Count -gt 0) {
+    Invoke-ReadinessStep -Name 'Android Java bridge contract' -Script {
+        & (Join-Path $PSScriptRoot 'Test-AndroidBridgeJar.ps1') -ManifestPath $ManifestPath
+    }
+}
+
 Invoke-ReadinessStep -Name 'Native build dry-run plan' -Script {
     & (Join-Path $PSScriptRoot 'Test-NativeBuildPlan.ps1') -Components $Components -Rids $Rids -ManifestPath $ManifestPath
 }
@@ -135,6 +156,12 @@ else {
 if (-not $SkipNativeArtifactValidation) {
     Invoke-ReadinessStep -Name 'Native package artifacts' -Script {
         & (Join-Path $PSScriptRoot 'Test-NativePackageArtifacts.ps1') -Components $Components -Rids $Rids -ManifestPath $ManifestPath
+    }
+}
+
+if (-not $SkipNativeArtifactValidation -and $androidPayloadRoots.Count -gt 0) {
+    Invoke-ReadinessStep -Name 'Android 16 KB page-size compatibility' -Script {
+        & (Join-Path $PSScriptRoot 'Test-AndroidPageSizeCompatibility.ps1') -Path $androidPayloadRoots
     }
 }
 

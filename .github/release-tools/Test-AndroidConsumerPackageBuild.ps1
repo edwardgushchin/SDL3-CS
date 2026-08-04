@@ -7,6 +7,8 @@ param(
     [string[]] $Rids,
     [string] $ScratchRoot,
     [string] $TargetFrameworkVersion = 'net10.0',
+    [string] $ZipAlignPath,
+    [string] $BundleToolPath,
     [switch] $DryRun
 )
 
@@ -39,6 +41,102 @@ function Get-AndroidConsumerPackages {
     })
 }
 
+function Resolve-AndroidToolPath {
+    param(
+        [AllowNull()][string] $Candidate,
+        [Parameter(Mandatory)][string] $CommandName
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($Candidate)) {
+        if (Test-Path -LiteralPath $Candidate -PathType Leaf) {
+            return (Resolve-Path -LiteralPath $Candidate).Path
+        }
+
+        $candidateCommand = Get-Command $Candidate -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($candidateCommand) {
+            return $candidateCommand.Source
+        }
+
+        return $null
+    }
+
+    $command = Get-Command $CommandName -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($command) {
+        return $command.Source
+    }
+
+    return $null
+}
+
+function Get-AndroidZipAlignPath {
+    param(
+        [AllowNull()][string] $Candidate,
+        [Parameter(Mandatory)][string] $BuildToolsVersion
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($Candidate)) {
+        return Resolve-AndroidToolPath -Candidate $Candidate -CommandName 'zipalign'
+    }
+
+    foreach ($environmentVariable in @('ANDROID_HOME', 'ANDROID_SDK_ROOT')) {
+        $androidSdkRoot = [Environment]::GetEnvironmentVariable($environmentVariable)
+        if (-not $androidSdkRoot) {
+            continue
+        }
+
+        $exactBuildToolsRoot = Join-Path $androidSdkRoot "build-tools/$BuildToolsVersion"
+        foreach ($fileName in @('zipalign', 'zipalign.exe')) {
+            $path = Join-Path $exactBuildToolsRoot $fileName
+            if (Test-Path -LiteralPath $path -PathType Leaf) {
+                return (Resolve-Path -LiteralPath $path).Path
+            }
+        }
+    }
+
+    return $null
+}
+
+function Invoke-AndroidZipAlignmentCheck {
+    param(
+        [Parameter(Mandatory)][string] $ToolPath,
+        [Parameter(Mandatory)][string] $ApkPath
+    )
+
+    & $ToolPath '-c' '-P' '16' '-v' '4' $ApkPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "zipalign 16 KB validation failed for Android APK '$ApkPath' with exit code $LASTEXITCODE."
+    }
+}
+
+function Invoke-AndroidBundleAlignmentCheck {
+    param(
+        [Parameter(Mandatory)][string] $ToolPath,
+        [Parameter(Mandatory)][string] $AabPath
+    )
+
+    $arguments = @('dump', 'config', "--bundle=$AabPath")
+    if ([System.IO.Path]::GetExtension($ToolPath).Equals('.jar', [System.StringComparison]::OrdinalIgnoreCase)) {
+        $java = Resolve-AndroidToolPath -Candidate $null -CommandName 'java'
+        if (-not $java) {
+            throw "Java was not found; it is required to run bundletool '$ToolPath'."
+        }
+
+        $output = @(& $java '-jar' $ToolPath @arguments 2>&1 | ForEach-Object { $_.ToString() })
+    }
+    else {
+        $output = @(& $ToolPath @arguments 2>&1 | ForEach-Object { $_.ToString() })
+    }
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "bundletool config validation failed for Android App Bundle '$AabPath' with exit code $LASTEXITCODE`: $($output -join [Environment]::NewLine)"
+    }
+    if (($output -join [Environment]::NewLine) -notmatch '(?m)\bPAGE_ALIGNMENT_16K\b') {
+        throw "Android App Bundle '$AabPath' does not request PAGE_ALIGNMENT_16K."
+    }
+
+    $output | ForEach-Object { Write-Host $_ }
+}
+
 function ConvertTo-XmlPackageReference {
     param(
         [Parameter(Mandatory)]
@@ -51,6 +149,11 @@ function ConvertTo-XmlPackageReference {
 }
 
 function Get-AndroidConsumerMainActivity {
+    param(
+        [Parameter(Mandatory)]
+        [string] $ApplicationId
+    )
+
     return @"
 using Android.App;
 using Android.Content.PM;
@@ -58,9 +161,12 @@ using Org.Libsdl.App;
 using SDL = SDL3.SDL;
 
 [Activity(
+    Name = "$ApplicationId.MainActivity",
     Label = "SDL3CSConsumer",
     MainLauncher = true,
     Exported = true,
+    ShowWhenLocked = true,
+    TurnScreenOn = true,
     ConfigurationChanges =
         ConfigChanges.Orientation |
         ConfigChanges.ScreenSize |
@@ -79,25 +185,76 @@ public sealed class MainActivity : SDLActivity
         "SDL3_shadercross"
     ];
 
+    protected override void OnCreate(Android.OS.Bundle? savedInstanceState)
+    {
+        base.OnCreate(savedInstanceState);
+        if (MBrokenLibraries)
+        {
+            Android.Util.Log.Error("SDL3CSConsumer", "SDL3CS_RUNTIME_FAILED: SDLActivity rejected one or more native libraries");
+            return;
+        }
+
+        ProbeNativeComponents();
+    }
+
+    private static void ProbeNativeComponents()
+    {
+        try
+        {
+            var sdlVersion = SDL.GetVersion();
+            var imageVersion = SDL3.Image.Version();
+            var mixerVersion = SDL3.Mixer.Version();
+            var ttfVersion = SDL3.TTF.Version();
+            _ = SDL3.ShaderCross.GetSPIRVShaderFormats();
+            if (sdlVersion <= 0 || imageVersion <= 0 || mixerVersion <= 0 || ttfVersion <= 0)
+            {
+                Android.Util.Log.Error("SDL3CSConsumer", "SDL3CS_RUNTIME_FAILED: a native component returned an invalid version");
+                return;
+            }
+
+            Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");
+        }
+        catch (System.Exception exception)
+        {
+            Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: {exception.GetType().Name}: {exception.Message}");
+        }
+    }
+
     protected override void Main()
     {
         if (!SDL.Init(SDL.InitFlags.Video))
         {
+            Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_INIT_FAILED: {SDL.GetError()}");
+            return;
+        }
+
+        if (!SDL.CreateWindowAndRenderer("SDL3-CS Android consumer", 64, 64, 0, out var window, out var renderer))
+        {
+            Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: CreateWindowAndRenderer: {SDL.GetError()}");
+            SDL.Quit();
             return;
         }
 
         try
         {
-            if (SDL.CreateWindowAndRenderer("SDL3-CS Android consumer", 64, 64, 0, out var window, out var renderer))
+            if (!SDL.RenderClear(renderer))
             {
-                SDL.RenderClear(renderer);
-                SDL.RenderPresent(renderer);
-                SDL.DestroyRenderer(renderer);
-                SDL.DestroyWindow(window);
+                Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: RenderClear: {SDL.GetError()}");
+                return;
             }
+            if (!SDL.RenderPresent(renderer))
+            {
+                Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: RenderPresent: {SDL.GetError()}");
+                return;
+            }
+
+            Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_VIDEO_READY");
+            System.Threading.Thread.Sleep(5000);
         }
         finally
         {
+            SDL.DestroyRenderer(renderer);
+            SDL.DestroyWindow(window);
             SDL.Quit();
         }
     }
@@ -105,12 +262,34 @@ public sealed class MainActivity : SDLActivity
 "@
 }
 
+function Get-AndroidConsumerBundleConfiguration {
+    return @'
+{
+  "optimizations": {
+    "uncompressNativeLibraries": {
+      "enabled": true,
+      "alignment": "PAGE_ALIGNMENT_16K"
+    }
+  }
+}
+'@
+}
+
 function Get-AndroidConsumerManifest {
+    param(
+        [Parameter(Mandatory)][int] $TargetSdkVersion
+    )
+
+    if ($TargetSdkVersion -lt 24) {
+        throw "Android consumer target SDK must be at least 24 for current Android runtime images, got $TargetSdkVersion."
+    }
+
     return @"
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-  <uses-sdk android:minSdkVersion="23" />
-  <application android:label="SDL3CSConsumer" android:allowBackup="false" android:supportsRtl="true" />
+  <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="$TargetSdkVersion" />
+  <application android:label="SDL3CSConsumer" android:allowBackup="false" android:supportsRtl="true"
+               android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
 </manifest>
 "@
 }
@@ -176,23 +355,36 @@ function Test-AndroidApkNativeLibraries {
         [string] $Abi,
 
         [Parameter(Mandatory)]
-        [string[]] $ExpectedLibraries
+        [string[]] $ExpectedLibraries,
+
+        [Parameter(Mandatory)]
+        [string] $PageSizeValidatorPath
     )
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $archive = [System.IO.Compression.ZipFile]::OpenRead($ApkPath)
     try {
-        $entries = @($archive.Entries | ForEach-Object { $_.FullName })
+        $nativeEntries = @($archive.Entries | Where-Object {
+            $_.FullName.Replace('\', '/') -match "^lib/$([regex]::Escape($Abi))/.+\.so(?:\..+)?$"
+        })
+        if ($nativeEntries.Count -eq 0) {
+            throw "Android APK '$ApkPath' contains no native shared libraries for ABI '$Abi'."
+        }
+
+        $entryNames = @($nativeEntries | ForEach-Object { $_.FullName.Replace('\', '/') })
         foreach ($library in $ExpectedLibraries) {
             $entryName = "lib/$Abi/$library"
-            if ($entries -notcontains $entryName) {
+            if ($entryNames -notcontains $entryName) {
                 throw "Android APK '$ApkPath' is missing expected native entry '$entryName'."
             }
         }
+
     }
     finally {
         $archive.Dispose()
     }
+
+    & $PageSizeValidatorPath -Path $ApkPath
 }
 
 function Test-AndroidApkManagedAssembly {
@@ -272,6 +464,50 @@ function Test-AndroidApkDexClasses {
 }
 
 $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
+$androidBuildToolsVersion = if ($manifest.PSObject.Properties.Name.Contains('toolchains') -and
+    $manifest.toolchains -and
+    $manifest.toolchains.PSObject.Properties.Name.Contains('androidBuildToolsVersion')) {
+    [string]$manifest.toolchains.androidBuildToolsVersion
+}
+else {
+    $null
+}
+if ([string]::IsNullOrWhiteSpace($androidBuildToolsVersion)) {
+    throw 'Release manifest must declare toolchains.androidBuildToolsVersion for exact zipalign selection.'
+}
+$bundletoolVersion = if ($manifest.toolchains.PSObject.Properties.Name.Contains('bundletoolVersion')) {
+    [string]$manifest.toolchains.bundletoolVersion
+}
+else {
+    $null
+}
+$bundletoolSha256 = if ($manifest.toolchains.PSObject.Properties.Name.Contains('bundletoolSha256')) {
+    [string]$manifest.toolchains.bundletoolSha256
+}
+else {
+    $null
+}
+if ([string]::IsNullOrWhiteSpace($bundletoolVersion) -or $bundletoolVersion -notmatch '^\d+\.\d+\.\d+$') {
+    throw 'Release manifest must declare an exact toolchains.bundletoolVersion.'
+}
+if ([string]::IsNullOrWhiteSpace($bundletoolSha256) -or $bundletoolSha256 -notmatch '^[0-9a-f]{64}$') {
+    throw 'Release manifest must declare a lowercase toolchains.bundletoolSha256.'
+}
+$android16KbSystemImage = if ($manifest.toolchains.PSObject.Properties.Name.Contains('android16KbSystemImage')) {
+    [string]$manifest.toolchains.android16KbSystemImage
+}
+else {
+    $null
+}
+$androidTargetSdkMatch = [regex]::Match($android16KbSystemImage, '^system-images;android-(?<Api>\d+);')
+if (-not $androidTargetSdkMatch.Success) {
+    throw 'Release manifest toolchains.android16KbSystemImage must identify a numeric Android API level.'
+}
+$androidTargetSdkVersion = [int]$androidTargetSdkMatch.Groups['Api'].Value
+if ($androidTargetSdkVersion -lt 24) {
+    throw "Android 16 KB system image API must be at least 24, got $androidTargetSdkVersion."
+}
+
 if ($PackageRevision -lt 0) {
     $PackageRevision = [int] $manifest.versioning.packageRevisionDefault
 }
@@ -336,6 +572,49 @@ $expectedBridgeClassDescriptors = @(
     'Lorg/libsdl/app/SDLMain;'
 )
 $rows = New-Object System.Collections.Generic.List[object]
+$pageSizeValidatorPath = Join-Path $PSScriptRoot 'Test-AndroidPageSizeCompatibility.ps1'
+$resolvedZipAlignPath = $null
+$resolvedBundleToolPath = $null
+
+if (-not $DryRun) {
+    if (-not (Test-Path -LiteralPath $pageSizeValidatorPath -PathType Leaf)) {
+        throw "Android page-size compatibility validator was not found: $pageSizeValidatorPath"
+    }
+
+    $resolvedZipAlignPath = Get-AndroidZipAlignPath -Candidate $ZipAlignPath -BuildToolsVersion $androidBuildToolsVersion
+    if (-not $resolvedZipAlignPath) {
+        throw "zipalign was not found. Pass -ZipAlignPath or install Android SDK build-tools $androidBuildToolsVersion under ANDROID_HOME/ANDROID_SDK_ROOT."
+    }
+    $resolvedBuildToolsRoot = Split-Path -Parent $resolvedZipAlignPath
+    if ((Split-Path -Leaf $resolvedBuildToolsRoot) -ne $androidBuildToolsVersion) {
+        throw "zipalign '$resolvedZipAlignPath' is not from exact Android SDK build-tools $androidBuildToolsVersion."
+    }
+    $buildToolsSourceProperties = Join-Path $resolvedBuildToolsRoot 'source.properties'
+    if (-not (Test-Path -LiteralPath $buildToolsSourceProperties -PathType Leaf)) {
+        throw "Android SDK build-tools source.properties was not found beside zipalign: $buildToolsSourceProperties"
+    }
+    $buildToolsRevisionMatches = @(Get-Content -LiteralPath $buildToolsSourceProperties -Encoding UTF8 | Where-Object {
+        $_ -match '^\s*Pkg\.Revision\s*=\s*(\S+)\s*$'
+    })
+    if ($buildToolsRevisionMatches.Count -ne 1 -or
+        [regex]::Match($buildToolsRevisionMatches[0], '^\s*Pkg\.Revision\s*=\s*(\S+)\s*$').Groups[1].Value -ne $androidBuildToolsVersion) {
+        throw "zipalign '$resolvedZipAlignPath' does not prove Android SDK build-tools revision $androidBuildToolsVersion."
+    }
+
+    $bundleToolCandidate = if ($BundleToolPath) { $BundleToolPath } else { [Environment]::GetEnvironmentVariable('BUNDLETOOL_PATH') }
+    $resolvedBundleToolPath = Resolve-AndroidToolPath -Candidate $bundleToolCandidate -CommandName 'bundletool'
+    if (-not $resolvedBundleToolPath) {
+        throw 'bundletool was not found. Pass -BundleToolPath, set BUNDLETOOL_PATH, or install bundletool on PATH.'
+    }
+    $expectedBundletoolFileName = "bundletool-all-$bundletoolVersion.jar"
+    if ((Split-Path -Leaf $resolvedBundleToolPath) -ne $expectedBundletoolFileName) {
+        throw "bundletool must use exact manifest asset '$expectedBundletoolFileName', got '$resolvedBundleToolPath'."
+    }
+    $actualBundletoolSha256 = (Get-FileHash -LiteralPath $resolvedBundleToolPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($actualBundletoolSha256 -ne $bundletoolSha256) {
+        throw "bundletool SHA-256 mismatch for '$resolvedBundleToolPath': expected $bundletoolSha256, got $actualBundletoolSha256."
+    }
+}
 
 foreach ($rid in $Rids) {
     $abi = Get-AndroidConsumerAbi -Rid $rid
@@ -355,7 +634,8 @@ foreach ($rid in $Rids) {
     <ApplicationId>$applicationId</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidPackageFormats>apk;aab</AndroidPackageFormats>
+    <AndroidBundleConfigurationFile>BundleConfig.json</AndroidBundleConfigurationFile>
     <RunAOTCompilation>false</RunAOTCompilation>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <EnableDefaultItems>false</EnableDefaultItems>
@@ -363,6 +643,7 @@ foreach ($rid in $Rids) {
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <None Include="AndroidManifest.xml" />
+    <None Include="BundleConfig.json" />
 $packageReferences
   </ItemGroup>
 </Project>
@@ -380,15 +661,18 @@ $packageReferences
         Write-Host "[dry-run] add package references: $((@($packages | ForEach-Object { $_.Id })) -join ', ')"
         Write-Host "[dry-run] dotnet restore $projectPath -r $rid --configfile <generated NuGet.config>"
         Write-Host "[dry-run] dotnet build $projectPath -c Release -f $targetFramework -r $rid --no-restore"
-        Write-Host "[dry-run] inspect APK for lib/$abi/{libSDL3.so,libSDL3_image.so,libSDL3_mixer.so,libSDL3_ttf.so,libSDL3_shadercross.so}"
+        Write-Host "[dry-run] inspect every lib/$abi/*.so in the final signed APK with Test-AndroidPageSizeCompatibility.ps1"
+        Write-Host "[dry-run] Android SDK build-tools $androidBuildToolsVersion`: zipalign -c -P 16 -v 4 <signed APK>"
+        Write-Host "[dry-run] bundletool dump config --bundle=<AAB>; require PAGE_ALIGNMENT_16K"
         Write-Host "[dry-run] inspect APK for managed assemblies SDL3CSConsumer.dll, SDL3-CS.dll, SDL3-CS.Android.dll and DEX descriptors Lorg/libsdl/app/SDLActivity; / Lorg/libsdl/app/SDLMain;"
         continue
     }
 
     New-Item -ItemType Directory -Force -Path $projectRoot | Out-Null
     Set-Content -LiteralPath $projectPath -Value $projectXml -Encoding UTF8
-    Set-Content -LiteralPath (Join-Path $projectRoot 'MainActivity.cs') -Value (Get-AndroidConsumerMainActivity) -Encoding UTF8
-    Set-Content -LiteralPath (Join-Path $projectRoot 'AndroidManifest.xml') -Value (Get-AndroidConsumerManifest) -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $projectRoot 'MainActivity.cs') -Value (Get-AndroidConsumerMainActivity -ApplicationId $applicationId) -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $projectRoot 'AndroidManifest.xml') -Value (Get-AndroidConsumerManifest -TargetSdkVersion $androidTargetSdkVersion) -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $projectRoot 'BundleConfig.json') -Value (Get-AndroidConsumerBundleConfiguration) -Encoding UTF8
 
     $nugetConfig = @"
 <?xml version="1.0" encoding="utf-8"?>
@@ -413,12 +697,24 @@ $packageReferences
         throw "dotnet build failed for Android consumer RID '$rid' with exit code $LASTEXITCODE."
     }
 
-    $apk = @(Get-ChildItem -LiteralPath $projectRoot -Recurse -Filter '*.apk' -File | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1)
+    $consumerBinRoot = Join-Path $projectRoot 'bin'
+    $apk = @(Get-ChildItem -LiteralPath $consumerBinRoot -Recurse -Filter '*-Signed.apk' -File | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1)
     if ($apk.Count -ne 1) {
-        throw "Android consumer build for RID '$rid' did not produce a single APK under $projectRoot."
+        throw "Android consumer build for RID '$rid' did not produce a signed APK under $consumerBinRoot."
     }
 
-    Test-AndroidApkNativeLibraries -ApkPath $apk[0].FullName -Abi $abi -ExpectedLibraries $expectedPrimaryLibraries
+    $aab = @(Get-ChildItem -LiteralPath $consumerBinRoot -Recurse -Filter '*.aab' -File | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1)
+    if ($aab.Count -ne 1) {
+        throw "Android consumer build for RID '$rid' did not produce an Android App Bundle under $consumerBinRoot."
+    }
+
+    Test-AndroidApkNativeLibraries `
+        -ApkPath $apk[0].FullName `
+        -Abi $abi `
+        -ExpectedLibraries $expectedPrimaryLibraries `
+        -PageSizeValidatorPath $pageSizeValidatorPath
+    Invoke-AndroidZipAlignmentCheck -ToolPath $resolvedZipAlignPath -ApkPath $apk[0].FullName
+    Invoke-AndroidBundleAlignmentCheck -ToolPath $resolvedBundleToolPath -AabPath $aab[0].FullName
     Test-AndroidApkManagedAssembly -ApkPath $apk[0].FullName -AssemblyName 'SDL3CSConsumer.dll'
     Test-AndroidApkManagedAssembly -ApkPath $apk[0].FullName -AssemblyName 'SDL3-CS.dll'
     Test-AndroidApkManagedAssembly -ApkPath $apk[0].FullName -AssemblyName 'SDL3-CS.Android.dll'

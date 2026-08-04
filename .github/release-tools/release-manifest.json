@@ -3,6 +3,21 @@
   "sourceRoot": "native-forks",
   "artifactsRoot": "artifacts/release",
   "configuration": "Release",
+  "toolchains": {
+    "androidNdkVersion": "28.2.13676358",
+    "androidCompileSdkVersion": "35",
+    "androidPlatformArchiveUrl": "https://dl.google.com/android/repository/platform-35_r02.zip",
+    "androidPlatformArchiveSha256": "0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0",
+    "androidPlatformJarSha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b",
+    "androidBridgeJarSha256": "1c7e84e863843b8d6b5c49d8b3bbc5bdb3a4cd56252b17cedd8348a7662638a4",
+    "androidBridgeJavaRelease": 11,
+    "androidBridgeSetupJavaVersion": "11.0.14+101",
+    "androidBridgeJavacVersion": "11.0.14.1",
+    "androidBuildToolsVersion": "35.0.0",
+    "bundletoolVersion": "1.18.3",
+    "bundletoolSha256": "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29",
+    "android16KbSystemImage": "system-images;android-35;google_apis_ps16k;x86_64"
+  },
   "versioning": {
     "packageRevisionDefault": 0,
     "packageVersionPattern": "{nativeVersion}.{packageRevision}",
@@ -13,6 +28,18 @@
         "SDL_mixer": 7,
         "SDL_ttf": 7,
         "SDL_shadercross": 7
+      },
+      "6": {
+        "SDL_image": 8,
+        "SDL_mixer": 7,
+        "SDL_ttf": 7,
+        "SDL_shadercross": 7
+      },
+      "7": {
+        "SDL_image": 9,
+        "SDL_mixer": 8,
+        "SDL_ttf": 8,
+        "SDL_shadercross": 8
       }
     }
   },
@@ -273,6 +300,7 @@
         "-DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a",
         "-DANDROID_ABI=armeabi-v7a",
         "-DANDROID_PLATFORM=android-23",
+        "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON",
         "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
       ]
     },
@@ -289,6 +317,7 @@
         "-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a",
         "-DANDROID_ABI=arm64-v8a",
         "-DANDROID_PLATFORM=android-23",
+        "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON",
         "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
       ]
     },
@@ -305,6 +334,7 @@
         "-DCMAKE_ANDROID_ARCH_ABI=x86",
         "-DANDROID_ABI=x86",
         "-DANDROID_PLATFORM=android-23",
+        "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON",
         "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
       ]
     },
@@ -321,6 +351,7 @@
         "-DCMAKE_ANDROID_ARCH_ABI=x86_64",
         "-DANDROID_ABI=x86_64",
         "-DANDROID_PLATFORM=android-23",
+        "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON",
         "-DCMAKE_TOOLCHAIN_FILE={androidNdk}/build/cmake/android.toolchain.cmake"
       ]
     },

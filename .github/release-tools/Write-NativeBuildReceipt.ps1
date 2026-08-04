@@ -127,12 +127,15 @@ else {
         $toolchain.InstallNameTool = $unixBuildTools.InstallNameTool
     }
     if ($ridInfo.os -eq 'android') {
-        $toolchain.AndroidNdk = Get-ReleaseAndroidNdkPath
+        $androidNdk = Assert-ReleaseAndroidNdk -Manifest $manifest
+        $toolchain.AndroidNdk = $androidNdk
+        $toolchain.AndroidNdkExpectedVersion = Get-ReleaseAndroidNdkExpectedVersion -Manifest $manifest
+        $toolchain.AndroidNdkActualVersion = Get-ReleaseAndroidNdkVersion -NdkPath $androidNdk
     }
 }
 
 $receipt = [pscustomobject]@{
-    SchemaVersion = 2
+    SchemaVersion = 3
     CreatedAtUtc = [DateTime]::UtcNow.ToString('o')
     Component = $componentInfo.id
     PackageId = $packageId

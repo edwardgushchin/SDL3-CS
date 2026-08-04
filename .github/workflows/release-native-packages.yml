@@ -24,6 +24,10 @@ on:
         description: CMake build parallel level for constrained hosted runners.
         required: true
         default: "2"
+      native_rids:
+        description: Optional comma-separated native RID scope for non-publishing branch validation; empty selects the full manifest.
+        required: false
+        default: ""
       require_upstream_current:
         description: Fail assembly when forks are not current with libsdl-org upstream main.
         required: true
@@ -82,6 +86,8 @@ jobs:
     steps:
       - name: Enforce exclusive release mode
         shell: pwsh
+        env:
+          NATIVE_RIDS: ${{ inputs.native_rids }}
         run: |
           $selective = '${{ inputs.selective_native_repack }}' -eq 'true'
           $repackMode = '${{ inputs.selective_repack_mode }}'
@@ -100,6 +106,9 @@ jobs:
           if ($selective -and $repackMode -notin @('add-libwebp-license', 'version-only')) {
             throw "Unsupported selective repack mode: $repackMode"
           }
+          if (-not [string]::IsNullOrWhiteSpace($env:NATIVE_RIDS) -and $managed) {
+            throw 'native_rids can be used only when managed_only=false.'
+          }
 
   plan:
     name: Plan native matrix
@@ -109,6 +118,23 @@ jobs:
     outputs:
       native_matrix: ${{ steps.native-matrix.outputs.native_matrix }}
       bundle_count: ${{ steps.native-matrix.outputs.bundle_count }}
+      selected_rids: ${{ steps.native-matrix.outputs.selected_rids }}
+      full_scope: ${{ steps.native-matrix.outputs.full_scope }}
+      has_android: ${{ steps.native-matrix.outputs.has_android }}
+      has_android_x64: ${{ steps.native-matrix.outputs.has_android_x64 }}
+      android_ndk_version: ${{ steps.native-matrix.outputs.android_ndk_version }}
+      android_compile_sdk_version: ${{ steps.native-matrix.outputs.android_compile_sdk_version }}
+      android_platform_archive_url: ${{ steps.native-matrix.outputs.android_platform_archive_url }}
+      android_platform_archive_sha256: ${{ steps.native-matrix.outputs.android_platform_archive_sha256 }}
+      android_platform_jar_sha256: ${{ steps.native-matrix.outputs.android_platform_jar_sha256 }}
+      android_bridge_jar_sha256: ${{ steps.native-matrix.outputs.android_bridge_jar_sha256 }}
+      android_bridge_java_release: ${{ steps.native-matrix.outputs.android_bridge_java_release }}
+      android_bridge_setup_java_version: ${{ steps.native-matrix.outputs.android_bridge_setup_java_version }}
+      android_bridge_javac_version: ${{ steps.native-matrix.outputs.android_bridge_javac_version }}
+      android_build_tools_version: ${{ steps.native-matrix.outputs.android_build_tools_version }}
+      bundletool_version: ${{ steps.native-matrix.outputs.bundletool_version }}
+      bundletool_sha256: ${{ steps.native-matrix.outputs.bundletool_sha256 }}
+      android_16kb_system_image: ${{ steps.native-matrix.outputs.android_16kb_system_image }}
 
     steps:
       - name: Checkout SDL3-CS
@@ -117,18 +143,117 @@ jobs:
       - name: Build matrix from release manifest
         id: native-matrix
         shell: pwsh
+        env:
+          REQUESTED_NATIVE_RIDS: ${{ inputs.native_rids }}
+          PUBLISH_GITHUB: ${{ inputs.publish_github }}
+          PUBLISH_NUGET: ${{ inputs.publish_nuget }}
+          PUBLISH_SELECTIVE_NUGET: ${{ inputs.publish_selective_nuget }}
         run: |
+          $ErrorActionPreference = 'Stop'
           $manifest = Get-Content -LiteralPath '.github/release-tools/release-manifest.json' -Raw | ConvertFrom-Json -Depth 64
+          if (-not $manifest.toolchains.androidNdkVersion -or [string]$manifest.toolchains.androidNdkVersion -notmatch '^\d+\.\d+\.\d+$') {
+            throw 'Release manifest must declare an exact stable toolchains.androidNdkVersion SDK revision.'
+          }
+          foreach ($toolchainProperty in @(
+            'androidCompileSdkVersion',
+            'androidPlatformArchiveUrl',
+            'androidPlatformArchiveSha256',
+            'androidPlatformJarSha256',
+            'androidBridgeJarSha256',
+            'androidBridgeJavaRelease',
+            'androidBridgeSetupJavaVersion',
+            'androidBridgeJavacVersion',
+            'androidBuildToolsVersion',
+            'bundletoolVersion',
+            'bundletoolSha256',
+            'android16KbSystemImage'
+          )) {
+            if ([string]::IsNullOrWhiteSpace([string]$manifest.toolchains.$toolchainProperty)) {
+              throw "Release manifest must declare toolchains.$toolchainProperty."
+            }
+          }
+          if ([string]$manifest.toolchains.androidCompileSdkVersion -notmatch '^\d+$') {
+            throw 'Release manifest toolchains.androidCompileSdkVersion must be a numeric API level.'
+          }
+          if ([string]$manifest.toolchains.androidPlatformArchiveUrl -notmatch '^https://dl\.google\.com/android/repository/platform-\d+_r\d+\.zip$') {
+            throw 'Release manifest toolchains.androidPlatformArchiveUrl must pin an official Android platform archive.'
+          }
+          foreach ($hashProperty in @('androidPlatformArchiveSha256', 'androidPlatformJarSha256', 'androidBridgeJarSha256', 'bundletoolSha256')) {
+            if ([string]$manifest.toolchains.$hashProperty -notmatch '^[0-9a-f]{64}$') {
+              throw "Release manifest toolchains.$hashProperty must be a lowercase SHA-256 hash."
+            }
+          }
+          if ([string]$manifest.toolchains.androidBridgeJavaRelease -notmatch '^\d+$' -or
+              [string]$manifest.toolchains.androidBridgeSetupJavaVersion -notmatch '^\d+\.\d+\.\d+\+\d+$' -or
+              [string]$manifest.toolchains.androidBridgeJavacVersion -notmatch '^\d+\.\d+\.\d+(?:\.\d+)?$') {
+            throw 'Release manifest must pin the Android bridge Java release, setup-java version, and javac output version.'
+          }
+          if ([string]$manifest.toolchains.androidBuildToolsVersion -notmatch '^\d+\.\d+\.\d+$') {
+            throw 'Release manifest toolchains.androidBuildToolsVersion must be an exact SDK revision.'
+          }
+          if ([string]$manifest.toolchains.bundletoolVersion -notmatch '^\d+\.\d+\.\d+$') {
+            throw 'Release manifest toolchains.bundletoolVersion must be an exact stable version.'
+          }
+          $allRids = @($manifest.rids | ForEach-Object { [string]$_.rid })
+          $requestedText = [string]$env:REQUESTED_NATIVE_RIDS
+          if ([string]::IsNullOrWhiteSpace($requestedText)) {
+            $requestedRids = $allRids
+          }
+          else {
+            $requestedParts = @($requestedText.Split(','))
+            if (@($requestedParts | Where-Object { [string]::IsNullOrWhiteSpace($_) }).Count -gt 0) {
+              throw 'Requested native RIDs must be a comma-separated list without empty entries.'
+            }
+            $requestedRids = @($requestedParts | ForEach-Object { $_.Trim() })
+            if ($requestedRids.Count -ne @($requestedRids | Select-Object -Unique).Count) {
+              throw "Requested native RIDs must be unique: $($requestedRids -join ', ')"
+            }
+            foreach ($requestedRid in $requestedRids) {
+              if ($requestedRid -notin $allRids) {
+                throw "Requested native RID is not declared in the release manifest: $requestedRid"
+              }
+            }
+          }
+
           $include = @($manifest.rids | ForEach-Object {
-            [ordered]@{
-              rid = $_.rid
-              runner = $_.runner
-              allow_cross_compile = ($_.os -eq 'windows' -and $_.arch -eq 'x86')
+            if ($_.rid -in $requestedRids) {
+              [ordered]@{
+                rid = $_.rid
+                runner = $_.runner
+                allow_cross_compile = ($_.os -eq 'windows' -and $_.arch -eq 'x86')
+              }
             }
           })
+          $selectedRids = @($include | ForEach-Object { [string]$_.rid })
+          $fullScope = $selectedRids.Count -eq $allRids.Count -and
+            @(Compare-Object -ReferenceObject @($allRids | Sort-Object) -DifferenceObject @($selectedRids | Sort-Object)).Count -eq 0
+          $publishing = $env:PUBLISH_GITHUB -eq 'true' -or
+            $env:PUBLISH_NUGET -eq 'true' -or
+            $env:PUBLISH_SELECTIVE_NUGET -eq 'true'
+          if (-not $fullScope -and $publishing) {
+            throw 'Partial native RID scope requires all publish flags to be false.'
+          }
+
           $matrix = @{ include = $include } | ConvertTo-Json -Depth 8 -Compress
           "native_matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "bundle_count=$($include.Count)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "selected_rids=$($selectedRids -join ',')" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "full_scope=$($fullScope.ToString().ToLowerInvariant())" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "has_android=$((@($selectedRids | Where-Object { $_ -like 'android-*' }).Count -gt 0).ToString().ToLowerInvariant())" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "has_android_x64=$(($selectedRids -contains 'android-x64').ToString().ToLowerInvariant())" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_ndk_version=$($manifest.toolchains.androidNdkVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_compile_sdk_version=$($manifest.toolchains.androidCompileSdkVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_platform_archive_url=$($manifest.toolchains.androidPlatformArchiveUrl)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_platform_archive_sha256=$($manifest.toolchains.androidPlatformArchiveSha256)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_platform_jar_sha256=$($manifest.toolchains.androidPlatformJarSha256)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_bridge_jar_sha256=$($manifest.toolchains.androidBridgeJarSha256)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_bridge_java_release=$($manifest.toolchains.androidBridgeJavaRelease)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_bridge_setup_java_version=$($manifest.toolchains.androidBridgeSetupJavaVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_bridge_javac_version=$($manifest.toolchains.androidBridgeJavacVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_build_tools_version=$($manifest.toolchains.androidBuildToolsVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "bundletool_version=$($manifest.toolchains.bundletoolVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "bundletool_sha256=$($manifest.toolchains.bundletoolSha256)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "android_16kb_system_image=$($manifest.toolchains.android16KbSystemImage)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
   native:
     name: Native ${{ matrix.rid }}
@@ -141,6 +266,7 @@ jobs:
 
     env:
       SDL3CS_NATIVE_BUILD_PARALLEL_LEVEL: ${{ inputs.build_parallel_level }}
+      SDL3CS_ANDROID_NDK_VERSION: ${{ needs.plan.outputs.android_ndk_version }}
 
     steps:
       - name: Checkout SDL3-CS
@@ -198,38 +324,42 @@ jobs:
         run: |
           set -eux
           test -n "${ANDROID_HOME:-}"
-          ndk_version="27.2.12479018"
+          ndk_version="$SDL3CS_ANDROID_NDK_VERSION"
+          test -n "$ndk_version"
           sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           if [ ! -x "$sdkmanager" ]; then
             sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' -type f | sort | tail -n 1)"
           fi
           test -x "$sdkmanager"
 
-          ndk="${ANDROID_NDK_HOME:-${ANDROID_NDK_ROOT:-}}"
-          if [ -z "$ndk" ] || [ ! -f "$ndk/build/cmake/android.toolchain.cmake" ]; then
-            ndk="$ANDROID_HOME/ndk/$ndk_version"
+          ndk="$ANDROID_HOME/ndk/$ndk_version"
+          source_properties="$ndk/source.properties"
+          actual_ndk_version=""
+          if [ -f "$source_properties" ]; then
+            actual_ndk_version="$(sed -n 's/^Pkg\.Revision[[:space:]]*=[[:space:]]*//p' "$source_properties")"
           fi
 
-          if [ ! -f "$ndk/build/cmake/android.toolchain.cmake" ]; then
-            existing_ndk="$(find "$ANDROID_HOME/ndk" -path '*/build/cmake/android.toolchain.cmake' -type f 2>/dev/null | sort | tail -n 1 || true)"
-            if [ -n "$existing_ndk" ]; then
-              ndk="$(dirname "$(dirname "$(dirname "$existing_ndk")")")"
-            else
-              for attempt in 1 2 3; do
-                rm -rf "$ndk" "$ANDROID_HOME/.temp"
-                yes | "$sdkmanager" --licenses >/dev/null || true
-                if "$sdkmanager" "ndk;$ndk_version"; then
+          if [ ! -f "$ndk/build/cmake/android.toolchain.cmake" ] || [ "$actual_ndk_version" != "$ndk_version" ]; then
+            for attempt in 1 2 3; do
+              rm -rf "$ndk" "$ANDROID_HOME/.temp"
+              yes | "$sdkmanager" --licenses >/dev/null || true
+              if "$sdkmanager" "ndk;$ndk_version"; then
+                actual_ndk_version="$(sed -n 's/^Pkg\.Revision[[:space:]]*=[[:space:]]*//p' "$source_properties")"
+                if [ -f "$ndk/build/cmake/android.toolchain.cmake" ] && [ "$actual_ndk_version" = "$ndk_version" ]; then
                   break
                 fi
-                if [ "$attempt" -eq 3 ]; then
-                  exit 1
-                fi
-                sleep $((attempt * 10))
-              done
-            fi
+              fi
+              if [ "$attempt" -eq 3 ]; then
+                exit 1
+              fi
+              sleep $((attempt * 10))
+            done
           fi
 
           test -f "$ndk/build/cmake/android.toolchain.cmake"
+          test -f "$source_properties"
+          actual_ndk_version="$(sed -n 's/^Pkg\.Revision[[:space:]]*=[[:space:]]*//p' "$source_properties")"
+          test "$actual_ndk_version" = "$ndk_version"
           echo "ANDROID_NDK_HOME=$ndk" >> "$GITHUB_ENV"
           echo "ANDROID_NDK_ROOT=$ndk" >> "$GITHUB_ENV"
 
@@ -297,6 +427,12 @@ jobs:
             8.0.x
             7.0.x
 
+      - name: Setup exact Java for Android bridge
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: ${{ needs.plan.outputs.android_bridge_setup_java_version }}
+
       - name: Install Android .NET workload for bridge package
         shell: pwsh
         run: dotnet workload install android --source https://api.nuget.org/v3/index.json
@@ -305,6 +441,61 @@ jobs:
         shell: pwsh
         run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
+      - name: Rebuild and verify exact Android bridge
+        shell: pwsh
+        env:
+          ANDROID_COMPILE_SDK_VERSION: ${{ needs.plan.outputs.android_compile_sdk_version }}
+          ANDROID_PLATFORM_ARCHIVE_URL: ${{ needs.plan.outputs.android_platform_archive_url }}
+          ANDROID_PLATFORM_ARCHIVE_SHA256: ${{ needs.plan.outputs.android_platform_archive_sha256 }}
+          ANDROID_PLATFORM_JAR_SHA256: ${{ needs.plan.outputs.android_platform_jar_sha256 }}
+          ANDROID_BRIDGE_JAVA_RELEASE: ${{ needs.plan.outputs.android_bridge_java_release }}
+          ANDROID_BRIDGE_JAVAC_VERSION: ${{ needs.plan.outputs.android_bridge_javac_version }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $toolRoot = Join-Path $env:RUNNER_TEMP 'sdl3-cs-android-platform'
+          $archivePath = Join-Path $toolRoot 'platform.zip'
+          $extractRoot = Join-Path $toolRoot 'extracted'
+          New-Item -ItemType Directory -Force -Path $toolRoot | Out-Null
+          Invoke-WebRequest -Uri $env:ANDROID_PLATFORM_ARCHIVE_URL -OutFile $archivePath
+          $archiveHash = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($archiveHash -ne $env:ANDROID_PLATFORM_ARCHIVE_SHA256) {
+            throw "Android platform archive SHA-256 mismatch: $archiveHash"
+          }
+          Expand-Archive -LiteralPath $archivePath -DestinationPath $extractRoot
+          $androidJar = Join-Path $extractRoot "android-$($env:ANDROID_COMPILE_SDK_VERSION)/android.jar"
+          if (-not (Test-Path -LiteralPath $androidJar -PathType Leaf)) {
+            throw "Exact Android platform JAR was not found: $androidJar"
+          }
+          $androidJarHash = (Get-FileHash -LiteralPath $androidJar -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($androidJarHash -ne $env:ANDROID_PLATFORM_JAR_SHA256) {
+            throw "Android platform JAR SHA-256 mismatch: $androidJarHash"
+          }
+          $javacVersion = (& (Join-Path $env:JAVA_HOME 'bin/javac.exe') -version 2>&1) -join ' '
+          if ($javacVersion -ne "javac $($env:ANDROID_BRIDGE_JAVAC_VERSION)" -or $env:ANDROID_BRIDGE_JAVA_RELEASE -notmatch '^\d+$') {
+            throw "Exact Android bridge Java toolchain is unavailable: $javacVersion"
+          }
+
+          $candidatePath = Join-Path $env:RUNNER_TEMP 'SDL3Bridge.candidate.jar'
+          ./.github/release-tools/Build-AndroidBridgeJar.ps1 `
+            -OutputPath $candidatePath `
+            -AndroidJarPath $androidJar `
+            -SourceRoot 'native-forks/SDL' `
+            -JavaHome $env:JAVA_HOME `
+            -VerifyDeterministic
+          $trackedPath = 'SDL3-CS.NativePackages/SDL3-CS.Android/SDL3Bridge.jar'
+          $candidateHash = (Get-FileHash -LiteralPath $candidatePath -Algorithm SHA256).Hash.ToLowerInvariant()
+          $trackedHash = (Get-FileHash -LiteralPath $trackedPath -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($candidateHash -ne $trackedHash) {
+            throw "Tracked SDL3Bridge.jar is stale: candidate $candidateHash, tracked $trackedHash"
+          }
+          ./.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $trackedPath -SourceRoot 'native-forks/SDL'
+
+      - name: Setup Java for Android package build
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
       - name: Download native bundles
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
@@ -312,8 +503,14 @@ jobs:
           path: artifacts/release/bundles
           merge-multiple: true
 
+      - name: Build wrapper Release output for Wiki contract
+        shell: pwsh
+        run: dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false
+
       - name: Assemble packages
         shell: pwsh
+        env:
+          SELECTED_NATIVE_RIDS: ${{ needs.plan.outputs.selected_rids }}
         run: |
           $bundles = @(Get-ChildItem -LiteralPath 'artifacts/release/bundles' -Filter '*.zip' -File | Sort-Object Name)
           $expectedBundleCount = [int]'${{ needs.plan.outputs.bundle_count }}'
@@ -325,6 +522,11 @@ jobs:
             PackageRevision = [int]'${{ inputs.package_revision }}'
             BundlePath = @($bundles | ForEach-Object { $_.FullName })
           }
+          $selectedRids = @($env:SELECTED_NATIVE_RIDS.Split(',', [System.StringSplitOptions]::RemoveEmptyEntries))
+          if ($selectedRids.Count -eq 0) {
+            throw 'The native plan returned an empty selected RID scope.'
+          }
+          $params.Rids = $selectedRids
           if ('${{ inputs.require_upstream_current }}' -eq 'true') {
             $params.RequireForksUpToDate = $true
             $params.CheckUpstream = $true
@@ -334,6 +536,7 @@ jobs:
           ./.github/release-tools/Invoke-ReleaseAssembly.ps1 @params
 
       - name: Export release assembly state
+        if: ${{ needs.plan.outputs.full_scope == 'true' }}
         shell: pwsh
         run: |
           $statePath = 'artifacts/release/release-assembly-state.zip'
@@ -368,6 +571,7 @@ jobs:
           Compress-Archive -Path (Join-Path $stateRoot '*') -DestinationPath $statePath -Force
 
       - name: Validate release assembly state
+        if: ${{ needs.plan.outputs.full_scope == 'true' }}
         shell: pwsh
         run: |
           ./.github/release-tools/Test-ReleaseAssemblyState.ps1 `
@@ -382,6 +586,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload release assembly state
+        if: ${{ needs.plan.outputs.full_scope == 'true' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-assembly-state
@@ -390,8 +595,10 @@ jobs:
 
   apple-consumer:
     name: Apple consumer ${{ matrix.name }}
-    if: ${{ !inputs.managed_only }}
-    needs: assemble
+    if: ${{ !inputs.managed_only && needs.plan.outputs.full_scope == 'true' }}
+    needs:
+      - plan
+      - assemble
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 45
     strategy:
@@ -449,8 +656,10 @@ jobs:
 
   android-consumer:
     name: Android consumer packages
-    if: ${{ !inputs.managed_only }}
-    needs: assemble
+    if: ${{ !inputs.managed_only && needs.plan.outputs.has_android == 'true' }}
+    needs:
+      - plan
+      - assemble
     runs-on: ubuntu-latest
 
     steps:
@@ -472,6 +681,55 @@ jobs:
           set -eux
           dotnet workload install android --source https://api.nuget.org/v3/index.json
 
+      - name: Install exact Android verification tools
+        shell: bash
+        env:
+          ANDROID_BUILD_TOOLS_VERSION: ${{ needs.plan.outputs.android_build_tools_version }}
+          BUNDLETOOL_VERSION: ${{ needs.plan.outputs.bundletool_version }}
+          BUNDLETOOL_SHA256: ${{ needs.plan.outputs.bundletool_sha256 }}
+        run: |
+          set -euo pipefail
+          sdkmanager="$(command -v sdkmanager || true)"
+          if [ -z "$sdkmanager" ]; then
+            for candidate in "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "$ANDROID_HOME/cmdline-tools/bin/sdkmanager"; do
+              if [ -x "$candidate" ]; then
+                sdkmanager="$candidate"
+                break
+              fi
+            done
+          fi
+          test -x "$sdkmanager"
+
+          yes | "$sdkmanager" --licenses >/dev/null || true
+          installed=false
+          for attempt in 1 2 3; do
+            if "$sdkmanager" --install "build-tools;$ANDROID_BUILD_TOOLS_VERSION"; then
+              installed=true
+              break
+            fi
+            sleep $((attempt * 5))
+          done
+          test "$installed" = true
+
+          build_tools="$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION"
+          build_tools_source_properties="$build_tools/source.properties"
+          test -f "$build_tools_source_properties"
+          actual_build_tools_version="$(sed -n 's/^[[:space:]]*Pkg\.Revision[[:space:]]*=[[:space:]]*//p' "$build_tools_source_properties" | tr -d '\r' | sed 's/[[:space:]]*$//')"
+          test "$actual_build_tools_version" = "$ANDROID_BUILD_TOOLS_VERSION"
+          zipalign="$build_tools/zipalign"
+          test -x "$zipalign"
+
+          bundletool_dir="$RUNNER_TEMP/sdl3cs-bundletool"
+          mkdir -p "$bundletool_dir"
+          bundletool="$bundletool_dir/bundletool-all-$BUNDLETOOL_VERSION.jar"
+          bundletool_url="https://github.com/google/bundletool/releases/download/$BUNDLETOOL_VERSION/bundletool-all-$BUNDLETOOL_VERSION.jar"
+          curl --fail --location --retry 3 --retry-all-errors --output "$bundletool" "$bundletool_url"
+          actual_bundletool_sha256="$(sha256sum "$bundletool" | awk '{print $1}')"
+          test "$actual_bundletool_sha256" = "$BUNDLETOOL_SHA256"
+
+          echo "ZIPALIGN_PATH=$zipalign" >> "$GITHUB_ENV"
+          echo "BUNDLETOOL_PATH=$bundletool" >> "$GITHUB_ENV"
+
       - name: Download NuGet packages
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
@@ -480,12 +738,168 @@ jobs:
 
       - name: Build Android consumer apps
         shell: pwsh
+        env:
+          SELECTED_NATIVE_RIDS: ${{ needs.plan.outputs.selected_rids }}
         run: |
-          $rids = 'android-arm,android-arm64,android-x86,android-x64' -split ','
+          $selectedRids = @($env:SELECTED_NATIVE_RIDS.Split(',', [System.StringSplitOptions]::RemoveEmptyEntries))
+          $rids = @($selectedRids | Where-Object { $_ -like 'android-*' })
+          if ($rids.Count -eq 0) {
+            throw 'Android consumer validation requires at least one selected Android RID.'
+          }
           ./.github/release-tools/Test-AndroidConsumerPackageBuild.ps1 `
             -PackageRevision ([int]'${{ inputs.package_revision }}') `
             -PackageDir 'artifacts/release/nuget' `
             -Rids $rids
+
+      - name: Prepare Android x64 runtime APK
+        if: ${{ needs.plan.outputs.has_android_x64 == 'true' }}
+        shell: pwsh
+        run: |
+          $apks = @(Get-ChildItem -LiteralPath 'artifacts/release/android-consumer-package-build' -Recurse -Filter '*-Signed.apk' -File |
+            Where-Object { $_.FullName -match '[\\/]android-x64[\\/]' } |
+            Sort-Object LastWriteTimeUtc -Descending)
+          if ($apks.Count -eq 0) {
+            throw 'Android x64 consumer build did not produce a signed APK for runtime validation.'
+          }
+          $target = 'artifacts/release/android-16kb-runtime/SDL3CSConsumer-android-x64-Signed.apk'
+          New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
+          Copy-Item -LiteralPath $apks[0].FullName -Destination $target -Force
+
+      - name: Upload Android x64 runtime APK
+        if: ${{ needs.plan.outputs.has_android_x64 == 'true' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: android-x64-runtime-apk
+          path: artifacts/release/android-16kb-runtime/SDL3CSConsumer-android-x64-Signed.apk
+          if-no-files-found: error
+
+  android-16kb-runtime:
+    name: Android 16 KB runtime smoke
+    if: ${{ !inputs.managed_only && needs.plan.outputs.has_android_x64 == 'true' }}
+    needs:
+      - plan
+      - android-consumer
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      ANDROID_16KB_SYSTEM_IMAGE: ${{ needs.plan.outputs.android_16kb_system_image }}
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download Android x64 runtime APK
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: android-x64-runtime-apk
+          path: artifacts/release/android-16kb-runtime
+
+      - name: Install exact Android 16 KB emulator packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdkmanager="$(command -v sdkmanager || true)"
+          avdmanager="$(command -v avdmanager || true)"
+          if [ -z "$sdkmanager" ] || [ -z "$avdmanager" ]; then
+            for tools_dir in "$ANDROID_HOME/cmdline-tools/latest/bin" "$ANDROID_HOME/cmdline-tools/bin"; do
+              if [ -z "$sdkmanager" ] && [ -x "$tools_dir/sdkmanager" ]; then
+                sdkmanager="$tools_dir/sdkmanager"
+              fi
+              if [ -z "$avdmanager" ] && [ -x "$tools_dir/avdmanager" ]; then
+                avdmanager="$tools_dir/avdmanager"
+              fi
+            done
+          fi
+          test -x "$sdkmanager"
+          test -x "$avdmanager"
+          emulator="$ANDROID_HOME/emulator/emulator"
+          avd_home="$RUNNER_TEMP/android-avd"
+          echo "ANDROID_AVD_HOME=$avd_home" >> "$GITHUB_ENV"
+          export ANDROID_AVD_HOME="$avd_home"
+
+          yes | "$sdkmanager" --licenses >/dev/null || true
+          installed=false
+          for attempt in 1 2 3; do
+            if "$sdkmanager" --install "platform-tools" "emulator" "$ANDROID_16KB_SYSTEM_IMAGE"; then
+              installed=true
+              break
+            fi
+            sleep $((attempt * 5))
+          done
+          test "$installed" = true
+          test -x "$ANDROID_HOME/platform-tools/adb"
+          test -x "$emulator"
+
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo no | "$avdmanager" create avd --force --name sdl3cs-16kb --package "$ANDROID_16KB_SYSTEM_IMAGE" --path "$ANDROID_AVD_HOME/sdl3cs-16kb.avd"
+          test -f "$ANDROID_AVD_HOME/sdl3cs-16kb.ini"
+          "$emulator" -list-avds | grep -Fx 'sdl3cs-16kb'
+
+      - name: Boot Android 16 KB emulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -e /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          adb="$ANDROID_HOME/platform-tools/adb"
+          emulator="$ANDROID_HOME/emulator/emulator"
+          "$emulator" -accel-check
+          nohup "$emulator" -avd sdl3cs-16kb -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -wipe-data -accel on > "$RUNNER_TEMP/android-16kb-emulator.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/android-16kb-emulator.pid"
+
+          device_ready=false
+          for attempt in $(seq 1 60); do
+            device_state="$("$adb" get-state 2>/dev/null || true)"
+            device_state="${device_state//$'\r'/}"
+            if [ "$device_state" = "device" ]; then
+              device_ready=true
+              break
+            fi
+            if ! kill -0 "$(cat "$RUNNER_TEMP/android-16kb-emulator.pid")" 2>/dev/null; then
+              cat "$RUNNER_TEMP/android-16kb-emulator.log"
+              exit 1
+            fi
+            sleep 5
+          done
+          if [ "$device_ready" != true ]; then
+            cat "$RUNNER_TEMP/android-16kb-emulator.log"
+            exit 1
+          fi
+
+          boot_completed=''
+          for attempt in $(seq 1 120); do
+            boot_completed="$("$adb" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
+            if [ "$boot_completed" = "1" ]; then
+              break
+            fi
+            if ! kill -0 "$(cat "$RUNNER_TEMP/android-16kb-emulator.pid")" 2>/dev/null; then
+              cat "$RUNNER_TEMP/android-16kb-emulator.log"
+              exit 1
+            fi
+            sleep 5
+          done
+          test "$boot_completed" = "1"
+          test "$("$adb" shell getconf PAGE_SIZE | tr -d '\r')" = "16384"
+
+      - name: Run Android 16 KB runtime smoke
+        shell: pwsh
+        run: |
+          ./.github/release-tools/Test-Android16KbRuntime.ps1 `
+            -ApkPath 'artifacts/release/android-16kb-runtime/SDL3CSConsumer-android-x64-Signed.apk' `
+            -AdbPath "$env:ANDROID_HOME/platform-tools/adb"
+
+      - name: Upload Android 16 KB emulator log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: android-16kb-emulator-log
+          path: ${{ runner.temp }}/android-16kb-emulator.log
+          if-no-files-found: warn
+
+      - name: Stop Android 16 KB emulator
+        if: ${{ always() }}
+        shell: bash
+        run: "$ANDROID_HOME/platform-tools/adb emu kill || true"
 
   publish:
     name: Publish release
@@ -493,6 +907,7 @@ jobs:
       - assemble
       - apple-consumer
       - android-consumer
+      - android-16kb-runtime
     if: ${{ !inputs.managed_only && (inputs.publish_github || inputs.publish_nuget) }}
     runs-on: windows-2025
     environment: production

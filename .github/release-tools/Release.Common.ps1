@@ -610,29 +610,104 @@ function Assert-ReleasePerl {
     return $perl
 }
 
+function Get-ReleaseAndroidNdkExpectedVersion {
+    param(
+        [AllowNull()]
+        [object] $Manifest
+    )
+
+    if ($null -eq $Manifest) {
+        $Manifest = Get-ReleaseManifest
+    }
+
+    if (-not $Manifest.PSObject.Properties.Name.Contains('toolchains') -or
+        $null -eq $Manifest.toolchains -or
+        -not $Manifest.toolchains.PSObject.Properties.Name.Contains('androidNdkVersion')) {
+        throw 'Release manifest must declare toolchains.androidNdkVersion.'
+    }
+
+    $version = [string]$Manifest.toolchains.androidNdkVersion
+    if ($version -notmatch '^\d+\.\d+\.\d+$') {
+        throw "Release manifest toolchains.androidNdkVersion is not an exact stable SDK revision: '$version'."
+    }
+
+    return $version
+}
+
+function Get-ReleaseAndroidNdkVersion {
+    param(
+        [Parameter(Mandatory)]
+        [string] $NdkPath
+    )
+
+    $sourceProperties = Join-Path $NdkPath 'source.properties'
+    if (-not (Test-Path -LiteralPath $sourceProperties -PathType Leaf)) {
+        return $null
+    }
+
+    $revisionLines = @(Get-Content -LiteralPath $sourceProperties -Encoding UTF8 | Where-Object {
+        $_ -match '^\s*Pkg\.Revision\s*=\s*(\S+)\s*$'
+    })
+    if ($revisionLines.Count -ne 1) {
+        return $null
+    }
+
+    $revisionMatch = [regex]::Match($revisionLines[0], '^\s*Pkg\.Revision\s*=\s*(\S+)\s*$')
+    if (-not $revisionMatch.Success) {
+        return $null
+    }
+
+    return $revisionMatch.Groups[1].Value
+}
+
+function Test-ReleaseAndroidNdkCandidate {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Path,
+
+        [Parameter(Mandatory)]
+        [string] $ExpectedVersion
+    )
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+        return $false
+    }
+
+    $toolchain = Join-Path $Path 'build/cmake/android.toolchain.cmake'
+    if (-not (Test-Path -LiteralPath $toolchain -PathType Leaf)) {
+        return $false
+    }
+
+    $actualVersion = Get-ReleaseAndroidNdkVersion -NdkPath $Path
+    return $actualVersion -eq $ExpectedVersion
+}
+
 function Get-ReleaseAndroidNdkPath {
+    param(
+        [AllowNull()]
+        [object] $Manifest
+    )
+
+    $expectedVersion = Get-ReleaseAndroidNdkExpectedVersion -Manifest $Manifest
+    $candidates = New-Object System.Collections.Generic.List[string]
+
     foreach ($environmentVariable in @('ANDROID_NDK_HOME', 'ANDROID_NDK_ROOT')) {
         $candidate = [Environment]::GetEnvironmentVariable($environmentVariable)
-        if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Container)) {
-            return (Resolve-Path -LiteralPath $candidate).Path
+        if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+            $candidates.Add($candidate)
         }
     }
 
-    $androidHome = [Environment]::GetEnvironmentVariable('ANDROID_HOME')
-    if (-not $androidHome) {
-        $androidHome = [Environment]::GetEnvironmentVariable('ANDROID_SDK_ROOT')
+    foreach ($environmentVariable in @('ANDROID_HOME', 'ANDROID_SDK_ROOT')) {
+        $androidHome = [Environment]::GetEnvironmentVariable($environmentVariable)
+        if (-not [string]::IsNullOrWhiteSpace($androidHome)) {
+            $candidates.Add((Join-Path $androidHome "ndk/$expectedVersion"))
+        }
     }
 
-    if ($androidHome) {
-        $ndkRoot = Join-Path $androidHome 'ndk'
-        if (Test-Path -LiteralPath $ndkRoot -PathType Container) {
-            $ndkVersions = @(Get-ChildItem -LiteralPath $ndkRoot -Directory | Sort-Object Name -Descending)
-            foreach ($ndkVersion in $ndkVersions) {
-                $toolchain = Join-Path $ndkVersion.FullName 'build/cmake/android.toolchain.cmake'
-                if (Test-Path -LiteralPath $toolchain -PathType Leaf) {
-                    return $ndkVersion.FullName
-                }
-            }
+    foreach ($candidate in @($candidates | Select-Object -Unique)) {
+        if (Test-ReleaseAndroidNdkCandidate -Path $candidate -ExpectedVersion $expectedVersion) {
+            return (Resolve-Path -LiteralPath $candidate).Path
         }
     }
 
@@ -640,14 +715,20 @@ function Get-ReleaseAndroidNdkPath {
 }
 
 function Assert-ReleaseAndroidNdk {
-    $ndk = Get-ReleaseAndroidNdkPath
+    param(
+        [AllowNull()]
+        [object] $Manifest
+    )
+
+    $expectedVersion = Get-ReleaseAndroidNdkExpectedVersion -Manifest $Manifest
+    $ndk = Get-ReleaseAndroidNdkPath -Manifest $Manifest
     if (-not $ndk) {
-        throw "Android NDK was not found. Set ANDROID_NDK_HOME/ANDROID_NDK_ROOT or install an NDK under ANDROID_HOME/ndk before building Android native RIDs."
+        throw "Android NDK $expectedVersion was not found. Install the exact SDK package 'ndk;$expectedVersion' under ANDROID_HOME/ndk or point ANDROID_NDK_HOME/ANDROID_NDK_ROOT to that exact revision."
     }
 
-    $toolchain = Join-Path $ndk 'build/cmake/android.toolchain.cmake'
-    if (-not (Test-Path -LiteralPath $toolchain -PathType Leaf)) {
-        throw "Android CMake toolchain file was not found: $toolchain"
+    $actualVersion = Get-ReleaseAndroidNdkVersion -NdkPath $ndk
+    if ($actualVersion -ne $expectedVersion) {
+        throw "Android NDK revision mismatch at '$ndk': expected $expectedVersion, got '$actualVersion'."
     }
 
     return $ndk
