@@ -50,6 +50,9 @@ $tempWorkflow = Join-Path $tempRoot 'release-native-packages.yml'
 try {
     $manifest = Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 64
     $expectedPackageRevisionDefault = [int]$manifest.versioning.packageRevisionDefault
+    $packageRevisionDefaultRegex = [regex]::new(
+        '(?m)(?<prefix>^[ ]{6}package_revision:[ \t]*\r?\n(?:^[ ]{8,}[^\r\n]*\r?\n)*?^[ ]{8}default:[ \t]+)["'']?\d+["'']?[ \t]*\r?$'
+    )
 
     $normalizedWorkflowText = $workflowText -replace "\r\n?", "`n"
     foreach ($lineEndingCase in @(
@@ -63,6 +66,11 @@ try {
             [System.Text.UTF8Encoding]::new($false)
         )
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+
+        $lineEndingMatches = $packageRevisionDefaultRegex.Matches($lineEndingWorkflow)
+        if ($lineEndingMatches.Count -ne 1) {
+            throw "Expected exactly one package_revision default in $($lineEndingCase.Name) workflow; found $($lineEndingMatches.Count)."
+        }
     }
 
     $hardcodedAppleXcodeWorkflow = $workflowText.Replace(
@@ -110,9 +118,6 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
-    $packageRevisionDefaultRegex = [regex]::new(
-        '(?m)(?<prefix>^[ ]{6}package_revision:[ \t]*\r?\n(?:^[ ]{8,}[^\r\n]*\r?\n)*?^[ ]{8}default:[ \t]+)["'']?\d+["'']?[ \t]*$'
-    )
     $packageRevisionDefaultMatches = $packageRevisionDefaultRegex.Matches($workflowText)
     if ($packageRevisionDefaultMatches.Count -ne 1) {
         throw "Expected exactly one package_revision default in release workflow; found $($packageRevisionDefaultMatches.Count)."
