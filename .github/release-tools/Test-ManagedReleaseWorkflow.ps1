@@ -131,10 +131,10 @@ if ($managedStart -ge 0) {
     }
 }
 
-$nativeSkipCondition = "if: `${{ !inputs.managed_only }}"
-$nativeSkipCount = ([regex]::Matches($workflowText, [regex]::Escape($nativeSkipCondition))).Count
-if ($nativeSkipCount -lt 5) {
-    Add-ManagedWorkflowError "Expected at least 5 full-release jobs guarded by '$nativeSkipCondition', got $nativeSkipCount."
+$nativeSkipPattern = 'if:\s+\$\{\{\s+!inputs\.managed_only(?:\s|\}|&)'
+$nativeSkipCount = ([regex]::Matches($workflowText, $nativeSkipPattern)).Count
+if ($nativeSkipCount -lt 7) {
+    Add-ManagedWorkflowError "Expected at least 7 full-release jobs guarded by !inputs.managed_only, got $nativeSkipCount."
 }
 
 $scriptExpectations = [ordered]@{

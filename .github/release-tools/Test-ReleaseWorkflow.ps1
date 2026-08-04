@@ -64,7 +64,7 @@ $requiredToolchains = [ordered]@{
     androidPlatformArchiveUrl = 'https://dl.google.com/android/repository/platform-35_r02.zip'
     androidPlatformArchiveSha256 = '0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0'
     androidPlatformJarSha256 = '4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b'
-    androidBridgeJarSha256 = '1c7e84e863843b8d6b5c49d8b3bbc5bdb3a4cd56252b17cedd8348a7662638a4'
+    androidBridgeJarSha256 = 'bd2b78f7a27e9af9a37d7cda910412324c97c6fcee3fb9e2d282b46fad734287'
     androidBridgeJavaRelease = '11'
     androidBridgeSetupJavaVersion = '11.0.14+101'
     androidBridgeJavacVersion = '11.0.14.1'
@@ -72,6 +72,10 @@ $requiredToolchains = [ordered]@{
     bundletoolVersion = '1.18.3'
     bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
     android16KbSystemImage = 'system-images;android-35;google_apis_ps16k;x86_64'
+    appleXcodeVersion = '26.6'
+    appleXcodeBuild = '17F113'
+    appleDotnetSdkVersion = '10.0.302'
+    appleDotnetWorkloadVersion = '10.0.302.1'
 }
 $resolvedToolchains = @{}
 foreach ($toolchain in $requiredToolchains.GetEnumerator()) {
@@ -90,6 +94,24 @@ foreach ($toolchain in $requiredToolchains.GetEnumerator()) {
 Assert-WorkflowContains -Text $workflowText -Expected 'workflow_dispatch:' -Description 'manual workflow trigger'
 foreach ($inputName in @('package_revision', 'build_parallel_level', 'require_upstream_current', 'publish_github', 'publish_nuget')) {
     Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{6}$([regex]::Escape($inputName)):\s*\r?\n.*?^\s{8}required:\s+true" -Description "workflow input '$inputName'"
+}
+
+$manifestPackageRevisionDefault = 0
+$hasManifestPackageRevisionDefault = $manifest.PSObject.Properties.Name.Contains('versioning') -and
+    $null -ne $manifest.versioning -and
+    $manifest.versioning.PSObject.Properties.Name.Contains('packageRevisionDefault') -and
+    [int]::TryParse([string]$manifest.versioning.packageRevisionDefault, [ref]$manifestPackageRevisionDefault) -and
+    $manifestPackageRevisionDefault -ge 0
+if (-not $hasManifestPackageRevisionDefault) {
+    Add-WorkflowError 'Release manifest versioning.packageRevisionDefault must be a non-negative integer.'
+}
+else {
+    $packageRevisionDefaultPattern = '(?m)^[ ]{6}package_revision:[ \t]*\r?\n' +
+        '(?:^[ ]{8,}[^\r\n]*\r?\n)*?' +
+        '^[ ]{8}default:[ \t]+["'']?' +
+        [regex]::Escape([string]$manifestPackageRevisionDefault) +
+        '["'']?[ \t]*\r?$'
+    Assert-WorkflowRegex -Text $workflowText -Pattern $packageRevisionDefaultPattern -Description 'package_revision default matching release manifest versioning.packageRevisionDefault'
 }
 
 foreach ($publishInput in @('publish_github', 'publish_nuget')) {
@@ -130,7 +152,11 @@ foreach ($toolchainOutput in @(
     'android_bridge_jar_sha256',
     'android_bridge_java_release',
     'android_bridge_setup_java_version',
-    'android_bridge_javac_version'
+    'android_bridge_javac_version',
+    'apple_xcode_version',
+    'apple_xcode_build',
+    'apple_dotnet_sdk_version',
+    'apple_dotnet_workload_version'
 )) {
     $manifestProperty = [regex]::Replace($toolchainOutput, '_([a-z])', { param($match) $match.Groups[1].Value.ToUpperInvariant() })
     Assert-WorkflowContains -Text $workflowText -Expected "$toolchainOutput`: `${{ steps.native-matrix.outputs.$toolchainOutput }}" -Description "plan job $toolchainOutput output binding"
@@ -152,7 +178,7 @@ Assert-WorkflowContains -Text $workflowText -Expected 'Rids = @(''${{ matrix.rid
 Assert-WorkflowContains -Text $workflowText -Expected '$buildParams.AllowCrossCompile = $true' -Description 'native build cross compile named parameter'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams' -Description 'native build script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'Smoke test ShaderCross DXC runtime' -Description 'ShaderCross DXC runtime smoke step'
-Assert-WorkflowContains -Text $workflowText -Expected "if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-')" -Description 'ShaderCross DXC smoke Linux/macOS RID gate'
+Assert-WorkflowContains -Text $workflowText -Expected "if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-') || matrix.rid == 'win-x86' || matrix.rid == 'win-x64' || matrix.rid == 'win-arm64'" -Description 'ShaderCross DXC smoke executable desktop RID gate'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-ShaderCrossDxcRuntime.ps1' -Description 'ShaderCross DXC smoke script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip' -Description 'native bundle upload path'
 Assert-WorkflowContains -Text $workflowText -Expected 'libjson-perl' -Description 'Linux vkd3d Perl JSON dependency'
@@ -178,7 +204,11 @@ $hardcodeSensitiveToolchains = @(
     'androidBuildToolsVersion',
     'bundletoolVersion',
     'bundletoolSha256',
-    'android16KbSystemImage'
+    'android16KbSystemImage',
+    'appleXcodeVersion',
+    'appleXcodeBuild',
+    'appleDotnetSdkVersion',
+    'appleDotnetWorkloadVersion'
 )
 foreach ($toolchain in $requiredToolchains.GetEnumerator() | Where-Object Key -In $hardcodeSensitiveToolchains) {
     if (-not [string]::IsNullOrWhiteSpace($resolvedToolchains[$toolchain.Key]) -and
@@ -240,8 +270,17 @@ Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ !inputs.managed_o
 Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26' -Description 'Apple arm64 consumer macOS 26 runner'
 Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26-intel' -Description 'Apple x64 consumer macOS 26 Intel runner'
 Assert-WorkflowContains -Text $workflowText -Expected 'timeout-minutes: 45' -Description 'Apple consumer timeout'
-Assert-WorkflowContains -Text $workflowText -Expected 'xcode-select -s /Applications/Xcode_26.5.app' -Description 'Apple consumer Xcode 26.5 selection'
-Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos' -Description 'Apple .NET workload installation'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_XCODE_VERSION: ${{ needs.plan.outputs.apple_xcode_version }}' -Description 'manifest-derived Apple Xcode version handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_XCODE_BUILD: ${{ needs.plan.outputs.apple_xcode_build }}' -Description 'manifest-derived Apple Xcode build handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_DOTNET_SDK_VERSION: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}' -Description 'manifest-derived Apple .NET SDK version handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_DOTNET_WORKLOAD_VERSION: ${{ needs.plan.outputs.apple_dotnet_workload_version }}' -Description 'manifest-derived Apple workload-set version handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}' -Description 'exact Apple .NET SDK setup'
+Assert-WorkflowContains -Text $workflowText -Expected 'xcode_path="/Applications/Xcode_${APPLE_XCODE_VERSION}.app"' -Description 'manifest-derived Apple Xcode application path'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_xcode_version" = "$APPLE_XCODE_VERSION"' -Description 'exact Apple Xcode version gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_xcode_build" = "$APPLE_XCODE_BUILD"' -Description 'exact Apple Xcode build gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_dotnet_sdk_version" = "$APPLE_DOTNET_SDK_VERSION"' -Description 'exact Apple .NET SDK gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION"' -Description 'exact Apple workload-set installation'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_workload_version" = "$APPLE_DOTNET_WORKLOAD_VERSION"' -Description 'exact Apple workload-set gate'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AppleConsumerPackageBuild.ps1' -Description 'Apple consumer package build validation'
 Assert-WorkflowContains -Text $workflowText -Expected '-Configuration Debug' -Description 'Apple consumer Debug build configuration'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-arm64,tvossimulator-arm64' -Description 'Apple arm64 simulator consumer RID matrix'

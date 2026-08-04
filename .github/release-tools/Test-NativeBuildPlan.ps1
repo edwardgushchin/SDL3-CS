@@ -33,6 +33,33 @@ foreach ($rid in $Rids) {
 $errors = New-Object System.Collections.Generic.List[string]
 $rows = New-Object System.Collections.Generic.List[object]
 
+$buildNativePath = Join-Path $PSScriptRoot 'Build-Native.ps1'
+$buildNativeText = [System.IO.File]::ReadAllText($buildNativePath)
+foreach ($mutableDxcSource in @(
+    'https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest',
+    'DXC_ZIP_URL'
+)) {
+    if ($buildNativeText.Contains($mutableDxcSource, [System.StringComparison]::Ordinal)) {
+        $errors.Add("SDL_shadercross DXC bootstrap must not depend on mutable source '$mutableDxcSource'; use the SHA256-pinned upstream download script.")
+    }
+}
+if ($buildNativeText.Contains('[dry-run] reuse pinned DXC binaries', [System.StringComparison]::Ordinal)) {
+    $errors.Add('SDL_shadercross DXC bootstrap must not trust a persistent extracted payload without reapplying the SHA256-pinned archive.')
+}
+if (-not $buildNativeText.Contains("`$dxcRootForCMake = `$dxcRoot.Replace('\', '/')", [System.StringComparison]::Ordinal)) {
+    $errors.Add('SDL_shadercross DXC bootstrap must normalize the Windows destination path before passing DXC_ROOT to CMake script mode.')
+}
+foreach ($requiredCleanupContract in @(
+    "Remove-ReleaseGeneratedDirectory -RootPath `$SourcePath -TargetPath `$dxcRoot -ExpectedRelativePath 'external\DirectXShaderCompiler-binaries'",
+    "Remove-ReleaseGeneratedDirectory -RootPath `$BuildRoot -TargetPath `$downloadRoot -ExpectedRelativePath '_downloads\DirectXShaderCompiler'"
+)) {
+    if (-not $buildNativeText.Contains($requiredCleanupContract, [System.StringComparison]::Ordinal)) {
+        $errors.Add("SDL_shadercross DXC bootstrap must apply the safe generated-directory cleanup contract: $requiredCleanupContract")
+    }
+}
+
+& (Join-Path $PSScriptRoot 'Test-ReleaseGeneratedDirectoryCleanup.Tests.ps1')
+
 function Assert-NativePlanContains {
     param(
         [Parameter(Mandatory)]
@@ -190,9 +217,13 @@ foreach ($rid in $Rids) {
                     Assert-NativePlanDoesNotContain -PlanOutput $planOutput -Unexpected "external$([System.IO.Path]::DirectorySeparatorChar)SPIRV-Cross -B" -Context $context
                 }
 
-                if ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64') {
+                if ($ridInfo.os -eq 'windows' -or ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64')) {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected 'pinned DXC binaries' -Context $context
+                }
+
+                if ($ridInfo.os -eq 'windows' -or ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64')) {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected '-DDirectXShaderCompiler_ROOT=' -Context $context
+                    Assert-NativePlanContains -PlanOutput $planOutput -Expected '-DDXC_ROOT=' -Context $context
                 }
             }
 

@@ -159,6 +159,10 @@ SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_CleansUpBeforeRethrowin
 Console.WriteLine("SDL.RunMainCallbacks native failure cleanup test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_WaitsForActiveEventBeforeQuit();
 Console.WriteLine("SDL.RunMainCallbacks concurrent quit test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunMainCallbacks_WaitsForConcurrentDuplicateQuit();
+Console.WriteLine("SDL.RunMainCallbacks concurrent duplicate quit test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.CreateNativeMainArguments_UsesProcessFriendlyNameAndFallback();
+Console.WriteLine("SDL.RunMainCallbacks native argv fallback test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.ManagedMainCallbacks_PublicContractHasExpectedShape();
 Console.WriteLine("SDL managed main callbacks public contract test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.RegisterApp_ForwardsNameStyleHInstAndReturnsNativeValue();

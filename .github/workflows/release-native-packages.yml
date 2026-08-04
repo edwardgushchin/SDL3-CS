@@ -6,7 +6,7 @@ on:
       package_revision:
         description: Numeric SDL3-CS release revision; the manifest may remap occupied component package revisions.
         required: true
-        default: "1"
+        default: "0"
       managed_only:
         description: Build and publish only the managed SDL3-CS package without running the native matrix.
         required: true
@@ -135,6 +135,10 @@ jobs:
       bundletool_version: ${{ steps.native-matrix.outputs.bundletool_version }}
       bundletool_sha256: ${{ steps.native-matrix.outputs.bundletool_sha256 }}
       android_16kb_system_image: ${{ steps.native-matrix.outputs.android_16kb_system_image }}
+      apple_xcode_version: ${{ steps.native-matrix.outputs.apple_xcode_version }}
+      apple_xcode_build: ${{ steps.native-matrix.outputs.apple_xcode_build }}
+      apple_dotnet_sdk_version: ${{ steps.native-matrix.outputs.apple_dotnet_sdk_version }}
+      apple_dotnet_workload_version: ${{ steps.native-matrix.outputs.apple_dotnet_workload_version }}
 
     steps:
       - name: Checkout SDL3-CS
@@ -166,7 +170,11 @@ jobs:
             'androidBuildToolsVersion',
             'bundletoolVersion',
             'bundletoolSha256',
-            'android16KbSystemImage'
+            'android16KbSystemImage',
+            'appleXcodeVersion',
+            'appleXcodeBuild',
+            'appleDotnetSdkVersion',
+            'appleDotnetWorkloadVersion'
           )) {
             if ([string]::IsNullOrWhiteSpace([string]$manifest.toolchains.$toolchainProperty)) {
               throw "Release manifest must declare toolchains.$toolchainProperty."
@@ -193,6 +201,14 @@ jobs:
           }
           if ([string]$manifest.toolchains.bundletoolVersion -notmatch '^\d+\.\d+\.\d+$') {
             throw 'Release manifest toolchains.bundletoolVersion must be an exact stable version.'
+          }
+          if ([string]$manifest.toolchains.appleXcodeVersion -notmatch '^\d+\.\d+$' -or
+              [string]$manifest.toolchains.appleXcodeBuild -notmatch '^\d+[A-Z]\d+$') {
+            throw 'Release manifest must pin the exact Apple Xcode version and build.'
+          }
+          if ([string]$manifest.toolchains.appleDotnetSdkVersion -notmatch '^\d+\.\d+\.\d+$' -or
+              [string]$manifest.toolchains.appleDotnetWorkloadVersion -notmatch '^\d+\.\d+\.\d+\.\d+$') {
+            throw 'Release manifest must pin the exact Apple .NET SDK and workload-set versions.'
           }
           $allRids = @($manifest.rids | ForEach-Object { [string]$_.rid })
           $requestedText = [string]$env:REQUESTED_NATIVE_RIDS
@@ -254,6 +270,10 @@ jobs:
           "bundletool_version=$($manifest.toolchains.bundletoolVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "bundletool_sha256=$($manifest.toolchains.bundletoolSha256)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "android_16kb_system_image=$($manifest.toolchains.android16KbSystemImage)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "apple_xcode_version=$($manifest.toolchains.appleXcodeVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "apple_xcode_build=$($manifest.toolchains.appleXcodeBuild)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "apple_dotnet_sdk_version=$($manifest.toolchains.appleDotnetSdkVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "apple_dotnet_workload_version=$($manifest.toolchains.appleDotnetWorkloadVersion)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
   native:
     name: Native ${{ matrix.rid }}
@@ -392,7 +412,7 @@ jobs:
           ./.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams
 
       - name: Smoke test ShaderCross DXC runtime
-        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-')
+        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-') || matrix.rid == 'win-x86' || matrix.rid == 'win-x64' || matrix.rid == 'win-arm64'
         shell: pwsh
         run: |
           ./.github/release-tools/Test-ShaderCrossDxcRuntime.ps1 `
@@ -612,6 +632,12 @@ jobs:
             runner: macos-26-intel
             rids: iossimulator-x64,tvossimulator-x64
 
+    env:
+      APPLE_XCODE_VERSION: ${{ needs.plan.outputs.apple_xcode_version }}
+      APPLE_XCODE_BUILD: ${{ needs.plan.outputs.apple_xcode_build }}
+      APPLE_DOTNET_SDK_VERSION: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}
+      APPLE_DOTNET_WORKLOAD_VERSION: ${{ needs.plan.outputs.apple_dotnet_workload_version }}
+
     steps:
       - name: Checkout SDL3-CS
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -619,24 +645,34 @@ jobs:
       - name: Setup .NET SDKs
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          dotnet-version: |
-            10.0.x
-            9.0.x
-            8.0.x
-            7.0.x
+          dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}
 
-      - name: Select Xcode 26.5
+      - name: Select exact Xcode
         shell: bash
         run: |
-          set -eux
-          sudo xcode-select -s /Applications/Xcode_26.5.app
-          xcodebuild -version
+          set -euo pipefail
+          xcode_path="/Applications/Xcode_${APPLE_XCODE_VERSION}.app"
+          test -d "$xcode_path"
+          sudo xcode-select -s "$xcode_path"
+          actual_xcode_version="$(xcodebuild -version | sed -n 's/^Xcode //p')"
+          actual_xcode_build="$(xcodebuild -version | sed -n 's/^Build version //p')"
+          test "$actual_xcode_version" = "$APPLE_XCODE_VERSION"
+          test "$actual_xcode_build" = "$APPLE_XCODE_BUILD"
+
+      - name: Verify exact Apple .NET SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual_dotnet_sdk_version="$(dotnet --version)"
+          test "$actual_dotnet_sdk_version" = "$APPLE_DOTNET_SDK_VERSION"
 
       - name: Install Apple .NET workloads
         shell: bash
         run: |
-          set -eux
-          dotnet workload install ios tvos --source https://api.nuget.org/v3/index.json
+          set -euo pipefail
+          dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION" --source https://api.nuget.org/v3/index.json
+          actual_workload_version="$(dotnet workload --version)"
+          test "$actual_workload_version" = "$APPLE_DOTNET_WORKLOAD_VERSION"
 
       - name: Download NuGet packages
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1

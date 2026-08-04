@@ -48,6 +48,129 @@ New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
 $tempWorkflow = Join-Path $tempRoot 'release-native-packages.yml'
 
 try {
+    $manifest = Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 64
+    $expectedPackageRevisionDefault = [int]$manifest.versioning.packageRevisionDefault
+    $packageRevisionDefaultRegex = [regex]::new(
+        '(?m)(?<prefix>^[ ]{6}package_revision:[ \t]*\r?\n(?:^[ ]{8,}[^\r\n]*\r?\n)*?^[ ]{8}default:[ \t]+)["'']?\d+["'']?[ \t]*\r?$'
+    )
+
+    $normalizedWorkflowText = $workflowText -replace "\r\n?", "`n"
+    foreach ($lineEndingCase in @(
+        [pscustomobject]@{ Name = 'LF'; NewLine = "`n" },
+        [pscustomobject]@{ Name = 'CRLF'; NewLine = "`r`n" }
+    )) {
+        $lineEndingWorkflow = $normalizedWorkflowText.Replace("`n", $lineEndingCase.NewLine)
+        [System.IO.File]::WriteAllText(
+            $tempWorkflow,
+            $lineEndingWorkflow,
+            [System.Text.UTF8Encoding]::new($false)
+        )
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+
+        $lineEndingMatches = $packageRevisionDefaultRegex.Matches($lineEndingWorkflow)
+        if ($lineEndingMatches.Count -ne 1) {
+            throw "Expected exactly one package_revision default in $($lineEndingCase.Name) workflow; found $($lineEndingMatches.Count)."
+        }
+    }
+
+    $hardcodedAppleXcodeWorkflow = $workflowText.Replace(
+        'xcode_path="/Applications/Xcode_${APPLE_XCODE_VERSION}.app"',
+        'xcode_path="/Applications/Xcode_26.6.app"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $hardcodedAppleXcodeWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'hardcoded Apple Xcode path' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $unpinnedAppleSdkWorkflow = $workflowText.Replace(
+        'dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}',
+        'dotnet-version: 10.0.x'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unpinnedAppleSdkWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'unpinned Apple .NET SDK' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $unpinnedAppleWorkloadWorkflow = $workflowText.Replace(
+        'dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION"',
+        'dotnet workload install ios tvos'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unpinnedAppleWorkloadWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'unpinned Apple workload set' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAppleXcodeBuildGateWorkflow = $workflowText.Replace(
+        'test "$actual_xcode_build" = "$APPLE_XCODE_BUILD"',
+        'test -n "$actual_xcode_build"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAppleXcodeBuildGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Apple Xcode build gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAppleWorkloadGateWorkflow = $workflowText.Replace(
+        'test "$actual_workload_version" = "$APPLE_DOTNET_WORKLOAD_VERSION"',
+        'test -n "$actual_workload_version"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAppleWorkloadGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Apple workload-set gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $packageRevisionDefaultMatches = $packageRevisionDefaultRegex.Matches($workflowText)
+    if ($packageRevisionDefaultMatches.Count -ne 1) {
+        throw "Expected exactly one package_revision default in release workflow; found $($packageRevisionDefaultMatches.Count)."
+    }
+    $mismatchedPackageRevisionDefault = $expectedPackageRevisionDefault + 1
+    $mismatchedPackageRevisionWorkflow = $packageRevisionDefaultRegex.Replace(
+        $workflowText,
+        ('${prefix}"' + $mismatchedPackageRevisionDefault + '"'),
+        1
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $mismatchedPackageRevisionWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'package_revision default differs from release manifest' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $x86HelperBuilder = Join-Path $PSScriptRoot 'New-ShaderCrossDxcSmokeHelper.ps1'
+    $x86HelperSource = Join-Path $PSScriptRoot 'ShaderCrossDxcSmoke.cs'
+    foreach ($requiredPath in @($x86HelperBuilder, $x86HelperSource)) {
+        if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
+            throw "Required win-x86 ShaderCross smoke helper file was not found: $requiredPath"
+        }
+    }
+
+    if ($IsWindows) {
+        $x86HelperPath = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.exe'
+        & $x86HelperBuilder -OutputPath $x86HelperPath | Out-Null
+        if (-not (Test-Path -LiteralPath $x86HelperPath -PathType Leaf)) {
+            throw "win-x86 ShaderCross smoke helper was not created: $x86HelperPath"
+        }
+
+        $x86HelperStdout = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.stdout.txt'
+        $x86HelperStderr = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.stderr.txt'
+        $x86HelperProcess = Start-Process `
+            -FilePath $x86HelperPath `
+            -Wait `
+            -PassThru `
+            -NoNewWindow `
+            -RedirectStandardOutput $x86HelperStdout `
+            -RedirectStandardError $x86HelperStderr
+        if ($x86HelperProcess.ExitCode -ne 2) {
+            throw "win-x86 ShaderCross smoke helper did not execute as an x86 process with the expected usage exit code 2; actual exit code: $($x86HelperProcess.ExitCode)"
+        }
+    }
+
+    $missingWinX86SmokeWorkflow = $workflowText.Replace(
+        " || matrix.rid == 'win-x86'",
+        ''
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingWinX86SmokeWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'win-x86 omitted from ShaderCross DXC runtime smoke gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $unpinnedWorkflow = [regex]::Replace(
         $workflowText,
         $pinnedLoginPattern,

@@ -27,7 +27,7 @@ $requiredToolchains = [ordered]@{
     androidPlatformArchiveUrl = 'https://dl.google.com/android/repository/platform-35_r02.zip'
     androidPlatformArchiveSha256 = '0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0'
     androidPlatformJarSha256 = '4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b'
-    androidBridgeJarSha256 = '1c7e84e863843b8d6b5c49d8b3bbc5bdb3a4cd56252b17cedd8348a7662638a4'
+    androidBridgeJarSha256 = 'bd2b78f7a27e9af9a37d7cda910412324c97c6fcee3fb9e2d282b46fad734287'
     androidBridgeJavaRelease = '11'
     androidBridgeSetupJavaVersion = '11.0.14+101'
     androidBridgeJavacVersion = '11.0.14.1'
@@ -35,6 +35,10 @@ $requiredToolchains = [ordered]@{
     bundletoolVersion = '1.18.3'
     bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
     android16KbSystemImage = 'system-images;android-35;google_apis_ps16k;x86_64'
+    appleXcodeVersion = '26.6'
+    appleXcodeBuild = '17F113'
+    appleDotnetSdkVersion = '10.0.302'
+    appleDotnetWorkloadVersion = '10.0.302.1'
 }
 if (-not $manifest.PSObject.Properties.Name.Contains('toolchains') -or -not $manifest.toolchains) {
     Add-ValidationError 'Manifest must declare toolchains.'
@@ -52,6 +56,7 @@ else {
 }
 
 $requiredReleaseOverrides = [ordered]@{
+    '0' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
     '6' = [ordered]@{ SDL_image = 8; SDL_mixer = 7; SDL_ttf = 7; SDL_shadercross = 7 }
     '7' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
 }
@@ -371,6 +376,25 @@ foreach ($rid in $manifest.rids) {
 $componentIds = @($manifest.components | ForEach-Object { $_.id })
 if ($componentIds.Count -ne ($componentIds | Select-Object -Unique).Count) {
     Add-ValidationError "Component ids must be unique."
+}
+
+$sdlComponents = @($manifest.components | Where-Object id -EQ 'SDL')
+if ($sdlComponents.Count -ne 1) {
+    Add-ValidationError "Manifest must declare component SDL exactly once."
+}
+else {
+    $expectedSdlSourceRef = '147a8ee32dbf9ac02f3794964490687b6bbda1bc'
+    $expectedSdlNativeVersion = '3.4.14'
+    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.14-release-3.4.14'
+    if ([string]$sdlComponents[0].sourceRef -ne $expectedSdlSourceRef) {
+        Add-ValidationError "Component SDL sourceRef must be exact release-3.4.14 commit $expectedSdlSourceRef."
+    }
+    if ([string]$sdlComponents[0].nativeVersion -ne $expectedSdlNativeVersion) {
+        Add-ValidationError "Component SDL nativeVersion must be $expectedSdlNativeVersion."
+    }
+    if (@($sdlComponents[0].cmakeArgs) -notcontains $expectedSdlRevisionArg) {
+        Add-ValidationError "Component SDL must pin its exact release identity with cmake argument '$expectedSdlRevisionArg'."
+    }
 }
 
 foreach ($component in $manifest.components) {

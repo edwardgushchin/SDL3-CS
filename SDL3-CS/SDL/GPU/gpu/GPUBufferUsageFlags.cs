@@ -27,8 +27,10 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>Specifies how a buffer is intended to be used by the client.</para>
-    /// <para>A buffer must have at least one usage flag. Note that some usage flag
-    /// combinations are invalid.</para>
+    /// <para>A buffer must have at least one usage flag.</para>
+    /// <para>If a buffer has multiple read usages, this may lead to a performance
+    /// penalty due to more conservative memory barriers, but it also may not
+    /// necessarily affect the performance.</para>
     /// <para>Unlike textures, READ | WRITE can be used for simultaneous read-write
     /// usage. The same data synchronization concerns as textures apply.</para>
     /// <para>If you use a STORAGE flag, the data in the buffer must respect std140

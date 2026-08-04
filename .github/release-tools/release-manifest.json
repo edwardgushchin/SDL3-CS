@@ -9,20 +9,30 @@
     "androidPlatformArchiveUrl": "https://dl.google.com/android/repository/platform-35_r02.zip",
     "androidPlatformArchiveSha256": "0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0",
     "androidPlatformJarSha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b",
-    "androidBridgeJarSha256": "1c7e84e863843b8d6b5c49d8b3bbc5bdb3a4cd56252b17cedd8348a7662638a4",
+    "androidBridgeJarSha256": "bd2b78f7a27e9af9a37d7cda910412324c97c6fcee3fb9e2d282b46fad734287",
     "androidBridgeJavaRelease": 11,
     "androidBridgeSetupJavaVersion": "11.0.14+101",
     "androidBridgeJavacVersion": "11.0.14.1",
     "androidBuildToolsVersion": "35.0.0",
     "bundletoolVersion": "1.18.3",
     "bundletoolSha256": "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29",
-    "android16KbSystemImage": "system-images;android-35;google_apis_ps16k;x86_64"
+    "android16KbSystemImage": "system-images;android-35;google_apis_ps16k;x86_64",
+    "appleXcodeVersion": "26.6",
+    "appleXcodeBuild": "17F113",
+    "appleDotnetSdkVersion": "10.0.302",
+    "appleDotnetWorkloadVersion": "10.0.302.1"
   },
   "versioning": {
     "packageRevisionDefault": 0,
     "packageVersionPattern": "{nativeVersion}.{packageRevision}",
     "wrapperVersionComponent": "SDL",
     "componentPackageRevisionOverrides": {
+      "0": {
+        "SDL_image": 9,
+        "SDL_mixer": 8,
+        "SDL_ttf": 8,
+        "SDL_shadercross": 8
+      },
       "1": {
         "SDL_image": 7,
         "SDL_mixer": 7,
@@ -480,15 +490,16 @@
       "id": "SDL",
       "repository": "https://github.com/edwardgushchin/SDL",
       "upstreamRepository": "https://github.com/libsdl-org/SDL",
-      "sourceRef": "f87239e71e42da91ca317a12eefb82cfbf3393eb",
+      "sourceRef": "147a8ee32dbf9ac02f3794964490687b6bbda1bc",
       "sourceFolder": "SDL",
-      "nativeVersion": "3.4.12",
+      "nativeVersion": "3.4.14",
       "packageNameSuffix": "",
       "dependencies": [],
       "cmakeArgs": [
         "-DSDL_INSTALL=ON",
         "-DSDL_TESTS=OFF",
-        "-DSDL_EXAMPLES=OFF"
+        "-DSDL_EXAMPLES=OFF",
+        "-DSDL_REVISION=SDL-3.4.14-release-3.4.14"
       ],
       "artifactPatterns": {
         "windows": [

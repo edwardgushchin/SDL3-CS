@@ -33,6 +33,73 @@ if (-not (Test-Path -LiteralPath $runtimeDir -PathType Container)) {
     throw "ShaderCross runtime directory was not found: $runtimeDir"
 }
 
+$shaderCrossLibrary = switch ($ridInfo.os) {
+    'windows' { Join-Path $runtimeDir 'SDL3_shadercross.dll' }
+    'linux' { Join-Path $runtimeDir 'libSDL3_shadercross.so' }
+    'macos' { Join-Path $runtimeDir 'libSDL3_shadercross.dylib' }
+}
+$sdlLibrary = switch ($ridInfo.os) {
+    'windows' { Join-Path $runtimeDir 'SDL3.dll' }
+    'linux' { Join-Path $runtimeDir 'libSDL3.so' }
+    'macos' { Join-Path $runtimeDir 'libSDL3.dylib' }
+}
+
+foreach ($libraryPath in @($shaderCrossLibrary, $sdlLibrary)) {
+    if (-not (Test-Path -LiteralPath $libraryPath -PathType Leaf)) {
+        throw "Required runtime library was not found: $libraryPath"
+    }
+}
+
+if ($Rid -eq 'win-x86') {
+    if ($ChildProcess) {
+        throw 'win-x86 ShaderCross DXC smoke must use the architecture-matched helper, not the PowerShell child-process mode.'
+    }
+
+    $tempBase = if ([string]::IsNullOrWhiteSpace($env:RUNNER_TEMP)) {
+        [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())
+    }
+    else {
+        [System.IO.Path]::GetFullPath($env:RUNNER_TEMP)
+    }
+    $tempPrefix = $tempBase.TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+    $tempRoot = [System.IO.Path]::GetFullPath((Join-Path $tempBase "sdl3-cs-shadercross-x86-$([guid]::NewGuid().ToString('N'))"))
+    if (-not $tempRoot.StartsWith($tempPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Unsafe win-x86 ShaderCross smoke temporary path: $tempRoot"
+    }
+
+    New-Item -ItemType Directory -Path $tempRoot | Out-Null
+    try {
+        $helperPath = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.exe'
+        & (Join-Path $PSScriptRoot 'New-ShaderCrossDxcSmokeHelper.ps1') -OutputPath $helperPath | Out-Null
+
+        $oldPath = $env:PATH
+        try {
+            $env:PATH = "$runtimeDir$([System.IO.Path]::PathSeparator)$oldPath"
+            & $helperPath $Rid $runtimeDir
+            if ($LASTEXITCODE -ne 0) {
+                throw "ShaderCross DXC architecture-matched x86 helper failed for $Rid with exit code $LASTEXITCODE."
+            }
+        }
+        finally {
+            $env:PATH = $oldPath
+        }
+    }
+    finally {
+        if (Test-Path -LiteralPath $tempRoot) {
+            $resolvedTempRoot = [System.IO.Path]::GetFullPath($tempRoot)
+            $tempItem = Get-Item -LiteralPath $resolvedTempRoot -Force
+            if (-not $resolvedTempRoot.StartsWith($tempPrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+                -not $tempItem.Name.StartsWith('sdl3-cs-shadercross-x86-', [System.StringComparison]::Ordinal) -or
+                ($tempItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                throw "Refusing to remove unsafe win-x86 ShaderCross smoke temporary path: $resolvedTempRoot"
+            }
+
+            Remove-Item -LiteralPath $resolvedTempRoot -Recurse -Force
+        }
+    }
+    return
+}
+
 if (-not $ChildProcess) {
     $oldPath = $env:PATH
     $oldLdLibraryPath = $env:LD_LIBRARY_PATH
@@ -58,23 +125,6 @@ if (-not $ChildProcess) {
         $env:DYLD_LIBRARY_PATH = $oldDyldLibraryPath
     }
     return
-}
-
-$shaderCrossLibrary = switch ($ridInfo.os) {
-    'windows' { Join-Path $runtimeDir 'SDL3_shadercross.dll' }
-    'linux' { Join-Path $runtimeDir 'libSDL3_shadercross.so' }
-    'macos' { Join-Path $runtimeDir 'libSDL3_shadercross.dylib' }
-}
-$sdlLibrary = switch ($ridInfo.os) {
-    'windows' { Join-Path $runtimeDir 'SDL3.dll' }
-    'linux' { Join-Path $runtimeDir 'libSDL3.so' }
-    'macos' { Join-Path $runtimeDir 'libSDL3.dylib' }
-}
-
-foreach ($libraryPath in @($shaderCrossLibrary, $sdlLibrary)) {
-    if (-not (Test-Path -LiteralPath $libraryPath -PathType Leaf)) {
-        throw "Required runtime library was not found: $libraryPath"
-    }
 }
 
 function ConvertTo-CSharpVerbatimLiteral {

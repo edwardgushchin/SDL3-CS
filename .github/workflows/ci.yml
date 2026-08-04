@@ -68,13 +68,15 @@ jobs:
             -PackagePath .\artifacts\managed-main-callbacks\SDL3-CS.0.0.0-ci.nupkg `
             -PackageVersion 0.0.0-ci
 
-      - name: Restore published native runtime for managed tests
+      - name: Restore tracked native runtime for managed tests
         shell: pwsh
         run: |
+          ./.github/release-tools/Test-RestoreManagedReleaseTestRuntime.Tests.ps1
           ./.github/release-tools/Restore-ManagedReleaseTestRuntime.ps1 `
-            -NativePackageRevision 1 `
+            -NativePackageRevision 0 `
             -Rid win-x64 `
-            -Destination 'SDL3-CS.Tests/bin/Release/net8.0'
+            -Destination 'SDL3-CS.Tests/bin/Release/net8.0' `
+            -UseTrackedPayload
 
       - name: Run managed wrapper tests
         shell: pwsh

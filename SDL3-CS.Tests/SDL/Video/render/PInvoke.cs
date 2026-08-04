@@ -76,6 +76,7 @@ internal static class PInvokeTests
     private static SDL3.SDL.FRect[]? capturedFRects;
     private static SDL3.SDL.Vertex[]? capturedVertices;
     private static int[]? capturedIntIndices;
+    private static ushort[]? capturedUShortIndices;
     private static float[]? capturedXY;
     private static SDL3.SDL.FColor[]? capturedColors;
     private static float[]? capturedUV;
@@ -2275,6 +2276,29 @@ internal static class PInvokeTests
         AssertFloats([0.0f, 0.1f, 3.0f, 4.0f, 0.5f, 0.6f, 0.7f, 0.8f, 0.2f, 0.3f], capturedUV, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward uv pointer.");
         TestAssert.Equal(IntPtr.Zero, capturedIndicesPointer, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward empty indices as null.");
         TestAssert.Equal(0, capturedSizeIndices, "SDL.RenderGeometryRaw<TIndex>(float color spans) must forward empty index size as zero.");
+
+        ResetCaptureState();
+        nextBool = true;
+        ushort[] ushortIndices = [9, 0, 1, 2, 9];
+        bool rawFloatIndexedResult = SDL3.SDL.RenderGeometryRaw<ushort>(
+            (IntPtr)0xD081,
+            (IntPtr)0xD082,
+            interleavedFloats.AsSpan(0, 10),
+            sizeof(float) * 8,
+            interleavedFloats.AsSpan(2, 10),
+            sizeof(float) * 8,
+            interleavedFloats.AsSpan(6, 10),
+            sizeof(float) * 8,
+            2,
+            ushortIndices.AsSpan(1, 3),
+            3,
+            sizeof(ushort));
+
+        TestAssert.Equal(true, rawFloatIndexedResult, "SDL.RenderGeometryRaw<TIndex>(float color spans with ushort indices) must return the native hook value.");
+        AssertGeometryBase((IntPtr)0xD081, (IntPtr)0xD082, 2, 3, "SDL.RenderGeometryRaw<TIndex>(float color spans with ushort indices)");
+        TestAssert.True(capturedIndicesPointer != IntPtr.Zero, "SDL.RenderGeometryRaw<TIndex>(float color spans with ushort indices) must pin the index span.");
+        TestAssert.Equal(sizeof(ushort), capturedSizeIndices, "SDL.RenderGeometryRaw<TIndex>(float color spans with ushort indices) must forward the index size.");
+        AssertUShorts([0, 1, 2], capturedUShortIndices, "SDL.RenderGeometryRaw<TIndex>(float color spans with ushort indices) must forward the sliced index span.");
     }
 
     public static void RenderTextureAddressReadPresentDestroyFlushAndMetalFunctions_ForwardInputsOutputsAndReturnNativeValues()
@@ -3564,6 +3588,7 @@ internal static class PInvokeTests
         capturedXY = CopyUnmanaged<float>(xy, FloatElementCount(numVertices, xyStride, 2));
         capturedColorFloats = CopyUnmanaged<float>(color, FloatElementCount(numVertices, colorStride, 4));
         capturedUV = CopyUnmanaged<float>(uv, FloatElementCount(numVertices, uvStride, 2));
+        capturedUShortIndices = sizeIndices == sizeof(ushort) ? CopyUnmanaged<ushort>(indices, numIndices) : null;
         return nextBool;
     }
 
@@ -3923,6 +3948,16 @@ internal static class PInvokeTests
         }
     }
 
+    private static void AssertUShorts(ushort[] expected, ushort[]? actual, string message)
+    {
+        TestAssert.NotNull(actual, message);
+        TestAssert.Equal(expected.Length, actual!.Length, message);
+        for (int index = 0; index < expected.Length; index++)
+        {
+            TestAssert.Equal(expected[index], actual[index], message);
+        }
+    }
+
     private static void AssertFloats(float[] expected, float[]? actual, string message)
     {
         TestAssert.NotNull(actual, message);
@@ -4200,6 +4235,7 @@ internal static class PInvokeTests
         capturedFRects = null;
         capturedVertices = null;
         capturedIntIndices = null;
+        capturedUShortIndices = null;
         capturedXY = null;
         capturedColors = null;
         capturedUV = null;
