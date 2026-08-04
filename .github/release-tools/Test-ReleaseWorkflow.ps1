@@ -152,7 +152,7 @@ Assert-WorkflowContains -Text $workflowText -Expected 'Rids = @(''${{ matrix.rid
 Assert-WorkflowContains -Text $workflowText -Expected '$buildParams.AllowCrossCompile = $true' -Description 'native build cross compile named parameter'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams' -Description 'native build script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'Smoke test ShaderCross DXC runtime' -Description 'ShaderCross DXC runtime smoke step'
-Assert-WorkflowContains -Text $workflowText -Expected "if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-') || matrix.rid == 'win-x64' || matrix.rid == 'win-arm64'" -Description 'ShaderCross DXC smoke executable desktop RID gate'
+Assert-WorkflowContains -Text $workflowText -Expected "if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-') || matrix.rid == 'win-x86' || matrix.rid == 'win-x64' || matrix.rid == 'win-arm64'" -Description 'ShaderCross DXC smoke executable desktop RID gate'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-ShaderCrossDxcRuntime.ps1' -Description 'ShaderCross DXC smoke script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip' -Description 'native bundle upload path'
 Assert-WorkflowContains -Text $workflowText -Expected 'libjson-perl' -Description 'Linux vkd3d Perl JSON dependency'

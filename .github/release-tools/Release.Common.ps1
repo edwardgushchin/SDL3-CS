@@ -67,6 +67,87 @@ function Resolve-ReleaseSafeRelativePath {
     return $candidate
 }
 
+function Remove-ReleaseGeneratedDirectory {
+    param(
+        [Parameter(Mandatory)]
+        [string] $RootPath,
+
+        [Parameter(Mandatory)]
+        [string] $TargetPath,
+
+        [Parameter(Mandatory)]
+        [string] $ExpectedRelativePath,
+
+        [Parameter(Mandatory)]
+        [string] $Description
+    )
+
+    $safeRelativePath = Assert-ReleaseSafeRelativePath -RelativePath $ExpectedRelativePath
+    $comparison = if ($IsWindows) {
+        [System.StringComparison]::OrdinalIgnoreCase
+    }
+    else {
+        [System.StringComparison]::Ordinal
+    }
+
+    $resolvedRoot = [System.IO.Path]::TrimEndingDirectorySeparator([System.IO.Path]::GetFullPath($RootPath))
+    $resolvedTarget = [System.IO.Path]::TrimEndingDirectorySeparator([System.IO.Path]::GetFullPath($TargetPath))
+    $expectedTarget = [System.IO.Path]::TrimEndingDirectorySeparator(
+        [System.IO.Path]::GetFullPath((Join-Path $resolvedRoot $safeRelativePath))
+    )
+
+    if (-not $resolvedTarget.Equals($expectedTarget, $comparison)) {
+        throw "Refusing to remove unexpected $Description path '$resolvedTarget'; expected '$expectedTarget'."
+    }
+
+    $rootPrefix = $resolvedRoot
+    if (-not $rootPrefix.EndsWith([System.IO.Path]::DirectorySeparatorChar) -and
+        -not $rootPrefix.EndsWith([System.IO.Path]::AltDirectorySeparatorChar)) {
+        $rootPrefix += [System.IO.Path]::DirectorySeparatorChar
+    }
+    if (-not $resolvedTarget.StartsWith($rootPrefix, $comparison)) {
+        throw "Refusing to remove $Description outside root '$resolvedRoot': $resolvedTarget"
+    }
+
+    $rootItem = Get-Item -LiteralPath $resolvedRoot -Force -ErrorAction SilentlyContinue
+    if (-not $rootItem -or -not $rootItem.PSIsContainer) {
+        throw "Cannot validate $Description because its allowed root is not a directory: $resolvedRoot"
+    }
+
+    $pathChain = [System.Collections.Generic.List[string]]::new()
+    $currentPath = $resolvedTarget
+    while ($true) {
+        $pathChain.Add($currentPath)
+        if ($currentPath.Equals($resolvedRoot, $comparison)) {
+            break
+        }
+
+        $parent = [System.IO.Directory]::GetParent($currentPath)
+        if (-not $parent) {
+            throw "Cannot prove canonical containment for $Description path: $resolvedTarget"
+        }
+        $currentPath = [System.IO.Path]::TrimEndingDirectorySeparator($parent.FullName)
+    }
+
+    for ($index = $pathChain.Count - 1; $index -ge 0; $index--) {
+        $path = $pathChain[$index]
+        $item = Get-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
+        if (-not $item) {
+            continue
+        }
+        if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+            throw "Refusing to remove $Description through reparse point: $path"
+        }
+        if (-not $item.PSIsContainer) {
+            throw "Refusing to remove $Description because a path segment is not a directory: $path"
+        }
+    }
+
+    if (Test-Path -LiteralPath $resolvedTarget -PathType Container) {
+        Remove-Item -LiteralPath $resolvedTarget -Recurse -Force
+    }
+}
+
 function Get-ReleaseManifest {
     param(
         [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json')

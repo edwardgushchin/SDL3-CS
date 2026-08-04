@@ -48,6 +48,36 @@ New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
 $tempWorkflow = Join-Path $tempRoot 'release-native-packages.yml'
 
 try {
+    $x86HelperBuilder = Join-Path $PSScriptRoot 'New-ShaderCrossDxcSmokeHelper.ps1'
+    $x86HelperSource = Join-Path $PSScriptRoot 'ShaderCrossDxcSmoke.cs'
+    foreach ($requiredPath in @($x86HelperBuilder, $x86HelperSource)) {
+        if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
+            throw "Required win-x86 ShaderCross smoke helper file was not found: $requiredPath"
+        }
+    }
+
+    if ($IsWindows) {
+        $x86HelperPath = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.exe'
+        & $x86HelperBuilder -OutputPath $x86HelperPath | Out-Null
+        if (-not (Test-Path -LiteralPath $x86HelperPath -PathType Leaf)) {
+            throw "win-x86 ShaderCross smoke helper was not created: $x86HelperPath"
+        }
+
+        & $x86HelperPath *> $null
+        if ($LASTEXITCODE -ne 2) {
+            throw "win-x86 ShaderCross smoke helper did not execute as an x86 process with the expected usage exit code 2; actual exit code: $LASTEXITCODE"
+        }
+    }
+
+    $missingWinX86SmokeWorkflow = $workflowText.Replace(
+        " || matrix.rid == 'win-x86'",
+        ''
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingWinX86SmokeWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'win-x86 omitted from ShaderCross DXC runtime smoke gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $unpinnedWorkflow = [regex]::Replace(
         $workflowText,
         $pinnedLoginPattern,

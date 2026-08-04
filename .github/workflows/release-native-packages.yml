@@ -392,7 +392,7 @@ jobs:
           ./.github/release-tools/Invoke-NativeHostBuild.ps1 @buildParams
 
       - name: Smoke test ShaderCross DXC runtime
-        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-') || matrix.rid == 'win-x64' || matrix.rid == 'win-arm64'
+        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-') || matrix.rid == 'win-x86' || matrix.rid == 'win-x64' || matrix.rid == 'win-arm64'
         shell: pwsh
         run: |
           ./.github/release-tools/Test-ShaderCrossDxcRuntime.ps1 `

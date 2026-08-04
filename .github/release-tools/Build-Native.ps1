@@ -376,9 +376,11 @@ function Initialize-SdlShadercrossDxcBinaries {
     }
 
     $dxcRoot = Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'
+    $downloadRoot = Join-Path $BuildRoot '_downloads\DirectXShaderCompiler'
     $dxcRootForCMake = $dxcRoot.Replace('\', '/')
     if ($DryRun) {
         Write-Host "[dry-run] bootstrap pinned DXC binaries into $dxcRoot"
+        Write-Host "[dry-run] reset pinned DXC FetchContent state under $downloadRoot"
         Write-Host "[dry-run] cmake -DCMAKE_SYSTEM_NAME=$($RidInfo.os) -DDXC_ROOT=$dxcRootForCMake -P download-prebuilt-DirectXShaderCompiler.cmake"
         return
     }
@@ -388,18 +390,10 @@ function Initialize-SdlShadercrossDxcBinaries {
         throw "Pinned SDL_shadercross DXC download script was not found: $downloadScript"
     }
 
-    if (Test-Path -LiteralPath $dxcRoot) {
-        $resolvedDxcRoot = [System.IO.Path]::GetFullPath($dxcRoot)
-        $expectedDxcRoot = [System.IO.Path]::GetFullPath((Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'))
-        if (-not $resolvedDxcRoot.Equals($expectedDxcRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
-            throw "Refusing to replace unexpected DXC payload path: $resolvedDxcRoot"
-        }
-        Remove-Item -LiteralPath $dxcRoot -Recurse -Force
-    }
+    Remove-ReleaseGeneratedDirectory -RootPath $SourcePath -TargetPath $dxcRoot -ExpectedRelativePath 'external\DirectXShaderCompiler-binaries' -Description 'SDL_shadercross pinned DXC payload'
+    Remove-ReleaseGeneratedDirectory -RootPath $BuildRoot -TargetPath $downloadRoot -ExpectedRelativePath '_downloads\DirectXShaderCompiler' -Description 'SDL_shadercross DXC FetchContent state'
 
-    New-Item -ItemType Directory -Force -Path $dxcRoot | Out-Null
-    $downloadRoot = Join-Path $BuildRoot '_downloads\DirectXShaderCompiler'
-    New-Item -ItemType Directory -Force -Path $downloadRoot | Out-Null
+    New-Item -ItemType Directory -Force -Path $dxcRoot, $downloadRoot | Out-Null
     $cmakePath = Get-ReleaseCMakePathForBuild
     $targetSystemName = if ($targetIsWindows) { 'Windows' } else { 'Linux' }
     Invoke-ReleaseCommand -FilePath $cmakePath -Arguments @(

@@ -46,12 +46,19 @@ foreach ($mutableDxcSource in @(
 if ($buildNativeText.Contains('[dry-run] reuse pinned DXC binaries', [System.StringComparison]::Ordinal)) {
     $errors.Add('SDL_shadercross DXC bootstrap must not trust a persistent extracted payload without reapplying the SHA256-pinned archive.')
 }
-if (-not $buildNativeText.Contains('Remove-Item -LiteralPath $dxcRoot -Recurse -Force', [System.StringComparison]::Ordinal)) {
-    $errors.Add('SDL_shadercross DXC bootstrap must safely replace any persistent extracted payload before applying the SHA256-pinned archive.')
-}
 if (-not $buildNativeText.Contains("`$dxcRootForCMake = `$dxcRoot.Replace('\', '/')", [System.StringComparison]::Ordinal)) {
     $errors.Add('SDL_shadercross DXC bootstrap must normalize the Windows destination path before passing DXC_ROOT to CMake script mode.')
 }
+foreach ($requiredCleanupContract in @(
+    "Remove-ReleaseGeneratedDirectory -RootPath `$SourcePath -TargetPath `$dxcRoot -ExpectedRelativePath 'external\DirectXShaderCompiler-binaries'",
+    "Remove-ReleaseGeneratedDirectory -RootPath `$BuildRoot -TargetPath `$downloadRoot -ExpectedRelativePath '_downloads\DirectXShaderCompiler'"
+)) {
+    if (-not $buildNativeText.Contains($requiredCleanupContract, [System.StringComparison]::Ordinal)) {
+        $errors.Add("SDL_shadercross DXC bootstrap must apply the safe generated-directory cleanup contract: $requiredCleanupContract")
+    }
+}
+
+& (Join-Path $PSScriptRoot 'Test-ReleaseGeneratedDirectoryCleanup.Tests.ps1')
 
 function Assert-NativePlanContains {
     param(
