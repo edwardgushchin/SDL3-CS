@@ -207,10 +207,20 @@ switch -Regex ($command) {
         exit 0
     }
     '^shell dumpsys window windows$' {
-        $focusCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count
-        if ($scenario -eq 'never-foreground' -or ($scenario -eq 'delayed-foreground' -and $focusCallCount -eq 1)) {
+        if ($scenario -in @('ready-after-finish', 'alive-no-ready-marker')) {
             'mTopFocusedDisplayId=-1'
             'imeLayeringTarget in display# 0 null'
+        }
+        elseif ($scenario -eq 'legacy-foreground') {
+            'mCurrentFocus=Window{abc u0 com.edwardgushchin.sdl3cs.consumer.android.x64/com.edwardgushchin.sdl3cs.consumer.android.x64.MainActivity}'
+        }
+        elseif ($scenario -eq 'wrong-activity-suffix') {
+            'mTopFocusedDisplayId=0'
+            'imeLayeringTarget in display# 0 Window{abc u0 com.edwardgushchin.sdl3cs.consumer.android.x64/com.edwardgushchin.sdl3cs.consumer.android.x64.MainActivityOverlay}'
+        }
+        elseif ($scenario -eq 'mismatched-display') {
+            'mTopFocusedDisplayId=0'
+            'imeLayeringTarget in display# 1 Window{abc u0 com.edwardgushchin.sdl3cs.consumer.android.x64/com.edwardgushchin.sdl3cs.consumer.android.x64.MainActivity}'
         }
         else {
             'mTopFocusedDisplayId=0'
@@ -219,9 +229,11 @@ switch -Regex ($command) {
         exit 0
     }
     '^shell dumpsys activity activities$' {
-        $resumeCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count
-        if ($scenario -eq 'never-foreground' -or ($scenario -eq 'delayed-foreground' -and $resumeCallCount -eq 1)) {
+        if ($scenario -in @('ready-after-finish', 'alive-no-ready-marker')) {
             'VisibleActivityProcess:[]'
+        }
+        elseif ($scenario -eq 'legacy-foreground') {
+            'topResumedActivity=ActivityRecord{def u0 com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity t1}'
         }
         else {
             'VisibleActivityProcess:[ ProcessRecord{def 4242:com.edwardgushchin.sdl3cs.consumer.android.x64/u0a207}]'
@@ -294,7 +306,6 @@ switch -Regex ($command) {
         @{ Name = 'compat-read-mismatch'; ExpectedMessage = 'compatibility property.*Expected.*false.*got.*true' },
         @{ Name = 'install-failure'; ExpectedMessage = 'adb install.*INSTALL_FAILED_INVALID_APK' },
         @{ Name = 'start-failure'; ExpectedMessage = 'adb shell am start.*Activity class does not exist' },
-        @{ Name = 'never-foreground'; ExpectedMessage = 'did not become focused and resumed' },
         @{ Name = 'linker-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'init-failure-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'alive-no-ready-marker'; ExpectedMessage = 'runtime log does not contain readiness marker' },
@@ -312,9 +323,6 @@ switch -Regex ($command) {
         Assert-RuntimeValidationFails -Description $scenario -ExpectedMessage $failureScenario.ExpectedMessage -Action {
             if ($scenario -eq 'root-reconnect-timeout') {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -DeviceReconnectAttempts 2 -DeviceReconnectDelayMilliseconds 0 *> $null
-            }
-            elseif ($scenario -eq 'never-foreground') {
-                & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -ForegroundReadyAttempts 2 -ForegroundReadyDelayMilliseconds 0 *> $null
             }
             elseif ($scenario -in @('alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -RuntimeReadyAttempts 2 -RuntimeReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0 *> $null
@@ -342,7 +350,7 @@ switch -Regex ($command) {
         if ($scenario -in @('linker-log', 'init-failure-log', 'alive-no-ready-marker', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'logcat --pid=4242 -d -v brief'
         }
-        if ($scenario -in @('start-failure', 'never-foreground', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
+        if ($scenario -in @('start-failure', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
         }
         if ($scenario -eq 'root-reconnect-timeout' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
@@ -356,27 +364,22 @@ switch -Regex ($command) {
                 throw 'The never-pid scenario queried process logs without a valid process ID.'
             }
         }
-        if ($scenario -eq 'never-foreground') {
-            if (@($commands | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count -ne 2 -or
-                @($commands | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count -ne 2) {
-                throw 'The never-foreground scenario did not stop after exactly two configured foreground attempts.'
-            }
-            if (@($commands | Where-Object { $_ -like 'shell pidof *' -or $_ -like 'logcat --pid=*' }).Count -ne 0) {
-                throw 'The never-foreground scenario reached marker polling without a focused and resumed activity.'
-            }
-        }
     }
 
-    [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
-    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'delayed-foreground')
-    $delayedForegroundResult = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -ForegroundReadyAttempts 2 -ForegroundReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0
-    if ($delayedForegroundResult.Status -ne 'Passed') {
-        throw "Android runtime polling did not accept delayed foreground readiness: $($delayedForegroundResult | ConvertTo-Json -Compress)"
-    }
-    $delayedForegroundCommands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
-    if (@($delayedForegroundCommands | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count -ne 2 -or
-        @($delayedForegroundCommands | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count -ne 2) {
-        throw 'Android runtime polling did not perform two bounded foreground attempts.'
+    foreach ($foregroundScenario in @(
+        @{ Name = 'legacy-foreground'; Expected = $true; Mode = 'Legacy' },
+        @{ Name = 'ready-after-finish'; Expected = $false; Mode = 'None' },
+        @{ Name = 'wrong-activity-suffix'; Expected = $false; Mode = 'None' },
+        @{ Name = 'mismatched-display'; Expected = $false; Mode = 'None' }
+    )) {
+        [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
+        [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', $foregroundScenario.Name)
+        $foregroundResult = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -PostReadyStabilityMilliseconds 0
+        if ($foregroundResult.Status -ne 'Passed' -or
+            $foregroundResult.ForegroundReady -ne $foregroundScenario.Expected -or
+            $foregroundResult.ForegroundMode -ne $foregroundScenario.Mode) {
+            throw "Unexpected foreground evidence for '$($foregroundScenario.Name)': $($foregroundResult | ConvertTo-Json -Compress)"
+        }
     }
 
     [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
@@ -405,7 +408,8 @@ switch -Regex ($command) {
     [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'success')
     $result = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -PostReadyStabilityMilliseconds 0
 
-    if ($result.Status -ne 'Passed' -or $result.PageSize -ne 16384 -or $result.ProcessId -ne 4242) {
+    if ($result.Status -ne 'Passed' -or $result.PageSize -ne 16384 -or $result.ProcessId -ne 4242 -or
+        -not $result.ForegroundReady -or $result.ForegroundMode -ne 'Android35') {
         throw "Unexpected Android 16 KB runtime validation result: $($result | ConvertTo-Json -Compress)"
     }
 

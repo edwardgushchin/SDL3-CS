@@ -16,12 +16,6 @@ param(
     [int] $StartupWaitSeconds = 3,
 
     [ValidateRange(1, 120)]
-    [int] $ForegroundReadyAttempts = 15,
-
-    [ValidateRange(0, 5000)]
-    [int] $ForegroundReadyDelayMilliseconds = 1000,
-
-    [ValidateRange(1, 120)]
     [int] $DeviceReconnectAttempts = 30,
 
     [ValidateRange(0, 5000)]
@@ -140,12 +134,10 @@ function Wait-AndroidDevice {
     throw "Android device did not reconnect after adb root within $Attempts attempt(s)."
 }
 
-function Wait-AndroidActivityForeground {
+function Get-AndroidActivityForegroundState {
     param(
         [Parameter(Mandatory)][string] $Executable,
-        [Parameter(Mandatory)][string] $Component,
-        [Parameter(Mandatory)][int] $Attempts,
-        [Parameter(Mandatory)][int] $DelayMilliseconds
+        [Parameter(Mandatory)][string] $Component
     )
 
     $applicationId = $Component.Split('/', 2)[0]
@@ -153,44 +145,48 @@ function Wait-AndroidActivityForeground {
         $Component,
         $Component.Replace('/.', "/$applicationId.", [System.StringComparison]::Ordinal)
     ) | Select-Object -Unique
-    $componentPattern = '(?:' + (($componentCandidates | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')'
+    $componentPattern = '(?:' + (($componentCandidates | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')(?=$|[\s}\]])'
     $windowPattern = '(?im)^\s*(?:mCurrentFocus|mFocusedApp)\s*=.*' + $componentPattern
-    $android35WindowPattern = '(?im)^\s*(?:imeLayeringTarget(?:\s+in\s+display#\s+\d+)?|mControlTarget)\b.*' + $componentPattern
-    $topFocusedDisplayPattern = '(?im)^\s*mTopFocusedDisplayId\s*=\s*\d+\s*$'
-    $activityPattern = '(?im)^\s*(?:topResumedActivity|mResumedActivity|ResumedActivity|ACTIVITY)\b.*' + $componentPattern
-    $visibleProcessPattern = '(?im)^\s*VisibleActivityProcess\s*:.*\b' + [regex]::Escape($applicationId) + '(?:/|\b)'
-    $lastWindowState = '<not queried>'
-    $lastActivityState = '<not queried>'
-    $lastWindowFocused = $false
-    $lastActivityResumed = $false
-    $lastAndroid35VisibleFocused = $false
-
-    for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
-        $windowResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'window', 'windows') -AllowFailure
-        $activityResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'activity', 'activities') -AllowFailure
-        $lastWindowState = if ([string]::IsNullOrWhiteSpace($windowResult.Text)) { '<no window state>' } else { $windowResult.Text }
-        $lastActivityState = if ([string]::IsNullOrWhiteSpace($activityResult.Text)) { '<no activity state>' } else { $activityResult.Text }
-
-        $lastWindowFocused = $windowResult.Text -match $windowPattern
-        $lastActivityResumed = $activityResult.Text -match $activityPattern
-        $lastAndroid35VisibleFocused =
-            $windowResult.Text -match $topFocusedDisplayPattern -and
+    $activityPattern = '(?im)^\s*(?:topResumedActivity|mResumedActivity|ResumedActivity)\b.*' + $componentPattern
+    $visibleProcessPattern = '(?im)^\s*VisibleActivityProcess\s*:.*' + [regex]::Escape($applicationId) + '(?=$|[/:\s}\]])'
+    $windowResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'window', 'windows') -AllowFailure
+    $activityResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'activity', 'activities') -AllowFailure
+    $windowState = if ([string]::IsNullOrWhiteSpace($windowResult.Text)) { '<no window state>' } else { $windowResult.Text }
+    $activityState = if ([string]::IsNullOrWhiteSpace($activityResult.Text)) { '<no activity state>' } else { $activityResult.Text }
+    $windowFocused = $windowResult.Text -match $windowPattern
+    $activityResumed = $activityResult.Text -match $activityPattern
+    $android35VisibleFocused = $false
+    $topFocusedDisplayMatch = [regex]::Match(
+        $windowResult.Text,
+        '(?im)^\s*mTopFocusedDisplayId\s*=\s*(?<Display>\d+)\s*$'
+    )
+    if ($topFocusedDisplayMatch.Success) {
+        $displayId = [regex]::Escape($topFocusedDisplayMatch.Groups['Display'].Value)
+        $android35WindowPattern = '(?im)^\s*imeLayeringTarget\s+in\s+display#\s+' + $displayId + '\b.*' + $componentPattern
+        $android35VisibleFocused =
             $windowResult.Text -match $android35WindowPattern -and
             $activityResult.Text -match $visibleProcessPattern
-
-        if ($windowResult.ExitCode -eq 0 -and $activityResult.ExitCode -eq 0 -and
-            (($lastWindowFocused -and $lastActivityResumed) -or $lastAndroid35VisibleFocused)) {
-            return
-        }
-
-        if ($attempt -lt $Attempts -and $DelayMilliseconds -gt 0) {
-            Start-Sleep -Milliseconds $DelayMilliseconds
-        }
     }
 
-    $windowDiagnostics = (@($lastWindowState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
-    $activityDiagnostics = (@($lastActivityState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
-    throw "Android activity '$Component' did not become focused and resumed within $Attempts attempt(s). Matcher state: windowFocused=$lastWindowFocused; activityResumed=$lastActivityResumed; android35VisibleFocused=$lastAndroid35VisibleFocused. Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
+    $mode = if ($windowFocused -and $activityResumed) {
+        'Legacy'
+    }
+    elseif ($android35VisibleFocused) {
+        'Android35'
+    }
+    else {
+        'None'
+    }
+
+    return [pscustomobject]@{
+        Ready = $mode -ne 'None'
+        Mode = $mode
+        WindowFocused = $windowFocused
+        ActivityResumed = $activityResumed
+        Android35VisibleFocused = $android35VisibleFocused
+        WindowState = $windowState
+        ActivityState = $activityState
+    }
 }
 
 function Set-AndroidCompatibilityProperty {
@@ -284,15 +280,11 @@ try {
         throw "Android activity launch failed for '$componentName': $($startResult.Text)"
     }
 
-    Wait-AndroidActivityForeground `
-        -Executable $resolvedAdbPath `
-        -Component $componentName `
-        -Attempts $ForegroundReadyAttempts `
-        -DelayMilliseconds $ForegroundReadyDelayMilliseconds
-
     if ($StartupWaitSeconds -gt 0) {
         Start-Sleep -Seconds $StartupWaitSeconds
     }
+
+    $foregroundState = Get-AndroidActivityForegroundState -Executable $resolvedAdbPath -Component $componentName
 
     $fatalPatterns = @(
         'java\.lang\.UnsatisfiedLinkError',
@@ -338,9 +330,12 @@ try {
     }
 
     if (-not $runtimeReady) {
+        $foregroundState = Get-AndroidActivityForegroundState -Executable $resolvedAdbPath -Component $componentName
         $diagnosticLines = @($lastRuntimeLog | Select-Object -Last 40)
         $diagnostics = if ($diagnosticLines.Count -eq 0) { '<no process log output>' } else { $diagnosticLines -join [Environment]::NewLine }
-        throw "Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY after $RuntimeReadyAttempts bounded attempt(s). Last process log:$([Environment]::NewLine)$diagnostics"
+        $windowDiagnostics = (@($foregroundState.WindowState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
+        $activityDiagnostics = (@($foregroundState.ActivityState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
+        throw "Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY after $RuntimeReadyAttempts bounded attempt(s). Foreground evidence: ready=$($foregroundState.Ready); mode=$($foregroundState.Mode); windowFocused=$($foregroundState.WindowFocused); activityResumed=$($foregroundState.ActivityResumed); android35VisibleFocused=$($foregroundState.Android35VisibleFocused). Last process log:$([Environment]::NewLine)$diagnostics$([Environment]::NewLine)Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
     }
 
     if ($PostReadyStabilityMilliseconds -gt 0) {
@@ -371,6 +366,8 @@ try {
         Activity = $componentName
         PageSize = $pageSize
         ProcessId = [int]$processId
+        ForegroundReady = [bool]$foregroundState.Ready
+        ForegroundMode = $foregroundState.Mode
     }
 }
 finally {
