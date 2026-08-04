@@ -12,6 +12,17 @@ if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) {
 
 $consumerBuilder = Join-Path $PSScriptRoot 'Test-AndroidConsumerPackageBuild.ps1'
 $consumerBuilderText = Get-Content -LiteralPath $consumerBuilder -Raw -Encoding UTF8
+foreach ($targetSdkContract in @(
+    '[Parameter(Mandatory)][int] $TargetSdkVersion',
+    'android:targetSdkVersion="$TargetSdkVersion"',
+    '$androidTargetSdkVersion = [int]$androidTargetSdkMatch.Groups[''Api''].Value',
+    'Get-AndroidConsumerManifest -TargetSdkVersion $androidTargetSdkVersion'
+)) {
+    if (-not $consumerBuilderText.Contains($targetSdkContract, [System.StringComparison]::Ordinal)) {
+        throw "Android consumer runtime manifest must derive an explicit target SDK from the exact 16 KB system image: missing '$targetSdkContract'."
+    }
+}
+
 $readyMarker = 'Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");'
 $readyMarkerIndex = $consumerBuilderText.IndexOf($readyMarker, [System.StringComparison]::Ordinal)
 if ($readyMarkerIndex -lt 0) {

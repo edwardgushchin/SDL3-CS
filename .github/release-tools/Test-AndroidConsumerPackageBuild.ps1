@@ -225,10 +225,18 @@ function Get-AndroidConsumerBundleConfiguration {
 }
 
 function Get-AndroidConsumerManifest {
+    param(
+        [Parameter(Mandatory)][int] $TargetSdkVersion
+    )
+
+    if ($TargetSdkVersion -lt 24) {
+        throw "Android consumer target SDK must be at least 24 for current Android runtime images, got $TargetSdkVersion."
+    }
+
     return @"
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-  <uses-sdk android:minSdkVersion="23" />
+  <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="$TargetSdkVersion" />
   <application android:label="SDL3CSConsumer" android:allowBackup="false" android:supportsRtl="true" />
 </manifest>
 "@
@@ -433,6 +441,20 @@ if ([string]::IsNullOrWhiteSpace($bundletoolVersion) -or $bundletoolVersion -not
 if ([string]::IsNullOrWhiteSpace($bundletoolSha256) -or $bundletoolSha256 -notmatch '^[0-9a-f]{64}$') {
     throw 'Release manifest must declare a lowercase toolchains.bundletoolSha256.'
 }
+$android16KbSystemImage = if ($manifest.toolchains.PSObject.Properties.Name.Contains('android16KbSystemImage')) {
+    [string]$manifest.toolchains.android16KbSystemImage
+}
+else {
+    $null
+}
+$androidTargetSdkMatch = [regex]::Match($android16KbSystemImage, '^system-images;android-(?<Api>\d+);')
+if (-not $androidTargetSdkMatch.Success) {
+    throw 'Release manifest toolchains.android16KbSystemImage must identify a numeric Android API level.'
+}
+$androidTargetSdkVersion = [int]$androidTargetSdkMatch.Groups['Api'].Value
+if ($androidTargetSdkVersion -lt 24) {
+    throw "Android 16 KB system image API must be at least 24, got $androidTargetSdkVersion."
+}
 
 if ($PackageRevision -lt 0) {
     $PackageRevision = [int] $manifest.versioning.packageRevisionDefault
@@ -597,7 +619,7 @@ $packageReferences
     New-Item -ItemType Directory -Force -Path $projectRoot | Out-Null
     Set-Content -LiteralPath $projectPath -Value $projectXml -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $projectRoot 'MainActivity.cs') -Value (Get-AndroidConsumerMainActivity -ApplicationId $applicationId) -Encoding UTF8
-    Set-Content -LiteralPath (Join-Path $projectRoot 'AndroidManifest.xml') -Value (Get-AndroidConsumerManifest) -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $projectRoot 'AndroidManifest.xml') -Value (Get-AndroidConsumerManifest -TargetSdkVersion $androidTargetSdkVersion) -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $projectRoot 'BundleConfig.json') -Value (Get-AndroidConsumerBundleConfiguration) -Encoding UTF8
 
     $nugetConfig = @"
