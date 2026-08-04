@@ -214,6 +214,8 @@ try {
     }
     $installed = $true
 
+    $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP')
+    $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'wm', 'dismiss-keyguard')
     $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('logcat', '-c')
     $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'am', 'force-stop', $PackageName)
 

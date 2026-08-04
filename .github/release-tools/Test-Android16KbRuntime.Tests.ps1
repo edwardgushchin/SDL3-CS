@@ -176,6 +176,12 @@ switch -Regex ($command) {
     '^logcat -c$' {
         exit 0
     }
+    '^shell input keyevent KEYCODE_WAKEUP$' {
+        exit 0
+    }
+    '^shell wm dismiss-keyguard$' {
+        exit 0
+    }
     '^shell am force-stop ' {
         exit 0
     }
@@ -352,6 +358,8 @@ switch -Regex ($command) {
         'shell getprop bionic.linker.16kb.app_compat.enabled',
         'shell setprop pm.16kb.app_compat.disabled true',
         'shell getprop pm.16kb.app_compat.disabled',
+        'shell input keyevent KEYCODE_WAKEUP',
+        'shell wm dismiss-keyguard',
         'logcat -c',
         'logcat --pid=4242 -d -v brief',
         'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
@@ -365,6 +373,12 @@ switch -Regex ($command) {
 
     if (@($successCommands | Where-Object { $_ -like 'install -r -t *SDL3CSConsumer-Signed.apk' }).Count -ne 1) {
         throw 'The successful runtime scenario did not install the signed APK exactly once.'
+    }
+    $wakeIndex = [Array]::IndexOf($successCommands, 'shell input keyevent KEYCODE_WAKEUP')
+    $dismissIndex = [Array]::IndexOf($successCommands, 'shell wm dismiss-keyguard')
+    $startIndex = [Array]::IndexOf($successCommands, 'shell am start -W -n com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity')
+    if ($wakeIndex -lt 0 -or $dismissIndex -le $wakeIndex -or $startIndex -le $dismissIndex) {
+        throw 'The successful runtime scenario did not wake and unlock the headless emulator before starting the SDL activity.'
     }
     if (@($successCommands | Where-Object { $_ -eq 'shell am start -W -n com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity' }).Count -ne 1) {
         throw 'The successful runtime scenario did not start the expected default Android activity exactly once.'
