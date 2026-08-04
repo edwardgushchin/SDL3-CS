@@ -50,6 +50,25 @@ function Assert-WorkflowRegex {
     }
 }
 
+function Get-WorkflowJobText {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Text,
+
+        [Parameter(Mandatory)]
+        [string] $JobName
+    )
+
+    $pattern = '(?ms)^  ' + [regex]::Escape($JobName) + ':\r?\n.*?(?=^  [A-Za-z0-9_-]+:\r?\n|\z)'
+    $match = [regex]::Match($Text, $pattern)
+    if (-not $match.Success) {
+        Add-WorkflowError "Workflow job '$JobName' was not found or could not be isolated."
+        return ''
+    }
+
+    return $match.Value
+}
+
 $errors = New-Object System.Collections.Generic.List[string]
 $workflowFile = Resolve-ReleasePath $WorkflowPath
 if (-not (Test-Path -LiteralPath $workflowFile -PathType Leaf)) {
@@ -258,7 +277,16 @@ $assemblyIndex = $workflowText.IndexOf('./.github/release-tools/Invoke-ReleaseAs
 if ($bridgeBuildIndex -lt 0 -or $androidPackageJavaIndex -le $bridgeBuildIndex -or $assemblyIndex -le $androidPackageJavaIndex) {
     Add-WorkflowError 'Exact Android bridge rebuild must run before release assembly.'
 }
-Assert-WorkflowContains -Text $workflowText -Expected 'dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false' -Description 'assembly Wiki Release output build'
+$wikiReleaseBuildCommand = 'dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false'
+Assert-WorkflowContains -Text $workflowText -Expected $wikiReleaseBuildCommand -Description 'assembly Wiki Release output build'
+$publishJobText = Get-WorkflowJobText -Text $workflowText -JobName 'publish'
+Assert-WorkflowContains -Text $publishJobText -Expected 'Build wrapper Release output for publish Wiki readiness' -Description 'publish Wiki Release output build step'
+Assert-WorkflowContains -Text $publishJobText -Expected $wikiReleaseBuildCommand -Description 'publish Wiki Release output build command'
+$publishWikiBuildIndex = $publishJobText.IndexOf($wikiReleaseBuildCommand, [System.StringComparison]::Ordinal)
+$publishEntryPointIndex = $publishJobText.IndexOf('./.github/release-tools/Publish-Release.ps1 @params', [System.StringComparison]::Ordinal)
+if ($publishWikiBuildIndex -lt 0 -or $publishEntryPointIndex -lt 0 -or $publishWikiBuildIndex -ge $publishEntryPointIndex) {
+    Add-WorkflowError 'Publish job must build wrapper Release output before invoking Publish-Release.ps1.'
+}
 Assert-WorkflowContains -Text $workflowText -Expected 'path: artifacts/release/nuget/*.nupkg' -Description 'NuGet artifact upload'
 Assert-WorkflowContains -Text $workflowText -Expected 'release-assembly-state.zip' -Description 'release assembly state artifact'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-ReleaseAssemblyState.ps1' -Description 'release assembly state validation'
