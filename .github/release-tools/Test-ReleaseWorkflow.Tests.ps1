@@ -245,6 +245,28 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $wikiReleaseBuildCommand = 'dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false'
+    $publishJobStart = $workflowText.IndexOf('  publish:', [System.StringComparison]::Ordinal)
+    $managedBuildJobStart = $workflowText.IndexOf('  managed-build:', [System.StringComparison]::Ordinal)
+    $publishWikiBuildIndex = if ($publishJobStart -ge 0) {
+        $workflowText.IndexOf($wikiReleaseBuildCommand, $publishJobStart, [System.StringComparison]::Ordinal)
+    }
+    else {
+        -1
+    }
+    if ($publishJobStart -lt 0 -or $managedBuildJobStart -le $publishJobStart -or
+        $publishWikiBuildIndex -lt $publishJobStart -or $publishWikiBuildIndex -ge $managedBuildJobStart) {
+        throw 'Release workflow fixture must contain the Wiki Release output build inside the publish job.'
+    }
+    $missingPublishWikiBuildWorkflow = $workflowText.Remove(
+        $publishWikiBuildIndex,
+        $wikiReleaseBuildCommand.Length
+    ).Insert($publishWikiBuildIndex, 'dotnet --info')
+    Set-Content -LiteralPath $tempWorkflow -Value $missingPublishWikiBuildWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing publish-job Wiki Release output build before readiness' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $missingBridgeBuildWorkflow = $workflowText.Replace(
         './.github/release-tools/Build-AndroidBridgeJar.ps1',
         './.github/release-tools/Build-AndroidBridgeJar-disabled.ps1'
