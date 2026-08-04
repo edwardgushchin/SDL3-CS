@@ -187,25 +187,38 @@ public sealed class MainActivity : SDLActivity
     {
         if (!SDL.Init(SDL.InitFlags.Video))
         {
+            Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_INIT_FAILED: {SDL.GetError()}");
             return;
         }
 
-        Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");
+        if (!SDL.CreateWindowAndRenderer("SDL3-CS Android consumer", 64, 64, 0, out var window, out var renderer))
+        {
+            Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: CreateWindowAndRenderer: {SDL.GetError()}");
+            SDL.Quit();
+            return;
+        }
 
         try
         {
-            if (SDL.CreateWindowAndRenderer("SDL3-CS Android consumer", 64, 64, 0, out var window, out var renderer))
+            if (!SDL.RenderClear(renderer))
             {
-                SDL.RenderClear(renderer);
-                SDL.RenderPresent(renderer);
-                SDL.DestroyRenderer(renderer);
-                SDL.DestroyWindow(window);
+                Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: RenderClear: {SDL.GetError()}");
+                return;
+            }
+            if (!SDL.RenderPresent(renderer))
+            {
+                Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: RenderPresent: {SDL.GetError()}");
+                return;
             }
         }
         finally
         {
+            SDL.DestroyRenderer(renderer);
+            SDL.DestroyWindow(window);
             SDL.Quit();
         }
+
+        Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");
     }
 }
 "@

@@ -19,7 +19,16 @@ param(
     [int] $DeviceReconnectAttempts = 30,
 
     [ValidateRange(0, 5000)]
-    [int] $DeviceReconnectDelayMilliseconds = 1000
+    [int] $DeviceReconnectDelayMilliseconds = 1000,
+
+    [ValidateRange(1, 120)]
+    [int] $RuntimeReadyAttempts = 30,
+
+    [ValidateRange(0, 5000)]
+    [int] $RuntimeReadyDelayMilliseconds = 1000,
+
+    [ValidateRange(0, 5000)]
+    [int] $PostReadyStabilityMilliseconds = 1000
 )
 
 Set-StrictMode -Version Latest
@@ -217,13 +226,6 @@ try {
         Start-Sleep -Seconds $StartupWaitSeconds
     }
 
-    $pidResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'pidof', $PackageName)
-    if ($pidResult.Text.Trim() -notmatch '^\d+(?:\s+\d+)*$') {
-        throw "Android consumer process '$PackageName' is not alive after launch: $($pidResult.Text)"
-    }
-    $processId = ($pidResult.Text.Trim() -split '\s+')[0]
-
-    $logResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('logcat', "--pid=$processId", '-d', '-v', 'brief')
     $fatalPatterns = @(
         'java\.lang\.UnsatisfiedLinkError',
         '\bUnsatisfiedLinkError\b',
@@ -237,21 +239,61 @@ try {
         '\bSIG(?:ABRT|SEGV|BUS|ILL)\b',
         '\bAbort message:',
         '\bJNI_ERR returned from JNI_OnLoad\b',
-        '\bSDL\w*\b.*\bversion mismatch\b'
+        '\bSDL\w*\b.*\bversion mismatch\b',
+        '\bSDL3CS_(?:INIT|RUNTIME)_FAILED\b'
     )
     $fatalRegex = '(?im)' + ($fatalPatterns -join '|')
-    $fatalLines = @($logResult.Output | Where-Object { $_ -match $fatalRegex } | Select-Object -First 10)
-    if ($fatalLines.Count -gt 0) {
-        throw "Android runtime log contains native loader, linker, or fatal errors:$([Environment]::NewLine)$($fatalLines -join [Environment]::NewLine)"
+    $runtimeReady = $false
+    $processId = $null
+    $lastRuntimeLog = @()
+    for ($attempt = 1; $attempt -le $RuntimeReadyAttempts; $attempt++) {
+        $pidResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'pidof', $PackageName) -AllowFailure
+        if ($pidResult.ExitCode -eq 0 -and $pidResult.Text.Trim() -match '^\d+(?:\s+\d+)*$') {
+            $processId = ($pidResult.Text.Trim() -split '\s+')[0]
+            $logResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('logcat', "--pid=$processId", '-d', '-v', 'brief')
+            $lastRuntimeLog = @($logResult.Output)
+
+            $fatalLines = @($lastRuntimeLog | Where-Object { $_ -match $fatalRegex } | Select-Object -First 10)
+            if ($fatalLines.Count -gt 0) {
+                throw "Android runtime log contains native loader, linker, or fatal errors:$([Environment]::NewLine)$($fatalLines -join [Environment]::NewLine)"
+            }
+
+            if (@($lastRuntimeLog | Where-Object { $_ -match '\bSDL3CS_RUNTIME_READY\b' }).Count -gt 0) {
+                $runtimeReady = $true
+                break
+            }
+        }
+
+        if ($attempt -lt $RuntimeReadyAttempts -and $RuntimeReadyDelayMilliseconds -gt 0) {
+            Start-Sleep -Milliseconds $RuntimeReadyDelayMilliseconds
+        }
     }
 
-    if (@($logResult.Output | Where-Object { $_ -match '\bSDL3CS_RUNTIME_READY\b' }).Count -eq 0) {
-        throw 'Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY.'
+    if (-not $runtimeReady) {
+        $diagnosticLines = @($lastRuntimeLog | Select-Object -Last 40)
+        $diagnostics = if ($diagnosticLines.Count -eq 0) { '<no process log output>' } else { $diagnosticLines -join [Environment]::NewLine }
+        throw "Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY after $RuntimeReadyAttempts bounded attempt(s). Last process log:$([Environment]::NewLine)$diagnostics"
     }
 
-    $finalPidResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'pidof', $PackageName)
-    if ($finalPidResult.Text.Trim() -notmatch '^\d+(?:\s+\d+)*$') {
-        throw "Android consumer process '$PackageName' stopped during runtime log validation."
+    if ($PostReadyStabilityMilliseconds -gt 0) {
+        Start-Sleep -Milliseconds $PostReadyStabilityMilliseconds
+    }
+
+    $finalPidResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'pidof', $PackageName) -AllowFailure
+    $finalProcessIds = if ($finalPidResult.ExitCode -eq 0 -and $finalPidResult.Text.Trim() -match '^\d+(?:\s+\d+)*$') {
+        @($finalPidResult.Text.Trim() -split '\s+')
+    }
+    else {
+        @()
+    }
+    if ($finalProcessIds -notcontains $processId) {
+        throw "Android readiness marker-emitting process '$processId' is no longer active for package '$PackageName'. Current PID output: $($finalPidResult.Text)"
+    }
+
+    $stabilityLogResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('logcat', "--pid=$processId", '-d', '-v', 'brief')
+    $stabilityFatalLines = @($stabilityLogResult.Output | Where-Object { $_ -match $fatalRegex } | Select-Object -First 10)
+    if ($stabilityFatalLines.Count -gt 0) {
+        throw "Android runtime log contains native loader, linker, or fatal errors after readiness:$([Environment]::NewLine)$($stabilityFatalLines -join [Environment]::NewLine)"
     }
 
     [pscustomobject]@{

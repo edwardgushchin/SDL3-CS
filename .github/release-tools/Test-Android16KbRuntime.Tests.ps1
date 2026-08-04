@@ -31,11 +31,32 @@ if ($readyMarkerIndex -lt 0) {
 
 $initGuard = [regex]::Match(
     $consumerBuilderText,
-    'if \(!SDL\.Init\(SDL\.InitFlags\.Video\)\)\s*\{\s*return;\s*\}',
+    'if \(!SDL\.Init\(SDL\.InitFlags\.Video\)\)\s*\{[\s\S]*?SDL3CS_INIT_FAILED[\s\S]*?return;\s*\}',
     [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
 )
 if (-not $initGuard.Success -or $readyMarkerIndex -le ($initGuard.Index + $initGuard.Length)) {
     throw 'Android consumer Main must emit SDL3CS_RUNTIME_READY only after the successful SDL initialization guard.'
+}
+if (-not $consumerBuilderText.Contains('SDL3CS_INIT_FAILED', [System.StringComparison]::Ordinal)) {
+    throw 'Android consumer Main must emit an explicit SDL3CS_INIT_FAILED diagnostic when SDL initialization fails.'
+}
+foreach ($completedOperation in @(
+    'SDL.CreateWindowAndRenderer(',
+    'SDL.RenderClear(',
+    'SDL.RenderPresent(',
+    'SDL.DestroyRenderer(',
+    'SDL.DestroyWindow(',
+    'SDL.Quit()'
+)) {
+    $operationIndex = $consumerBuilderText.LastIndexOf($completedOperation, [System.StringComparison]::Ordinal)
+    if ($operationIndex -lt 0 -or $readyMarkerIndex -le $operationIndex) {
+        throw "Android consumer must emit SDL3CS_RUNTIME_READY only after successful '$completedOperation' completion."
+    }
+}
+foreach ($failureContract in @('SDL3CS_RUNTIME_FAILED', 'Android.Util.Log.Error(', 'SDL.GetError()')) {
+    if (-not $consumerBuilderText.Contains($failureContract, [System.StringComparison]::Ordinal)) {
+        throw "Android consumer Main must emit fatal-classified runtime diagnostics: missing '$failureContract'."
+    }
 }
 
 function Assert-RuntimeValidationFails {
@@ -167,6 +188,14 @@ switch -Regex ($command) {
         exit 0
     }
     '^shell pidof ' {
+        $pidCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -like 'shell pidof *' }).Count
+        if ($scenario -eq 'never-pid' -or ($scenario -eq 'delayed-pid' -and $pidCallCount -eq 1)) {
+            exit 1
+        }
+        if ($scenario -eq 'post-marker-pid-turnover' -and $pidCallCount -gt 1) {
+            '5252'
+            exit 0
+        }
         '4242'
         exit 0
     }
@@ -174,8 +203,31 @@ switch -Regex ($command) {
         if ($scenario -eq 'linker-log') {
             'E/linker(4242): dlopen failed: library "libSDL3.so" not found'
         }
+        elseif ($scenario -eq 'init-failure-log') {
+            'E/SDL3CSConsumer(4242): SDL3CS_INIT_FAILED: video initialization failed'
+        }
         elseif ($scenario -eq 'alive-no-ready-marker') {
             'I/SDL3CSConsumer(4242): SDL initialized'
+        }
+        elseif ($scenario -eq 'delayed-ready-marker') {
+            $logcatCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'logcat --pid=4242 -d -v brief' }).Count
+            if ($logcatCallCount -eq 1) {
+                'I/SDL3CSConsumer(4242): runtime starting'
+            }
+            else {
+                'I/SDL3CSConsumer(4242): SDL3CS_RUNTIME_READY'
+            }
+        }
+        elseif ($scenario -eq 'ready-with-fatal') {
+            'I/SDL3CSConsumer(4242): SDL3CS_RUNTIME_READY'
+            'E/linker(4242): dlopen failed after readiness'
+        }
+        elseif ($scenario -eq 'ready-then-fatal') {
+            $logcatCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'logcat --pid=4242 -d -v brief' }).Count
+            'I/SDL3CSConsumer(4242): SDL3CS_RUNTIME_READY'
+            if ($logcatCallCount -gt 1) {
+                'E/SDL3CSConsumer(4242): SDL3CS_RUNTIME_FAILED: post-marker failure'
+            }
         }
         else {
             'I/SDL3CSConsumer(4242): SDL3CS_RUNTIME_READY'
@@ -202,7 +254,12 @@ switch -Regex ($command) {
         @{ Name = 'install-failure'; ExpectedMessage = 'adb install.*INSTALL_FAILED_INVALID_APK' },
         @{ Name = 'start-failure'; ExpectedMessage = 'adb shell am start.*Activity class does not exist' },
         @{ Name = 'linker-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
+        @{ Name = 'init-failure-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'alive-no-ready-marker'; ExpectedMessage = 'runtime log does not contain readiness marker' },
+        @{ Name = 'never-pid'; ExpectedMessage = 'runtime log does not contain readiness marker' },
+        @{ Name = 'ready-with-fatal'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
+        @{ Name = 'ready-then-fatal'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
+        @{ Name = 'post-marker-pid-turnover'; ExpectedMessage = 'marker-emitting process.*no longer active' },
         @{ Name = 'root-reconnect-timeout'; ExpectedMessage = 'did not reconnect after adb root' }
     )
     foreach ($failureScenario in $failureScenarios) {
@@ -213,6 +270,9 @@ switch -Regex ($command) {
         Assert-RuntimeValidationFails -Description $scenario -ExpectedMessage $failureScenario.ExpectedMessage -Action {
             if ($scenario -eq 'root-reconnect-timeout') {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -DeviceReconnectAttempts 2 -DeviceReconnectDelayMilliseconds 0 *> $null
+            }
+            elseif ($scenario -in @('alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
+                & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -RuntimeReadyAttempts 2 -RuntimeReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0 *> $null
             }
             else {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 *> $null
@@ -234,20 +294,50 @@ switch -Regex ($command) {
         if ($scenario -eq 'start-failure' -and @($commands | Where-Object { $_ -like 'shell am start -W -n *' }).Count -ne 1) {
             throw 'The start-failure scenario did not exercise exactly one activity launch attempt.'
         }
-        if ($scenario -in @('linker-log', 'alive-no-ready-marker')) {
+        if ($scenario -in @('linker-log', 'init-failure-log', 'alive-no-ready-marker', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'logcat --pid=4242 -d -v brief'
         }
-        if ($scenario -in @('start-failure', 'linker-log', 'alive-no-ready-marker')) {
+        if ($scenario -in @('start-failure', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
         }
         if ($scenario -eq 'root-reconnect-timeout' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
             throw 'An adb root reconnect timeout reached APK installation instead of failing closed.'
         }
+        if ($scenario -eq 'never-pid') {
+            if (@($commands | Where-Object { $_ -like 'shell pidof *' }).Count -ne 2) {
+                throw 'The never-pid scenario did not stop after exactly two configured bounded PID attempts.'
+            }
+            if (@($commands | Where-Object { $_ -like 'logcat --pid=*' }).Count -ne 0) {
+                throw 'The never-pid scenario queried process logs without a valid process ID.'
+            }
+        }
+    }
+
+    [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'delayed-pid')
+    $delayedPidResult = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -RuntimeReadyAttempts 2 -RuntimeReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0
+    if ($delayedPidResult.Status -ne 'Passed') {
+        throw "Android runtime polling did not accept a delayed process start: $($delayedPidResult | ConvertTo-Json -Compress)"
+    }
+    $delayedPidCommands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    if (@($delayedPidCommands | Where-Object { $_ -like 'shell pidof *' }).Count -ne 3) {
+        throw 'Android runtime polling did not perform two startup PID attempts plus one same-PID stability check.'
+    }
+
+    [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'delayed-ready-marker')
+    $delayedResult = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -RuntimeReadyAttempts 2 -RuntimeReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0
+    if ($delayedResult.Status -ne 'Passed') {
+        throw "Android runtime polling did not accept a delayed readiness marker: $($delayedResult | ConvertTo-Json -Compress)"
+    }
+    $delayedCommands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    if (@($delayedCommands | Where-Object { $_ -eq 'logcat --pid=4242 -d -v brief' }).Count -ne 3) {
+        throw 'Android runtime polling did not perform two bounded marker attempts plus one post-marker stability scan.'
     }
 
     [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
     [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'success')
-    $result = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0
+    $result = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -PostReadyStabilityMilliseconds 0
 
     if ($result.Status -ne 'Passed' -or $result.PageSize -ne 16384 -or $result.ProcessId -ne 4242) {
         throw "Unexpected Android 16 KB runtime validation result: $($result | ConvertTo-Json -Compress)"
