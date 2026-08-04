@@ -165,6 +165,8 @@ using SDL = SDL3.SDL;
     Label = "SDL3CSConsumer",
     MainLauncher = true,
     Exported = true,
+    ShowWhenLocked = true,
+    TurnScreenOn = true,
     ConfigurationChanges =
         ConfigChanges.Orientation |
         ConfigChanges.ScreenSize |
@@ -250,7 +252,8 @@ function Get-AndroidConsumerManifest {
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="$TargetSdkVersion" />
-  <application android:label="SDL3CSConsumer" android:allowBackup="false" android:supportsRtl="true" />
+  <application android:label="SDL3CSConsumer" android:allowBackup="false" android:supportsRtl="true"
+               android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
 </manifest>
 "@
 }

@@ -22,6 +22,16 @@ foreach ($targetSdkContract in @(
         throw "Android consumer runtime manifest must derive an explicit target SDK from the exact 16 KB system image: missing '$targetSdkContract'."
     }
 }
+foreach ($activityVisibilityContract in @(
+    'ShowWhenLocked = true',
+    'TurnScreenOn = true',
+    'android:theme="@android:style/Theme.NoTitleBar.Fullscreen"',
+    'android:hardwareAccelerated="true"'
+)) {
+    if (-not $consumerBuilderText.Contains($activityVisibilityContract, [System.StringComparison]::Ordinal)) {
+        throw "Android runtime consumer must guarantee a visible accelerated SDL surface on a headless emulator: missing '$activityVisibilityContract'."
+    }
+}
 
 $readyMarker = 'Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");'
 $readyMarkerIndex = $consumerBuilderText.IndexOf($readyMarker, [System.StringComparison]::Ordinal)
@@ -182,6 +192,9 @@ switch -Regex ($command) {
     '^shell wm dismiss-keyguard$' {
         exit 0
     }
+    '^shell input keyevent 82$' {
+        exit 0
+    }
     '^shell am force-stop ' {
         exit 0
     }
@@ -191,6 +204,26 @@ switch -Regex ($command) {
             exit 1
         }
         'Status: ok'
+        exit 0
+    }
+    '^shell dumpsys window windows$' {
+        $focusCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count
+        if ($scenario -eq 'never-foreground' -or ($scenario -eq 'delayed-foreground' -and $focusCallCount -eq 1)) {
+            'mCurrentFocus=null'
+        }
+        else {
+            'mCurrentFocus=Window{abc u0 com.edwardgushchin.sdl3cs.consumer.android.x64/com.edwardgushchin.sdl3cs.consumer.android.x64.MainActivity}'
+        }
+        exit 0
+    }
+    '^shell dumpsys activity activities$' {
+        $resumeCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count
+        if ($scenario -eq 'never-foreground' -or ($scenario -eq 'delayed-foreground' -and $resumeCallCount -eq 1)) {
+            'topResumedActivity=null'
+        }
+        else {
+            'topResumedActivity=ActivityRecord{def u0 com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity t1}'
+        }
         exit 0
     }
     '^shell pidof ' {
@@ -259,6 +292,7 @@ switch -Regex ($command) {
         @{ Name = 'compat-read-mismatch'; ExpectedMessage = 'compatibility property.*Expected.*false.*got.*true' },
         @{ Name = 'install-failure'; ExpectedMessage = 'adb install.*INSTALL_FAILED_INVALID_APK' },
         @{ Name = 'start-failure'; ExpectedMessage = 'adb shell am start.*Activity class does not exist' },
+        @{ Name = 'never-foreground'; ExpectedMessage = 'did not become focused and resumed' },
         @{ Name = 'linker-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'init-failure-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'alive-no-ready-marker'; ExpectedMessage = 'runtime log does not contain readiness marker' },
@@ -276,6 +310,9 @@ switch -Regex ($command) {
         Assert-RuntimeValidationFails -Description $scenario -ExpectedMessage $failureScenario.ExpectedMessage -Action {
             if ($scenario -eq 'root-reconnect-timeout') {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -DeviceReconnectAttempts 2 -DeviceReconnectDelayMilliseconds 0 *> $null
+            }
+            elseif ($scenario -eq 'never-foreground') {
+                & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -ForegroundReadyAttempts 2 -ForegroundReadyDelayMilliseconds 0 *> $null
             }
             elseif ($scenario -in @('alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -RuntimeReadyAttempts 2 -RuntimeReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0 *> $null
@@ -303,7 +340,7 @@ switch -Regex ($command) {
         if ($scenario -in @('linker-log', 'init-failure-log', 'alive-no-ready-marker', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'logcat --pid=4242 -d -v brief'
         }
-        if ($scenario -in @('start-failure', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
+        if ($scenario -in @('start-failure', 'never-foreground', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
         }
         if ($scenario -eq 'root-reconnect-timeout' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
@@ -317,6 +354,27 @@ switch -Regex ($command) {
                 throw 'The never-pid scenario queried process logs without a valid process ID.'
             }
         }
+        if ($scenario -eq 'never-foreground') {
+            if (@($commands | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count -ne 2 -or
+                @($commands | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count -ne 2) {
+                throw 'The never-foreground scenario did not stop after exactly two configured foreground attempts.'
+            }
+            if (@($commands | Where-Object { $_ -like 'shell pidof *' -or $_ -like 'logcat --pid=*' }).Count -ne 0) {
+                throw 'The never-foreground scenario reached marker polling without a focused and resumed activity.'
+            }
+        }
+    }
+
+    [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
+    [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', 'delayed-foreground')
+    $delayedForegroundResult = & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -ForegroundReadyAttempts 2 -ForegroundReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0
+    if ($delayedForegroundResult.Status -ne 'Passed') {
+        throw "Android runtime polling did not accept delayed foreground readiness: $($delayedForegroundResult | ConvertTo-Json -Compress)"
+    }
+    $delayedForegroundCommands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    if (@($delayedForegroundCommands | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count -ne 2 -or
+        @($delayedForegroundCommands | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count -ne 2) {
+        throw 'Android runtime polling did not perform two bounded foreground attempts.'
     }
 
     [System.IO.File]::WriteAllText($commandLog, [string]::Empty)
@@ -360,7 +418,10 @@ switch -Regex ($command) {
         'shell getprop pm.16kb.app_compat.disabled',
         'shell input keyevent KEYCODE_WAKEUP',
         'shell wm dismiss-keyguard',
+        'shell input keyevent 82',
         'logcat -c',
+        'shell dumpsys window windows',
+        'shell dumpsys activity activities',
         'logcat --pid=4242 -d -v brief',
         'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
     )) {
@@ -376,8 +437,12 @@ switch -Regex ($command) {
     }
     $wakeIndex = [Array]::IndexOf($successCommands, 'shell input keyevent KEYCODE_WAKEUP')
     $dismissIndex = [Array]::IndexOf($successCommands, 'shell wm dismiss-keyguard')
+    $menuIndex = [Array]::IndexOf($successCommands, 'shell input keyevent 82')
     $startIndex = [Array]::IndexOf($successCommands, 'shell am start -W -n com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity')
-    if ($wakeIndex -lt 0 -or $dismissIndex -le $wakeIndex -or $startIndex -le $dismissIndex) {
+    $focusIndex = [Array]::IndexOf($successCommands, 'shell dumpsys window windows')
+    $pidIndex = [Array]::IndexOf($successCommands, 'shell pidof com.edwardgushchin.sdl3cs.consumer.android.x64')
+    if ($wakeIndex -lt 0 -or $dismissIndex -le $wakeIndex -or $menuIndex -le $dismissIndex -or
+        $startIndex -le $menuIndex -or $focusIndex -le $startIndex -or $pidIndex -le $focusIndex) {
         throw 'The successful runtime scenario did not wake and unlock the headless emulator before starting the SDL activity.'
     }
     if (@($successCommands | Where-Object { $_ -eq 'shell am start -W -n com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity' }).Count -ne 1) {

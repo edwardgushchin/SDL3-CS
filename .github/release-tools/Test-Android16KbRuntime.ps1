@@ -16,6 +16,12 @@ param(
     [int] $StartupWaitSeconds = 3,
 
     [ValidateRange(1, 120)]
+    [int] $ForegroundReadyAttempts = 15,
+
+    [ValidateRange(0, 5000)]
+    [int] $ForegroundReadyDelayMilliseconds = 1000,
+
+    [ValidateRange(1, 120)]
     [int] $DeviceReconnectAttempts = 30,
 
     [ValidateRange(0, 5000)]
@@ -134,6 +140,46 @@ function Wait-AndroidDevice {
     throw "Android device did not reconnect after adb root within $Attempts attempt(s)."
 }
 
+function Wait-AndroidActivityForeground {
+    param(
+        [Parameter(Mandatory)][string] $Executable,
+        [Parameter(Mandatory)][string] $Component,
+        [Parameter(Mandatory)][int] $Attempts,
+        [Parameter(Mandatory)][int] $DelayMilliseconds
+    )
+
+    $applicationId = $Component.Split('/', 2)[0]
+    $componentCandidates = @(
+        $Component,
+        $Component.Replace('/.', "/$applicationId.", [System.StringComparison]::Ordinal)
+    ) | Select-Object -Unique
+    $componentPattern = '(?:' + (($componentCandidates | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')'
+    $windowPattern = '(?im)^\s*(?:mCurrentFocus|mFocusedApp)\s*=.*' + $componentPattern
+    $activityPattern = '(?im)^\s*(?:topResumedActivity|mResumedActivity|ResumedActivity)\s*=.*' + $componentPattern
+    $lastWindowState = '<not queried>'
+    $lastActivityState = '<not queried>'
+
+    for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+        $windowResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'window', 'windows') -AllowFailure
+        $activityResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'activity', 'activities') -AllowFailure
+        $lastWindowState = if ([string]::IsNullOrWhiteSpace($windowResult.Text)) { '<no window state>' } else { $windowResult.Text }
+        $lastActivityState = if ([string]::IsNullOrWhiteSpace($activityResult.Text)) { '<no activity state>' } else { $activityResult.Text }
+
+        if ($windowResult.ExitCode -eq 0 -and $activityResult.ExitCode -eq 0 -and
+            $windowResult.Text -match $windowPattern -and $activityResult.Text -match $activityPattern) {
+            return
+        }
+
+        if ($attempt -lt $Attempts -and $DelayMilliseconds -gt 0) {
+            Start-Sleep -Milliseconds $DelayMilliseconds
+        }
+    }
+
+    $windowDiagnostics = (@($lastWindowState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
+    $activityDiagnostics = (@($lastActivityState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
+    throw "Android activity '$Component' did not become focused and resumed within $Attempts attempt(s). Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
+}
+
 function Set-AndroidCompatibilityProperty {
     param(
         [Parameter(Mandatory)][string] $Executable,
@@ -216,6 +262,7 @@ try {
 
     $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP')
     $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'wm', 'dismiss-keyguard')
+    $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'input', 'keyevent', '82')
     $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('logcat', '-c')
     $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'am', 'force-stop', $PackageName)
 
@@ -223,6 +270,12 @@ try {
     if ($startResult.Text -match '(?im)^\s*(?:Error|Exception):|Status:\s*(?:timeout|canceled)\b') {
         throw "Android activity launch failed for '$componentName': $($startResult.Text)"
     }
+
+    Wait-AndroidActivityForeground `
+        -Executable $resolvedAdbPath `
+        -Component $componentName `
+        -Attempts $ForegroundReadyAttempts `
+        -DelayMilliseconds $ForegroundReadyDelayMilliseconds
 
     if ($StartupWaitSeconds -gt 0) {
         Start-Sleep -Seconds $StartupWaitSeconds
