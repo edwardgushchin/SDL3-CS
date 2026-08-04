@@ -200,7 +200,8 @@ foreach ($androidRid in $androidRids) {
 
 $workflowText = Get-Content -LiteralPath $workflowPath -Raw -Encoding UTF8
 $consumerText = Get-Content -LiteralPath $consumerPath -Raw -Encoding UTF8
-Assert-TextContains -Text $consumerText -Expected 'Name = ".MainActivity",' -Description 'stable Android runtime activity name'
+Assert-TextContains -Text $consumerText -Expected 'Name = "$ApplicationId.MainActivity",' -Description 'fully qualified Android runtime activity name'
+Assert-TextContains -Text $consumerText -Expected 'Get-AndroidConsumerMainActivity -ApplicationId $applicationId' -Description 'RID-specific Android application ID handoff'
 Assert-TextContains -Text $workflowText -Expected 'android_ndk_version: ${{ steps.native-matrix.outputs.android_ndk_version }}' -Description 'plan job Android NDK version output binding'
 Assert-TextContains -Text $workflowText -Expected 'android_ndk_version=$($manifest.toolchains.androidNdkVersion)' -Description 'manifest Android NDK version output'
 Assert-TextContains -Text $workflowText -Expected 'SDL3CS_ANDROID_NDK_VERSION: ${{ needs.plan.outputs.android_ndk_version }}' -Description 'manifest-derived Android NDK version environment handoff'

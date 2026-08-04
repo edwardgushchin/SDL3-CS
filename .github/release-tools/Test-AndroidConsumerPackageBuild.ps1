@@ -149,6 +149,11 @@ function ConvertTo-XmlPackageReference {
 }
 
 function Get-AndroidConsumerMainActivity {
+    param(
+        [Parameter(Mandatory)]
+        [string] $ApplicationId
+    )
+
     return @"
 using Android.App;
 using Android.Content.PM;
@@ -156,7 +161,7 @@ using Org.Libsdl.App;
 using SDL = SDL3.SDL;
 
 [Activity(
-    Name = ".MainActivity",
+    Name = "$ApplicationId.MainActivity",
     Label = "SDL3CSConsumer",
     MainLauncher = true,
     Exported = true,
@@ -574,7 +579,7 @@ $packageReferences
 
     New-Item -ItemType Directory -Force -Path $projectRoot | Out-Null
     Set-Content -LiteralPath $projectPath -Value $projectXml -Encoding UTF8
-    Set-Content -LiteralPath (Join-Path $projectRoot 'MainActivity.cs') -Value (Get-AndroidConsumerMainActivity) -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $projectRoot 'MainActivity.cs') -Value (Get-AndroidConsumerMainActivity -ApplicationId $applicationId) -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $projectRoot 'AndroidManifest.xml') -Value (Get-AndroidConsumerManifest) -Encoding UTF8
 
     $nugetConfig = @"
