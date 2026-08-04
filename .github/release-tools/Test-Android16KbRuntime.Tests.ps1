@@ -83,15 +83,27 @@ if (-not $consumerBuilderText.Contains('SDL3CS_INIT_FAILED', [System.StringCompa
 foreach ($completedOperation in @(
     'SDL.CreateWindowAndRenderer(',
     'SDL.RenderClear(',
-    'SDL.RenderPresent(',
-    'SDL.DestroyRenderer(',
-    'SDL.DestroyWindow(',
-    'SDL.Quit()'
+    'SDL.RenderPresent('
 )) {
     $operationIndex = $consumerBuilderText.LastIndexOf($completedOperation, [System.StringComparison]::Ordinal)
     if ($operationIndex -lt 0 -or $videoReadyMarkerIndex -le $operationIndex) {
         throw "Android consumer must emit SDL3CS_VIDEO_READY only after successful '$completedOperation' completion."
     }
+}
+$runtimeObservationHold = 'System.Threading.Thread.Sleep(5000);'
+$runtimeObservationHoldIndex = $consumerBuilderText.IndexOf($runtimeObservationHold, [System.StringComparison]::Ordinal)
+if ($runtimeObservationHoldIndex -le $videoReadyMarkerIndex) {
+    throw 'Android consumer must retain a bounded five-second liveness window after successful video operations.'
+}
+foreach ($cleanupOperation in @('SDL.DestroyRenderer(', 'SDL.DestroyWindow(', 'SDL.Quit()')) {
+    $cleanupIndex = $consumerBuilderText.LastIndexOf($cleanupOperation, [System.StringComparison]::Ordinal)
+    if ($cleanupIndex -le $runtimeObservationHoldIndex) {
+        throw "Android consumer must defer '$cleanupOperation' until after the bounded runtime observation window."
+    }
+}
+$validatorText = Get-Content -LiteralPath $validator -Raw -Encoding UTF8
+if ($validatorText -notmatch '\[int\]\s+\$StartupWaitSeconds\s*=\s*0\b') {
+    throw 'Android runtime PID polling must start without a blind startup delay.'
 }
 foreach ($failureContract in @('SDL3CS_RUNTIME_FAILED', 'Android.Util.Log.Error(', 'SDL.GetError()')) {
     if (-not $consumerBuilderText.Contains($failureContract, [System.StringComparison]::Ordinal)) {
@@ -272,7 +284,7 @@ switch -Regex ($command) {
     }
     '^shell pidof ' {
         $pidCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -like 'shell pidof *' }).Count
-        if ($scenario -eq 'never-pid' -or ($scenario -eq 'delayed-pid' -and $pidCallCount -eq 1)) {
+        if ($scenario -in @('never-pid', 'exited-with-fatal', 'exited-after-ready') -or ($scenario -eq 'delayed-pid' -and $pidCallCount -eq 1)) {
             exit 1
         }
         if ($scenario -eq 'post-marker-pid-turnover' -and $pidCallCount -gt 1) {
@@ -317,6 +329,17 @@ switch -Regex ($command) {
         }
         exit 0
     }
+    '^logcat -d -v brief$' {
+        if ($scenario -eq 'exited-with-fatal') {
+            'E/AndroidRuntime(5151): FATAL EXCEPTION: main'
+            'E/AndroidRuntime(5151): Process: com.edwardgushchin.sdl3cs.consumer.android.x64, PID: 5151'
+        }
+        elseif ($scenario -eq 'exited-after-ready') {
+            'I/SDL3CSConsumer(5151): SDL3CS_RUNTIME_READY'
+            'I/ActivityManager(1000): Process com.edwardgushchin.sdl3cs.consumer.android.x64 (pid 5151) has died'
+        }
+        exit 0
+    }
     '^uninstall ' {
         'Success'
         exit 0
@@ -340,6 +363,8 @@ switch -Regex ($command) {
         @{ Name = 'init-failure-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'alive-no-ready-marker'; ExpectedMessage = 'runtime log does not contain readiness marker' },
         @{ Name = 'never-pid'; ExpectedMessage = 'runtime log does not contain readiness marker' },
+        @{ Name = 'exited-with-fatal'; ExpectedMessage = 'global runtime log contains native loader, linker, or fatal errors' },
+        @{ Name = 'exited-after-ready'; ExpectedMessage = 'readiness marker.*process exited before PID-scoped stability verification' },
         @{ Name = 'ready-with-fatal'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'ready-then-fatal'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
         @{ Name = 'post-marker-pid-turnover'; ExpectedMessage = 'marker-emitting process.*no longer active' },
@@ -354,7 +379,7 @@ switch -Regex ($command) {
             if ($scenario -eq 'root-reconnect-timeout') {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -DeviceReconnectAttempts 2 -DeviceReconnectDelayMilliseconds 0 *> $null
             }
-            elseif ($scenario -in @('alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
+            elseif ($scenario -in @('alive-no-ready-marker', 'never-pid', 'exited-with-fatal', 'exited-after-ready', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
                 & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -RuntimeReadyAttempts 2 -RuntimeReadyDelayMilliseconds 0 -PostReadyStabilityMilliseconds 0 *> $null
             }
             else {
@@ -380,8 +405,11 @@ switch -Regex ($command) {
         if ($scenario -in @('linker-log', 'init-failure-log', 'alive-no-ready-marker', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'logcat --pid=4242 -d -v brief'
         }
-        if ($scenario -in @('start-failure', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
+        if ($scenario -in @('start-failure', 'linker-log', 'init-failure-log', 'alive-no-ready-marker', 'never-pid', 'exited-with-fatal', 'exited-after-ready', 'ready-with-fatal', 'ready-then-fatal', 'post-marker-pid-turnover')) {
             Assert-CommandLogged -Commands $commands -Expected 'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
+        }
+        if ($scenario -in @('never-pid', 'exited-with-fatal', 'exited-after-ready')) {
+            Assert-CommandLogged -Commands $commands -Expected 'logcat -d -v brief'
         }
         if ($scenario -eq 'root-reconnect-timeout' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
             throw 'An adb root reconnect timeout reached APK installation instead of failing closed.'

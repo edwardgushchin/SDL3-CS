@@ -13,7 +13,7 @@ param(
     [string] $ActivityName = '.MainActivity',
 
     [ValidateRange(0, 60)]
-    [int] $StartupWaitSeconds = 3,
+    [int] $StartupWaitSeconds = 0,
 
     [ValidateRange(1, 120)]
     [int] $DeviceReconnectAttempts = 30,
@@ -330,12 +330,27 @@ try {
     }
 
     if (-not $runtimeReady) {
+        $globalLogResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('logcat', '-d', '-v', 'brief') -AllowFailure
+        $globalRuntimeLog = if ($globalLogResult.ExitCode -eq 0) { @($globalLogResult.Output) } else { @() }
+        $packagePattern = [regex]::Escape($PackageName)
+        $globalRelevantRegex = "(?im)$packagePattern|SDL3CSConsumer|SDL3CS_|AndroidRuntime|\b(?:linker|NativeLoader)\b|\b(?:Fatal signal|Abort message|backtrace)\b"
+        $globalRelevantLines = @($globalRuntimeLog | Where-Object { $_ -match $globalRelevantRegex } | Select-Object -Last 80)
+        $globalFatalLines = @($globalRelevantLines | Where-Object { $_ -match $fatalRegex } | Select-Object -First 10)
+        if ($globalFatalLines.Count -gt 0) {
+            throw "Android global runtime log contains native loader, linker, or fatal errors:$([Environment]::NewLine)$($globalFatalLines -join [Environment]::NewLine)"
+        }
+        $globalReadyLines = @($globalRelevantLines | Where-Object { $_ -match '\bSDL3CS_RUNTIME_READY\b' } | Select-Object -First 10)
+        if ($globalReadyLines.Count -gt 0) {
+            throw "Android readiness marker was emitted, but the process exited before PID-scoped stability verification:$([Environment]::NewLine)$($globalReadyLines -join [Environment]::NewLine)"
+        }
+
         $foregroundState = Get-AndroidActivityForegroundState -Executable $resolvedAdbPath -Component $componentName
         $diagnosticLines = @($lastRuntimeLog | Select-Object -Last 40)
         $diagnostics = if ($diagnosticLines.Count -eq 0) { '<no process log output>' } else { $diagnosticLines -join [Environment]::NewLine }
+        $globalDiagnostics = if ($globalRelevantLines.Count -eq 0) { '<no package-relevant global log output>' } else { $globalRelevantLines -join [Environment]::NewLine }
         $windowDiagnostics = (@($foregroundState.WindowState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
         $activityDiagnostics = (@($foregroundState.ActivityState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
-        throw "Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY after $RuntimeReadyAttempts bounded attempt(s). Foreground evidence: ready=$($foregroundState.Ready); mode=$($foregroundState.Mode); windowFocused=$($foregroundState.WindowFocused); activityResumed=$($foregroundState.ActivityResumed); android35VisibleFocused=$($foregroundState.Android35VisibleFocused). Last process log:$([Environment]::NewLine)$diagnostics$([Environment]::NewLine)Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
+        throw "Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY after $RuntimeReadyAttempts bounded attempt(s). Activity launch output: $($startResult.Text.Trim()). Foreground evidence: ready=$($foregroundState.Ready); mode=$($foregroundState.Mode); windowFocused=$($foregroundState.WindowFocused); activityResumed=$($foregroundState.ActivityResumed); android35VisibleFocused=$($foregroundState.Android35VisibleFocused). Last process log:$([Environment]::NewLine)$diagnostics$([Environment]::NewLine)Relevant global log:$([Environment]::NewLine)$globalDiagnostics$([Environment]::NewLine)Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
     }
 
     if ($PostReadyStabilityMilliseconds -gt 0) {

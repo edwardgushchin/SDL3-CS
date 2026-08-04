@@ -247,6 +247,9 @@ public sealed class MainActivity : SDLActivity
                 Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: RenderPresent: {SDL.GetError()}");
                 return;
             }
+
+            Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_VIDEO_READY");
+            System.Threading.Thread.Sleep(5000);
         }
         finally
         {
@@ -254,8 +257,6 @@ public sealed class MainActivity : SDLActivity
             SDL.DestroyWindow(window);
             SDL.Quit();
         }
-
-        Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_VIDEO_READY");
     }
 }
 "@
