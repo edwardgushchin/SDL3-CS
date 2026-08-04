@@ -155,9 +155,15 @@ function Wait-AndroidActivityForeground {
     ) | Select-Object -Unique
     $componentPattern = '(?:' + (($componentCandidates | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')'
     $windowPattern = '(?im)^\s*(?:mCurrentFocus|mFocusedApp)\s*=.*' + $componentPattern
-    $activityPattern = '(?im)^\s*(?:topResumedActivity|mResumedActivity|ResumedActivity)\s*=.*' + $componentPattern
+    $android35WindowPattern = '(?im)^\s*(?:imeLayeringTarget(?:\s+in\s+display#\s+\d+)?|mControlTarget)\b.*' + $componentPattern
+    $topFocusedDisplayPattern = '(?im)^\s*mTopFocusedDisplayId\s*=\s*\d+\s*$'
+    $activityPattern = '(?im)^\s*(?:topResumedActivity|mResumedActivity|ResumedActivity|ACTIVITY)\b.*' + $componentPattern
+    $visibleProcessPattern = '(?im)^\s*VisibleActivityProcess\s*:.*\b' + [regex]::Escape($applicationId) + '(?:/|\b)'
     $lastWindowState = '<not queried>'
     $lastActivityState = '<not queried>'
+    $lastWindowFocused = $false
+    $lastActivityResumed = $false
+    $lastAndroid35VisibleFocused = $false
 
     for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
         $windowResult = Invoke-AdbCommand -Executable $Executable -Arguments @('shell', 'dumpsys', 'window', 'windows') -AllowFailure
@@ -165,8 +171,15 @@ function Wait-AndroidActivityForeground {
         $lastWindowState = if ([string]::IsNullOrWhiteSpace($windowResult.Text)) { '<no window state>' } else { $windowResult.Text }
         $lastActivityState = if ([string]::IsNullOrWhiteSpace($activityResult.Text)) { '<no activity state>' } else { $activityResult.Text }
 
+        $lastWindowFocused = $windowResult.Text -match $windowPattern
+        $lastActivityResumed = $activityResult.Text -match $activityPattern
+        $lastAndroid35VisibleFocused =
+            $windowResult.Text -match $topFocusedDisplayPattern -and
+            $windowResult.Text -match $android35WindowPattern -and
+            $activityResult.Text -match $visibleProcessPattern
+
         if ($windowResult.ExitCode -eq 0 -and $activityResult.ExitCode -eq 0 -and
-            $windowResult.Text -match $windowPattern -and $activityResult.Text -match $activityPattern) {
+            (($lastWindowFocused -and $lastActivityResumed) -or $lastAndroid35VisibleFocused)) {
             return
         }
 
@@ -177,7 +190,7 @@ function Wait-AndroidActivityForeground {
 
     $windowDiagnostics = (@($lastWindowState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
     $activityDiagnostics = (@($lastActivityState -split "`r?`n") | Select-Object -Last 40) -join [Environment]::NewLine
-    throw "Android activity '$Component' did not become focused and resumed within $Attempts attempt(s). Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
+    throw "Android activity '$Component' did not become focused and resumed within $Attempts attempt(s). Matcher state: windowFocused=$lastWindowFocused; activityResumed=$lastActivityResumed; android35VisibleFocused=$lastAndroid35VisibleFocused. Window state:$([Environment]::NewLine)$windowDiagnostics$([Environment]::NewLine)Activity state:$([Environment]::NewLine)$activityDiagnostics"
 }
 
 function Set-AndroidCompatibilityProperty {

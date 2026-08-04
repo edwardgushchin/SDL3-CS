@@ -209,20 +209,22 @@ switch -Regex ($command) {
     '^shell dumpsys window windows$' {
         $focusCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'shell dumpsys window windows' }).Count
         if ($scenario -eq 'never-foreground' -or ($scenario -eq 'delayed-foreground' -and $focusCallCount -eq 1)) {
-            'mCurrentFocus=null'
+            'mTopFocusedDisplayId=-1'
+            'imeLayeringTarget in display# 0 null'
         }
         else {
-            'mCurrentFocus=Window{abc u0 com.edwardgushchin.sdl3cs.consumer.android.x64/com.edwardgushchin.sdl3cs.consumer.android.x64.MainActivity}'
+            'mTopFocusedDisplayId=0'
+            'imeLayeringTarget in display# 0 Window{abc u0 com.edwardgushchin.sdl3cs.consumer.android.x64/com.edwardgushchin.sdl3cs.consumer.android.x64.MainActivity}'
         }
         exit 0
     }
     '^shell dumpsys activity activities$' {
         $resumeCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'shell dumpsys activity activities' }).Count
         if ($scenario -eq 'never-foreground' -or ($scenario -eq 'delayed-foreground' -and $resumeCallCount -eq 1)) {
-            'topResumedActivity=null'
+            'VisibleActivityProcess:[]'
         }
         else {
-            'topResumedActivity=ActivityRecord{def u0 com.edwardgushchin.sdl3cs.consumer.android.x64/.MainActivity t1}'
+            'VisibleActivityProcess:[ ProcessRecord{def 4242:com.edwardgushchin.sdl3cs.consumer.android.x64/u0a207}]'
         }
         exit 0
     }
