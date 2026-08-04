@@ -43,29 +43,29 @@ else {
     }
 }
 
-$requiredRevisionFiveOverrides = [ordered]@{
-    SDL_image = 9
-    SDL_mixer = 8
-    SDL_ttf = 8
-    SDL_shadercross = 8
+$requiredReleaseOverrides = [ordered]@{
+    '6' = [ordered]@{ SDL_image = 8; SDL_mixer = 7; SDL_ttf = 7; SDL_shadercross = 7 }
+    '7' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
 }
-$revisionFiveOverride = $null
-if ($manifest.PSObject.Properties.Name.Contains('versioning') -and
-    $null -ne $manifest.versioning -and
-    $manifest.versioning.PSObject.Properties.Name.Contains('componentPackageRevisionOverrides')) {
-    $revisionFiveProperty = $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties['5']
-    if ($revisionFiveProperty) {
-        $revisionFiveOverride = $revisionFiveProperty.Value
+foreach ($releaseOverride in $requiredReleaseOverrides.GetEnumerator()) {
+    $actualOverride = $null
+    if ($manifest.PSObject.Properties.Name.Contains('versioning') -and
+        $null -ne $manifest.versioning -and
+        $manifest.versioning.PSObject.Properties.Name.Contains('componentPackageRevisionOverrides')) {
+        $overrideProperty = $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties[$releaseOverride.Key]
+        if ($overrideProperty) {
+            $actualOverride = $overrideProperty.Value
+        }
     }
-}
-if ($null -eq $revisionFiveOverride) {
-    Add-ValidationError 'Manifest versioning.componentPackageRevisionOverrides must declare release revision 5.'
-}
-else {
-    foreach ($componentOverride in $requiredRevisionFiveOverrides.GetEnumerator()) {
-        if (-not $revisionFiveOverride.PSObject.Properties.Name.Contains($componentOverride.Key) -or
-            [int]$revisionFiveOverride.($componentOverride.Key) -ne $componentOverride.Value) {
-            Add-ValidationError "Manifest release revision 5 override for $($componentOverride.Key) must be $($componentOverride.Value)."
+    if ($null -eq $actualOverride) {
+        Add-ValidationError "Manifest versioning.componentPackageRevisionOverrides must declare release revision $($releaseOverride.Key)."
+    }
+    else {
+        foreach ($componentOverride in $releaseOverride.Value.GetEnumerator()) {
+            if (-not $actualOverride.PSObject.Properties.Name.Contains($componentOverride.Key) -or
+                [int]$actualOverride.($componentOverride.Key) -ne $componentOverride.Value) {
+                Add-ValidationError "Manifest release revision $($releaseOverride.Key) override for $($componentOverride.Key) must be $($componentOverride.Value)."
+            }
         }
     }
 }
