@@ -10,6 +10,23 @@ if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) {
     throw "Android 16 KB runtime validator was not found: $validator"
 }
 
+$consumerBuilder = Join-Path $PSScriptRoot 'Test-AndroidConsumerPackageBuild.ps1'
+$consumerBuilderText = Get-Content -LiteralPath $consumerBuilder -Raw -Encoding UTF8
+$readyMarker = 'Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");'
+$readyMarkerIndex = $consumerBuilderText.IndexOf($readyMarker, [System.StringComparison]::Ordinal)
+if ($readyMarkerIndex -lt 0) {
+    throw 'Android consumer Main must emit the exact SDL3CS_RUNTIME_READY marker after SDL initialization.'
+}
+
+$initGuard = [regex]::Match(
+    $consumerBuilderText,
+    'if \(!SDL\.Init\(SDL\.InitFlags\.Video\)\)\s*\{\s*return;\s*\}',
+    [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
+)
+if (-not $initGuard.Success -or $readyMarkerIndex -le ($initGuard.Index + $initGuard.Length)) {
+    throw 'Android consumer Main must emit SDL3CS_RUNTIME_READY only after the successful SDL initialization guard.'
+}
+
 function Assert-RuntimeValidationFails {
     param(
         [Parameter(Mandatory)][string] $Description,
@@ -74,7 +91,13 @@ if ($logPath) {
 
 switch -Regex ($command) {
     '^get-state$' {
-        'device'
+        if ($scenario -eq 'root-reconnect-timeout') {
+            $stateCallCount = @(Get-Content -LiteralPath $logPath -Encoding UTF8 | Where-Object { $_ -eq 'get-state' }).Count
+            if ($stateCallCount -gt 1) { 'offline' } else { 'device' }
+        }
+        else {
+            'device'
+        }
         exit 0
     }
     '^shell getconf PAGE_SIZE$' {
@@ -140,8 +163,11 @@ switch -Regex ($command) {
         if ($scenario -eq 'linker-log') {
             'E/linker(4242): dlopen failed: library "libSDL3.so" not found'
         }
-        else {
+        elseif ($scenario -eq 'alive-no-ready-marker') {
             'I/SDL3CSConsumer(4242): SDL initialized'
+        }
+        else {
+            'I/SDL3CSConsumer(4242): SDL3CS_RUNTIME_READY'
         }
         exit 0
     }
@@ -164,7 +190,9 @@ switch -Regex ($command) {
         @{ Name = 'compat-read-mismatch'; ExpectedMessage = 'compatibility property.*Expected.*false.*got.*true' },
         @{ Name = 'install-failure'; ExpectedMessage = 'adb install.*INSTALL_FAILED_INVALID_APK' },
         @{ Name = 'start-failure'; ExpectedMessage = 'adb shell am start.*Activity class does not exist' },
-        @{ Name = 'linker-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' }
+        @{ Name = 'linker-log'; ExpectedMessage = 'runtime log contains native loader, linker, or fatal errors' },
+        @{ Name = 'alive-no-ready-marker'; ExpectedMessage = 'runtime log does not contain readiness marker' },
+        @{ Name = 'root-reconnect-timeout'; ExpectedMessage = 'did not reconnect after adb root' }
     )
     foreach ($failureScenario in $failureScenarios) {
         $scenario = $failureScenario.Name
@@ -172,7 +200,12 @@ switch -Regex ($command) {
         [Environment]::SetEnvironmentVariable('SDL3CS_FAKE_ADB_SCENARIO', $scenario)
 
         Assert-RuntimeValidationFails -Description $scenario -ExpectedMessage $failureScenario.ExpectedMessage -Action {
-            & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 *> $null
+            if ($scenario -eq 'root-reconnect-timeout') {
+                & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 -DeviceReconnectAttempts 2 -DeviceReconnectDelayMilliseconds 0 *> $null
+            }
+            else {
+                & $validator -ApkPath $apkPath -AdbPath $fakeAdb -StartupWaitSeconds 0 *> $null
+            }
         }
 
         $commands = @(Get-Content -LiteralPath $commandLog -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -190,11 +223,14 @@ switch -Regex ($command) {
         if ($scenario -eq 'start-failure' -and @($commands | Where-Object { $_ -like 'shell am start -W -n *' }).Count -ne 1) {
             throw 'The start-failure scenario did not exercise exactly one activity launch attempt.'
         }
-        if ($scenario -eq 'linker-log') {
+        if ($scenario -in @('linker-log', 'alive-no-ready-marker')) {
             Assert-CommandLogged -Commands $commands -Expected 'logcat --pid=4242 -d -v brief'
         }
-        if ($scenario -in @('start-failure', 'linker-log')) {
+        if ($scenario -in @('start-failure', 'linker-log', 'alive-no-ready-marker')) {
             Assert-CommandLogged -Commands $commands -Expected 'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
+        }
+        if ($scenario -eq 'root-reconnect-timeout' -and @($commands | Where-Object { $_ -like 'install -r -t *' }).Count -ne 0) {
+            throw 'An adb root reconnect timeout reached APK installation instead of failing closed.'
         }
     }
 
@@ -211,7 +247,6 @@ switch -Regex ($command) {
         'get-state',
         'shell getconf PAGE_SIZE',
         'root',
-        'wait-for-device',
         'shell setprop bionic.linker.16kb.app_compat.enabled false',
         'shell getprop bionic.linker.16kb.app_compat.enabled',
         'shell setprop pm.16kb.app_compat.disabled true',
@@ -221,6 +256,10 @@ switch -Regex ($command) {
         'uninstall com.edwardgushchin.sdl3cs.consumer.android.x64'
     )) {
         Assert-CommandLogged -Commands $successCommands -Expected $expectedCommand
+    }
+
+    if (@($successCommands | Where-Object { $_ -eq 'get-state' }).Count -lt 2) {
+        throw 'The successful runtime scenario did not verify adb reconnection after adb root.'
     }
 
     if (@($successCommands | Where-Object { $_ -like 'install -r -t *SDL3CSConsumer-Signed.apk' }).Count -ne 1) {

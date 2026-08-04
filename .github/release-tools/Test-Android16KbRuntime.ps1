@@ -13,7 +13,13 @@ param(
     [string] $ActivityName = '.MainActivity',
 
     [ValidateRange(0, 60)]
-    [int] $StartupWaitSeconds = 3
+    [int] $StartupWaitSeconds = 3,
+
+    [ValidateRange(1, 120)]
+    [int] $DeviceReconnectAttempts = 30,
+
+    [ValidateRange(0, 5000)]
+    [int] $DeviceReconnectDelayMilliseconds = 1000
 )
 
 Set-StrictMode -Version Latest
@@ -97,6 +103,28 @@ function Get-AndroidComponentName {
     return "$ApplicationId/.$Activity"
 }
 
+function Wait-AndroidDevice {
+    param(
+        [Parameter(Mandatory)][string] $Executable,
+        [Parameter(Mandatory)][int] $Attempts,
+        [Parameter(Mandatory)][int] $DelayMilliseconds
+    )
+
+    for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+        $stateResult = Invoke-AdbCommand -Executable $Executable -Arguments @('get-state') -AllowFailure
+        if ($stateResult.ExitCode -eq 0 -and
+            $stateResult.Text.Trim().Equals('device', [System.StringComparison]::OrdinalIgnoreCase)) {
+            return
+        }
+
+        if ($attempt -lt $Attempts -and $DelayMilliseconds -gt 0) {
+            Start-Sleep -Milliseconds $DelayMilliseconds
+        }
+    }
+
+    throw "Android device did not reconnect after adb root within $Attempts attempt(s)."
+}
+
 function Set-AndroidCompatibilityProperty {
     param(
         [Parameter(Mandatory)][string] $Executable,
@@ -153,7 +181,10 @@ try {
 
     $rootResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('root') -AllowFailure
     if ($rootResult.ExitCode -eq 0) {
-        $null = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('wait-for-device')
+        Wait-AndroidDevice `
+            -Executable $resolvedAdbPath `
+            -Attempts $DeviceReconnectAttempts `
+            -DelayMilliseconds $DeviceReconnectDelayMilliseconds
     }
     else {
         Write-Verbose 'adb root is unavailable; compatibility properties will be attempted with the current adb identity.'
@@ -204,12 +235,18 @@ try {
         '\bFATAL EXCEPTION\b',
         '\bFatal signal\s+\d+\b',
         '\bSIG(?:ABRT|SEGV|BUS|ILL)\b',
-        '\bAbort message:'
+        '\bAbort message:',
+        '\bJNI_ERR returned from JNI_OnLoad\b',
+        '\bSDL\w*\b.*\bversion mismatch\b'
     )
     $fatalRegex = '(?im)' + ($fatalPatterns -join '|')
     $fatalLines = @($logResult.Output | Where-Object { $_ -match $fatalRegex } | Select-Object -First 10)
     if ($fatalLines.Count -gt 0) {
         throw "Android runtime log contains native loader, linker, or fatal errors:$([Environment]::NewLine)$($fatalLines -join [Environment]::NewLine)"
+    }
+
+    if (@($logResult.Output | Where-Object { $_ -match '\bSDL3CS_RUNTIME_READY\b' }).Count -eq 0) {
+        throw 'Android runtime log does not contain readiness marker SDL3CS_RUNTIME_READY.'
     }
 
     $finalPidResult = Invoke-AdbCommand -Executable $resolvedAdbPath -Arguments @('shell', 'pidof', $PackageName)

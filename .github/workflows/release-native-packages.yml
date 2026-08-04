@@ -710,6 +710,10 @@ jobs:
           fi
           test -x "$sdkmanager"
           test -x "$avdmanager"
+          emulator="$ANDROID_HOME/emulator/emulator"
+          avd_home="$RUNNER_TEMP/android-avd"
+          echo "ANDROID_AVD_HOME=$avd_home" >> "$GITHUB_ENV"
+          export ANDROID_AVD_HOME="$avd_home"
 
           yes | "$sdkmanager" --licenses >/dev/null || true
           installed=false
@@ -722,9 +726,12 @@ jobs:
           done
           test "$installed" = true
           test -x "$ANDROID_HOME/platform-tools/adb"
-          test -x "$ANDROID_HOME/emulator/emulator"
+          test -x "$emulator"
 
-          echo no | "$avdmanager" create avd --force --name sdl3cs-16kb --package "$ANDROID_16KB_SYSTEM_IMAGE"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo no | "$avdmanager" create avd --force --name sdl3cs-16kb --package "$ANDROID_16KB_SYSTEM_IMAGE" --path "$ANDROID_AVD_HOME/sdl3cs-16kb.avd"
+          test -f "$ANDROID_AVD_HOME/sdl3cs-16kb.ini"
+          "$emulator" -list-avds | grep -Fx 'sdl3cs-16kb'
 
       - name: Boot Android 16 KB emulator
         shell: bash

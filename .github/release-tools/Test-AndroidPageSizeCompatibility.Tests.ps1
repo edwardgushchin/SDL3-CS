@@ -101,6 +101,9 @@ function New-ElfFixtureBytes {
         [Parameter(Mandatory)]
         [uint64[]] $LoadAlignments,
 
+        [ValidateRange(-1, 65535)]
+        [int] $Machine = -1,
+
         [switch] $NoLoadSegments
     )
 
@@ -116,6 +119,8 @@ function New-ElfFixtureBytes {
     $bytes[4] = if ($Class -eq 32) { 1 } else { 2 }
     $bytes[5] = 1
     $bytes[6] = 1
+    $resolvedMachine = if ($Machine -ge 0) { [uint16]$Machine } elseif ($Class -eq 32) { [uint16]40 } else { [uint16]183 }
+    Set-UInt16LittleEndian -Bytes $bytes -Offset 18 -Value $resolvedMachine
     Set-UInt32LittleEndian -Bytes $bytes -Offset 20 -Value ([uint32]1)
 
     if ($Class -eq 32) {
@@ -236,6 +241,7 @@ try {
     $noLoadSegments = Join-Path $tempRoot 'libNoLoadSegments.so'
     $malformed = Join-Path $tempRoot 'libMalformed.so'
     $truncated = Join-Path $tempRoot 'libTruncated.so'
+    $unsupportedMachine = Join-Path $tempRoot 'libUnsupportedMachine.so'
 
     [System.IO.File]::WriteAllBytes($elf32Aligned, (New-ElfFixtureBytes -Class 32 -LoadAlignments @([uint64]0x4000)))
     [System.IO.File]::WriteAllBytes($elf32LegacyAligned, (New-ElfFixtureBytes -Class 32 -LoadAlignments @([uint64]0x1000)))
@@ -243,6 +249,7 @@ try {
     [System.IO.File]::WriteAllBytes($elf64Misaligned, (New-ElfFixtureBytes -Class 64 -LoadAlignments @([uint64]0x4000, [uint64]0x1000)))
     [System.IO.File]::WriteAllBytes($noLoadSegments, (New-ElfFixtureBytes -Class 64 -LoadAlignments @([uint64]0x4000) -NoLoadSegments))
     [System.IO.File]::WriteAllBytes($malformed, [System.Text.Encoding]::ASCII.GetBytes('not an ELF file'))
+    [System.IO.File]::WriteAllBytes($unsupportedMachine, (New-ElfFixtureBytes -Class 64 -Machine 0 -LoadAlignments @([uint64]0x4000)))
 
     $validElf64 = New-ElfFixtureBytes -Class 64 -LoadAlignments @([uint64]0x4000)
     $truncatedBytes = [byte[]]::new(70)
@@ -262,6 +269,18 @@ try {
     }
     Assert-ValidationFails -Description 'truncated ELF program-header table' -Action {
         & $validator -Path $truncated *> $null
+    }
+    Assert-ValidationFails -Description 'unsupported Android ELF machine' -Action {
+        & $validator -Path $unsupportedMachine *> $null
+    }
+
+    $wrongMachineRoot = Join-Path $tempRoot 'wrong-machine/android-arm64'
+    New-Item -ItemType Directory -Force -Path $wrongMachineRoot | Out-Null
+    [System.IO.File]::WriteAllBytes(
+        (Join-Path $wrongMachineRoot 'libWrongMachine.so'),
+        (New-ElfFixtureBytes -Class 64 -Machine 62 -LoadAlignments @([uint64]0x4000)))
+    Assert-ValidationFails -Description 'x86_64 ELF inside android-arm64 payload' -Action {
+        & $validator -Path $wrongMachineRoot *> $null
     }
 
     $recursivePassRoot = Join-Path $tempRoot 'recursive-pass'

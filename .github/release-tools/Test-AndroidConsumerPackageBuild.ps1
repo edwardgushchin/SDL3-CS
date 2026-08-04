@@ -190,6 +190,8 @@ public sealed class MainActivity : SDLActivity
             return;
         }
 
+        Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");
+
         try
         {
             if (SDL.CreateWindowAndRenderer("SDL3-CS Android consumer", 64, 64, 0, out var window, out var renderer))

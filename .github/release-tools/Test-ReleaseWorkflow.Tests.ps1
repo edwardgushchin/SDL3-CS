@@ -95,6 +95,15 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $narrowedDefaultRidWorkflow = $workflowText.Replace(
+        '$requestedRids = $allRids',
+        '$requestedRids = @($allRids | Where-Object { $_ -like ''android-*'' })'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $narrowedDefaultRidWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'empty native RID input narrowed below the full manifest' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $missingSelectedRidHandoffWorkflow = $workflowText.Replace(
         '$params.Rids = $selectedRids',
         '$null = $selectedRids'
@@ -155,6 +164,51 @@ try {
     )
     Set-Content -LiteralPath $tempWorkflow -Value $unboundedEmulatorWorkflow -Encoding UTF8
     Assert-WorkflowValidationFails -Description 'unbounded Android emulator device wait' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAvdHomeWorkflow = $workflowText.Replace(
+        'avd_home="$RUNNER_TEMP/android-avd"',
+        'avd_home="$HOME/.android/avd"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAvdHomeWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing persistent Android AVD home' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAvdEnvironmentHandoffWorkflow = $workflowText.Replace(
+        'echo "ANDROID_AVD_HOME=$avd_home" >> "$GITHUB_ENV"',
+        'echo "ANDROID_AVD_HOME=$avd_home"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAvdEnvironmentHandoffWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing Android AVD environment handoff' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAvdEnvironmentExportWorkflow = $workflowText.Replace(
+        'export ANDROID_AVD_HOME="$avd_home"',
+        'test -n "$avd_home"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAvdEnvironmentExportWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing Android AVD environment export' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingExplicitAvdPathWorkflow = $workflowText.Replace(
+        '--path "$ANDROID_AVD_HOME/sdl3cs-16kb.avd"',
+        '--path "$HOME/.android/avd/sdl3cs-16kb.avd"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingExplicitAvdPathWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing explicit persistent Android AVD path' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAvdVisibilityGateWorkflow = $workflowText.Replace(
+        '"$emulator" -list-avds | grep -Fx ''sdl3cs-16kb''',
+        'echo sdl3cs-16kb'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAvdVisibilityGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing Android AVD visibility gate' -Action {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 }

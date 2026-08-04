@@ -88,6 +88,7 @@ foreach ($publishInput in @('publish_github', 'publish_nuget')) {
     Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{6}$([regex]::Escape($publishInput)):\s*\r?\n.*?^\s{8}default:\s+false" -Description "workflow input '$publishInput' default"
 }
 Assert-WorkflowRegex -Text $workflowText -Pattern '(?ms)^\s{6}native_rids:\s*\r?\n.*?^\s{8}required:\s+false\s*$.*?^\s{8}default:\s+""\s*$' -Description "optional workflow input 'native_rids'"
+Assert-WorkflowRegex -Text $workflowText -Pattern '(?ms)if \(\[string\]::IsNullOrWhiteSpace\(\$requestedText\)\)\s*\{\s*\$requestedRids = \$allRids\s*\}' -Description 'empty requested RID input selecting the full manifest'
 
 Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{2}contents:\s+write\s*$" -Description 'workflow permissions for GitHub release creation'
 Assert-WorkflowRegex -Text $workflowText -Pattern "(?ms)^\s{2}id-token:\s+write\s*$" -Description 'workflow permissions for NuGet Trusted Publishing OIDC'
@@ -218,8 +219,14 @@ Assert-WorkflowContains -Text $workflowText -Expected 'name: android-x64-runtime
 Assert-WorkflowContains -Text $workflowText -Expected 'android-16kb-runtime:' -Description 'Android 16 KB runtime job'
 Assert-WorkflowContains -Text $workflowText -Expected 'needs.plan.outputs.has_android_x64 == ''true''' -Description 'Android 16 KB runtime x64 scope gate'
 Assert-WorkflowContains -Text $workflowText -Expected 'ANDROID_16KB_SYSTEM_IMAGE: ${{ needs.plan.outputs.android_16kb_system_image }}' -Description 'manifest-derived Android 16 KB system image handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'avd_home="$RUNNER_TEMP/android-avd"' -Description 'persistent Android AVD home'
+Assert-WorkflowContains -Text $workflowText -Expected 'echo "ANDROID_AVD_HOME=$avd_home" >> "$GITHUB_ENV"' -Description 'Android AVD environment handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'export ANDROID_AVD_HOME="$avd_home"' -Description 'Android AVD environment export'
+Assert-WorkflowContains -Text $workflowText -Expected '--path "$ANDROID_AVD_HOME/sdl3cs-16kb.avd"' -Description 'explicit persistent Android AVD path'
 Assert-WorkflowContains -Text $workflowText -Expected '"$sdkmanager" --install "platform-tools" "emulator" "$ANDROID_16KB_SYSTEM_IMAGE"' -Description 'Android 16 KB emulator package installation'
 Assert-WorkflowContains -Text $workflowText -Expected '"$avdmanager" create avd' -Description 'Android 16 KB AVD creation'
+Assert-WorkflowContains -Text $workflowText -Expected 'test -f "$ANDROID_AVD_HOME/sdl3cs-16kb.ini"' -Description 'Android 16 KB AVD metadata gate'
+Assert-WorkflowContains -Text $workflowText -Expected '"$emulator" -list-avds | grep -Fx ''sdl3cs-16kb''' -Description 'Android 16 KB AVD visibility gate'
 Assert-WorkflowContains -Text $workflowText -Expected 'test -e /dev/kvm' -Description 'Android emulator KVM availability gate'
 Assert-WorkflowContains -Text $workflowText -Expected 'sudo chmod 0666 /dev/kvm' -Description 'hosted-runner Android emulator KVM access'
 Assert-WorkflowContains -Text $workflowText -Expected '"$emulator" -accel-check' -Description 'Android emulator acceleration gate'

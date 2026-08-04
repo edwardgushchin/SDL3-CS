@@ -16,6 +16,22 @@ $validatedFiles = [System.Collections.Generic.HashSet[string]]::new([System.Stri
 $results = [System.Collections.Generic.List[object]]::new()
 $errors = [System.Collections.Generic.List[string]]::new()
 $candidateCount = 0
+$androidMachineInfo = @{
+    3 = [pscustomobject]@{ Name = 'EM_386'; Rid = 'android-x86'; ElfClass = 1 }
+    40 = [pscustomobject]@{ Name = 'EM_ARM'; Rid = 'android-arm'; ElfClass = 1 }
+    62 = [pscustomobject]@{ Name = 'EM_X86_64'; Rid = 'android-x64'; ElfClass = 2 }
+    183 = [pscustomobject]@{ Name = 'EM_AARCH64'; Rid = 'android-arm64'; ElfClass = 2 }
+}
+$androidPathSegmentToRid = @{
+    'android-arm' = 'android-arm'
+    'armeabi-v7a' = 'android-arm'
+    'android-arm64' = 'android-arm64'
+    'arm64-v8a' = 'android-arm64'
+    'android-x86' = 'android-x86'
+    'x86' = 'android-x86'
+    'android-x64' = 'android-x64'
+    'x86_64' = 'android-x64'
+}
 
 function Test-SharedLibraryName {
     param(
@@ -145,6 +161,32 @@ function Test-PowerOfTwoAlignment {
     return $Alignment -le 1 -or ($Alignment -band ($Alignment - 1)) -eq 0
 }
 
+function Get-AndroidRidFromDisplayPath {
+    param(
+        [Parameter(Mandatory)]
+        [string] $DisplayPath
+    )
+
+    $matches = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+    $normalized = $DisplayPath.Replace('\', '/').Replace('!', '/')
+    foreach ($segment in $normalized.Split('/', [System.StringSplitOptions]::RemoveEmptyEntries)) {
+        $normalizedSegment = $segment.ToLowerInvariant()
+        if ($script:androidPathSegmentToRid.ContainsKey($normalizedSegment)) {
+            [void]$matches.Add([string]$script:androidPathSegmentToRid[$normalizedSegment])
+        }
+    }
+
+    if ($matches.Count -gt 1) {
+        throw "Shared library path '$DisplayPath' contains conflicting Android ABI scopes: $(@($matches) -join ', ')."
+    }
+
+    if ($matches.Count -eq 1) {
+        return @($matches)[0]
+    }
+
+    return $null
+}
+
 function Test-ElfStream {
     param(
         [Parameter(Mandatory)]
@@ -190,6 +232,20 @@ function Test-ElfStream {
     $header = [byte[]]::new($headerSize)
     [System.Array]::Copy($identification, 0, $header, 0, $identification.Length)
     [System.Array]::Copy($headerTail, 0, $header, $identification.Length, $headerTail.Length)
+
+    $machine = [int](Read-UInt16LittleEndian -Bytes $header -Offset 18)
+    if (-not $script:androidMachineInfo.ContainsKey($machine)) {
+        throw "ELF '$DisplayPath' declares unsupported Android e_machine $machine."
+    }
+    $machineInfo = $script:androidMachineInfo[$machine]
+    if ([int]$machineInfo.ElfClass -ne $elfClass) {
+        throw "ELF '$DisplayPath' declares $($machineInfo.Name) with incompatible ELF class $elfClass."
+    }
+
+    $expectedRid = Get-AndroidRidFromDisplayPath -DisplayPath $DisplayPath
+    if ($expectedRid -and -not $machineInfo.Rid.Equals($expectedRid, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "ELF '$DisplayPath' declares $($machineInfo.Name) for $($machineInfo.Rid), expected machine for $expectedRid."
+    }
 
     if ($elfClass -eq 1) {
         $programHeaderOffset = [uint64](Read-UInt32LittleEndian -Bytes $header -Offset 28)
@@ -277,6 +333,8 @@ function Test-ElfStream {
     $script:results.Add([pscustomobject]@{
         Path = $DisplayPath
         ElfClass = if ($elfClass -eq 1) { 'ELF32' } else { 'ELF64' }
+        Machine = $machineInfo.Name
+        AndroidRid = if ($expectedRid) { $expectedRid } else { $machineInfo.Rid }
         LoadSegments = $loadAlignments.Count
         MinimumAlignment = "0x$(([uint64]$minimumAlignment).ToString('x'))"
         Status = 'compatible'
