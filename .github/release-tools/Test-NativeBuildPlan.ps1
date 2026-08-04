@@ -33,6 +33,17 @@ foreach ($rid in $Rids) {
 $errors = New-Object System.Collections.Generic.List[string]
 $rows = New-Object System.Collections.Generic.List[object]
 
+$buildNativePath = Join-Path $PSScriptRoot 'Build-Native.ps1'
+$buildNativeText = [System.IO.File]::ReadAllText($buildNativePath)
+foreach ($mutableDxcSource in @(
+    'https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest',
+    'DXC_ZIP_URL'
+)) {
+    if ($buildNativeText.Contains($mutableDxcSource, [System.StringComparison]::Ordinal)) {
+        $errors.Add("SDL_shadercross DXC bootstrap must not depend on mutable source '$mutableDxcSource'; use the SHA256-pinned upstream download script.")
+    }
+}
+
 function Assert-NativePlanContains {
     param(
         [Parameter(Mandatory)]
@@ -190,8 +201,11 @@ foreach ($rid in $Rids) {
                     Assert-NativePlanDoesNotContain -PlanOutput $planOutput -Unexpected "external$([System.IO.Path]::DirectorySeparatorChar)SPIRV-Cross -B" -Context $context
                 }
 
-                if ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64') {
+                if ($ridInfo.os -eq 'windows' -or ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64')) {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected 'pinned DXC binaries' -Context $context
+                }
+
+                if ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64') {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected '-DDirectXShaderCompiler_ROOT=' -Context $context
                 }
             }

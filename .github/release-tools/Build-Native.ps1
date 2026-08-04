@@ -355,37 +355,6 @@ function Test-SdlShadercrossVendoredBuild {
     return $RidInfo.os -eq 'macos' -or ($RidInfo.os -eq 'linux' -and $RidInfo.arch -eq 'arm64')
 }
 
-function Get-SdlShadercrossDxcDownloadAsset {
-    $explicitUrl = [Environment]::GetEnvironmentVariable('DXC_ZIP_URL')
-    if ($explicitUrl) {
-        return [pscustomobject]@{
-            Name = Split-Path -Leaf $explicitUrl
-            Url = $explicitUrl
-        }
-    }
-
-    $headers = @{
-        'User-Agent' = 'SDL3-CS-LocalRelease'
-        'Accept' = 'application/vnd.github+json'
-        'X-GitHub-Api-Version' = '2022-11-28'
-    }
-    $token = [Environment]::GetEnvironmentVariable('GITHUB_TOKEN')
-    if ($token) {
-        $headers['Authorization'] = "Bearer $token"
-    }
-
-    $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest' -Headers $headers
-    $asset = @($release.assets | Where-Object { $_.name -like 'dxc_*.zip' -and $_.name -notlike 'pdb_*' } | Select-Object -First 1)
-    if ($asset.Count -ne 1) {
-        throw 'DXC .zip asset was not found in the latest DirectXShaderCompiler release. Set DXC_ZIP_URL to a dxc_*.zip asset URL.'
-    }
-
-    return [pscustomobject]@{
-        Name = $asset[0].name
-        Url = $asset[0].browser_download_url
-    }
-}
-
 function Initialize-SdlShadercrossDxcBinaries {
     param(
         [Parameter(Mandatory)]
@@ -409,46 +378,13 @@ function Initialize-SdlShadercrossDxcBinaries {
     $dxcRoot = Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'
     if ($targetIsWindows) {
         if (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch) {
+            if ($DryRun) {
+                Write-Host "[dry-run] reuse pinned DXC binaries from $dxcRoot"
+            }
             return
         }
-
-        if ($DryRun) {
-            Write-Host "[dry-run] bootstrap DXC binaries into $dxcRoot"
-            return
-        }
-
-        New-Item -ItemType Directory -Force -Path $dxcRoot | Out-Null
-
-        $asset = Get-SdlShadercrossDxcDownloadAsset
-        $downloadRoot = Join-Path $BuildRoot '_downloads\DirectXShaderCompiler'
-        New-Item -ItemType Directory -Force -Path $downloadRoot | Out-Null
-
-        $zipPath = Join-Path $downloadRoot $asset.Name
-        Write-Host "Downloading DXC binaries: $($asset.Name)"
-        Invoke-WebRequest -Uri $asset.Url -OutFile $zipPath
-
-        $extractRoot = Join-Path $downloadRoot ([System.IO.Path]::GetFileNameWithoutExtension($asset.Name))
-        if (Test-Path -LiteralPath $extractRoot) {
-            Remove-Item -LiteralPath $extractRoot -Recurse -Force
-        }
-        New-Item -ItemType Directory -Force -Path $extractRoot | Out-Null
-        Expand-Archive -LiteralPath $zipPath -DestinationPath $extractRoot -Force
-
-        $payloadRoot = $extractRoot
-        $topFolder = @(Get-ChildItem -LiteralPath $extractRoot -Directory -Filter 'dxc_*' | Select-Object -First 1)
-        if ($topFolder.Count -eq 1 -and (Test-Path -LiteralPath (Join-Path $topFolder[0].FullName 'bin') -PathType Container)) {
-            $payloadRoot = $topFolder[0].FullName
-        }
-
-        Copy-Item -Path (Join-Path $payloadRoot '*') -Destination $dxcRoot -Recurse -Force
-
-        if (-not (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch)) {
-            throw "DXC binaries were downloaded but the expected $($RidInfo.arch) layout was not found under $dxcRoot."
-        }
-        return
     }
-
-    if (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot) {
+    elseif (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot) {
         if ($DryRun) {
             Write-Host "[dry-run] reuse pinned DXC binaries from $dxcRoot"
         }
@@ -469,14 +405,20 @@ function Initialize-SdlShadercrossDxcBinaries {
     $downloadRoot = Join-Path $BuildRoot '_downloads\DirectXShaderCompiler'
     New-Item -ItemType Directory -Force -Path $downloadRoot | Out-Null
     $cmakePath = Get-ReleaseCMakePathForBuild
+    $targetSystemName = if ($targetIsWindows) { 'Windows' } else { 'Linux' }
     Invoke-ReleaseCommand -FilePath $cmakePath -Arguments @(
-        '-DCMAKE_SYSTEM_NAME=Linux',
+        "-DCMAKE_SYSTEM_NAME=$targetSystemName",
         "-DDXC_ROOT=$dxcRoot",
         '-P', $downloadScript
     ) -WorkingDirectory $downloadRoot
 
-    if (-not (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot)) {
-        throw "Pinned DXC binaries were downloaded but the expected linux-x64 layout was not found under $dxcRoot."
+    if ($targetIsWindows) {
+        if (-not (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch)) {
+            throw "Pinned DXC binaries were downloaded but the expected $($RidInfo.arch) Windows layout was not found under $dxcRoot."
+        }
+    }
+    elseif (-not (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot)) {
+        throw 'Pinned DXC binaries were downloaded but the expected linux-x64 layout was not found.'
     }
 }
 
