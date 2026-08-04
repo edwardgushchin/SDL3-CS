@@ -76,6 +76,13 @@ if ($ManagedOnly) {
 if (@($packages).Count -eq 0) {
     throw 'Selected NuGet package scope is empty.'
 }
+$includesAndroidBridge = @($packages | Where-Object Id -EQ 'SDL3-CS.Android').Count -eq 1
+if ($includesAndroidBridge) {
+    & (Join-Path $PSScriptRoot 'Test-AndroidBridgeJar.ps1') -ManifestPath $ManifestPath
+    if ($NoBuild -and -not $DryRun) {
+        throw 'SDL3-CS.Android cannot be packed with -NoBuild because SDL3Bridge.jar is a binding compilation input.'
+    }
+}
 foreach ($package in $packages) {
     $projectPath = Resolve-ReleasePath $package.Project
     $expectedPackagePath = Get-ReleaseNuGetPackagePath -PackageDir $OutputDir -Package $package

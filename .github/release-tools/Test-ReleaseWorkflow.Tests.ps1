@@ -122,6 +122,24 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $missingBridgeBuildWorkflow = $workflowText.Replace(
+        './.github/release-tools/Build-AndroidBridgeJar.ps1',
+        './.github/release-tools/Build-AndroidBridgeJar-disabled.ps1'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingBridgeBuildWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Android bridge rebuild' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingBridgeParityWorkflow = $workflowText.Replace(
+        'if ($candidateHash -ne $trackedHash)',
+        'if ($false)'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingBridgeParityWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing tracked Android bridge candidate parity gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $latestBundletoolWorkflow = $workflowText.Replace(
         'bundletool/releases/download/$BUNDLETOOL_VERSION',
         'bundletool/releases/latest/download'

@@ -99,6 +99,8 @@ jobs:
       - name: Validate Android 16 KB release contract
         shell: pwsh
         run: |
+          ./.github/release-tools/Test-AndroidBridgeJar.Tests.ps1
+          ./.github/release-tools/Test-AndroidBridgeJar.ps1
           ./.github/release-tools/Test-AndroidPageSizeCompatibility.Tests.ps1
           ./.github/release-tools/Test-Android16KbRuntime.Tests.ps1
           $androidPayloadRoots = @(

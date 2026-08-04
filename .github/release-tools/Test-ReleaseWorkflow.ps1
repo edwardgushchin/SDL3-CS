@@ -60,6 +60,14 @@ $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
 $workflowText = Get-Content -LiteralPath $workflowFile -Raw -Encoding UTF8
 $requiredToolchains = [ordered]@{
     androidNdkVersion = '28.2.13676358'
+    androidCompileSdkVersion = '35'
+    androidPlatformArchiveUrl = 'https://dl.google.com/android/repository/platform-35_r02.zip'
+    androidPlatformArchiveSha256 = '0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0'
+    androidPlatformJarSha256 = '4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b'
+    androidBridgeJarSha256 = '1c7e84e863843b8d6b5c49d8b3bbc5bdb3a4cd56252b17cedd8348a7662638a4'
+    androidBridgeJavaRelease = '11'
+    androidBridgeSetupJavaVersion = '11.0.14+101'
+    androidBridgeJavacVersion = '11.0.14.1'
     androidBuildToolsVersion = '35.0.0'
     bundletoolVersion = '1.18.3'
     bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
@@ -114,6 +122,20 @@ Assert-WorkflowContains -Text $workflowText -Expected 'Partial native RID scope 
 Assert-WorkflowContains -Text $workflowText -Expected 'selected_rids=$($selectedRids -join '','')' -Description 'selected RID plan output'
 Assert-WorkflowContains -Text $workflowText -Expected 'android_ndk_version: ${{ steps.native-matrix.outputs.android_ndk_version }}' -Description 'plan job Android NDK version output binding'
 Assert-WorkflowContains -Text $workflowText -Expected 'android_ndk_version=$($manifest.toolchains.androidNdkVersion)' -Description 'plan job manifest Android NDK version output'
+foreach ($toolchainOutput in @(
+    'android_compile_sdk_version',
+    'android_platform_archive_url',
+    'android_platform_archive_sha256',
+    'android_platform_jar_sha256',
+    'android_bridge_jar_sha256',
+    'android_bridge_java_release',
+    'android_bridge_setup_java_version',
+    'android_bridge_javac_version'
+)) {
+    $manifestProperty = [regex]::Replace($toolchainOutput, '_([a-z])', { param($match) $match.Groups[1].Value.ToUpperInvariant() })
+    Assert-WorkflowContains -Text $workflowText -Expected "$toolchainOutput`: `${{ steps.native-matrix.outputs.$toolchainOutput }}" -Description "plan job $toolchainOutput output binding"
+    Assert-WorkflowContains -Text $workflowText -Expected "$toolchainOutput=`$(`$manifest.toolchains.$manifestProperty)" -Description "plan job manifest $manifestProperty output"
+}
 Assert-WorkflowContains -Text $workflowText -Expected 'android_build_tools_version=$($manifest.toolchains.androidBuildToolsVersion)' -Description 'plan job manifest Android build-tools version output'
 Assert-WorkflowContains -Text $workflowText -Expected 'bundletool_version=$($manifest.toolchains.bundletoolVersion)' -Description 'plan job manifest bundletool version output'
 Assert-WorkflowContains -Text $workflowText -Expected 'bundletool_sha256=$($manifest.toolchains.bundletoolSha256)' -Description 'plan job manifest bundletool hash output'
@@ -145,7 +167,20 @@ Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_ndk_version
 Assert-WorkflowContains -Text $workflowText -Expected 'for attempt in 1 2 3; do' -Description 'Android NDK install retry loop'
 Assert-WorkflowContains -Text $workflowText -Expected 'rm -rf "$ndk" "$ANDROID_HOME/.temp"' -Description 'Android NDK partial install cleanup'
 
-foreach ($toolchain in $requiredToolchains.GetEnumerator()) {
+$hardcodeSensitiveToolchains = @(
+    'androidNdkVersion',
+    'androidPlatformArchiveUrl',
+    'androidPlatformArchiveSha256',
+    'androidPlatformJarSha256',
+    'androidBridgeJarSha256',
+    'androidBridgeSetupJavaVersion',
+    'androidBridgeJavacVersion',
+    'androidBuildToolsVersion',
+    'bundletoolVersion',
+    'bundletoolSha256',
+    'android16KbSystemImage'
+)
+foreach ($toolchain in $requiredToolchains.GetEnumerator() | Where-Object Key -In $hardcodeSensitiveToolchains) {
     if (-not [string]::IsNullOrWhiteSpace($resolvedToolchains[$toolchain.Key]) -and
         $workflowText.Contains($resolvedToolchains[$toolchain.Key], [System.StringComparison]::Ordinal)) {
         Add-WorkflowError "Release workflow must obtain toolchains.$($toolchain.Key) from the manifest instead of hardcoding it."
@@ -175,6 +210,24 @@ Assert-WorkflowContains -Text $workflowText -Expected '$params.RequireUpstreamCu
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-ReleaseAssembly.ps1 @params' -Description 'assembly script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'Install Android .NET workload for bridge package' -Description 'assembly Android bridge workload installation step'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install android --source https://api.nuget.org/v3/index.json' -Description 'assembly Android workload installation command'
+Assert-WorkflowContains -Text $workflowText -Expected 'actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0' -Description 'assembly SHA-pinned exact Java setup'
+Assert-WorkflowContains -Text $workflowText -Expected 'java-version: ${{ needs.plan.outputs.android_bridge_setup_java_version }}' -Description 'manifest-derived Android bridge setup-java version'
+Assert-WorkflowContains -Text $workflowText -Expected 'Rebuild and verify exact Android bridge' -Description 'assembly exact Android bridge rebuild step'
+Assert-WorkflowContains -Text $workflowText -Expected 'Invoke-WebRequest -Uri $env:ANDROID_PLATFORM_ARCHIVE_URL' -Description 'manifest-derived Android platform download'
+Assert-WorkflowContains -Text $workflowText -Expected '$archiveHash -ne $env:ANDROID_PLATFORM_ARCHIVE_SHA256' -Description 'Android platform archive hash gate'
+Assert-WorkflowContains -Text $workflowText -Expected '$androidJarHash -ne $env:ANDROID_PLATFORM_JAR_SHA256' -Description 'Android platform JAR hash gate'
+Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Build-AndroidBridgeJar.ps1' -Description 'exact Android bridge builder invocation'
+Assert-WorkflowContains -Text $workflowText -Expected '-VerifyDeterministic' -Description 'Android bridge deterministic repeat gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'if ($candidateHash -ne $trackedHash)' -Description 'tracked Android bridge candidate parity gate'
+Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $trackedPath -SourceRoot ''native-forks/SDL''' -Description 'exact-source Android bridge validation'
+Assert-WorkflowContains -Text $workflowText -Expected 'Setup Java for Android package build' -Description 'supported Java restore before Android binding build'
+Assert-WorkflowContains -Text $workflowText -Expected "java-version: '21'" -Description 'supported Java major for Android .NET package build'
+$bridgeBuildIndex = $workflowText.IndexOf('./.github/release-tools/Build-AndroidBridgeJar.ps1', [System.StringComparison]::Ordinal)
+$androidPackageJavaIndex = $workflowText.IndexOf('Setup Java for Android package build', [System.StringComparison]::Ordinal)
+$assemblyIndex = $workflowText.IndexOf('./.github/release-tools/Invoke-ReleaseAssembly.ps1 @params', [System.StringComparison]::Ordinal)
+if ($bridgeBuildIndex -lt 0 -or $androidPackageJavaIndex -le $bridgeBuildIndex -or $assemblyIndex -le $androidPackageJavaIndex) {
+    Add-WorkflowError 'Exact Android bridge rebuild must run before release assembly.'
+}
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet build ./SDL3-CS/SDL3-CS.csproj -c Release /p:GeneratePackageOnBuild=false' -Description 'assembly Wiki Release output build'
 Assert-WorkflowContains -Text $workflowText -Expected 'path: artifacts/release/nuget/*.nupkg' -Description 'NuGet artifact upload'
 Assert-WorkflowContains -Text $workflowText -Expected 'release-assembly-state.zip' -Description 'release assembly state artifact'

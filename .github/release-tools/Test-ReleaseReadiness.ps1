@@ -93,6 +93,12 @@ $androidPayloadRoots = @(
     }
 )
 
+if ($androidPayloadRoots.Count -gt 0) {
+    Invoke-ReadinessStep -Name 'Android Java bridge contract' -Script {
+        & (Join-Path $PSScriptRoot 'Test-AndroidBridgeJar.ps1') -ManifestPath $ManifestPath
+    }
+}
+
 Invoke-ReadinessStep -Name 'Native build dry-run plan' -Script {
     & (Join-Path $PSScriptRoot 'Test-NativeBuildPlan.ps1') -Components $Components -Rids $Rids -ManifestPath $ManifestPath
 }

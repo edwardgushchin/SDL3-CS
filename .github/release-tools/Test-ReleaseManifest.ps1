@@ -23,6 +23,14 @@ if ($ridIds.Count -ne ($ridIds | Select-Object -Unique).Count) {
 
 $requiredToolchains = [ordered]@{
     androidNdkVersion = '28.2.13676358'
+    androidCompileSdkVersion = '35'
+    androidPlatformArchiveUrl = 'https://dl.google.com/android/repository/platform-35_r02.zip'
+    androidPlatformArchiveSha256 = '0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0'
+    androidPlatformJarSha256 = '4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b'
+    androidBridgeJarSha256 = '1c7e84e863843b8d6b5c49d8b3bbc5bdb3a4cd56252b17cedd8348a7662638a4'
+    androidBridgeJavaRelease = '11'
+    androidBridgeSetupJavaVersion = '11.0.14+101'
+    androidBridgeJavacVersion = '11.0.14.1'
     androidBuildToolsVersion = '35.0.0'
     bundletoolVersion = '1.18.3'
     bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
