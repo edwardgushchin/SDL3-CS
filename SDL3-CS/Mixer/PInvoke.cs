@@ -2439,9 +2439,8 @@ public partial class Mixer
     /// memory buffer without playing it, this interface offers that.</para>
     /// <para>This function allows properties to be specified. This is intended to supply
     /// file-specific settings, such as where to find SoundFonts for a MIDI file,
-    /// etc. Most of the properties available to <see cref="LoadAudioWithProperties"/>
-    /// apply here, too. In most cases, the caller should pass a zero to specify no
-    /// extra properties.</para>
+    /// etc. In most cases, the caller should pass a zero to specify no extra
+    /// properties.</para>
     /// <para>SDL_PropertiesID are discussed in
     /// [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties)
     /// .</para>

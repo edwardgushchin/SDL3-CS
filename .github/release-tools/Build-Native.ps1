@@ -376,21 +376,6 @@ function Initialize-SdlShadercrossDxcBinaries {
     }
 
     $dxcRoot = Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'
-    if ($targetIsWindows) {
-        if (Test-SdlShadercrossDxcBinaries -DxcRoot $dxcRoot -Architecture $RidInfo.arch) {
-            if ($DryRun) {
-                Write-Host "[dry-run] reuse pinned DXC binaries from $dxcRoot"
-            }
-            return
-        }
-    }
-    elseif (Test-SdlShadercrossUnixDxcBinaries -DxcRoot $dxcRoot) {
-        if ($DryRun) {
-            Write-Host "[dry-run] reuse pinned DXC binaries from $dxcRoot"
-        }
-        return
-    }
-
     if ($DryRun) {
         Write-Host "[dry-run] bootstrap pinned DXC binaries into $dxcRoot"
         return
@@ -399,6 +384,15 @@ function Initialize-SdlShadercrossDxcBinaries {
     $downloadScript = Join-Path $SourcePath 'build-scripts\download-prebuilt-DirectXShaderCompiler.cmake'
     if (-not (Test-Path -LiteralPath $downloadScript -PathType Leaf)) {
         throw "Pinned SDL_shadercross DXC download script was not found: $downloadScript"
+    }
+
+    if (Test-Path -LiteralPath $dxcRoot) {
+        $resolvedDxcRoot = [System.IO.Path]::GetFullPath($dxcRoot)
+        $expectedDxcRoot = [System.IO.Path]::GetFullPath((Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'))
+        if (-not $resolvedDxcRoot.Equals($expectedDxcRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw "Refusing to replace unexpected DXC payload path: $resolvedDxcRoot"
+        }
+        Remove-Item -LiteralPath $dxcRoot -Recurse -Force
     }
 
     New-Item -ItemType Directory -Force -Path $dxcRoot | Out-Null

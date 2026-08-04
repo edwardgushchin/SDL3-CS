@@ -381,11 +381,15 @@ if ($sdlComponents.Count -ne 1) {
 else {
     $expectedSdlSourceRef = '147a8ee32dbf9ac02f3794964490687b6bbda1bc'
     $expectedSdlNativeVersion = '3.4.14'
+    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.14-release-3.4.14'
     if ([string]$sdlComponents[0].sourceRef -ne $expectedSdlSourceRef) {
         Add-ValidationError "Component SDL sourceRef must be exact release-3.4.14 commit $expectedSdlSourceRef."
     }
     if ([string]$sdlComponents[0].nativeVersion -ne $expectedSdlNativeVersion) {
         Add-ValidationError "Component SDL nativeVersion must be $expectedSdlNativeVersion."
+    }
+    if (@($sdlComponents[0].cmakeArgs) -notcontains $expectedSdlRevisionArg) {
+        Add-ValidationError "Component SDL must pin its exact release identity with cmake argument '$expectedSdlRevisionArg'."
     }
 }
 

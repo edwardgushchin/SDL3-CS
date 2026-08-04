@@ -494,7 +494,8 @@
       "cmakeArgs": [
         "-DSDL_INSTALL=ON",
         "-DSDL_TESTS=OFF",
-        "-DSDL_EXAMPLES=OFF"
+        "-DSDL_EXAMPLES=OFF",
+        "-DSDL_REVISION=SDL-3.4.14-release-3.4.14"
       ],
       "artifactPatterns": {
         "windows": [

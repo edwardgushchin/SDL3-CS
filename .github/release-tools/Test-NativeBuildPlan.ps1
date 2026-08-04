@@ -43,6 +43,12 @@ foreach ($mutableDxcSource in @(
         $errors.Add("SDL_shadercross DXC bootstrap must not depend on mutable source '$mutableDxcSource'; use the SHA256-pinned upstream download script.")
     }
 }
+if ($buildNativeText.Contains('[dry-run] reuse pinned DXC binaries', [System.StringComparison]::Ordinal)) {
+    $errors.Add('SDL_shadercross DXC bootstrap must not trust a persistent extracted payload without reapplying the SHA256-pinned archive.')
+}
+if (-not $buildNativeText.Contains('Remove-Item -LiteralPath $dxcRoot -Recurse -Force', [System.StringComparison]::Ordinal)) {
+    $errors.Add('SDL_shadercross DXC bootstrap must safely replace any persistent extracted payload before applying the SHA256-pinned archive.')
+}
 
 function Assert-NativePlanContains {
     param(
