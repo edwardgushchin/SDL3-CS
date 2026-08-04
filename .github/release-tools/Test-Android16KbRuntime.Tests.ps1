@@ -33,19 +33,49 @@ foreach ($activityVisibilityContract in @(
     }
 }
 
-$readyMarker = 'Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");'
-$readyMarkerIndex = $consumerBuilderText.IndexOf($readyMarker, [System.StringComparison]::Ordinal)
-if ($readyMarkerIndex -lt 0) {
-    throw 'Android consumer Main must emit the exact SDL3CS_RUNTIME_READY marker after SDL initialization.'
-}
-
-$initGuard = [regex]::Match(
+$onCreateContract = [regex]::Match(
     $consumerBuilderText,
-    'if \(!SDL\.Init\(SDL\.InitFlags\.Video\)\)\s*\{[\s\S]*?SDL3CS_INIT_FAILED[\s\S]*?return;\s*\}',
+    'protected override void OnCreate\(Android\.OS\.Bundle\? savedInstanceState\)\s*\{\s*base\.OnCreate\(savedInstanceState\);\s*ProbeNativeComponents\(\);\s*\}',
     [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
 )
-if (-not $initGuard.Success -or $readyMarkerIndex -le ($initGuard.Index + $initGuard.Length)) {
-    throw 'Android consumer Main must emit SDL3CS_RUNTIME_READY only after the successful SDL initialization guard.'
+if (-not $onCreateContract.Success) {
+    throw 'Android consumer must run its managed native-component probe after SDLActivity has loaded the requested libraries.'
+}
+
+$nativeProbe = [regex]::Match(
+    $consumerBuilderText,
+    'private static void ProbeNativeComponents\(\)\s*\{(?<Body>[\s\S]*?)\n    \}',
+    [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
+)
+if (-not $nativeProbe.Success) {
+    throw 'Android consumer must define a deterministic managed native-component probe independent of SDL surface callbacks.'
+}
+$nativeProbeBody = $nativeProbe.Groups['Body'].Value
+$readyMarker = 'Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");'
+$readyMarkerIndex = $nativeProbeBody.IndexOf($readyMarker, [System.StringComparison]::Ordinal)
+if ($readyMarkerIndex -lt 0) {
+    throw 'Android native-component probe must emit the exact SDL3CS_RUNTIME_READY marker.'
+}
+foreach ($nativeCall in @(
+    'SDL.GetVersion()',
+    'SDL3.Image.Version()',
+    'SDL3.Mixer.Version()',
+    'SDL3.TTF.Version()',
+    'SDL3.ShaderCross.GetSPIRVShaderFormats()'
+)) {
+    $nativeCallIndex = $nativeProbeBody.IndexOf($nativeCall, [System.StringComparison]::Ordinal)
+    if ($nativeCallIndex -lt 0 -or $readyMarkerIndex -le $nativeCallIndex) {
+        throw "Android consumer must emit SDL3CS_RUNTIME_READY only after successfully calling '$nativeCall'."
+    }
+}
+if (-not $nativeProbeBody.Contains('SDL3CS_RUNTIME_FAILED', [System.StringComparison]::Ordinal)) {
+    throw 'Android native-component probe must emit a fatal-classified diagnostic when a managed native call fails.'
+}
+
+$videoReadyMarker = 'Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_VIDEO_READY");'
+$videoReadyMarkerIndex = $consumerBuilderText.IndexOf($videoReadyMarker, [System.StringComparison]::Ordinal)
+if ($videoReadyMarkerIndex -lt 0) {
+    throw 'Android consumer Main must retain the supplemental SDL video smoke marker.'
 }
 if (-not $consumerBuilderText.Contains('SDL3CS_INIT_FAILED', [System.StringComparison]::Ordinal)) {
     throw 'Android consumer Main must emit an explicit SDL3CS_INIT_FAILED diagnostic when SDL initialization fails.'
@@ -59,8 +89,8 @@ foreach ($completedOperation in @(
     'SDL.Quit()'
 )) {
     $operationIndex = $consumerBuilderText.LastIndexOf($completedOperation, [System.StringComparison]::Ordinal)
-    if ($operationIndex -lt 0 -or $readyMarkerIndex -le $operationIndex) {
-        throw "Android consumer must emit SDL3CS_RUNTIME_READY only after successful '$completedOperation' completion."
+    if ($operationIndex -lt 0 -or $videoReadyMarkerIndex -le $operationIndex) {
+        throw "Android consumer must emit SDL3CS_VIDEO_READY only after successful '$completedOperation' completion."
     }
 }
 foreach ($failureContract in @('SDL3CS_RUNTIME_FAILED', 'Android.Util.Log.Error(', 'SDL.GetError()')) {

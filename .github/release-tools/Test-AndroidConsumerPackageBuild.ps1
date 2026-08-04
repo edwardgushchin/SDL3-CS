@@ -185,6 +185,35 @@ public sealed class MainActivity : SDLActivity
         "SDL3_shadercross"
     ];
 
+    protected override void OnCreate(Android.OS.Bundle? savedInstanceState)
+    {
+        base.OnCreate(savedInstanceState);
+        ProbeNativeComponents();
+    }
+
+    private static void ProbeNativeComponents()
+    {
+        try
+        {
+            var sdlVersion = SDL.GetVersion();
+            var imageVersion = SDL3.Image.Version();
+            var mixerVersion = SDL3.Mixer.Version();
+            var ttfVersion = SDL3.TTF.Version();
+            _ = SDL3.ShaderCross.GetSPIRVShaderFormats();
+            if (sdlVersion <= 0 || imageVersion <= 0 || mixerVersion <= 0 || ttfVersion <= 0)
+            {
+                Android.Util.Log.Error("SDL3CSConsumer", "SDL3CS_RUNTIME_FAILED: a native component returned an invalid version");
+                return;
+            }
+
+            Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");
+        }
+        catch (System.Exception exception)
+        {
+            Android.Util.Log.Error("SDL3CSConsumer", $"SDL3CS_RUNTIME_FAILED: {exception.GetType().Name}: {exception.Message}");
+        }
+    }
+
     protected override void Main()
     {
         if (!SDL.Init(SDL.InitFlags.Video))
@@ -220,7 +249,7 @@ public sealed class MainActivity : SDLActivity
             SDL.Quit();
         }
 
-        Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_RUNTIME_READY");
+        Android.Util.Log.Info("SDL3CSConsumer", "SDL3CS_VIDEO_READY");
     }
 }
 "@
