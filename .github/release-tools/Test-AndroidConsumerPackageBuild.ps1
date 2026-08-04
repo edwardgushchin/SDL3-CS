@@ -209,6 +209,19 @@ public sealed class MainActivity : SDLActivity
 "@
 }
 
+function Get-AndroidConsumerBundleConfiguration {
+    return @'
+{
+  "optimizations": {
+    "uncompressNativeLibraries": {
+      "enabled": true,
+      "alignment": "PAGE_ALIGNMENT_16K"
+    }
+  }
+}
+'@
+}
+
 function Get-AndroidConsumerManifest {
     return @"
 <?xml version="1.0" encoding="utf-8"?>
@@ -546,6 +559,7 @@ foreach ($rid in $Rids) {
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidPackageFormats>apk;aab</AndroidPackageFormats>
+    <AndroidBundleConfigurationFile>BundleConfig.json</AndroidBundleConfigurationFile>
     <RunAOTCompilation>false</RunAOTCompilation>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <EnableDefaultItems>false</EnableDefaultItems>
@@ -553,6 +567,7 @@ foreach ($rid in $Rids) {
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <None Include="AndroidManifest.xml" />
+    <None Include="BundleConfig.json" />
 $packageReferences
   </ItemGroup>
 </Project>
@@ -581,6 +596,7 @@ $packageReferences
     Set-Content -LiteralPath $projectPath -Value $projectXml -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $projectRoot 'MainActivity.cs') -Value (Get-AndroidConsumerMainActivity -ApplicationId $applicationId) -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $projectRoot 'AndroidManifest.xml') -Value (Get-AndroidConsumerManifest) -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $projectRoot 'BundleConfig.json') -Value (Get-AndroidConsumerBundleConfiguration) -Encoding UTF8
 
     $nugetConfig = @"
 <?xml version="1.0" encoding="utf-8"?>
