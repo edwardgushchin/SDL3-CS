@@ -188,6 +188,12 @@ public sealed class MainActivity : SDLActivity
     protected override void OnCreate(Android.OS.Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
+        if (MBrokenLibraries)
+        {
+            Android.Util.Log.Error("SDL3CSConsumer", "SDL3CS_RUNTIME_FAILED: SDLActivity rejected one or more native libraries");
+            return;
+        }
+
         ProbeNativeComponents();
     }
 

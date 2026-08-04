@@ -35,11 +35,11 @@ foreach ($activityVisibilityContract in @(
 
 $onCreateContract = [regex]::Match(
     $consumerBuilderText,
-    'protected override void OnCreate\(Android\.OS\.Bundle\? savedInstanceState\)\s*\{\s*base\.OnCreate\(savedInstanceState\);\s*ProbeNativeComponents\(\);\s*\}',
+    'protected override void OnCreate\(Android\.OS\.Bundle\? savedInstanceState\)\s*\{\s*base\.OnCreate\(savedInstanceState\);\s*if \(MBrokenLibraries\)\s*\{[\s\S]*?SDL3CS_RUNTIME_FAILED[\s\S]*?return;\s*\}\s*ProbeNativeComponents\(\);\s*\}',
     [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
 )
 if (-not $onCreateContract.Success) {
-    throw 'Android consumer must run its managed native-component probe after SDLActivity has loaded the requested libraries.'
+    throw 'Android consumer must reject SDLActivity broken-library state before running its managed native-component probe.'
 }
 
 $nativeProbe = [regex]::Match(
