@@ -50,6 +50,21 @@ $tempWorkflow = Join-Path $tempRoot 'release-native-packages.yml'
 try {
     $manifest = Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 64
     $expectedPackageRevisionDefault = [int]$manifest.versioning.packageRevisionDefault
+
+    $normalizedWorkflowText = $workflowText -replace "\r\n?", "`n"
+    foreach ($lineEndingCase in @(
+        [pscustomobject]@{ Name = 'LF'; NewLine = "`n" },
+        [pscustomobject]@{ Name = 'CRLF'; NewLine = "`r`n" }
+    )) {
+        $lineEndingWorkflow = $normalizedWorkflowText.Replace("`n", $lineEndingCase.NewLine)
+        [System.IO.File]::WriteAllText(
+            $tempWorkflow,
+            $lineEndingWorkflow,
+            [System.Text.UTF8Encoding]::new($false)
+        )
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $packageRevisionDefaultRegex = [regex]::new(
         '(?m)(?<prefix>^[ ]{6}package_revision:[ \t]*\r?\n(?:^[ ]{8,}[^\r\n]*\r?\n)*?^[ ]{8}default:[ \t]+)["'']?\d+["'']?[ \t]*$'
     )

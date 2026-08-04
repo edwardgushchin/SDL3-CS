@@ -106,7 +106,7 @@ else {
         '(?:^[ ]{8,}[^\r\n]*\r?\n)*?' +
         '^[ ]{8}default:[ \t]+["'']?' +
         [regex]::Escape([string]$manifestPackageRevisionDefault) +
-        '["'']?[ \t]*$'
+        '["'']?[ \t]*\r?$'
     Assert-WorkflowRegex -Text $workflowText -Pattern $packageRevisionDefaultPattern -Description 'package_revision default matching release manifest versioning.packageRevisionDefault'
 }
 
