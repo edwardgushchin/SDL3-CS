@@ -376,8 +376,10 @@ function Initialize-SdlShadercrossDxcBinaries {
     }
 
     $dxcRoot = Join-Path $SourcePath 'external\DirectXShaderCompiler-binaries'
+    $dxcRootForCMake = $dxcRoot.Replace('\', '/')
     if ($DryRun) {
         Write-Host "[dry-run] bootstrap pinned DXC binaries into $dxcRoot"
+        Write-Host "[dry-run] cmake -DCMAKE_SYSTEM_NAME=$($RidInfo.os) -DDXC_ROOT=$dxcRootForCMake -P download-prebuilt-DirectXShaderCompiler.cmake"
         return
     }
 
@@ -402,7 +404,7 @@ function Initialize-SdlShadercrossDxcBinaries {
     $targetSystemName = if ($targetIsWindows) { 'Windows' } else { 'Linux' }
     Invoke-ReleaseCommand -FilePath $cmakePath -Arguments @(
         "-DCMAKE_SYSTEM_NAME=$targetSystemName",
-        "-DDXC_ROOT=$dxcRoot",
+        "-DDXC_ROOT=$dxcRootForCMake",
         '-P', $downloadScript
     ) -WorkingDirectory $downloadRoot
 
@@ -637,9 +639,10 @@ function Invoke-CMakeBuild {
         $configureArgs += if ($desktopDxc) { '-DSDLSHADERCROSS_DXC=ON' } else { '-DSDLSHADERCROSS_DXC=OFF' }
         $configureArgs += if ($shadercrossVendoredBuild) { '-DSDLSHADERCROSS_VENDORED=ON' } else { '-DSDLSHADERCROSS_VENDORED=OFF' }
 
-        if ($RidInfo.os -eq 'linux' -and $RidInfo.arch -eq 'x64') {
+        if ($RidInfo.os -eq 'windows' -or ($RidInfo.os -eq 'linux' -and $RidInfo.arch -eq 'x64')) {
             $dxcRoot = Join-Path $sourcePath 'external\DirectXShaderCompiler-binaries'
-            $configureArgs += "-DDirectXShaderCompiler_ROOT=$dxcRoot"
+            $dxcRootForCMake = $dxcRoot.Replace('\', '/')
+            $configureArgs += "-DDirectXShaderCompiler_ROOT=$dxcRootForCMake"
         }
     }
 

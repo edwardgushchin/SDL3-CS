@@ -49,6 +49,9 @@ if ($buildNativeText.Contains('[dry-run] reuse pinned DXC binaries', [System.Str
 if (-not $buildNativeText.Contains('Remove-Item -LiteralPath $dxcRoot -Recurse -Force', [System.StringComparison]::Ordinal)) {
     $errors.Add('SDL_shadercross DXC bootstrap must safely replace any persistent extracted payload before applying the SHA256-pinned archive.')
 }
+if (-not $buildNativeText.Contains("`$dxcRootForCMake = `$dxcRoot.Replace('\', '/')", [System.StringComparison]::Ordinal)) {
+    $errors.Add('SDL_shadercross DXC bootstrap must normalize the Windows destination path before passing DXC_ROOT to CMake script mode.')
+}
 
 function Assert-NativePlanContains {
     param(
@@ -211,8 +214,9 @@ foreach ($rid in $Rids) {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected 'pinned DXC binaries' -Context $context
                 }
 
-                if ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64') {
+                if ($ridInfo.os -eq 'windows' -or ($ridInfo.os -eq 'linux' -and $ridInfo.arch -eq 'x64')) {
                     Assert-NativePlanContains -PlanOutput $planOutput -Expected '-DDirectXShaderCompiler_ROOT=' -Context $context
+                    Assert-NativePlanContains -PlanOutput $planOutput -Expected '-DDXC_ROOT=' -Context $context
                 }
             }
 
