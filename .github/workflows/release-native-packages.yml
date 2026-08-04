@@ -730,14 +730,32 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ -e /dev/kvm ]; then
-            sudo chmod 0666 /dev/kvm
-          fi
+          test -e /dev/kvm
+          sudo chmod 0666 /dev/kvm
           adb="$ANDROID_HOME/platform-tools/adb"
           emulator="$ANDROID_HOME/emulator/emulator"
-          nohup "$emulator" -avd sdl3cs-16kb -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -wipe-data > "$RUNNER_TEMP/android-16kb-emulator.log" 2>&1 &
+          "$emulator" -accel-check
+          nohup "$emulator" -avd sdl3cs-16kb -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -wipe-data -accel on > "$RUNNER_TEMP/android-16kb-emulator.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/android-16kb-emulator.pid"
-          "$adb" wait-for-device
+
+          device_ready=false
+          for attempt in $(seq 1 60); do
+            device_state="$("$adb" get-state 2>/dev/null || true)"
+            device_state="${device_state//$'\r'/}"
+            if [ "$device_state" = "device" ]; then
+              device_ready=true
+              break
+            fi
+            if ! kill -0 "$(cat "$RUNNER_TEMP/android-16kb-emulator.pid")" 2>/dev/null; then
+              cat "$RUNNER_TEMP/android-16kb-emulator.log"
+              exit 1
+            fi
+            sleep 5
+          done
+          if [ "$device_ready" != true ]; then
+            cat "$RUNNER_TEMP/android-16kb-emulator.log"
+            exit 1
+          fi
 
           boot_completed=''
           for attempt in $(seq 1 120); do
@@ -760,6 +778,14 @@ jobs:
           ./.github/release-tools/Test-Android16KbRuntime.ps1 `
             -ApkPath 'artifacts/release/android-16kb-runtime/SDL3CSConsumer-android-x64-Signed.apk' `
             -AdbPath "$env:ANDROID_HOME/platform-tools/adb"
+
+      - name: Upload Android 16 KB emulator log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: android-16kb-emulator-log
+          path: ${{ runner.temp }}/android-16kb-emulator.log
+          if-no-files-found: warn
 
       - name: Stop Android 16 KB emulator
         if: ${{ always() }}

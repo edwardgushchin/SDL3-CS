@@ -148,6 +148,15 @@ try {
     Assert-WorkflowValidationFails -Description 'missing Android 16 KB runtime smoke' -Action {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
+
+    $unboundedEmulatorWorkflow = $workflowText.Replace(
+        'for attempt in $(seq 1 60); do',
+        'while true; do'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unboundedEmulatorWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'unbounded Android emulator device wait' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
 }
 finally {
     if (Test-Path -LiteralPath $tempRoot) {

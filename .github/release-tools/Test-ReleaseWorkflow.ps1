@@ -220,7 +220,13 @@ Assert-WorkflowContains -Text $workflowText -Expected 'needs.plan.outputs.has_an
 Assert-WorkflowContains -Text $workflowText -Expected 'ANDROID_16KB_SYSTEM_IMAGE: ${{ needs.plan.outputs.android_16kb_system_image }}' -Description 'manifest-derived Android 16 KB system image handoff'
 Assert-WorkflowContains -Text $workflowText -Expected '"$sdkmanager" --install "platform-tools" "emulator" "$ANDROID_16KB_SYSTEM_IMAGE"' -Description 'Android 16 KB emulator package installation'
 Assert-WorkflowContains -Text $workflowText -Expected '"$avdmanager" create avd' -Description 'Android 16 KB AVD creation'
+Assert-WorkflowContains -Text $workflowText -Expected 'test -e /dev/kvm' -Description 'Android emulator KVM availability gate'
 Assert-WorkflowContains -Text $workflowText -Expected 'sudo chmod 0666 /dev/kvm' -Description 'hosted-runner Android emulator KVM access'
+Assert-WorkflowContains -Text $workflowText -Expected '"$emulator" -accel-check' -Description 'Android emulator acceleration gate'
+Assert-WorkflowContains -Text $workflowText -Expected '-accel on' -Description 'Android emulator hardware acceleration requirement'
+Assert-WorkflowContains -Text $workflowText -Expected 'for attempt in $(seq 1 60); do' -Description 'bounded Android emulator device wait'
+Assert-WorkflowContains -Text $workflowText -Expected 'cat "$RUNNER_TEMP/android-16kb-emulator.log"' -Description 'Android emulator failure diagnostics'
+Assert-WorkflowContains -Text $workflowText -Expected 'name: android-16kb-emulator-log' -Description 'Android emulator log artifact'
 Assert-WorkflowContains -Text $workflowText -Expected 'sys.boot_completed' -Description 'Android 16 KB emulator boot gate'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-Android16KbRuntime.ps1' -Description 'Android 16 KB runtime smoke invocation'
 
