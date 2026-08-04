@@ -148,9 +148,17 @@ try {
             throw "win-x86 ShaderCross smoke helper was not created: $x86HelperPath"
         }
 
-        & $x86HelperPath *> $null
-        if ($LASTEXITCODE -ne 2) {
-            throw "win-x86 ShaderCross smoke helper did not execute as an x86 process with the expected usage exit code 2; actual exit code: $LASTEXITCODE"
+        $x86HelperStdout = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.stdout.txt'
+        $x86HelperStderr = Join-Path $tempRoot 'ShaderCrossDxcSmoke-x86.stderr.txt'
+        $x86HelperProcess = Start-Process `
+            -FilePath $x86HelperPath `
+            -Wait `
+            -PassThru `
+            -NoNewWindow `
+            -RedirectStandardOutput $x86HelperStdout `
+            -RedirectStandardError $x86HelperStderr
+        if ($x86HelperProcess.ExitCode -ne 2) {
+            throw "win-x86 ShaderCross smoke helper did not execute as an x86 process with the expected usage exit code 2; actual exit code: $($x86HelperProcess.ExitCode)"
         }
     }
 
