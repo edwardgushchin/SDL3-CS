@@ -72,6 +72,10 @@ $requiredToolchains = [ordered]@{
     bundletoolVersion = '1.18.3'
     bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
     android16KbSystemImage = 'system-images;android-35;google_apis_ps16k;x86_64'
+    appleXcodeVersion = '26.6'
+    appleXcodeBuild = '17F113'
+    appleDotnetSdkVersion = '10.0.302'
+    appleDotnetWorkloadVersion = '10.0.302.1'
 }
 $resolvedToolchains = @{}
 foreach ($toolchain in $requiredToolchains.GetEnumerator()) {
@@ -148,7 +152,11 @@ foreach ($toolchainOutput in @(
     'android_bridge_jar_sha256',
     'android_bridge_java_release',
     'android_bridge_setup_java_version',
-    'android_bridge_javac_version'
+    'android_bridge_javac_version',
+    'apple_xcode_version',
+    'apple_xcode_build',
+    'apple_dotnet_sdk_version',
+    'apple_dotnet_workload_version'
 )) {
     $manifestProperty = [regex]::Replace($toolchainOutput, '_([a-z])', { param($match) $match.Groups[1].Value.ToUpperInvariant() })
     Assert-WorkflowContains -Text $workflowText -Expected "$toolchainOutput`: `${{ steps.native-matrix.outputs.$toolchainOutput }}" -Description "plan job $toolchainOutput output binding"
@@ -196,7 +204,11 @@ $hardcodeSensitiveToolchains = @(
     'androidBuildToolsVersion',
     'bundletoolVersion',
     'bundletoolSha256',
-    'android16KbSystemImage'
+    'android16KbSystemImage',
+    'appleXcodeVersion',
+    'appleXcodeBuild',
+    'appleDotnetSdkVersion',
+    'appleDotnetWorkloadVersion'
 )
 foreach ($toolchain in $requiredToolchains.GetEnumerator() | Where-Object Key -In $hardcodeSensitiveToolchains) {
     if (-not [string]::IsNullOrWhiteSpace($resolvedToolchains[$toolchain.Key]) -and
@@ -258,8 +270,17 @@ Assert-WorkflowContains -Text $workflowText -Expected 'if: ${{ !inputs.managed_o
 Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26' -Description 'Apple arm64 consumer macOS 26 runner'
 Assert-WorkflowContains -Text $workflowText -Expected 'runner: macos-26-intel' -Description 'Apple x64 consumer macOS 26 Intel runner'
 Assert-WorkflowContains -Text $workflowText -Expected 'timeout-minutes: 45' -Description 'Apple consumer timeout'
-Assert-WorkflowContains -Text $workflowText -Expected 'xcode-select -s /Applications/Xcode_26.5.app' -Description 'Apple consumer Xcode 26.5 selection'
-Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos' -Description 'Apple .NET workload installation'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_XCODE_VERSION: ${{ needs.plan.outputs.apple_xcode_version }}' -Description 'manifest-derived Apple Xcode version handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_XCODE_BUILD: ${{ needs.plan.outputs.apple_xcode_build }}' -Description 'manifest-derived Apple Xcode build handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_DOTNET_SDK_VERSION: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}' -Description 'manifest-derived Apple .NET SDK version handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_DOTNET_WORKLOAD_VERSION: ${{ needs.plan.outputs.apple_dotnet_workload_version }}' -Description 'manifest-derived Apple workload-set version handoff'
+Assert-WorkflowContains -Text $workflowText -Expected 'dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}' -Description 'exact Apple .NET SDK setup'
+Assert-WorkflowContains -Text $workflowText -Expected 'xcode_path="/Applications/Xcode_${APPLE_XCODE_VERSION}.app"' -Description 'manifest-derived Apple Xcode application path'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_xcode_version" = "$APPLE_XCODE_VERSION"' -Description 'exact Apple Xcode version gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_xcode_build" = "$APPLE_XCODE_BUILD"' -Description 'exact Apple Xcode build gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_dotnet_sdk_version" = "$APPLE_DOTNET_SDK_VERSION"' -Description 'exact Apple .NET SDK gate'
+Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION"' -Description 'exact Apple workload-set installation'
+Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_workload_version" = "$APPLE_DOTNET_WORKLOAD_VERSION"' -Description 'exact Apple workload-set gate'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AppleConsumerPackageBuild.ps1' -Description 'Apple consumer package build validation'
 Assert-WorkflowContains -Text $workflowText -Expected '-Configuration Debug' -Description 'Apple consumer Debug build configuration'
 Assert-WorkflowContains -Text $workflowText -Expected 'iossimulator-arm64,tvossimulator-arm64' -Description 'Apple arm64 simulator consumer RID matrix'

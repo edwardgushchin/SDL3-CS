@@ -35,6 +35,10 @@ $requiredToolchains = [ordered]@{
     bundletoolVersion = '1.18.3'
     bundletoolSha256 = 'a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29'
     android16KbSystemImage = 'system-images;android-35;google_apis_ps16k;x86_64'
+    appleXcodeVersion = '26.6'
+    appleXcodeBuild = '17F113'
+    appleDotnetSdkVersion = '10.0.302'
+    appleDotnetWorkloadVersion = '10.0.302.1'
 }
 if (-not $manifest.PSObject.Properties.Name.Contains('toolchains') -or -not $manifest.toolchains) {
     Add-ValidationError 'Manifest must declare toolchains.'

@@ -65,6 +65,51 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $hardcodedAppleXcodeWorkflow = $workflowText.Replace(
+        'xcode_path="/Applications/Xcode_${APPLE_XCODE_VERSION}.app"',
+        'xcode_path="/Applications/Xcode_26.6.app"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $hardcodedAppleXcodeWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'hardcoded Apple Xcode path' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $unpinnedAppleSdkWorkflow = $workflowText.Replace(
+        'dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}',
+        'dotnet-version: 10.0.x'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unpinnedAppleSdkWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'unpinned Apple .NET SDK' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $unpinnedAppleWorkloadWorkflow = $workflowText.Replace(
+        'dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION"',
+        'dotnet workload install ios tvos'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unpinnedAppleWorkloadWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'unpinned Apple workload set' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAppleXcodeBuildGateWorkflow = $workflowText.Replace(
+        'test "$actual_xcode_build" = "$APPLE_XCODE_BUILD"',
+        'test -n "$actual_xcode_build"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAppleXcodeBuildGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Apple Xcode build gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
+    $missingAppleWorkloadGateWorkflow = $workflowText.Replace(
+        'test "$actual_workload_version" = "$APPLE_DOTNET_WORKLOAD_VERSION"',
+        'test -n "$actual_workload_version"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $missingAppleWorkloadGateWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Apple workload-set gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $packageRevisionDefaultRegex = [regex]::new(
         '(?m)(?<prefix>^[ ]{6}package_revision:[ \t]*\r?\n(?:^[ ]{8,}[^\r\n]*\r?\n)*?^[ ]{8}default:[ \t]+)["'']?\d+["'']?[ \t]*$'
     )
