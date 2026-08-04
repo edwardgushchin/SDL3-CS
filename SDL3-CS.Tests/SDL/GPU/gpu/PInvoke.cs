@@ -606,12 +606,16 @@ internal static class PInvokeTests
         ResetCaptureState();
         nextPointer = (IntPtr)1406;
         using NativeHookScope _ = NativeHookScope.Install("CreateGPUBufferNativeFunction", nameof(CaptureCreateGPUBuffer));
-        SDL3.SDL.GPUBufferCreateInfo createInfo = new() { Size = 2048, Props = 48 };
+        SDL3.SDL.GPUBufferUsageFlags multipleReadUsages =
+            SDL3.SDL.GPUBufferUsageFlags.GraphicsStorageRead |
+            SDL3.SDL.GPUBufferUsageFlags.ComputeStorageRead;
+        SDL3.SDL.GPUBufferCreateInfo createInfo = new() { Usage = multipleReadUsages, Size = 2048, Props = 48 };
 
         IntPtr result = SDL3.SDL.CreateGPUBuffer((IntPtr)1308, in createInfo);
 
         TestAssert.Equal((IntPtr)1406, result, "SDL.CreateGPUBuffer must return native buffer pointer.");
         TestAssert.Equal((IntPtr)1308, capturedDevice, "SDL.CreateGPUBuffer must forward device.");
+        TestAssert.Equal(multipleReadUsages, capturedBufferInfo.Usage, "SDL.CreateGPUBuffer must preserve multiple read usage flags.");
         TestAssert.Equal(2048u, capturedBufferInfo.Size, "SDL.CreateGPUBuffer must forward createinfo.");
     }
 

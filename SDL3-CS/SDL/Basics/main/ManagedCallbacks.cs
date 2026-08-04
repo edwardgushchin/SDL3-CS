@@ -121,17 +121,22 @@ public partial class SDL
         }
 
         nativeFailure?.Throw();
-        context.ThrowIfFaulted();
+        context.GetCallbackFailure()?.Throw();
         GC.KeepAlive(context);
         return result;
     }
 
     private static string[] CreateNativeMainArguments(string[] args)
     {
-        string? executablePath = Environment.ProcessPath;
+        return CreateNativeMainArguments(args, Environment.ProcessPath, AppDomain.CurrentDomain.FriendlyName);
+    }
+
+    private static string[] CreateNativeMainArguments(string[] args, string? processPath, string? friendlyName)
+    {
+        string? executablePath = processPath;
         if (string.IsNullOrWhiteSpace(executablePath))
         {
-            executablePath = AppDomain.CurrentDomain.FriendlyName;
+            executablePath = friendlyName;
         }
 
         if (string.IsNullOrWhiteSpace(executablePath))
@@ -182,9 +187,9 @@ public partial class SDL
             Complete(AppResult.Failure);
         }
 
-        internal void ThrowIfFaulted()
+        internal ExceptionDispatchInfo? GetCallbackFailure()
         {
-            callbackFailure?.Throw();
+            return callbackFailure;
         }
 
         private AppResult AppInitCore(ref IntPtr appstate, int argc, string[]? argv)

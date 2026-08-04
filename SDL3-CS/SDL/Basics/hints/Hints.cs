@@ -1809,7 +1809,8 @@ public static partial class SDL
         /// <item><c>"0"</c>: Assume this is a generic controller.</item>
         /// <item><c>"1"</c>: Reset the controller to get metadata.</item>
         /// </list>
-        /// <para>By default the controller is not reset.</para>
+        /// <para>By default the controller is reset. This is so we can properly detect
+        /// the controller type.</para>
         /// </summary>
         /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
         /// <since>This hint is available since SDL 3.4.0.</since>

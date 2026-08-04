@@ -258,6 +258,7 @@ internal static class PInvokeTests
         TestAssert.Equal("SDL_mixer.play.loop_start_frame", SDL3.Mixer.Props.PlayLoopStartFrameNumber, "Mixer.Props.PlayLoopStartFrameNumber must match MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER.");
         TestAssert.Equal("SDL_mixer.play.loop_start_millisecond", SDL3.Mixer.Props.PlayLoopStartMillisecondNumber, "Mixer.Props.PlayLoopStartMillisecondNumber must match MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER.");
         TestAssert.Equal("SDL_mixer.play.halt_when_exhausted", SDL3.Mixer.Props.PlayHaltWhenExhaustedBoolean, "Mixer.Props.PlayHaltWhenExhaustedBoolean must match MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN.");
+        TestAssert.Equal("SDL_mixer.play.start_order", SDL3.Mixer.Props.PlayStartOrderNumber, "Mixer.Props.PlayStartOrderNumber must match MIX_PROP_PLAY_START_ORDER_NUMBER.");
     }
 
     public static void LoadAudioNoCopy_ReturnsAudioForPinnedWavData()

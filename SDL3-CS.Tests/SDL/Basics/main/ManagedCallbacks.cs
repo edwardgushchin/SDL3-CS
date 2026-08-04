@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace SDL3.Tests.SDL.Basics.Main;
 
 internal static partial class PInvokeTests
@@ -14,6 +16,8 @@ internal static partial class PInvokeTests
         RunMainCallbacks_PerformsFallbackCleanupAndIgnoresDuplicateQuit();
         RunMainCallbacks_CleansUpBeforeRethrowingNativeFailure();
         RunMainCallbacks_WaitsForActiveEventBeforeQuit();
+        RunMainCallbacks_WaitsForConcurrentDuplicateQuit();
+        CreateNativeMainArguments_UsesProcessFriendlyNameAndFallback();
         ManagedMainCallbacks_PublicContractHasExpectedShape();
     }
 
@@ -141,6 +145,33 @@ internal static partial class PInvokeTests
         TestAssert.True(RecordingApp.EventCompletedBeforeQuit, "AppQuit must wait for an active AppEvent before releasing state.");
     }
 
+    public static void RunMainCallbacks_WaitsForConcurrentDuplicateQuit()
+    {
+        RecordingApp.Reset();
+        RecordingApp.BlockQuit = true;
+        using NativeHookScope _ = NativeHookScope.Install("EnterAppMainCallbacksNativeFunction", nameof(RunManagedConcurrentDuplicateQuit));
+
+        SDL3.SDL.RunMainCallbacks<RecordingApp>([]);
+
+        TestAssert.Equal(1, RecordingApp.QuitCount, "Concurrent duplicate AppQuit calls must reach managed state only once.");
+        TestAssert.Equal(SDL3.SDL.AppResult.Success, RecordingApp.QuitResult, "The first concurrent AppQuit result must remain terminal.");
+    }
+
+    public static void CreateNativeMainArguments_UsesProcessFriendlyNameAndFallback()
+    {
+        MethodInfo? method = typeof(SDL3.SDL).GetMethod(
+            "CreateNativeMainArguments",
+            BindingFlags.NonPublic | BindingFlags.Static,
+            null,
+            [typeof(string[]), typeof(string), typeof(string)],
+            null);
+        TestAssert.NotNull(method, "SDL.CreateNativeMainArguments must expose a pure overload for deterministic fallback verification.");
+
+        AssertNativeArgumentFallback(method!, "C:/apps/game.exe", "friendly.exe", "C:/apps/game.exe");
+        AssertNativeArgumentFallback(method!, " ", "friendly.exe", "friendly.exe");
+        AssertNativeArgumentFallback(method!, null, "\t", "SDL3-CS");
+    }
+
     public static void ManagedMainCallbacks_PublicContractHasExpectedShape()
     {
         Type contract = typeof(SDL3.SDL.IMainCallbacks<RecordingApp>);
@@ -252,6 +283,27 @@ internal static partial class PInvokeTests
         return 0;
     }
 
+    private static int RunManagedConcurrentDuplicateQuit(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    {
+        managedAppstate = IntPtr.Zero;
+        appinit(ref managedAppstate, argc, argv);
+        Task firstQuit = Task.Run(() => appquit(managedAppstate, SDL3.SDL.AppResult.Success));
+        TestAssert.True(RecordingApp.QuitEntered.Wait(TimeSpan.FromSeconds(5)), "The first managed AppQuit did not start in time.");
+        Task duplicateQuit = Task.Run(() => appquit(managedAppstate, SDL3.SDL.AppResult.Failure));
+        TestAssert.Equal(false, duplicateQuit.Wait(TimeSpan.FromMilliseconds(100)), "A duplicate AppQuit must wait while the first AppQuit is still active.");
+        RecordingApp.ReleaseQuit.Set();
+        TestAssert.True(Task.WaitAll([firstQuit, duplicateQuit], TimeSpan.FromSeconds(5)), "Concurrent AppQuit calls did not complete in time.");
+        return 0;
+    }
+
+    private static void AssertNativeArgumentFallback(MethodInfo method, string? processPath, string? friendlyName, string expectedExecutable)
+    {
+        string[] arguments = (string[])method.Invoke(null, [new[] { "--test" }, processPath, friendlyName])!;
+        TestAssert.Equal(2, arguments.Length, "Native arguments must prepend exactly one executable identifier.");
+        TestAssert.Equal(expectedExecutable, arguments[0], "Native arguments must use the expected executable fallback.");
+        TestAssert.Equal("--test", arguments[1], "Native arguments must preserve managed arguments.");
+    }
+
     private static void AssertNativeArguments(int argc, string[]? argv, params string[] expectedArgs)
     {
         TestAssert.NotNull(argv, "Native argv must contain the executable path.");
@@ -300,10 +352,12 @@ internal static partial class PInvokeTests
         public static int QuitCount { get; private set; }
         public static SDL3.SDL.AppResult QuitResult { get; private set; }
         public static bool BlockEvent { get; set; }
+        public static bool BlockQuit { get; set; }
         public static bool EventCompletedBeforeQuit { get; private set; }
         public static ManualResetEventSlim EventEntered { get; } = new(false);
         public static ManualResetEventSlim ReleaseEvent { get; } = new(false);
         public static ManualResetEventSlim QuitEntered { get; } = new(false);
+        public static ManualResetEventSlim ReleaseQuit { get; } = new(false);
 
         public static SDL3.SDL.AppResult AppInit(out RecordingApp? appState, string[] args)
         {
@@ -347,6 +401,11 @@ internal static partial class PInvokeTests
             QuitCount++;
             QuitResult = result;
             TestAssert.True(!BlockEvent || EventCompletedBeforeQuit, "AppQuit entered before AppEvent completed.");
+            if (BlockQuit)
+            {
+                TestAssert.True(ReleaseQuit.Wait(TimeSpan.FromSeconds(5)), "Managed AppQuit was not released in time.");
+            }
+
             ThrowIfConfigured(CallbackStage.Quit);
         }
 
@@ -363,10 +422,12 @@ internal static partial class PInvokeTests
             QuitCount = 0;
             QuitResult = default;
             BlockEvent = false;
+            BlockQuit = false;
             EventCompletedBeforeQuit = false;
             EventEntered.Reset();
             ReleaseEvent.Reset();
             QuitEntered.Reset();
+            ReleaseQuit.Reset();
         }
 
         private static void ThrowIfConfigured(CallbackStage stage)

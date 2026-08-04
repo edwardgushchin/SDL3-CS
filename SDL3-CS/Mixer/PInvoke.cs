@@ -764,8 +764,11 @@ public partial class Mixer
     /// <para>If the track is currently playing, it will be stopped immediately, without
     /// any fadeout. If there is a callback set through
     /// <see cref="SetTrackStoppedCallback"/>, it will _not_ be called.</para>
-    /// <para> If the mixer is currently mixing in another thread, this will block until
-    /// it finishes.</para>
+    /// <para>If the mixer is currently mixing in another thread, this will block until
+    /// it finishes. Destroying a track from the mixer thread itself (during a
+    /// callback) will cause it to be destroyed as soon as this iteration of the
+    /// mixer thread is not using it; in this scenario, destroying a track and then
+    /// making futher changes to it is considered undefined behavior.</para>
     /// <para>Destroying a <c>null</c> MIX_Track is a legal no-op.</para>
     /// </summary>
     /// <param name="track">the track to destroy.</param>
@@ -2436,8 +2439,9 @@ public partial class Mixer
     /// memory buffer without playing it, this interface offers that.</para>
     /// <para>This function allows properties to be specified. This is intended to supply
     /// file-specific settings, such as where to find SoundFonts for a MIDI file,
-    /// etc. In most cases, the caller should pass a zero to specify no extra
-    /// properties.</para>
+    /// etc. Most of the properties available to <see cref="LoadAudioWithProperties"/>
+    /// apply here, too. In most cases, the caller should pass a zero to specify no
+    /// extra properties.</para>
     /// <para>SDL_PropertiesID are discussed in
     /// [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties)
     /// .</para>

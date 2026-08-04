@@ -27,8 +27,10 @@ public static partial class SDL
 {
     /// <summary>
     /// <para>Specifies how a texture is intended to be used by the client.</para>
-    /// <para>A texture must have at least one usage flag. Note that some usage flag
-    /// combinations are invalid.</para>
+    /// <para>A texture must have at least one usage flag. Combining
+    /// <see cref="GPUTextureUsageFlags.Sampler"/> with
+    /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/> or
+    /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/> is invalid.</para>
     /// <para>With regards to compute storage usage, READ | WRITE means that you can have
     /// shader A that only writes into the texture and shader B that only reads
     /// from the texture and bind the same texture to either shader respectively.
