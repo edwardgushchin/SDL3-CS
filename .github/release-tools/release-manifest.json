@@ -9,7 +9,7 @@
     "androidPlatformArchiveUrl": "https://dl.google.com/android/repository/platform-35_r02.zip",
     "androidPlatformArchiveSha256": "0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0",
     "androidPlatformJarSha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b",
-    "androidBridgeJarSha256": "bd2b78f7a27e9af9a37d7cda910412324c97c6fcee3fb9e2d282b46fad734287",
+    "androidBridgeJarSha256": "5f5d8fb68f22f4b0adf5425ddcd24f08dc03461cf0354259a2809d99b81f15d3",
     "androidBridgeJavaRelease": 11,
     "androidBridgeSetupJavaVersion": "11.0.14+101",
     "androidBridgeJavacVersion": "11.0.14.1",
