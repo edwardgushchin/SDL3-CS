@@ -135,6 +135,7 @@ internal static class PInvokeTests
         CreateGPUSampler_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUShader_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUShaderSpan_OverridesScopedInputsAndPreservesTemplate();
+        CreateGPUShaderSpan_UnwindsPinsWhenNativeHookThrows();
         CreateGPUTexture_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUBuffer_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUTransferBuffer_ForwardsCreateInfoAndReturnsNativePointer();
@@ -742,6 +743,39 @@ internal static class PInvokeTests
 
         TestAssert.True(threw, "SDL.CreateGPUShader span overload must reject a null entrypoint with the correct parameter name.");
         TestAssert.Equal(0, capturedCallCount, "SDL.CreateGPUShader span overload must reject a null entrypoint before the native call.");
+    }
+
+    public static void CreateGPUShaderSpan_UnwindsPinsWhenNativeHookThrows()
+    {
+        byte[] code = [0x03, 0x02, 0x23, 0x07];
+        SDL3.SDL.GPUShaderCreateInfo createInfo = new()
+        {
+            Format = SDL3.SDL.GPUShaderFormat.SPIRV,
+            Stage = SDL3.SDL.GPUShaderStage.Vertex
+        };
+
+        using (NativeHookScope hookScope = NativeHookScope.Install("CreateGPUShaderNativeFunction", nameof(ThrowCreateGPUShader)))
+        {
+            try
+            {
+                _ = SDL3.SDL.CreateGPUShader(IntPtr.Zero, in createInfo, code, "main");
+                throw new InvalidOperationException("SDL.CreateGPUShader span overload must propagate native hook exceptions.");
+            }
+            catch (InvalidOperationException exception)
+            {
+                TestAssert.Equal("create shader hook failure", exception.Message, "SDL.CreateGPUShader span overload must preserve hook exceptions while unwinding pins.");
+            }
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)1416;
+        using (NativeHookScope hookScope = NativeHookScope.Install("CreateGPUShaderNativeFunction", nameof(CaptureCreateGPUShader)))
+        {
+            IntPtr result = SDL3.SDL.CreateGPUShader(IntPtr.Zero, in createInfo, code, "main_after_exception");
+            TestAssert.Equal((IntPtr)1416, result, "SDL.CreateGPUShader span overload must remain usable after exception unwinding.");
+            TestAssert.Equal("main_after_exception", capturedShaderEntrypoint, "SDL.CreateGPUShader span overload must re-pin a later entrypoint after exception unwinding.");
+            TestAssert.Equal(4, capturedShaderCode!.Length, "SDL.CreateGPUShader span overload must re-pin later code after exception unwinding.");
+        }
     }
 
     public static void CreateGPUTexture_ForwardsCreateInfoAndReturnsNativePointer()
@@ -2651,6 +2685,11 @@ internal static class PInvokeTests
         capturedShaderEntrypoint = Marshal.PtrToStringUTF8(createinfo._entrypoint);
         capturedCallCount++;
         return nextPointer;
+    }
+
+    private static IntPtr ThrowCreateGPUShader(IntPtr device, in SDL3.SDL.GPUShaderCreateInfo createinfo)
+    {
+        throw new InvalidOperationException("create shader hook failure");
     }
 
     private static IntPtr CaptureCreateGPUTexture(IntPtr device, in SDL3.SDL.GPUTextureCreateInfo createinfo)
