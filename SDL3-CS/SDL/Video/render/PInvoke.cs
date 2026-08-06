@@ -1392,6 +1392,15 @@ public static partial class SDL
         }
     }
 
+    /// <inheritdoc cref="UpdateTexture(IntPtr, IntPtr, byte[], int)"/>
+    public static unsafe bool UpdateTexture(IntPtr texture, IntPtr rect, ReadOnlySpan<byte> pixels, int pitch)
+    {
+        fixed (byte* p = pixels)
+        {
+            return UpdateTexture(texture, rect, (nint)p, pitch);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1498,6 +1507,15 @@ public static partial class SDL
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     public static unsafe bool UpdateTexture(IntPtr texture, in Rect rect, Span<byte> pixels, int pitch)
+    {
+        fixed (byte* p = pixels)
+        {
+            return UpdateTexture(texture, rect, (nint)p, pitch);
+        }
+    }
+
+    /// <inheritdoc cref="UpdateTexture(IntPtr, in Rect, byte[], int)"/>
+    public static unsafe bool UpdateTexture(IntPtr texture, in Rect rect, ReadOnlySpan<byte> pixels, int pitch)
     {
         fixed (byte* p = pixels)
         {
