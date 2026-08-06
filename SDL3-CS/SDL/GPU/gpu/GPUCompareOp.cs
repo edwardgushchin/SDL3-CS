@@ -29,7 +29,7 @@ public static partial class SDL
     /// Specifies a comparison operator for depth, stencil and sampler operations.
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     public enum GPUCompareOp
     {
         Invalid,

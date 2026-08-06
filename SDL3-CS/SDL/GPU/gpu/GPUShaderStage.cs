@@ -29,7 +29,7 @@ public static partial class SDL
     /// Specifies which stage a shader program corresponds to.
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public enum GPUShaderStage
     {
         Vertex,

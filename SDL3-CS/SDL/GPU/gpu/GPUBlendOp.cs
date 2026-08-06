@@ -32,7 +32,7 @@ public static partial class SDL
     /// destination color is the value currently existing in the texture.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     public enum GPUBlendOp
     {
         Invalid,

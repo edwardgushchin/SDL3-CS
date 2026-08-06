@@ -252,7 +252,7 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.4.0.</since>
     /// <seealso cref="CreateRendererWithProperties"/>
     /// <seealso cref="GetGPURendererDevice"/>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     /// <seealso cref="CreateGPURenderState(nint, in GPURenderStateCreateInfo)"/>
     /// <seealso cref="SetGPURenderState"/>
     public static IntPtr CreateGPURenderer(IntPtr device, IntPtr window)

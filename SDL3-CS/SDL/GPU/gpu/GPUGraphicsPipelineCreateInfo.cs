@@ -31,7 +31,7 @@ public static partial class SDL
     /// A structure specifying the parameters of a graphics pipeline state.
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     /// <seealso cref="GPUVertexInputState"/>
     /// <seealso cref="GPUPrimitiveType"/>
     /// <seealso cref="GPURasterizerState"/>

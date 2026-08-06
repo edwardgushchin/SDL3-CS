@@ -42,7 +42,7 @@ public static partial class SDL
     /// regret using it.</para>
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     public enum GPUPrimitiveType
     {
         /// <summary>

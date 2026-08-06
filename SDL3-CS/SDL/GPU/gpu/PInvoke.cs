@@ -24,6 +24,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SDL3;
 
@@ -502,12 +503,56 @@ public partial class SDL
     /// <returns>a graphics pipeline object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     /// <seealso cref="BindGPUGraphicsPipeline"/>
     /// <seealso cref="ReleaseGPUGraphicsPipeline"/>
     public static IntPtr CreateGPUGraphicsPipeline(IntPtr device, in GPUGraphicsPipelineCreateInfo createinfo)
     {
         return CreateGPUGraphicsPipelineNativeFunction(device, in createinfo);
+    }
+
+    /// <summary>
+    /// Creates a graphics pipeline from scoped managed vertex-input and color-target descriptions.
+    /// </summary>
+    /// <remarks>
+    /// The three pointer/count pairs in <paramref name="createinfo"/> are replaced in a local copy.
+    /// The spans remain pinned only for the native call.
+    /// </remarks>
+    /// <param name="device">a GPU Context.</param>
+    /// <param name="createinfo">a template describing the graphics pipeline state.</param>
+    /// <param name="vertexBuffers">the vertex buffer descriptions consumed during creation.</param>
+    /// <param name="vertexAttributes">the vertex attribute descriptions consumed during creation.</param>
+    /// <param name="colorTargets">the color target descriptions consumed during creation.</param>
+    /// <returns>a graphics pipeline object on success, or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
+    public static unsafe IntPtr CreateGPUGraphicsPipeline(
+        IntPtr device,
+        in GPUGraphicsPipelineCreateInfo createinfo,
+        ReadOnlySpan<GPUVertexBufferDescription> vertexBuffers,
+        ReadOnlySpan<GPUVertexAttribute> vertexAttributes,
+        ReadOnlySpan<GPUColorTargetDescription> colorTargets)
+    {
+        GPUGraphicsPipelineCreateInfo scopedCreateInfo = createinfo;
+
+        fixed (GPUVertexBufferDescription* vertexBufferPointer = vertexBuffers)
+        fixed (GPUVertexAttribute* vertexAttributePointer = vertexAttributes)
+        fixed (GPUColorTargetDescription* colorTargetPointer = colorTargets)
+        {
+            scopedCreateInfo.VertexInputState.VertexBufferDescriptions = vertexBuffers.IsEmpty
+                ? IntPtr.Zero
+                : (IntPtr)vertexBufferPointer;
+            scopedCreateInfo.VertexInputState.NumVertexBuffers = (uint)vertexBuffers.Length;
+            scopedCreateInfo.VertexInputState.VertexAttributes = vertexAttributes.IsEmpty
+                ? IntPtr.Zero
+                : (IntPtr)vertexAttributePointer;
+            scopedCreateInfo.VertexInputState.NumVertexAttributes = (uint)vertexAttributes.Length;
+            scopedCreateInfo.TargetInfo.ColorTargetDescriptions = colorTargets.IsEmpty
+                ? IntPtr.Zero
+                : (IntPtr)colorTargetPointer;
+            scopedCreateInfo.TargetInfo.NumColorTargets = (uint)colorTargets.Length;
+            return CreateGPUGraphicsPipelineNativeFunction(device, in scopedCreateInfo);
+        }
     }
 
 
@@ -609,11 +654,48 @@ public partial class SDL
     /// <returns>a shader object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     /// <seealso cref="ReleaseGPUShader"/>
     public static IntPtr CreateGPUShader(IntPtr device, in GPUShaderCreateInfo createinfo)
     {
         return CreateGPUShaderNativeFunction(device, in createinfo);
+    }
+
+    /// <summary>
+    /// Creates a GPU shader from scoped managed shader code and an entrypoint string.
+    /// </summary>
+    /// <remarks>
+    /// <para>The <see cref="GPUShaderCreateInfo.Code"/>, <see cref="GPUShaderCreateInfo.CodeSize"/>,
+    /// and entrypoint pointer in <paramref name="createinfo"/> are replaced in a local copy.</para>
+    /// <para>The shader code and UTF-8 entrypoint remain pinned only for the native call.</para>
+    /// </remarks>
+    /// <param name="device">a GPU Context.</param>
+    /// <param name="createinfo">a template describing the shader state.</param>
+    /// <param name="code">the shader code consumed during creation.</param>
+    /// <param name="entrypoint">the shader entrypoint encoded as a <c>null</c>-terminated UTF-8 string.</param>
+    /// <returns>a shader object on success, or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    public static unsafe IntPtr CreateGPUShader(
+        IntPtr device,
+        in GPUShaderCreateInfo createinfo,
+        ReadOnlySpan<byte> code,
+        string entrypoint)
+    {
+        ArgumentNullException.ThrowIfNull(entrypoint);
+
+        byte[] entrypointUtf8 = new byte[Encoding.UTF8.GetByteCount(entrypoint) + 1];
+        Encoding.UTF8.GetBytes(entrypoint, entrypointUtf8);
+        GPUShaderCreateInfo scopedCreateInfo = createinfo;
+
+        fixed (byte* codePointer = code)
+        fixed (byte* entrypointPointer = entrypointUtf8)
+        {
+            scopedCreateInfo.Code = code.IsEmpty ? IntPtr.Zero : (IntPtr)codePointer;
+            scopedCreateInfo.CodeSize = (UIntPtr)(uint)code.Length;
+            scopedCreateInfo._entrypoint = (IntPtr)entrypointPointer;
+            return CreateGPUShaderNativeFunction(device, in scopedCreateInfo);
+        }
     }
 
 
@@ -1077,7 +1159,7 @@ public partial class SDL
     /// terms this means you must ensure that vec3 and vec4 fields are 16-byte
     /// aligned.</para>
     /// <para>For detailed information about accessing uniform data from a shader, please
-    /// refer to <see cref="CreateGPUShader"/>.</para>
+    /// refer to <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="slotIndex">the vertex uniform slot to push data to.</param>
@@ -1580,7 +1662,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex sampler slot to begin binding from.</param>
@@ -1589,7 +1671,7 @@ public partial class SDL
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings)
     {
         if (textureSamplerBindings.Length == 0)
@@ -1628,7 +1710,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex sampler slot to begin binding from.</param>
@@ -1637,7 +1719,7 @@ public partial class SDL
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings)
     {
         BindGPUVertexSamplersPointerNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
@@ -1656,14 +1738,14 @@ public partial class SDL
     /// <para>Binds storage textures for use on the vertex shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage texture to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings)
     {
         BindGPUVertexStorageTexturesNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
@@ -1696,14 +1778,14 @@ public partial class SDL
     /// <para>Binds storage buffers for use on the vertex shader.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of buffers.</param>
     /// <param name="numBindings">the number of buffers to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings)
     {
         BindGPUVertexStorageBuffersNativeFunction(renderPass, firstSlot, storageBuffers, numBindings);
@@ -1736,7 +1818,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment sampler slot to begin binding from.</param>
@@ -1745,7 +1827,7 @@ public partial class SDL
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentSamplers(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings)
     {
         BindGPUFragmentSamplersArrayNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
@@ -1762,7 +1844,7 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment sampler slot to begin binding from.</param>
@@ -1771,7 +1853,7 @@ public partial class SDL
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
     /// array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentSamplers(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings)
     {
         BindGPUFragmentSamplersPointerNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
@@ -1800,14 +1882,14 @@ public partial class SDL
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings)
     {
         BindGPUFragmentStorageTexturesArrayNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
@@ -1825,14 +1907,14 @@ public partial class SDL
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr storageTextures, uint numBindings)
     {
         BindGPUFragmentStorageTexturesPointerNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
@@ -1861,14 +1943,14 @@ public partial class SDL
     /// <para>Binds storage buffers for use on the fragment shader.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of storage buffers.</param>
     /// <param name="numBindings">the number of storage buffers to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr[] storageBuffers, uint numBindings)
     {
         BindGPUFragmentStorageBuffersArrayNativeFunction(renderPass, firstSlot, storageBuffers, numBindings);
@@ -1886,14 +1968,14 @@ public partial class SDL
     /// <para>Binds storage buffers for use on the fragment shader.</para>
     /// <para>These buffers must have been created with
     /// <see cref="GPUBufferUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader"/>.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage buffer slot to begin binding from.</param>
     /// <param name="storageBuffers">an array of storage buffers.</param>
     /// <param name="numBindings">the number of storage buffers to bind from the array.</param>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentStorageBuffers(IntPtr renderPass, uint firstSlot, IntPtr storageBuffers, uint numBindings)
     {
         BindGPUFragmentStorageBuffersPointerNativeFunction(renderPass, firstSlot, storageBuffers, numBindings);
