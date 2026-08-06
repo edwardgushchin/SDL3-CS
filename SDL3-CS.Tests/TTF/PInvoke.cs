@@ -90,6 +90,7 @@ internal static class PInvokeTests
     private static int capturedCallCount;
     private static string? capturedFile;
     private static string? capturedString;
+    private static byte[]? capturedBytes;
     private static SDL3.TTF.SubString capturedSubString;
     private static int capturedOffset;
     private static int capturedTextLength;
@@ -1309,6 +1310,44 @@ internal static class PInvokeTests
                     TestAssert.Equal(1, capturedCallCount, "TTF.GetStringSize byte pointer overload must call native hook once.");
                 }
             }
+        }
+
+        ResetCaptureState();
+        nextBool = false;
+        nextWidth = 52;
+        nextHeight = 13;
+        byte[] utf8Source = [0xFF, 0xE2, 0x82, 0xAC, 0xEE];
+        ReadOnlySpan<byte> utf8 = utf8Source.AsSpan(1, 3);
+        using (NativeHookScope _ = NativeHookScope.Install("GetStringSizeBytePointerNativeFunction", nameof(CaptureStringSizeBytePointer)))
+        {
+            bool actual = SDL3.TTF.GetStringSize((IntPtr)0x8017, utf8, out int w, out int h);
+
+            TestAssert.Equal(false, actual, "TTF.GetStringSize ReadOnlySpan overload must return native success value.");
+            TestAssert.Equal(52, w, "TTF.GetStringSize ReadOnlySpan overload must return native width.");
+            TestAssert.Equal(13, h, "TTF.GetStringSize ReadOnlySpan overload must return native height.");
+            TestAssert.Equal((IntPtr)0x8017, capturedFont, "TTF.GetStringSize ReadOnlySpan overload must forward font.");
+            TestAssert.True(capturedTextPointer != IntPtr.Zero, "TTF.GetStringSize ReadOnlySpan overload must pin and forward text.");
+            TestAssert.Equal((UIntPtr)3, capturedLength, "TTF.GetStringSize ReadOnlySpan overload must derive the byte length.");
+            AssertBytes([0xE2, 0x82, 0xAC], capturedBytes, "TTF.GetStringSize ReadOnlySpan overload must forward the selected UTF-8 bytes.");
+            TestAssert.Equal(1, capturedCallCount, "TTF.GetStringSize ReadOnlySpan overload must call native hook once.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextWidth = 0;
+        nextHeight = 21;
+        using (NativeHookScope _ = NativeHookScope.Install("GetStringSizeBytePointerNativeFunction", nameof(CaptureStringSizeBytePointer)))
+        {
+            bool actual = SDL3.TTF.GetStringSize((IntPtr)0x8018, ReadOnlySpan<byte>.Empty, out int w, out int h);
+
+            TestAssert.Equal(true, actual, "TTF.GetStringSize empty ReadOnlySpan overload must return native success value.");
+            TestAssert.Equal(0, w, "TTF.GetStringSize empty ReadOnlySpan overload must return native width.");
+            TestAssert.Equal(21, h, "TTF.GetStringSize empty ReadOnlySpan overload must return native height.");
+            TestAssert.Equal((IntPtr)0x8018, capturedFont, "TTF.GetStringSize empty ReadOnlySpan overload must forward font.");
+            TestAssert.True(capturedTextPointer != IntPtr.Zero, "TTF.GetStringSize empty ReadOnlySpan overload must pass a valid NUL sentinel pointer.");
+            TestAssert.Equal(UIntPtr.Zero, capturedLength, "TTF.GetStringSize empty ReadOnlySpan overload must pass zero length.");
+            AssertBytes([0], capturedBytes, "TTF.GetStringSize empty ReadOnlySpan overload must pass a NUL sentinel.");
+            TestAssert.Equal(1, capturedCallCount, "TTF.GetStringSize empty ReadOnlySpan overload must call native hook once.");
         }
 
         ResetCaptureState();
@@ -2573,6 +2612,9 @@ internal static class PInvokeTests
         capturedFont = font;
         capturedTextPointer = (IntPtr)text;
         capturedLength = length;
+        capturedBytes = text == null
+            ? null
+            : new ReadOnlySpan<byte>(text, length == UIntPtr.Zero ? 1 : checked((int)length.ToUInt64())).ToArray();
         w = nextWidth;
         h = nextHeight;
         capturedCallCount++;
@@ -3130,6 +3172,7 @@ internal static class PInvokeTests
         capturedCallCount = 0;
         capturedFile = null;
         capturedString = null;
+        capturedBytes = null;
         capturedSubString = default;
         capturedOffset = 0;
         capturedTextLength = 0;
@@ -3397,6 +3440,16 @@ internal static class PInvokeTests
         MarshalAsAttribute? marshalAs = method.GetParameters()[index].GetCustomAttribute<MarshalAsAttribute>();
         TestAssert.NotNull(marshalAs, $"TTF.{method.Name} parameter {index} must keep MarshalAs metadata.");
         TestAssert.Equal(expected, marshalAs!.Value, $"TTF.{method.Name} parameter {index} must keep expected MarshalAs value.");
+    }
+
+    private static void AssertBytes(byte[] expected, byte[]? actual, string message)
+    {
+        TestAssert.NotNull(actual, message);
+        TestAssert.Equal(expected.Length, actual!.Length, $"{message} Length.");
+        for (int i = 0; i < expected.Length; i++)
+        {
+            TestAssert.Equal(expected[i], actual[i], $"{message} [{i}].");
+        }
     }
 
     private static void AssertExcludedFromCoverage(MethodInfo method)

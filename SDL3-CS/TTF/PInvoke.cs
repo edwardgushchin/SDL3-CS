@@ -1506,6 +1506,37 @@ public static partial class TTF
         return GetStringSizeBytePointerNativeFunction(font, text, length, out w, out h);
     }
 
+    /// <code>extern SDL_DECLSPEC bool SDLCALL TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);</code>
+    /// <summary>
+    /// <para>Calculate the dimensions of a rendered string of UTF-8 text.</para>
+    /// <para>This will report the width and height, in pixels, of the space that the
+    /// specified string will take to fully render.</para>
+    /// <para>The byte length is derived from <paramref name="utf8"/>. An empty span is
+    /// passed as a valid NUL-terminated empty string.</para>
+    /// </summary>
+    /// <param name="font">the font to query.</param>
+    /// <param name="utf8">text to calculate, in UTF-8 encoding.</param>
+    /// <param name="w">will be filled with width, in pixels, on return.</param>
+    /// <param name="h">will be filled with height, in pixels, on return.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="SDL.GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// font.</threadsafety>
+    /// <since>This function is available since SDL_ttf 3.0.0.</since>
+    public static unsafe bool GetStringSize(IntPtr font, ReadOnlySpan<byte> utf8, out int w, out int h)
+    {
+        if (utf8.IsEmpty)
+        {
+            byte terminator = 0;
+            return GetStringSize(font, &terminator, UIntPtr.Zero, out w, out h);
+        }
+
+        fixed (byte* text = utf8)
+        {
+            return GetStringSize(font, text, (UIntPtr)utf8.Length, out w, out h);
+        }
+    }
+
     [ExcludeFromCodeCoverage]
     [LibraryImport(FontLibrary, EntryPoint = "TTF_GetStringSize"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
