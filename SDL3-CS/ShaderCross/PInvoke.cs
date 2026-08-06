@@ -24,6 +24,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SDL3;
 
@@ -177,7 +178,7 @@ public partial class ShaderCross
 
     /// <code>extern SDL_DECLSPEC SDL_GPUShader * SDLCALL SDL_ShaderCross_CompileGraphicsShaderFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, const SDL_ShaderCross_GraphicsShaderMetadata *metadata, SDL_PropertiesID props);</code>
     /// <summary>
-    /// Compile an SDL GPU shader from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL"/>.
+    /// Compile an SDL GPU shader from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL(ref HLSLInfo, out UIntPtr)"/>.
     /// </summary>
     /// <param name="device">the SDL GPU device.</param>
     /// <param name="info">a struct describing the shader to transpile.</param>
@@ -199,7 +200,7 @@ public partial class ShaderCross
 
     /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_ShaderCross_CompileComputePipelineFromSPIRV(SDL_GPUDevice *device, const SDL_ShaderCross_SPIRV_Info *info, const SDL_ShaderCross_ComputePipelineMetadata *metadata, SDL_PropertiesID props);</code>
     /// <summary>
-    /// Compile an SDL GPU compute pipeline from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL"/>.
+    /// Compile an SDL GPU compute pipeline from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL(ref HLSLInfo, out UIntPtr)"/>.
     /// </summary>
     /// <param name="device">the SDL GPU device.</param>
     /// <param name="info">a struct describing the shader to transpile.</param>
@@ -221,7 +222,7 @@ public partial class ShaderCross
 
     /// <code>extern SDL_DECLSPEC SDL_ShaderCross_GraphicsShaderMetadata * SDLCALL SDL_ShaderCross_ReflectGraphicsSPIRV(const Uint8 *bytecode, size_t bytecode_size, SDL_PropertiesID props);</code>
     /// <summary>
-    /// Reflect graphics shader info from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL"/>. This must be freed with <see cref="SDL.Free"/> when you are done with the metadata.
+    /// Reflect graphics shader info from SPIRV code. If your shader source is HLSL, you should obtain SPIR-V bytecode from <see cref="CompileSPIRVFromHLSL(ref HLSLInfo, out UIntPtr)"/>. This must be freed with <see cref="SDL.Free"/> when you are done with the metadata.
     /// </summary>
     /// <param name="bytecode">the SPIRV bytecode.</param>
     /// <param name="bytecodeSize">the length of the SPIRV bytecode.</param>
@@ -353,5 +354,64 @@ public partial class ShaderCross
     public static IntPtr CompileSPIRVFromHLSL(ref HLSLInfo info, out UIntPtr size)
     {
         return CompileSPIRVFromHLSLNativeFunction(ref info, out size);
+    }
+
+    /// <summary>
+    /// Compiles managed HLSL source to SPIR-V using scoped UTF-8 input strings.
+    /// </summary>
+    /// <remarks>
+    /// The source, entrypoint, and optional include directory remain pinned only for the native call.
+    /// The returned SDL-allocated buffer must be released with <see cref="SDL.Free"/>.
+    /// Use <see cref="CompileSPIRVFromHLSL(ref HLSLInfo, out UIntPtr)"/> for custom defines and other
+    /// advanced pointer-based scenarios.
+    /// </remarks>
+    /// <param name="source">the HLSL source text.</param>
+    /// <param name="entrypoint">the UTF-8 entrypoint name.</param>
+    /// <param name="shaderStage">the shader stage to compile.</param>
+    /// <param name="size">filled in with the returned SPIR-V bytecode size.</param>
+    /// <param name="includeDir">an optional include directory, or <c>null</c>.</param>
+    /// <param name="props">a properties object filled in with compiler options.</param>
+    /// <returns>an SDL-allocated buffer containing SPIR-V bytecode, or <c>null</c> on failure.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    public static unsafe IntPtr CompileSPIRVFromHLSL(
+        string source,
+        string entrypoint,
+        ShaderStage shaderStage,
+        out UIntPtr size,
+        string? includeDir = null,
+        uint props = 0)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(entrypoint);
+
+        byte[] sourceUtf8 = new byte[Encoding.UTF8.GetByteCount(source) + 1];
+        Encoding.UTF8.GetBytes(source, sourceUtf8);
+        byte[] entrypointUtf8 = new byte[Encoding.UTF8.GetByteCount(entrypoint) + 1];
+        Encoding.UTF8.GetBytes(entrypoint, entrypointUtf8);
+        byte[] includeDirUtf8 = includeDir is null
+            ? []
+            : new byte[Encoding.UTF8.GetByteCount(includeDir) + 1];
+
+        if (includeDir is not null)
+        {
+            Encoding.UTF8.GetBytes(includeDir, includeDirUtf8);
+        }
+
+        fixed (byte* sourcePointer = sourceUtf8)
+        fixed (byte* entrypointPointer = entrypointUtf8)
+        fixed (byte* includeDirPointer = includeDirUtf8)
+        {
+            HLSLInfo info = new()
+            {
+                Source = (IntPtr)sourcePointer,
+                Entrypoint = (IntPtr)entrypointPointer,
+                IncludeDir = includeDir is null ? IntPtr.Zero : (IntPtr)includeDirPointer,
+                Defines = IntPtr.Zero,
+                ShaderStage = shaderStage,
+                Props = props
+            };
+
+            return CompileSPIRVFromHLSLNativeFunction(ref info, out size);
+        }
     }
 }

@@ -18,6 +18,9 @@ internal static class PInvokeTests
     private static int capturedCallCount;
     private static SDL3.ShaderCross.SPIRVInfo capturedSpirvInfo;
     private static SDL3.ShaderCross.HLSLInfo capturedHlslInfo;
+    private static string? capturedHlslSource;
+    private static string? capturedHlslEntrypoint;
+    private static string? capturedHlslIncludeDir;
     private static SDL3.ShaderCross.GraphicsShaderResourceInfo capturedResourceInfo;
     private static SDL3.ShaderCross.ComputePipelineMetadata capturedComputeMetadata;
 
@@ -29,6 +32,7 @@ internal static class PInvokeTests
         LifecycleAndFormatFunctions_ForwardInputsAndReturnNativeValues();
         SPIRVFunctions_ForwardInputsOutputsAndReturnNativeValues();
         HLSLFunctions_ForwardInputsOutputsAndReturnNativeValues();
+        CompileSPIRVFromHLSLStrings_UsesScopedUtf8Inputs();
     }
 
     public static void NativeEntryPoints_KeepExpectedLibraryImportMetadata()
@@ -452,6 +456,97 @@ internal static class PInvokeTests
         }
     }
 
+    public static void CompileSPIRVFromHLSLStrings_UsesScopedUtf8Inputs()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4101;
+        nextSize = (UIntPtr)3072;
+        using (NativeHookScope hookScope = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(CaptureCompileSPIRVFromHLSL)))
+        {
+            IntPtr actual = SDL3.ShaderCross.CompileSPIRVFromHLSL(
+                "float4 main_цвет() : SV_Target { return 1; }",
+                "main_цвет",
+                SDL3.ShaderCross.ShaderStage.Fragment,
+                out UIntPtr size,
+                "шэйдеры/include",
+                93);
+
+            TestAssert.Equal(nextPointer, actual, "ShaderCross.CompileSPIRVFromHLSL string overload must return native pointer.");
+            TestAssert.Equal(nextSize, size, "ShaderCross.CompileSPIRVFromHLSL string overload must return native size.");
+            TestAssert.Equal("float4 main_цвет() : SV_Target { return 1; }", capturedHlslSource, "ShaderCross.CompileSPIRVFromHLSL string overload must encode source as UTF-8.");
+            TestAssert.Equal("main_цвет", capturedHlslEntrypoint, "ShaderCross.CompileSPIRVFromHLSL string overload must encode entrypoint as UTF-8.");
+            TestAssert.Equal("шэйдеры/include", capturedHlslIncludeDir, "ShaderCross.CompileSPIRVFromHLSL string overload must encode include directory as UTF-8.");
+            TestAssert.Equal(IntPtr.Zero, capturedHlslInfo.Defines, "ShaderCross.CompileSPIRVFromHLSL string overload must leave defines empty.");
+            TestAssert.Equal(SDL3.ShaderCross.ShaderStage.Fragment, capturedHlslInfo.ShaderStage, "ShaderCross.CompileSPIRVFromHLSL string overload must forward shader stage.");
+            TestAssert.Equal(93u, capturedHlslInfo.Props, "ShaderCross.CompileSPIRVFromHLSL string overload must forward properties.");
+            TestAssert.Equal(1, capturedCallCount, "ShaderCross.CompileSPIRVFromHLSL string overload must call native hook once.");
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4102;
+        nextSize = (UIntPtr)4096;
+        using (NativeHookScope hookScope = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(CaptureCompileSPIRVFromHLSL)))
+        {
+            _ = SDL3.ShaderCross.CompileSPIRVFromHLSL(
+                "void main() {}",
+                "main",
+                SDL3.ShaderCross.ShaderStage.Vertex,
+                out _);
+
+            TestAssert.Equal<string?>(null, capturedHlslIncludeDir, "ShaderCross.CompileSPIRVFromHLSL string overload must pass a null include directory by default.");
+            TestAssert.Equal(IntPtr.Zero, capturedHlslInfo.IncludeDir, "ShaderCross.CompileSPIRVFromHLSL string overload must pass a null include-directory pointer by default.");
+            TestAssert.Equal(0u, capturedHlslInfo.Props, "ShaderCross.CompileSPIRVFromHLSL string overload must pass zero properties by default.");
+        }
+
+        ResetCaptureState();
+        using (NativeHookScope hookScope = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(CaptureCompileSPIRVFromHLSL)))
+        {
+            try
+            {
+                _ = SDL3.ShaderCross.CompileSPIRVFromHLSL(null!, "main", SDL3.ShaderCross.ShaderStage.Vertex, out _);
+                throw new InvalidOperationException("ShaderCross.CompileSPIRVFromHLSL string overload must reject a null source.");
+            }
+            catch (ArgumentNullException exception)
+            {
+                TestAssert.Equal("source", exception.ParamName, "ShaderCross.CompileSPIRVFromHLSL must identify the null source parameter.");
+            }
+
+            try
+            {
+                _ = SDL3.ShaderCross.CompileSPIRVFromHLSL("void main() {}", null!, SDL3.ShaderCross.ShaderStage.Vertex, out _);
+                throw new InvalidOperationException("ShaderCross.CompileSPIRVFromHLSL string overload must reject a null entrypoint.");
+            }
+            catch (ArgumentNullException exception)
+            {
+                TestAssert.Equal("entrypoint", exception.ParamName, "ShaderCross.CompileSPIRVFromHLSL must identify the null entrypoint parameter.");
+            }
+
+            TestAssert.Equal(0, capturedCallCount, "ShaderCross.CompileSPIRVFromHLSL must validate required strings before native invocation.");
+        }
+
+        using (NativeHookScope hookScope = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(ThrowCompileSPIRVFromHLSL)))
+        {
+            try
+            {
+                _ = SDL3.ShaderCross.CompileSPIRVFromHLSL("void main() {}", "main", SDL3.ShaderCross.ShaderStage.Vertex, out _);
+                throw new InvalidOperationException("ShaderCross.CompileSPIRVFromHLSL must propagate native hook exceptions.");
+            }
+            catch (InvalidOperationException exception)
+            {
+                TestAssert.Equal("compile SPIR-V hook failure", exception.Message, "ShaderCross.CompileSPIRVFromHLSL must preserve native hook exceptions while unwinding pins.");
+            }
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4103;
+        using (NativeHookScope hookScope = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(CaptureCompileSPIRVFromHLSL)))
+        {
+            IntPtr actual = SDL3.ShaderCross.CompileSPIRVFromHLSL("void main() {}", "main", SDL3.ShaderCross.ShaderStage.Vertex, out _);
+            TestAssert.Equal((IntPtr)0x4103, actual, "ShaderCross.CompileSPIRVFromHLSL must remain usable after exception unwinding.");
+            TestAssert.Equal("main", capturedHlslEntrypoint, "ShaderCross.CompileSPIRVFromHLSL must re-pin a later entrypoint after exception unwinding.");
+        }
+    }
+
     private static bool ReturnNextBool()
     {
         capturedCallCount++;
@@ -532,9 +627,18 @@ internal static class PInvokeTests
     private static IntPtr CaptureCompileSPIRVFromHLSL(ref SDL3.ShaderCross.HLSLInfo info, out UIntPtr size)
     {
         capturedHlslInfo = info;
+        capturedHlslSource = Marshal.PtrToStringUTF8(info.Source);
+        capturedHlslEntrypoint = Marshal.PtrToStringUTF8(info.Entrypoint);
+        capturedHlslIncludeDir = Marshal.PtrToStringUTF8(info.IncludeDir);
         size = nextSize;
         capturedCallCount++;
         return nextPointer;
+    }
+
+    private static IntPtr ThrowCompileSPIRVFromHLSL(ref SDL3.ShaderCross.HLSLInfo info, out UIntPtr size)
+    {
+        size = UIntPtr.Zero;
+        throw new InvalidOperationException("compile SPIR-V hook failure");
     }
 
     private static SDL3.ShaderCross.SPIRVInfo CreateSpirvInfo()
@@ -685,6 +789,9 @@ internal static class PInvokeTests
         capturedCallCount = 0;
         capturedSpirvInfo = default;
         capturedHlslInfo = default;
+        capturedHlslSource = null;
+        capturedHlslEntrypoint = null;
+        capturedHlslIncludeDir = null;
         capturedResourceInfo = default;
         capturedComputeMetadata = default;
     }
