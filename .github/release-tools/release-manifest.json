@@ -490,7 +490,18 @@
       "id": "SDL",
       "repository": "https://github.com/edwardgushchin/SDL",
       "upstreamRepository": "https://github.com/libsdl-org/SDL",
-      "sourceRef": "147a8ee32dbf9ac02f3794964490687b6bbda1bc",
+      "sourceRef": "14051aac9d347e2142d37fb5ed7f27766a430490",
+      "sourceProvenance": {
+        "kind": "downstream-patch",
+        "upstream": {
+          "repository": "https://github.com/libsdl-org/SDL",
+          "tag": "release-3.4.14",
+          "sourceRef": "147a8ee32dbf9ac02f3794964490687b6bbda1bc"
+        },
+        "parentSourceRef": "147a8ee32dbf9ac02f3794964490687b6bbda1bc",
+        "immutableTag": "sdl3-cs-3.4.14.1-metal-fence",
+        "issue": "https://github.com/edwardgushchin/SDL3-CS/issues/257"
+      },
       "sourceFolder": "SDL",
       "nativeVersion": "3.4.14",
       "packageNameSuffix": "",
@@ -499,7 +510,7 @@
         "-DSDL_INSTALL=ON",
         "-DSDL_TESTS=OFF",
         "-DSDL_EXAMPLES=OFF",
-        "-DSDL_REVISION=SDL-3.4.14-release-3.4.14"
+        "-DSDL_REVISION=SDL-3.4.14-sdl3-cs-3.4.14.1-metal-fence"
       ],
       "artifactPatterns": {
         "windows": [

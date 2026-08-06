@@ -383,17 +383,64 @@ if ($sdlComponents.Count -ne 1) {
     Add-ValidationError "Manifest must declare component SDL exactly once."
 }
 else {
-    $expectedSdlSourceRef = '147a8ee32dbf9ac02f3794964490687b6bbda1bc'
+    $expectedSdlSourceRef = '14051aac9d347e2142d37fb5ed7f27766a430490'
+    $expectedSdlUpstreamSourceRef = '147a8ee32dbf9ac02f3794964490687b6bbda1bc'
+    $expectedSdlUpstreamTag = 'release-3.4.14'
+    $expectedSdlImmutableTag = 'sdl3-cs-3.4.14.1-metal-fence'
+    $expectedSdlIssue = 'https://github.com/edwardgushchin/SDL3-CS/issues/257'
     $expectedSdlNativeVersion = '3.4.14'
-    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.14-release-3.4.14'
+    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.14-sdl3-cs-3.4.14.1-metal-fence'
     if ([string]$sdlComponents[0].sourceRef -ne $expectedSdlSourceRef) {
-        Add-ValidationError "Component SDL sourceRef must be exact release-3.4.14 commit $expectedSdlSourceRef."
+        Add-ValidationError "Component SDL sourceRef must be exact downstream Metal fence fix commit $expectedSdlSourceRef."
     }
     if ([string]$sdlComponents[0].nativeVersion -ne $expectedSdlNativeVersion) {
         Add-ValidationError "Component SDL nativeVersion must be $expectedSdlNativeVersion."
     }
     if (@($sdlComponents[0].cmakeArgs) -notcontains $expectedSdlRevisionArg) {
         Add-ValidationError "Component SDL must pin its exact release identity with cmake argument '$expectedSdlRevisionArg'."
+    }
+
+    if (-not $sdlComponents[0].PSObject.Properties.Name.Contains('sourceProvenance') -or
+        $null -eq $sdlComponents[0].sourceProvenance) {
+        Add-ValidationError 'Component SDL must declare sourceProvenance for its downstream patch.'
+    }
+    else {
+        $provenance = $sdlComponents[0].sourceProvenance
+        if (-not $provenance.PSObject.Properties.Name.Contains('kind') -or
+            [string]$provenance.kind -ne 'downstream-patch') {
+            Add-ValidationError "Component SDL sourceProvenance.kind must be 'downstream-patch'."
+        }
+        if (-not $provenance.PSObject.Properties.Name.Contains('parentSourceRef') -or
+            [string]$provenance.parentSourceRef -ne $expectedSdlUpstreamSourceRef) {
+            Add-ValidationError "Component SDL sourceProvenance.parentSourceRef must be exact upstream parent $expectedSdlUpstreamSourceRef."
+        }
+        if (-not $provenance.PSObject.Properties.Name.Contains('immutableTag') -or
+            [string]$provenance.immutableTag -ne $expectedSdlImmutableTag) {
+            Add-ValidationError "Component SDL sourceProvenance.immutableTag must be '$expectedSdlImmutableTag'."
+        }
+        if (-not $provenance.PSObject.Properties.Name.Contains('issue') -or
+            [string]$provenance.issue -ne $expectedSdlIssue) {
+            Add-ValidationError "Component SDL sourceProvenance.issue must be '$expectedSdlIssue'."
+        }
+        if (-not $provenance.PSObject.Properties.Name.Contains('upstream') -or
+            $null -eq $provenance.upstream) {
+            Add-ValidationError 'Component SDL sourceProvenance must declare upstream baseline metadata.'
+        }
+        else {
+            $upstream = $provenance.upstream
+            if (-not $upstream.PSObject.Properties.Name.Contains('repository') -or
+                [string]$upstream.repository -ne 'https://github.com/libsdl-org/SDL') {
+                Add-ValidationError "Component SDL sourceProvenance.upstream.repository must be 'https://github.com/libsdl-org/SDL'."
+            }
+            if (-not $upstream.PSObject.Properties.Name.Contains('tag') -or
+                [string]$upstream.tag -ne $expectedSdlUpstreamTag) {
+                Add-ValidationError "Component SDL sourceProvenance.upstream.tag must be '$expectedSdlUpstreamTag'."
+            }
+            if (-not $upstream.PSObject.Properties.Name.Contains('sourceRef') -or
+                [string]$upstream.sourceRef -ne $expectedSdlUpstreamSourceRef) {
+                Add-ValidationError "Component SDL sourceProvenance.upstream.sourceRef must be $expectedSdlUpstreamSourceRef."
+            }
+        }
     }
 }
 

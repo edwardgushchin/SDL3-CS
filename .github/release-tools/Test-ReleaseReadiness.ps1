@@ -54,6 +54,10 @@ Invoke-ReadinessStep -Name 'Release manifest' -Script {
     & (Join-Path $PSScriptRoot 'Test-ReleaseManifest.ps1') -ManifestPath $ManifestPath
 }
 
+Invoke-ReadinessStep -Name 'SDL Metal fence completion semantics' -Script {
+    & (Join-Path $PSScriptRoot 'Test-SDLMetalFenceSemantics.ps1') -ManifestPath $ManifestPath
+}
+
 Invoke-ReadinessStep -Name 'Release workflow' -Script {
     & (Join-Path $PSScriptRoot 'Test-ReleaseWorkflow.ps1') -ManifestPath $ManifestPath
 }
