@@ -511,6 +511,50 @@ public partial class SDL
         return CreateGPUGraphicsPipelineNativeFunction(device, in createinfo);
     }
 
+    /// <summary>
+    /// Creates a graphics pipeline from scoped managed vertex-input and color-target descriptions.
+    /// </summary>
+    /// <remarks>
+    /// The three pointer/count pairs in <paramref name="createinfo"/> are replaced in a local copy.
+    /// The spans remain pinned only for the native call.
+    /// </remarks>
+    /// <param name="device">a GPU Context.</param>
+    /// <param name="createinfo">a template describing the graphics pipeline state.</param>
+    /// <param name="vertexBuffers">the vertex buffer descriptions consumed during creation.</param>
+    /// <param name="vertexAttributes">the vertex attribute descriptions consumed during creation.</param>
+    /// <param name="colorTargets">the color target descriptions consumed during creation.</param>
+    /// <returns>a graphics pipeline object on success, or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
+    public static unsafe IntPtr CreateGPUGraphicsPipeline(
+        IntPtr device,
+        in GPUGraphicsPipelineCreateInfo createinfo,
+        ReadOnlySpan<GPUVertexBufferDescription> vertexBuffers,
+        ReadOnlySpan<GPUVertexAttribute> vertexAttributes,
+        ReadOnlySpan<GPUColorTargetDescription> colorTargets)
+    {
+        GPUGraphicsPipelineCreateInfo scopedCreateInfo = createinfo;
+
+        fixed (GPUVertexBufferDescription* vertexBufferPointer = vertexBuffers)
+        fixed (GPUVertexAttribute* vertexAttributePointer = vertexAttributes)
+        fixed (GPUColorTargetDescription* colorTargetPointer = colorTargets)
+        {
+            scopedCreateInfo.VertexInputState.VertexBufferDescriptions = vertexBuffers.IsEmpty
+                ? IntPtr.Zero
+                : (IntPtr)vertexBufferPointer;
+            scopedCreateInfo.VertexInputState.NumVertexBuffers = (uint)vertexBuffers.Length;
+            scopedCreateInfo.VertexInputState.VertexAttributes = vertexAttributes.IsEmpty
+                ? IntPtr.Zero
+                : (IntPtr)vertexAttributePointer;
+            scopedCreateInfo.VertexInputState.NumVertexAttributes = (uint)vertexAttributes.Length;
+            scopedCreateInfo.TargetInfo.ColorTargetDescriptions = colorTargets.IsEmpty
+                ? IntPtr.Zero
+                : (IntPtr)colorTargetPointer;
+            scopedCreateInfo.TargetInfo.NumColorTargets = (uint)colorTargets.Length;
+            return CreateGPUGraphicsPipelineNativeFunction(device, in scopedCreateInfo);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUSampler"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -610,7 +654,7 @@ public partial class SDL
     /// <returns>a shader object on success, or <c>null</c> on failure; call
     /// <see cref="GetError"/> for more information.</returns>
     /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     /// <seealso cref="ReleaseGPUShader"/>
     public static IntPtr CreateGPUShader(IntPtr device, in GPUShaderCreateInfo createinfo)
     {

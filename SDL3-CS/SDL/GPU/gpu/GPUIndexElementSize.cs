@@ -29,7 +29,7 @@ public static partial class SDL
     /// Specifies the size of elements in an index buffer.
     /// </summary>
     /// <since>This enum is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline"/>
+    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
     public enum GPUIndexElementSize
     {
         /// <summary>

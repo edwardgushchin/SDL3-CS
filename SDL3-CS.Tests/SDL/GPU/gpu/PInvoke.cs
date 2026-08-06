@@ -97,6 +97,9 @@ internal static class PInvokeTests
     private static string? capturedText;
     private static SDL3.SDL.GPUComputePipelineCreateInfo capturedComputePipelineInfo;
     private static SDL3.SDL.GPUGraphicsPipelineCreateInfo capturedGraphicsPipelineInfo;
+    private static SDL3.SDL.GPUVertexBufferDescription[]? capturedVertexBufferDescriptions;
+    private static SDL3.SDL.GPUVertexAttribute[]? capturedVertexAttributes;
+    private static SDL3.SDL.GPUColorTargetDescription[]? capturedColorTargetDescriptions;
     private static SDL3.SDL.GPUSamplerCreateInfo capturedSamplerInfo;
     private static SDL3.SDL.GPUShaderCreateInfo capturedShaderInfo;
     private static byte[]? capturedShaderCode;
@@ -128,6 +131,7 @@ internal static class PInvokeTests
         GetGPUDeviceProperties_ForwardsDeviceAndReturnsNativeValue();
         CreateGPUComputePipeline_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUGraphicsPipeline_ForwardsCreateInfoAndReturnsNativePointer();
+        CreateGPUGraphicsPipelineSpans_OverrideNestedArraysAndPreserveTemplate();
         CreateGPUSampler_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUShader_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUShaderSpan_OverridesScopedInputsAndPreservesTemplate();
@@ -544,6 +548,100 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)1402, result, "SDL.CreateGPUGraphicsPipeline must return native pipeline pointer.");
         TestAssert.Equal((IntPtr)1304, capturedDevice, "SDL.CreateGPUGraphicsPipeline must forward device.");
         TestAssert.Equal((IntPtr)1, capturedGraphicsPipelineInfo.VertexShader, "SDL.CreateGPUGraphicsPipeline must forward createinfo.");
+    }
+
+    public static void CreateGPUGraphicsPipelineSpans_OverrideNestedArraysAndPreserveTemplate()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)1412;
+        using NativeHookScope hookScope = NativeHookScope.Install("CreateGPUGraphicsPipelineNativeFunction", nameof(CaptureCreateGPUGraphicsPipeline));
+        SDL3.SDL.GPUVertexBufferDescription[] vertexBufferBacking =
+        [
+            new() { Slot = 99, Pitch = 999 },
+            new() { Slot = 2, Pitch = 16, InputRate = SDL3.SDL.GPUVertexInputRate.Vertex },
+            new() { Slot = 98, Pitch = 998 }
+        ];
+        SDL3.SDL.GPUVertexAttribute[] vertexAttributeBacking =
+        [
+            new() { Location = 99 },
+            new() { Location = 3, BufferSlot = 2, Format = SDL3.SDL.GPUVertexElementFormat.Float2, Offset = 4 },
+            new() { Location = 4, BufferSlot = 2, Format = SDL3.SDL.GPUVertexElementFormat.Float4, Offset = 12 },
+            new() { Location = 98 }
+        ];
+        SDL3.SDL.GPUColorTargetDescription[] colorTargetBacking =
+        [
+            new() { Format = SDL3.SDL.GPUTextureFormat.R8G8B8A8Unorm },
+            new() { Format = SDL3.SDL.GPUTextureFormat.B8G8R8A8Unorm },
+            new() { Format = SDL3.SDL.GPUTextureFormat.R8Unorm }
+        ];
+        ReadOnlySpan<SDL3.SDL.GPUVertexBufferDescription> vertexBuffers = vertexBufferBacking.AsSpan(1, 1);
+        ReadOnlySpan<SDL3.SDL.GPUVertexAttribute> vertexAttributes = vertexAttributeBacking.AsSpan(1, 2);
+        ReadOnlySpan<SDL3.SDL.GPUColorTargetDescription> colorTargets = colorTargetBacking.AsSpan(1, 1);
+        SDL3.SDL.GPUGraphicsPipelineCreateInfo createInfo = new()
+        {
+            VertexShader = (IntPtr)0x5201,
+            FragmentShader = (IntPtr)0x5202,
+            VertexInputState = new()
+            {
+                VertexBufferDescriptions = (IntPtr)0x5203,
+                NumVertexBuffers = 91,
+                VertexAttributes = (IntPtr)0x5204,
+                NumVertexAttributes = 92
+            },
+            TargetInfo = new()
+            {
+                ColorTargetDescriptions = (IntPtr)0x5205,
+                NumColorTargets = 93
+            },
+            Props = 48
+        };
+
+        IntPtr result = SDL3.SDL.CreateGPUGraphicsPipeline(
+            (IntPtr)1314,
+            in createInfo,
+            vertexBuffers,
+            vertexAttributes,
+            colorTargets);
+
+        TestAssert.Equal((IntPtr)1412, result, "SDL.CreateGPUGraphicsPipeline span overload must return native pipeline pointer.");
+        TestAssert.Equal((IntPtr)1314, capturedDevice, "SDL.CreateGPUGraphicsPipeline span overload must forward device.");
+        TestAssert.Equal(1u, capturedGraphicsPipelineInfo.VertexInputState.NumVertexBuffers, "SDL.CreateGPUGraphicsPipeline span overload must derive vertex-buffer count.");
+        TestAssert.Equal(2u, capturedGraphicsPipelineInfo.VertexInputState.NumVertexAttributes, "SDL.CreateGPUGraphicsPipeline span overload must derive vertex-attribute count.");
+        TestAssert.Equal(1u, capturedGraphicsPipelineInfo.TargetInfo.NumColorTargets, "SDL.CreateGPUGraphicsPipeline span overload must derive color-target count.");
+        TestAssert.NotNull(capturedVertexBufferDescriptions, "SDL.CreateGPUGraphicsPipeline span overload must expose vertex buffers during the native call.");
+        TestAssert.NotNull(capturedVertexAttributes, "SDL.CreateGPUGraphicsPipeline span overload must expose vertex attributes during the native call.");
+        TestAssert.NotNull(capturedColorTargetDescriptions, "SDL.CreateGPUGraphicsPipeline span overload must expose color targets during the native call.");
+        TestAssert.Equal(2u, capturedVertexBufferDescriptions![0].Slot, "SDL.CreateGPUGraphicsPipeline span overload must forward the selected vertex-buffer slice.");
+        TestAssert.Equal(3u, capturedVertexAttributes![0].Location, "SDL.CreateGPUGraphicsPipeline span overload must forward vertex-attribute item 0.");
+        TestAssert.Equal(4u, capturedVertexAttributes[1].Location, "SDL.CreateGPUGraphicsPipeline span overload must forward vertex-attribute item 1.");
+        TestAssert.Equal(SDL3.SDL.GPUTextureFormat.B8G8R8A8Unorm, capturedColorTargetDescriptions![0].Format, "SDL.CreateGPUGraphicsPipeline span overload must forward the selected color-target slice.");
+        TestAssert.Equal((IntPtr)0x5201, capturedGraphicsPipelineInfo.VertexShader, "SDL.CreateGPUGraphicsPipeline span overload must preserve other template fields.");
+        TestAssert.Equal((IntPtr)0x5203, createInfo.VertexInputState.VertexBufferDescriptions, "SDL.CreateGPUGraphicsPipeline span overload must not mutate template vertex-buffer pointer.");
+        TestAssert.Equal(91u, createInfo.VertexInputState.NumVertexBuffers, "SDL.CreateGPUGraphicsPipeline span overload must not mutate template vertex-buffer count.");
+        TestAssert.Equal((IntPtr)0x5204, createInfo.VertexInputState.VertexAttributes, "SDL.CreateGPUGraphicsPipeline span overload must not mutate template vertex-attribute pointer.");
+        TestAssert.Equal(92u, createInfo.VertexInputState.NumVertexAttributes, "SDL.CreateGPUGraphicsPipeline span overload must not mutate template vertex-attribute count.");
+        TestAssert.Equal((IntPtr)0x5205, createInfo.TargetInfo.ColorTargetDescriptions, "SDL.CreateGPUGraphicsPipeline span overload must not mutate template color-target pointer.");
+        TestAssert.Equal(93u, createInfo.TargetInfo.NumColorTargets, "SDL.CreateGPUGraphicsPipeline span overload must not mutate template color-target count.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateGPUGraphicsPipeline span overload must call native hook once.");
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)1413;
+
+        result = SDL3.SDL.CreateGPUGraphicsPipeline(
+            (IntPtr)1315,
+            in createInfo,
+            ReadOnlySpan<SDL3.SDL.GPUVertexBufferDescription>.Empty,
+            ReadOnlySpan<SDL3.SDL.GPUVertexAttribute>.Empty,
+            ReadOnlySpan<SDL3.SDL.GPUColorTargetDescription>.Empty);
+
+        TestAssert.Equal((IntPtr)1413, result, "SDL.CreateGPUGraphicsPipeline span overload must return native result for empty spans.");
+        TestAssert.Equal(IntPtr.Zero, capturedGraphicsPipelineInfo.VertexInputState.VertexBufferDescriptions, "SDL.CreateGPUGraphicsPipeline span overload must pass null for empty vertex buffers.");
+        TestAssert.Equal(0u, capturedGraphicsPipelineInfo.VertexInputState.NumVertexBuffers, "SDL.CreateGPUGraphicsPipeline span overload must pass zero vertex-buffer count.");
+        TestAssert.Equal(IntPtr.Zero, capturedGraphicsPipelineInfo.VertexInputState.VertexAttributes, "SDL.CreateGPUGraphicsPipeline span overload must pass null for empty vertex attributes.");
+        TestAssert.Equal(0u, capturedGraphicsPipelineInfo.VertexInputState.NumVertexAttributes, "SDL.CreateGPUGraphicsPipeline span overload must pass zero vertex-attribute count.");
+        TestAssert.Equal(IntPtr.Zero, capturedGraphicsPipelineInfo.TargetInfo.ColorTargetDescriptions, "SDL.CreateGPUGraphicsPipeline span overload must pass null for empty color targets.");
+        TestAssert.Equal(0u, capturedGraphicsPipelineInfo.TargetInfo.NumColorTargets, "SDL.CreateGPUGraphicsPipeline span overload must pass zero color-target count.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateGPUGraphicsPipeline span overload must call native hook once for empty spans.");
     }
 
     public static void CreateGPUSampler_ForwardsCreateInfoAndReturnsNativePointer()
@@ -2415,6 +2513,9 @@ internal static class PInvokeTests
         capturedText = null;
         capturedComputePipelineInfo = default;
         capturedGraphicsPipelineInfo = default;
+        capturedVertexBufferDescriptions = null;
+        capturedVertexAttributes = null;
+        capturedColorTargetDescriptions = null;
         capturedSamplerInfo = default;
         capturedShaderInfo = default;
         capturedShaderCode = null;
@@ -2513,6 +2614,21 @@ internal static class PInvokeTests
     {
         capturedDevice = device;
         capturedGraphicsPipelineInfo = createinfo;
+        capturedVertexBufferDescriptions = createinfo.VertexInputState.VertexBufferDescriptions == IntPtr.Zero
+            ? []
+            : CopyUnmanaged<SDL3.SDL.GPUVertexBufferDescription>(
+                createinfo.VertexInputState.VertexBufferDescriptions,
+                checked((int)createinfo.VertexInputState.NumVertexBuffers));
+        capturedVertexAttributes = createinfo.VertexInputState.VertexAttributes == IntPtr.Zero
+            ? []
+            : CopyUnmanaged<SDL3.SDL.GPUVertexAttribute>(
+                createinfo.VertexInputState.VertexAttributes,
+                checked((int)createinfo.VertexInputState.NumVertexAttributes));
+        capturedColorTargetDescriptions = createinfo.TargetInfo.ColorTargetDescriptions == IntPtr.Zero
+            ? []
+            : CopyUnmanaged<SDL3.SDL.GPUColorTargetDescription>(
+                createinfo.TargetInfo.ColorTargetDescriptions,
+                checked((int)createinfo.TargetInfo.NumColorTargets));
         capturedCallCount++;
         return nextPointer;
     }
