@@ -58,6 +58,7 @@ internal static class PInvokeTests
     private static int capturedVPitch;
     private static int capturedUVPitch;
     private static int nextPitch;
+    private static int expectedByteCount;
     private static uint nextUInt;
     private static uint capturedProps;
     private static uint capturedEventType;
@@ -809,6 +810,34 @@ internal static class PInvokeTests
             TestAssert.Equal(8, capturedPitch, "SDL.UpdateTexture(Span, IntPtr) must forward pitch.");
         }
 
+        ResetCaptureState();
+        nextBool = false;
+        expectedByteCount = 3;
+        byte[] readOnlySource = [0xFF, 10, 20, 30, 0xEE];
+        ReadOnlySpan<byte> readOnlyPixels = readOnlySource.AsSpan(1, 3);
+        using (NativeHookScope _ = NativeHookScope.Install("UpdateTexturePointerNativeFunction", nameof(CaptureUpdateTextureReadOnlySpan)))
+        {
+            bool result = SDL3.SDL.UpdateTexture((IntPtr)0x2023, (IntPtr)0x2024, readOnlyPixels, 6);
+
+            TestAssert.Equal(false, result, "SDL.UpdateTexture(ReadOnlySpan, IntPtr) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x2023, capturedTexture, "SDL.UpdateTexture(ReadOnlySpan, IntPtr) must forward texture.");
+            TestAssert.Equal((IntPtr)0x2024, capturedRectPointer, "SDL.UpdateTexture(ReadOnlySpan, IntPtr) must forward rect pointer.");
+            TestAssert.True(capturedPixels != IntPtr.Zero, "SDL.UpdateTexture(ReadOnlySpan, IntPtr) must pin and forward pixels.");
+            AssertBytes([10, 20, 30], capturedBytes, "SDL.UpdateTexture(ReadOnlySpan, IntPtr) must forward the selected pixels.");
+            TestAssert.Equal(6, capturedPitch, "SDL.UpdateTexture(ReadOnlySpan, IntPtr) must forward pitch.");
+        }
+
+        ResetCaptureState();
+        nextBool = false;
+        using (NativeHookScope _ = NativeHookScope.Install("UpdateTexturePointerNativeFunction", nameof(CaptureUpdateTextureReadOnlySpan)))
+        {
+            bool result = SDL3.SDL.UpdateTexture((IntPtr)0x2025, (IntPtr)0x2026, ReadOnlySpan<byte>.Empty, 4);
+
+            TestAssert.Equal(false, result, "SDL.UpdateTexture(empty ReadOnlySpan, IntPtr) must return the native hook value.");
+            TestAssert.Equal(IntPtr.Zero, capturedPixels, "SDL.UpdateTexture(empty ReadOnlySpan, IntPtr) must forward a null pixel pointer.");
+            AssertBytes([], capturedBytes, "SDL.UpdateTexture(empty ReadOnlySpan, IntPtr) must forward no pixels.");
+        }
+
         SDL3.SDL.Rect rect = CreateRect(1, 2, 3, 4);
         ResetCaptureState();
         nextBool = true;
@@ -847,6 +876,23 @@ internal static class PInvokeTests
             AssertRect(rect, capturedRect, "SDL.UpdateTexture(in Rect, Span) must forward rect.");
             TestAssert.True(capturedPixels != IntPtr.Zero, "SDL.UpdateTexture(in Rect, Span) must pin and forward pixels.");
             TestAssert.Equal(12, capturedPitch, "SDL.UpdateTexture(in Rect, Span) must forward pitch.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        expectedByteCount = 3;
+        byte[] rectReadOnlySource = [0xFF, 40, 50, 60, 0xEE];
+        ReadOnlySpan<byte> rectReadOnlyPixels = rectReadOnlySource.AsSpan(1, 3);
+        using (NativeHookScope _ = NativeHookScope.Install("UpdateTextureRectPointerNativeFunction", nameof(CaptureUpdateTextureRectReadOnlySpan)))
+        {
+            bool result = SDL3.SDL.UpdateTexture((IntPtr)0x2052, in rect, rectReadOnlyPixels, 9);
+
+            TestAssert.Equal(true, result, "SDL.UpdateTexture(in Rect, ReadOnlySpan) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x2052, capturedTexture, "SDL.UpdateTexture(in Rect, ReadOnlySpan) must forward texture.");
+            AssertRect(rect, capturedRect, "SDL.UpdateTexture(in Rect, ReadOnlySpan) must forward rect.");
+            TestAssert.True(capturedPixels != IntPtr.Zero, "SDL.UpdateTexture(in Rect, ReadOnlySpan) must pin and forward pixels.");
+            AssertBytes([40, 50, 60], capturedBytes, "SDL.UpdateTexture(in Rect, ReadOnlySpan) must forward the selected pixels.");
+            TestAssert.Equal(9, capturedPitch, "SDL.UpdateTexture(in Rect, ReadOnlySpan) must forward pitch.");
         }
     }
 
@@ -2515,6 +2561,40 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        byte[] uniformSource = [0xFF, 0x10, 0x20, 0x30, 0x40, 0xEE];
+        ReadOnlySpan<byte> uniformData = uniformSource.AsSpan(1, 4);
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateFragmentUniformsNativeFunction", nameof(CaptureSetGPURenderStateFragmentUniformSpan)))
+        {
+            bool result = SDL3.SDL.SetGPURenderStateFragmentUniforms((IntPtr)0xA083, 6u, uniformData);
+
+            TestAssert.Equal(true, result, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0xA083, capturedState, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must forward state.");
+            TestAssert.Equal(6u, capturedSlotIndex, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must forward slot index.");
+            TestAssert.True(capturedData != IntPtr.Zero, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must pin and forward data.");
+            TestAssert.Equal(4u, capturedLength, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must derive the byte length.");
+            AssertBytes([0x10, 0x20, 0x30, 0x40], capturedBytes, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must forward the selected bytes.");
+        }
+
+        ResetCaptureState();
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateFragmentUniformsNativeFunction", nameof(CaptureSetGPURenderStateFragmentUniformSpan)))
+        {
+            bool threw = false;
+            try
+            {
+                SDL3.SDL.SetGPURenderStateFragmentUniforms((IntPtr)0xA084, 7u, ReadOnlySpan<byte>.Empty);
+            }
+            catch (ArgumentException exception)
+            {
+                threw = true;
+                TestAssert.Equal("data", exception.ParamName, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must identify the empty data parameter.");
+            }
+
+            TestAssert.Equal(true, threw, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must reject empty data.");
+            TestAssert.Equal(IntPtr.Zero, capturedState, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must fail before invoking native code for empty data.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateNativeFunction", nameof(CaptureSetGPURenderState)))
         {
             bool result = SDL3.SDL.SetGPURenderState((IntPtr)0xA091, (IntPtr)0xA092);
@@ -2739,6 +2819,16 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureUpdateTextureReadOnlySpan(IntPtr texture, IntPtr rect, IntPtr pixels, int pitch)
+    {
+        capturedTexture = texture;
+        capturedRectPointer = rect;
+        capturedPixels = pixels;
+        capturedBytes = CopyUnmanaged<byte>(pixels, expectedByteCount);
+        capturedPitch = pitch;
+        return nextBool;
+    }
+
     private static bool CaptureUpdateTextureArray(IntPtr texture, IntPtr rect, byte[] pixels, int pitch)
     {
         capturedTexture = texture;
@@ -2753,6 +2843,16 @@ internal static class PInvokeTests
         capturedTexture = texture;
         capturedRect = rect;
         capturedPixels = pixels;
+        capturedPitch = pitch;
+        return nextBool;
+    }
+
+    private static bool CaptureUpdateTextureRectReadOnlySpan(IntPtr texture, in SDL3.SDL.Rect rect, IntPtr pixels, int pitch)
+    {
+        capturedTexture = texture;
+        capturedRect = rect;
+        capturedPixels = pixels;
+        capturedBytes = CopyUnmanaged<byte>(pixels, expectedByteCount);
         capturedPitch = pitch;
         return nextBool;
     }
@@ -3751,6 +3851,18 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static unsafe bool CaptureSetGPURenderStateFragmentUniformSpan(IntPtr state, uint slotIndex, IntPtr data, uint length)
+    {
+        capturedState = state;
+        capturedSlotIndex = slotIndex;
+        capturedData = data;
+        capturedLength = length;
+        capturedBytes = data == IntPtr.Zero
+            ? null
+            : new ReadOnlySpan<byte>((void*)data, checked((int)length)).ToArray();
+        return nextBool;
+    }
+
     private static bool CaptureSetGPURenderState(IntPtr renderer, IntPtr state)
     {
         capturedRenderer = renderer;
@@ -4217,6 +4329,7 @@ internal static class PInvokeTests
         capturedVPitch = 0;
         capturedUVPitch = 0;
         nextPitch = 0;
+        expectedByteCount = 0;
         nextUInt = 0;
         capturedProps = 0;
         capturedEventType = 0;

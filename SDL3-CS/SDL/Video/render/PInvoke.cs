@@ -1392,6 +1392,15 @@ public static partial class SDL
         }
     }
 
+    /// <inheritdoc cref="UpdateTexture(IntPtr, IntPtr, byte[], int)"/>
+    public static unsafe bool UpdateTexture(IntPtr texture, IntPtr rect, ReadOnlySpan<byte> pixels, int pitch)
+    {
+        fixed (byte* p = pixels)
+        {
+            return UpdateTexture(texture, rect, (nint)p, pitch);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_UpdateTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -1498,6 +1507,15 @@ public static partial class SDL
     /// <seealso cref="UpdateNVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int)"/>
     /// <seealso cref="UpdateYUVTexture(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int)"/>
     public static unsafe bool UpdateTexture(IntPtr texture, in Rect rect, Span<byte> pixels, int pitch)
+    {
+        fixed (byte* p = pixels)
+        {
+            return UpdateTexture(texture, rect, (nint)p, pitch);
+        }
+    }
+
+    /// <inheritdoc cref="UpdateTexture(IntPtr, in Rect, byte[], int)"/>
+    public static unsafe bool UpdateTexture(IntPtr texture, in Rect rect, ReadOnlySpan<byte> pixels, int pitch)
     {
         fixed (byte* p = pixels)
         {
@@ -5474,7 +5492,7 @@ public static partial class SDL
     /// <threadsafety>This function should be called on the thread that created the
     /// renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    /// <seealso cref="SetGPURenderStateFragmentUniforms"/>
+    /// <seealso cref="SetGPURenderStateFragmentUniforms(IntPtr, uint, IntPtr, uint)"/>
     /// <seealso cref="SetGPURenderState"/>
     /// <seealso cref="DestroyGPURenderState"/>
     public static IntPtr CreateGPURenderState(IntPtr renderer, IntPtr createinfo)
@@ -5519,6 +5537,36 @@ public static partial class SDL
     public static bool SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, IntPtr data, uint length)
     {
         return SetGPURenderStateFragmentUniformsNativeFunction(state, slotIndex, data, length);
+    }
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);</code>
+    /// <summary>
+    /// <para>Set fragment shader uniform variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be pushed using
+    /// <see cref="PushGPUFragmentUniformData(nint, uint, byte[], uint)"/> during draw call execution.</para>
+    /// <para>The byte length is derived from <paramref name="data"/>.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="slotIndex">the fragment uniform slot to push data to.</param>
+    /// <param name="data">client data to write.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <exception cref="ArgumentException"><paramref name="data"/> is empty.</exception>
+    /// <threadsafety>This function should be called on the thread that created the
+    /// renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.4.0</since>
+    /// <seealso cref="SetGPURenderStateFragmentUniforms(IntPtr, uint, IntPtr, uint)"/>
+    public static unsafe bool SetGPURenderStateFragmentUniforms(IntPtr state, uint slotIndex, ReadOnlySpan<byte> data)
+    {
+        if (data.IsEmpty)
+        {
+            throw new ArgumentException("Fragment uniform data must not be empty.", nameof(data));
+        }
+
+        fixed (byte* dataPointer = data)
+        {
+            return SetGPURenderStateFragmentUniforms(state, slotIndex, (IntPtr)dataPointer, (uint)data.Length);
+        }
     }
 
 
