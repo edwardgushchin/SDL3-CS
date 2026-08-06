@@ -98,6 +98,10 @@ jobs:
           ./.github/release-tools/Test-TrunkBasedReleaseLifecycle.Tests.ps1
           ./.github/release-tools/Test-TrunkBasedReleaseLifecycle.ps1
 
+      - name: Validate SDL Metal fence source regression contract
+        shell: pwsh
+        run: ./.github/release-tools/Test-SDLMetalFenceSemantics.Tests.ps1
+
       - name: Validate Android 16 KB release contract
         shell: pwsh
         run: |
