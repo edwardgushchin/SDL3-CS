@@ -191,6 +191,55 @@ public partial class ShaderCross
         return CompileGraphicsShaderFromSPIRVNativeFunction(device, ref info, ref resourceInfo, props);
     }
 
+    /// <summary>
+    /// Compiles a graphics shader from unmanaged SPIR-V bytecode and a scoped managed entrypoint.
+    /// </summary>
+    /// <remarks>
+    /// The bytecode remains owned by the caller. The UTF-8 entrypoint remains pinned only for the
+    /// native call, and the read-only resource information is forwarded through a local copy.
+    /// </remarks>
+    /// <param name="device">the SDL GPU device.</param>
+    /// <param name="bytecode">the unmanaged SPIR-V bytecode.</param>
+    /// <param name="bytecodeSize">the length of the SPIR-V bytecode.</param>
+    /// <param name="entrypoint">the UTF-8 entrypoint name.</param>
+    /// <param name="shaderStage">the shader stage to compile.</param>
+    /// <param name="resourceInfo">the read-only resource metadata for the shader.</param>
+    /// <param name="infoProps">a properties object filled in with SPIR-V input metadata.</param>
+    /// <param name="shaderProps">a properties object filled in with output shader metadata.</param>
+    /// <returns>a compiled SDL GPU shader, or <c>null</c> on failure.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <seealso cref="CompileGraphicsShaderFromSPIRV(nint, ref SPIRVInfo, ref GraphicsShaderResourceInfo, uint)"/>
+    public static unsafe IntPtr CompileGraphicsShaderFromSPIRV(
+        IntPtr device,
+        IntPtr bytecode,
+        UIntPtr bytecodeSize,
+        string entrypoint,
+        ShaderStage shaderStage,
+        in GraphicsShaderResourceInfo resourceInfo,
+        uint infoProps = 0,
+        uint shaderProps = 0)
+    {
+        ArgumentNullException.ThrowIfNull(entrypoint);
+
+        byte[] entrypointUtf8 = new byte[Encoding.UTF8.GetByteCount(entrypoint) + 1];
+        Encoding.UTF8.GetBytes(entrypoint, entrypointUtf8);
+
+        fixed (byte* entrypointPointer = entrypointUtf8)
+        {
+            SPIRVInfo info = new()
+            {
+                ByteCode = bytecode,
+                ByteCodeSize = bytecodeSize,
+                Entrypoint = (IntPtr)entrypointPointer,
+                ShaderStage = shaderStage,
+                Props = infoProps
+            };
+            GraphicsShaderResourceInfo scopedResourceInfo = resourceInfo;
+
+            return CompileGraphicsShaderFromSPIRV(device, ref info, ref scopedResourceInfo, shaderProps);
+        }
+    }
+
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(ShaderCrossLibrary, EntryPoint = "SDL_ShaderCross_CompileComputePipelineFromSPIRV"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

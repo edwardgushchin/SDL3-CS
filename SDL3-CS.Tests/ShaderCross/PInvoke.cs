@@ -17,6 +17,7 @@ internal static class PInvokeTests
     private static bool nextBool;
     private static int capturedCallCount;
     private static SDL3.ShaderCross.SPIRVInfo capturedSpirvInfo;
+    private static string? capturedSpirvEntrypoint;
     private static SDL3.ShaderCross.HLSLInfo capturedHlslInfo;
     private static string? capturedHlslSource;
     private static string? capturedHlslEntrypoint;
@@ -31,6 +32,7 @@ internal static class PInvokeTests
         ManagedStringProperties_SetPointersAndRoundTripValues();
         LifecycleAndFormatFunctions_ForwardInputsAndReturnNativeValues();
         SPIRVFunctions_ForwardInputsOutputsAndReturnNativeValues();
+        CompileGraphicsShaderFromSPIRVString_UsesScopedUtf8Entrypoint();
         HLSLFunctions_ForwardInputsOutputsAndReturnNativeValues();
         CompileSPIRVFromHLSLStrings_UsesScopedUtf8Inputs();
     }
@@ -456,6 +458,120 @@ internal static class PInvokeTests
         }
     }
 
+    public static void CompileGraphicsShaderFromSPIRVString_UsesScopedUtf8Entrypoint()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4201;
+        SDL3.ShaderCross.GraphicsShaderResourceInfo resourceInfo = CreateResourceInfo();
+        SDL3.ShaderCross.GraphicsShaderResourceInfo originalResourceInfo = resourceInfo;
+        using (NativeHookScope hookScope = NativeHookScope.Install(
+            "CompileGraphicsShaderFromSPIRVNativeFunction",
+            nameof(CaptureScopedCompileGraphicsShaderFromSPIRV)))
+        {
+            IntPtr actual = SDL3.ShaderCross.CompileGraphicsShaderFromSPIRV(
+                (IntPtr)0x2201,
+                (IntPtr)0x3201,
+                (UIntPtr)768,
+                "main_цвет",
+                SDL3.ShaderCross.ShaderStage.Fragment,
+                in resourceInfo,
+                94,
+                95);
+
+            TestAssert.Equal(nextPointer, actual, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must return native pointer.");
+            TestAssert.Equal((IntPtr)0x2201, capturedDevice, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward device.");
+            TestAssert.Equal((IntPtr)0x3201, capturedSpirvInfo.ByteCode, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward bytecode.");
+            TestAssert.Equal((UIntPtr)768, capturedSpirvInfo.ByteCodeSize, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward bytecode size.");
+            TestAssert.Equal("main_цвет", capturedSpirvEntrypoint, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must encode entrypoint as UTF-8.");
+            TestAssert.Equal(SDL3.ShaderCross.ShaderStage.Fragment, capturedSpirvInfo.ShaderStage, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward shader stage.");
+            TestAssert.Equal(94u, capturedSpirvInfo.Props, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward info properties.");
+            TestAssert.Equal(95u, capturedProps, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward shader properties.");
+            AssertResourceInfoEqual(originalResourceInfo, capturedResourceInfo, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must forward resource info.");
+            AssertResourceInfoEqual(originalResourceInfo, resourceInfo, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must protect read-only resource info from native mutation.");
+            TestAssert.Equal(1, capturedCallCount, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must call native hook once.");
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4202;
+        using (NativeHookScope hookScope = NativeHookScope.Install(
+            "CompileGraphicsShaderFromSPIRVNativeFunction",
+            nameof(CaptureScopedCompileGraphicsShaderFromSPIRV)))
+        {
+            _ = SDL3.ShaderCross.CompileGraphicsShaderFromSPIRV(
+                (IntPtr)0x2202,
+                (IntPtr)0x3202,
+                (UIntPtr)512,
+                "main",
+                SDL3.ShaderCross.ShaderStage.Vertex,
+                in resourceInfo);
+
+            TestAssert.Equal(0u, capturedSpirvInfo.Props, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must default info properties to zero.");
+            TestAssert.Equal(0u, capturedProps, "ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must default shader properties to zero.");
+        }
+
+        ResetCaptureState();
+        using (NativeHookScope hookScope = NativeHookScope.Install(
+            "CompileGraphicsShaderFromSPIRVNativeFunction",
+            nameof(CaptureScopedCompileGraphicsShaderFromSPIRV)))
+        {
+            try
+            {
+                _ = SDL3.ShaderCross.CompileGraphicsShaderFromSPIRV(
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    UIntPtr.Zero,
+                    null!,
+                    SDL3.ShaderCross.ShaderStage.Vertex,
+                    in resourceInfo);
+                throw new InvalidOperationException("ShaderCross.CompileGraphicsShaderFromSPIRV managed-entrypoint overload must reject a null entrypoint.");
+            }
+            catch (ArgumentNullException exception)
+            {
+                TestAssert.Equal("entrypoint", exception.ParamName, "ShaderCross.CompileGraphicsShaderFromSPIRV must identify the null entrypoint parameter.");
+            }
+
+            TestAssert.Equal(0, capturedCallCount, "ShaderCross.CompileGraphicsShaderFromSPIRV must validate entrypoint before native invocation.");
+        }
+
+        using (NativeHookScope hookScope = NativeHookScope.Install(
+            "CompileGraphicsShaderFromSPIRVNativeFunction",
+            nameof(ThrowCompileGraphicsShaderFromSPIRV)))
+        {
+            try
+            {
+                _ = SDL3.ShaderCross.CompileGraphicsShaderFromSPIRV(
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    UIntPtr.Zero,
+                    "main",
+                    SDL3.ShaderCross.ShaderStage.Vertex,
+                    in resourceInfo);
+                throw new InvalidOperationException("ShaderCross.CompileGraphicsShaderFromSPIRV must propagate native hook exceptions.");
+            }
+            catch (InvalidOperationException exception)
+            {
+                TestAssert.Equal("compile graphics hook failure", exception.Message, "ShaderCross.CompileGraphicsShaderFromSPIRV must preserve native hook exceptions while unwinding the entrypoint pin.");
+            }
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4203;
+        using (NativeHookScope hookScope = NativeHookScope.Install(
+            "CompileGraphicsShaderFromSPIRVNativeFunction",
+            nameof(CaptureScopedCompileGraphicsShaderFromSPIRV)))
+        {
+            IntPtr actual = SDL3.ShaderCross.CompileGraphicsShaderFromSPIRV(
+                IntPtr.Zero,
+                IntPtr.Zero,
+                UIntPtr.Zero,
+                "main",
+                SDL3.ShaderCross.ShaderStage.Vertex,
+                in resourceInfo);
+            TestAssert.Equal((IntPtr)0x4203, actual, "ShaderCross.CompileGraphicsShaderFromSPIRV must remain usable after exception unwinding.");
+            TestAssert.Equal("main", capturedSpirvEntrypoint, "ShaderCross.CompileGraphicsShaderFromSPIRV must re-pin a later entrypoint after exception unwinding.");
+        }
+    }
+
     public static void CompileSPIRVFromHLSLStrings_UsesScopedUtf8Inputs()
     {
         ResetCaptureState();
@@ -635,6 +751,31 @@ internal static class PInvokeTests
         return nextPointer;
     }
 
+    private static IntPtr CaptureScopedCompileGraphicsShaderFromSPIRV(
+        IntPtr device,
+        ref SDL3.ShaderCross.SPIRVInfo info,
+        ref SDL3.ShaderCross.GraphicsShaderResourceInfo resourceInfo,
+        uint props)
+    {
+        capturedDevice = device;
+        capturedSpirvInfo = info;
+        capturedSpirvEntrypoint = Marshal.PtrToStringUTF8(info.Entrypoint);
+        capturedResourceInfo = resourceInfo;
+        capturedProps = props;
+        capturedCallCount++;
+        resourceInfo.NumSamplers = uint.MaxValue;
+        return nextPointer;
+    }
+
+    private static IntPtr ThrowCompileGraphicsShaderFromSPIRV(
+        IntPtr device,
+        ref SDL3.ShaderCross.SPIRVInfo info,
+        ref SDL3.ShaderCross.GraphicsShaderResourceInfo resourceInfo,
+        uint props)
+    {
+        throw new InvalidOperationException("compile graphics hook failure");
+    }
+
     private static IntPtr ThrowCompileSPIRVFromHLSL(ref SDL3.ShaderCross.HLSLInfo info, out UIntPtr size)
     {
         size = UIntPtr.Zero;
@@ -788,6 +929,7 @@ internal static class PInvokeTests
         nextBool = false;
         capturedCallCount = 0;
         capturedSpirvInfo = default;
+        capturedSpirvEntrypoint = null;
         capturedHlslInfo = default;
         capturedHlslSource = null;
         capturedHlslEntrypoint = null;
