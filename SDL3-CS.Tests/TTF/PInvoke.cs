@@ -1581,6 +1581,38 @@ internal static class PInvokeTests
         }
 
         ResetCaptureState();
+        nextPointer = (IntPtr)0x9123;
+        byte[] blendedSource = [0xFF, 66, 108, 101, 110, 100, 0xEE];
+        ReadOnlySpan<byte> blendedUtf8 = blendedSource.AsSpan(1, 5);
+        using (NativeHookScope _ = NativeHookScope.Install("RenderTextBlendedBytePointerNativeFunction", nameof(CaptureRenderTextBytePointer)))
+        {
+            IntPtr actual = SDL3.TTF.RenderTextBlended((IntPtr)0x9124, blendedUtf8, fg);
+
+            TestAssert.Equal((IntPtr)0x9123, actual, "TTF.RenderTextBlended ReadOnlySpan overload must return native surface.");
+            TestAssert.Equal((IntPtr)0x9124, capturedFont, "TTF.RenderTextBlended ReadOnlySpan overload must forward font.");
+            TestAssert.True(capturedTextPointer != IntPtr.Zero, "TTF.RenderTextBlended ReadOnlySpan overload must pin and forward text.");
+            TestAssert.Equal((UIntPtr)5, capturedLength, "TTF.RenderTextBlended ReadOnlySpan overload must derive the byte length.");
+            TestAssert.Equal(fg, capturedForeground, "TTF.RenderTextBlended ReadOnlySpan overload must forward foreground color.");
+            AssertBytes([66, 108, 101, 110, 100], capturedBytes, "TTF.RenderTextBlended ReadOnlySpan overload must forward the selected UTF-8 bytes.");
+            TestAssert.Equal(1, capturedCallCount, "TTF.RenderTextBlended ReadOnlySpan overload must call native hook once.");
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x9125;
+        using (NativeHookScope _ = NativeHookScope.Install("RenderTextBlendedBytePointerNativeFunction", nameof(CaptureRenderTextBytePointer)))
+        {
+            IntPtr actual = SDL3.TTF.RenderTextBlended((IntPtr)0x9126, ReadOnlySpan<byte>.Empty, fg);
+
+            TestAssert.Equal((IntPtr)0x9125, actual, "TTF.RenderTextBlended empty ReadOnlySpan overload must return native surface.");
+            TestAssert.Equal((IntPtr)0x9126, capturedFont, "TTF.RenderTextBlended empty ReadOnlySpan overload must forward font.");
+            TestAssert.True(capturedTextPointer != IntPtr.Zero, "TTF.RenderTextBlended empty ReadOnlySpan overload must pass a valid NUL sentinel pointer.");
+            TestAssert.Equal(UIntPtr.Zero, capturedLength, "TTF.RenderTextBlended empty ReadOnlySpan overload must pass zero length.");
+            TestAssert.Equal(fg, capturedForeground, "TTF.RenderTextBlended empty ReadOnlySpan overload must forward foreground color.");
+            AssertBytes([0], capturedBytes, "TTF.RenderTextBlended empty ReadOnlySpan overload must pass a NUL sentinel.");
+            TestAssert.Equal(1, capturedCallCount, "TTF.RenderTextBlended empty ReadOnlySpan overload must call native hook once.");
+        }
+
+        ResetCaptureState();
         nextPointer = (IntPtr)0x9025;
         using (NativeHookScope _ = NativeHookScope.Install("RenderTextBlendedWrappedNativeFunction", nameof(CaptureRenderTextWrapped)))
         {
@@ -2681,6 +2713,9 @@ internal static class PInvokeTests
         capturedFont = font;
         capturedTextPointer = (IntPtr)text;
         capturedLength = length;
+        capturedBytes = text == null
+            ? null
+            : new ReadOnlySpan<byte>(text, length == UIntPtr.Zero ? 1 : checked((int)length.ToUInt64())).ToArray();
         capturedForeground = fg;
         capturedCallCount++;
         return nextPointer;
