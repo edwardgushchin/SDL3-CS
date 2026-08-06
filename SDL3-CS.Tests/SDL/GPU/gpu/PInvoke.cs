@@ -99,6 +99,8 @@ internal static class PInvokeTests
     private static SDL3.SDL.GPUGraphicsPipelineCreateInfo capturedGraphicsPipelineInfo;
     private static SDL3.SDL.GPUSamplerCreateInfo capturedSamplerInfo;
     private static SDL3.SDL.GPUShaderCreateInfo capturedShaderInfo;
+    private static byte[]? capturedShaderCode;
+    private static string? capturedShaderEntrypoint;
     private static SDL3.SDL.GPUTextureCreateInfo capturedTextureInfo;
     private static SDL3.SDL.GPUBufferCreateInfo capturedBufferInfo;
     private static SDL3.SDL.GPUTransferBufferCreateInfo capturedTransferBufferInfo;
@@ -128,6 +130,7 @@ internal static class PInvokeTests
         CreateGPUGraphicsPipeline_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUSampler_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUShader_ForwardsCreateInfoAndReturnsNativePointer();
+        CreateGPUShaderSpan_OverridesScopedInputsAndPreservesTemplate();
         CreateGPUTexture_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUBuffer_ForwardsCreateInfoAndReturnsNativePointer();
         CreateGPUTransferBuffer_ForwardsCreateInfoAndReturnsNativePointer();
@@ -577,6 +580,70 @@ internal static class PInvokeTests
         TestAssert.Equal((IntPtr)1404, result, "SDL.CreateGPUShader must return native shader pointer.");
         TestAssert.Equal((IntPtr)1306, capturedDevice, "SDL.CreateGPUShader must forward device.");
         TestAssert.Equal(5u, capturedShaderInfo.NumUniformBuffers, "SDL.CreateGPUShader must forward createinfo.");
+    }
+
+    public static void CreateGPUShaderSpan_OverridesScopedInputsAndPreservesTemplate()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)1414;
+        using NativeHookScope hookScope = NativeHookScope.Install("CreateGPUShaderNativeFunction", nameof(CaptureCreateGPUShader));
+        byte[] backingCode = [0xFF, 0x03, 0x02, 0x23, 0x07, 0xEE];
+        ReadOnlySpan<byte> code = backingCode.AsSpan(1, 4);
+        SDL3.SDL.GPUShaderCreateInfo createInfo = new()
+        {
+            Code = (IntPtr)0x5101,
+            CodeSize = (UIntPtr)99,
+            _entrypoint = (IntPtr)0x5102,
+            Format = SDL3.SDL.GPUShaderFormat.SPIRV,
+            Stage = SDL3.SDL.GPUShaderStage.Vertex,
+            NumUniformBuffers = 3,
+            Props = 47
+        };
+
+        IntPtr result = SDL3.SDL.CreateGPUShader((IntPtr)1306, in createInfo, code, "māin_着");
+
+        TestAssert.Equal((IntPtr)1414, result, "SDL.CreateGPUShader span overload must return native shader pointer.");
+        TestAssert.Equal((IntPtr)1306, capturedDevice, "SDL.CreateGPUShader span overload must forward device.");
+        TestAssert.Equal((UIntPtr)4, capturedShaderInfo.CodeSize, "SDL.CreateGPUShader span overload must derive code size.");
+        TestAssert.True(capturedShaderInfo.Code != IntPtr.Zero, "SDL.CreateGPUShader span overload must pin non-empty code.");
+        TestAssert.NotNull(capturedShaderCode, "SDL.CreateGPUShader span overload must expose code during the native call.");
+        TestAssert.Equal(4, capturedShaderCode!.Length, "SDL.CreateGPUShader span overload must forward the selected span length.");
+        TestAssert.Equal((byte)0x03, capturedShaderCode[0], "SDL.CreateGPUShader span overload must forward span item 0.");
+        TestAssert.Equal((byte)0x07, capturedShaderCode[3], "SDL.CreateGPUShader span overload must forward span item 3.");
+        TestAssert.Equal("māin_着", capturedShaderEntrypoint, "SDL.CreateGPUShader span overload must forward a null-terminated UTF-8 entrypoint.");
+        TestAssert.Equal(SDL3.SDL.GPUShaderFormat.SPIRV, capturedShaderInfo.Format, "SDL.CreateGPUShader span overload must preserve template format.");
+        TestAssert.Equal(3u, capturedShaderInfo.NumUniformBuffers, "SDL.CreateGPUShader span overload must preserve template resource counts.");
+        TestAssert.Equal((IntPtr)0x5101, createInfo.Code, "SDL.CreateGPUShader span overload must not mutate template code.");
+        TestAssert.Equal((UIntPtr)99, createInfo.CodeSize, "SDL.CreateGPUShader span overload must not mutate template code size.");
+        TestAssert.Equal((IntPtr)0x5102, createInfo._entrypoint, "SDL.CreateGPUShader span overload must not mutate template entrypoint.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateGPUShader span overload must call native hook once.");
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)1415;
+
+        result = SDL3.SDL.CreateGPUShader((IntPtr)1307, in createInfo, ReadOnlySpan<byte>.Empty, "main");
+
+        TestAssert.Equal((IntPtr)1415, result, "SDL.CreateGPUShader span overload must return native result for empty code.");
+        TestAssert.Equal(IntPtr.Zero, capturedShaderInfo.Code, "SDL.CreateGPUShader span overload must pass a null pointer for empty code.");
+        TestAssert.Equal(UIntPtr.Zero, capturedShaderInfo.CodeSize, "SDL.CreateGPUShader span overload must pass zero size for empty code.");
+        TestAssert.NotNull(capturedShaderCode, "SDL.CreateGPUShader span overload must capture an empty code buffer.");
+        TestAssert.Equal(0, capturedShaderCode!.Length, "SDL.CreateGPUShader span overload must forward empty code.");
+        TestAssert.Equal("main", capturedShaderEntrypoint, "SDL.CreateGPUShader span overload must keep entrypoint valid for empty code.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateGPUShader span overload must call native hook once for empty code.");
+
+        ResetCaptureState();
+        bool threw = false;
+        try
+        {
+            _ = SDL3.SDL.CreateGPUShader((IntPtr)1308, in createInfo, code, null!);
+        }
+        catch (ArgumentNullException exception)
+        {
+            threw = exception.ParamName == "entrypoint";
+        }
+
+        TestAssert.True(threw, "SDL.CreateGPUShader span overload must reject a null entrypoint with the correct parameter name.");
+        TestAssert.Equal(0, capturedCallCount, "SDL.CreateGPUShader span overload must reject a null entrypoint before the native call.");
     }
 
     public static void CreateGPUTexture_ForwardsCreateInfoAndReturnsNativePointer()
@@ -2350,6 +2417,8 @@ internal static class PInvokeTests
         capturedGraphicsPipelineInfo = default;
         capturedSamplerInfo = default;
         capturedShaderInfo = default;
+        capturedShaderCode = null;
+        capturedShaderEntrypoint = null;
         capturedTextureInfo = default;
         capturedBufferInfo = default;
         capturedTransferBufferInfo = default;
@@ -2460,6 +2529,10 @@ internal static class PInvokeTests
     {
         capturedDevice = device;
         capturedShaderInfo = createinfo;
+        capturedShaderCode = createinfo.Code == IntPtr.Zero || createinfo.CodeSize == UIntPtr.Zero
+            ? []
+            : CopyUnmanaged<byte>(createinfo.Code, checked((int)createinfo.CodeSize.ToUInt64()));
+        capturedShaderEntrypoint = Marshal.PtrToStringUTF8(createinfo._entrypoint);
         capturedCallCount++;
         return nextPointer;
     }

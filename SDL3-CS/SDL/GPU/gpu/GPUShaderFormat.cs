@@ -30,7 +30,7 @@ public static partial class SDL
     /// <para>Each format corresponds to a specific backend that accepts it.</para>
     /// </summary>
     /// <since>This datatype is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     [Flags]
     public enum GPUShaderFormat : uint
     {

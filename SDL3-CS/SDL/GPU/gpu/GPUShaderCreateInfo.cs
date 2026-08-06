@@ -31,7 +31,7 @@ public static partial class SDL
     /// <para>A structure specifying code and metadata for creating a shader object.</para>
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader"/>
+    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
     /// <seealso cref="GPUShaderFormat"/>
     /// <seealso cref="GPUShaderStage"/>
     [StructLayout(LayoutKind.Sequential)]
