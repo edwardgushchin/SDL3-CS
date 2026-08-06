@@ -2515,6 +2515,40 @@ internal static class PInvokeTests
 
         ResetCaptureState();
         nextBool = true;
+        byte[] uniformSource = [0xFF, 0x10, 0x20, 0x30, 0x40, 0xEE];
+        ReadOnlySpan<byte> uniformData = uniformSource.AsSpan(1, 4);
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateFragmentUniformsNativeFunction", nameof(CaptureSetGPURenderStateFragmentUniformSpan)))
+        {
+            bool result = SDL3.SDL.SetGPURenderStateFragmentUniforms((IntPtr)0xA083, 6u, uniformData);
+
+            TestAssert.Equal(true, result, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0xA083, capturedState, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must forward state.");
+            TestAssert.Equal(6u, capturedSlotIndex, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must forward slot index.");
+            TestAssert.True(capturedData != IntPtr.Zero, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must pin and forward data.");
+            TestAssert.Equal(4u, capturedLength, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must derive the byte length.");
+            AssertBytes([0x10, 0x20, 0x30, 0x40], capturedBytes, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must forward the selected bytes.");
+        }
+
+        ResetCaptureState();
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateFragmentUniformsNativeFunction", nameof(CaptureSetGPURenderStateFragmentUniformSpan)))
+        {
+            bool threw = false;
+            try
+            {
+                SDL3.SDL.SetGPURenderStateFragmentUniforms((IntPtr)0xA084, 7u, ReadOnlySpan<byte>.Empty);
+            }
+            catch (ArgumentException exception)
+            {
+                threw = true;
+                TestAssert.Equal("data", exception.ParamName, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must identify the empty data parameter.");
+            }
+
+            TestAssert.Equal(true, threw, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must reject empty data.");
+            TestAssert.Equal(IntPtr.Zero, capturedState, "SDL.SetGPURenderStateFragmentUniforms(ReadOnlySpan) must fail before invoking native code for empty data.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
         using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateNativeFunction", nameof(CaptureSetGPURenderState)))
         {
             bool result = SDL3.SDL.SetGPURenderState((IntPtr)0xA091, (IntPtr)0xA092);
@@ -3748,6 +3782,18 @@ internal static class PInvokeTests
         capturedSlotIndex = slotIndex;
         capturedData = data;
         capturedLength = length;
+        return nextBool;
+    }
+
+    private static unsafe bool CaptureSetGPURenderStateFragmentUniformSpan(IntPtr state, uint slotIndex, IntPtr data, uint length)
+    {
+        capturedState = state;
+        capturedSlotIndex = slotIndex;
+        capturedData = data;
+        capturedLength = length;
+        capturedBytes = data == IntPtr.Zero
+            ? null
+            : new ReadOnlySpan<byte>((void*)data, checked((int)length)).ToArray();
         return nextBool;
     }
 
