@@ -57,6 +57,7 @@ else {
 
 $requiredReleaseOverrides = [ordered]@{
     '0' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
+    '1' = [ordered]@{ SDL_image = 10; SDL_mixer = 9; SDL_ttf = 9; SDL_shadercross = 9 }
     '6' = [ordered]@{ SDL_image = 8; SDL_mixer = 7; SDL_ttf = 7; SDL_shadercross = 7 }
     '7' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
 }
