@@ -188,11 +188,11 @@ internal static partial class PInvokeTests
         TestAssert.Equal(false, usage.Inherited, "SDL.GenerateMainAttribute must not be inherited.");
     }
 
-    private static int RunManagedLifecycle(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedLifecycle(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         AssertNativeArguments(argc, argv, "--renderer", "software");
         managedAppstate = IntPtr.Zero;
-        TestAssert.Equal(SDL3.SDL.AppResult.Continue, appinit(ref managedAppstate, argc, argv), "Managed AppInit must continue.");
+        TestAssert.Equal(SDL3.SDL.AppResult.Continue, InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv), "Managed AppInit must continue.");
         TestAssert.True(managedAppstate != IntPtr.Zero, "Managed AppInit must provide an opaque native state handle.");
         TestAssert.Equal(SDL3.SDL.AppResult.Continue, appiter(managedAppstate), "Managed AppIterate must continue.");
         SDL3.SDL.Event @event = new() { Type = (uint)SDL3.SDL.EventType.Quit };
@@ -206,29 +206,29 @@ internal static partial class PInvokeTests
         return 73;
     }
 
-    private static int RunManagedEarlyExit(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedEarlyExit(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         AssertNativeArguments(argc, argv);
         managedAppstate = IntPtr.Zero;
-        SDL3.SDL.AppResult result = appinit(ref managedAppstate, argc, argv);
+        SDL3.SDL.AppResult result = InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         TestAssert.Equal(SDL3.SDL.AppResult.Success, result, "Managed AppInit must return configured early success.");
         appquit(managedAppstate, result);
         return 17;
     }
 
-    private static int RunManagedInitFailure(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedInitFailure(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        SDL3.SDL.AppResult result = appinit(ref managedAppstate, argc, argv);
+        SDL3.SDL.AppResult result = InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         TestAssert.Equal(SDL3.SDL.AppResult.Failure, result, "Invalid managed state must become native failure.");
         appquit(managedAppstate, result);
         return -1;
     }
 
-    private static int RunManagedFailure(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedFailure(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        SDL3.SDL.AppResult result = appinit(ref managedAppstate, argc, argv);
+        SDL3.SDL.AppResult result = InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         if (result == SDL3.SDL.AppResult.Continue)
         {
             result = appiter(managedAppstate);
@@ -245,33 +245,33 @@ internal static partial class PInvokeTests
         return -1;
     }
 
-    private static int RunManagedWithoutQuit(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedWithoutQuit(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        TestAssert.Equal(SDL3.SDL.AppResult.Continue, appinit(ref managedAppstate, argc, argv), "Managed AppInit must continue before fallback cleanup.");
+        TestAssert.Equal(SDL3.SDL.AppResult.Continue, InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv), "Managed AppInit must continue before fallback cleanup.");
         return 0;
     }
 
-    private static int RunManagedDuplicateQuit(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedDuplicateQuit(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        appinit(ref managedAppstate, argc, argv);
+        InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         appquit(managedAppstate, SDL3.SDL.AppResult.Success);
         appquit(managedAppstate, SDL3.SDL.AppResult.Failure);
         return 0;
     }
 
-    private static int RunManagedNativeFailure(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedNativeFailure(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        appinit(ref managedAppstate, argc, argv);
+        InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         throw new NotSupportedException("native bridge");
     }
 
-    private static int RunManagedConcurrentQuit(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedConcurrentQuit(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        appinit(ref managedAppstate, argc, argv);
+        InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         SDL3.SDL.Event @event = new() { Type = (uint)SDL3.SDL.EventType.Quit };
         Task<SDL3.SDL.AppResult> eventTask = Task.Run(() => appevent(managedAppstate, ref @event));
         TestAssert.True(RecordingApp.EventEntered.Wait(TimeSpan.FromSeconds(5)), "Managed AppEvent did not start in time.");
@@ -283,10 +283,10 @@ internal static partial class PInvokeTests
         return 0;
     }
 
-    private static int RunManagedConcurrentDuplicateQuit(int argc, string[]? argv, SDL3.SDL.AppInitFunc appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
+    private static int RunManagedConcurrentDuplicateQuit(int argc, string[]? argv, IntPtr appinit, SDL3.SDL.AppIterateFunc appiter, SDL3.SDL.AppEventFunc appevent, SDL3.SDL.AppQuitFunc appquit)
     {
         managedAppstate = IntPtr.Zero;
-        appinit(ref managedAppstate, argc, argv);
+        InvokeNativeAppInit(appinit, ref managedAppstate, argc, argv);
         Task firstQuit = Task.Run(() => appquit(managedAppstate, SDL3.SDL.AppResult.Success));
         TestAssert.True(RecordingApp.QuitEntered.Wait(TimeSpan.FromSeconds(5)), "The first managed AppQuit did not start in time.");
         Task duplicateQuit = Task.Run(() => appquit(managedAppstate, SDL3.SDL.AppResult.Failure));
@@ -302,6 +302,26 @@ internal static partial class PInvokeTests
         TestAssert.Equal(2, arguments.Length, "Native arguments must prepend exactly one executable identifier.");
         TestAssert.Equal(expectedExecutable, arguments[0], "Native arguments must use the expected executable fallback.");
         TestAssert.Equal("--test", arguments[1], "Native arguments must preserve managed arguments.");
+    }
+
+    private static unsafe SDL3.SDL.AppResult InvokeNativeAppInit(IntPtr appinit, ref IntPtr appstate, int argc, string[]? argv)
+    {
+        delegate* unmanaged[Cdecl]<IntPtr*, int, IntPtr, SDL3.SDL.AppResult> callback = (delegate* unmanaged[Cdecl]<IntPtr*, int, IntPtr, SDL3.SDL.AppResult>)(void*)appinit;
+        IntPtr nativeAppstate = appstate;
+        SDL3.SDL.AppResult result;
+
+        if (argc <= 0 || argv is null)
+        {
+            result = callback(&nativeAppstate, 0, IntPtr.Zero);
+        }
+        else
+        {
+            using Utf8ArgvScope nativeArguments = new(argv);
+            result = callback(&nativeAppstate, argc, nativeArguments.Pointer);
+        }
+
+        appstate = nativeAppstate;
+        return result;
     }
 
     private static void AssertNativeArguments(int argc, string[]? argv, params string[] expectedArgs)
