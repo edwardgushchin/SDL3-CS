@@ -124,10 +124,17 @@ else {
             Add-VersioningError "componentPackageRevisionOverrides must declare release revision '1'."
         }
         else {
-            foreach ($componentId in @('SDL_image', 'SDL_mixer', 'SDL_ttf', 'SDL_shadercross')) {
+            $requiredRevisionOneOverrides = [ordered]@{
+                SDL_image = 10
+                SDL_mixer = 9
+                SDL_ttf = 9
+                SDL_shadercross = 9
+            }
+            foreach ($componentOverride in $requiredRevisionOneOverrides.GetEnumerator()) {
+                $componentId = $componentOverride.Key
                 $override = $revisionOne.Value.PSObject.Properties[$componentId]
-                if (-not $override -or [int] $override.Value -ne 7) {
-                    Add-VersioningError "componentPackageRevisionOverrides.1.$componentId must be 7 for public release v3.4.12.1."
+                if (-not $override -or [int] $override.Value -ne $componentOverride.Value) {
+                    Add-VersioningError "componentPackageRevisionOverrides.1.$componentId must be $($componentOverride.Value) for public release v3.4.14.1."
                 }
             }
             if ($revisionOne.Value.PSObject.Properties['SDL']) {
