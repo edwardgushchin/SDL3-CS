@@ -13,8 +13,8 @@ internal static partial class PInvokeTests
     private static string[]? capturedArgv;
     private static uint capturedEventType;
     private static SDL3.SDL.AppResult capturedResult;
-    private static SDL3.SDL.MainFunc? capturedMainFunction;
-    private static SDL3.SDL.AppInitFunc? capturedAppInit;
+    private static IntPtr capturedMainFunctionPointer;
+    private static IntPtr capturedAppInitPointer;
     private static SDL3.SDL.AppIterateFunc? capturedAppIterate;
     private static SDL3.SDL.AppEventFunc? capturedAppEvent;
     private static SDL3.SDL.AppQuitFunc? capturedAppQuit;
@@ -26,6 +26,9 @@ internal static partial class PInvokeTests
     private static int nextInt;
     private static bool nextBool;
     private static int capturedCallCount;
+    private static int capturedCallbackArgc;
+    private static string[]? capturedCallbackArgv;
+    private static string[]? nativeCallbackArgv;
 
     public static void AppInit_ForwardsStateArgumentsAndReturnsNativeValue()
     {
@@ -188,6 +191,91 @@ internal static partial class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.SetMainReady must call native hook once.");
     }
 
+    public static void RunApp_AdaptsCompleteUtf8ArgumentsFromNativeCallback()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_RunApp");
+        AssertIntPtrParameter(nativeMethod, "mainFunction");
+
+        ResetCaptureState();
+        nextInt = 73;
+        nativeCallbackArgv = ["app", "naïve", "тест"];
+        using NativeHookScope _ = NativeHookScope.Install("RunAppNativeFunction", nameof(CaptureRunAppAndInvokeNativeMain));
+
+        int result = SDL3.SDL.RunApp(2, ["app", "--managed"], CaptureAdaptedMain, (IntPtr)505);
+
+        TestAssert.Equal(73, result, "SDL.RunApp must return the result from the adapted main callback.");
+        AssertAdaptedCallbackArguments(nativeCallbackArgv);
+        TestAssert.True(capturedMainFunctionPointer != IntPtr.Zero, "SDL.RunApp must pass a non-null native callback pointer.");
+    }
+
+    public static void RunApp_AdaptsNullArgumentsFromNativeCallback()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_RunApp");
+        AssertIntPtrParameter(nativeMethod, "mainFunction");
+
+        ResetCaptureState();
+        nextInt = 17;
+        nativeCallbackArgv = null;
+        using NativeHookScope _ = NativeHookScope.Install("RunAppNativeFunction", nameof(CaptureRunAppAndInvokeNativeMain));
+
+        int result = SDL3.SDL.RunApp(1, ["app"], CaptureAdaptedMain, IntPtr.Zero);
+
+        TestAssert.Equal(17, result, "SDL.RunApp must return the result from a callback receiving null argv.");
+        TestAssert.Equal(0, capturedCallbackArgc, "SDL.MainFunc must receive zero argc from the native callback.");
+        TestAssert.Equal<string[]?>(null, capturedCallbackArgv, "SDL.MainFunc must receive null argv for a native null pointer with zero argc.");
+    }
+
+    public static void EnterAppMainCallbacks_AdaptsCompleteUtf8ArgumentsFromNativeCallback()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_EnterAppMainCallbacks");
+        AssertIntPtrParameter(nativeMethod, "appinit");
+
+        ResetCaptureState();
+        nextInt = 99;
+        nextAppResult = SDL3.SDL.AppResult.Success;
+        nextAppstate = (IntPtr)5150;
+        nativeCallbackArgv = ["app", "naïve", "тест"];
+        using NativeHookScope _ = NativeHookScope.Install("EnterAppMainCallbacksNativeFunction", nameof(CaptureEnterAppMainCallbacksAndInvokeNativeInit));
+
+        int result = SDL3.SDL.EnterAppMainCallbacks(
+            2,
+            ["app", "--managed"],
+            CaptureAdaptedAppInit,
+            HandleAppIterate,
+            HandleAppEvent,
+            HandleAppQuit);
+
+        TestAssert.Equal(99, result, "SDL.EnterAppMainCallbacks must return the native boundary result.");
+        AssertAdaptedCallbackArguments(nativeCallbackArgv);
+        TestAssert.Equal((IntPtr)5150, capturedAppstate, "SDL.AppInitFunc must preserve appstate assignment through the native adapter.");
+        TestAssert.Equal(SDL3.SDL.AppResult.Success, capturedResult, "SDL.AppInitFunc must preserve its result through the native adapter.");
+        TestAssert.True(capturedAppInitPointer != IntPtr.Zero, "SDL.EnterAppMainCallbacks must pass a non-null native appinit pointer.");
+    }
+
+    public static void EnterAppMainCallbacks_AdaptsNullArgumentsFromNativeCallback()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_EnterAppMainCallbacks");
+        AssertIntPtrParameter(nativeMethod, "appinit");
+
+        ResetCaptureState();
+        nextInt = 19;
+        nextAppResult = SDL3.SDL.AppResult.Success;
+        nativeCallbackArgv = null;
+        using NativeHookScope _ = NativeHookScope.Install("EnterAppMainCallbacksNativeFunction", nameof(CaptureEnterAppMainCallbacksAndInvokeNativeInit));
+
+        int result = SDL3.SDL.EnterAppMainCallbacks(
+            1,
+            ["app"],
+            CaptureAdaptedAppInit,
+            HandleAppIterate,
+            HandleAppEvent,
+            HandleAppQuit);
+
+        TestAssert.Equal(19, result, "SDL.EnterAppMainCallbacks must return after adapting native null argv.");
+        TestAssert.Equal(0, capturedCallbackArgc, "SDL.AppInitFunc must receive zero argc from the native callback.");
+        TestAssert.Equal<string[]?>(null, capturedCallbackArgv, "SDL.AppInitFunc must receive null argv for a native null pointer with zero argc.");
+    }
+
     public static void RunApp_ForwardsArgumentsCallbackReservedAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_RunApp");
@@ -206,7 +294,7 @@ internal static partial class PInvokeTests
         TestAssert.Equal(77, result, "SDL.RunApp must return native int value.");
         TestAssert.Equal(argv.Length, capturedArgc, "SDL.RunApp must forward argc.");
         TestAssert.True(ReferenceEquals(argv, capturedArgv), "SDL.RunApp must forward argv array.");
-        TestAssert.Equal(mainFunction, capturedMainFunction!, "SDL.RunApp must forward main callback.");
+        TestAssert.True(capturedMainFunctionPointer != IntPtr.Zero, "SDL.RunApp must forward a non-null native main callback pointer.");
         TestAssert.Equal((IntPtr)505, capturedReserved, "SDL.RunApp must forward reserved pointer.");
         TestAssert.Equal(1, capturedCallCount, "SDL.RunApp must call native hook once.");
     }
@@ -255,7 +343,7 @@ internal static partial class PInvokeTests
         TestAssert.Equal(99, result, "SDL.EnterAppMainCallbacks must return native int value.");
         TestAssert.Equal(argv.Length, capturedArgc, "SDL.EnterAppMainCallbacks must forward argc.");
         TestAssert.True(ReferenceEquals(argv, capturedArgv), "SDL.EnterAppMainCallbacks must forward argv array.");
-        TestAssert.Equal(appinit, capturedAppInit!, "SDL.EnterAppMainCallbacks must forward appinit.");
+        TestAssert.True(capturedAppInitPointer != IntPtr.Zero, "SDL.EnterAppMainCallbacks must forward a non-null native appinit callback pointer.");
         TestAssert.Equal(appiter, capturedAppIterate!, "SDL.EnterAppMainCallbacks must forward appiter.");
         TestAssert.Equal(appevent, capturedAppEvent!, "SDL.EnterAppMainCallbacks must forward appevent.");
         TestAssert.Equal(appquit, capturedAppQuit!, "SDL.EnterAppMainCallbacks must forward appquit.");
@@ -345,8 +433,8 @@ internal static partial class PInvokeTests
         capturedArgv = null;
         capturedEventType = 0;
         capturedResult = default;
-        capturedMainFunction = null;
-        capturedAppInit = null;
+        capturedMainFunctionPointer = IntPtr.Zero;
+        capturedAppInitPointer = IntPtr.Zero;
         capturedAppIterate = null;
         capturedAppEvent = null;
         capturedAppQuit = null;
@@ -359,6 +447,9 @@ internal static partial class PInvokeTests
         nextInt = 0;
         nextBool = false;
         capturedCallCount = 0;
+        capturedCallbackArgc = 0;
+        capturedCallbackArgv = null;
+        nativeCallbackArgv = null;
     }
 
     private static SDL3.SDL.AppResult CaptureAppInit(ref IntPtr appstate, int argc, string[]? argv)
@@ -407,31 +498,81 @@ internal static partial class PInvokeTests
         capturedCallCount++;
     }
 
-    private static int CaptureRunApp(int argc, string[]? argv, SDL3.SDL.MainFunc mainFunction, IntPtr reserved)
+    private static int CaptureRunApp(int argc, string[]? argv, IntPtr mainFunction, IntPtr reserved)
     {
         capturedArgc = argc;
         capturedArgv = argv;
-        capturedMainFunction = mainFunction;
+        capturedMainFunctionPointer = mainFunction;
         capturedReserved = reserved;
         capturedCallCount++;
         return nextInt;
     }
 
+    private static unsafe int CaptureRunAppAndInvokeNativeMain(int argc, string[]? argv, IntPtr mainFunction, IntPtr reserved)
+    {
+        capturedArgc = argc;
+        capturedArgv = argv;
+        capturedMainFunctionPointer = mainFunction;
+        capturedReserved = reserved;
+        capturedCallCount++;
+
+        delegate* unmanaged[Cdecl]<int, IntPtr, int> callback = (delegate* unmanaged[Cdecl]<int, IntPtr, int>)(void*)mainFunction;
+        if (nativeCallbackArgv is null)
+        {
+            return callback(0, IntPtr.Zero);
+        }
+
+        using Utf8ArgvScope nativeArguments = new(nativeCallbackArgv);
+        return callback(nativeCallbackArgv.Length, nativeArguments.Pointer);
+    }
+
     private static int CaptureEnterAppMainCallbacks(
         int argc,
         string[]? argv,
-        SDL3.SDL.AppInitFunc appinit,
+        IntPtr appinit,
         SDL3.SDL.AppIterateFunc appiter,
         SDL3.SDL.AppEventFunc appevent,
         SDL3.SDL.AppQuitFunc appquit)
     {
         capturedArgc = argc;
         capturedArgv = argv;
-        capturedAppInit = appinit;
+        capturedAppInitPointer = appinit;
         capturedAppIterate = appiter;
         capturedAppEvent = appevent;
         capturedAppQuit = appquit;
         capturedCallCount++;
+        return nextInt;
+    }
+
+    private static unsafe int CaptureEnterAppMainCallbacksAndInvokeNativeInit(
+        int argc,
+        string[]? argv,
+        IntPtr appinit,
+        SDL3.SDL.AppIterateFunc appiter,
+        SDL3.SDL.AppEventFunc appevent,
+        SDL3.SDL.AppQuitFunc appquit)
+    {
+        capturedArgc = argc;
+        capturedArgv = argv;
+        capturedAppInitPointer = appinit;
+        capturedAppIterate = appiter;
+        capturedAppEvent = appevent;
+        capturedAppQuit = appquit;
+        capturedCallCount++;
+
+        IntPtr appstate = (IntPtr)101;
+        delegate* unmanaged[Cdecl]<IntPtr*, int, IntPtr, SDL3.SDL.AppResult> callback = (delegate* unmanaged[Cdecl]<IntPtr*, int, IntPtr, SDL3.SDL.AppResult>)(void*)appinit;
+        if (nativeCallbackArgv is null)
+        {
+            capturedResult = callback(&appstate, 0, IntPtr.Zero);
+        }
+        else
+        {
+            using Utf8ArgvScope nativeArguments = new(nativeCallbackArgv);
+            capturedResult = callback(&appstate, nativeCallbackArgv.Length, nativeArguments.Pointer);
+        }
+
+        capturedAppstate = appstate;
         return nextInt;
     }
 
@@ -459,9 +600,24 @@ internal static partial class PInvokeTests
         return 0;
     }
 
+    private static int CaptureAdaptedMain(int argc, string[]? argv)
+    {
+        capturedCallbackArgc = argc;
+        capturedCallbackArgv = argv;
+        return nextInt;
+    }
+
     private static SDL3.SDL.AppResult HandleAppInit(ref IntPtr appstate, int argc, string[]? argv)
     {
         return SDL3.SDL.AppResult.Continue;
+    }
+
+    private static SDL3.SDL.AppResult CaptureAdaptedAppInit(ref IntPtr appstate, int argc, string[]? argv)
+    {
+        capturedCallbackArgc = argc;
+        capturedCallbackArgv = argv;
+        appstate = nextAppstate;
+        return nextAppResult;
     }
 
     private static SDL3.SDL.AppResult AssignAppstate(ref IntPtr appstate, int argc, string[]? argv)
@@ -556,6 +712,23 @@ internal static partial class PInvokeTests
         TestAssert.Equal(elementType, parameter.ParameterType.GetElementType(), $"{method.DeclaringType?.Name}.{method.Name} parameter {parameterName} must point to the expected element type.");
     }
 
+    private static void AssertIntPtrParameter(MethodInfo method, string parameterName)
+    {
+        ParameterInfo parameter = method.GetParameters().Single(param => param.Name == parameterName);
+        TestAssert.Equal(typeof(IntPtr), parameter.ParameterType, $"SDL.{method.Name} parameter {parameterName} must be an unmanaged callback pointer.");
+    }
+
+    private static void AssertAdaptedCallbackArguments(string[] expected)
+    {
+        TestAssert.Equal(expected.Length, capturedCallbackArgc, "Managed callback argc must equal the native argument count.");
+        TestAssert.NotNull(capturedCallbackArgv, "Managed callback argv must not be null when native argc is positive.");
+        TestAssert.Equal(expected.Length, capturedCallbackArgv!.Length, "Managed callback argv length must equal native argc.");
+        for (int index = 0; index < expected.Length; index++)
+        {
+            TestAssert.Equal(expected[index], capturedCallbackArgv[index], $"Managed callback argv[{index}] must preserve UTF-8 content and ordering.");
+        }
+    }
+
     private static void AssertCallbackCdecl(Type callbackType, string callbackName)
     {
         UnmanagedFunctionPointerAttribute? callbackAttribute = callbackType.GetCustomAttribute<UnmanagedFunctionPointerAttribute>();
@@ -589,6 +762,39 @@ internal static partial class PInvokeTests
         public void Dispose()
         {
             field.SetValue(null, originalValue);
+        }
+    }
+
+    private sealed class Utf8ArgvScope : IDisposable
+    {
+        private readonly IntPtr[] strings;
+
+        public Utf8ArgvScope(string[] values)
+        {
+            strings = new IntPtr[values.Length];
+            Pointer = Marshal.AllocHGlobal((values.Length + 1) * IntPtr.Size);
+            for (int index = 0; index < values.Length; index++)
+            {
+                strings[index] = Marshal.StringToCoTaskMemUTF8(values[index]);
+                Marshal.WriteIntPtr(Pointer, index * IntPtr.Size, strings[index]);
+            }
+
+            Marshal.WriteIntPtr(Pointer, values.Length * IntPtr.Size, IntPtr.Zero);
+        }
+
+        public IntPtr Pointer { get; }
+
+        public void Dispose()
+        {
+            foreach (IntPtr value in strings)
+            {
+                if (value != IntPtr.Zero)
+                {
+                    Marshal.FreeCoTaskMem(value);
+                }
+            }
+
+            Marshal.FreeHGlobal(Pointer);
         }
     }
 }

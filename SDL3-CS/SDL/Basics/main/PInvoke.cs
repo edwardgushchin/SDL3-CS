@@ -281,8 +281,10 @@ public partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RunApp"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv, MainFunc mainFunction, IntPtr reserved);
-    private delegate int RunAppNative(int argc, string[]? argv, MainFunc mainFunction, IntPtr reserved);
+    private static partial int SDL_RunApp(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv, IntPtr mainFunction, IntPtr reserved);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate int MainFuncNative(int argc, IntPtr argv);
+    private delegate int RunAppNative(int argc, string[]? argv, IntPtr mainFunction, IntPtr reserved);
     private static RunAppNative RunAppNativeFunction = SDL_RunApp;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_RunApp(int argc, char *argv[], SDL_main_func mainFunction, void *reserved);</code>
@@ -312,14 +314,27 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static int RunApp(int argc, string[]? argv, MainFunc mainFunction, IntPtr reserved)
     {
-        return RunAppNativeFunction(argc, NormalizeMainArgv(argv), mainFunction, reserved);
+        MainFuncNative nativeMainFunction = (nativeArgc, nativeArgv) =>
+            mainFunction(nativeArgc, MarshalMainCallbackArguments(nativeArgc, nativeArgv));
+        IntPtr nativeMainFunctionPointer = Marshal.GetFunctionPointerForDelegate(nativeMainFunction);
+
+        try
+        {
+            return RunAppNativeFunction(argc, NormalizeMainArgv(argv), nativeMainFunctionPointer, reserved);
+        }
+        finally
+        {
+            GC.KeepAlive(nativeMainFunction);
+        }
     }
 
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_EnterAppMainCallbacks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial int SDL_EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
-    private delegate int EnterAppMainCallbacksNative(int argc, string[]? argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
+    private static partial int SDL_EnterAppMainCallbacks(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]? argv, IntPtr appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate AppResult AppInitFuncNative(ref IntPtr appstate, int argc, IntPtr argv);
+    private delegate int EnterAppMainCallbacksNative(int argc, string[]? argv, IntPtr appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit);
     private static EnterAppMainCallbacksNative EnterAppMainCallbacksNativeFunction = SDL_EnterAppMainCallbacks;
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_EnterAppMainCallbacks(int argc, char *argv[], SDL_AppInit_func appinit, SDL_AppIterate_func appiter, SDL_AppEvent_func appevent, SDL_AppQuit_func appquit);</code>
@@ -346,7 +361,23 @@ public partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     public static int EnterAppMainCallbacks(int argc, string[]? argv, AppInitFunc appinit, AppIterateFunc appiter, AppEventFunc appevent, AppQuitFunc appquit)
     {
-        return EnterAppMainCallbacksNativeFunction(argc, NormalizeMainArgv(argv), appinit, appiter, appevent, appquit);
+        AppInitFuncNative nativeAppInit = (ref IntPtr appstate, int nativeArgc, IntPtr nativeArgv) =>
+            appinit(ref appstate, nativeArgc, MarshalMainCallbackArguments(nativeArgc, nativeArgv));
+        IntPtr nativeAppInitPointer = Marshal.GetFunctionPointerForDelegate(nativeAppInit);
+
+        try
+        {
+            return EnterAppMainCallbacksNativeFunction(argc, NormalizeMainArgv(argv), nativeAppInitPointer, appiter, appevent, appquit);
+        }
+        finally
+        {
+            GC.KeepAlive(nativeAppInit);
+        }
+    }
+
+    private static string[]? MarshalMainCallbackArguments(int argc, IntPtr argv)
+    {
+        return argc > 0 ? PointerToStringArray(argv, argc) : null;
     }
 
     private static string[]? NormalizeMainArgv(string[]? argv)

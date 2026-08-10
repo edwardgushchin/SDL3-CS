@@ -1,5 +1,15 @@
 using SDL3;
 
+if (args.SequenceEqual(["--argv-callbacks-only"]))
+{
+    SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_AdaptsCompleteUtf8ArgumentsFromNativeCallback();
+    SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_AdaptsNullArgumentsFromNativeCallback();
+    SDL3.Tests.SDL.Basics.Main.PInvokeTests.EnterAppMainCallbacks_AdaptsCompleteUtf8ArgumentsFromNativeCallback();
+    SDL3.Tests.SDL.Basics.Main.PInvokeTests.EnterAppMainCallbacks_AdaptsNullArgumentsFromNativeCallback();
+    Console.WriteLine("SDL native callback argv adapter focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--main-callbacks-only"]))
 {
     SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunManagedMainCallbackFocusedTests();
@@ -135,6 +145,14 @@ SDL3.Tests.SDL.Basics.Main.PInvokeTests.Main_NullAndEmptyArgumentsForwardNull();
 Console.WriteLine("SDL.Main null and empty argv normalization test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.SetMainReady_CallsNativeHook();
 Console.WriteLine("SDL.SetMainReady binding test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_AdaptsCompleteUtf8ArgumentsFromNativeCallback();
+Console.WriteLine("SDL.RunApp native callback argv adapter test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_AdaptsNullArgumentsFromNativeCallback();
+Console.WriteLine("SDL.RunApp native callback null argv adapter test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.EnterAppMainCallbacks_AdaptsCompleteUtf8ArgumentsFromNativeCallback();
+Console.WriteLine("SDL.EnterAppMainCallbacks native callback argv adapter test passed.");
+SDL3.Tests.SDL.Basics.Main.PInvokeTests.EnterAppMainCallbacks_AdaptsNullArgumentsFromNativeCallback();
+Console.WriteLine("SDL.EnterAppMainCallbacks native callback null argv adapter test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_ForwardsArgumentsCallbackReservedAndReturnsNativeValue();
 Console.WriteLine("SDL.RunApp binding test passed.");
 SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_NullAndEmptyArgumentsForwardNull();
