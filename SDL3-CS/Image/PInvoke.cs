@@ -2856,7 +2856,7 @@ public partial class Image
     /// <since>This function is available since SDL_image 3.4.0.</since>
     /// <seealso cref="CreateAnimationDecoderIO"/>
     /// <seealso cref="CreateAnimationDecoderWithProperties"/>
-    /// <seealso cref="GetAnimationDecoderFrame"/>
+    /// <seealso cref="GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong)"/>
     /// <seealso cref="ResetAnimationDecoder"/>
     /// <seealso cref="CloseAnimationDecoder"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_CreateAnimationDecoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2887,7 +2887,7 @@ public partial class Image
     /// <since>This function is available since SDL_image 3.4.0.</since>
     /// <seealso cref="CreateAnimationDecoder"/>
     /// <seealso cref="CreateAnimationDecoderWithProperties"/>
-    /// <seealso cref="GetAnimationDecoderFrame"/>
+    /// <seealso cref="GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong)"/>
     /// <seealso cref="ResetAnimationDecoder"/>
     /// <seealso cref="CloseAnimationDecoder"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_CreateAnimationDecoder_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2928,7 +2928,7 @@ public partial class Image
     /// <since>This function is available since SDL_image 3.4.0.</since>
     /// <seealso cref="CreateAnimationDecoder"/>
     /// <seealso cref="CreateAnimationDecoderIO"/>
-    /// <seealso cref="GetAnimationDecoderFrame"/>
+    /// <seealso cref="GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong)"/>
     /// <seealso cref="ResetAnimationDecoder"/>
     /// <seealso cref="CloseAnimationDecoder"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_CreateAnimationDecoderWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -2987,7 +2987,22 @@ public partial class Image
     /// <seealso cref="CloseAnimationDecoder"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_GetAnimationDecoderFrame"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool GetAnimationDecoderFrame(IntPtr decoder, out IntPtr frame, long duration);
+    public static partial bool GetAnimationDecoderFrame(IntPtr decoder, out IntPtr frame, out ulong duration);
+
+    /// <summary>
+    /// Decode the next animation frame while discarding its duration.
+    /// </summary>
+    /// <param name="decoder">the animation decoder.</param>
+    /// <param name="frame">a pointer filled in with the surface for the next frame.</param>
+    /// <param name="duration">an unused compatibility argument.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure and when no more frames are available.</returns>
+    /// <seealso cref="GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong)"/>
+    [Obsolete("Use GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong) to receive the frame duration.")]
+    public static bool GetAnimationDecoderFrame(IntPtr decoder, out IntPtr frame, long duration)
+    {
+        _ = duration;
+        return GetAnimationDecoderFrame(decoder, out frame, out _);
+    }
     
 
     /// <code>extern SDL_DECLSPEC IMG_AnimationDecoderStatus SDLCALL IMG_GetAnimationDecoderStatus(IMG_AnimationDecoder *decoder);</code>
@@ -2998,7 +3013,7 @@ public partial class Image
     /// <returns>the status of the underlying decoder, or
     /// <seealso cref="AnimationDecoderStatus.Invalid"/> if the given decoder is invalid.</returns>
     /// <since>This function is available since SDL_image 3.4.0.</since>
-    /// <seealso cref="GetAnimationDecoderFrame"/>
+    /// <seealso cref="GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong)"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_GetAnimationDecoderStatus"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial AnimationDecoderStatus GetAnimationDecoderStatus(IntPtr decoder);
     
@@ -3017,7 +3032,7 @@ public partial class Image
     /// <seealso cref="CreateAnimationDecoder"/>
     /// <seealso cref="CreateAnimationDecoderIO"/>
     /// <seealso cref="CreateAnimationDecoderWithProperties"/>
-    /// <seealso cref="GetAnimationDecoderFrame"/>
+    /// <seealso cref="GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong)"/>
     /// <seealso cref="CloseAnimationDecoder"/>
     [LibraryImport(ImageLibrary, EntryPoint = "IMG_ResetAnimationDecoder"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
