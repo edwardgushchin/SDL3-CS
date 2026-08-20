@@ -509,8 +509,8 @@ public static partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForPoint"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForPoint(Point point);
-    private delegate uint GetDisplayForPointNativeDelegate(Point point);
+    private static partial uint SDL_GetDisplayForPoint(in Point point);
+    private delegate uint GetDisplayForPointNativeDelegate(in Point point);
     private static GetDisplayForPointNativeDelegate GetDisplayForPointNativeFunction = SDL_GetDisplayForPoint;
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForPoint(const SDL_Point *point);</code>
@@ -524,16 +524,16 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    public static uint GetDisplayForPoint(Point point)
+    public static uint GetDisplayForPoint(in Point point)
     {
-        return GetDisplayForPointNativeFunction(point);
+        return GetDisplayForPointNativeFunction(in point);
     }
 
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDisplayForRect"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial uint SDL_GetDisplayForRect(Rect rect);
-    private delegate uint GetDisplayForRectNativeDelegate(Rect rect);
+    private static partial uint SDL_GetDisplayForRect(in Rect rect);
+    private delegate uint GetDisplayForRectNativeDelegate(in Rect rect);
     private static GetDisplayForRectNativeDelegate GetDisplayForRectNativeFunction = SDL_GetDisplayForRect;
 
     /// <code>extern SDL_DECLSPEC SDL_DisplayID SDLCALL SDL_GetDisplayForRect(const SDL_Rect *rect);</code>
@@ -548,9 +548,9 @@ public static partial class SDL
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetDisplayBounds"/>
     /// <seealso cref="GetDisplays"/>
-    public static uint GetDisplayForRect(Rect rect)
+    public static uint GetDisplayForRect(in Rect rect)
     {
-        return GetDisplayForRectNativeFunction(rect);
+        return GetDisplayForRectNativeFunction(in rect);
     }
 
 

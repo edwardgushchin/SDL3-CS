@@ -124,8 +124,17 @@ internal static class PInvokeTests
         AssertBoolParameterMarshal(closestFullscreenDisplayMode, 4);
         AssertNativeImport(GetNativeMethod("SDL_GetDesktopDisplayMode"), "SDL_GetDesktopDisplayMode");
         AssertNativeImport(GetNativeMethod("SDL_GetCurrentDisplayMode"), "SDL_GetCurrentDisplayMode");
-        AssertNativeImport(GetNativeMethod("SDL_GetDisplayForPoint"), "SDL_GetDisplayForPoint");
-        AssertNativeImport(GetNativeMethod("SDL_GetDisplayForRect"), "SDL_GetDisplayForRect");
+        MethodInfo getDisplayForPoint = GetNativeMethod("SDL_GetDisplayForPoint");
+        AssertNativeImport(getDisplayForPoint, "SDL_GetDisplayForPoint");
+        ParameterInfo getDisplayForPointParameter = getDisplayForPoint.GetParameters()[0];
+        TestAssert.Equal(typeof(SDL3.SDL.Point).MakeByRefType(), getDisplayForPointParameter.ParameterType, "SDL_GetDisplayForPoint must pass Point by reference.");
+        TestAssert.True(getDisplayForPointParameter.IsIn, "SDL_GetDisplayForPoint must keep the const Point input read-only.");
+
+        MethodInfo getDisplayForRect = GetNativeMethod("SDL_GetDisplayForRect");
+        AssertNativeImport(getDisplayForRect, "SDL_GetDisplayForRect");
+        ParameterInfo getDisplayForRectParameter = getDisplayForRect.GetParameters()[0];
+        TestAssert.Equal(typeof(SDL3.SDL.Rect).MakeByRefType(), getDisplayForRectParameter.ParameterType, "SDL_GetDisplayForRect must pass Rect by reference.");
+        TestAssert.True(getDisplayForRectParameter.IsIn, "SDL_GetDisplayForRect must keep the const Rect input read-only.");
         AssertNativeImport(GetNativeMethod("SDL_GetDisplayForWindow"), "SDL_GetDisplayForWindow");
         AssertNativeImport(GetNativeMethod("SDL_GetWindowPixelDensity"), "SDL_GetWindowPixelDensity");
         AssertNativeImport(GetNativeMethod("SDL_GetWindowDisplayScale"), "SDL_GetWindowDisplayScale");
@@ -591,7 +600,7 @@ internal static class PInvokeTests
         SDL3.SDL.Point point = new() { X = -10, Y = 20 };
         using (NativeHookScope _ = NativeHookScope.Install("GetDisplayForPointNativeFunction", nameof(CapturePointReturnUInt)))
         {
-            TestAssert.Equal(0x501u, SDL3.SDL.GetDisplayForPoint(point), "SDL.GetDisplayForPoint must return native display id.");
+            TestAssert.Equal(0x501u, SDL3.SDL.GetDisplayForPoint(in point), "SDL.GetDisplayForPoint must return native display id.");
             AssertPoint(point, capturedPoint, "SDL.GetDisplayForPoint must forward point.");
         }
 
@@ -600,7 +609,7 @@ internal static class PInvokeTests
         SDL3.SDL.Rect rect = new() { X = 1, Y = 2, W = 640, H = 480 };
         using (NativeHookScope _ = NativeHookScope.Install("GetDisplayForRectNativeFunction", nameof(CaptureRectReturnUInt)))
         {
-            TestAssert.Equal(0x502u, SDL3.SDL.GetDisplayForRect(rect), "SDL.GetDisplayForRect must return native display id.");
+            TestAssert.Equal(0x502u, SDL3.SDL.GetDisplayForRect(in rect), "SDL.GetDisplayForRect must return native display id.");
             AssertRect(rect, capturedRect, "SDL.GetDisplayForRect must forward rect.");
         }
 
@@ -1874,13 +1883,13 @@ internal static class PInvokeTests
         return nextUInt;
     }
 
-    private static uint CapturePointReturnUInt(SDL3.SDL.Point point)
+    private static uint CapturePointReturnUInt(in SDL3.SDL.Point point)
     {
         capturedPoint = point;
         return nextUInt;
     }
 
-    private static uint CaptureRectReturnUInt(SDL3.SDL.Rect rect)
+    private static uint CaptureRectReturnUInt(in SDL3.SDL.Rect rect)
     {
         capturedRect = rect;
         return nextUInt;
