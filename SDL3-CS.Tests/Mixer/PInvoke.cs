@@ -187,6 +187,18 @@ internal static class PInvokeTests
         {
             DestroyAudioIfNeeded(audio);
         }
+
+        IntPtr infiniteAudio = SDL3.Mixer.CreateSineWaveAudio(mixer.Handle, 440, 0.125f);
+
+        try
+        {
+            TestAssert.True(infiniteAudio != IntPtr.Zero, "Mixer.CreateSineWaveAudio(IntPtr, int, float) compatibility method must create audio.");
+            TestAssert.Equal(SDL3.Mixer.DurationInfinite, SDL3.Mixer.GetAudioDuration(infiniteAudio), "Mixer.CreateSineWaveAudio(IntPtr, int, float) must create infinite audio explicitly.");
+        }
+        finally
+        {
+            DestroyAudioIfNeeded(infiniteAudio);
+        }
     }
 
     public static void LoadAudio_ReturnsAudioForWavFile()
@@ -322,16 +334,17 @@ internal static class PInvokeTests
 
     public static void CreateSineWaveAudio_ReturnsAudioForMemoryMixer()
     {
-        MethodInfo? method = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.CreateSineWaveAudio), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr), typeof(int), typeof(float)]);
-        TestAssert.NotNull(method, "Mixer.CreateSineWaveAudio(IntPtr, int, float) method must be public static.");
+        MethodInfo? method = typeof(SDL3.Mixer).GetMethod(nameof(SDL3.Mixer.CreateSineWaveAudio), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr), typeof(int), typeof(float), typeof(long)]);
+        TestAssert.NotNull(method, "Mixer.CreateSineWaveAudio(IntPtr, int, float, long) method must be public static.");
         AssertMixerLibraryImport(method!, "MIX_CreateSineWaveAudio");
 
         using MixerScope mixer = MixerScope.CreateMemoryMixer();
-        IntPtr audio = SDL3.Mixer.CreateSineWaveAudio(mixer.Handle, 440, 0.125f);
+        IntPtr audio = SDL3.Mixer.CreateSineWaveAudio(mixer.Handle, 440, 0.125f, 250);
 
         try
         {
-            TestAssert.True(audio != IntPtr.Zero, "Mixer.CreateSineWaveAudio(IntPtr, int, float) must create audio for a valid memory mixer.");
+            TestAssert.True(audio != IntPtr.Zero, "Mixer.CreateSineWaveAudio(IntPtr, int, float, long) must create audio for a valid memory mixer.");
+            TestAssert.Equal(12_000L, SDL3.Mixer.GetAudioDuration(audio), "Mixer.CreateSineWaveAudio(IntPtr, int, float, long) must honor 250 milliseconds at 48 kHz.");
         }
         finally
         {
