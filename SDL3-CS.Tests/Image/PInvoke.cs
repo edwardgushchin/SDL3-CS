@@ -1385,22 +1385,47 @@ internal static class PInvokeTests
 
     public static void GetAnimationDecoderFrame_ReturnsSurfaceForGifDecoder()
     {
-        AssertBoolReturnMethodMetadata(nameof(SDL3.Image.GetAnimationDecoderFrame), "IMG_GetAnimationDecoderFrame", [typeof(IntPtr), typeof(IntPtr).MakeByRefType(), typeof(long)]);
+        AssertBoolReturnMethodMetadata(nameof(SDL3.Image.GetAnimationDecoderFrame), "IMG_GetAnimationDecoderFrame", [typeof(IntPtr), typeof(IntPtr).MakeByRefType(), typeof(ulong).MakeByRefType()]);
+        MethodInfo? compatibilityMethod = typeof(SDL3.Image).GetMethod(nameof(SDL3.Image.GetAnimationDecoderFrame), BindingFlags.Public | BindingFlags.Static, [typeof(IntPtr), typeof(IntPtr).MakeByRefType(), typeof(long)]);
+        TestAssert.NotNull(compatibilityMethod, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, long) compatibility method must remain public static.");
+        TestAssert.NotNull(compatibilityMethod!.GetCustomAttribute<ObsoleteAttribute>(), "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, long) compatibility method must direct callers to the corrected ABI overload.");
 
-        using ConstMemIOStreamScope stream = ConstMemIOStreamScope.Create(OnePixelGif());
+        byte[] gif = OnePixelGif();
+        gif[23] = 10;
+        using ConstMemIOStreamScope stream = ConstMemIOStreamScope.Create(gif);
         using AnimationDecoderScope decoder = AnimationDecoderScope.CreateForGifIO(stream.Handle);
-        bool gotFrame = SDL3.Image.GetAnimationDecoderFrame(decoder.Handle, out IntPtr frame, duration: 0);
+        bool gotFrame = SDL3.Image.GetAnimationDecoderFrame(decoder.Handle, out IntPtr frame, out ulong duration);
 
         try
         {
-            TestAssert.True(gotFrame, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, long) must decode the first GIF frame.");
-            TestAssert.True(frame != IntPtr.Zero, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, long) must return a surface for the first GIF frame.");
+            TestAssert.True(gotFrame, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong) must decode the first GIF frame.");
+            TestAssert.True(frame != IntPtr.Zero, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong) must return a surface for the first GIF frame.");
+            TestAssert.True(duration > 0, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, out ulong) must return the configured nonzero GIF frame duration.");
         }
         finally
         {
             if (frame != IntPtr.Zero)
             {
                 SDL3.SDL.DestroySurface(frame);
+            }
+        }
+
+        using ConstMemIOStreamScope compatibilityStream = ConstMemIOStreamScope.Create(gif);
+        using AnimationDecoderScope compatibilityDecoder = AnimationDecoderScope.CreateForGifIO(compatibilityStream.Handle);
+#pragma warning disable CS0618
+        bool compatibilityGotFrame = SDL3.Image.GetAnimationDecoderFrame(compatibilityDecoder.Handle, out IntPtr compatibilityFrame, duration: 0);
+#pragma warning restore CS0618
+
+        try
+        {
+            TestAssert.True(compatibilityGotFrame, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, long) must forward through the corrected native ABI.");
+            TestAssert.True(compatibilityFrame != IntPtr.Zero, "Image.GetAnimationDecoderFrame(IntPtr, out IntPtr, long) must return the decoded frame.");
+        }
+        finally
+        {
+            if (compatibilityFrame != IntPtr.Zero)
+            {
+                SDL3.SDL.DestroySurface(compatibilityFrame);
             }
         }
     }
