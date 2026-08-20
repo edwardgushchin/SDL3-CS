@@ -598,7 +598,7 @@ public partial class Mixer
     public static partial IntPtr LoadRawAudioNoCopy(IntPtr mixer, IntPtr data, UIntPtr datalen, in IntPtr spec, [MarshalAs(UnmanagedType.I1)] bool freeWhenDone);
 
 
-    /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_CreateSineWaveAudio(MIX_Mixer *mixer, int hz, float amplitude);</code>
+    /// <code>extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_CreateSineWaveAudio(MIX_Mixer *mixer, int hz, float amplitude, Sint64 ms);</code>
     /// <summary>
     /// Create a MIX_Audio that generates a sinewave.
     /// <para>This is useful just to have _something_ to play, perhaps for testing or
@@ -618,7 +618,8 @@ public partial class Mixer
     /// </summary>
     /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
     /// <param name="hz">the sinewave's frequency in Hz.</param>
-    /// <param name="amplitude">the maximum number of milliseconds of audio to generate, or less
+    /// <param name="amplitude">the sinewave's amplitude from 0.0f to 1.0f.</param>
+    /// <param name="ms">the maximum number of milliseconds of audio to generate, or less
     /// than zero to generate infinite audio.</param>
     /// <returns>an audio object that can be used to make sound on a mixer, or <c>null</c>
     /// on failure; call <see cref="SDL.GetError"/> for more information.</returns>
@@ -628,7 +629,20 @@ public partial class Mixer
     /// <seealso cref="SetTrackAudio"/>
     /// <seealso cref="LoadAudioIO"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_CreateSineWaveAudio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr CreateSineWaveAudio(IntPtr mixer, int hz, float amplitude);
+    public static partial IntPtr CreateSineWaveAudio(IntPtr mixer, int hz, float amplitude, long ms);
+
+    /// <summary>
+    /// Create infinite sine-wave audio for source compatibility with earlier SDL3-CS releases.
+    /// </summary>
+    /// <param name="mixer">a mixer this audio is intended to be used with. May be <c>null</c>.</param>
+    /// <param name="hz">the sinewave's frequency in Hz.</param>
+    /// <param name="amplitude">the sinewave's amplitude from 0.0f to 1.0f.</param>
+    /// <returns>an infinite audio object that can be used to make sound on a mixer, or <c>null</c> on failure.</returns>
+    /// <seealso cref="CreateSineWaveAudio(IntPtr, int, float, long)"/>
+    public static IntPtr CreateSineWaveAudio(IntPtr mixer, int hz, float amplitude)
+    {
+        return CreateSineWaveAudio(mixer, hz, amplitude, DurationInfinite);
+    }
 
 
     /// <code>extern SDL_DECLSPEC SDL_PropertiesID SDLCALL MIX_GetAudioProperties(MIX_Audio *audio);</code>
