@@ -259,7 +259,7 @@ Assert-WorkflowContains -Text $workflowText -Expected '$params.RequireUpstreamCu
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Invoke-ReleaseAssembly.ps1 @params' -Description 'assembly script invocation'
 Assert-WorkflowContains -Text $workflowText -Expected 'Install Android .NET workload for bridge package' -Description 'assembly Android bridge workload installation step'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet workload install android --source https://api.nuget.org/v3/index.json' -Description 'assembly Android workload installation command'
-Assert-WorkflowContains -Text $workflowText -Expected 'actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0' -Description 'assembly SHA-pinned exact Java setup'
+Assert-WorkflowContains -Text $workflowText -Expected 'actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0' -Description 'assembly SHA-pinned exact Java setup'
 Assert-WorkflowContains -Text $workflowText -Expected 'java-version: ${{ needs.plan.outputs.android_bridge_setup_java_version }}' -Description 'manifest-derived Android bridge setup-java version'
 Assert-WorkflowContains -Text $workflowText -Expected 'Rebuild and verify exact Android bridge' -Description 'assembly exact Android bridge rebuild step'
 Assert-WorkflowContains -Text $workflowText -Expected 'Invoke-WebRequest -Uri $env:ANDROID_PLATFORM_ARCHIVE_URL' -Description 'manifest-derived Android platform download'
