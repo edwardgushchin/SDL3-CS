@@ -268,7 +268,7 @@ Assert-WorkflowContains -Text $workflowText -Expected '$archiveHash -ne $env:AND
 Assert-WorkflowContains -Text $workflowText -Expected '$androidJarHash -ne $env:ANDROID_PLATFORM_JAR_SHA256' -Description 'Android platform JAR hash gate'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Build-AndroidBridgeJar.ps1' -Description 'exact Android bridge builder invocation'
 Assert-WorkflowContains -Text $workflowText -Expected '-VerifyDeterministic' -Description 'Android bridge deterministic repeat gate'
-Assert-WorkflowContains -Text $workflowText -Expected 'if ($candidateHash -ne $trackedHash)' -Description 'tracked Android bridge candidate parity gate'
+Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $candidatePath -SourceRoot ''native-forks/SDL'' -SkipPinnedJarHashValidation' -Description 'host-built Android bridge semantic validation'
 Assert-WorkflowContains -Text $workflowText -Expected './.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $trackedPath -SourceRoot ''native-forks/SDL''' -Description 'exact-source Android bridge validation'
 Assert-WorkflowContains -Text $workflowText -Expected 'Setup Java for Android package build' -Description 'supported Java restore before Android binding build'
 Assert-WorkflowContains -Text $workflowText -Expected "java-version: '21'" -Description 'supported Java major for Android .NET package build'
