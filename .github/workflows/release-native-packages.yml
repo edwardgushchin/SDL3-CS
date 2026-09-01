@@ -644,6 +644,13 @@ jobs:
         with:
           dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}
 
+      - name: Activate exact Apple .NET SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x "$DOTNET_ROOT/dotnet"
+          printf '%s\n' "$DOTNET_ROOT" >> "$GITHUB_PATH"
+
       - name: Select exact Xcode
         shell: bash
         run: |

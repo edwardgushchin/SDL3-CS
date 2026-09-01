@@ -91,6 +91,15 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $unactivatedAppleSdkWorkflow = $workflowText.Replace(
+        'test -x "$DOTNET_ROOT/dotnet"',
+        'test -f "$DOTNET_ROOT/dotnet"'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unactivatedAppleSdkWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Apple .NET SDK executable gate' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $unpinnedAppleWorkloadWorkflow = $workflowText.Replace(
         'dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION"',
         'dotnet workload install ios tvos'
