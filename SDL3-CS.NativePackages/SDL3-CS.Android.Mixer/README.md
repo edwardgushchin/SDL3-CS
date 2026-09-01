@@ -73,5 +73,6 @@ The release pipeline populates the `lib/<rid>/` folders before packaging. A loca
 
 - [Repository README](../../README.md)
 - [Managed wrapper project](../../SDL3-CS/README.md)
+- [Avalonia audio-only Android example](../../SDL3-CS.Examples/Android/AndroidAvaloniaMixerAudio/README.md)
 - [SDL3-CS Wiki](https://github.com/edwardgushchin/SDL3-CS/wiki)
 - [NuGet package search](https://www.nuget.org/profiles/edwardgushchin)

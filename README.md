@@ -146,7 +146,9 @@ Use the same platform suffix for every SDL3# package in the same application.
 
 ### Android
 
-Android applications should reference `SDL3-CS.Android` and use `MainActivity : Org.Libsdl.App.SDLActivity` with a managed `Main()` override. The Android package includes the SDL Java bridge bindings and ABI-specific `libSDL3.so` files.
+Android applications that use SDL video, surfaces, input, or the full SDL lifecycle should reference `SDL3-CS.Android` and use `MainActivity : Org.Libsdl.App.SDLActivity` with a managed `Main()` override. The Android package includes the SDL Java bridge bindings and ABI-specific `libSDL3.so` files.
+
+Audio-only applications can keep an existing Android Activity, including `AvaloniaMainActivity`, initialize the smaller SDL JNI/context bridge, and initialize only `SDL.InitFlags.Audio`. See the runnable [Avalonia + SDL_mixer audio example](SDL3-CS.Examples/Android/AndroidAvaloniaMixerAudio/README.md) for lifecycle, error handling, and an emulator/device smoke test. This narrower setup does not provide an SDL video surface inside the existing Activity.
 
 ### Build from Source
 

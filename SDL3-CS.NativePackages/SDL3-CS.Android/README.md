@@ -36,7 +36,9 @@ Native asset mode: Android ABI-specific native libraries and, for the base packa
 
 ## Android Bridge
 
-The base Android package also includes the SDL Java bridge binding. Android apps can inherit from `Org.Libsdl.App.SDLActivity`, override `GetLibraries()` to load `SDL3`, and run managed SDL code from the activity `Main()` override. See the Android example README under [`../../SDL3-CS.Examples/Android/AndroidCircularColorFade`](../../SDL3-CS.Examples/Android/AndroidCircularColorFade/README.md).
+The base Android package also includes the SDL Java bridge binding. Apps that use SDL video, surfaces, input, or the full SDL lifecycle can inherit from `Org.Libsdl.App.SDLActivity`, override `GetLibraries()` to load `SDL3`, and run managed SDL code from the activity `Main()` override. See [`AndroidCircularColorFade`](../../SDL3-CS.Examples/Android/AndroidCircularColorFade/README.md).
+
+Audio-only apps can retain an existing Activity, including `AvaloniaMainActivity`, and initialize the smaller JNI/context bridge before initializing `SDL.InitFlags.Audio`. The [`AndroidAvaloniaMixerAudio`](../../SDL3-CS.Examples/Android/AndroidAvaloniaMixerAudio/README.md) example demonstrates the supported scope, error propagation, pause/resume/cleanup order, and a deterministic device smoke test. This integration does not embed an SDL video surface in the existing Activity.
 
 ## Installation
 

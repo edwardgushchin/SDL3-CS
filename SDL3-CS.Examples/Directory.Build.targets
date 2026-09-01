@@ -20,6 +20,7 @@
 
   <ItemGroup Condition="'$(SDL3CSExampleUseAndroidRuntime)' == 'true'">
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\SDL3-CS.NativePackages\SDL3-CS.Android\SDL3-CS.Android.csproj" />
+    <PackageReference Include="SDL3-CS.Android.Mixer" Version="$(SDL3CSMixerVersion)" Condition="'$(SDL3CSExampleUseMixer)' == 'true'" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SDL3CSExampleUseNativeRuntime)' == 'true' and $([System.OperatingSystem]::IsWindows())">
