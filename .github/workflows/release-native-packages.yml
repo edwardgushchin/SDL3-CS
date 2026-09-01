@@ -504,11 +504,7 @@ jobs:
             -JavaHome $env:JAVA_HOME `
             -VerifyDeterministic
           $trackedPath = 'SDL3-CS.NativePackages/SDL3-CS.Android/SDL3Bridge.jar'
-          $candidateHash = (Get-FileHash -LiteralPath $candidatePath -Algorithm SHA256).Hash.ToLowerInvariant()
-          $trackedHash = (Get-FileHash -LiteralPath $trackedPath -Algorithm SHA256).Hash.ToLowerInvariant()
-          if ($candidateHash -ne $trackedHash) {
-            throw "Tracked SDL3Bridge.jar is stale: candidate $candidateHash, tracked $trackedHash"
-          }
+          ./.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $candidatePath -SourceRoot 'native-forks/SDL' -SkipPinnedJarHashValidation
           ./.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $trackedPath -SourceRoot 'native-forks/SDL'
 
       - name: Setup Java for Android package build

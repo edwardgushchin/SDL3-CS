@@ -276,12 +276,12 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
-    $missingBridgeParityWorkflow = $workflowText.Replace(
-        'if ($candidateHash -ne $trackedHash)',
-        'if ($false)'
+    $missingBridgeCandidateValidationWorkflow = $workflowText.Replace(
+        './.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $candidatePath -SourceRoot ''native-forks/SDL'' -SkipPinnedJarHashValidation',
+        '$null = $candidatePath'
     )
-    Set-Content -LiteralPath $tempWorkflow -Value $missingBridgeParityWorkflow -Encoding UTF8
-    Assert-WorkflowValidationFails -Description 'missing tracked Android bridge candidate parity gate' -Action {
+    Set-Content -LiteralPath $tempWorkflow -Value $missingBridgeCandidateValidationWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing host-built Android bridge semantic validation gate' -Action {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
