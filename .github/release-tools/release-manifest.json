@@ -39,6 +39,12 @@
         "SDL_ttf": 9,
         "SDL_shadercross": 9
       },
+      "2": {
+        "SDL_image": 11,
+        "SDL_mixer": 10,
+        "SDL_ttf": 10,
+        "SDL_shadercross": 10
+      },
       "6": {
         "SDL_image": 8,
         "SDL_mixer": 7,
