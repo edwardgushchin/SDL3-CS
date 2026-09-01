@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SDL3-CS\SDL3-CS.csproj" />
     <ProjectReference Include="..\SDL3-CS.Generators\SDL3-CS.Generators.csproj" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
   </ItemGroup>
 
 </Project>
