@@ -168,6 +168,10 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Validate Avalonia SDL_mixer Android example contract
+        shell: pwsh
+        run: ./.github/release-tools/Test-AndroidAvaloniaMixerAudioExample.Tests.ps1
+
       - name: Install Android .NET workload
         shell: pwsh
         run: dotnet workload install android --source https://api.nuget.org/v3/index.json
