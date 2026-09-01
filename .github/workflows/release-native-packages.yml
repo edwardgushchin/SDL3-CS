@@ -192,7 +192,7 @@ jobs:
             }
           }
           if ([string]$manifest.toolchains.androidBridgeJavaRelease -notmatch '^\d+$' -or
-              [string]$manifest.toolchains.androidBridgeSetupJavaVersion -notmatch '^\d+\.\d+\.\d+\+\d+$' -or
+              [string]$manifest.toolchains.androidBridgeSetupJavaVersion -notmatch '^\d+\.\d+\.\d+(?:\.\d+)?\+\d+$' -or
               [string]$manifest.toolchains.androidBridgeJavacVersion -notmatch '^\d+\.\d+\.\d+(?:\.\d+)?$') {
             throw 'Release manifest must pin the Android bridge Java release, setup-java version, and javac output version.'
           }
@@ -452,6 +452,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ needs.plan.outputs.android_bridge_setup_java_version }}
+          verify-signature: true
 
       - name: Install Android .NET workload for bridge package
         shell: pwsh
