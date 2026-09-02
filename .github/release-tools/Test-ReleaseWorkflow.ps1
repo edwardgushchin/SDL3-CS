@@ -305,6 +305,7 @@ Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_DOTNET_SDK_VERSION:
 Assert-WorkflowContains -Text $workflowText -Expected 'APPLE_DOTNET_WORKLOAD_VERSION: ${{ needs.plan.outputs.apple_dotnet_workload_version }}' -Description 'manifest-derived Apple workload-set version handoff'
 Assert-WorkflowContains -Text $workflowText -Expected 'dotnet-version: ${{ needs.plan.outputs.apple_dotnet_sdk_version }}' -Description 'exact Apple .NET SDK setup'
 Assert-WorkflowContains -Text $workflowText -Expected 'test -x "$DOTNET_ROOT/dotnet"' -Description 'exact Apple .NET SDK executable gate'
+Assert-WorkflowContains -Text $workflowText -Expected '"$DOTNET_ROOT/dotnet" new globaljson --sdk-version "$APPLE_DOTNET_SDK_VERSION" --roll-forward disable' -Description 'exact Apple .NET SDK selection pin'
 Assert-WorkflowContains -Text $workflowText -Expected 'printf ''%s\n'' "$DOTNET_ROOT" >> "$GITHUB_PATH"' -Description 'exact Apple .NET SDK PATH activation'
 Assert-WorkflowContains -Text $workflowText -Expected 'xcode_path="/Applications/Xcode_${APPLE_XCODE_VERSION}.app"' -Description 'manifest-derived Apple Xcode application path'
 Assert-WorkflowContains -Text $workflowText -Expected 'test "$actual_xcode_version" = "$APPLE_XCODE_VERSION"' -Description 'exact Apple Xcode version gate'

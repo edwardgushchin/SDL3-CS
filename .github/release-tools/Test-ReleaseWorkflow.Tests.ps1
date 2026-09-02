@@ -100,6 +100,15 @@ try {
         & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
     }
 
+    $unpinnedAppleSdkSelectionWorkflow = $workflowText.Replace(
+        '"$DOTNET_ROOT/dotnet" new globaljson --sdk-version "$APPLE_DOTNET_SDK_VERSION" --roll-forward disable',
+        '"$DOTNET_ROOT/dotnet" new globaljson --sdk-version "$APPLE_DOTNET_SDK_VERSION" --roll-forward latestFeature'
+    )
+    Set-Content -LiteralPath $tempWorkflow -Value $unpinnedAppleSdkSelectionWorkflow -Encoding UTF8
+    Assert-WorkflowValidationFails -Description 'missing exact Apple .NET SDK selection pin' -Action {
+        & $validator -WorkflowPath $tempWorkflow -ManifestPath $ManifestPath *> $null
+    }
+
     $unpinnedAppleWorkloadWorkflow = $workflowText.Replace(
         'dotnet workload install ios tvos --version "$APPLE_DOTNET_WORKLOAD_VERSION"',
         'dotnet workload install ios tvos'

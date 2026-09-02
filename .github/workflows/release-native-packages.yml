@@ -649,6 +649,8 @@ jobs:
         run: |
           set -euo pipefail
           test -x "$DOTNET_ROOT/dotnet"
+          test ! -e global.json
+          "$DOTNET_ROOT/dotnet" new globaljson --sdk-version "$APPLE_DOTNET_SDK_VERSION" --roll-forward disable
           printf '%s\n' "$DOTNET_ROOT" >> "$GITHUB_PATH"
 
       - name: Select exact Xcode
