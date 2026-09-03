@@ -3,7 +3,7 @@
 <p align="center">
   <img alt="tvOS native package" src="https://img.shields.io/badge/platform-tvOS-555?style=flat-square">
   <img alt="SDL_image" src="https://img.shields.io/badge/component-SDL_image-239120?style=flat-square">
-  <img alt="SDL_image 3.4.4" src="https://img.shields.io/badge/native-SDL_image%203.4.4-004880?style=flat-square">
+  <img alt="SDL_image 3.4.6" src="https://img.shields.io/badge/native-SDL_image%203.4.6-004880?style=flat-square">
 </p>
 
 `SDL3-CS.tvOS.Image` contains SDL_image native runtime libraries for image loading and saving APIs for tvOS applications that use SDL3-CS.
@@ -16,7 +16,7 @@ Use this package when a .NET application targets tvOS and needs image format det
 
 | Package | Native library version | Package line |
 |---------|------------------------|--------------|
-| `SDL3-CS.tvOS.Image` | SDL_image 3.4.4 | `3.4.4.x` |
+| `SDL3-CS.tvOS.Image` | SDL_image 3.4.6 | `3.4.6.x` |
 
 ## Supported Runtime Identifiers
 
@@ -45,8 +45,8 @@ dotnet add package SDL3-CS.tvOS.Image
 
 | Package | Native component | Use when you need |
 |---------|------------------|-------------------|
-| `SDL3-CS.tvOS` | SDL 3.4.14 | Core SDL3 runtime assets. |
-| `SDL3-CS.tvOS.Image` | SDL_image 3.4.4 | Image loading and saving. |
+| `SDL3-CS.tvOS` | SDL 3.4.16 | Core SDL3 runtime assets. |
+| `SDL3-CS.tvOS.Image` | SDL_image 3.4.6 | Image loading and saving. |
 | `SDL3-CS.tvOS.TTF` | SDL_ttf 3.2.2 | Font and text rendering APIs. |
 | `SDL3-CS.tvOS.Mixer` | SDL_mixer 3.2.4 | Music and mixer playback APIs. |
 | `SDL3-CS.tvOS.Shadercross` | SDL_shadercross 3.0.0 | Shader translation APIs. |

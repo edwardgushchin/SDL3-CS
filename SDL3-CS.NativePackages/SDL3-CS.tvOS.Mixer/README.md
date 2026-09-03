@@ -45,8 +45,8 @@ dotnet add package SDL3-CS.tvOS.Mixer
 
 | Package | Native component | Use when you need |
 |---------|------------------|-------------------|
-| `SDL3-CS.tvOS` | SDL 3.4.14 | Core SDL3 runtime assets. |
-| `SDL3-CS.tvOS.Image` | SDL_image 3.4.4 | Image loading and saving. |
+| `SDL3-CS.tvOS` | SDL 3.4.16 | Core SDL3 runtime assets. |
+| `SDL3-CS.tvOS.Image` | SDL_image 3.4.6 | Image loading and saving. |
 | `SDL3-CS.tvOS.TTF` | SDL_ttf 3.2.2 | Font and text rendering APIs. |
 | `SDL3-CS.tvOS.Mixer` | SDL_mixer 3.2.4 | Music and mixer playback APIs. |
 | `SDL3-CS.tvOS.Shadercross` | SDL_shadercross 3.0.0 | Shader translation APIs. |

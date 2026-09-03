@@ -32,6 +32,11 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BlitGPUTexture"/>
+    /// <seealso cref="GPUBlitRegion"/>
+    /// <seealso cref="GPULoadOp"/>
+    /// <seealso cref="FColor"/>
+    /// <seealso cref="FlipMode"/>
+    /// <seealso cref="GPUFilter"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUBlitInfo
     {

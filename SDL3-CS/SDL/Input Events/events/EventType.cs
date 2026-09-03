@@ -329,6 +329,9 @@ public static partial class SDL
         /// The on-screen keyboard has been hidden
         /// </summary>
         ScreenKeyboardHidden,
+
+        KeyboardFirst = KeyDown,
+        KeyboardLast = ScreenKeyboardHidden,
         #endregion
 
         #region Mouse events
@@ -361,6 +364,9 @@ public static partial class SDL
         /// A mouse has been removed
         /// </summary>
         MouseRemoved,
+
+        MouseFirst = MouseMotion,
+        MouseLast = MouseRemoved,
         #endregion
 
         #region Joystick events
@@ -408,6 +414,9 @@ public static partial class SDL
         /// Joystick update is complete
         /// </summary>
         JoystickUpdateComplete,
+
+        JoystickFirst = JoystickAxisMotion,
+        JoystickLast = JoystickUpdateComplete,
         #endregion
 
         #region Gamepad events
@@ -471,6 +480,9 @@ public static partial class SDL
         /// </summary>
         GamepadSteamHandleUpdated,
 
+        GamepadFirst = GamepadAxisMotion,
+        GamepadLast = GamepadSteamHandleUpdated,
+
         #endregion
 
         #region Touch events
@@ -478,6 +490,8 @@ public static partial class SDL
         FingerUp,
         FingerMotion,
         FingerCanceled,
+        FingerFirst = FingerDown,
+        FingerLast = FingerCanceled,
         #endregion
         
         #region Pinch events
@@ -495,6 +509,8 @@ public static partial class SDL
         /// Pinch gesture ended
         /// </summary>
         PinchEnd,
+        PinchFirst = PinchBegin,
+        PinchLast = PinchEnd,
         #endregion
 
         #region Clipboard events
@@ -502,6 +518,8 @@ public static partial class SDL
         /// The clipboard changed
         /// </summary>
         ClipboardUpdate = 0x900,
+        ClipboardFirst = ClipboardUpdate,
+        ClipboardLast = ClipboardUpdate,
         #endregion
 
         #region Drag and drop events
@@ -529,6 +547,8 @@ public static partial class SDL
         /// Position while moving over the window
         /// </summary>
         DropPosition,
+        DropFirst = DropFile,
+        DropLast = DropPosition,
         #endregion
 
         #region Audio hotplug events
@@ -546,6 +566,8 @@ public static partial class SDL
         /// An audio device's format has been changed by the system.
         /// </summary>
         AudioDeviceFormatChanged,
+        AudioDeviceFirst = AudioDeviceAdded,
+        AudioDeviceLast = AudioDeviceFormatChanged,
         #endregion
 
         #region Sensor events
@@ -553,6 +575,8 @@ public static partial class SDL
         /// A sensor was updated
         /// </summary>
         SensorUpdate = 0x1200,
+        SensorFirst = SensorUpdate,
+        SensorLast = SensorUpdate,
         #endregion
 
         #region Pressure-sensitive pen events
@@ -595,6 +619,8 @@ public static partial class SDL
         /// Pressure-sensitive pen angle/pressure/etc changed
         /// </summary>
         PenAxis,
+        PenFirst = PenProximityIn,
+        PenLast = PenAxis,
         #endregion
 
         #region Camera hotplug events
@@ -617,6 +643,8 @@ public static partial class SDL
         /// A camera device has been denied for use by the user.
         /// </summary>
         CameraDeviceDenied,
+        CameraDeviceFirst = CameraDeviceAdded,
+        CameraDeviceLast = CameraDeviceDenied,
         #endregion
 
         #region Render events
@@ -634,6 +662,8 @@ public static partial class SDL
         /// The device has been lost and can't be recovered.
         /// </summary>
         RenderDeviceLost,
+        RenderFirst = RenderTargetsReset,
+        RenderLast = RenderDeviceLost,
         #endregion
 
         #region Reserved events for private platforms

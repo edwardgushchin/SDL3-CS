@@ -291,7 +291,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateSoftwareRenderer(SDL_Surface *surface);</code>
     /// <summary>
     /// <para>Create a 2D software rendering context for a surface.</para>
-    /// <para>Two other API which can be used to create SDL_Renderer:
+    /// <para>Two other APIs which can be used to create SDL_Renderer:
     /// <see cref="CreateRenderer"/> and <see cref="CreateWindowAndRenderer"/>. These can _also_
     /// create a software renderer, but they are intended to be used with an
     /// SDL_Window as the final destination and not an <see cref="Surface"/>.</para>
@@ -1186,6 +1186,7 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode blendMode);</code>
     /// <summary>
     /// <para>Set the blend mode for a texture, used by <see cref="RenderTexture(nint, nint, nint, nint)"/>.</para>
+    /// <para>This blend mode is used for any drawing that involves this texture.</para>
     /// <para>If the blend mode is not supported, the closest supported mode is chosen
     /// and this function returns <c>false</c>.</para>
     /// </summary>
@@ -1196,6 +1197,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetTextureBlendMode"/>
+    /// <seealso cref="SetRenderDrawBlendMode"/>
     public static bool SetTextureBlendMode(IntPtr texture, BlendMode blendMode)
     {
         return SetTextureBlendModeNativeFunction(texture, blendMode);
@@ -2646,7 +2648,8 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode);</code>
     /// <summary>
-    /// <para>Set the blend mode used for drawing operations (Fill and Line).</para>
+    /// <para>Set the blend mode used for drawing operations.</para>
+    /// <para>This blend mode is used for any drawing that doesn't involve textures.</para>
     /// <para>If the blend mode is not supported, the closest supported mode is chosen.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
@@ -2656,6 +2659,7 @@ public static partial class SDL
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
     /// <since>This function is available since SDL 3.2.0</since>
     /// <seealso cref="GetRenderDrawBlendMode"/>
+    /// <seealso cref="SetTextureBlendMode"/>
     public static bool SetRenderDrawBlendMode(IntPtr renderer, BlendMode blendMode)
     {
         return SetRenderDrawBlendModeNativeFunction(renderer, blendMode);

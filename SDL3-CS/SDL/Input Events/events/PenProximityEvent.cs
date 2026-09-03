@@ -65,5 +65,10 @@ public static partial class SDL
         /// The pen instance id
         /// </summary>
         public UInt32 Which;
+
+        /// <summary>
+        /// Complete pen input state at time of event (added in 3.4.16).
+        /// </summary>
+        public PenInputFlags PenState;
     }
 }
