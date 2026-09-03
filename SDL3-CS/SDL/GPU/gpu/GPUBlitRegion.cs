@@ -32,6 +32,7 @@ public static partial class SDL
     /// </summary>
     /// <since>This struct is available since SDL 3.2.0</since>
     /// <seealso cref="BlitGPUTexture"/>
+    /// <seealso cref="CreateGPUTexture"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct GPUBlitRegion
     {

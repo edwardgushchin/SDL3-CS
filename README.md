@@ -26,7 +26,7 @@
 <p align="center">
   <img alt=".NET 7, 8, 9, and 10" src="https://img.shields.io/badge/.NET-7.0%20%7C%208.0%20%7C%209.0%20%7C%2010.0-512BD4?style=flat-square">
   <img alt="C# 14" src="https://img.shields.io/badge/C%23-14-239120?style=flat-square">
-  <img alt="SDL3 target 3.4.14" src="https://img.shields.io/badge/SDL3%20target-3.4.14-239120?style=flat-square">
+  <img alt="SDL3 target 3.4.16" src="https://img.shields.io/badge/SDL3%20target-3.4.16-239120?style=flat-square">
   <img alt="SDL companion libraries" src="https://img.shields.io/badge/addons-image%20%7C%20ttf%20%7C%20mixer%20%7C%20shadercross-555?style=flat-square">
 </p>
 
@@ -74,9 +74,9 @@ This source tree targets the following release lines:
 
 | Component | Package pattern | Native target | Package line |
 |-----------|-----------------|---------------|--------------|
-| SDL3 managed bindings | `SDL3-CS` | SDL `3.4.14` | `3.4.14.x` |
-| SDL3 native runtime | `SDL3-CS.{Platform}` | SDL `3.4.14` | `3.4.14.x` |
-| SDL_image native runtime | `SDL3-CS.{Platform}.Image` | SDL_image `3.4.4` | `3.4.4.x` |
+| SDL3 managed bindings | `SDL3-CS` | SDL `3.4.16` | `3.4.16.x` |
+| SDL3 native runtime | `SDL3-CS.{Platform}` | SDL `3.4.16` | `3.4.16.x` |
+| SDL_image native runtime | `SDL3-CS.{Platform}.Image` | SDL_image `3.4.6` | `3.4.6.x` |
 | SDL_ttf native runtime | `SDL3-CS.{Platform}.TTF` | SDL_ttf `3.2.2` | `3.2.2.x` |
 | SDL_mixer native runtime | `SDL3-CS.{Platform}.Mixer` | SDL_mixer `3.2.4` | `3.2.4.x` |
 | SDL_shadercross native runtime | `SDL3-CS.{Platform}.Shadercross` | SDL_shadercross `3.0.0` | `3.0.0.x` |

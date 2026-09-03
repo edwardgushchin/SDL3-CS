@@ -27,7 +27,7 @@ $requiredToolchains = [ordered]@{
     androidPlatformArchiveUrl = 'https://dl.google.com/android/repository/platform-35_r02.zip'
     androidPlatformArchiveSha256 = '0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0'
     androidPlatformJarSha256 = '4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b'
-    androidBridgeJarSha256 = 'ea40cad5d31334de9ea9fb57785bbede4f07945be42408729b89079982a36175'
+    androidBridgeJarSha256 = '102abe870151f8247f2f2ebe67dee1759c760f7cee31a504bd50269ef0479eb3'
     androidBridgeJavaRelease = '11'
     androidBridgeSetupJavaVersion = '11.0.32+9'
     androidBridgeJavacVersion = '11.0.32'
@@ -56,7 +56,7 @@ else {
 }
 
 $requiredReleaseOverrides = [ordered]@{
-    '0' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
+    '0' = [ordered]@{ SDL_image = 9; SDL_mixer = 11; SDL_ttf = 11; SDL_shadercross = 11 }
     '1' = [ordered]@{ SDL_image = 10; SDL_mixer = 9; SDL_ttf = 9; SDL_shadercross = 9 }
     '6' = [ordered]@{ SDL_image = 8; SDL_mixer = 7; SDL_ttf = 7; SDL_shadercross = 7 }
     '7' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
@@ -379,69 +379,34 @@ if ($componentIds.Count -ne ($componentIds | Select-Object -Unique).Count) {
     Add-ValidationError "Component ids must be unique."
 }
 
-$sdlComponents = @($manifest.components | Where-Object id -EQ 'SDL')
-if ($sdlComponents.Count -ne 1) {
-    Add-ValidationError "Manifest must declare component SDL exactly once."
+$requiredComponentBaselines = [ordered]@{
+    SDL = [ordered]@{ sourceRef = 'fa2c02bb6e21974a89ea9824bc53c9932abe5f9c'; nativeVersion = '3.4.16' }
+    SDL_image = [ordered]@{ sourceRef = 'f661fa1ad24ab1b81e43662532f9a6a9fcf67ea6'; nativeVersion = '3.4.6' }
+    SDL_shadercross = [ordered]@{ sourceRef = 'e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba'; nativeVersion = '3.0.0' }
 }
-else {
-    $expectedSdlSourceRef = '14051aac9d347e2142d37fb5ed7f27766a430490'
-    $expectedSdlUpstreamSourceRef = '147a8ee32dbf9ac02f3794964490687b6bbda1bc'
-    $expectedSdlUpstreamTag = 'release-3.4.14'
-    $expectedSdlImmutableTag = 'sdl3-cs-3.4.14.1-metal-fence'
-    $expectedSdlIssue = 'https://github.com/edwardgushchin/SDL3-CS/issues/257'
-    $expectedSdlNativeVersion = '3.4.14'
-    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.14-sdl3-cs-3.4.14.1-metal-fence'
-    if ([string]$sdlComponents[0].sourceRef -ne $expectedSdlSourceRef) {
-        Add-ValidationError "Component SDL sourceRef must be exact downstream Metal fence fix commit $expectedSdlSourceRef."
+foreach ($requiredComponent in $requiredComponentBaselines.GetEnumerator()) {
+    $matches = @($manifest.components | Where-Object id -EQ $requiredComponent.Key)
+    if ($matches.Count -ne 1) {
+        Add-ValidationError "Manifest must declare component $($requiredComponent.Key) exactly once."
+        continue
     }
-    if ([string]$sdlComponents[0].nativeVersion -ne $expectedSdlNativeVersion) {
-        Add-ValidationError "Component SDL nativeVersion must be $expectedSdlNativeVersion."
+
+    if ([string]$matches[0].sourceRef -ne $requiredComponent.Value.sourceRef) {
+        Add-ValidationError "Component $($requiredComponent.Key) sourceRef must be exact commit $($requiredComponent.Value.sourceRef)."
     }
+    if ([string]$matches[0].nativeVersion -ne $requiredComponent.Value.nativeVersion) {
+        Add-ValidationError "Component $($requiredComponent.Key) nativeVersion must be $($requiredComponent.Value.nativeVersion)."
+    }
+}
+
+$sdlComponents = @($manifest.components | Where-Object id -EQ 'SDL')
+if ($sdlComponents.Count -eq 1) {
+    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.16-release-3.4.16'
     if (@($sdlComponents[0].cmakeArgs) -notcontains $expectedSdlRevisionArg) {
         Add-ValidationError "Component SDL must pin its exact release identity with cmake argument '$expectedSdlRevisionArg'."
     }
-
-    if (-not $sdlComponents[0].PSObject.Properties.Name.Contains('sourceProvenance') -or
-        $null -eq $sdlComponents[0].sourceProvenance) {
-        Add-ValidationError 'Component SDL must declare sourceProvenance for its downstream patch.'
-    }
-    else {
-        $provenance = $sdlComponents[0].sourceProvenance
-        if (-not $provenance.PSObject.Properties.Name.Contains('kind') -or
-            [string]$provenance.kind -ne 'downstream-patch') {
-            Add-ValidationError "Component SDL sourceProvenance.kind must be 'downstream-patch'."
-        }
-        if (-not $provenance.PSObject.Properties.Name.Contains('parentSourceRef') -or
-            [string]$provenance.parentSourceRef -ne $expectedSdlUpstreamSourceRef) {
-            Add-ValidationError "Component SDL sourceProvenance.parentSourceRef must be exact upstream parent $expectedSdlUpstreamSourceRef."
-        }
-        if (-not $provenance.PSObject.Properties.Name.Contains('immutableTag') -or
-            [string]$provenance.immutableTag -ne $expectedSdlImmutableTag) {
-            Add-ValidationError "Component SDL sourceProvenance.immutableTag must be '$expectedSdlImmutableTag'."
-        }
-        if (-not $provenance.PSObject.Properties.Name.Contains('issue') -or
-            [string]$provenance.issue -ne $expectedSdlIssue) {
-            Add-ValidationError "Component SDL sourceProvenance.issue must be '$expectedSdlIssue'."
-        }
-        if (-not $provenance.PSObject.Properties.Name.Contains('upstream') -or
-            $null -eq $provenance.upstream) {
-            Add-ValidationError 'Component SDL sourceProvenance must declare upstream baseline metadata.'
-        }
-        else {
-            $upstream = $provenance.upstream
-            if (-not $upstream.PSObject.Properties.Name.Contains('repository') -or
-                [string]$upstream.repository -ne 'https://github.com/libsdl-org/SDL') {
-                Add-ValidationError "Component SDL sourceProvenance.upstream.repository must be 'https://github.com/libsdl-org/SDL'."
-            }
-            if (-not $upstream.PSObject.Properties.Name.Contains('tag') -or
-                [string]$upstream.tag -ne $expectedSdlUpstreamTag) {
-                Add-ValidationError "Component SDL sourceProvenance.upstream.tag must be '$expectedSdlUpstreamTag'."
-            }
-            if (-not $upstream.PSObject.Properties.Name.Contains('sourceRef') -or
-                [string]$upstream.sourceRef -ne $expectedSdlUpstreamSourceRef) {
-                Add-ValidationError "Component SDL sourceProvenance.upstream.sourceRef must be $expectedSdlUpstreamSourceRef."
-            }
-        }
+    if ($sdlComponents[0].PSObject.Properties.Name.Contains('sourceProvenance')) {
+        Add-ValidationError 'Component SDL must not retain obsolete downstream sourceProvenance after the Metal fence fix shipped upstream.'
     }
 }
 

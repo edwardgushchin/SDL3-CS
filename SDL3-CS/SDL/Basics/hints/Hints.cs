@@ -96,6 +96,27 @@ public static partial class SDL
         /// <remarks>This hint should be set before SDL audio is initialized.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string AndroidLowLatencyAudio = "SDL_ANDROID_LOW_LATENCY_AUDIO";
+
+        /// <summary>
+        /// <para>A variable to control Android's AAudio input preset.</para>
+        /// <para>This hint only applies to SDL's <c>"aaudio"</c> backend on Android 9+ devices.</para>
+        /// <para>Some devices choose the wrong microphone by default (between the one meant
+        /// to be spoken in when the phone is held to the user's ear for a phone call,
+        /// or an external microphone that's meant to be used when recording video),
+        /// or have DSP effects applied to the recorded audio, and changing the input
+        /// preset can help control this.</para>
+        /// <para>This can be any number that maps to an <c>AAUDIO_INPUT_PRESET_*</c> enum from
+        /// the Android NDK headers. The most reasonable choices are 5 (<c>"camcorder"</c>,
+        /// for external microphones) and 7 (<c>"voice communication"</c>, for speaking
+        /// directly into the device like a mobile phone). 6 (<c>"voice recognition"</c>)
+        /// might also be a useful choice.</para>
+        /// <para>If unset (the default), SDL will not specify an input preset at all, which
+        /// lets the system choose. This is usually the correct thing to do unless
+        /// your app is having problems.</para>
+        /// </summary>
+        /// <remarks>This hint should be set before a recording audio device is opened.</remarks>
+        /// <since>This hint is available since SDL 3.4.16.</since>
+        public const string AndroidAAudioInputPreset = "SDL_ANDROID_AAUDIO_INPUT_PRESET";
         
         /// <summary>
         /// <para>A variable to control whether we trap the Android back button to handle it

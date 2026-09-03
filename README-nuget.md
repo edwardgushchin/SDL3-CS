@@ -4,16 +4,16 @@ SDL3-CS is a C# wrapper for SDL3. The managed `SDL3-CS` package contains the C# 
 
 ## Package Versions
 
-This package set uses managed version `SDL3-CS 3.4.14.2`.
+This package set uses managed version `SDL3-CS 3.4.16.0`.
 
 | Package family | Version |
 |----------------|---------|
-| `SDL3-CS` | `3.4.14.2` |
-| `SDL3-CS.<Platform>` | `3.4.14.1` |
-| `SDL3-CS.<Platform>.Image` | `3.4.4.10` |
-| `SDL3-CS.<Platform>.Mixer` | `3.2.4.9` |
-| `SDL3-CS.<Platform>.TTF` | `3.2.2.9` |
-| `SDL3-CS.<Platform>.Shadercross` | `3.0.0.9` |
+| `SDL3-CS` | `3.4.16.0` |
+| `SDL3-CS.<Platform>` | `3.4.16.0` |
+| `SDL3-CS.<Platform>.Image` | `3.4.6.9` |
+| `SDL3-CS.<Platform>.Mixer` | `3.2.4.11` |
+| `SDL3-CS.<Platform>.TTF` | `3.2.2.11` |
+| `SDL3-CS.<Platform>.Shadercross` | `3.0.0.11` |
 
 ## Documentation
 
