@@ -23,9 +23,39 @@ try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $archive = [System.IO.Compression.ZipFile]::OpenRead($resolvedPackage)
     try {
-        $entryNames = @($archive.Entries | ForEach-Object FullName)
-        if ($entryNames -notcontains 'analyzers/dotnet/cs/SDL3-CS.Generators.dll') {
+        $analyzerEntry = $archive.GetEntry('analyzers/dotnet/cs/SDL3-CS.Generators.dll')
+        if ($null -eq $analyzerEntry) {
             throw 'SDL3-CS package does not contain the managed main callback generator under analyzers/dotnet/cs.'
+        }
+
+        $analyzerStream = [System.IO.MemoryStream]::new()
+        $archiveStream = $analyzerEntry.Open()
+        try {
+            $archiveStream.CopyTo($analyzerStream)
+            $analyzerStream.Position = 0
+        }
+        finally {
+            $archiveStream.Dispose()
+        }
+        $peReader = [System.Reflection.PortableExecutable.PEReader]::new($analyzerStream)
+        try {
+            $metadataReader = [System.Reflection.Metadata.PEReaderExtensions]::GetMetadataReader($peReader)
+            $roslynReferences = @($metadataReader.AssemblyReferences | ForEach-Object {
+                $reference = $metadataReader.GetAssemblyReference($_)
+                $name = $metadataReader.GetString($reference.Name)
+                if ($name -in @('Microsoft.CodeAnalysis', 'Microsoft.CodeAnalysis.CSharp')) {
+                    [pscustomobject]@{ Name = $name; Version = $reference.Version }
+                }
+            })
+            $unsupportedReferences = @($roslynReferences | Where-Object Version -gt ([Version]'4.4.0.0'))
+            if ($roslynReferences.Count -ne 2 -or $unsupportedReferences.Count -gt 0) {
+                $actualReferences = @($roslynReferences | Sort-Object Name | ForEach-Object { "$($_.Name) $($_.Version)" }) -join ', '
+                throw "SDL3-CS generator must reference Microsoft.CodeAnalysis assemblies at or below 4.4.0.0. Actual: $actualReferences."
+            }
+        }
+        finally {
+            $peReader.Dispose()
+            $analyzerStream.Dispose()
         }
 
         $nuspecEntry = $archive.Entries | Where-Object { $_.FullName -like '*.nuspec' } | Select-Object -First 1
