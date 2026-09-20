@@ -17,6 +17,13 @@ if (args.SequenceEqual(["--main-callbacks-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--gpu-multisample-only"]))
+{
+    SDL3.Tests.SDL.GPU.Gpu.GPUMultisampleStateTests.RunAll();
+    Console.WriteLine("SDL GPUMultisampleState focused tests passed.");
+    return;
+}
+
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();
@@ -313,6 +320,8 @@ SDL3.Tests.SDL.ForceFeedback.Haptic.StructLayoutTests.RunAll();
 Console.WriteLine("SDL.Haptic struct layout tests passed.");
 SDL3.Tests.SDL.GPU.Gpu.PInvokeTests.RunAll();
 Console.WriteLine("SDL.GPU binding tests passed.");
+SDL3.Tests.SDL.GPU.Gpu.GPUMultisampleStateTests.RunAll();
+Console.WriteLine("SDL.GPUMultisampleState layout tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Events binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.EventTypeTests.GroupBoundaries_MatchSupportedEvents();
