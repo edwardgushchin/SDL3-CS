@@ -51,13 +51,19 @@ public static partial class SDL
         /// </summary>
         public byte EnableMask;
         
-        /// <summary>
-        /// <c>true</c> enables the alpha-to-coverage feature.
-        /// </summary>
-        private byte EnableAlphaToCoverage;
+        private byte _enableAlphaToCoverage;
         
         private Byte _padding2;
         
         private Byte _padding3;
+
+        /// <summary>
+        /// <c>true</c> enables the alpha-to-coverage feature.
+        /// </summary>
+        public bool EnableAlphaToCoverage
+        {
+            get => _enableAlphaToCoverage != 0;
+            set => _enableAlphaToCoverage = value ? (byte)1 : (byte)0;
+        }
     }
 }
