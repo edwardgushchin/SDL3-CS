@@ -29,7 +29,7 @@ if (-not (Test-Path -LiteralPath $targetsPath -PathType Leaf)) {
 
 foreach ($rid in $rids) {
     $include = "`$(MSBuildProjectDirectory)\lib\$rid\**\*"
-    $packagePath = "runtimes\$rid\native\%(RecursiveDir)"
+    $packagePath = "runtimes\$rid\native\%(RecursiveDir)%(Filename)%(Extension)"
     $matches = @($targetsXml.Project.ItemGroup.None | Where-Object {
         $_.Include -eq $include -and
         $_.PackagePath -eq $packagePath -and
@@ -42,7 +42,7 @@ foreach ($rid in $rids) {
 }
 
 $unexpectedRidEntries = @($targetsXml.Project.ItemGroup.None | Where-Object {
-    $_.Include -like '$(MSBuildProjectDirectory)\lib\*\**\*' -and $_.PackagePath -like 'runtimes\*\native\%(RecursiveDir)'
+    $_.Include -like '$(MSBuildProjectDirectory)\lib\*\**\*' -and $_.PackagePath -like 'runtimes\*\native\%(RecursiveDir)%(Filename)%(Extension)'
 } | ForEach-Object {
     $includeRid = $_.Include.Substring('$(MSBuildProjectDirectory)\lib\'.Length)
     $includeRid = $includeRid.Substring(0, $includeRid.IndexOf('\'))
