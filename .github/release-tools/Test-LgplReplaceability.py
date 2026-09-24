@@ -55,6 +55,13 @@ def dynamic_linux(scratch: Path) -> None:
 
 def static_apple(scratch: Path) -> None:
     scratch.mkdir()
+    linker = next(
+        (path for name in ("ld64.lld", *(f"ld64.lld-{version}" for version in range(23, 13, -1)))
+         if (path := shutil.which(name))),
+        None,
+    )
+    if linker is None:
+        raise RuntimeError("ld64.lld (or a versioned ld64.lld) is required")
     for platform, rid, target, arch, linker_platform in APPLE:
         for library, symbol in (("gme", "gme_open_data"), ("mpg123", "mpg123_init")):
             work = scratch / f"{rid}-{library}"
@@ -70,7 +77,7 @@ def static_apple(scratch: Path) -> None:
             if hashlib.sha256(original.read_bytes()).digest() == hashlib.sha256(replacement.read_bytes()).digest():
                 raise AssertionError(f"{rid}: replacement archive is unchanged")
             run(
-                "ld64.lld", "-dylib", "-arch", arch, "-platform_version", linker_platform,
+                linker, "-dylib", "-arch", arch, "-platform_version", linker_platform,
                 "13.0", "13.0", "-undefined", "dynamic_lookup", "-o", str(work / "relinked.dylib"),
                 str(work / "probe.o"), str(replacement),
             )
