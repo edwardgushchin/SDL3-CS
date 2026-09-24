@@ -4,6 +4,7 @@ param(
     [int] $PackageRevision = -1,
     [string] $ManifestPath = (Join-Path $PSScriptRoot 'release-manifest.json'),
     [string] $PackageDir,
+    [string] $ReceiptRoot,
     [string[]] $PackageIds,
     [string[]] $Components,
     [string[]] $Rids,
@@ -54,6 +55,9 @@ function Add-ContentError {
 }
 
 $manifest = Get-ReleaseManifest -ManifestPath $ManifestPath
+if (-not $ReceiptRoot) {
+    $ReceiptRoot = Resolve-ReleasePath (Join-Path $manifest.artifactsRoot 'receipts')
+}
 if ($PackageRevision -lt 0) {
     $PackageRevision = [int] $manifest.versioning.packageRevisionDefault
 }
@@ -377,6 +381,91 @@ foreach ($package in $packages) {
     }
     $packageProject = Resolve-ReleasePath $nativeArtifactProject
     $packageRoot = Split-Path -Parent $packageProject
+
+    $needsLgplSources = $package.VersionComponent -eq 'SDL_mixer' -or
+        ($package.VersionComponent -eq 'SDL_shadercross' -and $package.NativePackagePlatform -in @('Linux', 'MacOS'))
+    if ($needsLgplSources) {
+        $sourceRoot = Join-Path $PSScriptRoot '..\..\SDL3-CS.NativePackages\ThirdPartySources'
+        $sourceManifestPath = Join-Path $sourceRoot 'SOURCE_MANIFEST.json'
+        $sourceManifest = Get-Content -LiteralPath $sourceManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $componentSources = @($sourceManifest.sources | Where-Object { $_.component -eq $package.VersionComponent })
+        $expectedSourceIds = if ($package.VersionComponent -eq 'SDL_mixer') { @('game-music-emu', 'mpg123') } else { @('vkd3d') }
+        if (@(Compare-Object -ReferenceObject $expectedSourceIds -DifferenceObject @($componentSources | ForEach-Object { $_.id } | Sort-Object)).Count -ne 0) {
+            Add-ContentError "$($package.Id) source manifest does not identify its complete LGPL dependency set."
+        }
+        foreach ($source in $componentSources) {
+            $archivePath = Join-Path $sourceRoot $source.archive
+            if ($source.componentSourceRef -ne $component.sourceRef -or
+                (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash.ToLowerInvariant() -ne $source.sha256) {
+                Add-ContentError "$($package.Id) $($source.id) archive or source revision differs from its source manifest."
+            }
+        }
+        $sourceFiles = @(
+            (Join-Path $sourceRoot 'README.md'),
+            $sourceManifestPath
+        ) + @($componentSources | ForEach-Object { Join-Path $sourceRoot $_.archive })
+        foreach ($sourceFile in $sourceFiles) {
+            $sourceEntry = "licenses/sources/$([System.IO.Path]::GetFileName($sourceFile))"
+            $expectedHash = (Get-FileHash -LiteralPath $sourceFile -Algorithm SHA256).Hash
+            $actualHash = Get-ZipEntryHash -Path $packagePath -EntryName $sourceEntry
+            if ($actualHash -ne $expectedHash) {
+                Add-ContentError "$($package.Id) source entry $sourceEntry is missing or differs from its tracked source."
+            }
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'LGPL-source'
+                Expected = $sourceEntry
+                Count = if ($actualHash) { 1 } else { 0 }
+                Status = if ($actualHash -eq $expectedHash) { 'valid' } else { 'mismatch' }
+            })
+        }
+
+        foreach ($rid in $packageRids) {
+            $receiptPath = Join-Path $ReceiptRoot "$($package.VersionComponent)/$rid.json"
+            if (-not (Test-Path -LiteralPath $receiptPath -PathType Leaf)) {
+                Add-ContentError "$($package.Id) LGPL build receipt is missing for $rid."
+                continue
+            }
+            $receiptEntry = "licenses/provenance/$rid.json"
+            $expectedHash = (Get-FileHash -LiteralPath $receiptPath -Algorithm SHA256).Hash
+            $actualHash = Get-ZipEntryHash -Path $packagePath -EntryName $receiptEntry
+            if ($actualHash -ne $expectedHash) {
+                Add-ContentError "$($package.Id) receipt entry $receiptEntry is missing or differs from the validated build receipt."
+                continue
+            }
+            $receipt = Get-Content -LiteralPath $receiptPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            $componentRef = @($receipt.SourceReferences | Where-Object { $_.Component -eq $package.VersionComponent })
+            if ($componentRef.Count -ne 1 -or $componentRef[0].Head -ne $component.sourceRef) {
+                Add-ContentError "$($package.Id) receipt $rid does not identify the pinned component source."
+            }
+            $binaryEntries = @($entryNames | Where-Object {
+                $_.StartsWith("runtimes/$rid/native/", [System.StringComparison]::Ordinal) -and
+                (($_ -match '(^|/)(lib)?gme(\.|$|[-])') -or
+                 ($_ -match '(^|/)(lib)?mpg123(\.|$|[-])') -or
+                 ($_ -match '(^|/)libvkd3d'))
+            })
+            if ($binaryEntries.Count -eq 0) {
+                Add-ContentError "$($package.Id) $rid has no expected standalone LGPL library."
+            }
+            foreach ($binaryEntry in $binaryEntries) {
+                $fileName = [System.IO.Path]::GetFileName($binaryEntry)
+                $artifact = @($receipt.Artifacts | Where-Object {
+                    $_.Name -eq $fileName -and $_.RelativePath.Replace('\', '/') -eq "lib/$rid/$fileName"
+                })
+                $binaryHash = Get-ZipEntryHash -Path $packagePath -EntryName $binaryEntry
+                if ($artifact.Count -ne 1 -or -not $binaryHash -or $artifact[0].Sha256 -ne $binaryHash.ToLowerInvariant()) {
+                    Add-ContentError "$($package.Id) $binaryEntry does not match its source-linked build receipt."
+                }
+            }
+            $rows.Add([pscustomobject]@{
+                PackageId = $package.Id
+                Scope = 'LGPL-provenance'
+                Expected = $rid
+                Count = $binaryEntries.Count
+                Status = if ($binaryEntries.Count -gt 0) { 'checked' } else { 'missing' }
+            })
+        }
+    }
 
     $targetsEntry = "buildTransitive/$($package.Id).targets"
     if (-not $entrySet.Contains($targetsEntry)) {

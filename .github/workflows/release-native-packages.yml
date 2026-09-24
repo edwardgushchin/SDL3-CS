@@ -398,6 +398,10 @@ jobs:
         shell: pwsh
         run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
 
+      - name: Validate LGPL source archives
+        shell: pwsh
+        run: ./.github/release-tools/Test-LgplSourceArchives.ps1
+
       - name: Build native bundle
         shell: pwsh
         run: |

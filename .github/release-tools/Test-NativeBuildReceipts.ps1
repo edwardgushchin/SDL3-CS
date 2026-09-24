@@ -136,6 +136,10 @@ foreach ($componentId in $Components) {
                 $errors.Add("Receipt source head mismatch for $componentId/$rid source $($sourceReference.Component): receipt $($sourceReference.ShortHead), current $($currentHead.Substring(0, 12)).")
                 $status = 'failed'
             }
+            if ($sourceReference.Head -ne $sourceComponent.sourceRef) {
+                $errors.Add("Receipt source head differs from pinned manifest ref for $componentId/$rid source $($sourceReference.Component).")
+                $status = 'failed'
+            }
             if (-not $AllowDirtySources -and $dirtyCount -ne 0) {
                 $errors.Add("Source $($sourceReference.Component) is dirty while validating receipt $componentId/$rid.")
                 $status = 'failed'
