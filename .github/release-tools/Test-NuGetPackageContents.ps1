@@ -138,6 +138,33 @@ function Get-ZipEntryText {
     }
 }
 
+function Get-ZipEntryHash {
+    param(
+        [Parameter(Mandatory)][string] $Path,
+        [Parameter(Mandatory)][string] $EntryName
+    )
+
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::OpenRead($Path)
+    try {
+        $entry = $zip.GetEntry($EntryName)
+        if (-not $entry) {
+            return $null
+        }
+
+        $stream = $entry.Open()
+        try {
+            return [Convert]::ToHexString([System.Security.Cryptography.SHA256]::HashData($stream))
+        }
+        finally {
+            $stream.Dispose()
+        }
+    }
+    finally {
+        $zip.Dispose()
+    }
+}
+
 foreach ($package in $packages) {
     $component = $null
     $packageRids = @()
@@ -290,56 +317,56 @@ foreach ($package in $packages) {
         }
     }
 
+    $licenseRoot = Join-Path $PSScriptRoot '..\..\SDL3-CS.NativePackages\ThirdPartyLicenses'
+    $licenseFolders = @(switch ($package.VersionComponent) {
+        'SDL' { @('SDL') }
+        'SDL_image' { @('Image', 'libwebp') }
+        'SDL_mixer' { @('Mixer') }
+        'SDL_ttf' { @('TTF') }
+        'SDL_shadercross' { @('Shadercross') }
+    })
+    $licenseFileCounts = @{
+        SDL = 1
+        Image = 10
+        libwebp = 1
+        Mixer = 11
+        TTF = 6
+        Shadercross = 2
+        DirectXShaderCompiler = 4
+        ShadercrossVkd3d = 2
+    }
     if ($package.VersionComponent -eq 'SDL_shadercross' -and $package.NativePackagePlatform -in @('Windows', 'Linux', 'MacOS')) {
-        foreach ($licenseEntry in @(
-            'licenses/DirectXShaderCompiler/LICENSE.TXT',
-            'licenses/DirectXShaderCompiler/LICENSE-LLVM.txt',
-            'licenses/DirectXShaderCompiler/LICENSE-MS.txt',
-            'licenses/DirectXShaderCompiler/ThirdPartyNotices.txt'
-        )) {
-            if (-not $entrySet.Contains($licenseEntry)) {
-                Add-ContentError "$($package.Id) package is missing $licenseEntry."
-                $rows.Add([pscustomobject]@{
-                    PackageId = $package.Id
-                    Scope = 'license'
-                    Expected = $licenseEntry
-                    Count = 0
-                    Status = 'missing'
-                })
-            }
-            else {
-                $rows.Add([pscustomobject]@{
-                    PackageId = $package.Id
-                    Scope = 'license'
-                    Expected = $licenseEntry
-                    Count = 1
-                    Status = 'present'
-                })
-            }
-        }
+        $licenseFolders += 'DirectXShaderCompiler'
+    }
+    if ($package.VersionComponent -eq 'SDL_shadercross' -and $package.NativePackagePlatform -in @('Linux', 'MacOS')) {
+        $licenseFolders += 'ShadercrossVkd3d'
     }
 
-    if ($package.VersionComponent -eq 'SDL_image' -and $package.NativePackagePlatform -in @('Android', 'Linux', 'Windows')) {
-        $licenseEntry = 'licenses/libwebp/COPYING'
-        if (-not $entrySet.Contains($licenseEntry)) {
-            Add-ContentError "$($package.Id) package is missing $licenseEntry."
-            $rows.Add([pscustomobject]@{
-                PackageId = $package.Id
-                Scope = 'license'
-                Expected = $licenseEntry
-                Count = 0
-                Status = 'missing'
-            })
+    $licenseFiles = @((Join-Path $licenseRoot 'README.md'))
+    foreach ($folder in $licenseFolders) {
+        $folderPath = Join-Path $licenseRoot $folder
+        $sourceFiles = @(Get-ChildItem -LiteralPath $folderPath -File)
+        if ($sourceFiles.Count -ne $licenseFileCounts[$folder]) {
+            Add-ContentError "$($package.Id) license source folder $folder has $($sourceFiles.Count) files; expected $($licenseFileCounts[$folder])."
         }
-        else {
-            $rows.Add([pscustomobject]@{
-                PackageId = $package.Id
-                Scope = 'license'
-                Expected = $licenseEntry
-                Count = 1
-                Status = 'present'
-            })
+        $licenseFiles += @($sourceFiles | ForEach-Object { $_.FullName })
+    }
+    foreach ($sourceFile in $licenseFiles) {
+        $relative = [System.IO.Path]::GetRelativePath($licenseRoot, $sourceFile).Replace('\', '/')
+        $licenseEntry = "licenses/$relative"
+        $expectedHash = (Get-FileHash -LiteralPath $sourceFile -Algorithm SHA256).Hash
+        $actualHash = Get-ZipEntryHash -Path $packagePath -EntryName $licenseEntry
+        $status = if (-not $actualHash) { 'missing' } elseif ($actualHash -ne $expectedHash) { 'mismatch' } else { 'valid' }
+        if ($status -ne 'valid') {
+            Add-ContentError "$($package.Id) license entry $licenseEntry is $status."
         }
+        $rows.Add([pscustomobject]@{
+            PackageId = $package.Id
+            Scope = 'license'
+            Expected = $licenseEntry
+            Count = if ($actualHash) { 1 } else { 0 }
+            Status = $status
+        })
     }
 
     $nativeArtifactProject = if ($package.PSObject.Properties.Name.Contains('NativeArtifactProject') -and $package.NativeArtifactProject) {
