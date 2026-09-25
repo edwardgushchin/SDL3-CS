@@ -126,6 +126,45 @@ jobs:
           ./.github/release-tools/Test-AndroidPageSizeCompatibility.ps1 -Path $androidPayloadRoots
           ./.github/release-tools/Test-ReleaseWorkflow.Tests.ps1
 
+  lgpl-sources:
+    name: LGPL source and replacement checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Prepare cross-link tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v clang >/dev/null || ! command -v llvm-ar >/dev/null || ! command -v ld64.lld >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y clang llvm lld
+          fi
+
+      - name: Verify LGPL source archives against pinned source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/lgpl-source-checkouts
+          for component in SDL_mixer SDL_shadercross; do
+            git clone --quiet --filter=blob:none --no-checkout "https://github.com/edwardgushchin/$component.git" "artifacts/lgpl-source-checkouts/$component"
+          done
+          git -C artifacts/lgpl-source-checkouts/SDL_mixer checkout --quiet 72a81869b45e249e8e67102db4e98dd2441f05a1
+          git -C artifacts/lgpl-source-checkouts/SDL_shadercross checkout --quiet e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba
+          pwsh -NoProfile -File .github/release-tools/Test-LgplSourceArchives.ps1 -SourceRoot artifacts/lgpl-source-checkouts
+          git -C artifacts/lgpl-source-checkouts/SDL_mixer submodule update --init external/libgme external/mpg123
+          git -C artifacts/lgpl-source-checkouts/SDL_mixer/external/libgme archive --format=tar --prefix=game-music-emu/ 8ebb4f65096fdf980b39be2283699d523ddc09af > "$RUNNER_TEMP/game-music-emu.tar"
+          gzip -dc SDL3-CS.NativePackages/ThirdPartySources/game-music-emu-8ebb4f65096fdf980b39be2283699d523ddc09af.tar.gz | cmp - "$RUNNER_TEMP/game-music-emu.tar"
+          git -C artifacts/lgpl-source-checkouts/SDL_mixer/external/mpg123 archive --format=tar --prefix=mpg123/ 6e97a7fdf112a950977dad73de10be0d17ddb6b8 > "$RUNNER_TEMP/mpg123.tar"
+          gzip -dc SDL3-CS.NativePackages/ThirdPartySources/mpg123-6e97a7fdf112a950977dad73de10be0d17ddb6b8.tar.gz | cmp - "$RUNNER_TEMP/mpg123.tar"
+
+      - name: Verify dynamic replacement and static relinking
+        shell: bash
+        run: python3 -B .github/release-tools/Test-LgplReplaceability.py
+
   examples-desktop:
     name: Build desktop examples (${{ matrix.name }})
     runs-on: ${{ matrix.runner }}

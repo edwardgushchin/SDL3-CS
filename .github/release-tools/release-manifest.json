@@ -23,7 +23,7 @@
     "appleDotnetWorkloadVersion": "10.0.302.1"
   },
   "versioning": {
-    "packageRevisionDefault": 0,
+    "packageRevisionDefault": 2,
     "packageVersionPattern": "{nativeVersion}.{packageRevision}",
     "wrapperVersionComponent": "SDL",
     "componentPackageRevisionOverrides": {

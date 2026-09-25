@@ -6,7 +6,7 @@ on:
       package_revision:
         description: Numeric SDL3-CS release revision; the manifest may remap occupied component package revisions.
         required: true
-        default: "0"
+        default: "2"
       managed_only:
         description: Build and publish only the managed SDL3-CS package without running the native matrix.
         required: true
@@ -397,6 +397,10 @@ jobs:
       - name: Initialize native forks
         shell: pwsh
         run: ./.github/release-tools/Initialize-NativeForks.ps1 -Depth 1 -Retries 3
+
+      - name: Validate LGPL source archives
+        shell: pwsh
+        run: ./.github/release-tools/Test-LgplSourceArchives.ps1
 
       - name: Build native bundle
         shell: pwsh

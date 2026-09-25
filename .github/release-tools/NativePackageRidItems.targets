@@ -2,6 +2,8 @@
   <PropertyGroup>
     <NativePackagePlatform Condition="'$(NativePackagePlatform)' == ''">All</NativePackagePlatform>
     <ThirdPartyLicenseRoot>$(MSBuildThisFileDirectory)..\..\SDL3-CS.NativePackages\ThirdPartyLicenses</ThirdPartyLicenseRoot>
+    <ThirdPartySourceRoot>$(MSBuildThisFileDirectory)..\..\SDL3-CS.NativePackages\ThirdPartySources</ThirdPartySourceRoot>
+    <NativeReceiptRoot Condition="'$(NativeReceiptRoot)' == ''">$(MSBuildThisFileDirectory)..\..\artifacts\release\receipts</NativeReceiptRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,8 @@
   </ItemGroup>
   <ItemGroup Condition="'$(PackageId)' == 'SDL3-CS.$(NativePackagePlatform).Mixer'">
     <None Include="$(ThirdPartyLicenseRoot)\Mixer\*" Pack="true" PackagePath="licenses\Mixer" />
+    <None Include="$(ThirdPartySourceRoot)\README.md;$(ThirdPartySourceRoot)\SOURCE_MANIFEST.json;$(ThirdPartySourceRoot)\game-music-emu-*.tar.gz;$(ThirdPartySourceRoot)\mpg123-*.tar.gz" Pack="true" PackagePath="licenses\sources" />
+    <None Include="$(NativeReceiptRoot)\SDL_mixer\*.json" Pack="true" PackagePath="licenses\provenance" />
   </ItemGroup>
   <ItemGroup Condition="'$(PackageId)' == 'SDL3-CS.$(NativePackagePlatform).TTF'">
     <None Include="$(ThirdPartyLicenseRoot)\TTF\*" Pack="true" PackagePath="licenses\TTF" />
@@ -26,6 +30,8 @@
   </ItemGroup>
   <ItemGroup Condition="'$(PackageId)' == 'SDL3-CS.$(NativePackagePlatform).Shadercross' and ('$(NativePackagePlatform)' == 'Linux' or '$(NativePackagePlatform)' == 'MacOS')">
     <None Include="$(ThirdPartyLicenseRoot)\ShadercrossVkd3d\*" Pack="true" PackagePath="licenses\ShadercrossVkd3d" />
+    <None Include="$(ThirdPartySourceRoot)\README.md;$(ThirdPartySourceRoot)\SOURCE_MANIFEST.json;$(ThirdPartySourceRoot)\vkd3d-2.0.tar.xz" Pack="true" PackagePath="licenses\sources" />
+    <None Include="$(NativeReceiptRoot)\SDL_shadercross\*.json" Pack="true" PackagePath="licenses\provenance" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NativePackagePlatform)' == 'All' or '$(NativePackagePlatform)' == 'Windows'">

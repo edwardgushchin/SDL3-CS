@@ -10,6 +10,7 @@ $manifestPath = Join-Path $PSScriptRoot 'release-manifest.json'
 $tempBase = [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())
 $tempRoot = [System.IO.Path]::GetFullPath((Join-Path $tempBase "sdl3-cs-managed-runtime-test-$([guid]::NewGuid().ToString('N'))"))
 $stalePayloadPath = Join-Path $repoRoot "SDL3-CS.NativePackages/SDL3-CS.Windows/lib/win-x64/.stale-$([guid]::NewGuid().ToString('N')).dll"
+$trackedNativePackageRevision = 0
 
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
 
@@ -87,14 +88,14 @@ if (-not $tempRoot.StartsWith($tempBase, [System.StringComparison]::OrdinalIgnor
 try {
     $destination = Join-Path $tempRoot 'runtime'
     & $scriptPath `
-        -NativePackageRevision 0 `
+        -NativePackageRevision $trackedNativePackageRevision `
         -Rid win-x64 `
         -Destination $destination `
         -UseTrackedPayload
 
     $firstInventory = Get-FileInventory -Root $destination
     & $scriptPath `
-        -NativePackageRevision 0 `
+        -NativePackageRevision $trackedNativePackageRevision `
         -Rid win-x64 `
         -Destination $destination `
         -UseTrackedPayload
@@ -102,12 +103,9 @@ try {
     Assert-InventoriesEqual -Expected $firstInventory -Actual $secondInventory -Context 'Repeated tracked restore'
 
     $manifest = Get-ReleaseManifest -ManifestPath $manifestPath
-    if ([int]$manifest.versioning.packageRevisionDefault -ne 0) {
-        throw 'The SDL 3.4.14 candidate must use manifest packageRevisionDefault 0.'
-    }
 
     $expectedInventory = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-    $packages = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision 0 |
+    $packages = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $trackedNativePackageRevision |
         Where-Object { $_.Kind -eq 'native' -and @($_.Rids) -contains 'win-x64' } |
         Sort-Object Id)
     foreach ($package in $packages) {
@@ -157,15 +155,16 @@ try {
     if (-not $ciText.Contains('-UseTrackedPayload', [System.StringComparison]::Ordinal)) {
         throw 'CI must restore the managed test runtime from the tracked payload of the exact commit.'
     }
-    if (-not $ciText.Contains('-NativePackageRevision 0', [System.StringComparison]::Ordinal)) {
-        throw 'CI must restore the current manifest package revision 0.'
+    $expectedCiRevision = "-NativePackageRevision $trackedNativePackageRevision"
+    if (-not $ciText.Contains($expectedCiRevision, [System.StringComparison]::Ordinal)) {
+        throw "CI must restore the tracked native package revision $trackedNativePackageRevision."
     }
 
     [System.IO.File]::WriteAllText($stalePayloadPath, 'untracked stale payload')
     $rejectedStalePayload = $false
     try {
         & $scriptPath `
-            -NativePackageRevision 0 `
+            -NativePackageRevision $trackedNativePackageRevision `
             -Rid win-x64 `
             -Destination (Join-Path $tempRoot 'stale-runtime') `
             -UseTrackedPayload

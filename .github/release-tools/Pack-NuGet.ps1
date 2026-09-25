@@ -68,6 +68,9 @@ if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeArtifactValidation)
 if (-not $ManagedOnly -and -not $DryRun -and -not $SkipNativeBuildReceiptValidation) {
     & (Join-Path $PSScriptRoot 'Test-NativeBuildReceipts.ps1') -ManifestPath $ManifestPath -Rids $Rids
 }
+if (-not $ManagedOnly -and -not $DryRun) {
+    & (Join-Path $PSScriptRoot 'Test-LgplSourceArchives.ps1') -ManifestPath $ManifestPath
+}
 
 $packages = Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $PackageRevision
 if ($ManagedOnly) {

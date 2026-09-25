@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "game-music-emu",
+      "component": "SDL_mixer",
+      "componentSourceRef": "72a81869b45e249e8e67102db4e98dd2441f05a1",
+      "upstream": "https://github.com/libsdl-org/game-music-emu",
+      "revision": "8ebb4f65096fdf980b39be2283699d523ddc09af",
+      "archive": "game-music-emu-8ebb4f65096fdf980b39be2283699d523ddc09af.tar.gz",
+      "sha256": "a1f6569436934b8815fc5c17b2b4a3b855b1db97996a4528745ec561386f70a8",
+      "license": "licenses/Mixer/gme-license.txt"
+    },
+    {
+      "id": "mpg123",
+      "component": "SDL_mixer",
+      "componentSourceRef": "72a81869b45e249e8e67102db4e98dd2441f05a1",
+      "upstream": "https://github.com/libsdl-org/mpg123",
+      "revision": "6e97a7fdf112a950977dad73de10be0d17ddb6b8",
+      "archive": "mpg123-6e97a7fdf112a950977dad73de10be0d17ddb6b8.tar.gz",
+      "sha256": "8ca8e15c66314e869b419642b6f8d0fda0a00d01d405e44f697698fef7d0728b",
+      "license": "licenses/Mixer/mpg123-COPYING"
+    },
+    {
+      "id": "vkd3d",
+      "component": "SDL_shadercross",
+      "componentSourceRef": "e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba",
+      "upstream": "https://dl.winehq.org/vkd3d/source/vkd3d-2.0.tar.xz",
+      "revision": "2.0",
+      "archive": "vkd3d-2.0.tar.xz",
+      "sha256": "9ad29bb236808186a47ec66e853b21e6fca59b9dc62a9474b05d5e3eda2710ef",
+      "license": "licenses/ShadercrossVkd3d/LGPL-2.1-or-later.txt"
+    }
+  ]
+}
