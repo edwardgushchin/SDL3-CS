@@ -36,6 +36,8 @@ if ($workflowText -notmatch $pinnedLoginPattern) {
     throw 'Release workflow fixture must contain a SHA-pinned NuGet/login v1 action.'
 }
 
+. (Join-Path $PSScriptRoot 'Release.Common.ps1')
+
 & $validator -WorkflowPath $resolvedWorkflow -ManifestPath $ManifestPath
 
 $tempBase = [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())
@@ -50,6 +52,19 @@ $tempWorkflow = Join-Path $tempRoot 'release-native-packages.yml'
 try {
     $manifest = Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 64
     $expectedPackageRevisionDefault = [int]$manifest.versioning.packageRevisionDefault
+    $managedPackages = @(Get-ReleasePackageVersions -Manifest $manifest -PackageRevision $expectedPackageRevisionDefault |
+        Where-Object { $_.Kind -eq 'managed' })
+    if ($managedPackages.Count -ne 1) {
+        throw "Expected exactly one managed package for release revision $expectedPackageRevisionDefault, got $($managedPackages.Count)."
+    }
+
+    $readmePath = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) 'README-nuget.md'
+    $readmeText = Get-Content -LiteralPath $readmePath -Raw -Encoding UTF8
+    $expectedReleaseMarker = "SDL3-CS $($managedPackages[0].PackageVersion)"
+    if (-not $readmeText.Contains($expectedReleaseMarker, [System.StringComparison]::Ordinal)) {
+        throw "README-nuget.md does not identify the default managed release $($managedPackages[0].PackageVersion)."
+    }
+
     $packageRevisionDefaultRegex = [regex]::new(
         '(?m)(?<prefix>^[ ]{6}package_revision:[ \t]*\r?\n(?:^[ ]{8,}[^\r\n]*\r?\n)*?^[ ]{8}default:[ \t]+)["'']?\d+["'']?[ \t]*\r?$'
     )

@@ -6,7 +6,7 @@ on:
       package_revision:
         description: Numeric SDL3-CS release revision; the manifest may remap occupied component package revisions.
         required: true
-        default: "0"
+        default: "2"
       managed_only:
         description: Build and publish only the managed SDL3-CS package without running the native matrix.
         required: true
