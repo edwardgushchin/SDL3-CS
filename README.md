@@ -244,8 +244,6 @@ More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushch
 
 ## 🌟 Projects Using SDL3-CS
 
-Thanks to the maintainers of these projects for letting us share their work:
-
 - [3DEngine](https://github.com/EggyStudio/3DEngine) — a C# 3D engine and editor built with Vulkan and SDL3.
 - [AITD-tools](https://github.com/tigrouind/AITD-tools) — disassemblers and utilities for classic Alone in the Dark games.
 - [Bliss](https://github.com/MrScautHD/Bliss) — a cross-platform .NET rendering framework.
