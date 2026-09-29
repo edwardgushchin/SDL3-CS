@@ -46,6 +46,7 @@
   <a href="#-supported-platforms">Platforms</a> -
   <a href="#-installation">Installation</a> -
   <a href="#-examples">Examples</a> -
+  <a href="#-projects-using-sdl3-cs">Projects</a> -
   <a href="#-feedback-and-contributions">Feedback</a> -
   <a href="#-license">License</a>
 </p>
@@ -240,6 +241,20 @@ internal static class Program
 ```
 
 More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushchin/SDL3-CS/tree/main/SDL3-CS.Examples).
+
+## 🌟 Projects Using SDL3-CS
+
+- [3DEngine](https://github.com/EggyStudio/3DEngine) — a C# 3D engine and editor built with Vulkan and SDL3.
+- [AITD-tools](https://github.com/tigrouind/AITD-tools) — disassemblers and utilities for classic Alone in the Dark games.
+- [Bliss](https://github.com/MrScautHD/Bliss) — a cross-platform .NET rendering framework.
+- [Call of Duty Alt Launcher](https://github.com/framilano/CallofDutyAltLauncher) — an offline launcher for custom Call of Duty clients.
+- [concrete](https://github.com/sjoerdev/concrete) — a modern .NET game engine.
+- [Cut the Rope: DX](https://github.com/yell0wsuit/cuttherope-dx) — a fan-made enhancement of the Cut the Rope PC game.
+- [Dead Cells Core Modding](https://github.com/dead-cells-core-modding/core) — a modding API and loader for Dead Cells.
+- [Genouka UndertaleModTool](https://github.com/Genouka/UndertaleModTool) — an UndertaleModTool fork with an Avalonia desktop frontend.
+- [OpenUtau](https://github.com/openutau/OpenUtau) — an open-source singing synthesis editor.
+- [QBX](https://github.com/logiclrd/QBX) — a cross-platform reimplementation of QuickBASIC 7.1.
+- [Win32Emu](https://github.com/archanox/Win32Emu) — a cross-platform emulator for classic Windows executables.
 
 ## 🤝 Feedback and Contributions
 
