@@ -46,6 +46,7 @@
   <a href="#-supported-platforms">Platforms</a> -
   <a href="#-installation">Installation</a> -
   <a href="#-examples">Examples</a> -
+  <a href="#-projects-using-sdl3-cs">Projects</a> -
   <a href="#-feedback-and-contributions">Feedback</a> -
   <a href="#-license">License</a>
 </p>
@@ -240,6 +241,22 @@ internal static class Program
 ```
 
 More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushchin/SDL3-CS/tree/main/SDL3-CS.Examples).
+
+## 🌟 Projects Using SDL3-CS
+
+Thanks to the maintainers of these projects for letting us share their work:
+
+- [3DEngine](https://github.com/EggyStudio/3DEngine)
+- [AITD-tools](https://github.com/tigrouind/AITD-tools)
+- [Bliss](https://github.com/MrScautHD/Bliss)
+- [Call of Duty Alt Launcher](https://github.com/framilano/CallofDutyAltLauncher)
+- [concrete](https://github.com/sjoerdev/concrete)
+- [Cut the Rope: DX](https://github.com/yell0wsuit/cuttherope-dx)
+- [Dead Cells Core Modding](https://github.com/dead-cells-core-modding/core)
+- [Genouka UndertaleModTool](https://github.com/Genouka/UndertaleModTool)
+- [OpenUtau](https://github.com/openutau/OpenUtau)
+- [QBX](https://github.com/logiclrd/QBX)
+- [Win32Emu](https://github.com/archanox/Win32Emu)
 
 ## 🤝 Feedback and Contributions
 
