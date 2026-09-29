@@ -246,17 +246,17 @@ More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushch
 
 Thanks to the maintainers of these projects for letting us share their work:
 
-- [3DEngine](https://github.com/EggyStudio/3DEngine)
-- [AITD-tools](https://github.com/tigrouind/AITD-tools)
-- [Bliss](https://github.com/MrScautHD/Bliss)
-- [Call of Duty Alt Launcher](https://github.com/framilano/CallofDutyAltLauncher)
-- [concrete](https://github.com/sjoerdev/concrete)
-- [Cut the Rope: DX](https://github.com/yell0wsuit/cuttherope-dx)
-- [Dead Cells Core Modding](https://github.com/dead-cells-core-modding/core)
-- [Genouka UndertaleModTool](https://github.com/Genouka/UndertaleModTool)
-- [OpenUtau](https://github.com/openutau/OpenUtau)
-- [QBX](https://github.com/logiclrd/QBX)
-- [Win32Emu](https://github.com/archanox/Win32Emu)
+- [3DEngine](https://github.com/EggyStudio/3DEngine) — a C# 3D engine and editor built with Vulkan and SDL3.
+- [AITD-tools](https://github.com/tigrouind/AITD-tools) — disassemblers and utilities for classic Alone in the Dark games.
+- [Bliss](https://github.com/MrScautHD/Bliss) — a cross-platform .NET rendering framework.
+- [Call of Duty Alt Launcher](https://github.com/framilano/CallofDutyAltLauncher) — an offline launcher for custom Call of Duty clients.
+- [concrete](https://github.com/sjoerdev/concrete) — a modern .NET game engine.
+- [Cut the Rope: DX](https://github.com/yell0wsuit/cuttherope-dx) — a fan-made enhancement of the Cut the Rope PC game.
+- [Dead Cells Core Modding](https://github.com/dead-cells-core-modding/core) — a modding API and loader for Dead Cells.
+- [Genouka UndertaleModTool](https://github.com/Genouka/UndertaleModTool) — an UndertaleModTool fork with an Avalonia desktop frontend.
+- [OpenUtau](https://github.com/openutau/OpenUtau) — an open-source singing synthesis editor.
+- [QBX](https://github.com/logiclrd/QBX) — a cross-platform reimplementation of QuickBASIC 7.1.
+- [Win32Emu](https://github.com/archanox/Win32Emu) — a cross-platform emulator for classic Windows executables.
 
 ## 🤝 Feedback and Contributions
 
