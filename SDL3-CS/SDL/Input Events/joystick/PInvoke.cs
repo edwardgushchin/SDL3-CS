@@ -728,6 +728,140 @@ public static partial class SDL
 
 
 	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickHasSensor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_JoystickHasSensor(IntPtr joystick, SensorType type);
+	private delegate bool JoystickHasSensorNativeDelegate(IntPtr joystick, SensorType type);
+	private static JoystickHasSensorNativeDelegate JoystickHasSensorNativeFunction = SDL_JoystickHasSensor;
+
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_JoystickHasSensor(SDL_Joystick *joystick, SDL_SensorType type);</code>
+	/// <summary>
+	/// <para>Return whether a joystick has a particular sensor.</para>
+	/// <para>Sensors are disabled by default and <see cref="SetJoystickSensorEnabled"/> is used
+	/// to enable them.</para>
+	/// </summary>
+	/// <param name="joystick">the joystick to query.</param>
+	/// <param name="type">the type of sensor to query.</param>
+	/// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.6.0.</since>
+	/// <seealso cref="GetJoystickSensorData(nint, SensorType, Span{float}, int)"/>
+	/// <seealso cref="GetJoystickSensorDataRate"/>
+	/// <seealso cref="SetJoystickSensorEnabled"/>
+	public static bool JoystickHasSensor(IntPtr joystick, SensorType type)
+	{
+		return JoystickHasSensorNativeFunction(joystick, type);
+	}
+
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_SetJoystickSensorEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_SetJoystickSensorEnabled(IntPtr joystick, SensorType type, [MarshalAs(UnmanagedType.I1)] bool enabled);
+	private delegate bool SetJoystickSensorEnabledNativeDelegate(IntPtr joystick, SensorType type, bool enabled);
+	private static SetJoystickSensorEnabledNativeDelegate SetJoystickSensorEnabledNativeFunction = SDL_SetJoystickSensorEnabled;
+
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetJoystickSensorEnabled(SDL_Joystick *joystick, SDL_SensorType type, bool enabled);</code>
+	/// <summary>
+	/// <para>Set whether data reporting for a joystick sensor is enabled.</para>
+	/// <para>Sensors are disabled by default and this function is used to enable them.</para>
+	/// </summary>
+	/// <param name="joystick">the joystick to update.</param>
+	/// <param name="type">the type of sensor to enable/disable.</param>
+	/// <param name="enabled">whether data reporting should be enabled.</param>
+	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+	/// information.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.6.0.</since>
+	/// <seealso cref="JoystickHasSensor"/>
+	/// <seealso cref="JoystickSensorEnabled"/>
+	public static bool SetJoystickSensorEnabled(IntPtr joystick, SensorType type, bool enabled)
+	{
+		return SetJoystickSensorEnabledNativeFunction(joystick, type, enabled);
+	}
+
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_JoystickSensorEnabled"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_JoystickSensorEnabled(IntPtr joystick, SensorType type);
+	private delegate bool JoystickSensorEnabledNativeDelegate(IntPtr joystick, SensorType type);
+	private static JoystickSensorEnabledNativeDelegate JoystickSensorEnabledNativeFunction = SDL_JoystickSensorEnabled;
+
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_JoystickSensorEnabled(SDL_Joystick *joystick, SDL_SensorType type);</code>
+	/// <summary>Query whether sensor data reporting is enabled for a joystick.</summary>
+	/// <param name="joystick">the joystick to query.</param>
+	/// <param name="type">the type of sensor to query.</param>
+	/// <returns><c>true</c> if the sensor is enabled, <c>false</c> otherwise.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.6.0.</since>
+	/// <seealso cref="SetJoystickSensorEnabled"/>
+	public static bool JoystickSensorEnabled(IntPtr joystick, SensorType type)
+	{
+		return JoystickSensorEnabledNativeFunction(joystick, type);
+	}
+
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickSensorDataRate"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	private static partial float SDL_GetJoystickSensorDataRate(IntPtr joystick, SensorType type);
+	private delegate float GetJoystickSensorDataRateNativeDelegate(IntPtr joystick, SensorType type);
+	private static GetJoystickSensorDataRateNativeDelegate GetJoystickSensorDataRateNativeFunction = SDL_GetJoystickSensorDataRate;
+
+	/// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetJoystickSensorDataRate(SDL_Joystick *joystick, SDL_SensorType type);</code>
+	/// <summary>Get the data rate (number of events per second) of a joystick sensor.</summary>
+	/// <param name="joystick">the joystick to query.</param>
+	/// <param name="type">the type of sensor to query.</param>
+	/// <returns>the data rate, or 0.0f if the data rate is not available.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.6.0.</since>
+	public static float GetJoystickSensorDataRate(IntPtr joystick, SensorType type)
+	{
+		return GetJoystickSensorDataRateNativeFunction(joystick, type);
+	}
+
+
+	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickSensorData"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_GetJoystickSensorData(IntPtr joystick, SensorType type, IntPtr data, int numValues);
+	private delegate bool GetJoystickSensorDataNativeDelegate(IntPtr joystick, SensorType type, IntPtr data, int numValues);
+	private static GetJoystickSensorDataNativeDelegate GetJoystickSensorDataNativeFunction = SDL_GetJoystickSensorData;
+
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetJoystickSensorData(SDL_Joystick *joystick, SDL_SensorType type, float *data, int num_values);</code>
+	/// <summary>
+	/// <para>Get the current state of a joystick sensor.</para>
+	/// <para>The number of values and interpretation of the data is sensor dependent.
+	/// See the remarks in <see cref="SensorType"/> for details for each type of sensor.</para>
+	/// </summary>
+	/// <param name="joystick">the joystick to query.</param>
+	/// <param name="type">the type of sensor to query.</param>
+	/// <param name="data">the destination buffer filled with the current sensor state.</param>
+	/// <param name="numValues">the number of values to write to <c>data</c>.</param>
+	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+	/// information.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.6.0.</since>
+	public static unsafe bool GetJoystickSensorData(IntPtr joystick, SensorType type, Span<float> data, int numValues)
+	{
+		if (numValues < 0)
+		{
+			throw new ArgumentOutOfRangeException(nameof(numValues));
+		}
+
+		if (numValues > data.Length)
+		{
+			throw new ArgumentOutOfRangeException(nameof(numValues));
+		}
+
+		fixed (float* pData = data)
+		{
+			return GetJoystickSensorDataNativeFunction(joystick, type, (IntPtr)pData, numValues);
+		}
+	}
+
+
+	[ExcludeFromCodeCoverage]
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_GetJoystickProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	private static partial uint SDL_GetJoystickProperties(IntPtr joystick);
 	private delegate uint GetJoystickPropertiesNativeDelegate(IntPtr joystick);

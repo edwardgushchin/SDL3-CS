@@ -110,6 +110,21 @@ if (args.SequenceEqual(["--capsense-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--joystick-sensors-only"]))
+{
+    string[] exports = ["SDL_JoystickHasSensor", "SDL_SetJoystickSensorEnabled", "SDL_JoystickSensorEnabled", "SDL_GetJoystickSensorDataRate", "SDL_GetJoystickSensorData"];
+    SDL3.Tests.TestAssert.True(exports.All(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export), "The focused joystick sensor tests require an SDL native library that exports every joystick sensor API.");
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.JoystickHasSensor_ForwardsJoystickSensorAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.SetJoystickSensorEnabled_ForwardsJoystickSensorEnabledAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.JoystickSensorEnabled_ForwardsJoystickSensorAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.GetJoystickSensorDataRate_ForwardsJoystickSensorAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.GetJoystickSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.GetJoystickSensorDataSpan_RejectsInvalidNumValues();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.JoystickSensorApis_ReturnDefaultsWithoutJoystick();
+    Console.WriteLine("SDL joystick sensor focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--jpg-loaders-only"]))
 {
     SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
