@@ -2039,7 +2039,7 @@ public partial class Mixer
     /// <see cref="SDL.GetError"/> for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL_mixer 3.0.0.</since>
-    /// <seealso cref="GetTrackFrequencyRatio"/>
+    /// <seealso cref="SetTrackFrequencyRatio"/>
     [LibraryImport(MixerLibrary, EntryPoint = "MIX_GetTrackFrequencyRatio"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetTrackFrequencyRatio(IntPtr track);
 
