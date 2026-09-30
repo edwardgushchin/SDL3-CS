@@ -711,6 +711,64 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadJPG_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_LoadJPGIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio);
+    private delegate IntPtr LoadJPGIONativeDelegate(IntPtr src, bool closeio);
+    private static LoadJPGIONativeDelegate LoadJPGIONativeFunction = SDL_LoadJPGIO;
+
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadJPG_IO(SDL_IOStream *src, bool closeio);</code>
+    /// <summary>
+    /// <para>Load a JPEG image from a seekable SDL data stream.</para>
+    /// <para>This is intended as a convenience function for loading images from trusted
+    /// sources. If you want to load arbitrary images you should use libjpeg or
+    /// another image loading library designed with security in mind.</para>
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="src">the data stream for the surface.</param>
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
+    /// in the case of an error.</param>
+    /// <returns>a pointer to a new <c>SDL_Surface</c> structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadJPG"/>
+    public static IntPtr LoadJPGIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio)
+    {
+        return LoadJPGIONativeFunction(src, closeio);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_LoadJPG"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_LoadJPG([MarshalAs(UnmanagedType.LPUTF8Str)] string file);
+    private delegate IntPtr LoadJPGNativeDelegate(string file);
+    private static LoadJPGNativeDelegate LoadJPGNativeFunction = SDL_LoadJPG;
+
+    /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadJPG(const char *file);</code>
+    /// <summary>
+    /// <para>Load a JPEG image from a file.</para>
+    /// <para>This is intended as a convenience function for loading images from trusted
+    /// sources. If you want to load arbitrary images you should use libjpeg or
+    /// another image loading library designed with security in mind.</para>
+    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// will result in a memory leak.</para>
+    /// </summary>
+    /// <param name="file">the JPG file to load.</param>
+    /// <returns>a pointer to a new <c>SDL_Surface</c> structure or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="DestroySurface"/>
+    /// <seealso cref="LoadJPGIO"/>
+    public static IntPtr LoadJPG([MarshalAs(UnmanagedType.LPUTF8Str)] string file)
+    {
+        return LoadJPGNativeFunction(file);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SavePNG_IO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SavePNGIO(IntPtr surface, IntPtr dst, [MarshalAs(UnmanagedType.I1)] bool closeio);
