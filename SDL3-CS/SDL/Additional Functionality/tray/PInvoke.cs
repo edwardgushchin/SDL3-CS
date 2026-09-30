@@ -59,6 +59,51 @@ public partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateTrayWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_CreateTrayWithProperties(uint props);
+    private delegate IntPtr CreateTrayWithPropertiesNative(uint props);
+    private static CreateTrayWithPropertiesNative CreateTrayWithPropertiesNativeFunction = SDL_CreateTrayWithProperties;
+
+    /// <code>extern SDL_DECLSPEC SDL_Tray * SDLCALL SDL_CreateTrayWithProperties(SDL_PropertiesID props);</code>
+    /// <summary>
+    /// <para>Create an icon to be placed in the operating system's tray, or equivalent.</para>
+    /// <para>Many platforms advise not using a system tray unless persistence is a
+    /// necessary feature. Avoid needlessly creating a tray icon, as the user may
+    /// feel like it clutters their interface.</para>
+    /// <para>You should set the <see cref="Props.AppMetadataIdentifierString"/> property to
+    /// ensure correct behaviour on some platforms like Linux.</para>
+    /// <para>Using tray icons require the video subsystem.</para>
+    /// <para>The supported properties are:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Props.TrayCreateIconPointer"/>: an <c>SDL_Surface</c> to be used as the
+    /// tray icon. May be <c>null</c>.</item>
+    /// <item><see cref="Props.TrayCreateTooltipString"/>: a tooltip to display on hover in UTF-8.
+    /// May be <c>null</c> and is not supported on all platforms.</item>
+    /// <item><see cref="Props.TrayCreateUserdataPointer"/>: optional userdata passed to click
+    /// callbacks. May be <c>null</c>.</item>
+    /// <item><see cref="Props.TrayCreateLeftClickCallbackPointer"/>: an optional
+    /// <see cref="TrayClickCallback"/> for left-clicks; not supported on all platforms.</item>
+    /// <item><see cref="Props.TrayCreateRightClickCallbackPointer"/>: an optional
+    /// <see cref="TrayClickCallback"/> for right-clicks; not supported on all platforms.</item>
+    /// <item><see cref="Props.TrayCreateMiddleClickCallbackPointer"/>: an optional
+    /// <see cref="TrayClickCallback"/> for middle-clicks; not supported on all platforms.</item>
+    /// </list>
+    /// </summary>
+    /// <param name="props">the properties to use.</param>
+    /// <returns>The newly created system tray icon.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateTray"/>
+    /// <seealso cref="CreateTrayMenu"/>
+    /// <seealso cref="GetTrayMenu"/>
+    /// <seealso cref="DestroyTray"/>
+    public static IntPtr CreateTrayWithProperties(uint props)
+    {
+        return CreateTrayWithPropertiesNativeFunction(props);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetTrayIcon"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_SetTrayIcon(IntPtr tray, IntPtr icon);
     private delegate void SetTrayIconNative(IntPtr tray, IntPtr icon);

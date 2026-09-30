@@ -336,6 +336,60 @@ public partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOpenHarmonySDKVersion"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetOpenHarmonySDKVersion();
+    private delegate int GetOpenHarmonySDKVersionNative();
+    private static GetOpenHarmonySDKVersionNative GetOpenHarmonySDKVersionNativeFunction = SDL_GetOpenHarmonySDKVersion;
+
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetOpenHarmonySDKVersion(void);</code>
+    /// <summary>
+    /// <para>Query OpenHarmony API level of the current device.</para>
+    /// <list type="bullet">
+    /// <item>API level 20: OpenHarmony 6.0.0</item>
+    /// <item>API level 18: OpenHarmony 5.1.0</item>
+    /// <item>API level 16: OpenHarmony 5.0.4</item>
+    /// <item>API level 15: OpenHarmony 5.0.3</item>
+    /// <item>API level 14: OpenHarmony 5.0.2</item>
+    /// <item>API level 13: OpenHarmony 5.0.1</item>
+    /// <item>API level 12: OpenHarmony 5.0.0</item>
+    /// <item>API level 11: OpenHarmony 4.1.0</item>
+    /// <item>API level 10: OpenHarmony 4.0.0</item>
+    /// <item>API level 9: OpenHarmony 3.2.0</item>
+    /// </list>
+    /// </summary>
+    /// <returns>the OpenHarmony API level.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static int GetOpenHarmonySDKVersion()
+    {
+        return GetOpenHarmonySDKVersionNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetOpenHarmonyInternalStoragePath"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetOpenHarmonyInternalStoragePath();
+    private delegate IntPtr GetOpenHarmonyInternalStoragePathNative();
+    private static GetOpenHarmonyInternalStoragePathNative GetOpenHarmonyInternalStoragePathNativeFunction = SDL_GetOpenHarmonyInternalStoragePath;
+
+    /// <code>extern SDL_DECLSPEC const char * SDLCALL SDL_GetOpenHarmonyInternalStoragePath(void);</code>
+    /// <summary>
+    /// <para>Get the path used for internal storage for this OpenHarmony application.</para>
+    /// <para>This path is unique to your application and cannot be written to by other
+    /// applications.</para>
+    /// <para>Your internal storage path is typically: <c>/data/storage/el2/base/files</c>.</para>
+    /// </summary>
+    /// <returns>the path used for internal storage or <c>null</c> on failure; call
+    /// <see cref="GetError"/> for more information.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static string? GetOpenHarmonyInternalStoragePath()
+    {
+        IntPtr path = GetOpenHarmonyInternalStoragePathNativeFunction();
+        return path == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(path);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsChromebook"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_IsChromebook();

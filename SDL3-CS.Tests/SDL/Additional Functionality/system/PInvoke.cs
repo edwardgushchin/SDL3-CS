@@ -180,6 +180,30 @@ internal static class PInvokeTests
         TestAssert.Equal(35, result, "SDL.GetAndroidSDKVersion must return the native hook value.");
     }
 
+    public static void GetOpenHarmonySDKVersion_ReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetOpenHarmonySDKVersion");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetOpenHarmonySDKVersion");
+        using NativeHookScope _ = NativeHookScope.Install("GetOpenHarmonySDKVersionNativeFunction", nameof(CaptureGetAndroidSDKVersion));
+        TestAssert.Equal(35, SDL3.SDL.GetOpenHarmonySDKVersion(), "SDL.GetOpenHarmonySDKVersion must return the native hook value.");
+    }
+
+    public static void GetOpenHarmonyInternalStoragePath_ReturnsStringAndNull()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetOpenHarmonyInternalStoragePath");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetOpenHarmonyInternalStoragePath");
+        using NativeHookScope _ = NativeHookScope.Install("GetOpenHarmonyInternalStoragePathNativeFunction", nameof(CapturePathPointer));
+        TestAssert.Equal("/data/storage/el2/base/files", CaptureUtf8Path(() => SDL3.SDL.GetOpenHarmonyInternalStoragePath(), "/data/storage/el2/base/files"), "SDL.GetOpenHarmonyInternalStoragePath must decode the native UTF-8 path.");
+        nextPointer = IntPtr.Zero;
+        TestAssert.Equal<string?>(null, SDL3.SDL.GetOpenHarmonyInternalStoragePath(), "SDL.GetOpenHarmonyInternalStoragePath must return null when the native path is null.");
+    }
+
+    public static void OpenHarmonyQueryStubs_ReturnZeroAndNullOnOtherPlatforms()
+    {
+        TestAssert.Equal(0, SDL3.SDL.GetOpenHarmonySDKVersion(), "The unsupported OpenHarmony SDK query must return zero on other platforms.");
+        TestAssert.Equal<string?>(null, SDL3.SDL.GetOpenHarmonyInternalStoragePath(), "The unsupported OpenHarmony path query must return null on other platforms.");
+    }
+
     public static void IsChromebook_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_IsChromebook");

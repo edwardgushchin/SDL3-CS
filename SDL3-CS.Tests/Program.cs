@@ -125,6 +125,29 @@ if (args.SequenceEqual(["--joystick-sensors-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--tray-properties-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_CreateTrayWithProperties"), "The focused tray property test requires an SDL native library that exports SDL_CreateTrayWithProperties.");
+    SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTrayWithProperties_ForwardsPropertiesAndReturnsNativePointer();
+    SDL3.Tests.SDL.AdditionalFunctionality.Tray.PropsTests.TrayCreatePropertyNames_MatchNativeIdentifiers();
+    SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.TrayClickCallback_UsesExpectedNativeAbi();
+    Console.WriteLine("SDL tray properties focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--openharmony-queries-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetOpenHarmonySDKVersion") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetOpenHarmonyInternalStoragePath"), "The focused OpenHarmony query tests require an SDL native library that exports both query APIs.");
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonySDKVersion_ReturnsNativeValue();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonyInternalStoragePath_ReturnsStringAndNull();
+    if (!string.Equals(SDL3.SDL.GetPlatform(), "OpenHarmony", StringComparison.OrdinalIgnoreCase))
+    {
+        SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.OpenHarmonyQueryStubs_ReturnZeroAndNullOnOtherPlatforms();
+    }
+    Console.WriteLine("SDL OpenHarmony query focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--jpg-loaders-only"]))
 {
     SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
@@ -732,6 +755,9 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetGDKDefaultUser_Ret
 Console.WriteLine("SDL.GetGDKDefaultUser binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTray_ForwardsIconAndTooltip();
 Console.WriteLine("SDL.CreateTray binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTrayWithProperties_ForwardsPropertiesAndReturnsNativePointer();
+SDL3.Tests.SDL.AdditionalFunctionality.Tray.PropsTests.TrayCreatePropertyNames_MatchNativeIdentifiers();
+SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.TrayClickCallback_UsesExpectedNativeAbi();
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.SetTrayIcon_ForwardsTrayAndIcon();
 Console.WriteLine("SDL.SetTrayIcon binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.SetTrayTooltip_ForwardsTrayAndTooltip();
