@@ -148,6 +148,18 @@ if (args.SequenceEqual(["--openharmony-queries-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--gdk-renderer-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GDKSuspendRenderer") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GDKResumeRenderer"), "The focused GDK renderer tests require an SDL native library that exports both lifecycle APIs.");
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata();
+    if (!string.Equals(SDL3.SDL.GetPlatform(), "GDK", StringComparison.OrdinalIgnoreCase))
+    {
+        SDL3.Tests.SDL.Video.Render.PInvokeTests.GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer();
+    }
+    Console.WriteLine("SDL GDK renderer lifecycle focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--jpg-loaders-only"]))
 {
     SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");

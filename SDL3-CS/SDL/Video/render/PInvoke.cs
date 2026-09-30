@@ -5268,6 +5268,52 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GDKSuspendRenderer(IntPtr renderer);
+    private delegate void GDKSuspendRendererNativeDelegate(IntPtr renderer);
+    private static GDKSuspendRendererNativeDelegate GDKSuspendRendererNativeFunction = SDL_GDKSuspendRenderer;
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendRenderer(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// <para>Call this to suspend Render operations on Xbox after receiving the
+    /// <see cref="EventType.DidEnterBackground"/> event.</para>
+    /// <para>Do not call any SDL_Render functions after calling this function. This must
+    /// also be called before calling <see cref="GDKSuspendComplete"/>.</para>
+    /// <para>This function must be called on the application's render thread.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should suspend operation.</param>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AddEventWatch"/>
+    public static void GDKSuspendRenderer(IntPtr renderer)
+    {
+        GDKSuspendRendererNativeFunction(renderer);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKResumeRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GDKResumeRenderer(IntPtr renderer);
+    private delegate void GDKResumeRendererNativeDelegate(IntPtr renderer);
+    private static GDKResumeRendererNativeDelegate GDKResumeRendererNativeFunction = SDL_GDKResumeRenderer;
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKResumeRenderer(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// <para>Call this to resume Render operations on Xbox after receiving the
+    /// <see cref="EventType.WillEnterForeground"/> event.</para>
+    /// <para>When resuming, this function must be called before calling any other
+    /// SDL_Render functions.</para>
+    /// <para>This function must be called on the application's render thread.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should resume operation.</param>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AddEventWatch"/>
+    public static void GDKResumeRenderer(IntPtr renderer)
+    {
+        GDKResumeRendererNativeFunction(renderer);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyTexture"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyTexture(IntPtr texture);
     private delegate void DestroyTextureNativeDelegate(IntPtr texture);

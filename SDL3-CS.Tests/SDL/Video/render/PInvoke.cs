@@ -173,6 +173,11 @@ internal static class PInvokeTests
         {
             FloatViewportAndClipFunctions_UseNativeSoftwareRenderer();
         }
+        GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata();
+        if (!string.Equals(SDL3.SDL.GetPlatform(), "GDK", StringComparison.OrdinalIgnoreCase))
+        {
+            GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer();
+        }
         DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues();
         PrimitiveRenderingFunctions_ForwardCoordinatesPointersArraysAndRects();
         TextureRenderingFunctions_ForwardTextureRectsRotationCenterAndFlip();
@@ -1374,6 +1379,34 @@ internal static class PInvokeTests
         bool getClipResult = SDL3.SDL.GetRenderClipRectFloat((IntPtr)0x6151, out SDL3.SDL.FRect actualClip);
         TestAssert.Equal(true, getClipResult, "SDL.GetRenderClipRectFloat must return native success.");
         AssertFRect(clip, actualClip, "SDL.GetRenderClipRectFloat must return the native rectangle.");
+    }
+
+    public static void GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata()
+    {
+        MethodInfo suspend = GetNativeMethod("SDL_GDKSuspendRenderer");
+        AssertNativeImport(suspend, "SDL_GDKSuspendRenderer");
+        TestAssert.Equal(typeof(IntPtr), suspend.GetParameters()[0].ParameterType, "SDL.GDKSuspendRenderer must take a renderer pointer.");
+        MethodInfo resume = GetNativeMethod("SDL_GDKResumeRenderer");
+        AssertNativeImport(resume, "SDL_GDKResumeRenderer");
+        TestAssert.Equal(typeof(IntPtr), resume.GetParameters()[0].ParameterType, "SDL.GDKResumeRenderer must take a renderer pointer.");
+
+        using (NativeHookScope _ = NativeHookScope.Install("GDKSuspendRendererNativeFunction", nameof(CaptureRendererOnlyVoid)))
+        {
+            SDL3.SDL.GDKSuspendRenderer((IntPtr)0xE051);
+            TestAssert.Equal((IntPtr)0xE051, capturedRenderer, "SDL.GDKSuspendRenderer must forward renderer.");
+        }
+
+        using (NativeHookScope _ = NativeHookScope.Install("GDKResumeRendererNativeFunction", nameof(CaptureRendererOnlyVoid)))
+        {
+            SDL3.SDL.GDKResumeRenderer((IntPtr)0xE052);
+            TestAssert.Equal((IntPtr)0xE052, capturedRenderer, "SDL.GDKResumeRenderer must forward renderer.");
+        }
+    }
+
+    public static void GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer()
+    {
+        SDL3.SDL.GDKSuspendRenderer(IntPtr.Zero);
+        SDL3.SDL.GDKResumeRenderer(IntPtr.Zero);
     }
 
     public static void FloatViewportAndClipFunctions_UseNativeSoftwareRenderer()
