@@ -131,5 +131,43 @@ public static partial class SDL
 		public const string TextureGPUTextureVPointer = "SDL.texture.gpu.texture_v";
 		
 		
-	}
+        /// <summary>Identifier for the renderer create metal device pointer property.</summary>
+        public const string RendererCreateMetalDevicePointer = "SDL.renderer.create.metal.device";
+        /// <summary>Identifier for the renderer create metal command queue pointer property.</summary>
+        public const string RendererCreateMetalCommandQueuePointer = "SDL.renderer.create.metal.command_queue";
+        /// <summary>Identifier for the renderer metal device pointer property.</summary>
+        public const string RendererMetalDevicePointer = "SDL.renderer.metal.device";
+        /// <summary>Identifier for the renderer metal command queue pointer property.</summary>
+        public const string RendererMetalCommandQueuePointer = "SDL.renderer.metal.command_queue";
+        /// <summary>Identifier for the texture create metal texture pointer property.</summary>
+        public const string TextureCreateMetalTexturePointer = "SDL.texture.create.metal.texture";
+        /// <summary>Identifier for the texture create metal texture uvpointer property.</summary>
+        public const string TextureCreateMetalTextureUVPointer = "SDL.texture.create.metal.texture_uv";
+        /// <summary>Identifier for the texture create metal texture upointer property.</summary>
+        public const string TextureCreateMetalTextureUPointer = "SDL.texture.create.metal.texture_u";
+        /// <summary>Identifier for the texture create metal texture vpointer property.</summary>
+        public const string TextureCreateMetalTextureVPointer = "SDL.texture.create.metal.texture_v";
+        /// <summary>Identifier for the texture create metal texture usage number property.</summary>
+        public const string TextureCreateMetalTextureUsageNumber = "SDL.texture.create.metal.texture_usage";
+        /// <summary>Identifier for the texture create vulkan texture unumber property.</summary>
+        public const string TextureCreateVulkanTextureUNumber = "SDL.texture.create.vulkan.texture_u";
+        /// <summary>Identifier for the texture create vulkan texture vnumber property.</summary>
+        public const string TextureCreateVulkanTextureVNumber = "SDL.texture.create.vulkan.texture_v";
+        /// <summary>Identifier for the texture create vulkan usage number property.</summary>
+        public const string TextureCreateVulkanUsageNumber = "SDL.texture.create.vulkan.usage";
+        /// <summary>Identifier for the texture create vulkan android hardware buffer pointer property.</summary>
+        public const string TextureCreateVulkanAndroidHardwareBufferPointer = "SDL.texture.create.vulkan.android_hardware_buffer";
+        /// <summary>Identifier for the texture metal texture pointer property.</summary>
+        public const string TextureMetalTexturePointer = "SDL.texture.metal.texture";
+        /// <summary>Identifier for the texture metal texture uvpointer property.</summary>
+        public const string TextureMetalTextureUVPointer = "SDL.texture.metal.texture_uv";
+        /// <summary>Identifier for the texture metal texture upointer property.</summary>
+        public const string TextureMetalTextureUPointer = "SDL.texture.metal.texture_u";
+        /// <summary>Identifier for the texture metal texture vpointer property.</summary>
+        public const string TextureMetalTextureVPointer = "SDL.texture.metal.texture_v";
+        /// <summary>Identifier for the texture vulkan texture unumber property.</summary>
+        public const string TextureVulkanTextureUNumber = "SDL.texture.vulkan.texture_u";
+        /// <summary>Identifier for the texture vulkan texture vnumber property.</summary>
+        public const string TextureVulkanTextureVNumber = "SDL.texture.vulkan.texture_v";
+    }
 }

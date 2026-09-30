@@ -32,6 +32,33 @@ internal static class PInvokeTests
     private static float nextFloat;
     private static int capturedCallCount;
 
+    public static void GetNumProperties_ReturnsCountForValidProperties()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetNumProperties");
+        AssertLibraryImport(nativeMethod, "SDL_GetNumProperties");
+        TestAssert.Equal(typeof(uint), nativeMethod.GetParameters()[0].ParameterType, "SDL.SDL_GetNumProperties must accept SDL_PropertiesID as uint.");
+        TestAssert.Equal(typeof(int), nativeMethod.ReturnType, "SDL.SDL_GetNumProperties must return int.");
+
+        TestAssert.Equal(0, SDL3.SDL.GetNumProperties(0), "SDL.GetNumProperties must return zero for an invalid property id.");
+        uint props = SDL3.SDL.CreateProperties();
+        TestAssert.True(props != 0, "SDL.CreateProperties must return an id before counting properties.");
+
+        try
+        {
+            TestAssert.Equal(0, SDL3.SDL.GetNumProperties(props), "SDL.GetNumProperties must return zero for an empty property group.");
+            TestAssert.True(SDL3.SDL.SetNumberProperty(props, "first", 1), "SDL.SetNumberProperty must add the first property.");
+            TestAssert.Equal(1, SDL3.SDL.GetNumProperties(props), "SDL.GetNumProperties must count a property.");
+            TestAssert.True(SDL3.SDL.SetNumberProperty(props, "first", 2), "SDL.SetNumberProperty must update an existing property.");
+            TestAssert.Equal(1, SDL3.SDL.GetNumProperties(props), "SDL.GetNumProperties must not double-count an updated property.");
+            TestAssert.True(SDL3.SDL.SetStringProperty(props, "second", "value"), "SDL.SetStringProperty must add another property.");
+            TestAssert.Equal(2, SDL3.SDL.GetNumProperties(props), "SDL.GetNumProperties must count distinct properties.");
+        }
+        finally
+        {
+            SDL3.SDL.DestroyProperties(props);
+        }
+    }
+
     public static void GetGlobalProperties_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_GetGlobalProperties");

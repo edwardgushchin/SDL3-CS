@@ -63,6 +63,8 @@ internal static class PInvokeTests
     private static SDL3.SDL.PowerState nextPowerState;
     private static int nextPercent;
     private static bool nextBool;
+    private static float nextFloat;
+    private static float[] nextSensorData = [];
     private static IntPtr nextPointer;
     private static int nextCount;
 
@@ -70,6 +72,11 @@ internal static class PInvokeTests
     {
         LockJoysticks_CallsNativeHook();
         UnlockJoysticks_CallsNativeHook();
+        TryLockJoysticks_ReturnsNativeValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_TryLockJoysticks"))
+        {
+            TryLockJoysticks_AcquiresAndReleasesTheNativeLock();
+        }
         HasJoystick_ReturnsNativeValue();
         SDL_GetJoysticks_UsesExpectedNativeMetadata();
         GetJoysticks_ReturnsArrayNullAndFreesNativePointer();
@@ -97,6 +104,16 @@ internal static class PInvokeTests
         SetJoystickVirtualTouchpad_ForwardsVirtualTouchpadAndReturnsNativeValue();
         SendJoystickVirtualSensorData_ForwardsVirtualSensorDataAndReturnsNativeValue();
         SendJoystickVirtualSensorDataSpan_ForwardsPinnedVirtualSensorDataAndReturnsNativeValue();
+        JoystickHasSensor_ForwardsJoystickSensorAndReturnsNativeValue();
+        SetJoystickSensorEnabled_ForwardsJoystickSensorEnabledAndReturnsNativeValue();
+        JoystickSensorEnabled_ForwardsJoystickSensorAndReturnsNativeValue();
+        GetJoystickSensorDataRate_ForwardsJoystickSensorAndReturnsNativeValue();
+        GetJoystickSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue();
+        GetJoystickSensorDataSpan_RejectsInvalidNumValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_JoystickHasSensor") && NativeLibraryProbe.SupportsSDL3Export("SDL_GetJoystickSensorData"))
+        {
+            JoystickSensorApis_ReturnDefaultsWithoutJoystick();
+        }
         GetJoystickProperties_ForwardsJoystickAndReturnsNativeValue();
         SDL_GetJoystickName_UsesExpectedNativeMetadata();
         GetJoystickName_ReturnsStringAndNull();
@@ -162,6 +179,32 @@ internal static class PInvokeTests
         SDL3.SDL.UnlockJoysticks();
 
         TestAssert.Equal(1, capturedCallCount, "SDL.UnlockJoysticks must call the native hook once.");
+    }
+
+    public static void TryLockJoysticks_ReturnsNativeValues()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_TryLockJoysticks");
+        AssertSdlImport(nativeMethod, "SDL_TryLockJoysticks");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install("TryLockJoysticksNativeFunction", nameof(CaptureNoArgumentBool));
+        nextBool = true;
+        TestAssert.Equal(true, SDL3.SDL.TryLockJoysticks(), "SDL.TryLockJoysticks must return the native hook's true value.");
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.TryLockJoysticks(), "SDL.TryLockJoysticks must return the native hook's false value.");
+        TestAssert.Equal(2, capturedCallCount, "SDL.TryLockJoysticks must call the native hook once per invocation.");
+    }
+
+    public static void TryLockJoysticks_AcquiresAndReleasesTheNativeLock()
+    {
+        bool locked = SDL3.SDL.TryLockJoysticks();
+        if (locked)
+        {
+            SDL3.SDL.UnlockJoysticks();
+        }
+
+        TestAssert.Equal(true, locked, "SDL.TryLockJoysticks must acquire an uncontended joystick lock.");
     }
 
     public static void HasJoystick_ReturnsNativeValue()
@@ -529,6 +572,124 @@ internal static class PInvokeTests
         TestAssert.True(capturedFloatPointer != IntPtr.Zero, "SDL.SendJoystickVirtualSensorData span overload must pin data.");
         AssertFloats(data, capturedFloatArray ?? [], "SDL.SendJoystickVirtualSensorData span overload must forward sensor values.");
         TestAssert.Equal(1, capturedCallCount, "SDL.SendJoystickVirtualSensorData span overload must call the native hook once.");
+    }
+
+    public static void JoystickHasSensor_ForwardsJoystickSensorAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_JoystickHasSensor", typeof(IntPtr), typeof(SDL3.SDL.SensorType));
+        AssertSdlImport(nativeMethod, "SDL_JoystickHasSensor");
+        AssertBoolReturnMarshal(nativeMethod);
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope _ = NativeHookScope.Install("JoystickHasSensorNativeFunction", nameof(CaptureJoystickSensorBool));
+        bool result = SDL3.SDL.JoystickHasSensor((IntPtr)0x7610, SDL3.SDL.SensorType.Accel);
+        TestAssert.Equal(true, result, "SDL.JoystickHasSensor must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7610, capturedJoystick, "SDL.JoystickHasSensor must forward joystick.");
+        TestAssert.Equal(SDL3.SDL.SensorType.Accel, capturedSensorType, "SDL.JoystickHasSensor must forward sensor type.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.JoystickHasSensor must call the native hook once.");
+    }
+
+    public static void SetJoystickSensorEnabled_ForwardsJoystickSensorEnabledAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_SetJoystickSensorEnabled", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(bool));
+        AssertSdlImport(nativeMethod, "SDL_SetJoystickSensorEnabled");
+        AssertBoolReturnMarshal(nativeMethod);
+        AssertBoolParameterMarshal(nativeMethod, "enabled");
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope _ = NativeHookScope.Install("SetJoystickSensorEnabledNativeFunction", nameof(CaptureSetJoystickSensorEnabled));
+        bool result = SDL3.SDL.SetJoystickSensorEnabled((IntPtr)0x7611, SDL3.SDL.SensorType.Gyro, true);
+        TestAssert.Equal(true, result, "SDL.SetJoystickSensorEnabled must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7611, capturedJoystick, "SDL.SetJoystickSensorEnabled must forward joystick.");
+        TestAssert.Equal(SDL3.SDL.SensorType.Gyro, capturedSensorType, "SDL.SetJoystickSensorEnabled must forward sensor type.");
+        TestAssert.Equal(true, capturedEnabled, "SDL.SetJoystickSensorEnabled must forward enabled.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.SetJoystickSensorEnabled must call the native hook once.");
+    }
+
+    public static void JoystickSensorEnabled_ForwardsJoystickSensorAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_JoystickSensorEnabled", typeof(IntPtr), typeof(SDL3.SDL.SensorType));
+        AssertSdlImport(nativeMethod, "SDL_JoystickSensorEnabled");
+        AssertBoolReturnMarshal(nativeMethod);
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope _ = NativeHookScope.Install("JoystickSensorEnabledNativeFunction", nameof(CaptureJoystickSensorBool));
+        bool result = SDL3.SDL.JoystickSensorEnabled((IntPtr)0x7612, SDL3.SDL.SensorType.Gyro);
+        TestAssert.Equal(true, result, "SDL.JoystickSensorEnabled must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7612, capturedJoystick, "SDL.JoystickSensorEnabled must forward joystick.");
+        TestAssert.Equal(SDL3.SDL.SensorType.Gyro, capturedSensorType, "SDL.JoystickSensorEnabled must forward sensor type.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.JoystickSensorEnabled must call the native hook once.");
+    }
+
+    public static void GetJoystickSensorDataRate_ForwardsJoystickSensorAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetJoystickSensorDataRate", typeof(IntPtr), typeof(SDL3.SDL.SensorType));
+        AssertSdlImport(nativeMethod, "SDL_GetJoystickSensorDataRate");
+        ResetCaptureState();
+        nextFloat = 120.5f;
+        using NativeHookScope _ = NativeHookScope.Install("GetJoystickSensorDataRateNativeFunction", nameof(CaptureJoystickSensorDataRate));
+        float result = SDL3.SDL.GetJoystickSensorDataRate((IntPtr)0x7613, SDL3.SDL.SensorType.AccelL);
+        TestAssert.Equal(120.5f, result, "SDL.GetJoystickSensorDataRate must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7613, capturedJoystick, "SDL.GetJoystickSensorDataRate must forward joystick.");
+        TestAssert.Equal(SDL3.SDL.SensorType.AccelL, capturedSensorType, "SDL.GetJoystickSensorDataRate must forward sensor type.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.GetJoystickSensorDataRate must call the native hook once.");
+    }
+
+    public static void GetJoystickSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetJoystickSensorData", typeof(IntPtr), typeof(SDL3.SDL.SensorType), typeof(IntPtr), typeof(int));
+        AssertSdlImport(nativeMethod, "SDL_GetJoystickSensorData");
+        AssertBoolReturnMarshal(nativeMethod);
+        ResetCaptureState();
+        nextBool = true;
+        nextSensorData = [0.25f, 0.5f, 0.75f];
+        float[] data = [0, 0, 0];
+        using NativeHookScope _ = NativeHookScope.Install("GetJoystickSensorDataNativeFunction", nameof(CaptureJoystickSensorData));
+        bool result = SDL3.SDL.GetJoystickSensorData((IntPtr)0x7614, SDL3.SDL.SensorType.AccelL, data.AsSpan(), data.Length);
+        TestAssert.Equal(true, result, "SDL.GetJoystickSensorData must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x7614, capturedJoystick, "SDL.GetJoystickSensorData must forward joystick.");
+        TestAssert.Equal(SDL3.SDL.SensorType.AccelL, capturedSensorType, "SDL.GetJoystickSensorData must forward sensor type.");
+        TestAssert.Equal(3, capturedNumValues, "SDL.GetJoystickSensorData must forward numValues.");
+        TestAssert.True(capturedFloatPointer != IntPtr.Zero, "SDL.GetJoystickSensorData must pin data.");
+        AssertFloats(nextSensorData, data, "SDL.GetJoystickSensorData must write sensor values.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.GetJoystickSensorData must call the native hook once.");
+    }
+
+    public static void GetJoystickSensorDataSpan_RejectsInvalidNumValues()
+    {
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install("GetJoystickSensorDataNativeFunction", nameof(CaptureJoystickSensorData));
+        float[] data = [1, 2];
+        bool oversizedThrew = false;
+        try
+        {
+            SDL3.SDL.GetJoystickSensorData((IntPtr)0x7615, SDL3.SDL.SensorType.Gyro, data.AsSpan(), 3);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            oversizedThrew = true;
+        }
+        bool negativeThrew = false;
+        try
+        {
+            SDL3.SDL.GetJoystickSensorData((IntPtr)0x7616, SDL3.SDL.SensorType.Gyro, data.AsSpan(), -1);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            negativeThrew = true;
+        }
+        TestAssert.True(oversizedThrew, "SDL.GetJoystickSensorData must reject values beyond the destination length.");
+        TestAssert.True(negativeThrew, "SDL.GetJoystickSensorData must reject a negative value count.");
+        TestAssert.Equal(0, capturedCallCount, "SDL.GetJoystickSensorData must validate before calling native code.");
+    }
+
+    public static void JoystickSensorApis_ReturnDefaultsWithoutJoystick()
+    {
+        TestAssert.Equal(false, SDL3.SDL.JoystickHasSensor(IntPtr.Zero, SDL3.SDL.SensorType.Accel), "SDL.JoystickHasSensor must return false without a joystick.");
+        TestAssert.Equal(false, SDL3.SDL.SetJoystickSensorEnabled(IntPtr.Zero, SDL3.SDL.SensorType.Accel, true), "SDL.SetJoystickSensorEnabled must fail without a joystick.");
+        TestAssert.Equal(false, SDL3.SDL.JoystickSensorEnabled(IntPtr.Zero, SDL3.SDL.SensorType.Accel), "SDL.JoystickSensorEnabled must return false without a joystick.");
+        TestAssert.Equal(0f, SDL3.SDL.GetJoystickSensorDataRate(IntPtr.Zero, SDL3.SDL.SensorType.Accel), "SDL.GetJoystickSensorDataRate must return zero without a joystick.");
+        TestAssert.Equal(false, SDL3.SDL.GetJoystickSensorData(IntPtr.Zero, SDL3.SDL.SensorType.Accel, Span<float>.Empty, 0), "SDL.GetJoystickSensorData must fail without a joystick.");
     }
 
     public static void GetJoystickProperties_ForwardsJoystickAndReturnsNativeValue()
@@ -1377,6 +1538,45 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureJoystickSensorBool(IntPtr joystick, SDL3.SDL.SensorType type)
+    {
+        capturedCallCount++;
+        capturedJoystick = joystick;
+        capturedSensorType = type;
+        return nextBool;
+    }
+
+    private static bool CaptureSetJoystickSensorEnabled(IntPtr joystick, SDL3.SDL.SensorType type, bool enabled)
+    {
+        capturedCallCount++;
+        capturedJoystick = joystick;
+        capturedSensorType = type;
+        capturedEnabled = enabled;
+        return nextBool;
+    }
+
+    private static float CaptureJoystickSensorDataRate(IntPtr joystick, SDL3.SDL.SensorType type)
+    {
+        capturedCallCount++;
+        capturedJoystick = joystick;
+        capturedSensorType = type;
+        return nextFloat;
+    }
+
+    private static bool CaptureJoystickSensorData(IntPtr joystick, SDL3.SDL.SensorType type, IntPtr data, int numValues)
+    {
+        capturedCallCount++;
+        capturedJoystick = joystick;
+        capturedSensorType = type;
+        capturedFloatPointer = data;
+        capturedNumValues = numValues;
+        if (data != IntPtr.Zero && numValues > 0)
+        {
+            Marshal.Copy(nextSensorData, 0, data, numValues);
+        }
+        return nextBool;
+    }
+
     private static uint CaptureJoystickUInt(IntPtr joystick)
     {
         capturedCallCount++;
@@ -1605,6 +1805,8 @@ internal static class PInvokeTests
         capturedPressure = 0;
         capturedSensorType = SDL3.SDL.SensorType.Invalid;
         capturedSensorTimestamp = 0;
+        nextFloat = 0;
+        nextSensorData = [];
         capturedFloatArray = null;
         capturedNumValues = 0;
         capturedCallCount = 0;

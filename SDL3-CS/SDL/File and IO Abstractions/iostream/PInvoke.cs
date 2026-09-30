@@ -37,36 +37,34 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC SDL_IOStream * SDLCALL SDL_IOFromFile(const char *file, const char *mode);</code>
     /// <summary>
-    /// <para>Use this function to create a new SDL_IOStream structure for reading from
+    /// <para>Use this function to create a new <c>SDL_IOStream</c> structure for reading from
     /// and/or writing to a named file.</para>
     /// <para>The <c>mode</c> string is treated roughly the same as in a call to the C
     /// library's fopen(), even if SDL doesn't happen to use fopen() behind the
     /// scenes.</para>
     /// <para>Available <c>mode</c> strings:</para>
-    /// <list type="bullet">
-    /// <item>"r": Open a file for reading. The file must exist.</item>
-    /// <item>"w": Create an empty file for writing. If a file with the same name
-    /// already exists its content is erased and the file is treated as a new
-    /// empty file.</item>
-    /// <item>"wx": Create an empty file for writing. If a file with the same name
-    /// already exists, the call fails.</item>
-    /// <item>"a": Append to a file. Writing operations append data at the end of the
-    /// file. The file is created if it does not exist.</item>
-    /// <item>"r+": Open a file for update both reading and writing. The file must
-    /// exist.</item>
-    /// <item>"w+": Create an empty file for both reading and writing. If a file with
-    /// the same name already exists its content is erased and the file is
-    /// treated as a new empty file.</item>
-    /// <item>"w+x": Create an empty file for both reading and writing. If a file with
-    /// the same name already exists, the call fails.</item>
-    /// <item>"a+": Open a file for reading and appending. All writing operations are
-    /// performed at the end of the file, protecting the previous content to be
-    /// overwritten. You can reposition (fseek, rewind) the internal pointer to
-    /// anywhere in the file for reading, but writing operations will move it
-    /// back to the end of file. The file is created if it does not exist.</item>
-    /// </list>
-    /// <para><b>NOTE</b>: In order to open a file as a binary file, a "b" character has to
-    /// be included in the `mode` string. This additional "b" character can either
+    /// <para>- "r": Open a file for reading. The file must exist.
+    /// - "w": Create an empty file for writing. If a file with the same name
+    ///   already exists its content is erased and the file is treated as a new
+    ///   empty file.
+    /// - "wx": Create an empty file for writing. If a file with the same name
+    ///   already exists, the call fails.
+    /// - "a": Append to a file. Writing operations append data at the end of the
+    ///   file. The file is created if it does not exist.
+    /// - "r+": Open a file for update both reading and writing. The file must
+    ///   exist.
+    /// - "w+": Create an empty file for both reading and writing. If a file with
+    ///   the same name already exists its content is erased and the file is
+    ///   treated as a new empty file.
+    /// - "w+x": Create an empty file for both reading and writing. If a file with
+    ///   the same name already exists, the call fails.
+    /// - "a+": Open a file for reading and appending. All writing operations are
+    ///   performed at the end of the file, protecting the previous content to be
+    ///   overwritten. You can reposition (fseek, rewind) the internal pointer to
+    ///   anywhere in the file for reading, but writing operations will move it
+    ///   back to the end of file. The file is created if it does not exist.</para>
+    /// <para>**NOTE**: In order to open a file as a binary file, a "b" character has to
+    /// be included in the <c>mode</c> string. This additional "b" character can either
     /// be appended at the end of the string (thus making the following compound
     /// modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
     /// letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
@@ -75,44 +73,46 @@ public static partial class SDL
     /// a text file.</para>
     /// <para>This function supports Unicode filenames, but they must be encoded in UTF-8
     /// format, regardless of the underlying operating system.</para>
-    /// <para>In Android, <see cref="IOFromFile"/> can be used to open content:// URIs. As a
-    /// fallback, <see cref="IOFromFile"/> will transparently open a matching filename in
+    /// <para>In Android, <see cref="IOFromFile(string, string)"/>() can be used to open content:// URIs. As a
+    /// fallback, <see cref="IOFromFile(string, string)"/>() will transparently open a matching filename in
     /// the app's <c>assets</c>.</para>
-    /// <para>Closing the SDL_IOStream will close SDL's internal file handle.</para>
+    /// <para>Closing the <c>SDL_IOStream</c> will close SDL's internal file handle.</para>
     /// <para>The following properties may be set at creation time by SDL:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.IOStreamWindowsHandlePointer"/>: a pointer, that can be cast
-    /// to a win32 <c>HANDLE</c>, that this SDL_IOStream is using to access the
-    /// filesystem. If the program isn't running on Windows, or SDL used some
-    /// other method to access the filesystem, this property will not be set.</item>
-    /// <item><see cref="Props.IOStreamSTDIOFilePointer"/>: a pointer, that can be cast to a
-    /// stdio <c>FILE *</c>, that this SDL_IOStream is using to access the filesystem.
-    /// If SDL used some other method to access the filesystem, this property
-    /// will not be set. PLEASE NOTE that if SDL is using a different C runtime
-    /// than your app, trying to use this pointer will almost certainly result in
-    /// a crash! This is mostly a problem on Windows; make sure you build SDL and
-    /// your app with the same compiler and settings to avoid it.</item>
-    /// <item><see cref="Props.IOStreamFileDescriptorNumber"/>: a file descriptor that this
-    /// SDL_IOStream is using to access the filesystem.</item>
-    /// <item><see cref="Props.IOStreamAndroidAAssetPointer"/>: a pointer, that can be cast
-    /// to an Android NDK <c>AAsset *</c>, that this SDL_IOStream is using to access
-    /// the filesystem. If SDL used some other method to access the filesystem,
-    /// this property will not be set.</item>
-    /// </list>
+    /// <para>- <see cref="Props.IOStreamWindowsHandlePointer"/>: a pointer, that can be cast
+    ///   to a win32 <c>HANDLE</c>, that this <c>SDL_IOStream</c> is using to access the
+    ///   filesystem. If the program isn't running on Windows, or SDL used some
+    ///   other method to access the filesystem, this property will not be set.
+    /// - <see cref="Props.IOStreamSTDIOFilePointer"/>: a pointer, that can be cast to a
+    ///   stdio <c>FILE *</c>, that this <c>SDL_IOStream</c> is using to access the filesystem.
+    ///   If SDL used some other method to access the filesystem, this property
+    ///   will not be set. PLEASE NOTE that if SDL is using a different C runtime
+    ///   than your app, trying to use this pointer will almost certainly result in
+    ///   a crash! This is mostly a problem on Windows; make sure you build SDL and
+    ///   your app with the same compiler and settings to avoid it.
+    /// - <c>SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER</c>: a file descriptor that this
+    ///   <c>SDL_IOStream</c> is using to access the filesystem.
+    /// - <see cref="Props.IOStreamAndroidAAssetPointer"/>: a pointer, that can be cast
+    ///   to an Android NDK <c>AAsset *</c>, that this <c>SDL_IOStream</c> is using to access
+    ///   the filesystem. If SDL used some other method to access the filesystem,
+    ///   this property will not be set.
+    /// - <see cref="Props.IOStreamOpenHarmonyRawFile64Pointer"/>: a pointer, that can be
+    ///   cast to an OpenHarmony/HarmonyOS <c>RawFile64 *</c>, that this <c>SDL_IOStream</c> is
+    ///   using to access the filesystem. If SDL used some other method to access
+    ///   the filesystem, this property will not be set.</para>
     /// </summary>
     /// <param name="file">a UTF-8 string representing the filename to open.</param>
     /// <param name="mode">an ASCII string representing the mode to be used for opening
-    /// the file.</param>
-    /// <returns>a pointer to the SDL_IOStream structure that is created or <c>null</c> on
-    /// failure; call <see cref="GetError"/> for more information.</returns>
+    ///             the file.</param>
+    /// <returns>a pointer to the <c>SDL_IOStream</c> structure that is created or <c>null</c> on
+    ///          failure; call <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CloseIO"/>
-    /// <seealso cref="FlushIO"/>
-    /// <seealso cref="ReadIO"/>
-    /// <seealso cref="SeekIO"/>
-    /// <seealso cref="TellIO"/>
-    /// <seealso cref="WriteIO"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CloseIO(IntPtr)"/>
+    /// <seealso cref="FlushIO(IntPtr)"/>
+    /// <seealso cref="ReadIO(IntPtr, IntPtr, UIntPtr)"/>
+    /// <seealso cref="SeekIO(IntPtr, long, IOWhence)"/>
+    /// <seealso cref="TellIO(IntPtr)"/>
+    /// <seealso cref="WriteIO(IntPtr, IntPtr, UIntPtr)"/>
     public static IntPtr IOFromFile(string file, string mode)
     {
         return IOFromFileNativeFunction(file, mode);

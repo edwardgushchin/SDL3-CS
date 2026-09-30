@@ -10,6 +10,7 @@ internal static class PInvokeTests
     private static SDL3.SDL.X11EventHook? capturedX11EventHook;
     private static SDL3.SDL.IOSAnimationCallback? capturedIOSAnimationCallback;
     private static SDL3.SDL.RequestAndroidPermissionCallback? capturedAndroidPermissionCallback;
+    private static SDL3.SDL.RequestOpenHarmonyPermissionCallback? capturedOpenHarmonyPermissionCallback;
     private static IntPtr capturedWindow;
     private static IntPtr capturedUserdata;
     private static IntPtr capturedCallbackParam;
@@ -21,6 +22,7 @@ internal static class PInvokeTests
     private static int capturedSchedPolicy;
     private static int capturedInterval;
     private static bool capturedEnabled;
+    private static bool capturedPermissionGranted;
     private static string? capturedPermission;
     private static string? capturedMessage;
     private static int capturedDuration;
@@ -30,6 +32,9 @@ internal static class PInvokeTests
     private static uint capturedCommand;
     private static int capturedParam;
     private static int capturedCallCount;
+    private static bool nextBool;
+    private static SDL3.SDL.FormFactor nextFormFactor;
+    private static SDL3.SDL.FormFactor capturedFormFactor;
 
     public static void SetWindowsMessageHook_ForwardsCallbackAndUserdata()
     {
@@ -177,6 +182,30 @@ internal static class PInvokeTests
         TestAssert.Equal(35, result, "SDL.GetAndroidSDKVersion must return the native hook value.");
     }
 
+    public static void GetOpenHarmonySDKVersion_ReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetOpenHarmonySDKVersion");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetOpenHarmonySDKVersion");
+        using NativeHookScope _ = NativeHookScope.Install("GetOpenHarmonySDKVersionNativeFunction", nameof(CaptureGetAndroidSDKVersion));
+        TestAssert.Equal(35, SDL3.SDL.GetOpenHarmonySDKVersion(), "SDL.GetOpenHarmonySDKVersion must return the native hook value.");
+    }
+
+    public static void GetOpenHarmonyInternalStoragePath_ReturnsStringAndNull()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetOpenHarmonyInternalStoragePath");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetOpenHarmonyInternalStoragePath");
+        using NativeHookScope _ = NativeHookScope.Install("GetOpenHarmonyInternalStoragePathNativeFunction", nameof(CapturePathPointer));
+        TestAssert.Equal("/data/storage/el2/base/files", CaptureUtf8Path(() => SDL3.SDL.GetOpenHarmonyInternalStoragePath(), "/data/storage/el2/base/files"), "SDL.GetOpenHarmonyInternalStoragePath must decode the native UTF-8 path.");
+        nextPointer = IntPtr.Zero;
+        TestAssert.Equal<string?>(null, SDL3.SDL.GetOpenHarmonyInternalStoragePath(), "SDL.GetOpenHarmonyInternalStoragePath must return null when the native path is null.");
+    }
+
+    public static void OpenHarmonyQueryStubs_ReturnZeroAndNullOnOtherPlatforms()
+    {
+        TestAssert.Equal(0, SDL3.SDL.GetOpenHarmonySDKVersion(), "The unsupported OpenHarmony SDK query must return zero on other platforms.");
+        TestAssert.Equal<string?>(null, SDL3.SDL.GetOpenHarmonyInternalStoragePath(), "The unsupported OpenHarmony path query must return null on other platforms.");
+    }
+
     public static void IsChromebook_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_IsChromebook");
@@ -292,6 +321,43 @@ internal static class PInvokeTests
         TestAssert.NotNull(capturedAndroidPermissionCallback, "SDL.RequestAndroidPermission must forward callback.");
     }
 
+    public static void RequestOpenHarmonyPermission_ForwardsPermissionCallbackAndUserdata()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_RequestOpenHarmonyPermission");
+        AssertSdlLibraryImport(nativeMethod, "SDL_RequestOpenHarmonyPermission");
+        AssertBoolReturnMarshal(nativeMethod);
+        AssertStringParameterMarshal(nativeMethod, "permission");
+        SDL3.SDL.RequestOpenHarmonyPermissionCallback callback = TestOpenHarmonyPermissionCallback;
+        using NativeHookScope _ = NativeHookScope.Install("RequestOpenHarmonyPermissionNativeFunction", nameof(CaptureRequestOpenHarmonyPermission));
+        bool result = SDL3.SDL.RequestOpenHarmonyPermission("ohos.permission.CAMERA", callback, (IntPtr)112);
+        TestAssert.Equal(true, result, "SDL.RequestOpenHarmonyPermission must return native hook result.");
+        TestAssert.Equal("ohos.permission.CAMERA", capturedPermission, "SDL.RequestOpenHarmonyPermission must forward permission.");
+        TestAssert.Equal((IntPtr)112, capturedUserdata, "SDL.RequestOpenHarmonyPermission must forward userdata.");
+        TestAssert.NotNull(capturedOpenHarmonyPermissionCallback, "SDL.RequestOpenHarmonyPermission must forward callback.");
+        TestAssert.Equal(true, capturedPermissionGranted, "SDL.RequestOpenHarmonyPermission callback must preserve granted result.");
+    }
+
+    public static void RequestOpenHarmonyPermissionCallback_UsesExpectedAbi()
+    {
+        MethodInfo invoke = typeof(SDL3.SDL.RequestOpenHarmonyPermissionCallback).GetMethod("Invoke")!;
+        AssertStringParameterMarshal(invoke, "permission");
+        AssertBoolParameterMarshal(invoke, "granted");
+        UnmanagedFunctionPointerAttribute? callConv = typeof(SDL3.SDL.RequestOpenHarmonyPermissionCallback).GetCustomAttribute<UnmanagedFunctionPointerAttribute>();
+        TestAssert.NotNull(callConv, "OpenHarmony permission callback must declare native calling convention.");
+        TestAssert.Equal(CallingConvention.Cdecl, callConv!.CallingConvention, "OpenHarmony permission callback must use cdecl.");
+        TestOpenHarmonyPermissionCallback(IntPtr.Zero, "ohos.permission.TEST", false);
+        TestAssert.Equal(false, capturedPermissionGranted, "OpenHarmony permission callback must preserve denial.");
+    }
+
+    public static void RequestOpenHarmonyPermission_UnsupportedStubDoesNotInvokeCallback()
+    {
+        bool invoked = false;
+        SDL3.SDL.RequestOpenHarmonyPermissionCallback callback = (_, _, _) => invoked = true;
+        TestAssert.Equal(false, SDL3.SDL.RequestOpenHarmonyPermission("ohos.permission.CAMERA", callback, IntPtr.Zero), "Desktop unsupported permission stub must return false.");
+        TestAssert.Equal(false, invoked, "Rejected native submission must not invoke the callback.");
+        GC.KeepAlive(callback);
+    }
+
     public static void ShowAndroidToast_ForwardsMessageAndLayout()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_ShowAndroidToast");
@@ -346,6 +412,80 @@ internal static class PInvokeTests
         bool result = SDL3.SDL.IsTV();
 
         TestAssert.Equal(true, result, "SDL.IsTV must return the native hook value.");
+    }
+
+    public static void IsPhone_ReturnsNativeValues()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_IsPhone");
+        AssertSdlLibraryImport(nativeMethod, "SDL_IsPhone");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        using NativeHookScope _ = NativeHookScope.Install("IsPhoneNativeFunction", nameof(CaptureBool));
+        nextBool = true;
+        TestAssert.Equal(true, SDL3.SDL.IsPhone(), "SDL.IsPhone must return the native true value.");
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.IsPhone(), "SDL.IsPhone must return the native false value.");
+    }
+
+    public static void IsUbuntuTouch_ReturnsNativeValues()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_IsUbuntuTouch");
+        AssertSdlLibraryImport(nativeMethod, "SDL_IsUbuntuTouch");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        using NativeHookScope _ = NativeHookScope.Install("IsUbuntuTouchNativeFunction", nameof(CaptureBool));
+        nextBool = true;
+        TestAssert.Equal(true, SDL3.SDL.IsUbuntuTouch(), "SDL.IsUbuntuTouch must return the native true value.");
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.IsUbuntuTouch(), "SDL.IsUbuntuTouch must return the native false value.");
+    }
+
+    public static void GetDeviceFormFactor_ReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetDeviceFormFactor");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetDeviceFormFactor");
+        TestAssert.Equal(typeof(SDL3.SDL.FormFactor), nativeMethod.ReturnType, "SDL.SDL_GetDeviceFormFactor must return SDL_FormFactor.");
+
+        using NativeHookScope _ = NativeHookScope.Install("GetDeviceFormFactorNativeFunction", nameof(CaptureDeviceFormFactor));
+        nextFormFactor = SDL3.SDL.FormFactor.Laptop;
+        TestAssert.Equal(SDL3.SDL.FormFactor.Laptop, SDL3.SDL.GetDeviceFormFactor(), "SDL.GetDeviceFormFactor must return the native enum value.");
+    }
+
+    public static void GetDeviceFormFactorName_ReturnsUtf8Name()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetDeviceFormFactorName");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetDeviceFormFactorName");
+        TestAssert.Equal(typeof(SDL3.SDL.FormFactor), nativeMethod.GetParameters()[0].ParameterType, "SDL.SDL_GetDeviceFormFactorName must accept SDL_FormFactor.");
+
+        using NativeHookScope _ = NativeHookScope.Install("GetDeviceFormFactorNameNativeFunction", nameof(CaptureDeviceFormFactorName));
+        string? name = CaptureUtf8Path(() => SDL3.SDL.GetDeviceFormFactorName(SDL3.SDL.FormFactor.Desktop), "SDL_FORMFACTOR_DESKTOP");
+        TestAssert.Equal("SDL_FORMFACTOR_DESKTOP", name, "SDL.GetDeviceFormFactorName must convert the native UTF-8 name.");
+        TestAssert.Equal(SDL3.SDL.FormFactor.Desktop, capturedFormFactor, "SDL.GetDeviceFormFactorName must forward the form factor.");
+
+        nextPointer = IntPtr.Zero;
+        TestAssert.Equal(string.Empty, SDL3.SDL.GetDeviceFormFactorName(SDL3.SDL.FormFactor.Unknown), "SDL.GetDeviceFormFactorName must return an empty string for a null native pointer.");
+    }
+
+    public static void IsPhone_InvokesNativeFormFactor()
+    {
+        SDL3.SDL.FormFactor formFactor = SDL3.SDL.GetDeviceFormFactor();
+        TestAssert.Equal(formFactor == SDL3.SDL.FormFactor.Phone, SDL3.SDL.IsPhone(), "SDL.IsPhone must match SDL_GetDeviceFormFactor.");
+    }
+
+    public static void IsUbuntuTouch_InvokesNativeEntryPoint()
+    {
+        TestAssert.Equal(false, SDL3.SDL.IsUbuntuTouch(), "The desktop test host must not be detected as Ubuntu Touch.");
+    }
+
+    public static void GetDeviceFormFactor_InvokesNativeEntryPoint()
+    {
+        TestAssert.True(Enum.IsDefined(SDL3.SDL.GetDeviceFormFactor()), "SDL.GetDeviceFormFactor must return a defined form factor.");
+    }
+
+    public static void GetDeviceFormFactorName_InvokesNativeEntryPoint()
+    {
+        TestAssert.Equal("SDL_FORMFACTOR_DESKTOP", SDL3.SDL.GetDeviceFormFactorName(SDL3.SDL.FormFactor.Desktop), "SDL.GetDeviceFormFactorName must return the native desktop label.");
+        TestAssert.Equal("SDL_FORMFACTOR_UNKNOWN", SDL3.SDL.GetDeviceFormFactorName((SDL3.SDL.FormFactor)(-1)), "SDL.GetDeviceFormFactorName must map unknown enum values to SDL_FORMFACTOR_UNKNOWN.");
     }
 
     public static void GetSandbox_ReturnsNativeValue()
@@ -495,6 +635,22 @@ internal static class PInvokeTests
         return true;
     }
 
+    private static bool CaptureBool()
+    {
+        return nextBool;
+    }
+
+    private static SDL3.SDL.FormFactor CaptureDeviceFormFactor()
+    {
+        return nextFormFactor;
+    }
+
+    private static IntPtr CaptureDeviceFormFactorName(SDL3.SDL.FormFactor formFactor)
+    {
+        capturedFormFactor = formFactor;
+        return nextPointer;
+    }
+
     private static void CaptureVoidCall()
     {
         capturedCallCount++;
@@ -516,6 +672,22 @@ internal static class PInvokeTests
         capturedAndroidPermissionCallback = cb;
         capturedUserdata = userdata;
         return true;
+    }
+
+    private static bool CaptureRequestOpenHarmonyPermission(string permission, SDL3.SDL.RequestOpenHarmonyPermissionCallback cb, IntPtr userdata)
+    {
+        capturedPermission = permission;
+        capturedUserdata = userdata;
+        capturedOpenHarmonyPermissionCallback = cb;
+        cb(userdata, permission, true);
+        return true;
+    }
+
+    private static void TestOpenHarmonyPermissionCallback(IntPtr userdata, string permission, bool granted)
+    {
+        capturedUserdata = userdata;
+        capturedPermission = permission;
+        capturedPermissionGranted = granted;
     }
 
     private static bool CaptureShowAndroidToast(string message, int duration, int gravity, int xoffset, int yoffset)

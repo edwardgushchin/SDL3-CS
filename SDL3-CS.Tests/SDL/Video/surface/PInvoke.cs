@@ -7,6 +7,8 @@ namespace SDL3.Tests.SDL.Video.Surface;
 
 internal static class PInvokeTests
 {
+    private const string MinimalJpegBase64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAACAAIDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACP/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAVAQEBAAAAAAAAAAAAAAAAAAAHCf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ADoDFU3/2Q==";
+
     private static IntPtr nextPointer;
     private static IntPtr capturedSurface;
     private static IntPtr capturedPalette;
@@ -86,6 +88,14 @@ internal static class PInvokeTests
         SurfacePaletteAlternateImageAndLockFunctions_ForwardInputsOutputsAndManageNativeArrays();
         SurfaceLoadAndBmpSaveFunctions_ForwardInputsAndReturnNativeValues();
         SurfacePngLoadAndSaveFunctions_ForwardInputsAndReturnNativeValues();
+        SurfaceJpgLoadFunctions_ForwardInputsAndReturnNativeValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG") && NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG_IO"))
+        {
+            LoadJPG_InvokesNativeEntryPoint();
+            LoadJPGIO_InvokesNativeEntryPointAndClosesOwnedStream();
+            LoadJPG_ReturnsNullForMissingFile();
+            LoadJPGIO_ReturnsNullForNullStream();
+        }
         SurfaceRleColorBlendAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues();
         SurfaceTransformAndConversionFunctions_ForwardInputsAndReturnNativeValues();
         SurfaceConvertPixelsFunctions_ForwardInputsOutputsAndReturnNativeValues();
@@ -141,6 +151,14 @@ internal static class PInvokeTests
         MethodInfo loadPng = GetNativeMethod("SDL_LoadPNG");
         AssertNativeImport(loadPng, "SDL_LoadPNG");
         AssertStringParameterMarshal(loadPng, 0);
+        MethodInfo loadJpgIO = GetNativeMethod("SDL_LoadJPGIO");
+        AssertNativeImport(loadJpgIO, "SDL_LoadJPG_IO");
+        TestAssert.Equal(typeof(IntPtr), loadJpgIO.ReturnType, "SDL_LoadJPG_IO must return an SDL_Surface pointer.");
+        AssertBoolParameterMarshal(loadJpgIO, 1);
+        MethodInfo loadJpg = GetNativeMethod("SDL_LoadJPG");
+        AssertNativeImport(loadJpg, "SDL_LoadJPG");
+        TestAssert.Equal(typeof(IntPtr), loadJpg.ReturnType, "SDL_LoadJPG must return an SDL_Surface pointer.");
+        AssertStringParameterMarshal(loadJpg, 0);
         MethodInfo savePngIO = GetNativeMethod("SDL_SavePNGIO");
         AssertNativeBoolImport(savePngIO, "SDL_SavePNG_IO");
         AssertBoolParameterMarshal(savePngIO, 2);
@@ -552,6 +570,84 @@ internal static class PInvokeTests
         TestAssert.Equal(true, saved, "SDL.SavePNG must return the native hook value.");
         TestAssert.Equal((IntPtr)0x4031, capturedSurface, "SDL.SavePNG must forward surface.");
         TestAssert.Equal("surface-out.png", capturedFile, "SDL.SavePNG must forward file.");
+    }
+
+    public static void SurfaceJpgLoadFunctions_ForwardInputsAndReturnNativeValues()
+    {
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4101;
+        using (NativeHookScope _ = NativeHookScope.Install("LoadJPGIONativeFunction", nameof(CaptureLoadJPGIO)))
+        {
+            IntPtr result = SDL3.SDL.LoadJPGIO((IntPtr)0x4102, true);
+
+            TestAssert.Equal((IntPtr)0x4101, result, "SDL.LoadJPGIO must return the native hook surface.");
+            TestAssert.Equal((IntPtr)0x4102, capturedSrc, "SDL.LoadJPGIO must forward the stream.");
+            TestAssert.Equal(true, capturedCloseIO, "SDL.LoadJPGIO must forward closeio.");
+        }
+
+        ResetCaptureState();
+        nextPointer = (IntPtr)0x4111;
+        using NativeHookScope jpgLoadHook = NativeHookScope.Install("LoadJPGNativeFunction", nameof(CaptureLoadJPG));
+        IntPtr loaded = SDL3.SDL.LoadJPG("surface.jpg");
+
+        TestAssert.Equal((IntPtr)0x4111, loaded, "SDL.LoadJPG must return the native hook surface.");
+        TestAssert.Equal("surface.jpg", capturedFile, "SDL.LoadJPG must forward the path.");
+    }
+
+    public static void LoadJPG_InvokesNativeEntryPoint()
+    {
+        string path = CreateJpegFixture();
+        IntPtr surface = IntPtr.Zero;
+        try
+        {
+            surface = SDL3.SDL.LoadJPG(path);
+            TestAssert.True(surface != IntPtr.Zero, "SDL.LoadJPG must decode a valid JPEG fixture.");
+        }
+        finally
+        {
+            if (surface != IntPtr.Zero)
+            {
+                SDL3.SDL.DestroySurface(surface);
+            }
+            File.Delete(path);
+        }
+    }
+
+    public static void LoadJPGIO_InvokesNativeEntryPointAndClosesOwnedStream()
+    {
+        string path = CreateJpegFixture();
+        IntPtr stream = SDL3.SDL.IOFromFile(path, "rb");
+        IntPtr surface = IntPtr.Zero;
+        try
+        {
+            TestAssert.True(stream != IntPtr.Zero, "SDL.IOFromFile must open the JPEG fixture.");
+            surface = SDL3.SDL.LoadJPGIO(stream, closeio: true);
+            stream = IntPtr.Zero;
+            TestAssert.True(surface != IntPtr.Zero, "SDL.LoadJPGIO must decode a valid JPEG stream.");
+        }
+        finally
+        {
+            if (surface != IntPtr.Zero)
+            {
+                SDL3.SDL.DestroySurface(surface);
+            }
+            if (stream != IntPtr.Zero)
+            {
+                SDL3.SDL.CloseIO(stream);
+            }
+            File.Delete(path);
+        }
+    }
+
+    public static void LoadJPG_ReturnsNullForMissingFile()
+    {
+        string path = Path.Combine(Path.GetTempPath(), $"sdl3-cs-missing-{Guid.NewGuid():N}.jpg");
+        TestAssert.Equal(IntPtr.Zero, SDL3.SDL.LoadJPG(path), "SDL.LoadJPG must return null for a missing file.");
+    }
+
+    public static void LoadJPGIO_ReturnsNullForNullStream()
+    {
+        TestAssert.Equal(IntPtr.Zero, SDL3.SDL.LoadJPGIO(IntPtr.Zero, closeio: false), "SDL.LoadJPGIO must return null for a null stream.");
     }
 
     public static void SurfaceRleColorBlendAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues()
@@ -1830,6 +1926,26 @@ internal static class PInvokeTests
     {
         capturedFile = file;
         return nextPointer;
+    }
+
+    private static IntPtr CaptureLoadJPGIO(IntPtr src, bool closeio)
+    {
+        capturedSrc = src;
+        capturedCloseIO = closeio;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureLoadJPG(string file)
+    {
+        capturedFile = file;
+        return nextPointer;
+    }
+
+    private static string CreateJpegFixture()
+    {
+        string path = Path.Combine(Path.GetTempPath(), $"sdl3-cs-jpeg-{Guid.NewGuid():N}.jpg");
+        File.WriteAllBytes(path, Convert.FromBase64String(MinimalJpegBase64));
+        return path;
     }
 
     private static bool CaptureSavePNGIO(IntPtr surface, IntPtr dst, bool closeio)

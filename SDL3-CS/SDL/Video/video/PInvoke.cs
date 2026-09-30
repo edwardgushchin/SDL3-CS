@@ -983,130 +983,131 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Window * SDLCALL SDL_CreateWindowWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Create a window with the specified properties.</para>
+    /// <para>The window size is a request and may be different than expected based on
+    /// the desktop layout and window manager policies. Your application should be
+    /// prepared to handle a window of any size.</para>
     /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateAlwaysOnTopBoolean"/>: <c>true</c> if the window should
-    /// be always on top</item>
-    /// <item><see cref="Props.WindowCreateBorderlessBoolean"/>: <c>true</c> if the window has no
-    /// window decoration</item>
-    /// <item><see cref="Props.WindowCreateExternalGraphicsContextBoolean"/>: <c>true</c> if the
-    /// window will be used with an externally managed graphics context.</item>
-    /// <item><see cref="Props.WindowCreateFocusableBoolean"/>: <c>true</c> if the window should
-    /// accept keyboard input (defaults <c>true</c>)</item>
-    /// <item><see cref="Props.WindowCreateFullscreenBoolean"/>: <c>true</c> if the window should
-    /// start in fullscreen mode at desktop resolution</item>
-    /// <item><see cref="Props.WindowCreateHeightNumber"/>: the height of the window</item>
-    /// <item><see cref="Props.WindowCreateHiddenBoolean"/>: <c>true</c> if the window should start
-    /// hidden</item>
-    /// <item><see cref="Props.WindowCreateHighPixelDensityBoolean"/>: <c>true</c> if the window
-    /// uses a high pixel density buffer if possible</item>
-    /// <item><see cref="Props.WindowCreateMaximizedBoolean"/>: <c>true</c> if the window should
-    /// start maximized</item>
-    /// <item><see cref="Props.WindowCreateMenuBoolean"/>: <c>true</c> if the window is a popup menu</item>
-    /// <item><see cref="Props.WindowCreateMetalBoolean"/>: <c>true</c> if the window will be used
-    /// with Metal rendering</item>
-    /// <item><see cref="Props.WindowCreateMinimizedBoolean"/>: <c>true</c> if the window should
-    /// start minimized</item>
-    /// <item><see cref="Props.WindowCreateModalBoolean"/>: <c>true</c> if the window is modal to
-    /// its parent</item>
-    /// <item><see cref="Props.WindowCreateMouseGrabbedBoolean"/>: <c>true</c> if the window starts
-    /// with grabbed mouse focus</item>
-    /// <item><see cref="Props.WindowCreateOpenGLBoolean"/>: <c>true</c> if the window will be used
-    /// with OpenGL rendering</item>
-    /// <item><see cref="Props.WindowCreateParentPointer"/>: an SDL_Window that will be the
-    /// parent of this window, required for windows with the <c>"tooltip,"</c> <c>"menu"</c>,
-    /// and <c>"modal"</c> properties</item>
-    /// <item><see cref="Props.WindowCreateResizableBoolean"/>: <c>true</c> if the window should be
-    /// resizable</item>
-    /// <item><see cref="Props.WindowCreateTitleString"/>: the title of the window, in UTF-8
-    /// encoding</item>
-    /// <item><see cref="Props.WindowCreateTransparentBoolean"/>: <c>true</c> if the window show
-    /// transparent in the areas with alpha of 0</item>
-    /// <item><see cref="Props.WindowCreateTooltipBoolean"/>: <c>true</c> if the window is a tooltip</item>
-    /// <item><see cref="Props.WindowCreateUtilityBoolean"/>: <c>true</c> if the window is a utility
-    /// window, not showing in the task bar and window list</item>
-    /// <item><see cref="Props.WindowCreateVulkanBoolean"/>: <c>true</c> if the window will be used
-    /// with Vulkan rendering</item>
-    /// <item><see cref="Props.WindowCreateWidthNumber"/>: the width of the window</item>
-    /// <item><see cref="Props.WindowCreateXNumber"/>: the x position of the window, or
-    /// <see cref="WindowPosCentered"/>, defaults to <see cref="WindowPosUndefined"/>. This is
-    /// relative to the parent for windows with the <c>"tooltip"</c> or <c>"menu"</c> property set.</item>
-    /// <item><see cref="Props.WindowCreateYNumber"/>: the y position of the window, or
-    /// <see cref="WindowPosCentered"/>, defaults to <see cref="WindowPosUndefined"/>. This is
-    /// relative to the parent for windows with the <c>"tooltip"</c> or <c>"menu"</c> property set.</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowCreateAlwaysOnTopBoolean"/>: <c>true</c> if the window should
+    ///   be always on top
+    /// - <see cref="Props.WindowCreateBorderlessBoolean"/>: <c>true</c> if the window has no
+    ///   window decoration
+    /// - <see cref="Props.WindowCreateConstrainPopupBoolean"/>: <c>true</c> if the "tooltip"
+    ///   and "menu" window types should be automatically constrained to be
+    ///   entirely within display bounds (default), <c>false</c> if no constraints on the
+    ///   position are desired.
+    /// - <see cref="Props.WindowCreateExternalGraphicsContextBoolean"/>: <c>true</c> if the
+    ///   window will be used with an externally managed graphics context.
+    /// - <see cref="Props.WindowCreateFocusableBoolean"/>: <c>true</c> if the window should
+    ///   accept keyboard input (defaults <c>true</c>)
+    /// - <see cref="Props.WindowCreateFullscreenBoolean"/>: <c>true</c> if the window should
+    ///   start in fullscreen mode at desktop resolution
+    /// - <see cref="Props.WindowCreateHeightNumber"/>: the height of the window
+    /// - <see cref="Props.WindowCreateHiddenBoolean"/>: <c>true</c> if the window should start
+    ///   hidden
+    /// - <see cref="Props.WindowCreateHighPixelDensityBoolean"/>: <c>true</c> if the window
+    ///   uses a high pixel density buffer if possible
+    /// - <see cref="Props.WindowCreateMaximizedBoolean"/>: <c>true</c> if the window should
+    ///   start maximized
+    /// - <see cref="Props.WindowCreateMenuBoolean"/>: <c>true</c> if the window is a popup menu
+    /// - <see cref="Props.WindowCreateMetalBoolean"/>: <c>true</c> if the window will be used
+    ///   with Metal rendering
+    /// - <see cref="Props.WindowCreateMinimizedBoolean"/>: <c>true</c> if the window should
+    ///   start minimized
+    /// - <see cref="Props.WindowCreateModalBoolean"/>: <c>true</c> if the window is modal to
+    ///   its parent
+    /// - <see cref="Props.WindowCreateMouseGrabbedBoolean"/>: <c>true</c> if the window starts
+    ///   with grabbed mouse focus
+    /// - <see cref="Props.WindowCreateOpenGLBoolean"/>: <c>true</c> if the window will be used
+    ///   with OpenGL rendering
+    /// - <see cref="Props.WindowCreateParentPointer"/>: an <c>SDL_Window</c> that will be the
+    ///   parent of this window, required for windows with the "tooltip", "menu",
+    ///   and "modal" properties
+    /// - <see cref="Props.WindowCreateResizableBoolean"/>: <c>true</c> if the window should be
+    ///   resizable
+    /// - <see cref="Props.WindowCreateTitleString"/>: the title of the window, in UTF-8
+    ///   encoding
+    /// - <see cref="Props.WindowCreateTransparentBoolean"/>: <c>true</c> if the window show
+    ///   transparent in the areas with alpha of 0
+    /// - <see cref="Props.WindowCreateTooltipBoolean"/>: <c>true</c> if the window is a tooltip
+    /// - <see cref="Props.WindowCreateUtilityBoolean"/>: <c>true</c> if the window is a utility
+    ///   window, not showing in the task bar and window list
+    /// - <see cref="Props.WindowCreateVulkanBoolean"/>: <c>true</c> if the window will be used
+    ///   with Vulkan rendering
+    /// - <see cref="Props.WindowCreateWidthNumber"/>: the width of the window
+    /// - <see cref="Props.WindowCreateXNumber"/>: the x position of the window, or
+    ///   <c>SDL_WINDOWPOS_CENTERED</c>, defaults to <c>SDL_WINDOWPOS_UNDEFINED</c>. This is
+    ///   relative to the parent for windows with the "tooltip" or "menu" property
+    ///   set.
+    /// - <see cref="Props.WindowCreateYNumber"/>: the y position of the window, or
+    ///   <c>SDL_WINDOWPOS_CENTERED</c>, defaults to <c>SDL_WINDOWPOS_UNDEFINED</c>. This is
+    ///   relative to the parent for windows with the "tooltip" or "menu" property
+    ///   set.</para>
     /// <para>These are additional supported properties on macOS:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateCocoaWindowPointer"/>: the
-    /// <c>(__unsafe_unretained)</c> NSWindow associated with the window, if you want
-    /// to wrap an existing window.</item>
-    /// <item><see cref="Props.WindowCreateCocoaViewPointer"/>: the <c>(__unsafe_unretained)</c>
-    /// NSView associated with the window, defaults to <c>[window contentView]</c></item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowCreateCocoaWindowPointer"/>: the
+    ///   <c>(__unsafe_unretained)</c> NSWindow associated with the window, if you want
+    ///   to wrap an existing window.
+    /// - <see cref="Props.WindowCreateCocoaViewPointer"/>: the <c>(__unsafe_unretained)</c>
+    ///   NSView associated with the window, defaults to <c>[window contentView]</c></para>
     /// <para>These are additional supported properties on iOS, tvOS, and visionOS:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateWindowScenePointer"/>: the <c>(__unsafe_unretained)</c>
-    /// UIWindowScene associated with the window, defaults to the active window
-    /// scene.</item>
-    /// </list>
-    /// <para>These are additional supported properties with visionOS:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateVisionOSSettingsString"/>: the settings of the window
-    /// in JSON format. If this isn't set, the window will have standard UIKit
-    /// behavior. If this is set to <c>""</c> or a valid setting string then the
-    /// window is created with enhanced features allowing curved display. The
-    /// curvature in the settings is defined as a radius in millimeters. A common
-    /// value for a gaming monitor is 1000 and a setting string for that would be
-    /// <c>"{\"curvatureRadius\":1000}"</c>.</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowCreateWindowScenePointer"/>: the <c>(__unsafe_unretained)</c>
+    ///   UIWindowScene associated with the window, defaults to the active window
+    ///   scene.</para>
     /// <para>These are additional supported properties on Wayland:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - <c>true</c> if
-    /// the application wants to use the Wayland surface for a custom role and
-    /// does not want it attached to an XDG toplevel window. See
-    /// [README-wayland](README-wayland) for more information on using custom
-    /// surfaces.</item>
-    /// <item><see cref="Props.WindowCreateWaylandCreateEGLWindowBoolean"/> - <c>true</c> if the
-    /// application wants an associated <c>wl_egl_window</c> object to be created and
-    /// attached to the window, even if the window does not have the OpenGL
-    /// property or <see cref="WindowFlags.OpenGL"/> flag set.</item>
-    /// <item><see cref="Props.WindowCreateWaylandWLSurfacePointer"/> - the wl_surface
-    /// associated with the window, if you want to wrap an existing window. See
-    /// [README-wayland](README-wayland) for more information.</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowCreateWaylandSurfaceRoleCustomBoolean"/> - <c>true</c> if
+    ///   the application wants to use the Wayland surface for a custom role and
+    ///   does not want it attached to an XDG toplevel window. See
+    ///   [README-wayland](README-wayland) for more information on using custom
+    ///   surfaces.
+    /// - <see cref="Props.WindowCreateWaylandCreateEGLWindowBoolean"/> - <c>true</c> if the
+    ///   application wants an associated <c>wl_egl_window</c> object to be created and
+    ///   attached to the window, even if the window does not have the OpenGL
+    ///   property or <c>SDL_WINDOW_OPENGL</c> flag set.
+    /// - <see cref="Props.WindowCreateWaylandWindowIDString"/> - a string used as a
+    ///   stable identifier for toplevel windows for the purpose of allowing the
+    ///   compositor to save/restore their state between runs. This should be human
+    ///   readable, but not translated, and must be unique for each individual
+    ///   window.
+    /// - <see cref="Props.WindowCreateWaylandWLSurfacePointer"/> - the wl_surface
+    ///   associated with the window, if you want to wrap an existing window. See
+    ///   [README-wayland](README-wayland) for more information.
+    /// - <see cref="Props.WindowCreateWaylandEnableInsetsBoolean"/> - <c>true</c> if the
+    ///   application wants to enable custom border inset window properties. See
+    ///   [README-wayland](README-wayland) for more information.</para>
     /// <para>These are additional supported properties on Windows:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateWin32HWNDPointer"/>: the HWND associated with the
-    /// window, if you want to wrap an existing window.</item>
-    /// <item><see cref="Props.WindowCreateWin32PixelFormatHWNDPointer"/>`: optional,
-    /// another window to share pixel format with, useful for OpenGL windows</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowCreateWin32HWNDPointer"/>: the HWND associated with the
+    ///   window, if you want to wrap an existing window.
+    /// - <see cref="Props.WindowCreateWin32PixelFormatHWNDPointer"/>: optional,
+    ///   another window to share pixel format with, useful for OpenGL windows
+    /// - <see cref="Props.WindowCreateWin32StyleExNumber"/>: the window style
+    ///   (WS_EX_*) flags to use instead of the defaults.</para>
     /// <para>These are additional supported properties with X11:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateX11WindowNumber"/>: the X11 Window associated
-    /// with the window, if you want to wrap an existing window.</item>
-    /// </list>
-    /// <para>The window is implicitly shown if the <c>"hidden"</c> property is not set.</para>
+    /// <para>- <see cref="Props.WindowCreateX11WindowNumber"/>: the X11 Window associated
+    ///   with the window, if you want to wrap an existing window.</para>
+    /// <para>The window is implicitly shown if the "hidden" property is not set.</para>
     /// <para>These are additional supported properties with Emscripten:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCreateEmscriptennCanvasIdString"/>: the id given to the canvas
-    /// element. This should start with a <c>#</c> sign</item>
-    /// <item><see cref="Props.WindowCreateEmscriptenKeyboardElementString"/>: override the
-    /// binding element for keyboard inputs for this canvas. The variable can be
-    /// one of:</item>
-    /// <item><c>"#window"</c>: the javascript window object (default)</item>
-    /// <item><c>"#document"</c>: the javascript document object</item>
-    /// <item><c>"#screen"</c>: the javascript window.screen object</item>
-    /// <item><c>"#canvas"</c>: the WebGL canvas element</item>
-    /// <item><c>"#none"</c>: Don't bind anything at all</item>
-    /// <item>any other string without a leading # sign applies to the element on the
-    /// page with that ID. Windows with the "tooltip" and "menu" properties are
-    /// popup windows and have the behaviors and guidelines outlined in
-    /// <see cref="CreatePopupWindow"/>.</item>
-    /// </list>
-    /// <para>Windows with the <c>"tooltip"</c> and <c>"menu"</c> properties are popup windows and have
-    /// the behaviors and guidelines outlined in <see cref="CreatePopupWindow"/>.</para>
-    /// <para>If this window is being created to be used with an SDL_Renderer, you should
+    /// <para>- <see cref="Props.WindowCreateEmscriptennCanvasIdString"/>: the id given to the
+    ///   canvas element. This should start with a '#' sign
+    /// - <see cref="Props.WindowCreateEmscriptenKeyboardElementString"/>: override the
+    ///   binding element for keyboard inputs for this canvas. The variable can be
+    ///   one of:
+    /// - "#window": the javascript window object (default)
+    /// - "#document": the javascript document object
+    /// - "#screen": the javascript window.screen object
+    /// - "#canvas": the WebGL canvas element
+    /// - "#none": Don't bind anything at all
+    /// - any other string without a leading # sign applies to the element on the
+    ///   page with that ID. Windows with the "tooltip" and "menu" properties are
+    ///   popup windows and have the behaviors and guidelines outlined in
+    ///   <see cref="CreatePopupWindow(IntPtr, int, int, int, int, WindowFlags)"/>().</para>
+    /// <para>These are additional supported properties with visionOS:</para>
+    /// <para>- <see cref="Props.WindowCreateVisionOSSettingsString"/>: the settings of the
+    ///   window in JSON format. If this isn't set, the window will have standard
+    ///   UIKit behavior. If this is set to "" or a valid setting string then the
+    ///   window is created with enhanced features allowing curved display. The
+    ///   curvature in the settings is defined as a radius in millimeters. A common
+    ///   value for a gaming monitor is 1000 and a setting string for that would be
+    ///   "{\"curvatureRadius\":1000}".</para>
+    /// <para>If this window is being created to be used with an <c>SDL_Renderer</c>, you should
     /// not add a graphics API specific property
     /// (<see cref="Props.WindowCreateOpenGLBoolean"/>, etc), as SDL will handle that
     /// internally when it chooses a renderer. However, SDL might need to recreate
@@ -1114,16 +1115,16 @@ public static partial class SDL
     /// and then flicker as it is recreated. The correct approach to this is to
     /// create the window with the <see cref="Props.WindowCreateHiddenBoolean"/> property
     /// set to <c>true</c>, then create the renderer, then show the window with
-    /// <see cref="ShowWindow"/>.</para>
+    /// <see cref="ShowWindow(IntPtr)"/>().</para>
     /// </summary>
     /// <param name="props">the properties to use.</param>
     /// <returns>the window that was created or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateProperties"/>
-    /// <seealso cref="CreateWindow"/>
-    /// <seealso cref="DestroyWindow"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateProperties()"/>
+    /// <seealso cref="CreateWindow(string, int, int, WindowFlags)"/>
+    /// <seealso cref="DestroyWindow(IntPtr)"/>
     public static IntPtr CreateWindowWithProperties(uint props)
     {
         return CreateWindowWithPropertiesNativeFunction(props);
@@ -1210,140 +1211,137 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the properties associated with a window.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowShapePointer"/>: the surface associated with a shaped
-    /// window</item>
-    /// <item><see cref="Props.WindowHDREnabledBoolean"/>: <c>true</c> if the window has HDR
-    /// headroom above the SDR white point. This property can change dynamically
-    /// when <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
-    /// <item><see cref="Props.WindowSDRWhiteLevelFloat"/>: the value of SDR white in the
-    /// <see cref="Colorspace.SRGBLinear"/> colorspace. On Windows this corresponds to the
-    /// SDR white level in scRGB colorspace, and on Apple platforms this is
-    /// always 1.0 for EDR content. This property can change dynamically when
-    /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
-    /// <item><see cref="Props.WindowHDRHeadroomFloat"/>: the additional high dynamic range
-    /// that can be displayed, in terms of the SDR white point. When HDR is not
-    /// enabled, this will be 1.0. This property can change dynamically when
-    /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowShapePointer"/>: the surface associated with a shaped
+    ///   window
+    /// - <see cref="Props.WindowHDREnabledBoolean"/>: <c>true</c> if the window has HDR
+    ///   headroom above the SDR white point. This property can change dynamically
+    ///   when <see cref="EventType.WindowHDRStateChanged"/> is sent.
+    /// - <see cref="Props.WindowSDRWhiteLevelFloat"/>: the value of SDR white in the
+    ///   <see cref="Colorspace.SRGBLinear"/> colorspace. On Windows this corresponds to the
+    ///   SDR white level in scRGB colorspace, and on Apple platforms this is
+    ///   always 1.0 for EDR content. This property can change dynamically when
+    ///   <see cref="EventType.WindowHDRStateChanged"/> is sent.
+    /// - <see cref="Props.WindowHDRHeadroomFloat"/>: the additional high dynamic range
+    ///   that can be displayed, in terms of the SDR white point. When HDR is not
+    ///   enabled, this will be 1.0. This property can change dynamically when
+    ///   <see cref="EventType.WindowHDRStateChanged"/> is sent.</para>
     /// <para>On Android:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowAndroidWindowPointer"/>: the ANativeWindow associated
-    /// with the window</item>
-    /// <item><see cref="Props.WindowAndroidSurfacePointer"/>: the EGLSurface associated with
-    /// the window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowAndroidWindowPointer"/>: the ANativeWindow associated
+    ///   with the window
+    /// - <see cref="Props.WindowAndroidSurfacePointer"/>: the EGLSurface associated with
+    ///   the window</para>
+    /// <para>On OpenHarmony/HarmonyOS:</para>
+    /// <para>- <see cref="Props.WindowOpenHarmonyXComponentPointer"/>: the OH_NativeXComponent
+    ///   associated with the window
+    /// - <see cref="Props.WindowOpenHarmonyWindowPointer"/>: the OHNativeWindow
+    ///   associated with the window
+    /// - <see cref="Props.WindowOpenHarmonySurfacePointer"/>: the EGLSurface associated
+    ///   with the window</para>
     /// <para>On iOS:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowUIKitWindowPointer"/>: the <c>(__unsafe_unretained)</c>
-    /// UIWindow associated with the window</item>
-    /// <item><see cref="Props.WindowUIKitMetalViewTagNumber"/>: the NSInteger tag
-    /// associated with metal views on the window</item>
-    /// <item><see cref="Props.WindowUIKitOpenglFramebufferNumber"/>: the OpenGL view's
-    /// framebuffer object. It must be bound when rendering to the screen using
-    /// OpenGL.</item>
-    /// <item><see cref="Props.WindowUIKitOpenglRenderbufferNumber"/>: the OpenGL view's
-    /// renderbuffer object. It must be bound when <see cref="GLSwapWindow"/> is called.</item>
-    /// <item><see cref="Props.WindowUIKitOpenglResolveFramebufferNumber"/>: the OpenGL
-    /// view's resolve framebuffer, when MSAA is used.</item>
-    /// </list>
-    /// <para>On visionOS:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowVisionOSSettingsString"/>: the current settings of the
-    /// window in JSON format, or <c>null</c> if the window has standard UIKit
-    /// behavior. <see cref="EventType.WindowSettingsChanged"/> is sent when this
-    /// value changes.</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowUIKitWindowPointer"/>: the <c>(__unsafe_unretained)</c>
+    ///   UIWindow associated with the window
+    /// - <see cref="Props.WindowUIKitMetalViewTagNumber"/>: the NSInteger tag
+    ///   associated with metal views on the window
+    /// - <see cref="Props.WindowUIKitOpenglFramebufferNumber"/>: the OpenGL view's
+    ///   framebuffer object. It must be bound when rendering to the screen using
+    ///   OpenGL.
+    /// - <see cref="Props.WindowUIKitOpenglRenderbufferNumber"/>: the OpenGL view's
+    ///   renderbuffer object. It must be bound when <see cref="GLSwapWindow(IntPtr)"/> is called.
+    /// - <see cref="Props.WindowUIKitOpenglResolveFramebufferNumber"/>: the OpenGL
+    ///   view's resolve framebuffer, when MSAA is used.</para>
     /// <para>On KMS/DRM:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowKMSDRMDeviceIndexNumber"/>: the device index associated
-    /// with the window (e.g. the X in /dev/dri/cardX)</item>
-    /// <item><see cref="Props.WindowKMSDRMDRMFDNumber"/>: the DRM FD associated with the
-    /// window</item>
-    /// <item><see cref="Props.WindowKMSDRMGBMDevicePointer"/>: the GBM device associated
-    /// with the window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowKMSDRMDeviceIndexNumber"/>: the device index associated
+    ///   with the window (e.g. the X in /dev/dri/cardX)
+    /// - <see cref="Props.WindowKMSDRMDRMFDNumber"/>: the DRM FD associated with the
+    ///   window
+    /// - <see cref="Props.WindowKMSDRMGBMDevicePointer"/>: the GBM device associated
+    ///   with the window</para>
     /// <para>On macOS:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowCocoaWindowPointer"/>: the <c>(__unsafe_unretained)</c>
-    /// NSWindow associated with the window</item>
-    /// <item><see cref="Props.WindowCocoaMetalViewTagNumber"/>: the NSInteger tag
-    /// associated with metal views on the window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowCocoaWindowPointer"/>: the <c>(__unsafe_unretained)</c>
+    ///   NSWindow associated with the window
+    /// - <see cref="Props.WindowCocoaMetalViewTagNumber"/>: the NSInteger tag
+    ///   associated with metal views on the window</para>
     /// <para>On OpenVR:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowOpenVROverlayIdNumber"/>: the OpenVR Overlay Handle ID for the
-    /// associated overlay window.</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowOpenVROverlayIdNumber"/>: the OpenVR Overlay Handle ID
+    ///   for the associated overlay window.</para>
     /// <para>On QNX:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowQNXWindowPointer"/>: the screen_window_t associated with
-    /// the window.</item>
-    /// <item><see cref="Props.WindowQNXSurfacePointer"/>: the EGLSurface associated with the
-    /// window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowQNXWindowPointer"/>: the screen_window_t associated with
+    ///   the window.
+    /// - <see cref="Props.WindowQNXSurfacePointer"/>: the EGLSurface associated with the
+    ///   window</para>
     /// <para>On Vivante:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowVivanteDisplayPointer"/>: the EGLNativeDisplayType
-    /// associated with the window</item>
-    /// <item><see cref="Props.WindowVivanteWindowPointer"/>: the EGLNativeWindowType
-    /// associated with the window</item>
-    /// <item><see cref="Props.WindowVivanteSurfacePointer"/>: the EGLSurface associated with
-    /// the window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowVivanteDisplayPointer"/>: the EGLNativeDisplayType
+    ///   associated with the window
+    /// - <see cref="Props.WindowVivanteWindowPointer"/>: the EGLNativeWindowType
+    ///   associated with the window
+    /// - <see cref="Props.WindowVivanteSurfacePointer"/>: the EGLSurface associated with
+    ///   the window</para>
     /// <para>On Windows:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowWin32HWNDPointer"/>: the HWND associated with the window</item>
-    /// <item><see cref="Props.WindowWin32HDCPointer"/>: the HDC associated with the window</item>
-    /// <item><see cref="Props.WindowWin32InstancePointer"/>: the HINSTANCE associated with
-    /// the window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowWin32HWNDPointer"/>: the HWND associated with the window
+    /// - <see cref="Props.WindowWin32HDCPointer"/>: the HDC associated with the window
+    /// - <see cref="Props.WindowWin32InstancePointer"/>: the HINSTANCE associated with
+    ///   the window</para>
     /// <para>On Wayland:</para>
     /// <para>Note: The <c>xdg_*</c> window objects do not internally persist across window
     /// show/hide calls. They will be <c>null</c> if the window is hidden and must be
     /// queried each time it is shown.</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowWaylandDisplayPointer"/>: the wl_display associated with
-    /// the window</item>
-    /// <item><see cref="Props.WindowWaylandSurfacePointer"/>: the wl_surface associated with
-    /// the window</item>
-    /// <item><see cref="Props.WindowWaylandViewportPointer"/>: the wp_viewport associated
-    /// with the window</item>
-    /// <item><see cref="Props.WindowWaylandEGLWindowPointer"/>: the wl_egl_window
-    /// associated with the window</item>
-    /// <item><see cref="Props.WindowWaylandXDGSurfacePointer"/>: the xdg_surface associated
-    /// with the window</item>
-    /// <item><see cref="Props.WindowWaylandXDGToplevelPointer"/>: the xdg_toplevel role
-    /// associated with the window</item>
-    /// <item><see cref="Props.WindowWaylandXDGToplevelExportHandleString"/>: the export
-    /// handle associated with the window</item>
-    /// <item><see cref="Props.WindowWaylandXDGPopupPointer"/>: the xdg_popup role
-    /// associated with the window</item>
-    /// <item><see cref="Props.WindowWaylandXDGPositionerPointer"/>: the xdg_positioner
-    /// associated with the window, in popup mode</item>
-    /// </list>
+    /// <para>Note: The <c>border_inset_*</c> properties can be set by the application when
+    /// client-side decorations such as shadows or invisible resize borders extend
+    /// beyond the visible frame (see docs/README-wayland.md for details).</para>
+    /// <para>- <see cref="Props.WindowWaylandDisplayPointer"/>: the wl_display associated with
+    ///   the window
+    /// - <see cref="Props.WindowWaylandSurfacePointer"/>: the wl_surface associated with
+    ///   the window
+    /// - <see cref="Props.WindowWaylandViewportPointer"/>: the wp_viewport associated
+    ///   with the window
+    /// - <see cref="Props.WindowWaylandEGLWindowPointer"/>: the wl_egl_window
+    ///   associated with the window
+    /// - <see cref="Props.WindowWaylandWindowIDString"/>: the window identification
+    ///   string, initially set with
+    ///   <see cref="Props.WindowCreateWaylandWindowIDString"/>, and used as an
+    ///   identifier for session management. Setting this to <c>null</c> or an empty
+    ///   string ("") before hiding or destroying the window will cause any session
+    ///   information associated with the window to be removed
+    /// - <see cref="Props.WindowWaylandXDGSurfacePointer"/>: the xdg_surface associated
+    ///   with the window
+    /// - <see cref="Props.WindowWaylandXDGToplevelPointer"/>: the xdg_toplevel role
+    ///   associated with the window
+    /// - '<see cref="Props.WindowWaylandXDGToplevelExportHandleString"/>': the export
+    ///   handle associated with the window
+    /// - <see cref="Props.WindowWaylandXDGPopupPointer"/>: the xdg_popup role
+    ///   associated with the window
+    /// - <see cref="Props.WindowWaylandXDGPositionerPointer"/>: the xdg_positioner
+    ///   associated with the window, in popup mode
+    /// - <see cref="Props.WindowWaylandBorderInsetLeftNumber"/>: the left border inset
+    ///   of the visible window
+    /// - <see cref="Props.WindowWaylandBorderInsetTopNumber"/>: the top border inset
+    ///   of the visible window
+    /// - <see cref="Props.WindowWaylandBorderInsetRightNumber"/>: the right border
+    ///   inset of the visible window
+    /// - <see cref="Props.WindowWaylandBorderInsetBottomNumber"/>: the bottom border
+    ///   inset of the visible window</para>
     /// <para>On X11:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowX11DisplayPointer"/>: the X11 Display associated with
-    /// the window</item>
-    /// <item><see cref="Props.WindowX11ScreenNumber"/>: the screen number associated with
-    /// the window</item>
-    /// <item><see cref="Props.WindowX11WindowNumber"/>: the X11 Window associated with the
-    /// window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowX11DisplayPointer"/>: the X11 Display associated with
+    ///   the window
+    /// - <see cref="Props.WindowX11ScreenNumber"/>: the screen number associated with
+    ///   the window
+    /// - <see cref="Props.WindowX11WindowNumber"/>: the X11 Window associated with the
+    ///   window</para>
     /// <para>On Emscripten:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.WindowEMScriptenCanvasIdString"/>: the id the canvas element
-    /// will have</item>
-    /// <item><see cref="Props.WindowEMScriptenKeyboardElementString"/>: the keyboard
-    /// element that associates keyboard events to this window</item>
-    /// </list>
+    /// <para>- <see cref="Props.WindowEMScriptenCanvasIdString"/>: the id the canvas element
+    ///   will have
+    /// - <see cref="Props.WindowEMScriptenKeyboardElementString"/>: the keyboard
+    ///   element that associates keyboard events to this window</para>
+    /// <para>On visionOS:</para>
+    /// <para>- <see cref="Props.WindowVisionOSSettingsString"/>: the current settings of the
+    ///   window in JSON format, or <c>null</c> if the window has standard UIKit behavior.
+    ///   <see cref="EventType.WindowSettingsChanged"/> is sent when this value changes.</para>
     /// </summary>
     /// <param name="window">the window to query.</param>
-    /// <returns>a valid property ID on success or <c>0</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <returns>a valid property ID on success or 0 on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static uint GetWindowProperties(IntPtr window)
     {
         return GetWindowPropertiesNativeFunction(window);

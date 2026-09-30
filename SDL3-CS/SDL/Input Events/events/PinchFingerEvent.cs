@@ -54,5 +54,14 @@ public static partial class SDL
         /// The window underneath the finger, if any
         /// </summary>
         public UInt32 WindowID;
+
+        /// <summary>On mobile devices for BEGIN and UPDATE events, the average X distance between each of the pointers forming the pinch in window coordinates. Otherwise, -1.</summary>
+        public float SpanX;
+        /// <summary>On mobile devices for BEGIN and UPDATE events, the average Y distance between each of the pointers forming the pinch in window coordinates. Otherwise, -1.</summary>
+        public float SpanY;
+        /// <summary>On mobile devices for BEGIN and UPDATE events, the X coordinate of the current gesture's focal point in window coordinates. Otherwise, -1.</summary>
+        public float FocusX;
+        /// <summary>On mobile devices for BEGIN and UPDATE events, the Y coordinate of the current gesture's focal point in window coordinates. Otherwise, -1.</summary>
+        public float FocusY;
     }
 }

@@ -287,9 +287,11 @@ public partial class SDL
     /// meant to be proper names.</para>
     /// </summary>
     /// <param name="index">the index of a GPU driver.</param>
-    /// <returns>the name of the GPU driver with the given <b>index</b>.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetNumGPUDrivers"/>
+    /// <returns>the name of the GPU driver with the given **index** or <c>null</c> when
+    ///          the index is out of bounds; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetNumGPUDrivers()"/>
     public static string GetGPUDriver(int index)
     {
         var value = GetGPUDriverNativeFunction(index);
@@ -445,42 +447,167 @@ public partial class SDL
     private delegate IntPtr CreateGPUComputePipelineNativeDelegate(IntPtr device, in GPUComputePipelineCreateInfo createinfo);
     private static CreateGPUComputePipelineNativeDelegate CreateGPUComputePipelineNativeFunction = SDL_CreateGPUComputePipeline;
 
-    /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline *SDLCALL SDL_CreateGPUComputePipeline(SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPUComputePipeline * SDLCALL SDL_CreateGPUComputePipeline( SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);</code>
     /// <summary>
     /// <para>Creates a pipeline object to be used in a compute workflow.</para>
-    /// <para>Shader resource bindings must be authored to follow a particular order
-    /// depending on the shader format.</para>
-    /// <para>For SPIR-V shaders, use the following resource sets:</para>
-    /// <list type="bullet">
-    /// <item>0: Sampled textures, followed by read-only storage textures, followed by
-    /// read-only storage buffers</item>
-    /// <item>1: Read-write storage textures, followed by read-write storage buffers</item>
-    /// <item>2: Uniform buffers</item>
-    /// </list>
-    /// <para>For DXBC and DXIL shaders, use the following register order:</para>
-    /// <list type="bullet">
-    /// <item>(t[n], space0): Sampled textures, followed by read-only storage textures,
-    /// followed by read-only storage buffers</item>
-    /// <item>(u[n], space1): Read-write storage textures, followed by read-write
-    /// storage buffers</item>
-    /// <item>(b[n], space2): Uniform buffers</item>
-    /// </list>
-    /// <para>For MSL/metallib, use the following order:</para>
-    /// <list type="bullet">
-    /// <item>[[buffer]]: Uniform buffers, followed by read-only storage buffers,
-    /// followed by read-write storage buffers</item>
-    /// <item>[[texture]]: Sampled textures, followed by read-only storage textures,
-    /// followed by read-write storage textures</item>
-    /// </list>
+    /// <para>Shader resource bindings must be authored to follow a particular convention
+    /// depending on the shader format. See below for details.</para>
+    /// <para>---</para>
+    /// <para>**SPIR-V (GLSL)**</para>
+    /// <para>For compute shaders, use:</para>
+    /// <para>- Set 0 for samplers, read-only storage textures, and read-only storage
+    ///   buffers
+    /// - Set 1 for read-write storage textures and read-write storage buffers
+    /// - Set 2 for uniform data</para>
+    /// <para>The first resource in a given set must have a <c>binding</c> of 0. Additional
+    /// resources must appear at consecutive bindings (1, 2, etc), leaving no gaps
+    /// in the set.</para>
+    /// <para>All samplers must come first in the binding order of Set 0, in order of how
+    /// they are bound via <c><see cref="BindGPUComputeSamplers(IntPtr, uint, GPUTextureSamplerBinding[], uint)"/>()</c>.</para>
+    /// <para>All read-only storage textures must come after all samplers in the binding
+    /// order, in order of how they are bound via
+    /// <c><see cref="BindGPUComputeStorageTextures(IntPtr, uint, IntPtr[], uint)"/>()</c>.</para>
+    /// <para>All read-only storage buffers must come after all read-only storage
+    /// textures in the binding order, in order of how they are bound via
+    /// <c><see cref="BindGPUComputeStorageBuffers(IntPtr, uint, IntPtr[], uint)"/>()</c>.</para>
+    /// <para>All read-write storage textures must come first in the binding order of Set
+    /// 1, in order of how they are bound via <c><see cref="BeginGPUComputePass(IntPtr, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>()</c>.</para>
+    /// <para>All read-write storage buffers must come after all read-write storage
+    /// textures in the binding order, in order of how they are bound via
+    /// <c><see cref="BeginGPUComputePass(IntPtr, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>()</c>.</para>
+    /// <para>**Example**</para>
+    /// <para>If a compute shader binds 2 of each resource type, its binding layout
+    /// should look like this:</para>
+    /// <code>// Any samplers come first in Set 0, in SDL bind slot order
+    /// layout(set = 0, binding = 0) uniform sampler2D samplerBoundToSlot0;
+    /// layout(set = 0, binding = 1) uniform sampler2D samplerBoundToSlot1;
+    /// // Any read-only storage textures come next in Set 0, in SDL bind slot order
+    /// layout(set = 0, binding = 2) uniform image2D storageTextureBoundToSlot0;
+    /// layout(set = 0, binding = 3) uniform image2D storageTextureBoundToSlot1;
+    /// // Any read-only storage buffers come next in Set 0, in SDL bind slot order
+    /// layout(set = 0, binding = 4) buffer storageBufferBoundToSlot0 { ... };
+    /// layout(set = 0, binding = 5) buffer storageBufferBoundToSlot1 { ... };
+    /// // Any read-write storage textures come first in Set 1, in SDL bind slot order
+    /// layout(set = 1, binding = 0) uniform image2D rwStorageTextureBoundToSlot0;
+    /// layout(set = 1, binding = 1) uniform image2D rwStorageTextureBoundToSlot1;
+    /// // Any read-write storage buffers come next in Set 1, in SDL bind slot order
+    /// layout(set = 1, binding = 2) buffer rwStorageBufferBoundToSlot0 { ... };
+    /// layout(set = 1, binding = 3) buffer rwStorageBufferBoundToSlot1 { ... };
+    /// // Any uniform buffers are in Set 2, in SDL slot order
+    /// layout(set = 2, binding = 0) uniform UniformDataBoundToSlot0 { ... };
+    /// layout(set = 2, binding = 1) uniform UniformDataBoundToSlot1 { ... };</code>
+    /// <para>---</para>
+    /// <para>**DXBC / DXIL (HLSL)**</para>
+    /// <para>For compute shaders, use:</para>
+    /// <para>- <c>(t[n], space0)</c> for sampled textures, read-only storage textures, and
+    ///   read-only storage buffers
+    /// - <c>(s[n], space0)</c> for samplers
+    /// - <c>(u[n], space1)</c> for read-write storage textures and read-write storage
+    ///   buffers
+    /// - <c>(b[n], space2)</c> for uniform data</para>
+    /// <para>The first resource in a given register set must have a register index of
+    /// <c>0</c>. Additional resources must appear at consecutive indices (1, 2, etc),
+    /// leaving no gaps in the register set.</para>
+    /// <para>All sampled textures must come first in the <c>t</c> register set, in order of
+    /// how they are bound via <c><see cref="BindGPUComputeSamplers(IntPtr, uint, GPUTextureSamplerBinding[], uint)"/>()</c>.</para>
+    /// <para>All sampler objects must be in the <c>s</c> register set, in the same order as
+    /// the textures above.</para>
+    /// <para>All read-only storage textures must come after all samplers in the <c>t</c>
+    /// register set, in order of how they are bound via
+    /// <c>SDL_BindComputeStorageTextures()</c>.</para>
+    /// <para>All read-only storage buffers must come after all storage textures in the
+    /// <c>t</c> register set, in order of how they are bound via
+    /// <c>SDL_BindComputeStorageBuffers()</c>.</para>
+    /// <para>All read-write storage textures must come first in the <c>u</c> register set in
+    /// <c>space1</c>, in order of how they are bound via <c><see cref="BeginGPUComputePass(IntPtr, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>()</c>.</para>
+    /// <para>All read-write storage buffers must come after all read-write storage
+    /// textures in the <c>u</c> register set in <c>space1</c>, in order of how they are
+    /// bound via <c><see cref="BeginGPUComputePass(IntPtr, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>()</c>.</para>
+    /// <para>**Example**</para>
+    /// <para>If a compute shader binds 2 of each resource type, the layout should look
+    /// like this:</para>
+    /// <code>// Any samplers and sampled textures come first in their respective register sets, in SDL bind slot order
+    /// SamplerState SamplerBoundToSlot0 : register( s0, space0 );
+    /// SamplerState SamplerBoundToSlot1 : register( s1, space0 );
+    /// Texture2D SampledTextureBoundToSlot0 : register( t0, space0 );
+    /// Texture2D SampledTextureBoundToSlot1 : register( t1, space0 );
+    /// // Any read-only storage textures come next in the `t` register set, in SDL bind slot order
+    /// Texture2D StorageTextureBoundToSlot0 : register( t2, space0 );
+    /// Texture2D StorageTextureBoundToSlot1 : register( t3, space0 );
+    /// // Any read-only storage buffers come next in the `t` register set, in SDL bind slot order
+    /// ByteAddressBuffer StorageBufferBoundToSlot0 : register( t4, space0 );
+    /// ByteAddressBuffer StorageBufferBoundToSlot1 : register( t5, space0 );
+    /// // Any read-write storage textures come first in the `u` register set in space1, in SDL bind slot order
+    /// RWTexture2D RWStorageTextureBoundToSlot0 : register( u0, space1 );
+    /// RWTexture2D RWStorageTextureBoundToSlot1 : register( u1, space1 );
+    /// // Any read-write storage buffers come next in the `u` register set in space1, in SDL bind slot order
+    /// RWByteAddressBuffer RWStorageTextureBoundToSlot0 : register( u2, space1 );
+    /// RWByteAddressBuffer RWStorageTextureBoundToSlot1 : register( u3, space1 );
+    /// // Any uniform buffers are in the `b` register set in space2, in SDL slot order
+    /// cbuffer UniformDataBoundToSlot0 : register( b0, space2 ) { ... };
+    /// cbuffer UniformDataBoundToSlot1 : register( b1, space2 ) { ... };</code>
+    /// <para>---</para>
+    /// <para>**MSL / Metallib (Metal Shading Language)**</para>
+    /// <para>The first resource in a given argument table must have an index of <c>0</c>.
+    /// Additional resources must appear at consecutive indices (1, 2, etc),
+    /// leaving no gaps in the table.</para>
+    /// <para>All sampled textures must come first in the <c>[[texture]]</c> argument table,
+    /// in order of how they are bound via <c><see cref="BindGPUComputeSamplers(IntPtr, uint, GPUTextureSamplerBinding[], uint)"/>()</c>.</para>
+    /// <para>All sampler objects must be in the <c>[[sampler]]</c> argument table, in the
+    /// same order as the textures above.</para>
+    /// <para>All read-only storage textures must come after all sampled textures in the
+    /// <c>[[texture]]</c> argument table, in order of how they are bound via
+    /// <c><see cref="BindGPUComputeStorageTextures(IntPtr, uint, IntPtr[], uint)"/>()</c>.</para>
+    /// <para>All read-write storage textures must come after all read-only storage
+    /// textures in the <c>[[texture]]</c> argument table, in order of how they are
+    /// bound via <c><see cref="BeginGPUComputePass(IntPtr, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>()</c>.</para>
+    /// <para>All uniform buffers must come first in the <c>[[buffer]]</c> argument table, in
+    /// order of their slots in <c><see cref="PushGPUComputeUniformData(IntPtr, uint, IntPtr, uint)"/>()</c>.</para>
+    /// <para>All read-only storage buffers must come after all uniform buffers in the
+    /// <c>[[buffer]]</c> argument table, in order of how they are bound via
+    /// <c><see cref="BindGPUComputeStorageBuffers(IntPtr, uint, IntPtr[], uint)"/>()</c>.</para>
+    /// <para>All read-write storage buffers must come after all read-only storage
+    /// buffers in the <c>[[buffer]]</c> argument table, in order of how they are bound
+    /// via <c><see cref="BeginGPUComputePass(IntPtr, GPUStorageTextureReadWriteBinding[], uint, GPUStorageBufferReadWriteBinding[], uint)"/>()</c>.</para>
+    /// <para>**Example**</para>
+    /// <para>For a compute shader binding 2 of each resource type, the main function
+    /// signature should look like this:</para>
+    /// <code>kernel void ExampleComputeShader(
+    ///     // Any samplers go in the `sampler` table, in SDL bind slot order
+    ///     sampler samplerBoundToSlot0 [[sampler(0)]],
+    ///     sampler samplerBoundToSlot1 [[sampler(1)]],
+    ///     // Any sampled textures come first in the `texture` table, in SDL bind slot order
+    ///     texture2d&lt;float&gt; sampledTextureBoundToSlot0 [[texture(0)]],
+    ///     texture2d&lt;float&gt; sampledTextureBoundToSlot1 [[texture(1)]],
+    ///     // Any read-only storage textures come next in the `texture` table, in SDL bind slot order
+    ///     texture2d&lt;float&gt; storageTextureBoundToSlot0 [[texture(2)]],
+    ///     texture2d&lt;float&gt; storageTextureBoundToSlot1 [[texture(3)]],
+    ///     // Any read-write storage textures come next in the `texture` table, in SDL bind slot order
+    ///     texture2d&lt;float, access::write&gt; rwStorageTextureBoundToSlot0 [[texture(4)]];
+    ///     texture2d&lt;float, access::write&gt; rwStorageTextureBoundToSlot1 [[texture(5)]];
+    ///     // Any uniform buffers come first in the `buffer` table, in SDL slot order
+    ///     constant SomeUniformStruct uniformDataBoundToSlot0 [[buffer(0)]],
+    ///     constant SomeUniformStruct uniformDataBoundToSlot1 [[buffer(1)]],
+    ///     // Any read-only storage buffers come next in the `buffer` table, in SDL bind slot order
+    ///     device SomeBufferStruct&amp; storageBufferBoundToSlot0 [[buffer(2)]],
+    ///     device SomeBufferStruct&amp; storageBufferBoundToSlot1 [[buffer(3)]]);
+    ///     // Any read-write storage buffers come next in the `buffer` table, in SDL bind slot order
+    ///     device SomeBufferStruct&amp; rwStorageBufferBoundToSlot0 [[buffer(4)]];
+    ///     device SomeBufferStruct&amp; rwStorageBufferBoundToSlot1 [[buffer(5)]]);</code>
+    /// <para>---</para>
+    /// <para>There are optional properties that can be provided through <c>props</c>. These
+    /// are the supported properties:</para>
+    /// <para>- <c>SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING</c>: a name that can be
+    ///   displayed in debugging tools.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the compute pipeline to
-    /// create.</param>
+    ///                   create.</param>
     /// <returns>a compute pipeline object on success, or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="BindGPUComputePipeline"/>
-    /// <seealso cref="ReleaseGPUComputePipeline"/>
+    ///          <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="BindGPUComputePipeline(IntPtr, IntPtr)"/>
+    /// <seealso cref="ReleaseGPUComputePipeline(IntPtr, IntPtr)"/>
     public static IntPtr CreateGPUComputePipeline(IntPtr device, in GPUComputePipelineCreateInfo createinfo)
     {
         return CreateGPUComputePipelineNativeFunction(device, in createinfo);
@@ -591,71 +718,147 @@ public partial class SDL
     private delegate IntPtr CreateGPUShaderNativeDelegate(IntPtr device, in GPUShaderCreateInfo createinfo);
     private static CreateGPUShaderNativeDelegate CreateGPUShaderNativeFunction = SDL_CreateGPUShader;
 
-    /// <code>extern SDL_DECLSPEC SDL_GPUShader *SDLCALL SDL_CreateGPUShader(SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPUShader * SDLCALL SDL_CreateGPUShader( SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo);</code>
     /// <summary>
     /// <para>Creates a shader to be used when creating a graphics pipeline.</para>
-    /// <para>Shader resource bindings must be authored to follow a particular order
-    /// depending on the shader format.</para>
-    /// <para>For SPIR-V shaders, use the following resource sets:</para>
-    /// <para>For vertex shaders:</para>
-    /// <list type="bullet">
-    /// <item>0: Sampled textures, followed by storage textures, followed by storage
-    /// buffers</item>
-    /// <item>1: Uniform buffers</item>
-    /// </list>
-    /// <para>For fragment shaders:</para>
-    /// <list type="bullet">
-    /// <item>2: Sampled textures, followed by storage textures, followed by storage
-    /// buffers</item>
-    /// <item>3: Uniform buffers</item>
-    /// </list>
-    /// <para>For DXBC and DXIL shaders, use the following register order:</para>
-    /// <para>For vertex shaders:</para>
-    /// <list type="bullet">
-    /// <item>(t[n], space0): Sampled textures, followed by storage textures, followed
-    /// by storage buffers</item>
-    /// <item>(s[n], space0): Samplers with indices corresponding to the sampled
-    /// textures</item>
-    /// <item>(b[n], space1): Uniform buffers</item>
-    /// </list>
-    /// <para>For pixel shaders:</para>
-    /// <list type="bullet">
-    /// <item>(t[n], space2): Sampled textures, followed by storage textures, followed
-    /// by storage buffers</item>
-    /// <item>(s[n], space2): Samplers with indices corresponding to the sampled
-    /// textures</item>
-    /// <item>(b[n], space3): Uniform buffers</item>
-    /// </list>
-    /// <para>For MSL/metallib, use the following order:</para>
-    /// <list type="bullet">
-    /// <item>[[texture]]: Sampled textures, followed by storage textures</item>
-    /// <item>[[sampler]]: Samplers with indices corresponding to the sampled textures</item>
-    /// <item>[[buffer]]: Uniform buffers, followed by storage buffers. Vertex buffer 0
-    /// is bound at [[buffer(14)]], vertex buffer 1 at [[buffer(15)]], and so on.
-    /// Rather than manually authoring vertex buffer indices, use the
-    /// [[stage_in]] attribute which will automatically use the vertex input
-    /// information from the SDL_GPUGraphicsPipeline.</item>
-    /// </list>
-    /// <para>Shader semantics other than system-value semantics do not matter in D3D12
-    /// and for ease of use the SDL implementation assumes that non system-value
-    /// semantics will all be TEXCOORD. If you are using HLSL as the shader source
-    /// language, your vertex semantics should start at TEXCOORD0 and increment
-    /// like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
-    /// prefix to something other than TEXCOORD you can use
+    /// <para>Shader resource bindings must be authored to follow a particular convention
+    /// depending on the shader format. See below for details.</para>
+    /// <para>---</para>
+    /// <para>**SPIR-V (GLSL)**</para>
+    /// <para>For vertex shaders, use: - Set 0 for samplers, storage textures, and
+    /// storage buffers - Set 1 for uniform data</para>
+    /// <para>For fragment shaders, use: - Set 2 for samplers, storage textures, and
+    /// storage buffers - Set 3 for uniform data</para>
+    /// <para>The first resource in a given set must have a <c>binding</c> of 0. Additional
+    /// resources must appear at consecutive bindings (1, 2, etc), leaving no gaps
+    /// in the set.</para>
+    /// <para>All samplers must come first in the binding order, in order of how they are
+    /// bound via <c>SDL_BindGPU*Samplers()</c>.</para>
+    /// <para>All storage textures must come after all samplers in the binding order, in
+    /// order of how they are bound via <c>SDL_Bind*StorageTextures()</c>.</para>
+    /// <para>All storage buffers must come after all storage textures in the binding
+    /// order, in order of how they are bound via <c>SDL_Bind*StorageBuffers()</c>.</para>
+    /// <para>**Example**</para>
+    /// <para>If a vertex shader binds 2 samplers, 2 storage textures, 2 storage buffers,
+    /// and 2 uniform buffers, its binding layout should look like this:</para>
+    /// <code>// Any samplers come first in the set, in SDL bind slot order
+    /// layout(set = 0, binding = 0) uniform sampler2D samplerBoundToSlot0;
+    /// layout(set = 0, binding = 1) uniform sampler2D samplerBoundToSlot1;
+    /// // Any storage textures come next in the set, in SDL bind slot order
+    /// layout(set = 0, binding = 2) uniform image2D storageTextureBoundToSlot0;
+    /// layout(set = 0, binding = 3) uniform image2D storageTextureBoundToSlot1;
+    /// // Any storage buffers come next in the set, in SDL bind slot order
+    /// layout(set = 0, binding = 4) buffer storageBufferBoundToSlot0 { ... };
+    /// layout(set = 0, binding = 5) buffer storageBufferBoundToSlot1 { ... };
+    /// // Any uniform buffers are in their own set, in SDL slot order
+    /// layout(set = 1, binding = 0) uniform UniformDataBoundToSlot0 { ... };
+    /// layout(set = 1, binding = 1) uniform UniformDataBoundToSlot1 { ... };</code>
+    /// <para>---</para>
+    /// <para>**DXBC / DXIL (HLSL)**</para>
+    /// <para>For vertex shaders, use: - <c>(t[n], space0)</c> for sampled textures, storage
+    /// textures, and storage buffers - <c>(s[n], space0)</c> for samplers - <c>(b[n],
+    /// space1)</c> for uniform data</para>
+    /// <para>For fragment (aka "pixel") shaders, use: - <c>(t[n], space2)</c> for sampled
+    /// textures, storage textures, and storage buffers - <c>(s[n], space2)</c> for
+    /// samplers - <c>(b[n], space3)</c> for uniform data</para>
+    /// <para>The first resource in a given register set must have a register index of
+    /// <c>0</c>. Additional resources must appear at consecutive indices (1, 2, etc),
+    /// leaving no gaps in the register set.</para>
+    /// <para>All sampled textures must come first in the <c>t</c> register set, in order of
+    /// how they are bound via <c>SDL_BindGPU*Samplers()</c>.</para>
+    /// <para>All sampler objects must be in the <c>s</c> register set, in the same order as
+    /// the textures above.</para>
+    /// <para>All storage textures must come after all samplers in the <c>t</c> register set,
+    /// in order of how they are bound via <c>SDL_Bind*StorageTextures()</c>.</para>
+    /// <para>All storage buffers must come after all storage textures in the <c>t</c>
+    /// register set, in order of how they are bound via
+    /// <c>SDL_Bind*StorageBuffers()</c>.</para>
+    /// <para>**Example**</para>
+    /// <para>If a pixel shader binds 2 samplers, 2 storage textures, 2 storage buffers,
+    /// and 2 uniform buffers, its binding layout should look like this:</para>
+    /// <code>// Any samplers and sampled textures come first in their respective register sets, in SDL bind slot order
+    /// SamplerState SamplerBoundToSlot0 : register( s0, space2 );
+    /// SamplerState SamplerBoundToSlot1 : register( s1, space2 );
+    /// Texture2D SampledTextureBoundToSlot0 : register( t0, space2 );
+    /// Texture2D SampledTextureBoundToSlot1 : register( t1, space2 );
+    /// // Any storage textures come next in the `t` register set, in SDL bind slot order
+    /// Texture2D StorageTextureBoundToSlot0 : register( t2, space2 );
+    /// Texture2D StorageTextureBoundToSlot1 : register( t3, space2 );
+    /// // Any storage buffers come next in the `t` register set, in SDL bind slot order
+    /// ByteAddressBuffer StorageBufferBoundToSlot0 : register( t4, space2 );
+    /// ByteAddressBuffer StorageBufferBoundToSlot1 : register( t5, space2 );
+    /// // Any uniform buffers are in the `b` register set *and* in their own space, in SDL slot order
+    /// cbuffer UniformDataBoundToSlot0 : register( b0, space3 ) { ... };
+    /// cbuffer UniformDataBoundToSlot1 : register( b1, space3 ) { ... };</code>
+    /// <para>---</para>
+    /// <para>**MSL / Metallib (Metal Shading Language)**</para>
+    /// <para>The first resource in a given argument table must have an index of <c>0</c>.
+    /// Additional resources must appear at consecutive indices (1, 2, etc),
+    /// leaving no gaps in the table. (_Except_ in the case of vertex buffers,
+    /// which are mentioned below.)</para>
+    /// <para>All sampled textures must come first in the <c>[[texture]]</c> argument table,
+    /// in order of how they are bound via <c>SDL_BindGPU*Samplers()</c>.</para>
+    /// <para>All sampler objects must be in the <c>[[sampler]]</c> argument table, in the
+    /// same order as the textures above.</para>
+    /// <para>All storage textures must come after all sampled textures in the
+    /// <c>[[texture]]</c> argument table, in order of how they are bound via
+    /// <c>SDL_BindGPU*StorageTextures()</c>.</para>
+    /// <para>All uniform buffers must come first in the <c>[[buffer]]</c> argument table, in
+    /// order of their slots in <c>SDL_PushGPU*UniformData()</c>.</para>
+    /// <para>All storage buffers must come after all uniform buffers in the <c>[[buffer]]</c>
+    /// argument table, in order of how they are bound via
+    /// <c>SDL_BindGPU*StorageBuffers()</c>.</para>
+    /// <para>In Metal, vertex buffers are also included in the <c>[[buffer]]</c> argument
+    /// table. To work around this, SDL forces the vertex buffer bound to slot 0 to
+    /// be bound at <c>[[buffer(14)]]</c>. The vertex buffer in slot 1 will be bound to
+    /// <c>[[buffer(15)]]</c>, and so on. Rather than manually authoring vertex buffer
+    /// indices, use the <c>[[stage_in]]</c> attribute which will automatically use the
+    /// vertex input information from the <c>SDL_GPUGraphicsPipeline</c>.</para>
+    /// <para>**Example**</para>
+    /// <para>For a vertex shader with 1 vertex buffer, 2 samplers, 2 storage textures, 2
+    /// storage buffers, and 2 uniform buffers, the main function signature should
+    /// look something like this:</para>
+    /// <code>vertex VertexOutput ExampleVertexShader(
+    ///     // Vertex buffers are their own special thing...
+    ///     SomeVertexInput input [[stage_in]], // alternatively, SomeVertexInput input [[buffer(14)]]
+    ///     // Any samplers go in the `sampler` table, in SDL bind slot order
+    ///     sampler samplerBoundToSlot0 [[sampler(0)]],
+    ///     sampler samplerBoundToSlot1 [[sampler(1)]],
+    ///     // Any sampled textures come first in the `texture` table, in SDL bind slot order
+    ///     texture2d&lt;float&gt; sampledTextureBoundToSlot0 [[texture(0)]],
+    ///     texture2d&lt;float&gt; sampledTextureBoundToSlot1 [[texture(1)]],
+    ///     // Any storage textures come next in the `texture` table, in SDL bind slot order
+    ///     texture2d&lt;float&gt; storageTextureBoundToSlot0 [[texture(2)]],
+    ///     texture2d&lt;float&gt; storageTextureBoundToSlot1 [[texture(3)]],
+    ///     // Any uniform buffers come first in the `buffer` table, in SDL slot order
+    ///     constant SomeUniformStruct uniformDataBoundToSlot0 [[buffer(0)]],
+    ///     constant SomeUniformStruct uniformDataBoundToSlot1 [[buffer(1)]],
+    ///     // Any storage buffers come next in the `buffer` table, in SDL bind slot order
+    ///     device SomeBufferStruct&amp; storageBufferBoundToSlot0 [[buffer(2)]],
+    ///     device SomeBufferStruct&amp; storageBufferBoundToSlot1 [[buffer(3)]]);
+    /// </code>
+    /// <para>---</para>
+    /// <para>Shader semantics other than system-value semantics do not matter in D3D12.
+    /// For ease of use, the SDL implementation assumes that non system-value
+    /// semantics will all be <c>TEXCOORD</c>. If you are using HLSL as the shader
+    /// source language, your vertex semantics should start at <c>TEXCOORD0</c> and
+    /// increment like so: <c>TEXCOORD1</c>, <c>TEXCOORD2</c>, etc.</para>
+    /// <para>If you wish to change the semantic prefix to something other than
+    /// <c>TEXCOORD</c> you can use
     /// <see cref="Props.GPUDeviceCreateD3D12SemanticNameString"/> with
-    /// <see cref="CreateGPUDeviceWithProperties"/>.</para>
-    /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.GPUSamplerCreateNameString"/>: a name that can be displayed in debugging tools.</item>
-    /// </list>
+    /// <see cref="CreateGPUDeviceWithProperties(uint)"/>().</para>
+    /// <para>There are optional properties that can be provided through <c>props</c>. These
+    /// are the supported properties:</para>
+    /// <para>- <see cref="Props.GPUShaderCreateNameString"/>: a name that can be displayed in
+    ///   debugging tools.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the shader to create.</param>
     /// <returns>a shader object on success, or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUGraphicsPipeline(nint, in GPUGraphicsPipelineCreateInfo)"/>
-    /// <seealso cref="ReleaseGPUShader"/>
+    ///          <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUGraphicsPipeline(IntPtr, in GPUGraphicsPipelineCreateInfo)"/>
+    /// <seealso cref="ReleaseGPUShader(IntPtr, IntPtr)"/>
     public static IntPtr CreateGPUShader(IntPtr device, in GPUShaderCreateInfo createinfo)
     {
         return CreateGPUShaderNativeFunction(device, in createinfo);
@@ -775,42 +978,42 @@ public partial class SDL
     private delegate IntPtr CreateGPUBufferNativeDelegate(IntPtr device, in GPUBufferCreateInfo createinfo);
     private static CreateGPUBufferNativeDelegate CreateGPUBufferNativeFunction = SDL_CreateGPUBuffer;
 
-    /// <code>extern SDL_DECLSPEC SDL_GPUBuffer *SDLCALL SDL_CreateGPUBuffer(SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPUBuffer * SDLCALL SDL_CreateGPUBuffer( SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo);</code>
     /// <summary>
     /// <para>Creates a buffer object to be used in graphics or compute workflows.</para>
     /// <para>The contents of this buffer are undefined until data is written to the
     /// buffer.</para>
     /// <para>Note that certain combinations of usage flags are invalid. For example, a
-    /// buffer cannot have both the <see cref="GPUBufferUsageFlags.Vertex"/> and <see cref="GPUBufferUsageFlags.Index"/> flags.</para>
-    /// <para>If you use a STORAGE flag, the data in the buffer must respect std140
+    /// buffer cannot have both the VERTEX and INDEX flags.</para>
+    /// <para>If you use a STORAGE flag, the data in the buffer must respect std430
     /// layout conventions. In practical terms this means you must ensure that vec3
     /// and vec4 fields are 16-byte aligned.</para>
     /// <para>For better understanding of underlying concepts and memory management with
     /// SDL GPU API, you may refer
-    /// [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).</para>
-    /// <para>There are optional properties that can be provided through <c>props</c>. These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.GPUBufferCreateNameString"/>: a name that can be displayed in debugging tools.</item>
-    /// </list>
+    /// [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
+    /// .</para>
+    /// <para>There are optional properties that can be provided through <c>props</c>. These
+    /// are the supported properties:</para>
+    /// <para>- <see cref="Props.GPUBufferCreateNameString"/>: a name that can be displayed in
+    ///   debugging tools.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the buffer to create.</param>
     /// <returns>a buffer object on success, or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetGPUBufferName"/>
-    /// <seealso cref="UploadToGPUBuffer"/>
-    /// <seealso cref="DownloadFromGPUBuffer"/>
-    /// <seealso cref="CopyGPUBufferToBuffer"/>
-    /// <seealso cref="BindGPUVertexBuffers(nint, uint, GPUBufferBinding[], uint)"/>
-    /// <seealso cref="BindGPUIndexBuffer"/>
-    /// <seealso cref="BindGPUVertexStorageBuffers(nint, uint, nint[], uint)"/>
-    /// <seealso cref="BindGPUFragmentStorageBuffers(nint, uint, nint[], uint)"/>
-    /// <seealso cref="DrawGPUPrimitivesIndirect"/>
-    /// <seealso cref="DrawGPUIndexedPrimitivesIndirect"/>
-    /// <seealso cref="BindGPUComputeStorageBuffers(nint, uint, nint[], uint)"/>
-    /// <seealso cref="DispatchGPUComputeIndirect"/>
-    /// <seealso cref="ReleaseGPUBuffer"/>
+    ///          <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="UploadToGPUBuffer(IntPtr, in GPUTransferBufferLocation, in GPUBufferRegion, bool)"/>
+    /// <seealso cref="DownloadFromGPUBuffer(IntPtr, in GPUBufferRegion, in GPUTransferBufferLocation)"/>
+    /// <seealso cref="CopyGPUBufferToBuffer(IntPtr, in GPUBufferLocation, in GPUBufferLocation, uint, bool)"/>
+    /// <seealso cref="BindGPUVertexBuffers(IntPtr, uint, GPUBufferBinding[], uint)"/>
+    /// <seealso cref="BindGPUIndexBuffer(IntPtr, in GPUBufferBinding, GPUIndexElementSize)"/>
+    /// <seealso cref="BindGPUVertexStorageBuffers(IntPtr, uint, IntPtr[], uint)"/>
+    /// <seealso cref="BindGPUFragmentStorageBuffers(IntPtr, uint, IntPtr[], uint)"/>
+    /// <seealso cref="DrawGPUPrimitivesIndirect(IntPtr, IntPtr, uint, uint)"/>
+    /// <seealso cref="DrawGPUIndexedPrimitivesIndirect(IntPtr, IntPtr, uint, uint)"/>
+    /// <seealso cref="BindGPUComputeStorageBuffers(IntPtr, uint, IntPtr[], uint)"/>
+    /// <seealso cref="DispatchGPUComputeIndirect(IntPtr, IntPtr, uint)"/>
+    /// <seealso cref="ReleaseGPUBuffer(IntPtr, IntPtr)"/>
     public static IntPtr CreateGPUBuffer(IntPtr device, in GPUBufferCreateInfo createinfo)
     {
         return CreateGPUBufferNativeFunction(device, in createinfo);
@@ -823,24 +1026,30 @@ public partial class SDL
     private delegate IntPtr CreateGPUTransferBufferNativeDelegate(IntPtr device, in GPUTransferBufferCreateInfo createinfo);
     private static CreateGPUTransferBufferNativeDelegate CreateGPUTransferBufferNativeFunction = SDL_CreateGPUTransferBuffer;
 
-    /// <code>extern SDL_DECLSPEC SDL_GPUTransferBuffer *SDLCALL SDL_CreateGPUTransferBuffer(SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo);</code>
+    /// <code>extern SDL_DECLSPEC SDL_GPUTransferBuffer * SDLCALL SDL_CreateGPUTransferBuffer( SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo);</code>
     /// <summary>
     /// <para>Creates a transfer buffer to be used when uploading to or downloading from
     /// graphics resources.</para>
     /// <para>Download buffers can be particularly expensive to create, so it is good
     /// practice to reuse them if data will be downloaded regularly.</para>
+    /// <para>There are optional properties that can be provided through <c>props</c>. These
+    /// are the supported properties:</para>
+    /// <para>- <see cref="Props.GPUTransferBufferCreateNameString"/>: a name that can be
+    ///   displayed in debugging tools.</para>
     /// </summary>
     /// <param name="device">a GPU Context.</param>
     /// <param name="createinfo">a struct describing the state of the transfer buffer to
-    /// create.</param>
+    ///                   create.</param>
     /// <returns>a transfer buffer on success, or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="UploadToGPUBuffer"/>
-    /// <seealso cref="DownloadFromGPUBuffer"/>
-    /// <seealso cref="UploadToGPUTexture"/>
-    /// <seealso cref="DownloadFromGPUTexture"/>
-    /// <seealso cref="ReleaseGPUTransferBuffer"/>
+    ///          <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="MapGPUTransferBuffer(IntPtr, IntPtr, bool)"/>
+    /// <seealso cref="UnmapGPUTransferBuffer(IntPtr, IntPtr)"/>
+    /// <seealso cref="UploadToGPUBuffer(IntPtr, in GPUTransferBufferLocation, in GPUBufferRegion, bool)"/>
+    /// <seealso cref="DownloadFromGPUBuffer(IntPtr, in GPUBufferRegion, in GPUTransferBufferLocation)"/>
+    /// <seealso cref="UploadToGPUTexture(IntPtr, in GPUTextureTransferInfo, in GPUTextureRegion, bool)"/>
+    /// <seealso cref="DownloadFromGPUTexture(IntPtr, in GPUTextureRegion, in GPUTextureTransferInfo)"/>
+    /// <seealso cref="ReleaseGPUTransferBuffer(IntPtr, IntPtr)"/>
     public static IntPtr CreateGPUTransferBuffer(IntPtr device, in GPUTransferBufferCreateInfo createinfo)
     {
         return CreateGPUTransferBufferNativeFunction(device, in createinfo);
@@ -979,14 +1188,16 @@ public partial class SDL
     private delegate void ReleaseGPUTextureNativeDelegate(IntPtr device, IntPtr texture);
     private static ReleaseGPUTextureNativeDelegate ReleaseGPUTextureNativeFunction = SDL_ReleaseGPUTexture;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUTexture(SDL_GPUDevice *device, SDL_GPUTexture *texture);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUTexture( SDL_GPUDevice *device, SDL_GPUTexture *texture);</code>
     /// <summary>
     /// <para>Frees the given texture as soon as it is safe to do so.</para>
     /// <para>You must not reference the texture after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>texture</c>, in that case this function is a
+    /// no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="texture">a texture to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUTexture(IntPtr device, IntPtr texture)
     {
         ReleaseGPUTextureNativeFunction(device, texture);
@@ -999,14 +1210,16 @@ public partial class SDL
     private delegate void ReleaseGPUSamplerNativeDelegate(IntPtr device, IntPtr sampler);
     private static ReleaseGPUSamplerNativeDelegate ReleaseGPUSamplerNativeFunction = SDL_ReleaseGPUSampler;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUSampler(SDL_GPUDevice *device, SDL_GPUSampler *sampler);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUSampler( SDL_GPUDevice *device, SDL_GPUSampler *sampler);</code>
     /// <summary>
     /// <para>Frees the given sampler as soon as it is safe to do so.</para>
     /// <para>You must not reference the sampler after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>sampler</c>, in that case this function is a
+    /// no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="sampler">a sampler to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUSampler(IntPtr device, IntPtr sampler)
     {
         ReleaseGPUSamplerNativeFunction(device, sampler);
@@ -1019,14 +1232,16 @@ public partial class SDL
     private delegate void ReleaseGPUBufferNativeDelegate(IntPtr device, IntPtr buffer);
     private static ReleaseGPUBufferNativeDelegate ReleaseGPUBufferNativeFunction = SDL_ReleaseGPUBuffer;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUBuffer(SDL_GPUDevice *device, SDL_GPUBuffer *buffer);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUBuffer( SDL_GPUDevice *device, SDL_GPUBuffer *buffer);</code>
     /// <summary>
     /// <para>Frees the given buffer as soon as it is safe to do so.</para>
     /// <para>You must not reference the buffer after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>buffer</c>, in that case this function is a
+    /// no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="buffer">a buffer to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUBuffer(IntPtr device, IntPtr buffer)
     {
         ReleaseGPUBufferNativeFunction(device, buffer);
@@ -1039,14 +1254,16 @@ public partial class SDL
     private delegate void ReleaseGPUTransferBufferNativeDelegate(IntPtr device, IntPtr transferBuffer);
     private static ReleaseGPUTransferBufferNativeDelegate ReleaseGPUTransferBufferNativeFunction = SDL_ReleaseGPUTransferBuffer;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUTransferBuffer( SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);</code>
     /// <summary>
     /// <para>Frees the given transfer buffer as soon as it is safe to do so.</para>
     /// <para>You must not reference the transfer buffer after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>transferBuffer</c>, in that case this function
+    /// is a no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="transferBuffer">a transfer buffer to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUTransferBuffer(IntPtr device, IntPtr transferBuffer)
     {
         ReleaseGPUTransferBufferNativeFunction(device, transferBuffer);
@@ -1059,14 +1276,16 @@ public partial class SDL
     private delegate void ReleaseGPUComputePipelineNativeDelegate(IntPtr device, IntPtr computePipeline);
     private static ReleaseGPUComputePipelineNativeDelegate ReleaseGPUComputePipelineNativeFunction = SDL_ReleaseGPUComputePipeline;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUComputePipeline(SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUComputePipeline( SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline);</code>
     /// <summary>
     /// <para>Frees the given compute pipeline as soon as it is safe to do so.</para>
     /// <para>You must not reference the compute pipeline after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>computePipeline</c>, in that case this function
+    /// is a no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="computePipeline">a compute pipeline to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUComputePipeline(IntPtr device, IntPtr computePipeline)
     {
         ReleaseGPUComputePipelineNativeFunction(device, computePipeline);
@@ -1079,14 +1298,16 @@ public partial class SDL
     private delegate void ReleaseGPUShaderNativeDelegate(IntPtr device, IntPtr shader);
     private static ReleaseGPUShaderNativeDelegate ReleaseGPUShaderNativeFunction = SDL_ReleaseGPUShader;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUShader(SDL_GPUDevice *device, SDL_GPUShader *shader);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUShader( SDL_GPUDevice *device, SDL_GPUShader *shader);</code>
     /// <summary>
     /// <para>Frees the given shader as soon as it is safe to do so.</para>
     /// <para>You must not reference the shader after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>shader</c>, in that case this function is a
+    /// no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="shader">a shader to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUShader(IntPtr device, IntPtr shader)
     {
         ReleaseGPUShaderNativeFunction(device, shader);
@@ -1099,14 +1320,16 @@ public partial class SDL
     private delegate void ReleaseGPUGraphicsPipelineNativeDelegate(IntPtr device, IntPtr graphicsPipeline);
     private static ReleaseGPUGraphicsPipelineNativeDelegate ReleaseGPUGraphicsPipelineNativeFunction = SDL_ReleaseGPUGraphicsPipeline;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUGraphicsPipeline(SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUGraphicsPipeline( SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline);</code>
     /// <summary>
     /// <para>Frees the given graphics pipeline as soon as it is safe to do so.</para>
     /// <para>You must not reference the graphics pipeline after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>graphicsPipeline</c>, in that case this function
+    /// is a no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="graphicsPipeline">a graphics pipeline to be destroyed.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static void ReleaseGPUGraphicsPipeline(IntPtr device, IntPtr graphicsPipeline)
     {
         ReleaseGPUGraphicsPipelineNativeFunction(device, graphicsPipeline);
@@ -1658,20 +1881,23 @@ public partial class SDL
 
     #region BindGPUVertexSamplers
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers( SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
-    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <para>The textures must have been created with <c>SDL_GPU_TEXTUREUSAGE_SAMPLER</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex sampler slot to begin binding from.</param>
     /// <param name="textureSamplerBindings">an array of texture-sampler binding
-    /// structs.</param>
+    ///                                 structs.</param>
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
-    /// array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    ///                     array.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings)
     {
         if (textureSamplerBindings.Length == 0)
@@ -1706,20 +1932,23 @@ public partial class SDL
     private delegate void BindGPUVertexSamplersPointerNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings);
     private static BindGPUVertexSamplersPointerNativeDelegate BindGPUVertexSamplersPointerNativeFunction = SDL_BindGPUVertexSamplers;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexSamplers( SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
-    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <para>The textures must have been created with <c>SDL_GPU_TEXTUREUSAGE_SAMPLER</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex sampler slot to begin binding from.</param>
-    /// <param name="textureSamplerBindings">a pointer an array of texture-sampler binding
-    /// structs.</param>
+    /// <param name="textureSamplerBindings">an array of texture-sampler binding
+    ///                                 structs.</param>
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
-    /// array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    ///                     array.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexSamplers(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings)
     {
         BindGPUVertexSamplersPointerNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
@@ -1733,19 +1962,22 @@ public partial class SDL
     private delegate void BindGPUVertexStorageTexturesNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     private static BindGPUVertexStorageTexturesNativeDelegate BindGPUVertexStorageTexturesNativeFunction = SDL_BindGPUVertexStorageTextures;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUVertexStorageTextures( SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds storage textures for use on the vertex shader.</para>
     /// <para>These textures must have been created with
-    /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <c>SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the vertex storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage texture to bind from the array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUVertexStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings)
     {
         BindGPUVertexStorageTexturesNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
@@ -1814,20 +2046,23 @@ public partial class SDL
     private delegate void BindGPUFragmentSamplersArrayNativeDelegate(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
     private static BindGPUFragmentSamplersArrayNativeDelegate BindGPUFragmentSamplersArrayNativeFunction = SDL_BindGPUFragmentSamplers;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentSamplers( SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
-    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <para>The textures must have been created with <c>SDL_GPU_TEXTUREUSAGE_SAMPLER</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment sampler slot to begin binding from.</param>
     /// <param name="textureSamplerBindings">an array of texture-sampler binding
-    /// structs.</param>
+    ///                                 structs.</param>
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
-    /// array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    ///                     array.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentSamplers(IntPtr renderPass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings)
     {
         BindGPUFragmentSamplersArrayNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
@@ -1840,20 +2075,23 @@ public partial class SDL
     private delegate void BindGPUFragmentSamplersPointerNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings);
     private static BindGPUFragmentSamplersPointerNativeDelegate BindGPUFragmentSamplersPointerNativeFunction = SDL_BindGPUFragmentSamplers;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentSamplers( SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
-    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <para>The textures must have been created with <c>SDL_GPU_TEXTUREUSAGE_SAMPLER</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment sampler slot to begin binding from.</param>
     /// <param name="textureSamplerBindings">an array of texture-sampler binding
-    /// structs.</param>
+    ///                                 structs.</param>
     /// <param name="numBindings">the number of texture-sampler pairs to bind from the
-    /// array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    ///                     array.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentSamplers(IntPtr renderPass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings)
     {
         BindGPUFragmentSamplersPointerNativeFunction(renderPass, firstSlot, textureSamplerBindings, numBindings);
@@ -1877,19 +2115,22 @@ public partial class SDL
     private delegate void BindGPUFragmentStorageTexturesArrayNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     private static BindGPUFragmentStorageTexturesArrayNativeDelegate BindGPUFragmentStorageTexturesArrayNativeFunction = SDL_BindGPUFragmentStorageTextures;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentStorageTextures( SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
-    /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <c>SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr[] storageTextures, uint numBindings)
     {
         BindGPUFragmentStorageTexturesArrayNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
@@ -1902,19 +2143,22 @@ public partial class SDL
     private delegate void BindGPUFragmentStorageTexturesPointerNativeDelegate(IntPtr renderPass, uint firstSlot, IntPtr storageTextures, uint numBindings);
     private static BindGPUFragmentStorageTexturesPointerNativeDelegate BindGPUFragmentStorageTexturesPointerNativeFunction = SDL_BindGPUFragmentStorageTextures;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUFragmentStorageTextures( SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
-    /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
+    /// <c>SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
     /// <param name="firstSlot">the fragment storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUShader(IntPtr, in GPUShaderCreateInfo)"/>
     public static void BindGPUFragmentStorageTextures(IntPtr renderPass, uint firstSlot, IntPtr storageTextures, uint numBindings)
     {
         BindGPUFragmentStorageTexturesPointerNativeFunction(renderPass, firstSlot, storageTextures, numBindings);
@@ -2218,20 +2462,23 @@ public partial class SDL
     private delegate void BindGPUComputeSamplersArrayNativeDelegate(IntPtr computePass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings);
     private static BindGPUComputeSamplersArrayNativeDelegate BindGPUComputeSamplersArrayNativeFunction = SDL_BindGPUComputeSamplers;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeSamplers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeSamplers( SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
-    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
+    /// <para>The textures must have been created with <c>SDL_GPU_TEXTUREUSAGE_SAMPLER</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute sampler slot to begin binding from.</param>
     /// <param name="textureSamplerBindings">an array of texture-sampler binding
-    /// structs.</param>
+    ///                                 structs.</param>
     /// <param name="numBindings">the number of texture-sampler bindings to bind from the
-    /// array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUComputePipeline"/>
+    ///                     array.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>
     public static void BindGPUComputeSamplers(IntPtr computePass, uint firstSlot, GPUTextureSamplerBinding[] textureSamplerBindings, uint numBindings)
     {
         BindGPUComputeSamplersArrayNativeFunction(computePass, firstSlot, textureSamplerBindings, numBindings);
@@ -2244,20 +2491,23 @@ public partial class SDL
     private delegate void BindGPUComputeSamplersPointerNativeDelegate(IntPtr computePass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings);
     private static BindGPUComputeSamplersPointerNativeDelegate BindGPUComputeSamplersPointerNativeFunction = SDL_BindGPUComputeSamplers;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeSamplers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeSamplers( SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
-    /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
+    /// <para>The textures must have been created with <c>SDL_GPU_TEXTUREUSAGE_SAMPLER</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute sampler slot to begin binding from.</param>
     /// <param name="textureSamplerBindings">an array of texture-sampler binding
-    /// structs.</param>
+    ///                                 structs.</param>
     /// <param name="numBindings">the number of texture-sampler bindings to bind from the
-    /// array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUComputePipeline"/>
+    ///                     array.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>
     public static void BindGPUComputeSamplers(IntPtr computePass, uint firstSlot, IntPtr textureSamplerBindings, uint numBindings)
     {
         BindGPUComputeSamplersPointerNativeFunction(computePass, firstSlot, textureSamplerBindings, numBindings);
@@ -2281,19 +2531,22 @@ public partial class SDL
     private delegate void BindGPUComputeStorageTexturesArrayNativeDelegate(IntPtr computePass, uint firstSlot, IntPtr[] storageTextures, uint numBindings);
     private static BindGPUComputeStorageTexturesArrayNativeDelegate BindGPUComputeStorageTexturesArrayNativeFunction = SDL_BindGPUComputeStorageTextures;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeStorageTextures( SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
-    /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
+    /// <c>SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUComputePipeline"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>
     public static void BindGPUComputeStorageTextures(IntPtr computePass, uint firstSlot, IntPtr[] storageTextures, uint numBindings)
     {
         BindGPUComputeStorageTexturesArrayNativeFunction(computePass, firstSlot, storageTextures, numBindings);
@@ -2306,19 +2559,22 @@ public partial class SDL
     private delegate void BindGPUComputeStorageTexturesPointerNativeDelegate(IntPtr computePass, uint firstSlot, IntPtr storageTextures, uint numBindings);
     private static BindGPUComputeStorageTexturesPointerNativeDelegate BindGPUComputeStorageTexturesPointerNativeFunction = SDL_BindGPUComputeStorageTextures;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_BindGPUComputeStorageTextures( SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);</code>
     /// <summary>
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
-    /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
-    /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
+    /// <c>SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ</c>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
+    /// <para>Be sure your shader is set up according to the requirements documented in
+    /// <see cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>().</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
     /// <param name="firstSlot">the compute storage texture slot to begin binding from.</param>
     /// <param name="storageTextures">an array of storage textures.</param>
     /// <param name="numBindings">the number of storage textures to bind from the array.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateGPUComputePipeline"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateGPUComputePipeline(IntPtr, in GPUComputePipelineCreateInfo)"/>
     public static void BindGPUComputeStorageTextures(IntPtr computePass, uint firstSlot, IntPtr storageTextures, uint numBindings)
     {
         BindGPUComputeStorageTexturesPointerNativeFunction(computePass, firstSlot, storageTextures, numBindings);
@@ -2478,19 +2734,19 @@ public partial class SDL
     private delegate IntPtr MapGPUTransferBufferNativeDelegate(IntPtr device, IntPtr transferBuffer, bool cycle);
     private static MapGPUTransferBufferNativeDelegate MapGPUTransferBufferNativeFunction = SDL_MapGPUTransferBuffer;
 
-    /// <code>extern SDL_DECLSPEC void *SDLCALL SDL_MapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);</code>
+    /// <code>extern SDL_DECLSPEC void * SDLCALL SDL_MapGPUTransferBuffer( SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);</code>
     /// <summary>
     /// <para>Maps a transfer buffer into application address space.</para>
-    /// <para>You must unmap the transfer buffer before encoding upload commands. The
-    /// memory is owned by the graphics driver - do NOT call <see cref="Free"/> on the
-    /// returned pointer.</para>
+    /// <para>You must unmap the transfer buffer before encoding upload commands using
+    /// <see cref="UnmapGPUTransferBuffer(IntPtr, IntPtr)"/>. The memory is owned by the graphics driver - do
+    /// NOT call <see cref="Free(IntPtr)"/>() on the returned pointer.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="transferBuffer">a transfer buffer.</param>
     /// <param name="cycle">if <c>true</c>, cycles the transfer buffer if it is already bound.</param>
     /// <returns>the address of the mapped transfer buffer memory, or <c>null</c> on
-    /// failure; call <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
+    ///          failure; call <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static IntPtr MapGPUTransferBuffer(IntPtr device, IntPtr transferBuffer, [MarshalAs(UnmanagedType.I1)] bool cycle)
     {
         return MapGPUTransferBufferNativeFunction(device, transferBuffer, cycle);
@@ -2983,7 +3239,7 @@ public partial class SDL
     private delegate bool AcquireGPUSwapchainTextureNativeDelegate(IntPtr commandBuffer, IntPtr window, out IntPtr swapchainTexture, out uint swapchainTextureWidth, out uint swapchainTextureHeight);
     private static AcquireGPUSwapchainTextureNativeDelegate AcquireGPUSwapchainTextureNativeFunction = SDL_AcquireGPUSwapchainTexture;
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_AcquireGPUSwapchainTexture( SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);</code>
     /// <summary>
     /// <para>Acquire a texture to use in presentation.</para>
     /// <para>When a swapchain texture is acquired on a command buffer, it will
@@ -2999,7 +3255,7 @@ public partial class SDL
     /// <para>If you use this function, it is possible to create a situation where many
     /// command buffers are allocated while the rendering context waits for the GPU
     /// to catch up, which will cause memory usage to grow. You should use
-    /// <see cref="WaitAndAcquireGPUSwapchainTexture"/> unless you know what you are doing
+    /// <see cref="WaitAndAcquireGPUSwapchainTexture(IntPtr, IntPtr, out IntPtr, out uint, out uint)"/>() unless you know what you are doing
     /// with timing.</para>
     /// <para>The swapchain texture is managed by the implementation and must not be
     /// freed by the user. You MUST NOT call this function from any thread other
@@ -3008,24 +3264,24 @@ public partial class SDL
     /// <param name="commandBuffer">a command buffer.</param>
     /// <param name="window">a window that has been claimed.</param>
     /// <param name="swapchainTexture">a pointer filled in with a swapchain texture
-    /// handle.</param>
+    ///                          handle.</param>
     /// <param name="swapchainTextureWidth">a pointer filled in with the swapchain
-    /// texture width, may be <c>null</c>.</param>
+    ///                                texture width, may be <c>null</c>.</param>
     /// <param name="swapchainTextureHeight">a pointer filled in with the swapchain
-    /// texture height, may be <c>null</c>.</param>
-    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///                                 texture height, may be <c>null</c>.</param>
+    /// <returns><c>true</c> on success, <c>false</c> on error; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called from the thread that
-    /// created the window.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="ClaimWindowForGPUDevice"/>
-    /// <seealso cref="SubmitGPUCommandBuffer"/>
-    /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
-    /// <seealso cref="CancelGPUCommandBuffer"/>
-    /// <seealso cref="GetWindowSizeInPixels"/>
-    /// <seealso cref="WaitForGPUSwapchain"/>
-    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
-    /// <seealso cref="SetGPUAllowedFramesInFlight"/>
+    ///               created the window.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="ClaimWindowForGPUDevice(IntPtr, IntPtr)"/>
+    /// <seealso cref="SubmitGPUCommandBuffer(IntPtr)"/>
+    /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence(IntPtr)"/>
+    /// <seealso cref="CancelGPUCommandBuffer(IntPtr)"/>
+    /// <seealso cref="GetWindowSizeInPixels(IntPtr, out int, out int)"/>
+    /// <seealso cref="WaitForGPUSwapchain(IntPtr, IntPtr)"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture(IntPtr, IntPtr, out IntPtr, out uint, out uint)"/>
+    /// <seealso cref="SetGPUAllowedFramesInFlight(IntPtr, uint)"/>
     public static bool AcquireGPUSwapchainTexture(IntPtr commandBuffer, IntPtr window, out IntPtr swapchainTexture, out uint swapchainTextureWidth, out uint swapchainTextureHeight)
     {
         return AcquireGPUSwapchainTextureNativeFunction(commandBuffer, window, out swapchainTexture, out swapchainTextureWidth, out swapchainTextureHeight);
@@ -3039,21 +3295,21 @@ public partial class SDL
     private delegate bool WaitForGPUSwapchainNativeDelegate(IntPtr device, IntPtr window);
     private static WaitForGPUSwapchainNativeDelegate WaitForGPUSwapchainNativeFunction = SDL_WaitForGPUSwapchain;
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitForGPUSwapchain(SDL_GPUDevice *device, SDL_Window *window);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_WaitForGPUSwapchain( SDL_GPUDevice *device, SDL_Window *window);</code>
     /// <summary>
     /// <para>Blocks the thread until all presenting command buffers are finished
     /// executing.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="window">a window that has been claimed.</param>
-    /// <returns><c>true</c> on success, <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success, <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called from the thread that
-    /// created the window.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="AcquireGPUSwapchainTexture"/>
-    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture"/>
-    /// <seealso cref="SetGPUAllowedFramesInFlight"/>
+    ///               created the window.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="AcquireGPUSwapchainTexture(IntPtr, IntPtr, out IntPtr, out uint, out uint)"/>
+    /// <seealso cref="WaitAndAcquireGPUSwapchainTexture(IntPtr, IntPtr, out IntPtr, out uint, out uint)"/>
+    /// <seealso cref="SetGPUAllowedFramesInFlight(IntPtr, uint)"/>
     public static bool WaitForGPUSwapchain(IntPtr device, IntPtr window)
     {
         return WaitForGPUSwapchainNativeFunction(device, window);
@@ -3312,15 +3568,16 @@ public partial class SDL
     private delegate void ReleaseGPUFenceNativeDelegate(IntPtr device, IntPtr fence);
     private static ReleaseGPUFenceNativeDelegate ReleaseGPUFenceNativeFunction = SDL_ReleaseGPUFence;
 
-    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);</code>
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ReleaseGPUFence( SDL_GPUDevice *device, SDL_GPUFence *fence);</code>
     /// <summary>
-    /// Releases a fence obtained from <see cref="SubmitGPUCommandBufferAndAcquireFence"/>.
+    /// <para>Releases a fence obtained from <see cref="SubmitGPUCommandBufferAndAcquireFence(IntPtr)"/>.</para>
     /// <para>You must not reference the fence after calling this function.</para>
+    /// <para>It is safe to pass <c>null</c> for <c>fence</c>, in that case this function is a no-op.</para>
     /// </summary>
     /// <param name="device">a GPU context.</param>
     /// <param name="fence">a fence.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="SubmitGPUCommandBufferAndAcquireFence(IntPtr)"/>
     public static void ReleaseGPUFence(IntPtr device, IntPtr fence)
     {
         ReleaseGPUFenceNativeFunction(device, fence);
@@ -3424,13 +3681,13 @@ public partial class SDL
     /// <summary>
     /// <para>Call this to suspend GPU operation on Xbox after receiving the
     /// <see cref="EventType.DidEnterBackground"/> event.</para>
-    /// <para>Do NOT call any SDL_GPU functions after calling this function! This must
-    /// also be called before calling <see cref="GDKSuspendComplete"/>.</para>
+    /// <para>Do NOT call any <c>SDL_GPU</c> functions after calling this function! This must
+    /// also be called before calling <see cref="GDKSuspendComplete()"/>.</para>
     /// <para>This function MUST be called from the application's render thread.</para>
     /// </summary>
-    /// <param name="device">device a GPU context.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="AddEventWatch"/>
+    /// <param name="device">a GPU context.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="AddEventWatch(EventFilter, IntPtr)"/>
     public static void GDKSuspendGPU(IntPtr device)
     {
         GDKSuspendGPUNativeFunction(device);
@@ -3448,12 +3705,12 @@ public partial class SDL
     /// <para>Call this to resume GPU operation on Xbox after receiving the
     /// <see cref="EventType.WillEnterForeground"/> event.</para>
     /// <para>When resuming, this function MUST be called before calling any other
-    /// SDL_GPU functions.</para>
+    /// <c>SDL_GPU</c> functions.</para>
     /// <para>This function MUST be called from the application's render thread.</para>
     /// </summary>
-    /// <param name="device">device a GPU context.</param>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="AddEventWatch"/>
+    /// <param name="device">a GPU context.</param>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="AddEventWatch(EventFilter, IntPtr)"/>
     public static void GDKResumeGPU(IntPtr device)
     {
         GDKResumeGPUNativeFunction(device);

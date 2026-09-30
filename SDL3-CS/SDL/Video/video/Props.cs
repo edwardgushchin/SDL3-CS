@@ -127,5 +127,29 @@ public static partial class SDL
 		public const string WindowEMScriptenCanvasIdString = "SDL.window.emscripten.canvas_id";
 		public const string WindowEMScriptenKeyboardElementString = "SDL.window.emscripten.keyboard_element";
 		public const string WindowVisionOSSettingsString = "SDL.window.visionos.settings";
-	}
+        /// <summary>Identifier for the global video wayland session idstring property.</summary>
+        public const string GlobalVideoWaylandSessionIDString = "SDL.video.wayland.session_id";
+        /// <summary>Identifier for the window create wayland window idstring property.</summary>
+        public const string WindowCreateWaylandWindowIDString = "SDL.window.create.wayland.window_id";
+        /// <summary>Identifier for the window create wayland enable insets boolean property.</summary>
+        public const string WindowCreateWaylandEnableInsetsBoolean = "SDL.window.create.wayland.enable_insets";
+        /// <summary>Identifier for the window create win32 style ex number property.</summary>
+        public const string WindowCreateWin32StyleExNumber = "SDL.window.create.win32.style_ex";
+        /// <summary>Identifier for the window open harmony xcomponent pointer property.</summary>
+        public const string WindowOpenHarmonyXComponentPointer = "SDL.window.openharmony.xcomponent";
+        /// <summary>Identifier for the window open harmony window pointer property.</summary>
+        public const string WindowOpenHarmonyWindowPointer = "SDL.window.openharmony.window";
+        /// <summary>Identifier for the window open harmony surface pointer property.</summary>
+        public const string WindowOpenHarmonySurfacePointer = "SDL.window.openharmony.surface";
+        /// <summary>Identifier for the window wayland window idstring property.</summary>
+        public const string WindowWaylandWindowIDString = "SDL.window.wayland.window_id";
+        /// <summary>Identifier for the window wayland border inset left number property.</summary>
+        public const string WindowWaylandBorderInsetLeftNumber = "SDL.window.wayland.border_inset_left";
+        /// <summary>Identifier for the window wayland border inset top number property.</summary>
+        public const string WindowWaylandBorderInsetTopNumber = "SDL.window.wayland.border_inset_top";
+        /// <summary>Identifier for the window wayland border inset right number property.</summary>
+        public const string WindowWaylandBorderInsetRightNumber = "SDL.window.wayland.border_inset_right";
+        /// <summary>Identifier for the window wayland border inset bottom number property.</summary>
+        public const string WindowWaylandBorderInsetBottomNumber = "SDL.window.wayland.border_inset_bottom";
+    }
 }

@@ -424,23 +424,23 @@ public static partial class SDL
     /// <para>Wait until the specified timeout (in milliseconds) for the next available
     /// event.</para>
     /// <para>If <c>event</c> is not <c>null</c>, the next event is removed from the queue and stored
-    /// in the <seealso cref="Event"/> structure pointed to by <c>event</c>.</para>
-    /// <para>As this function may implicitly call <see cref="PumpEvents"/>, you can only call
+    /// in the <see cref="Event"/> structure pointed to by <c>event</c>.</para>
+    /// <para>As this function may implicitly call <see cref="PumpEvents()"/>(), you can only call
     /// this function in the thread that initialized the video subsystem.</para>
     /// <para>The timeout is not guaranteed, the actual wait time could be longer due to
     /// system scheduling.</para>
     /// </summary>
     /// <param name="event">the <see cref="Event"/> structure to be filled in with the next event
-    /// from the queue, or <c>null</c>.</param>
+    ///              from the queue, or <c>null</c>.</param>
     /// <param name="timeoutMs">the maximum number of milliseconds to wait for the next
-    /// available event, or <c>-1</c> to wait indefinitely.</param>
+    ///                  available event, or -1 to wait indefinitely.</param>
     /// <returns><c>true</c> if this got an event or <c>false</c> if the timeout elapsed without
-    /// any events available.</returns>
+    ///          any events available.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="PollEvent(out Event)"/>
-    /// <seealso cref="PushEvent"/>
-    /// <seealso cref="WaitEvent"/>
+    /// <seealso cref="PushEvent(ref Event)"/>
+    /// <seealso cref="WaitEvent(out Event)"/>
     public static bool WaitEventTimeout(out Event @event, int timeoutMs)
     {
         return WaitEventTimeoutNativeFunction(out @event, timeoutMs);

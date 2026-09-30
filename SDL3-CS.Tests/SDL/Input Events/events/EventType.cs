@@ -9,7 +9,7 @@ internal static class EventTypeTests
         AssertBoundary(SDL3.SDL.EventType.KeyboardFirst, SDL3.SDL.EventType.KeyDown, SDL3.SDL.EventType.KeyboardLast, SDL3.SDL.EventType.ScreenKeyboardHidden, "keyboard");
         AssertBoundary(SDL3.SDL.EventType.MouseFirst, SDL3.SDL.EventType.MouseMotion, SDL3.SDL.EventType.MouseLast, SDL3.SDL.EventType.MouseRemoved, "mouse");
         AssertBoundary(SDL3.SDL.EventType.JoystickFirst, SDL3.SDL.EventType.JoystickAxisMotion, SDL3.SDL.EventType.JoystickLast, SDL3.SDL.EventType.JoystickUpdateComplete, "joystick");
-        AssertBoundary(SDL3.SDL.EventType.GamepadFirst, SDL3.SDL.EventType.GamepadAxisMotion, SDL3.SDL.EventType.GamepadLast, SDL3.SDL.EventType.GamepadSteamHandleUpdated, "gamepad");
+        AssertBoundary(SDL3.SDL.EventType.GamepadFirst, SDL3.SDL.EventType.GamepadAxisMotion, SDL3.SDL.EventType.GamepadLast, SDL3.SDL.EventType.GamepadCapSenseRelease, "gamepad");
         AssertBoundary(SDL3.SDL.EventType.FingerFirst, SDL3.SDL.EventType.FingerDown, SDL3.SDL.EventType.FingerLast, SDL3.SDL.EventType.FingerCanceled, "finger");
         AssertBoundary(SDL3.SDL.EventType.PinchFirst, SDL3.SDL.EventType.PinchBegin, SDL3.SDL.EventType.PinchLast, SDL3.SDL.EventType.PinchEnd, "pinch");
         AssertBoundary(SDL3.SDL.EventType.ClipboardFirst, SDL3.SDL.EventType.ClipboardUpdate, SDL3.SDL.EventType.ClipboardLast, SDL3.SDL.EventType.ClipboardUpdate, "clipboard");
@@ -18,6 +18,7 @@ internal static class EventTypeTests
         AssertBoundary(SDL3.SDL.EventType.SensorFirst, SDL3.SDL.EventType.SensorUpdate, SDL3.SDL.EventType.SensorLast, SDL3.SDL.EventType.SensorUpdate, "sensor");
         AssertBoundary(SDL3.SDL.EventType.PenFirst, SDL3.SDL.EventType.PenProximityIn, SDL3.SDL.EventType.PenLast, SDL3.SDL.EventType.PenAxis, "pen");
         AssertBoundary(SDL3.SDL.EventType.CameraDeviceFirst, SDL3.SDL.EventType.CameraDeviceAdded, SDL3.SDL.EventType.CameraDeviceLast, SDL3.SDL.EventType.CameraDeviceDenied, "camera device");
+        AssertBoundary(SDL3.SDL.EventType.NotificationFirst, SDL3.SDL.EventType.NotificationActionInvoked, SDL3.SDL.EventType.NotificationLast, SDL3.SDL.EventType.NotificationActionInvoked, "notification");
         AssertBoundary(SDL3.SDL.EventType.RenderFirst, SDL3.SDL.EventType.RenderTargetsReset, SDL3.SDL.EventType.RenderLast, SDL3.SDL.EventType.RenderDeviceLost, "render");
     }
 

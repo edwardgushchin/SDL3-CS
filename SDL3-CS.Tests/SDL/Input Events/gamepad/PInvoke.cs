@@ -21,6 +21,7 @@ internal static class PInvokeTests
     private static SDL3.SDL.GamepadType capturedGamepadType;
     private static SDL3.SDL.GamepadAxis capturedAxis;
     private static SDL3.SDL.GamepadButton capturedButton;
+    private static SDL3.SDL.GamepadCapSenseType capturedCapSenseType;
     private static SDL3.SDL.SensorType capturedSensorType;
     private static ushort capturedLowFrequencyRumble;
     private static ushort capturedHighFrequencyRumble;
@@ -138,6 +139,13 @@ internal static class PInvokeTests
         GetNumGamepadTouchpads_ForwardsGamepadAndReturnsNativeValue();
         GetNumGamepadTouchpadFingers_ForwardsGamepadTouchpadAndReturnsNativeValue();
         GetGamepadTouchpadFinger_ForwardsArgumentsOutputsValuesAndReturnsNativeValue();
+        GamepadCapSenseType_UsesExpectedNativeValues();
+        GamepadHasCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue();
+        GetGamepadCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_GamepadHasCapSense") && NativeLibraryProbe.SupportsSDL3Export("SDL_GetGamepadCapSense"))
+        {
+            GamepadCapSense_ReturnsFalseWithoutGamepad();
+        }
         GamepadHasSensor_ForwardsGamepadSensorAndReturnsNativeValue();
         SetGamepadSensorEnabled_ForwardsGamepadSensorEnabledAndReturnsNativeValue();
         GamepadSensorEnabled_ForwardsGamepadSensorAndReturnsNativeValue();
@@ -1259,6 +1267,58 @@ internal static class PInvokeTests
         TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadTouchpadFinger must call the native hook once.");
     }
 
+    public static void GamepadCapSenseType_UsesExpectedNativeValues()
+    {
+        TestAssert.Equal(-1, (int)SDL3.SDL.GamepadCapSenseType.Invalid, "SDL.GamepadCapSenseType.Invalid must match SDL_GAMEPAD_CAPSENSE_INVALID.");
+        TestAssert.Equal(0, (int)SDL3.SDL.GamepadCapSenseType.LeftStick, "SDL.GamepadCapSenseType.LeftStick must match SDL_GAMEPAD_CAPSENSE_LEFT_STICK.");
+        TestAssert.Equal(1, (int)SDL3.SDL.GamepadCapSenseType.RightStick, "SDL.GamepadCapSenseType.RightStick must match SDL_GAMEPAD_CAPSENSE_RIGHT_STICK.");
+        TestAssert.Equal(2, (int)SDL3.SDL.GamepadCapSenseType.LeftGrip, "SDL.GamepadCapSenseType.LeftGrip must match SDL_GAMEPAD_CAPSENSE_LEFT_GRIP.");
+        TestAssert.Equal(3, (int)SDL3.SDL.GamepadCapSenseType.RightGrip, "SDL.GamepadCapSenseType.RightGrip must match SDL_GAMEPAD_CAPSENSE_RIGHT_GRIP.");
+        TestAssert.Equal(4, (int)SDL3.SDL.GamepadCapSenseType.Count, "SDL.GamepadCapSenseType.Count must match SDL_GAMEPAD_CAPSENSE_COUNT.");
+    }
+
+    public static void GamepadHasCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GamepadHasCapSense");
+        AssertSdlImport(nativeMethod, "SDL_GamepadHasCapSense");
+        AssertBoolReturnMarshal(nativeMethod);
+        TestAssert.Equal(typeof(SDL3.SDL.GamepadCapSenseType), nativeMethod.GetParameters()[1].ParameterType, "SDL.GamepadHasCapSense must use the capsense enum.");
+
+        ResetCaptureState();
+        nextBool = true;
+        using NativeHookScope _ = NativeHookScope.Install("GamepadHasCapSenseNativeFunction", nameof(CaptureGamepadCapSenseBool));
+        bool result = SDL3.SDL.GamepadHasCapSense((IntPtr)0x5C01, SDL3.SDL.GamepadCapSenseType.LeftGrip);
+
+        TestAssert.Equal(true, result, "SDL.GamepadHasCapSense must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x5C01, capturedGamepad, "SDL.GamepadHasCapSense must forward gamepad.");
+        TestAssert.Equal(SDL3.SDL.GamepadCapSenseType.LeftGrip, capturedCapSenseType, "SDL.GamepadHasCapSense must forward capsense type.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.GamepadHasCapSense must call the native hook once.");
+    }
+
+    public static void GetGamepadCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetGamepadCapSense");
+        AssertSdlImport(nativeMethod, "SDL_GetGamepadCapSense");
+        AssertBoolReturnMarshal(nativeMethod);
+        TestAssert.Equal(typeof(SDL3.SDL.GamepadCapSenseType), nativeMethod.GetParameters()[1].ParameterType, "SDL.GetGamepadCapSense must use the capsense enum.");
+
+        ResetCaptureState();
+        nextBool = false;
+        using NativeHookScope _ = NativeHookScope.Install("GetGamepadCapSenseNativeFunction", nameof(CaptureGamepadCapSenseBool));
+        bool result = SDL3.SDL.GetGamepadCapSense((IntPtr)0x5C02, SDL3.SDL.GamepadCapSenseType.RightStick);
+
+        TestAssert.Equal(false, result, "SDL.GetGamepadCapSense must return the native hook value.");
+        TestAssert.Equal((IntPtr)0x5C02, capturedGamepad, "SDL.GetGamepadCapSense must forward gamepad.");
+        TestAssert.Equal(SDL3.SDL.GamepadCapSenseType.RightStick, capturedCapSenseType, "SDL.GetGamepadCapSense must forward capsense type.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.GetGamepadCapSense must call the native hook once.");
+    }
+
+    public static void GamepadCapSense_ReturnsFalseWithoutGamepad()
+    {
+        TestAssert.Equal(false, SDL3.SDL.GamepadHasCapSense(IntPtr.Zero, SDL3.SDL.GamepadCapSenseType.LeftStick), "SDL.GamepadHasCapSense must return false without a gamepad.");
+        TestAssert.Equal(false, SDL3.SDL.GetGamepadCapSense(IntPtr.Zero, SDL3.SDL.GamepadCapSenseType.LeftStick), "SDL.GetGamepadCapSense must return false without a gamepad.");
+    }
+
     public static void GamepadHasSensor_ForwardsGamepadSensorAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_GamepadHasSensor");
@@ -2068,6 +2128,14 @@ internal static class PInvokeTests
         return nextBool;
     }
 
+    private static bool CaptureGamepadCapSenseBool(IntPtr gamepad, SDL3.SDL.GamepadCapSenseType type)
+    {
+        capturedCallCount++;
+        capturedGamepad = gamepad;
+        capturedCapSenseType = type;
+        return nextBool;
+    }
+
     private static bool CaptureSetGamepadSensorEnabled(IntPtr gamepad, SDL3.SDL.SensorType type, bool enabled)
     {
         capturedCallCount++;
@@ -2253,6 +2321,7 @@ internal static class PInvokeTests
         nextGamepadType = SDL3.SDL.GamepadType.Unknown;
         nextGamepadAxis = SDL3.SDL.GamepadAxis.Invalid;
         nextGamepadButton = SDL3.SDL.GamepadButton.Invalid;
+        capturedCapSenseType = SDL3.SDL.GamepadCapSenseType.Invalid;
         nextGamepadButtonLabel = SDL3.SDL.GamepadButtonLabel.Unknown;
         nextConnectionState = SDL3.SDL.JoystickConnectionState.Invalid;
         nextPowerState = SDL3.SDL.PowerState.Error;

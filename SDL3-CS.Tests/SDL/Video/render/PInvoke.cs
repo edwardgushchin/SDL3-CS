@@ -30,6 +30,13 @@ internal static class PInvokeTests
     private static IntPtr capturedState;
     private static IntPtr capturedCreateInfo;
     private static SDL3.SDL.GPURenderStateCreateInfo capturedGPURenderStateCreateInfo;
+    private static SDL3.SDL.GPUTextureSamplerBinding[]? capturedSamplerBindings;
+    private static IntPtr[]? capturedStorageTextures;
+    private static IntPtr[]? capturedStorageBuffers;
+    private static int capturedSamplerBindingCount;
+    private static int capturedStorageTextureCount;
+    private static int capturedStorageBufferCount;
+    private static int gpuBindingHookCallCount;
     private static IntPtr capturedData;
     private static IntPtr capturedYPlane;
     private static IntPtr capturedUPlane;
@@ -168,6 +175,16 @@ internal static class PInvokeTests
         ConvertEventToRenderCoordinates_ForwardsRendererAndRefEvent();
         ViewportClipAndScaleFunctions_ForwardInputsOutputsAndReturnNativeValues();
         SetRenderViewportRect_UsesPointerAbiWithNativeSoftwareRenderer();
+        FloatViewportAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_SetRenderViewportFloat"))
+        {
+            FloatViewportAndClipFunctions_UseNativeSoftwareRenderer();
+        }
+        GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_GDKSuspendRenderer") && NativeLibraryProbe.SupportsSDL3Export("SDL_GDKResumeRenderer") && !string.Equals(SDL3.SDL.GetPlatform(), "GDK", StringComparison.OrdinalIgnoreCase))
+        {
+            GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer();
+        }
         DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues();
         PrimitiveRenderingFunctions_ForwardCoordinatesPointersArraysAndRects();
         TextureRenderingFunctions_ForwardTextureRectsRotationCenterAndFlip();
@@ -181,6 +198,12 @@ internal static class PInvokeTests
         GPURenderStateCreateInfoTests.Layout_MatchesSdl3412Abi();
         CreateGPURenderStateTypedOverload_UsesInParameterAndForwardsAllFields();
         GpuRenderStateFunctions_ForwardPointersArraysAndReturnNativeValues();
+        GPURenderStateBindingSetters_ForwardArraysAndReturnNativeValues();
+        GPURenderStateBindingSetters_ValidateArrayCounts();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_SetGPURenderStateSamplerBindings") && NativeLibraryProbe.SupportsSDL3Export("SDL_SetGPURenderStateStorageTextures") && NativeLibraryProbe.SupportsSDL3Export("SDL_SetGPURenderStateStorageBuffers"))
+        {
+            GPURenderStateBindingSetters_RejectNullStateOnNative();
+        }
     }
 
     public static void NativeEntryPoints_KeepExpectedLibraryImportMetadata()
@@ -264,6 +287,26 @@ internal static class PInvokeTests
 
         AssertInRectParameter(GetPublicSetRenderViewportRectMethod(), 1, "SetRenderViewport(IntPtr, in Rect)");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRenderViewport"), "SDL_GetRenderViewport");
+        AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderViewportFloatPointer"), "SDL_SetRenderViewportFloat");
+        MethodInfo setViewportFloatRect = GetNativeMethod("SDL_SetRenderViewportFloatRect");
+        AssertNativeBoolImport(setViewportFloatRect, "SDL_SetRenderViewportFloat");
+        ParameterInfo viewportFloatRectParameter = setViewportFloatRect.GetParameters()[1];
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), viewportFloatRectParameter.ParameterType, "SDL_SetRenderViewportFloat must pass SDL_FRect by reference.");
+        TestAssert.True(viewportFloatRectParameter.IsIn, "SDL_SetRenderViewportFloat must pass its const SDL_FRect input as in.");
+        MethodInfo getViewportFloat = GetNativeMethod("SDL_GetRenderViewportFloat");
+        AssertNativeBoolImport(getViewportFloat, "SDL_GetRenderViewportFloat");
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), getViewportFloat.GetParameters()[1].ParameterType, "SDL_GetRenderViewportFloat must receive SDL_FRect by reference.");
+        TestAssert.True(getViewportFloat.GetParameters()[1].IsOut, "SDL_GetRenderViewportFloat must mark its SDL_FRect output as out.");
+        AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderClipRectFloatPointer"), "SDL_SetRenderClipRectFloat");
+        MethodInfo setClipFloatRect = GetNativeMethod("SDL_SetRenderClipRectFloatRect");
+        AssertNativeBoolImport(setClipFloatRect, "SDL_SetRenderClipRectFloat");
+        ParameterInfo clipFloatRectParameter = setClipFloatRect.GetParameters()[1];
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), clipFloatRectParameter.ParameterType, "SDL_SetRenderClipRectFloat must pass SDL_FRect by reference.");
+        TestAssert.True(clipFloatRectParameter.IsIn, "SDL_SetRenderClipRectFloat must pass its const SDL_FRect input as in.");
+        MethodInfo getClipFloat = GetNativeMethod("SDL_GetRenderClipRectFloat");
+        AssertNativeBoolImport(getClipFloat, "SDL_GetRenderClipRectFloat");
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), getClipFloat.GetParameters()[1].ParameterType, "SDL_GetRenderClipRectFloat must receive SDL_FRect by reference.");
+        TestAssert.True(getClipFloat.GetParameters()[1].IsOut, "SDL_GetRenderClipRectFloat must mark its SDL_FRect output as out.");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderViewportSet"), "SDL_RenderViewportSet");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRenderSafeArea"), "SDL_GetRenderSafeArea");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderClipRectPointer"), "SDL_SetRenderClipRect");
@@ -362,6 +405,15 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_GetDefaultTextureScaleMode"), "SDL_GetDefaultTextureScaleMode");
         AssertNativeImport(GetNativeMethod("SDL_CreateGPURenderState"), "SDL_CreateGPURenderState");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateFragmentUniforms"), "SDL_SetGPURenderStateFragmentUniforms");
+        MethodInfo samplerBindings = GetNativeMethod("SDL_SetGPURenderStateSamplerBindings");
+        AssertNativeBoolImport(samplerBindings, "SDL_SetGPURenderStateSamplerBindings");
+        AssertArrayParameterMarshal(samplerBindings, 2, 1);
+        MethodInfo storageTextures = GetNativeMethod("SDL_SetGPURenderStateStorageTextures");
+        AssertNativeBoolImport(storageTextures, "SDL_SetGPURenderStateStorageTextures");
+        AssertArrayParameterMarshal(storageTextures, 2, 1);
+        MethodInfo storageBuffers = GetNativeMethod("SDL_SetGPURenderStateStorageBuffers");
+        AssertNativeBoolImport(storageBuffers, "SDL_SetGPURenderStateStorageBuffers");
+        AssertArrayParameterMarshal(storageBuffers, 2, 1);
         AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderState"), "SDL_SetGPURenderState");
         AssertNativeImport(GetNativeMethod("SDL_DestroyGPURenderState"), "SDL_DestroyGPURenderState");
     }
@@ -1283,6 +1335,174 @@ internal static class PInvokeTests
         {
             SDL3.SDL.DestroySurface(surface);
         }
+    }
+
+    public static void FloatViewportAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues()
+    {
+        SDL3.SDL.FRect viewport = CreateFRect(1.5f, 2.5f, 30.5f, 40.5f);
+        SDL3.SDL.FRect clip = CreateFRect(5.5f, 6.5f, 20.5f, 10.5f);
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderViewportFloatPointerNativeFunction", nameof(CaptureSetRenderViewportFloatPointer)))
+        {
+            bool result = SDL3.SDL.SetRenderViewportFloat((IntPtr)0x6101, IntPtr.Zero);
+            TestAssert.Equal(true, result, "SDL.SetRenderViewportFloat(IntPtr) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x6101, capturedRenderer, "SDL.SetRenderViewportFloat(IntPtr) must forward renderer.");
+            TestAssert.Equal(IntPtr.Zero, capturedRectPointer, "SDL.SetRenderViewportFloat(IntPtr) must forward a null rect pointer.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderViewportFloatRectNativeFunction", nameof(CaptureSetRenderViewportFloatRect)))
+        {
+            bool result = SDL3.SDL.SetRenderViewportFloat((IntPtr)0x6111, in viewport);
+            TestAssert.Equal(true, result, "SDL.SetRenderViewportFloat(in FRect) must return native success.");
+            TestAssert.Equal((IntPtr)0x6111, capturedRenderer, "SDL.SetRenderViewportFloat(in FRect) must forward renderer.");
+            AssertFRect(viewport, capturedFRect, "SDL.SetRenderViewportFloat(in FRect) must forward the rectangle.");
+            nextBool = false;
+            result = SDL3.SDL.SetRenderViewportFloat((IntPtr)0x6112, in viewport);
+            TestAssert.Equal(false, result, "SDL.SetRenderViewportFloat(in FRect) must return native failure.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFRect = viewport;
+        using (NativeHookScope _ = NativeHookScope.Install("GetRenderViewportFloatNativeFunction", nameof(CaptureGetRenderViewportFloat)))
+        {
+            bool result = SDL3.SDL.GetRenderViewportFloat((IntPtr)0x6121, out SDL3.SDL.FRect actual);
+            TestAssert.Equal(true, result, "SDL.GetRenderViewportFloat must return native success.");
+            AssertFRect(viewport, actual, "SDL.GetRenderViewportFloat must return the native rectangle.");
+        }
+
+        ResetCaptureState();
+        nextBool = false;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderClipRectFloatPointerNativeFunction", nameof(CaptureSetRenderClipRectFloatPointer)))
+        {
+            bool result = SDL3.SDL.SetRenderClipRectFloat((IntPtr)0x6131, (IntPtr)0x6132);
+            TestAssert.Equal(false, result, "SDL.SetRenderClipRectFloat(IntPtr) must return native failure.");
+            TestAssert.Equal((IntPtr)0x6132, capturedRectPointer, "SDL.SetRenderClipRectFloat(IntPtr) must forward the rectangle pointer.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderClipRectFloatRectNativeFunction", nameof(CaptureSetRenderClipRectFloatRect)))
+        {
+            bool result = SDL3.SDL.SetRenderClipRectFloat((IntPtr)0x6141, in clip);
+            TestAssert.Equal(true, result, "SDL.SetRenderClipRectFloat(in FRect) must return native success.");
+            TestAssert.Equal((IntPtr)0x6141, capturedRenderer, "SDL.SetRenderClipRectFloat(in FRect) must forward renderer.");
+            AssertFRect(clip, capturedFRect, "SDL.SetRenderClipRectFloat(in FRect) must forward the rectangle.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFRect = clip;
+        using NativeHookScope getClipFloat = NativeHookScope.Install("GetRenderClipRectFloatNativeFunction", nameof(CaptureGetRenderClipRectFloat));
+        bool getClipResult = SDL3.SDL.GetRenderClipRectFloat((IntPtr)0x6151, out SDL3.SDL.FRect actualClip);
+        TestAssert.Equal(true, getClipResult, "SDL.GetRenderClipRectFloat must return native success.");
+        AssertFRect(clip, actualClip, "SDL.GetRenderClipRectFloat must return the native rectangle.");
+    }
+
+    public static void GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata()
+    {
+        MethodInfo suspend = GetNativeMethod("SDL_GDKSuspendRenderer");
+        AssertNativeImport(suspend, "SDL_GDKSuspendRenderer");
+        TestAssert.Equal(typeof(IntPtr), suspend.GetParameters()[0].ParameterType, "SDL.GDKSuspendRenderer must take a renderer pointer.");
+        MethodInfo resume = GetNativeMethod("SDL_GDKResumeRenderer");
+        AssertNativeImport(resume, "SDL_GDKResumeRenderer");
+        TestAssert.Equal(typeof(IntPtr), resume.GetParameters()[0].ParameterType, "SDL.GDKResumeRenderer must take a renderer pointer.");
+
+        using (NativeHookScope _ = NativeHookScope.Install("GDKSuspendRendererNativeFunction", nameof(CaptureRendererOnlyVoid)))
+        {
+            SDL3.SDL.GDKSuspendRenderer((IntPtr)0xE051);
+            TestAssert.Equal((IntPtr)0xE051, capturedRenderer, "SDL.GDKSuspendRenderer must forward renderer.");
+        }
+
+        using (NativeHookScope _ = NativeHookScope.Install("GDKResumeRendererNativeFunction", nameof(CaptureRendererOnlyVoid)))
+        {
+            SDL3.SDL.GDKResumeRenderer((IntPtr)0xE052);
+            TestAssert.Equal((IntPtr)0xE052, capturedRenderer, "SDL.GDKResumeRenderer must forward renderer.");
+        }
+    }
+
+    public static void GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer()
+    {
+        SDL3.SDL.GDKSuspendRenderer(IntPtr.Zero);
+        SDL3.SDL.GDKResumeRenderer(IntPtr.Zero);
+    }
+
+    public static void FloatViewportAndClipFunctions_UseNativeSoftwareRenderer()
+    {
+        IntPtr surface = SDL3.SDL.CreateSurface(64, 64, SDL3.SDL.PixelFormat.ARGB8888);
+        TestAssert.True(surface != IntPtr.Zero, $"SDL.CreateSurface must succeed for the float viewport native ABI test: {SDL3.SDL.GetError()}");
+
+        try
+        {
+            IntPtr renderer = SDL3.SDL.CreateSoftwareRenderer(surface);
+            TestAssert.True(renderer != IntPtr.Zero, $"SDL.CreateSoftwareRenderer must succeed for the float viewport native ABI test: {SDL3.SDL.GetError()}");
+            try
+            {
+                SDL3.SDL.FRect viewport = CreateFRect(1.5f, 2.5f, 30.5f, 40.5f);
+                TestAssert.True(SDL3.SDL.SetRenderViewportFloat(renderer, in viewport), $"SDL.SetRenderViewportFloat must succeed: {SDL3.SDL.GetError()}");
+                TestAssert.True(SDL3.SDL.GetRenderViewportFloat(renderer, out SDL3.SDL.FRect actualViewport), $"SDL.GetRenderViewportFloat must succeed: {SDL3.SDL.GetError()}");
+                AssertFRect(viewport, actualViewport, "SDL float viewport calls must round-trip FRect fields.");
+
+                SDL3.SDL.FRect clip = CreateFRect(5.5f, 6.5f, 20.5f, 10.5f);
+                TestAssert.True(SDL3.SDL.SetRenderClipRectFloat(renderer, in clip), $"SDL.SetRenderClipRectFloat must succeed: {SDL3.SDL.GetError()}");
+                TestAssert.True(SDL3.SDL.GetRenderClipRectFloat(renderer, out SDL3.SDL.FRect actualClip), $"SDL.GetRenderClipRectFloat must succeed: {SDL3.SDL.GetError()}");
+                AssertFRect(clip, actualClip, "SDL float clip calls must round-trip FRect fields.");
+            }
+            finally
+            {
+                SDL3.SDL.DestroyRenderer(renderer);
+            }
+        }
+        finally
+        {
+            SDL3.SDL.DestroySurface(surface);
+        }
+    }
+
+    private static bool CaptureSetRenderViewportFloatPointer(IntPtr renderer, IntPtr rect)
+    {
+        capturedRenderer = renderer;
+        capturedRectPointer = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureSetRenderViewportFloatRect(IntPtr renderer, in SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        capturedFRect = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureGetRenderViewportFloat(IntPtr renderer, out SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        rect = nextFRect;
+        return nextBool;
+    }
+
+    private static bool CaptureSetRenderClipRectFloatPointer(IntPtr renderer, IntPtr rect)
+    {
+        capturedRenderer = renderer;
+        capturedRectPointer = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureSetRenderClipRectFloatRect(IntPtr renderer, in SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        capturedFRect = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureGetRenderClipRectFloat(IntPtr renderer, out SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        rect = nextFRect;
+        return nextBool;
     }
 
     public static void DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues()
@@ -2530,6 +2750,75 @@ internal static class PInvokeTests
             TestAssert.Equal(createInfo.NumStorageBuffers, capturedGPURenderStateCreateInfo.NumStorageBuffers, "SDL.CreateGPURenderState must forward NumStorageBuffers.");
             TestAssert.Equal(createInfo.StorageBuffers, capturedGPURenderStateCreateInfo.StorageBuffers, "SDL.CreateGPURenderState must forward StorageBuffers.");
             TestAssert.Equal(createInfo.Props, capturedGPURenderStateCreateInfo.Props, "SDL.CreateGPURenderState must forward Props.");
+        }
+    }
+
+    public static void GPURenderStateBindingSetters_ForwardArraysAndReturnNativeValues()
+    {
+        SDL3.SDL.GPUTextureSamplerBinding[] samplerBindings = [new() { Texture = (IntPtr)0xB101, Sampler = (IntPtr)0xB102 }];
+        IntPtr[] storageTextures = [(IntPtr)0xB201, (IntPtr)0xB202];
+        IntPtr[] storageBuffers = [(IntPtr)0xB301];
+        nextBool = true;
+        gpuBindingHookCallCount = 0;
+
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateSamplerBindingsNativeFunction", nameof(CaptureSetGPURenderStateSamplerBindings)))
+        {
+            TestAssert.Equal(true, SDL3.SDL.SetGPURenderStateSamplerBindings((IntPtr)0xB110, samplerBindings.Length, samplerBindings), "SDL.SetGPURenderStateSamplerBindings must return native hook result.");
+            TestAssert.Equal((IntPtr)0xB110, capturedState, "SDL.SetGPURenderStateSamplerBindings must forward state.");
+            TestAssert.Equal(1, capturedSamplerBindingCount, "SDL.SetGPURenderStateSamplerBindings must forward count.");
+            TestAssert.True(ReferenceEquals(samplerBindings, capturedSamplerBindings), "SDL.SetGPURenderStateSamplerBindings must forward sampler array.");
+            TestAssert.Equal(1, gpuBindingHookCallCount, "SDL.SetGPURenderStateSamplerBindings must call its native hook once.");
+        }
+
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageTexturesNativeFunction", nameof(CaptureSetGPURenderStateStorageTextures)))
+        {
+            TestAssert.Equal(true, SDL3.SDL.SetGPURenderStateStorageTextures((IntPtr)0xB210, storageTextures.Length, storageTextures), "SDL.SetGPURenderStateStorageTextures must return native hook result.");
+            TestAssert.Equal((IntPtr)0xB210, capturedState, "SDL.SetGPURenderStateStorageTextures must forward state.");
+            TestAssert.Equal(2, capturedStorageTextureCount, "SDL.SetGPURenderStateStorageTextures must forward count.");
+            TestAssert.True(ReferenceEquals(storageTextures, capturedStorageTextures), "SDL.SetGPURenderStateStorageTextures must forward texture pointer array.");
+            TestAssert.Equal(2, gpuBindingHookCallCount, "SDL.SetGPURenderStateStorageTextures must call its native hook once after the sampler setter.");
+        }
+
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageBuffersNativeFunction", nameof(CaptureSetGPURenderStateStorageBuffers)))
+        {
+            TestAssert.Equal(true, SDL3.SDL.SetGPURenderStateStorageBuffers((IntPtr)0xB310, storageBuffers.Length, storageBuffers), "SDL.SetGPURenderStateStorageBuffers must return native hook result.");
+            TestAssert.Equal((IntPtr)0xB310, capturedState, "SDL.SetGPURenderStateStorageBuffers must forward state.");
+            TestAssert.Equal(1, capturedStorageBufferCount, "SDL.SetGPURenderStateStorageBuffers must forward count.");
+            TestAssert.True(ReferenceEquals(storageBuffers, capturedStorageBuffers), "SDL.SetGPURenderStateStorageBuffers must forward buffer pointer array.");
+            TestAssert.Equal(3, gpuBindingHookCallCount, "SDL.SetGPURenderStateStorageBuffers must call its native hook once after prior setters.");
+        }
+    }
+
+    public static void GPURenderStateBindingSetters_RejectNullStateOnNative()
+    {
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, 0, Array.Empty<SDL3.SDL.GPUTextureSamplerBinding>()), "SDL sampler setter must reject null state.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, 0, Array.Empty<IntPtr>()), "SDL storage texture setter must reject null state.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, 0, Array.Empty<IntPtr>()), "SDL storage buffer setter must reject null state.");
+    }
+
+    public static void GPURenderStateBindingSetters_ValidateArrayCounts()
+    {
+        using NativeHookScope sampler = NativeHookScope.Install("SetGPURenderStateSamplerBindingsNativeFunction", nameof(CaptureSetGPURenderStateSamplerBindings));
+        using NativeHookScope textures = NativeHookScope.Install("SetGPURenderStateStorageTexturesNativeFunction", nameof(CaptureSetGPURenderStateStorageTextures));
+        using NativeHookScope buffers = NativeHookScope.Install("SetGPURenderStateStorageBuffersNativeFunction", nameof(CaptureSetGPURenderStateStorageBuffers));
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, 0, null), "Empty sampler array must preserve native failure.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, 0, null), "Empty texture array must preserve native failure.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, 0, null), "Empty buffer array must preserve native failure.");
+        Action[] invalid = [
+            () => SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, -1, []),
+            () => SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, 1, null),
+            () => SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, -1, []),
+            () => SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, 1, null),
+            () => SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, -1, []),
+            () => SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, 1, null)
+        ];
+        foreach (Action action in invalid)
+        {
+            bool caught = false;
+            try { action(); }
+            catch (ArgumentOutOfRangeException) { caught = true; }
+            TestAssert.True(caught, "Count must be nonnegative and cannot exceed the actual native input array.");
         }
     }
 
@@ -3848,6 +4137,33 @@ internal static class PInvokeTests
         capturedSlotIndex = slotIndex;
         capturedData = data;
         capturedLength = length;
+        return nextBool;
+    }
+
+    private static bool CaptureSetGPURenderStateSamplerBindings(IntPtr state, int count, SDL3.SDL.GPUTextureSamplerBinding[]? bindings)
+    {
+        gpuBindingHookCallCount++;
+        capturedState = state;
+        capturedSamplerBindingCount = count;
+        capturedSamplerBindings = bindings;
+        return nextBool;
+    }
+
+    private static bool CaptureSetGPURenderStateStorageTextures(IntPtr state, int count, IntPtr[]? textures)
+    {
+        gpuBindingHookCallCount++;
+        capturedState = state;
+        capturedStorageTextureCount = count;
+        capturedStorageTextures = textures;
+        return nextBool;
+    }
+
+    private static bool CaptureSetGPURenderStateStorageBuffers(IntPtr state, int count, IntPtr[]? buffers)
+    {
+        gpuBindingHookCallCount++;
+        capturedState = state;
+        capturedStorageBufferCount = count;
+        capturedStorageBuffers = buffers;
         return nextBool;
     }
 

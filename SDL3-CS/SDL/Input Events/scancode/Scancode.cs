@@ -383,6 +383,9 @@ public static partial class SDL
         CrSel = 163,
         ExSel = 164,
 
+        /// <summary>Window Front.</summary>
+        Front = 165,
+
         Kp00 = 176,
         Kp000 = 177,
         ThousandsSeparator = 178,

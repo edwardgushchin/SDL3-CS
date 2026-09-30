@@ -11,6 +11,7 @@ internal static class PInvokeTests
     private static IntPtr capturedEntry;
     private static IntPtr capturedMenu;
     private static IntPtr capturedUserdata;
+    private static uint capturedTrayProperties;
     private static IntPtr nextPointer;
     private static IntPtr nextEntriesPointer;
     private static string? capturedTooltip;
@@ -21,6 +22,35 @@ internal static class PInvokeTests
     private static int capturedCallCount;
     private static SDL3.SDL.TrayEntryFlags capturedFlags;
     private static SDL3.SDL.TrayCallback? capturedCallback;
+
+    public static void CreateTrayWithProperties_ForwardsPropertiesAndReturnsNativePointer()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_CreateTrayWithProperties");
+        AssertSdlLibraryImport(nativeMethod, "SDL_CreateTrayWithProperties");
+        TestAssert.Equal(typeof(uint), nativeMethod.GetParameters()[0].ParameterType, "SDL.CreateTrayWithProperties must use the SDL property ID type.");
+        nextPointer = (IntPtr)302;
+        capturedTrayProperties = 0;
+        capturedCallCount = 0;
+        using NativeHookScope _ = NativeHookScope.Install("CreateTrayWithPropertiesNativeFunction", nameof(CaptureCreateTrayWithProperties));
+        IntPtr result = SDL3.SDL.CreateTrayWithProperties(0xA123u);
+        TestAssert.Equal((IntPtr)302, result, "SDL.CreateTrayWithProperties must return the native hook pointer.");
+        TestAssert.Equal(0xA123u, capturedTrayProperties, "SDL.CreateTrayWithProperties must forward properties.");
+        TestAssert.Equal(1, capturedCallCount, "SDL.CreateTrayWithProperties must call the native hook once.");
+    }
+
+    public static void TrayClickCallback_UsesExpectedNativeAbi()
+    {
+        MethodInfo invoke = typeof(SDL3.SDL.TrayClickCallback).GetMethod("Invoke")!;
+        MarshalAsAttribute? returnMarshal = invoke.ReturnParameter.GetCustomAttribute<MarshalAsAttribute>();
+        TestAssert.NotNull(returnMarshal, "SDL.TrayClickCallback return value must declare native bool marshalling.");
+        TestAssert.Equal(UnmanagedType.I1, returnMarshal!.Value, "SDL.TrayClickCallback return value must use one-byte bool marshalling.");
+        UnmanagedFunctionPointerAttribute? callingConvention = typeof(SDL3.SDL.TrayClickCallback).GetCustomAttribute<UnmanagedFunctionPointerAttribute>();
+        TestAssert.NotNull(callingConvention, "SDL.TrayClickCallback must declare its native calling convention.");
+        TestAssert.Equal(CallingConvention.Cdecl, callingConvention!.CallingConvention, "SDL.TrayClickCallback must use cdecl.");
+        SDL3.SDL.TrayClickCallback callback = (userdata, tray) => userdata == (IntPtr)0xA101 && tray == (IntPtr)0xA102;
+        TestAssert.Equal(true, callback((IntPtr)0xA101, (IntPtr)0xA102), "SDL.TrayClickCallback must preserve a true response.");
+        TestAssert.Equal(false, callback(IntPtr.Zero, (IntPtr)0xA102), "SDL.TrayClickCallback must preserve a false response.");
+    }
 
     public static void CreateTray_ForwardsIconAndTooltip()
     {
@@ -272,6 +302,13 @@ internal static class PInvokeTests
     private static IntPtr CaptureTrayPointer(IntPtr tray)
     {
         capturedTray = tray;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureCreateTrayWithProperties(uint props)
+    {
+        capturedCallCount++;
+        capturedTrayProperties = props;
         return nextPointer;
     }
 

@@ -381,6 +381,13 @@ public static partial class SDL
         /// <code>DefinePixelFourCC('P', '0', '1', '0'),</code>
         /// </summary>
         P010 = 0x30313050u,
+
+        /// <summary>YUV 4:4:4 8-bit planar mode: Y + U + V (3 planes).</summary>
+        I444 = 0x34343449u,
+        /// <summary>YUV 4:2:0 16-bit planar mode: Y + U + V (3 planes).</summary>
+        I0FL = 0x4c463049u,
+        /// <summary>YUV 4:4:4 16-bit planar mode: Y + U + V (3 planes).</summary>
+        I4FL = 0x4c463449u,
         
         /// <summary>
         /// <para>Android video texture format</para>

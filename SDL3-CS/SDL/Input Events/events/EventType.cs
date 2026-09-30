@@ -480,8 +480,13 @@ public static partial class SDL
         /// </summary>
         GamepadSteamHandleUpdated,
 
+        /// <summary>Gamepad capsense was touched.</summary>
+        GamepadCapSenseTouch,
+        /// <summary>Gamepad capsense was released.</summary>
+        GamepadCapSenseRelease,
+
         GamepadFirst = GamepadAxisMotion,
-        GamepadLast = GamepadSteamHandleUpdated,
+        GamepadLast = GamepadCapSenseRelease,
 
         #endregion
 
@@ -645,6 +650,13 @@ public static partial class SDL
         CameraDeviceDenied,
         CameraDeviceFirst = CameraDeviceAdded,
         CameraDeviceLast = CameraDeviceDenied,
+        #endregion
+
+        #region Notification events
+        /// <summary>A user response to a system notification was received.</summary>
+        NotificationActionInvoked = 0x1500,
+        NotificationFirst = NotificationActionInvoked,
+        NotificationLast = NotificationActionInvoked,
         #endregion
 
         #region Render events

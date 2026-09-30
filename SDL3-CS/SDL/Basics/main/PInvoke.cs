@@ -453,10 +453,22 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendComplete(void);</code>
     /// <summary>
     /// <para>Callback from the application to let the suspend continue.</para>
+    /// <para>This should be called in response to an <see cref="EventType.DidEnterBackground"/>
+    /// event, which can be detected via event watch. However, do NOT call this
+    /// function directly from within an event watch callback. Instead, wait until
+    /// the app has suppressed all rendering operations, then call this from the
+    /// application render thread.</para>
+    /// <para>When using <c>SDL_Render</c>, this should be called after calling
+    /// <see cref="GDKSuspendRenderer(IntPtr)"/>.</para>
+    /// <para>When using <c>SDL_GPU</c>, this should be called after calling <see cref="GDKSuspendGPU(IntPtr)"/>.</para>
+    /// <para>If you're writing your own D3D12 renderer, this should be called after
+    /// calling <c>ID3D12CommandQueue::SuspendX</c>.</para>
     /// <para>This function is only needed for Xbox GDK support; all other platforms will
     /// do nothing and set an "unsupported" error message.</para>
     /// </summary>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="AddEventWatch(EventFilter, IntPtr)"/>
     public static void GDKSuspendComplete()
     {
         GDKSuspendCompleteNativeFunction();

@@ -58,19 +58,22 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_MALLOC SDL_ALLOC_SIZE2(1, 2) void * SDLCALL SDL_calloc(size_t nmemb, size_t size);</code>
     /// <summary>
     /// <para>Allocate a zero-initialized array.</para>
-    /// <para>The memory returned by this function must be freed with <see cref="Free"/>.</para>
+    /// <para>The memory returned by this function must be freed with <see cref="Free(IntPtr)"/>().</para>
     /// <para>If either of <c>nmemb</c> or <c>size</c> is 0, they will both be set to 1.</para>
     /// <para>If the allocation is successful, the returned pointer is guaranteed to be
-    /// aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
-    /// C11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use
-    /// <see cref="AlignedAlloc"/> if you need to allocate memory aligned to an
+    /// aligned to either the *fundamental alignment* (<c>alignof(max_align_t)</c> in
+    /// C11 and later) or <c>2 * sizeof(void *)</c>, whichever is smaller. Use
+    /// <see cref="AlignedAllocZero(UIntPtr, UIntPtr)"/>() if you need to allocate memory aligned to an
     /// alignment greater than this guarantee.</para>
     /// </summary>
     /// <param name="nmemb">the number of elements in the array.</param>
     /// <param name="size">the size of each element of the array.</param>
     /// <returns>a pointer to the allocated array, or <c>null</c> if allocation failed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="Free(IntPtr)"/>
+    /// <seealso cref="Malloc(UIntPtr)"/>
+    /// <seealso cref="Realloc(IntPtr, UIntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_calloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr Calloc(UIntPtr nmemb, UIntPtr size);
 
@@ -196,23 +199,28 @@ public partial class SDL
     /// <summary>
     /// <para>Replace SDL's memory allocation functions with a custom set.</para>
     /// <para>It is not safe to call this function once any allocations have been made,
-    /// as future calls to SDL_free will use the new allocator, even if they came
-    /// from an SDL_malloc made with the old one!</para>
+    /// as future calls to <see cref="Free(IntPtr)"/> will use the new allocator, even if they came
+    /// from an <see cref="Malloc(UIntPtr)"/> made with the old one!</para>
     /// <para>If used, usually this needs to be the first call made into the SDL library,
     /// if not the very first thing done at program startup time.</para>
+    /// <para>It is legal to call this with all 4 parameters set to <c>null</c>, which will
+    /// restore the original memory functions without having to query them with
+    /// <see cref="GetOriginalMemoryFunctions(out MallocFunc, out CallocFunc, out ReallocFunc, out FreeFunc)"/>() first.</para>
     /// </summary>
     /// <param name="mallocFunc">custom malloc function.</param>
     /// <param name="callocFunc">custom calloc function.</param>
     /// <param name="reallocFunc">custom realloc function.</param>
     /// <param name="freeFunc">custom free function.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure. This only fails if there is a
+    ///          mix of <c>null</c> and non-<c>null</c> parameters. Failure will not set an error
+    ///          message (which allocates memory) so do _not_ call <see cref="GetError()"/>()
+    ///          in response to a failure here.</returns>
     /// <threadsafety>It is safe to call this function from any thread, but one
-    /// should not replace the memory functions once any allocations
-    /// are made!</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetMemoryFunctions"/>
-    /// <seealso cref="GetOriginalMemoryFunctions"/>
+    ///               should not replace the memory functions once any allocations
+    ///               are made!</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetMemoryFunctions(out MallocFunc, out CallocFunc, out ReallocFunc, out FreeFunc)"/>
+    /// <seealso cref="GetOriginalMemoryFunctions(out MallocFunc, out CallocFunc, out ReallocFunc, out FreeFunc)"/>
     public static bool SetMemoryFunctions(MallocFunc mallocFunc, CallocFunc callocFunc, ReallocFunc reallocFunc, FreeFunc freeFunc)
     {
         return SetMemoryFunctionsNativeFunction(mallocFunc, callocFunc, reallocFunc, freeFunc);
@@ -237,6 +245,25 @@ public partial class SDL
     /// <seealso cref="AlignedFree"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr AlignedAlloc(UIntPtr alignment, UIntPtr size);
+
+    /// <code>extern SDL_DECLSPEC SDL_MALLOC void * SDLCALL SDL_aligned_alloc_zero(size_t alignment, size_t size);</code>
+    /// <summary>
+    /// <para>Allocate zero-initialized memory aligned to a specific alignment.</para>
+    /// <para>The memory returned by this function must be freed with <see cref="AlignedFree(IntPtr)"/>(),
+    /// _not_ <see cref="Free(IntPtr)"/>().</para>
+    /// <para>If <c>alignment</c> is less than the size of <c>void *</c>, it will be increased to
+    /// match that.</para>
+    /// <para>The returned memory address will be a multiple of the alignment value, and
+    /// the size of the memory allocated will be a multiple of the alignment value.</para>
+    /// </summary>
+    /// <param name="alignment">the alignment of the memory.</param>
+    /// <param name="size">the size to allocate.</param>
+    /// <returns>a pointer to the aligned memory, or <c>null</c> if allocation failed.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AlignedFree(IntPtr)"/>
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_aligned_alloc_zero"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial IntPtr AlignedAllocZero(UIntPtr alignment, UIntPtr size);
 
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_aligned_free(void *mem);</code>
@@ -270,40 +297,50 @@ public partial class SDL
     /// <summary>
     /// <para>Get the process environment.</para>
     /// <para>This is initialized at application start and is not affected by setenv()
-    /// and unsetenv() calls after that point. Use <see cref="SetEnvironmentVariable"/> and
-    /// <see cref="UnsetEnvironmentVariable"/> if you want to modify this environment, or
-    /// SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
-    /// in the C runtime environment after <see cref="Quit"/>.</para>
+    /// and unsetenv() calls after that point. Use <see cref="SetEnvironmentVariable(IntPtr, string, string, bool)"/>() and
+    /// <see cref="UnsetEnvironmentVariable(IntPtr, string)"/>() if you want to modify this environment, or
+    /// <c>SDL_setenv_unsafe</c>() or <c>SDL_unsetenv_unsafe</c>() if you want changes to persist
+    /// in the C runtime environment after <see cref="Quit()"/>().</para>
+    /// <para>Note that on Windows, the variable names pulled in from the system at
+    /// startup have their ASCII values uppercased, to match what most platforms
+    /// expect even though the Windows system environment table is
+    /// case-insensitive. Once those uppercased variable names are in an
+    /// <c>SDL_Environment</c>, SDL treats them as case-sensitive.</para>
     /// </summary>
     /// <returns>a pointer to the environment for the process or <c>null</c> on failure;
-    /// call <see cref="GetError"/> for more information.</returns>
+    ///          call <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetEnvironmentVariable"/>
-    /// <seealso cref="GetEnvironmentVariables"/>
-    /// <seealso cref="SetEnvironmentVariable"/>
-    /// <seealso cref="UnsetEnvironmentVariable"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetEnvironmentVariable(IntPtr, string)"/>
+    /// <seealso cref="GetEnvironmentVariables(IntPtr)"/>
+    /// <seealso cref="SetEnvironmentVariable(IntPtr, string, string, bool)"/>
+    /// <seealso cref="UnsetEnvironmentVariable(IntPtr, string)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetEnvironment();
 
 
     /// <code>extern SDL_DECLSPEC SDL_Environment * SDLCALL SDL_CreateEnvironment(bool populated);</code>
     /// <summary>
-    /// Create a set of environment variables
+    /// <para>Create a set of environment variables.</para>
+    /// <para>Note that on Windows, the variable names pulled in from the system, if
+    /// <c>populated</c> is <c>true</c>, have their ASCII values uppercased, to match what most
+    /// platforms expect even though the Windows system environment table is
+    /// case-insensitive. Once those uppercased variable names are in an
+    /// <c>SDL_Environment</c>, SDL treats them as case-sensitive.</para>
     /// </summary>
     /// <param name="populated"><c>true</c> to initialize it from the C runtime environment,
-    /// <c>false</c> to create an empty environment.</param>
+    ///                  <c>false</c> to create an empty environment.</param>
     /// <returns>a pointer to the new environment or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>If <c>populated</c> is <c>false</c>, it is safe to call this function
-    /// from any thread, otherwise it is safe if no other threads are
-    /// calling setenv() or unsetenv()</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetEnvironmentVariable"/>
-    /// <seealso cref="GetEnvironmentVariables"/>
-    /// <seealso cref="SetEnvironmentVariable"/>
-    /// <seealso cref="UnsetEnvironmentVariable"/>
-    /// <seealso cref="DestroyEnvironment"/>
+    ///               from any thread, otherwise it is safe if no other threads are
+    ///               calling setenv() or unsetenv()</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetEnvironmentVariable(IntPtr, string)"/>
+    /// <seealso cref="GetEnvironmentVariables(IntPtr)"/>
+    /// <seealso cref="SetEnvironmentVariable(IntPtr, string, string, bool)"/>
+    /// <seealso cref="UnsetEnvironmentVariable(IntPtr, string)"/>
+    /// <seealso cref="DestroyEnvironment(IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateEnvironment"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateEnvironment([MarshalAs(UnmanagedType.I1)] bool populated);
 
@@ -338,20 +375,20 @@ public partial class SDL
     private static partial IntPtr SDL_GetEnvironmentVariables(IntPtr env);
     /// <code>extern SDL_DECLSPEC char ** SDLCALL SDL_GetEnvironmentVariables(SDL_Environment *env);</code>
     /// <summary>
-    /// Get all variables in the environment.
+    /// <para>Get all variables in the environment.</para>
     /// </summary>
     /// <param name="env">the environment to query.</param>
     /// <returns>a <c>null</c> terminated array of pointers to environment variables in
-    /// the form "variable=value" or <c>null</c> on failure; call <see cref="GetError"/>
-    /// for more information. This is a single allocation that should be
-    /// freed with <see cref="Free"/> when it is no longer needed.</returns>
+    ///          the form "variable=value" or <c>null</c> on failure; call <see cref="GetError()"/>()
+    ///          for more information. This is a single allocation that should be
+    ///          freed with <see cref="Free(IntPtr)"/>() when it is no longer needed.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetEnvironment"/>
-    /// <seealso cref="CreateEnvironment"/>
-    /// <seealso cref="GetEnvironmentVariables"/>
-    /// <seealso cref="SetEnvironmentVariable"/>
-    /// <seealso cref="UnsetEnvironmentVariable"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetEnvironment()"/>
+    /// <seealso cref="CreateEnvironment(bool)"/>
+    /// <seealso cref="GetEnvironmentVariable(IntPtr, string)"/>
+    /// <seealso cref="SetEnvironmentVariable(IntPtr, string, string, bool)"/>
+    /// <seealso cref="UnsetEnvironmentVariable(IntPtr, string)"/>
     public static string[]? GetEnvironmentVariables(IntPtr env)
     {
         var ptr = SDL_GetEnvironmentVariables(env);
@@ -495,19 +532,19 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_rand_bits(void);</code>
     /// <summary>
     /// <para>Generate 32 pseudo-random bits.</para>
-    /// <para>You likely want to use <see cref="Rand"/> to get a pseudo-random number instead.</para>
+    /// <para>You likely want to use <see cref="Rand(int)"/>() to get a pseudo-random number instead.</para>
     /// <para>There are no guarantees as to the quality of the random sequence produced,
     /// and this should not be used for security (cryptography, passwords) or where
     /// money is on the line (loot-boxes, casinos). There are many random number
     /// libraries available with different characteristics and you should pick one
     /// of those to meet any serious needs.</para>
     /// </summary>
-    /// <returns>a random value in the range of [0-SDL_MAX_UINT32].</returns>
+    /// <returns>a random value in the range of [0-<c>SDL_MAX_UINT32</c>].</returns>
     /// <threadsafety>All calls should be made from a single thread</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="Rand"/>
-    /// <seealso cref="RandF"/>
-    /// <seealso cref="SRand"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="Rand(int)"/>
+    /// <seealso cref="RandF()"/>
+    /// <seealso cref="SRand(ulong)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_bits"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint RandBits();
 
@@ -552,14 +589,14 @@ public partial class SDL
     /// of those to meet any serious needs.</para>
     /// </summary>
     /// <param name="state">a pointer to the current random number state, this may not be
-    /// <c>null</c>.</param>
+    ///              <c>null</c>.</param>
     /// <returns>a random value in the range of [0.0, 1.0).</returns>
     /// <threadsafety>This function is thread-safe, as long as the state pointer
-    /// isn't shared between threads.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RandBitsR"/>
-    /// <seealso cref="RandR"/>
-    /// <seealso cref="RandF"/>
+    ///               isn't shared between threads.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RandBitsR(ref ulong)"/>
+    /// <seealso cref="RandR(ref ulong, int)"/>
+    /// <seealso cref="RandF()"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_randf_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float RandFR(ref ulong state);
 
@@ -567,7 +604,7 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC Uint32 SDLCALL SDL_rand_bits_r(Uint64 *state);</code>
     /// <summary>
     /// <para>Generate 32 pseudo-random bits.</para>
-    /// <para>You likely want to use <see cref="RandR"/> to get a pseudo-random number instead.</para>
+    /// <para>You likely want to use <see cref="RandR(ref ulong, int)"/>() to get a pseudo-random number instead.</para>
     /// <para>There are no guarantees as to the quality of the random sequence produced,
     /// and this should not be used for security (cryptography, passwords) or where
     /// money is on the line (loot-boxes, casinos). There are many random number
@@ -575,13 +612,13 @@ public partial class SDL
     /// of those to meet any serious needs.</para>
     /// </summary>
     /// <param name="state">a pointer to the current random number state, this may not be
-    /// <c>null</c>.</param>
-    /// <returns>a random value in the range of [0-SDL_MAX_UINT32].</returns>
+    ///              <c>null</c>.</param>
+    /// <returns>a random value in the range of [0-<c>SDL_MAX_UINT32</c>].</returns>
     /// <threadsafety>This function is thread-safe, as long as the state pointer
-    /// isn't shared between threads.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RandR"/>
-    /// <seealso cref="RandFR"/>
+    ///               isn't shared between threads.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RandR(ref ulong, int)"/>
+    /// <seealso cref="RandFR(ref ulong)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_rand_bits_r"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint RandBitsR(ref ulong state);
 
