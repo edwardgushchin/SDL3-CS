@@ -76,6 +76,37 @@ if (args.SequenceEqual(["--device-form-factor-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--jpg-loaders-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG_IO"), "The focused JPEG-loader tests require an SDL native library that exports both JPG loader APIs.");
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.NativeEntryPoints_KeepExpectedLibraryImportMetadata();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.SurfaceJpgLoadFunctions_ForwardInputsAndReturnNativeValues();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPG_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPGIO_InvokesNativeEntryPointAndClosesOwnedStream();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPG_ReturnsNullForMissingFile();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPGIO_ReturnsNullForNullStream();
+    Console.WriteLine("SDL JPEG loader focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--render-float-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_SetRenderViewportFloat"), "The focused float render tests require a native SDL library that exports SDL_SetRenderViewportFloat.");
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.NativeEntryPoints_KeepExpectedLibraryImportMetadata();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.FloatViewportAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.FloatViewportAndClipFunctions_UseNativeSoftwareRenderer();
+    Console.WriteLine("SDL float viewport/clip focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--jpg-loaders-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.RunAll();
+    Console.WriteLine("SDL surface focused tests passed.");
+    return;
+}
+
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();

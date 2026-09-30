@@ -2230,6 +2230,79 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewportFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderViewportFloatPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool SetRenderViewportFloatPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static SetRenderViewportFloatPointerNativeDelegate SetRenderViewportFloatPointerNativeFunction = SDL_SetRenderViewportFloatPointer;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderViewportFloat(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Set the drawing area for rendering on the current target.</para>
+    /// <para>Drawing will clip to this area (separately from any clipping done with
+    /// <see cref="SetRenderClipRect(IntPtr, in Rect)"/>), and the top left of the
+    /// area will become the coordinate origin for future drawing commands.</para>
+    /// <para>Each render target has its own viewport. This function sets the viewport
+    /// for the current render target.</para>
+    /// <para><see cref="RenderViewportSet"/> can be used to query whether the viewport was
+    /// set to the entire target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure representing the drawing area, or <c>null</c>
+    /// to set the viewport to the entire target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="GetRenderViewportFloat"/>
+    /// <seealso cref="RenderViewportSet"/>
+    public static bool SetRenderViewportFloat(IntPtr renderer, IntPtr rect)
+    {
+        return SetRenderViewportFloatPointerNativeFunction(renderer, rect);
+    }
+
+    /// <inheritdoc cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
+    public static bool SetRenderViewportFloat(IntPtr renderer, in FRect rect)
+    {
+        return SetRenderViewportFloatRectNativeFunction(renderer, in rect);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewportFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderViewportFloatRect(IntPtr renderer, in FRect rect);
+    private delegate bool SetRenderViewportFloatRectNativeDelegate(IntPtr renderer, in FRect rect);
+    private static SetRenderViewportFloatRectNativeDelegate SetRenderViewportFloatRectNativeFunction = SDL_SetRenderViewportFloatRect;
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderViewportFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderViewportFloat(IntPtr renderer, out FRect rect);
+    private delegate bool GetRenderViewportFloatNativeDelegate(IntPtr renderer, out FRect rect);
+    private static GetRenderViewportFloatNativeDelegate GetRenderViewportFloatNativeFunction = SDL_GetRenderViewportFloat;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderViewportFloat(SDL_Renderer *renderer, SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Get the drawing area for the current target.</para>
+    /// <para>Each render target has its own viewport. This function gets the viewport
+    /// for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure filled in with the current drawing area.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="RenderViewportSet"/>
+    /// <seealso cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
+    /// <seealso cref="SetRenderViewportFloat(IntPtr, in FRect)"/>
+    public static bool GetRenderViewportFloat(IntPtr renderer, out FRect rect)
+    {
+        return GetRenderViewportFloatNativeFunction(renderer, out rect);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_RenderViewportSet"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderViewportSet(IntPtr renderer);
@@ -2368,6 +2441,76 @@ public static partial class SDL
     public static bool GetRenderClipRect(IntPtr renderer, out Rect rect)
     {
         return GetRenderClipRectNativeFunction(renderer, out rect);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRectFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderClipRectFloatPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool SetRenderClipRectFloatPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static SetRenderClipRectFloatPointerNativeDelegate SetRenderClipRectFloatPointerNativeFunction = SDL_SetRenderClipRectFloatPointer;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRectFloat(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Set the clip rectangle for rendering on the specified target.</para>
+    /// <para>Each render target has its own clip rectangle. This function sets the
+    /// clip rectangle for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure representing the clip area, relative to
+    /// the viewport, or <c>null</c> to disable clipping.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="GetRenderClipRectFloat"/>
+    /// <seealso cref="RenderClipEnabled"/>
+    public static bool SetRenderClipRectFloat(IntPtr renderer, IntPtr rect)
+    {
+        return SetRenderClipRectFloatPointerNativeFunction(renderer, rect);
+    }
+
+    /// <inheritdoc cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
+    public static bool SetRenderClipRectFloat(IntPtr renderer, in FRect rect)
+    {
+        return SetRenderClipRectFloatRectNativeFunction(renderer, in rect);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRectFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderClipRectFloatRect(IntPtr renderer, in FRect rect);
+    private delegate bool SetRenderClipRectFloatRectNativeDelegate(IntPtr renderer, in FRect rect);
+    private static SetRenderClipRectFloatRectNativeDelegate SetRenderClipRectFloatRectNativeFunction = SDL_SetRenderClipRectFloatRect;
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderClipRectFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderClipRectFloat(IntPtr renderer, out FRect rect);
+    private delegate bool GetRenderClipRectFloatNativeDelegate(IntPtr renderer, out FRect rect);
+    private static GetRenderClipRectFloatNativeDelegate GetRenderClipRectFloatNativeFunction = SDL_GetRenderClipRectFloat;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRectFloat(SDL_Renderer *renderer, SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Get the clip rectangle for the current target.</para>
+    /// <para>Each render target has its own clip rectangle. This function gets the
+    /// clip rectangle for the current render target. If clipping is disabled,
+    /// this will return an empty rectangle.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure filled in with the current clipping area
+    /// or an empty rectangle if clipping is disabled.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
+    /// information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="RenderClipEnabled"/>
+    /// <seealso cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
+    /// <seealso cref="SetRenderClipRectFloat(IntPtr, in FRect)"/>
+    public static bool GetRenderClipRectFloat(IntPtr renderer, out FRect rect)
+    {
+        return GetRenderClipRectFloatNativeFunction(renderer, out rect);
     }
 
 

@@ -168,6 +168,11 @@ internal static class PInvokeTests
         ConvertEventToRenderCoordinates_ForwardsRendererAndRefEvent();
         ViewportClipAndScaleFunctions_ForwardInputsOutputsAndReturnNativeValues();
         SetRenderViewportRect_UsesPointerAbiWithNativeSoftwareRenderer();
+        FloatViewportAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_SetRenderViewportFloat"))
+        {
+            FloatViewportAndClipFunctions_UseNativeSoftwareRenderer();
+        }
         DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues();
         PrimitiveRenderingFunctions_ForwardCoordinatesPointersArraysAndRects();
         TextureRenderingFunctions_ForwardTextureRectsRotationCenterAndFlip();
@@ -264,6 +269,26 @@ internal static class PInvokeTests
 
         AssertInRectParameter(GetPublicSetRenderViewportRectMethod(), 1, "SetRenderViewport(IntPtr, in Rect)");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRenderViewport"), "SDL_GetRenderViewport");
+        AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderViewportFloatPointer"), "SDL_SetRenderViewportFloat");
+        MethodInfo setViewportFloatRect = GetNativeMethod("SDL_SetRenderViewportFloatRect");
+        AssertNativeBoolImport(setViewportFloatRect, "SDL_SetRenderViewportFloat");
+        ParameterInfo viewportFloatRectParameter = setViewportFloatRect.GetParameters()[1];
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), viewportFloatRectParameter.ParameterType, "SDL_SetRenderViewportFloat must pass SDL_FRect by reference.");
+        TestAssert.True(viewportFloatRectParameter.IsIn, "SDL_SetRenderViewportFloat must pass its const SDL_FRect input as in.");
+        MethodInfo getViewportFloat = GetNativeMethod("SDL_GetRenderViewportFloat");
+        AssertNativeBoolImport(getViewportFloat, "SDL_GetRenderViewportFloat");
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), getViewportFloat.GetParameters()[1].ParameterType, "SDL_GetRenderViewportFloat must receive SDL_FRect by reference.");
+        TestAssert.True(getViewportFloat.GetParameters()[1].IsOut, "SDL_GetRenderViewportFloat must mark its SDL_FRect output as out.");
+        AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderClipRectFloatPointer"), "SDL_SetRenderClipRectFloat");
+        MethodInfo setClipFloatRect = GetNativeMethod("SDL_SetRenderClipRectFloatRect");
+        AssertNativeBoolImport(setClipFloatRect, "SDL_SetRenderClipRectFloat");
+        ParameterInfo clipFloatRectParameter = setClipFloatRect.GetParameters()[1];
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), clipFloatRectParameter.ParameterType, "SDL_SetRenderClipRectFloat must pass SDL_FRect by reference.");
+        TestAssert.True(clipFloatRectParameter.IsIn, "SDL_SetRenderClipRectFloat must pass its const SDL_FRect input as in.");
+        MethodInfo getClipFloat = GetNativeMethod("SDL_GetRenderClipRectFloat");
+        AssertNativeBoolImport(getClipFloat, "SDL_GetRenderClipRectFloat");
+        TestAssert.Equal(typeof(SDL3.SDL.FRect).MakeByRefType(), getClipFloat.GetParameters()[1].ParameterType, "SDL_GetRenderClipRectFloat must receive SDL_FRect by reference.");
+        TestAssert.True(getClipFloat.GetParameters()[1].IsOut, "SDL_GetRenderClipRectFloat must mark its SDL_FRect output as out.");
         AssertNativeBoolImport(GetNativeMethod("SDL_RenderViewportSet"), "SDL_RenderViewportSet");
         AssertNativeBoolImport(GetNativeMethod("SDL_GetRenderSafeArea"), "SDL_GetRenderSafeArea");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetRenderClipRectPointer"), "SDL_SetRenderClipRect");
@@ -1283,6 +1308,146 @@ internal static class PInvokeTests
         {
             SDL3.SDL.DestroySurface(surface);
         }
+    }
+
+    public static void FloatViewportAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues()
+    {
+        SDL3.SDL.FRect viewport = CreateFRect(1.5f, 2.5f, 30.5f, 40.5f);
+        SDL3.SDL.FRect clip = CreateFRect(5.5f, 6.5f, 20.5f, 10.5f);
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderViewportFloatPointerNativeFunction", nameof(CaptureSetRenderViewportFloatPointer)))
+        {
+            bool result = SDL3.SDL.SetRenderViewportFloat((IntPtr)0x6101, IntPtr.Zero);
+            TestAssert.Equal(true, result, "SDL.SetRenderViewportFloat(IntPtr) must return the native hook value.");
+            TestAssert.Equal((IntPtr)0x6101, capturedRenderer, "SDL.SetRenderViewportFloat(IntPtr) must forward renderer.");
+            TestAssert.Equal(IntPtr.Zero, capturedRectPointer, "SDL.SetRenderViewportFloat(IntPtr) must forward a null rect pointer.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderViewportFloatRectNativeFunction", nameof(CaptureSetRenderViewportFloatRect)))
+        {
+            bool result = SDL3.SDL.SetRenderViewportFloat((IntPtr)0x6111, in viewport);
+            TestAssert.Equal(true, result, "SDL.SetRenderViewportFloat(in FRect) must return native success.");
+            TestAssert.Equal((IntPtr)0x6111, capturedRenderer, "SDL.SetRenderViewportFloat(in FRect) must forward renderer.");
+            AssertFRect(viewport, capturedFRect, "SDL.SetRenderViewportFloat(in FRect) must forward the rectangle.");
+            nextBool = false;
+            result = SDL3.SDL.SetRenderViewportFloat((IntPtr)0x6112, in viewport);
+            TestAssert.Equal(false, result, "SDL.SetRenderViewportFloat(in FRect) must return native failure.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFRect = viewport;
+        using (NativeHookScope _ = NativeHookScope.Install("GetRenderViewportFloatNativeFunction", nameof(CaptureGetRenderViewportFloat)))
+        {
+            bool result = SDL3.SDL.GetRenderViewportFloat((IntPtr)0x6121, out SDL3.SDL.FRect actual);
+            TestAssert.Equal(true, result, "SDL.GetRenderViewportFloat must return native success.");
+            AssertFRect(viewport, actual, "SDL.GetRenderViewportFloat must return the native rectangle.");
+        }
+
+        ResetCaptureState();
+        nextBool = false;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderClipRectFloatPointerNativeFunction", nameof(CaptureSetRenderClipRectFloatPointer)))
+        {
+            bool result = SDL3.SDL.SetRenderClipRectFloat((IntPtr)0x6131, (IntPtr)0x6132);
+            TestAssert.Equal(false, result, "SDL.SetRenderClipRectFloat(IntPtr) must return native failure.");
+            TestAssert.Equal((IntPtr)0x6132, capturedRectPointer, "SDL.SetRenderClipRectFloat(IntPtr) must forward the rectangle pointer.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        using (NativeHookScope _ = NativeHookScope.Install("SetRenderClipRectFloatRectNativeFunction", nameof(CaptureSetRenderClipRectFloatRect)))
+        {
+            bool result = SDL3.SDL.SetRenderClipRectFloat((IntPtr)0x6141, in clip);
+            TestAssert.Equal(true, result, "SDL.SetRenderClipRectFloat(in FRect) must return native success.");
+            TestAssert.Equal((IntPtr)0x6141, capturedRenderer, "SDL.SetRenderClipRectFloat(in FRect) must forward renderer.");
+            AssertFRect(clip, capturedFRect, "SDL.SetRenderClipRectFloat(in FRect) must forward the rectangle.");
+        }
+
+        ResetCaptureState();
+        nextBool = true;
+        nextFRect = clip;
+        using NativeHookScope getClipFloat = NativeHookScope.Install("GetRenderClipRectFloatNativeFunction", nameof(CaptureGetRenderClipRectFloat));
+        bool getClipResult = SDL3.SDL.GetRenderClipRectFloat((IntPtr)0x6151, out SDL3.SDL.FRect actualClip);
+        TestAssert.Equal(true, getClipResult, "SDL.GetRenderClipRectFloat must return native success.");
+        AssertFRect(clip, actualClip, "SDL.GetRenderClipRectFloat must return the native rectangle.");
+    }
+
+    public static void FloatViewportAndClipFunctions_UseNativeSoftwareRenderer()
+    {
+        IntPtr surface = SDL3.SDL.CreateSurface(64, 64, SDL3.SDL.PixelFormat.ARGB8888);
+        TestAssert.True(surface != IntPtr.Zero, $"SDL.CreateSurface must succeed for the float viewport native ABI test: {SDL3.SDL.GetError()}");
+
+        try
+        {
+            IntPtr renderer = SDL3.SDL.CreateSoftwareRenderer(surface);
+            TestAssert.True(renderer != IntPtr.Zero, $"SDL.CreateSoftwareRenderer must succeed for the float viewport native ABI test: {SDL3.SDL.GetError()}");
+            try
+            {
+                SDL3.SDL.FRect viewport = CreateFRect(1.5f, 2.5f, 30.5f, 40.5f);
+                TestAssert.True(SDL3.SDL.SetRenderViewportFloat(renderer, in viewport), $"SDL.SetRenderViewportFloat must succeed: {SDL3.SDL.GetError()}");
+                TestAssert.True(SDL3.SDL.GetRenderViewportFloat(renderer, out SDL3.SDL.FRect actualViewport), $"SDL.GetRenderViewportFloat must succeed: {SDL3.SDL.GetError()}");
+                AssertFRect(viewport, actualViewport, "SDL float viewport calls must round-trip FRect fields.");
+
+                SDL3.SDL.FRect clip = CreateFRect(5.5f, 6.5f, 20.5f, 10.5f);
+                TestAssert.True(SDL3.SDL.SetRenderClipRectFloat(renderer, in clip), $"SDL.SetRenderClipRectFloat must succeed: {SDL3.SDL.GetError()}");
+                TestAssert.True(SDL3.SDL.GetRenderClipRectFloat(renderer, out SDL3.SDL.FRect actualClip), $"SDL.GetRenderClipRectFloat must succeed: {SDL3.SDL.GetError()}");
+                AssertFRect(clip, actualClip, "SDL float clip calls must round-trip FRect fields.");
+            }
+            finally
+            {
+                SDL3.SDL.DestroyRenderer(renderer);
+            }
+        }
+        finally
+        {
+            SDL3.SDL.DestroySurface(surface);
+        }
+    }
+
+    private static bool CaptureSetRenderViewportFloatPointer(IntPtr renderer, IntPtr rect)
+    {
+        capturedRenderer = renderer;
+        capturedRectPointer = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureSetRenderViewportFloatRect(IntPtr renderer, in SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        capturedFRect = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureGetRenderViewportFloat(IntPtr renderer, out SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        rect = nextFRect;
+        return nextBool;
+    }
+
+    private static bool CaptureSetRenderClipRectFloatPointer(IntPtr renderer, IntPtr rect)
+    {
+        capturedRenderer = renderer;
+        capturedRectPointer = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureSetRenderClipRectFloatRect(IntPtr renderer, in SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        capturedFRect = rect;
+        return nextBool;
+    }
+
+    private static bool CaptureGetRenderClipRectFloat(IntPtr renderer, out SDL3.SDL.FRect rect)
+    {
+        capturedRenderer = renderer;
+        rect = nextFRect;
+        return nextBool;
     }
 
     public static void DrawColorBlendAndClearFunctions_ForwardInputsOutputsAndReturnNativeValues()
