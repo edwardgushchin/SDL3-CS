@@ -99,6 +99,17 @@ if (args.SequenceEqual(["--render-float-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--capsense-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GamepadHasCapSense") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetGamepadCapSense"), "The focused capsense tests require an SDL native library that exports both capsense APIs.");
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GamepadCapSenseType_UsesExpectedNativeValues();
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GamepadHasCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GetGamepadCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GamepadCapSense_ReturnsFalseWithoutGamepad();
+    Console.WriteLine("SDL gamepad capsense focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--jpg-loaders-only"]))
 {
     SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
