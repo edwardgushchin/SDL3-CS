@@ -11,9 +11,9 @@ This package set uses managed version `SDL3-CS 3.4.16.2`.
 | `SDL3-CS` | `3.4.16.2` |
 | `SDL3-CS.<Platform>` | `3.4.16.2` |
 | `SDL3-CS.<Platform>.Image` | `3.4.6.11` |
-| `SDL3-CS.<Platform>.Mixer` | `3.2.4.10` |
-| `SDL3-CS.<Platform>.TTF` | `3.2.2.10` |
-| `SDL3-CS.<Platform>.Shadercross` | `3.0.0.10` |
+| `SDL3-CS.<Platform>.Mixer` | `3.2.4.12` |
+| `SDL3-CS.<Platform>.TTF` | `3.2.2.12` |
+| `SDL3-CS.<Platform>.Shadercross` | `3.0.0.12` |
 
 ## Documentation
 
