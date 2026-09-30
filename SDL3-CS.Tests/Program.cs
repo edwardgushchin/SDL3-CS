@@ -160,6 +160,18 @@ if (args.SequenceEqual(["--gdk-renderer-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--notifications-only"]))
+{
+    string[] exports = ["SDL_RequestNotificationPermission", "SDL_ShowNotificationWithProperties", "SDL_ShowNotification", "SDL_RemoveNotification"];
+    SDL3.Tests.TestAssert.True(exports.All(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export), "The focused notification tests require an SDL native library that exports every notification API.");
+    SDL3.Tests.SDL.AdditionalFunctionality.Notification.PInvokeTests.RunAll();
+    SDL3.Tests.SDL.AdditionalFunctionality.Notification.PropsTests.NotificationProps_MatchNativeNames();
+    SDL3.Tests.SDL.InputEvents.Events.EventTypeTests.GroupBoundaries_MatchSupportedEvents();
+    SDL3.Tests.SDL.InputEvents.Events.NotificationEventTests.NotificationEvent_UsesExpectedNativeLayoutAndEventUnion();
+    Console.WriteLine("SDL notification focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--jpg-loaders-only"]))
 {
     SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
@@ -479,6 +491,9 @@ SDL3.Tests.SDL.InputEvents.Events.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Events binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.EventTypeTests.GroupBoundaries_MatchSupportedEvents();
 Console.WriteLine("SDL.EventType group boundary tests passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Notification.PInvokeTests.RunAll();
+SDL3.Tests.SDL.AdditionalFunctionality.Notification.PropsTests.NotificationProps_MatchNativeNames();
+Console.WriteLine("SDL.Notification binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.PenState_MatchesNativeLayout();
 Console.WriteLine("SDL.PenProximityEvent layout test passed.");
 SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.RunAll();

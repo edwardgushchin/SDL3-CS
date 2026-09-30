@@ -18,6 +18,7 @@ internal static class EventTypeTests
         AssertBoundary(SDL3.SDL.EventType.SensorFirst, SDL3.SDL.EventType.SensorUpdate, SDL3.SDL.EventType.SensorLast, SDL3.SDL.EventType.SensorUpdate, "sensor");
         AssertBoundary(SDL3.SDL.EventType.PenFirst, SDL3.SDL.EventType.PenProximityIn, SDL3.SDL.EventType.PenLast, SDL3.SDL.EventType.PenAxis, "pen");
         AssertBoundary(SDL3.SDL.EventType.CameraDeviceFirst, SDL3.SDL.EventType.CameraDeviceAdded, SDL3.SDL.EventType.CameraDeviceLast, SDL3.SDL.EventType.CameraDeviceDenied, "camera device");
+        AssertBoundary(SDL3.SDL.EventType.NotificationFirst, SDL3.SDL.EventType.NotificationActionInvoked, SDL3.SDL.EventType.NotificationLast, SDL3.SDL.EventType.NotificationActionInvoked, "notification");
         AssertBoundary(SDL3.SDL.EventType.RenderFirst, SDL3.SDL.EventType.RenderTargetsReset, SDL3.SDL.EventType.RenderLast, SDL3.SDL.EventType.RenderDeviceLost, "render");
     }
 

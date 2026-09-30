@@ -165,6 +165,9 @@ public static partial class SDL
         /// Camera device event data
         /// </summary>
         [FieldOffset(0)] public CameraDeviceEvent CDevice;
+
+        /// <summary>Notification event data.</summary>
+        [FieldOffset(0)] public NotificationEvent Notification;
         
         // ReSharper disable once MemberHidesStaticFromOuterClass
         /// <summary>
