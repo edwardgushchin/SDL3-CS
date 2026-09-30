@@ -24,6 +24,42 @@ if (args.SequenceEqual(["--gpu-multisample-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--properties-count-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetNumProperties"), "The focused SDL_GetNumProperties test requires a native SDL library that exports SDL_GetNumProperties.");
+    SDL3.Tests.SDL.Basics.Properties.PInvokeTests.GetNumProperties_ReturnsCountForValidProperties();
+    Console.WriteLine("SDL.GetNumProperties focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--sve2-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_HasSVE2"), "The focused SDL_HasSVE2 test requires a native SDL library that exports SDL_HasSVE2.");
+    SDL3.Tests.SDL.PlatformAndCPUInformation.Cpuinfo.PInvokeTests.HasSVE2_ReturnsNativeValues();
+    SDL3.Tests.SDL.PlatformAndCPUInformation.Cpuinfo.PInvokeTests.HasSVE2_InvokesNativeEntryPoint();
+    Console.WriteLine("SDL.HasSVE2 focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--audio-device-properties-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetAudioDeviceProperties"), "The focused SDL_GetAudioDeviceProperties test requires a native SDL library that exports SDL_GetAudioDeviceProperties.");
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.SDL_GetAudioDeviceProperties_UsesExpectedNativeMetadata();
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_ReturnsZeroForInvalidDevice();
+    Console.WriteLine("SDL.GetAudioDeviceProperties focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--try-lock-joysticks-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_TryLockJoysticks"), "The focused SDL_TryLockJoysticks test requires a native SDL library that exports SDL_TryLockJoysticks.");
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.TryLockJoysticks_ReturnsNativeValues();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.TryLockJoysticks_AcquiresAndReleasesTheNativeLock();
+    Console.WriteLine("SDL.TryLockJoysticks focused tests passed.");
+    return;
+}
+
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();
@@ -202,6 +238,15 @@ SDL3.Tests.SDL.Basics.Properties.PInvokeTests.GetGlobalProperties_ReturnsNativeV
 Console.WriteLine("SDL.GetGlobalProperties binding test passed.");
 SDL3.Tests.SDL.Basics.Properties.PInvokeTests.CreateProperties_ReturnsNativeValue();
 Console.WriteLine("SDL.CreateProperties binding test passed.");
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetNumProperties"))
+{
+    SDL3.Tests.SDL.Basics.Properties.PInvokeTests.GetNumProperties_ReturnsCountForValidProperties();
+    Console.WriteLine("SDL.GetNumProperties binding integration test passed.");
+}
+else
+{
+    Console.WriteLine("SDL.GetNumProperties native integration test skipped; SDL_GetNumProperties is unavailable in the loaded native library.");
+}
 SDL3.Tests.SDL.Basics.Properties.PInvokeTests.CopyProperties_ForwardsSourceDestinationAndReturnsNativeValue();
 Console.WriteLine("SDL.CopyProperties binding test passed.");
 SDL3.Tests.SDL.Basics.Properties.PInvokeTests.LockProperties_ForwardsPropsAndReturnsNativeValue();
@@ -684,6 +729,20 @@ SDL3.Tests.SDL.Audio.Audio.PInvokeTests.AudioDevicePaused_ReturnsNativeValue();
 Console.WriteLine("SDL.AudioDevicePaused binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceGain_ReturnsNativeValue();
 Console.WriteLine("SDL.GetAudioDeviceGain binding test passed.");
+SDL3.Tests.SDL.Audio.Audio.PInvokeTests.SDL_GetAudioDeviceProperties_UsesExpectedNativeMetadata();
+Console.WriteLine("SDL.SDL_GetAudioDeviceProperties binding metadata test passed.");
+SDL3.Tests.SDL.Audio.Audio.PropsTests.AudioDeviceUniqueIdString_UsesNativePropertyName();
+Console.WriteLine("SDL.AudioDeviceUniqueIdString property test passed.");
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetAudioDeviceProperties"))
+{
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_ReturnsZeroForInvalidDevice();
+    Console.WriteLine("SDL.GetAudioDeviceProperties native integration test passed.");
+}
+else
+{
+    Console.WriteLine("SDL.GetAudioDeviceProperties native integration test skipped; SDL_GetAudioDeviceProperties is unavailable in the loaded native library.");
+}
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.SetAudioDeviceGain_ForwardsDeviceAndGain();
 Console.WriteLine("SDL.SetAudioDeviceGain binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.CloseAudioDevice_ForwardsDevice();

@@ -26,8 +26,13 @@ internal static class PInvokeTests
         HasAVX512F_ReturnsNativeValues();
         HasARMSIMD_ReturnsNativeValues();
         HasNEON_ReturnsNativeValues();
+        HasSVE2_ReturnsNativeValues();
         HasLSX_ReturnsNativeValues();
         HasLASX_ReturnsNativeValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_HasSVE2"))
+        {
+            HasSVE2_InvokesNativeEntryPoint();
+        }
         GetSystemRAM_ReturnsNativeValue();
         GetSIMDAlignment_ReturnsNativeValue();
         GetSystemPageSize_ReturnsNativeValue();
@@ -115,6 +120,20 @@ internal static class PInvokeTests
     public static void HasNEON_ReturnsNativeValues()
     {
         AssertBooleanWrapper("HasNEONNativeFunction", SDL3.SDL.HasNEON, "SDL.HasNEON");
+    }
+
+    public static void HasSVE2_ReturnsNativeValues()
+    {
+        AssertBooleanWrapper("HasSVE2NativeFunction", SDL3.SDL.HasSVE2, "SDL.HasSVE2");
+    }
+
+    public static void HasSVE2_InvokesNativeEntryPoint()
+    {
+        bool hasSVE2 = SDL3.SDL.HasSVE2();
+        if (!OperatingSystem.IsLinux() || System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.Arm64)
+        {
+            TestAssert.Equal(false, hasSVE2, "SDL.HasSVE2 must return false outside ARM64 Linux.");
+        }
     }
 
     public static void HasLSX_ReturnsNativeValues()

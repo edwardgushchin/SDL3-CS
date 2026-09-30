@@ -69,6 +69,29 @@ public static partial class SDL
 
 
 	[ExcludeFromCodeCoverage]
+	[LibraryImport(SDLLibrary, EntryPoint = "SDL_TryLockJoysticks"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool SDL_TryLockJoysticks();
+	private delegate bool TryLockJoysticksNativeDelegate();
+	private static TryLockJoysticksNativeDelegate TryLockJoysticksNativeFunction = SDL_TryLockJoysticks;
+
+	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockJoysticks(void) SDL_TRY_ACQUIRE(true, SDL_event_lock);</code>
+	/// <summary>
+	/// Locking for atomic access to the joystick API.
+	/// <para>The SDL joystick functions are thread-safe, however you can lock the
+	/// joysticks while processing to guarantee that the joystick list won't change
+	/// and joystick and gamepad events will not be delivered.</para>
+	/// </summary>
+	/// <returns><c>true</c> if the joysticks were successfully locked, <c>false</c> otherwise.</returns>
+	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+	/// <since>This function is available since SDL 3.6.0.</since>
+	public static bool TryLockJoysticks()
+	{
+		return TryLockJoysticksNativeFunction();
+	}
+
+
+	[ExcludeFromCodeCoverage]
 	[LibraryImport(SDLLibrary, EntryPoint = "SDL_HasJoystick"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static partial bool SDL_HasJoystick();

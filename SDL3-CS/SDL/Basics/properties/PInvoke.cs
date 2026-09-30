@@ -376,6 +376,28 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetNumProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_GetNumProperties(uint props);
+    private delegate int GetNumPropertiesNative(uint props);
+    private static GetNumPropertiesNative GetNumPropertiesNativeFunction = SDL_GetNumProperties;
+
+    /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumProperties(SDL_PropertiesID props);</code>
+    /// <summary>
+    /// Get the current number of items in a group of properties.
+    /// <para>For an invalid <c>SDL_PropertiesID</c>, this returns <c>0</c> and does not set an
+    /// error message.</para>
+    /// </summary>
+    /// <param name="props">the properties to query.</param>
+    /// <returns>the number of property items available.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static int GetNumProperties(uint props)
+    {
+        return GetNumPropertiesNativeFunction(props);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetPointerProperty"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial IntPtr SDL_GetPointerProperty(uint props, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         IntPtr defaultValue);

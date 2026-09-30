@@ -70,6 +70,11 @@ internal static class PInvokeTests
     {
         LockJoysticks_CallsNativeHook();
         UnlockJoysticks_CallsNativeHook();
+        TryLockJoysticks_ReturnsNativeValues();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_TryLockJoysticks"))
+        {
+            TryLockJoysticks_AcquiresAndReleasesTheNativeLock();
+        }
         HasJoystick_ReturnsNativeValue();
         SDL_GetJoysticks_UsesExpectedNativeMetadata();
         GetJoysticks_ReturnsArrayNullAndFreesNativePointer();
@@ -162,6 +167,32 @@ internal static class PInvokeTests
         SDL3.SDL.UnlockJoysticks();
 
         TestAssert.Equal(1, capturedCallCount, "SDL.UnlockJoysticks must call the native hook once.");
+    }
+
+    public static void TryLockJoysticks_ReturnsNativeValues()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_TryLockJoysticks");
+        AssertSdlImport(nativeMethod, "SDL_TryLockJoysticks");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        ResetCaptureState();
+        using NativeHookScope _ = NativeHookScope.Install("TryLockJoysticksNativeFunction", nameof(CaptureNoArgumentBool));
+        nextBool = true;
+        TestAssert.Equal(true, SDL3.SDL.TryLockJoysticks(), "SDL.TryLockJoysticks must return the native hook's true value.");
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.TryLockJoysticks(), "SDL.TryLockJoysticks must return the native hook's false value.");
+        TestAssert.Equal(2, capturedCallCount, "SDL.TryLockJoysticks must call the native hook once per invocation.");
+    }
+
+    public static void TryLockJoysticks_AcquiresAndReleasesTheNativeLock()
+    {
+        bool locked = SDL3.SDL.TryLockJoysticks();
+        if (locked)
+        {
+            SDL3.SDL.UnlockJoysticks();
+        }
+
+        TestAssert.Equal(true, locked, "SDL.TryLockJoysticks must acquire an uncontended joystick lock.");
     }
 
     public static void HasJoystick_ReturnsNativeValue()
