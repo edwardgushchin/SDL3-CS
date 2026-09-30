@@ -447,7 +447,7 @@ internal static class PInvokeTests
         ResetCaptureState();
         nextPointer = (IntPtr)0x4003;
         nextSize = (UIntPtr)2560;
-        using (NativeHookScope _ = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(CaptureCompileSPIRVFromHLSL)))
+        using (NativeHookScope _ = NativeHookScope.Install("CompileSPIRVFromHLSLNativeFunction", nameof(CaptureHlslInfoPointerAndSize)))
         {
             IntPtr actual = SDL3.ShaderCross.CompileSPIRVFromHLSL(ref info, out UIntPtr size);
 
@@ -733,6 +733,14 @@ internal static class PInvokeTests
     }
 
     private static IntPtr CaptureHlslInfoReturnPointerAndSize(in SDL3.ShaderCross.HLSLInfo info, out UIntPtr size)
+    {
+        capturedHlslInfo = info;
+        size = nextSize;
+        capturedCallCount++;
+        return nextPointer;
+    }
+
+    private static IntPtr CaptureHlslInfoPointerAndSize(ref SDL3.ShaderCross.HLSLInfo info, out UIntPtr size)
     {
         capturedHlslInfo = info;
         size = nextSize;
