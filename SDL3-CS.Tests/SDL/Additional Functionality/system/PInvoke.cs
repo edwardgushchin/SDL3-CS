@@ -30,6 +30,9 @@ internal static class PInvokeTests
     private static uint capturedCommand;
     private static int capturedParam;
     private static int capturedCallCount;
+    private static bool nextBool;
+    private static SDL3.SDL.FormFactor nextFormFactor;
+    private static SDL3.SDL.FormFactor capturedFormFactor;
 
     public static void SetWindowsMessageHook_ForwardsCallbackAndUserdata()
     {
@@ -348,6 +351,80 @@ internal static class PInvokeTests
         TestAssert.Equal(true, result, "SDL.IsTV must return the native hook value.");
     }
 
+    public static void IsPhone_ReturnsNativeValues()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_IsPhone");
+        AssertSdlLibraryImport(nativeMethod, "SDL_IsPhone");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        using NativeHookScope _ = NativeHookScope.Install("IsPhoneNativeFunction", nameof(CaptureBool));
+        nextBool = true;
+        TestAssert.Equal(true, SDL3.SDL.IsPhone(), "SDL.IsPhone must return the native true value.");
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.IsPhone(), "SDL.IsPhone must return the native false value.");
+    }
+
+    public static void IsUbuntuTouch_ReturnsNativeValues()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_IsUbuntuTouch");
+        AssertSdlLibraryImport(nativeMethod, "SDL_IsUbuntuTouch");
+        AssertBoolReturnMarshal(nativeMethod);
+
+        using NativeHookScope _ = NativeHookScope.Install("IsUbuntuTouchNativeFunction", nameof(CaptureBool));
+        nextBool = true;
+        TestAssert.Equal(true, SDL3.SDL.IsUbuntuTouch(), "SDL.IsUbuntuTouch must return the native true value.");
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.IsUbuntuTouch(), "SDL.IsUbuntuTouch must return the native false value.");
+    }
+
+    public static void GetDeviceFormFactor_ReturnsNativeValue()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetDeviceFormFactor");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetDeviceFormFactor");
+        TestAssert.Equal(typeof(SDL3.SDL.FormFactor), nativeMethod.ReturnType, "SDL.SDL_GetDeviceFormFactor must return SDL_FormFactor.");
+
+        using NativeHookScope _ = NativeHookScope.Install("GetDeviceFormFactorNativeFunction", nameof(CaptureDeviceFormFactor));
+        nextFormFactor = SDL3.SDL.FormFactor.Laptop;
+        TestAssert.Equal(SDL3.SDL.FormFactor.Laptop, SDL3.SDL.GetDeviceFormFactor(), "SDL.GetDeviceFormFactor must return the native enum value.");
+    }
+
+    public static void GetDeviceFormFactorName_ReturnsUtf8Name()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetDeviceFormFactorName");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetDeviceFormFactorName");
+        TestAssert.Equal(typeof(SDL3.SDL.FormFactor), nativeMethod.GetParameters()[0].ParameterType, "SDL.SDL_GetDeviceFormFactorName must accept SDL_FormFactor.");
+
+        using NativeHookScope _ = NativeHookScope.Install("GetDeviceFormFactorNameNativeFunction", nameof(CaptureDeviceFormFactorName));
+        string? name = CaptureUtf8Path(() => SDL3.SDL.GetDeviceFormFactorName(SDL3.SDL.FormFactor.Desktop), "SDL_FORMFACTOR_DESKTOP");
+        TestAssert.Equal("SDL_FORMFACTOR_DESKTOP", name, "SDL.GetDeviceFormFactorName must convert the native UTF-8 name.");
+        TestAssert.Equal(SDL3.SDL.FormFactor.Desktop, capturedFormFactor, "SDL.GetDeviceFormFactorName must forward the form factor.");
+
+        nextPointer = IntPtr.Zero;
+        TestAssert.Equal(string.Empty, SDL3.SDL.GetDeviceFormFactorName(SDL3.SDL.FormFactor.Unknown), "SDL.GetDeviceFormFactorName must return an empty string for a null native pointer.");
+    }
+
+    public static void IsPhone_InvokesNativeFormFactor()
+    {
+        SDL3.SDL.FormFactor formFactor = SDL3.SDL.GetDeviceFormFactor();
+        TestAssert.Equal(formFactor == SDL3.SDL.FormFactor.Phone, SDL3.SDL.IsPhone(), "SDL.IsPhone must match SDL_GetDeviceFormFactor.");
+    }
+
+    public static void IsUbuntuTouch_InvokesNativeEntryPoint()
+    {
+        TestAssert.Equal(false, SDL3.SDL.IsUbuntuTouch(), "The desktop test host must not be detected as Ubuntu Touch.");
+    }
+
+    public static void GetDeviceFormFactor_InvokesNativeEntryPoint()
+    {
+        TestAssert.True(Enum.IsDefined(SDL3.SDL.GetDeviceFormFactor()), "SDL.GetDeviceFormFactor must return a defined form factor.");
+    }
+
+    public static void GetDeviceFormFactorName_InvokesNativeEntryPoint()
+    {
+        TestAssert.Equal("SDL_FORMFACTOR_DESKTOP", SDL3.SDL.GetDeviceFormFactorName(SDL3.SDL.FormFactor.Desktop), "SDL.GetDeviceFormFactorName must return the native desktop label.");
+        TestAssert.Equal("SDL_FORMFACTOR_UNKNOWN", SDL3.SDL.GetDeviceFormFactorName((SDL3.SDL.FormFactor)(-1)), "SDL.GetDeviceFormFactorName must map unknown enum values to SDL_FORMFACTOR_UNKNOWN.");
+    }
+
     public static void GetSandbox_ReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_GetSandbox");
@@ -493,6 +570,22 @@ internal static class PInvokeTests
     private static bool CaptureTrue()
     {
         return true;
+    }
+
+    private static bool CaptureBool()
+    {
+        return nextBool;
+    }
+
+    private static SDL3.SDL.FormFactor CaptureDeviceFormFactor()
+    {
+        return nextFormFactor;
+    }
+
+    private static IntPtr CaptureDeviceFormFactorName(SDL3.SDL.FormFactor formFactor)
+    {
+        capturedFormFactor = formFactor;
+        return nextPointer;
     }
 
     private static void CaptureVoidCall()

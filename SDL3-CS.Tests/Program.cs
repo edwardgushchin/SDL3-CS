@@ -60,6 +60,22 @@ if (args.SequenceEqual(["--try-lock-joysticks-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--device-form-factor-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetDeviceFormFactor"), "The focused form-factor tests require a native SDL library that exports SDL_GetDeviceFormFactor.");
+    SDL3.Tests.SDL.AdditionalFunctionality.System.FormFactorTests.FormFactor_UsesExpectedNativeValues();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_ReturnsNativeValues();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_ReturnsNativeValues();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_ReturnsNativeValue();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_ReturnsUtf8Name();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_InvokesNativeFormFactor();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_InvokesNativeEntryPoint();
+    Console.WriteLine("SDL device form-factor focused tests passed.");
+    return;
+}
+
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();
@@ -617,6 +633,28 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsTV_ReturnsNativeVal
 Console.WriteLine("SDL.IsTV binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetSandbox_ReturnsNativeValue();
 Console.WriteLine("SDL.GetSandbox binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_ReturnsNativeValues();
+Console.WriteLine("SDL.IsPhone binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_ReturnsNativeValues();
+Console.WriteLine("SDL.IsUbuntuTouch binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_ReturnsNativeValue();
+Console.WriteLine("SDL.GetDeviceFormFactor binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_ReturnsUtf8Name();
+Console.WriteLine("SDL.GetDeviceFormFactorName binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.FormFactorTests.FormFactor_UsesExpectedNativeValues();
+Console.WriteLine("SDL.FormFactor enum layout test passed.");
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetDeviceFormFactor"))
+{
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_InvokesNativeFormFactor();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_InvokesNativeEntryPoint();
+    Console.WriteLine("SDL device form-factor native integration tests passed.");
+}
+else
+{
+    Console.WriteLine("SDL device form-factor native integration tests skipped; SDL 3.6 exports are unavailable.");
+}
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.OnApplicationWillTerminate_ForwardsCall();
 Console.WriteLine("SDL.OnApplicationWillTerminate binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.OnApplicationDidReceiveMemoryWarning_ForwardsCall();

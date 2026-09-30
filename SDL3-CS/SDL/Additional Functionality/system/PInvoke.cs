@@ -635,6 +635,96 @@ public partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsPhone"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_IsPhone();
+    private delegate bool IsPhoneNative();
+    private static IsPhoneNative IsPhoneNativeFunction = SDL_IsPhone;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsPhone(void);</code>
+    /// <summary>
+    /// <para>Query if the current device is a phone.</para>
+    /// <para>If SDL can't determine this, it will return <c>false</c>.</para>
+    /// </summary>
+    /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="IsTablet"/>
+    public static bool IsPhone()
+    {
+        return IsPhoneNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_IsUbuntuTouch"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_IsUbuntuTouch();
+    private delegate bool IsUbuntuTouchNative();
+    private static IsUbuntuTouchNative IsUbuntuTouchNativeFunction = SDL_IsUbuntuTouch;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsUbuntuTouch(void);</code>
+    /// <summary>Detect whether the current platform is Ubuntu Touch.</summary>
+    /// <returns><c>true</c> if the platform is Ubuntu Touch; <c>false</c> otherwise.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static bool IsUbuntuTouch()
+    {
+        return IsUbuntuTouchNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDeviceFormFactor"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial FormFactor SDL_GetDeviceFormFactor();
+    private delegate FormFactor GetDeviceFormFactorNative();
+    private static GetDeviceFormFactorNative GetDeviceFormFactorNativeFunction = SDL_GetDeviceFormFactor;
+
+    /// <code>extern SDL_DECLSPEC SDL_FormFactor SDLCALL SDL_GetDeviceFormFactor(void);</code>
+    /// <summary>
+    /// <para>Get the form factor of the current device.</para>
+    /// <para>This function guesses what the device may be, but may report inaccurate or
+    /// outright wrong results. For example, it may report a laptop as a desktop,
+    /// or a car device as a phone.</para>
+    /// <para>Depending on the usage, there may be different functions better suited for
+    /// each purpose. For example, activating touch controls can be done by
+    /// detecting the presence of a touchscreen rather than restricting to phones
+    /// and tablets.</para>
+    /// </summary>
+    /// <returns>the best guess for the form factor of the current device.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="FormFactor"/>
+    /// <seealso cref="GetDeviceFormFactorName"/>
+    public static FormFactor GetDeviceFormFactor()
+    {
+        return GetDeviceFormFactorNativeFunction();
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetDeviceFormFactorName"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetDeviceFormFactorName(FormFactor formFactor);
+    private delegate IntPtr GetDeviceFormFactorNameNative(FormFactor formFactor);
+    private static GetDeviceFormFactorNameNative GetDeviceFormFactorNameNativeFunction = SDL_GetDeviceFormFactorName;
+
+    /// <code>extern SDL_DECLSPEC const char* SDLCALL SDL_GetDeviceFormFactorName(SDL_FormFactor form_factor);</code>
+    /// <summary>
+    /// <para>Get a short name for the current device.</para>
+    /// <para>The name will be in English.</para>
+    /// </summary>
+    /// <param name="formFactor">the form factor to query.</param>
+    /// <returns>a human-readable name for the given form factor, or
+    /// <see cref="FormFactor.Unknown"/> if the form factor isn't recognized.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="FormFactor"/>
+    /// <seealso cref="GetDeviceFormFactor"/>
+    public static string GetDeviceFormFactorName(FormFactor formFactor)
+    {
+        return Marshal.PtrToStringUTF8(GetDeviceFormFactorNameNativeFunction(formFactor)) ?? string.Empty;
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetSandbox"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Sandbox SDL_GetSandbox();
     private delegate Sandbox GetSandboxNative();
