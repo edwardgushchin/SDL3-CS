@@ -10,6 +10,7 @@ internal static class PInvokeTests
     private static SDL3.SDL.X11EventHook? capturedX11EventHook;
     private static SDL3.SDL.IOSAnimationCallback? capturedIOSAnimationCallback;
     private static SDL3.SDL.RequestAndroidPermissionCallback? capturedAndroidPermissionCallback;
+    private static SDL3.SDL.RequestOpenHarmonyPermissionCallback? capturedOpenHarmonyPermissionCallback;
     private static IntPtr capturedWindow;
     private static IntPtr capturedUserdata;
     private static IntPtr capturedCallbackParam;
@@ -21,6 +22,7 @@ internal static class PInvokeTests
     private static int capturedSchedPolicy;
     private static int capturedInterval;
     private static bool capturedEnabled;
+    private static bool capturedPermissionGranted;
     private static string? capturedPermission;
     private static string? capturedMessage;
     private static int capturedDuration;
@@ -317,6 +319,43 @@ internal static class PInvokeTests
         TestAssert.Equal("android.permission.CAMERA", capturedPermission, "SDL.RequestAndroidPermission must forward permission.");
         TestAssert.Equal((IntPtr)111, capturedUserdata, "SDL.RequestAndroidPermission must forward userdata.");
         TestAssert.NotNull(capturedAndroidPermissionCallback, "SDL.RequestAndroidPermission must forward callback.");
+    }
+
+    public static void RequestOpenHarmonyPermission_ForwardsPermissionCallbackAndUserdata()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_RequestOpenHarmonyPermission");
+        AssertSdlLibraryImport(nativeMethod, "SDL_RequestOpenHarmonyPermission");
+        AssertBoolReturnMarshal(nativeMethod);
+        AssertStringParameterMarshal(nativeMethod, "permission");
+        SDL3.SDL.RequestOpenHarmonyPermissionCallback callback = TestOpenHarmonyPermissionCallback;
+        using NativeHookScope _ = NativeHookScope.Install("RequestOpenHarmonyPermissionNativeFunction", nameof(CaptureRequestOpenHarmonyPermission));
+        bool result = SDL3.SDL.RequestOpenHarmonyPermission("ohos.permission.CAMERA", callback, (IntPtr)112);
+        TestAssert.Equal(true, result, "SDL.RequestOpenHarmonyPermission must return native hook result.");
+        TestAssert.Equal("ohos.permission.CAMERA", capturedPermission, "SDL.RequestOpenHarmonyPermission must forward permission.");
+        TestAssert.Equal((IntPtr)112, capturedUserdata, "SDL.RequestOpenHarmonyPermission must forward userdata.");
+        TestAssert.NotNull(capturedOpenHarmonyPermissionCallback, "SDL.RequestOpenHarmonyPermission must forward callback.");
+        TestAssert.Equal(true, capturedPermissionGranted, "SDL.RequestOpenHarmonyPermission callback must preserve granted result.");
+    }
+
+    public static void RequestOpenHarmonyPermissionCallback_UsesExpectedAbi()
+    {
+        MethodInfo invoke = typeof(SDL3.SDL.RequestOpenHarmonyPermissionCallback).GetMethod("Invoke")!;
+        AssertStringParameterMarshal(invoke, "permission");
+        AssertBoolParameterMarshal(invoke, "granted");
+        UnmanagedFunctionPointerAttribute? callConv = typeof(SDL3.SDL.RequestOpenHarmonyPermissionCallback).GetCustomAttribute<UnmanagedFunctionPointerAttribute>();
+        TestAssert.NotNull(callConv, "OpenHarmony permission callback must declare native calling convention.");
+        TestAssert.Equal(CallingConvention.Cdecl, callConv!.CallingConvention, "OpenHarmony permission callback must use cdecl.");
+        TestOpenHarmonyPermissionCallback(IntPtr.Zero, "ohos.permission.TEST", false);
+        TestAssert.Equal(false, capturedPermissionGranted, "OpenHarmony permission callback must preserve denial.");
+    }
+
+    public static void RequestOpenHarmonyPermission_UnsupportedStubDoesNotInvokeCallback()
+    {
+        bool invoked = false;
+        SDL3.SDL.RequestOpenHarmonyPermissionCallback callback = (_, _, _) => invoked = true;
+        TestAssert.Equal(false, SDL3.SDL.RequestOpenHarmonyPermission("ohos.permission.CAMERA", callback, IntPtr.Zero), "Desktop unsupported permission stub must return false.");
+        TestAssert.Equal(false, invoked, "Rejected native submission must not invoke the callback.");
+        GC.KeepAlive(callback);
     }
 
     public static void ShowAndroidToast_ForwardsMessageAndLayout()
@@ -633,6 +672,22 @@ internal static class PInvokeTests
         capturedAndroidPermissionCallback = cb;
         capturedUserdata = userdata;
         return true;
+    }
+
+    private static bool CaptureRequestOpenHarmonyPermission(string permission, SDL3.SDL.RequestOpenHarmonyPermissionCallback cb, IntPtr userdata)
+    {
+        capturedPermission = permission;
+        capturedUserdata = userdata;
+        capturedOpenHarmonyPermissionCallback = cb;
+        cb(userdata, permission, true);
+        return true;
+    }
+
+    private static void TestOpenHarmonyPermissionCallback(IntPtr userdata, string permission, bool granted)
+    {
+        capturedUserdata = userdata;
+        capturedPermission = permission;
+        capturedPermissionGranted = granted;
     }
 
     private static bool CaptureShowAndroidToast(string message, int duration, int gravity, int xoffset, int yoffset)

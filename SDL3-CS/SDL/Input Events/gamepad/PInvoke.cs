@@ -1603,13 +1603,15 @@ public static partial class SDL
     private static GamepadCapSenseNativeDelegate GamepadHasCapSenseNativeFunction = SDL_GamepadHasCapSense;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GamepadHasCapSense(SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type);</code>
-    /// <summary>Return whether a gamepad has a particular capsense.</summary>
+    /// <summary>
+    /// <para>Return whether a gamepad has a particular capsense.</para>
+    /// </summary>
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="type">the type of capsense to query.</param>
     /// <returns><c>true</c> if the capsense exists, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="GetGamepadCapSense"/>
+    /// <seealso cref="GetGamepadCapSense(IntPtr, GamepadCapSenseType)"/>
     public static bool GamepadHasCapSense(IntPtr gamepad, GamepadCapSenseType type)
     {
         return GamepadHasCapSenseNativeFunction(gamepad, type);
@@ -1623,13 +1625,15 @@ public static partial class SDL
     private static GamepadCapSenseNativeDelegate GetGamepadCapSenseNativeFunction = SDL_GetGamepadCapSense;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetGamepadCapSense(SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type);</code>
-    /// <summary>Get the current state of a capsense on a gamepad.</summary>
+    /// <summary>
+    /// <para>Get the current state of a capsense on a gamepad.</para>
+    /// </summary>
     /// <param name="gamepad">a gamepad.</param>
     /// <param name="type">the type of capsense to query.</param>
     /// <returns><c>true</c> if the capsense is touched, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="GamepadHasCapSense"/>
+    /// <seealso cref="GamepadHasCapSense(IntPtr, GamepadCapSenseType)"/>
     public static bool GetGamepadCapSense(IntPtr gamepad, GamepadCapSenseType type)
     {
         return GetGamepadCapSenseNativeFunction(gamepad, type);
@@ -1645,16 +1649,18 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GamepadHasSensor(SDL_Gamepad *gamepad, SDL_SensorType type);</code>
     /// <summary>
-    /// Return whether a gamepad has a particular sensor.
+    /// <para>Return whether a gamepad has a particular sensor.</para>
+    /// <para>Sensors are disabled by default and <see cref="SetGamepadSensorEnabled(IntPtr, SensorType, bool)"/>() is used
+    /// to enable them.</para>
     /// </summary>
     /// <param name="gamepad">the gamepad to query.</param>
     /// <param name="type">the type of sensor to query.</param>
     /// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetGamepadSensorData(nint, SensorType, Span{float}, int)"/>
-    /// <seealso cref="GetGamepadSensorDataRate"/>
-    /// <seealso cref="SetGamepadSensorEnabled"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetGamepadSensorData(IntPtr, SensorType, Span{float}, int)"/>
+    /// <seealso cref="GetGamepadSensorDataRate(IntPtr, SensorType)"/>
+    /// <seealso cref="SetGamepadSensorEnabled(IntPtr, SensorType, bool)"/>
     public static bool GamepadHasSensor(IntPtr gamepad, SensorType type)
     {
         return GamepadHasSensorNativeFunction(gamepad, type);
@@ -1670,17 +1676,18 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGamepadSensorEnabled(SDL_Gamepad *gamepad, SDL_SensorType type, bool enabled);</code>
     /// <summary>
-    /// Set whether data reporting for a gamepad sensor is enabled.
+    /// <para>Set whether data reporting for a gamepad sensor is enabled.</para>
+    /// <para>Sensors are disabled by default and this function is used to enable them.</para>
     /// </summary>
     /// <param name="gamepad">the gamepad to update.</param>
     /// <param name="type">the type of sensor to enable/disable.</param>
     /// <param name="enabled">whether data reporting should be enabled.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GamepadHasSensor"/>
-    /// <seealso cref="GamepadSensorEnabled"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GamepadHasSensor(IntPtr, SensorType)"/>
+    /// <seealso cref="GamepadSensorEnabled(IntPtr, SensorType)"/>
     public static bool SetGamepadSensorEnabled(IntPtr gamepad, SensorType type, bool enabled)
     {
         return SetGamepadSensorEnabledNativeFunction(gamepad, type, enabled);

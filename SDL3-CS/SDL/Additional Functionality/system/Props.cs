@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (c) 2024-2026 Eduard Gushchin.
  *
  * This software is provided 'as-is', without any express or implied warranty.
@@ -25,18 +25,13 @@ namespace SDL3;
 
 public static partial class SDL
 {
-	public static partial class Props
-	{
-		public const string TextInputTypeNumber = "SDL.textinput.type";
-		public const string TextInputCapitalizationNumber = "SDL.textinput.capitalization";
-		public const string TextInputAutoCorrectBoolean = "SDL.textinput.autocorrect";
-		public const string TextInputMultilineBoolean = "SDL.textinput.multiline";
-		public const string TextInputTitleString = "SDL.textinput.title";
-		public const string TextInputPlaceholderString = "SDL.textinput.placeholder";
-		public const string TextInputDefaultTextString = "SDL.textinput.default_text";
-		public const string TextInputMaxLengthNumber = "SDL.textinput.max_length";
-		public const string TextInputAndroidInputTypeNumber = "SDL.textinput.android.inputtype";
-        /// <summary>Identifier for the text input open harmony input type number property.</summary>
-        public const string TextInputOpenHarmonyInputTypeNumber = "SDL.textinput.openharmony.inputtype";
+    public static partial class Props
+    {
+        /// <summary>Identifier for the global system ubuntu touch app idstring property.</summary>
+        public const string GlobalSystemUbuntuTouchAppIDString = "SDL.system.ubuntu_touch.appid";
+        /// <summary>Identifier for the global system ubuntu touch hook string property.</summary>
+        public const string GlobalSystemUbuntuTouchHookString = "SDL.system.ubuntu_touch.hook";
+        /// <summary>Identifier for the global system ubuntu touch app version string property.</summary>
+        public const string GlobalSystemUbuntuTouchAppVersionString = "SDL.system.ubuntu_touch.app_version";
     }
 }

@@ -344,18 +344,16 @@ public partial class SDL
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetOpenHarmonySDKVersion(void);</code>
     /// <summary>
     /// <para>Query OpenHarmony API level of the current device.</para>
-    /// <list type="bullet">
-    /// <item>API level 20: OpenHarmony 6.0.0</item>
-    /// <item>API level 18: OpenHarmony 5.1.0</item>
-    /// <item>API level 16: OpenHarmony 5.0.4</item>
-    /// <item>API level 15: OpenHarmony 5.0.3</item>
-    /// <item>API level 14: OpenHarmony 5.0.2</item>
-    /// <item>API level 13: OpenHarmony 5.0.1</item>
-    /// <item>API level 12: OpenHarmony 5.0.0</item>
-    /// <item>API level 11: OpenHarmony 4.1.0</item>
-    /// <item>API level 10: OpenHarmony 4.0.0</item>
-    /// <item>API level 9: OpenHarmony 3.2.0</item>
-    /// </list>
+    /// <para>- API level 20: OpenHarmony 6.0.0
+    /// - API level 18: OpenHarmony 5.1.0
+    /// - API level 16: OpenHarmony 5.0.4
+    /// - API level 15: OpenHarmony 5.0.3
+    /// - API level 14: OpenHarmony 5.0.2
+    /// - API level 13: OpenHarmony 5.0.1
+    /// - API level 12: OpenHarmony 5.0.0
+    /// - API level 11: OpenHarmony 4.1.0
+    /// - API level 10: OpenHarmony 4.0.0
+    /// - API level 9: OpenHarmony 3.2.0</para>
     /// </summary>
     /// <returns>the OpenHarmony API level.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
@@ -380,7 +378,7 @@ public partial class SDL
     /// <para>Your internal storage path is typically: <c>/data/storage/el2/base/files</c>.</para>
     /// </summary>
     /// <returns>the path used for internal storage or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
     public static string? GetOpenHarmonyInternalStoragePath()
     {
@@ -571,9 +569,9 @@ public partial class SDL
     /// specific entitlement, the callback will still fire, probably on the current
     /// thread and before this function returns.</para>
     /// <para>If the request submission fails, this function returns <c>false</c> and the
-    /// <c>callback</c> will NOT be called, but this should only happen in catastrophic
-    /// <c>conditions</c>, like memory running out. Normally there will be a yes or no to
-    /// <c>the request</c> through the callback.</para>
+    /// callback will NOT be called, but this should only happen in catastrophic
+    /// conditions, like memory running out. Normally there will be a yes or no to
+    /// the request through the callback.</para>
     /// <para>For the <c>permission</c> parameter, choose a value from here:</para>
     /// <para>https://developer.android.com/reference/android/Manifest.permission</para>
     /// </summary>
@@ -581,13 +579,54 @@ public partial class SDL
     /// <param name="cb">the callback to trigger when the request has a response.</param>
     /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
     /// <returns><c>true</c> if the request was submitted, <c>false</c> if there was an error
-    /// submitting. The result of the request is only ever reported
-    /// through the callback, not this return value.</returns>
+    ///          submitting. The result of the request is only ever reported
+    ///          through the callback, not this return value.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static bool RequestAndroidPermission(string permission, RequestAndroidPermissionCallback cb, IntPtr userdata)
     {
         return RequestAndroidPermissionNativeFunction(permission, cb, userdata);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_RequestOpenHarmonyPermission"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RequestOpenHarmonyPermission([MarshalAs(UnmanagedType.LPUTF8Str)] string permission, RequestOpenHarmonyPermissionCallback cb, IntPtr userdata);
+    private delegate bool RequestOpenHarmonyPermissionNative(string permission, RequestOpenHarmonyPermissionCallback cb, IntPtr userdata);
+    private static RequestOpenHarmonyPermissionNative RequestOpenHarmonyPermissionNativeFunction = SDL_RequestOpenHarmonyPermission;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RequestOpenHarmonyPermission(const char *permission, SDL_RequestOpenHarmonyPermissionCallback cb, void *userdata);</code>
+    /// <summary>
+    /// <para>Request permissions at runtime, asynchronously.</para>
+    /// <para>You do not need to call this for built-in functionality of SDL; recording
+    /// from a microphone or reading images from a camera, using standard SDL APIs,
+    /// will manage permission requests for you.</para>
+    /// <para>This function never blocks. Instead, the app-supplied callback will be
+    /// called when a decision has been made. This callback may happen on a
+    /// different thread, and possibly much later, as it might wait on a user to
+    /// respond to a system dialog. If permission has already been granted for a
+    /// specific entitlement, the callback will still fire, probably on the current
+    /// thread and before this function returns.</para>
+    /// <para>If the request submission fails, this function returns <c>false</c> and the
+    /// callback will NOT be called, but this should only happen in catastrophic
+    /// conditions, like memory running out. Normally there will be a yes or no to
+    /// the request through the callback.</para>
+    /// <para>For the <c>permission</c> parameter, choose a value from here:</para>
+    /// <para>https://developer.huawei.com/consumer/en/doc/harmonyos-guides/app-permissions</para>
+    /// <para>Strings should be in the form of "ohos.permission.PERMISSION_NAME".</para>
+    /// </summary>
+    /// <param name="permission">the permission to request.</param>
+    /// <param name="cb">the callback to trigger when the request has a response.</param>
+    /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
+    /// <returns><c>true</c> if the request was submitted, <c>false</c> if there was an error
+    ///          submitting. The result of the request is only ever reported
+    ///          through the callback, not this return value.</returns>
+    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <remarks>Keep <paramref name="cb"/> alive until its response has been delivered.</remarks>
+    public static bool RequestOpenHarmonyPermission(string permission, RequestOpenHarmonyPermissionCallback cb, IntPtr userdata)
+    {
+        return RequestOpenHarmonyPermissionNativeFunction(permission, cb, userdata);
     }
 
 
@@ -660,7 +699,8 @@ public partial class SDL
     /// </summary>
     /// <returns><c>true</c> if the device is a tablet, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="IsPhone()"/>
     public static bool IsTablet()
     {
         return IsTabletNativeFunction();
@@ -703,7 +743,7 @@ public partial class SDL
     /// <returns><c>true</c> if the device is a phone, <c>false</c> otherwise.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="IsTablet"/>
+    /// <seealso cref="IsTablet()"/>
     public static bool IsPhone()
     {
         return IsPhoneNativeFunction();
@@ -718,9 +758,10 @@ public partial class SDL
     private static IsUbuntuTouchNative IsUbuntuTouchNativeFunction = SDL_IsUbuntuTouch;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_IsUbuntuTouch(void);</code>
-    /// <summary>Detect whether the current platform is Ubuntu Touch.</summary>
+    /// <summary>
+    /// <para>Detect whether the current platform is Ubuntu Touch.</para>
+    /// </summary>
     /// <returns><c>true</c> if the platform is Ubuntu Touch; <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
     public static bool IsUbuntuTouch()
     {
@@ -748,7 +789,8 @@ public partial class SDL
     /// <returns>the best guess for the form factor of the current device.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="FormFactor"/>
-    /// <seealso cref="GetDeviceFormFactorName"/>
+    /// <seealso cref="GetDeviceFormFactorName(FormFactor)"/>
+    /// <remarks><c>SDL_FormFactor</c></remarks>
     public static FormFactor GetDeviceFormFactor()
     {
         return GetDeviceFormFactorNativeFunction();
@@ -768,10 +810,11 @@ public partial class SDL
     /// </summary>
     /// <param name="formFactor">the form factor to query.</param>
     /// <returns>a human-readable name for the given form factor, or
-    /// <see cref="FormFactor.Unknown"/> if the form factor isn't recognized.</returns>
+    ///          "<see cref="FormFactor.Unknown"/>" if the form factor isn't recognized.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
     /// <seealso cref="FormFactor"/>
-    /// <seealso cref="GetDeviceFormFactor"/>
+    /// <seealso cref="GetDeviceFormFactor()"/>
+    /// <remarks><c>SDL_FormFactor</c></remarks>
     public static string GetDeviceFormFactorName(FormFactor formFactor)
     {
         return Marshal.PtrToStringUTF8(GetDeviceFormFactorNameNativeFunction(formFactor)) ?? string.Empty;

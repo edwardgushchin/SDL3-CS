@@ -852,6 +852,9 @@ public static partial class SDL
         /// SDL.ScancodeToKeycode(SDL.Scancode.ExSel)
         /// </summary>
         ExSel = 0x400000a4u,
+
+        /// <summary><see cref="Scancode.Front"/> with <see cref="ScanCodeMask"/>.</summary>
+        Front = 0x400000a5u,
         
         /// <summary>
         /// SDL.ScancodeToKeycode(SDL.Scancode.Kp00)

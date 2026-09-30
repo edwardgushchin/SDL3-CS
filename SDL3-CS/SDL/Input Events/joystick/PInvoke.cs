@@ -77,7 +77,7 @@ public static partial class SDL
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_TryLockJoysticks(void) SDL_TRY_ACQUIRE(true, SDL_event_lock);</code>
 	/// <summary>
-	/// Locking for atomic access to the joystick API.
+	/// <para>Locking for atomic access to the joystick API.</para>
 	/// <para>The SDL joystick functions are thread-safe, however you can lock the
 	/// joysticks while processing to guarantee that the joystick list won't change
 	/// and joystick and gamepad events will not be delivered.</para>
@@ -737,7 +737,7 @@ public static partial class SDL
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_JoystickHasSensor(SDL_Joystick *joystick, SDL_SensorType type);</code>
 	/// <summary>
 	/// <para>Return whether a joystick has a particular sensor.</para>
-	/// <para>Sensors are disabled by default and <see cref="SetJoystickSensorEnabled"/> is used
+	/// <para>Sensors are disabled by default and <see cref="SetJoystickSensorEnabled(IntPtr, SensorType, bool)"/>() is used
 	/// to enable them.</para>
 	/// </summary>
 	/// <param name="joystick">the joystick to query.</param>
@@ -745,9 +745,9 @@ public static partial class SDL
 	/// <returns><c>true</c> if the sensor exists, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.6.0.</since>
-	/// <seealso cref="GetJoystickSensorData(nint, SensorType, Span{float}, int)"/>
-	/// <seealso cref="GetJoystickSensorDataRate"/>
-	/// <seealso cref="SetJoystickSensorEnabled"/>
+	/// <seealso cref="GetJoystickSensorData(IntPtr, SensorType, Span{float}, int)"/>
+	/// <seealso cref="GetJoystickSensorDataRate(IntPtr, SensorType)"/>
+	/// <seealso cref="SetJoystickSensorEnabled(IntPtr, SensorType, bool)"/>
 	public static bool JoystickHasSensor(IntPtr joystick, SensorType type)
 	{
 		return JoystickHasSensorNativeFunction(joystick, type);
@@ -769,12 +769,12 @@ public static partial class SDL
 	/// <param name="joystick">the joystick to update.</param>
 	/// <param name="type">the type of sensor to enable/disable.</param>
 	/// <param name="enabled">whether data reporting should be enabled.</param>
-	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-	/// information.</returns>
+	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+	///          information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.6.0.</since>
-	/// <seealso cref="JoystickHasSensor"/>
-	/// <seealso cref="JoystickSensorEnabled"/>
+	/// <seealso cref="JoystickHasSensor(IntPtr, SensorType)"/>
+	/// <seealso cref="JoystickSensorEnabled(IntPtr, SensorType)"/>
 	public static bool SetJoystickSensorEnabled(IntPtr joystick, SensorType type, bool enabled)
 	{
 		return SetJoystickSensorEnabledNativeFunction(joystick, type, enabled);
@@ -789,13 +789,15 @@ public static partial class SDL
 	private static JoystickSensorEnabledNativeDelegate JoystickSensorEnabledNativeFunction = SDL_JoystickSensorEnabled;
 
 	/// <code>extern SDL_DECLSPEC bool SDLCALL SDL_JoystickSensorEnabled(SDL_Joystick *joystick, SDL_SensorType type);</code>
-	/// <summary>Query whether sensor data reporting is enabled for a joystick.</summary>
+	/// <summary>
+	/// <para>Query whether sensor data reporting is enabled for a joystick.</para>
+	/// </summary>
 	/// <param name="joystick">the joystick to query.</param>
 	/// <param name="type">the type of sensor to query.</param>
 	/// <returns><c>true</c> if the sensor is enabled, <c>false</c> otherwise.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.6.0.</since>
-	/// <seealso cref="SetJoystickSensorEnabled"/>
+	/// <seealso cref="SetJoystickSensorEnabled(IntPtr, SensorType, bool)"/>
 	public static bool JoystickSensorEnabled(IntPtr joystick, SensorType type)
 	{
 		return JoystickSensorEnabledNativeFunction(joystick, type);
@@ -809,7 +811,9 @@ public static partial class SDL
 	private static GetJoystickSensorDataRateNativeDelegate GetJoystickSensorDataRateNativeFunction = SDL_GetJoystickSensorDataRate;
 
 	/// <code>extern SDL_DECLSPEC float SDLCALL SDL_GetJoystickSensorDataRate(SDL_Joystick *joystick, SDL_SensorType type);</code>
-	/// <summary>Get the data rate (number of events per second) of a joystick sensor.</summary>
+	/// <summary>
+	/// <para>Get the data rate (number of events per second) of a joystick sensor.</para>
+	/// </summary>
 	/// <param name="joystick">the joystick to query.</param>
 	/// <param name="type">the type of sensor to query.</param>
 	/// <returns>the data rate, or 0.0f if the data rate is not available.</returns>
@@ -836,10 +840,10 @@ public static partial class SDL
 	/// </summary>
 	/// <param name="joystick">the joystick to query.</param>
 	/// <param name="type">the type of sensor to query.</param>
-	/// <param name="data">the destination buffer filled with the current sensor state.</param>
-	/// <param name="numValues">the number of values to write to <c>data</c>.</param>
-	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-	/// information.</returns>
+	/// <param name="data">a pointer filled with the current sensor state.</param>
+	/// <param name="numValues">the number of values to write to data.</param>
+	/// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+	///          information.</returns>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
 	/// <since>This function is available since SDL 3.6.0.</since>
 	public static unsafe bool GetJoystickSensorData(IntPtr joystick, SensorType type, Span<float> data, int numValues)
@@ -1380,7 +1384,7 @@ public static partial class SDL
 	/// enabled and <see cref="Hints.AutoUpdateJoysticks"/> hasn't been set to "0".</para>
 	/// </summary>
 	/// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-	/// <since>This function is available since SDL 3.2.0</since>
+	/// <since>This function is available since SDL 3.2.0.</since>
 	public static void UpdateJoysticks()
 	{
 		UpdateJoysticksNativeFunction();

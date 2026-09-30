@@ -27,26 +27,23 @@ namespace SDL3;
 
 public static partial class SDL
 {
-    /// <summary>
-    /// Notification dialog event structure (event.notification.*).
-    /// <para>The action identifier 'default' indicates that the notification was interacted with without selecting a specific action (e.g. the body of the notification was clicked on).</para>
-    /// </summary>
+    /// <summary>Gamepad capsense event structure (event.gcapsense.*).</summary>
     /// <since>This struct is available since SDL 3.6.0.</since>
     [StructLayout(LayoutKind.Sequential)]
-    public struct NotificationEvent
+    public struct GamepadCapSenseEvent
     {
-        /// <summary><see cref="EventType.NotificationActionInvoked"/></summary>
+        /// <summary><see cref="EventType.GamepadCapSenseTouch"/> or <see cref="EventType.GamepadCapSenseRelease"/>.</summary>
         public EventType Type;
-
-        private UInt32 _reserved;
-
+        private uint _reserved;
         /// <summary>In nanoseconds, populated using <see cref="GetTicksNS"/>.</summary>
-        public UInt64 Timestamp;
-
-        /// <summary>The ID of the notification that generated this event.</summary>
-        public UInt32 Which;
-
-        /// <summary>The identifier string of the action invoked in the notification dialog.</summary>
-        public IntPtr ActionId;
+        public ulong Timestamp;
+        /// <summary>The joystick instance ID.</summary>
+        public uint Which;
+        /// <summary>The capsense type, a <see cref="GamepadCapSenseType"/> value.</summary>
+        public byte CapSense;
+        /// <summary><c>true</c> if the capsense is touched.</summary>
+        [MarshalAs(UnmanagedType.I1)] public bool Down;
+        private byte _padding1;
+        private byte _padding2;
     }
 }

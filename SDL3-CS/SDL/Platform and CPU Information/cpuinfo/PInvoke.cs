@@ -367,7 +367,6 @@ public static partial class SDL
     /// <c>false</c>.</para>
     /// </summary>
     /// <returns><c>true</c> if the CPU has SVE2, <c>false</c> otherwise.</returns>
-    /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
     public static bool HasSVE2()
     {

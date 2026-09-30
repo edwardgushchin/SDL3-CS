@@ -1,5 +1,46 @@
 using SDL3;
 
+if (args.SequenceEqual(["--aligned-alloc-zero-only"]))
+{
+    SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAllocZero_AllocatesAlignedZeroedMemory();
+    Console.WriteLine("SDL zeroed aligned allocator focused test passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--mainline-header-only"]))
+{
+    SDL3.Tests.SDL.Video.Video.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.Video.Render.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Keyboard.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.FileAndIOAbstractions.IOStream.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.Basics.Hints.MainlineHintsTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Events.GamepadCapSenseEventTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Events.PinchFingerEventTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Scancode.MainlineScancodeTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Keycode.MainlineKeycodeTests.RunAll();
+    SDL3.Tests.SDL.Video.Pixels.MainlinePixelFormatTests.RunAll();
+    Console.WriteLine("SDL mainline header constants and ABI tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--openxr-only"]))
+{
+    SDL3.Tests.SDL.Video.OpenXR.PInvokeTests.RunAll();
+    Console.WriteLine("SDL OpenXR focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--openharmony-permission-only"]))
+{
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermission_ForwardsPermissionCallbackAndUserdata();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermissionCallback_UsesExpectedAbi();
+    if (!string.Equals(SDL3.SDL.GetPlatform(), "OpenHarmony", StringComparison.OrdinalIgnoreCase))
+        SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermission_UnsupportedStubDoesNotInvokeCallback();
+    Console.WriteLine("SDL OpenHarmony permission focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--argv-callbacks-only"]))
 {
     SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_AdaptsCompleteUtf8ArgumentsFromNativeCallback();
@@ -172,6 +213,17 @@ if (args.SequenceEqual(["--notifications-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--gpu-render-state-bindings-only"]))
+{
+    string[] exports = ["SDL_SetGPURenderStateSamplerBindings", "SDL_SetGPURenderStateStorageTextures", "SDL_SetGPURenderStateStorageBuffers"];
+    SDL3.Tests.TestAssert.True(exports.All(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export), "The focused GPU render-state tests require an SDL native library that exports all binding setters.");
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GPURenderStateBindingSetters_ForwardArraysAndReturnNativeValues();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GPURenderStateBindingSetters_ValidateArrayCounts();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GPURenderStateBindingSetters_RejectNullStateOnNative();
+    Console.WriteLine("SDL GPU render-state binding focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--jpg-loaders-only"]))
 {
     SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
@@ -181,6 +233,17 @@ if (args.SequenceEqual(["--jpg-loaders-only"]))
 }
 
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
+SDL3.Tests.SDL.Video.Video.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.Video.Render.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.AdditionalFunctionality.System.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Keyboard.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.FileAndIOAbstractions.IOStream.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.Basics.Hints.MainlineHintsTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Events.GamepadCapSenseEventTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Events.PinchFingerEventTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Scancode.MainlineScancodeTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Keycode.MainlineKeycodeTests.RunAll();
+SDL3.Tests.SDL.Video.Pixels.MainlinePixelFormatTests.RunAll();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked C# identifier Cyrillic guard test passed.");
@@ -559,6 +622,7 @@ Console.WriteLine("SDL.Surface macro tests passed.");
 SDL3.Tests.SDL.Video.Surface.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Surface binding tests passed.");
 SDL3.Tests.SDL.Video.Render.PInvokeTests.RunAll();
+SDL3.Tests.SDL.Video.OpenXR.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Render binding tests passed.");
 SDL3.Tests.SDL.Video.Video.MacroTests.RunAll();
 Console.WriteLine("SDL.Video macro tests passed.");
@@ -647,6 +711,8 @@ Console.WriteLine("SDL.GetMemoryFunctions binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.SetMemoryFunctions_ForwardsCallbacksThroughHook();
 Console.WriteLine("SDL.SetMemoryFunctions binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAlloc_ReturnsAlignedMemory();
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_aligned_alloc_zero"))
+    SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAllocZero_AllocatesAlignedZeroedMemory();
 Console.WriteLine("SDL.AlignedAlloc binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedFree_FreesAlignedMemoryAndAllowsNull();
 Console.WriteLine("SDL.AlignedFree binding test passed.");
@@ -730,6 +796,10 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetAndroidCachePath_R
 Console.WriteLine("SDL.GetAndroidCachePath binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestAndroidPermission_ForwardsPermissionCallbackAndUserdata();
 Console.WriteLine("SDL.RequestAndroidPermission binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermission_ForwardsPermissionCallbackAndUserdata();
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermissionCallback_UsesExpectedAbi();
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonySDKVersion_ReturnsNativeValue();
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonyInternalStoragePath_ReturnsStringAndNull();
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.ShowAndroidToast_ForwardsMessageAndLayout();
 Console.WriteLine("SDL.ShowAndroidToast binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.SendAndroidMessage_ForwardsCommandAndParam();

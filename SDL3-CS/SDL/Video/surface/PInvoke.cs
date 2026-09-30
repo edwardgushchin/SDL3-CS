@@ -68,7 +68,7 @@ public static partial class SDL
     /// <para>No copy is made of the pixel data. Pixel data is not managed automatically;
     /// you must free the surface before you free the pixel data.</para>
     /// <para>Pitch is the offset in bytes from one row of pixels to the next, e.g.
-    /// <c>width*4</c> for <see cref="PixelFormat.RGBA8888"/>.</para>
+    /// <c>(width * 4)</c> for <see cref="PixelFormat.RGBA8888"/>.</para>
     /// <para>You may pass <c>null</c> for pixels and 0 for pitch to create a surface that you
     /// will fill in with valid values later.</para>
     /// </summary>
@@ -78,11 +78,11 @@ public static partial class SDL
     /// <param name="pixels">a pointer to existing pixel data.</param>
     /// <param name="pitch">the number of bytes between each row, including padding.</param>
     /// <returns>the new <see cref="Surface"/> structure that is created or <c>null</c> on failure;
-    /// call <see cref="GetError"/> for more information.</returns>
+    ///          call <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateSurface"/>
-    /// <seealso cref="DestroySurface"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateSurface(int, int, PixelFormat)"/>
+    /// <seealso cref="DestroySurface(IntPtr)"/>
     public static IntPtr CreateSurfaceFrom(int width, int height, PixelFormat format, IntPtr pixels, int pitch)
     {
         return CreateSurfaceFromNativeFunction(width, height, format, pixels, pitch);
@@ -491,18 +491,18 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadSurface_IO(SDL_IOStream *src, bool closeio);</code>
     /// <summary>
     /// <para>Load a BMP, PNG or JPEG image from a seekable SDL data stream.</para>
-    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// <para>The new surface should be freed with <see cref="DestroySurface(IntPtr)"/>(). Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
     /// <param name="src">the data stream for the surface.</param>
-    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
-    /// in the case of an error.</param>
-    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO(IntPtr)"/>() on <c>src</c> before returning, even
+    ///                in the case of an error.</param>
+    /// <returns>a pointer to a new <see cref="Surface"/> structure or <c>null</c> on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
-    /// <seealso cref="DestroySurface"/>
-    /// <seealso cref="LoadSurface"/>
+    /// <seealso cref="DestroySurface(IntPtr)"/>
+    /// <seealso cref="LoadSurface(string)"/>
     public static IntPtr LoadSurfaceIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio)
     {
         return LoadSurfaceIONativeFunction(src, closeio);
@@ -517,15 +517,17 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC SDL_Surface * SDLCALL SDL_LoadSurface(const char *file);</code>
     /// <summary>
-    /// Load a BMP, PNG or JPEG image from a file.
-    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// <para>Load a BMP, PNG or JPEG image from a file.</para>
+    /// <para>The new surface should be freed with <see cref="DestroySurface(IntPtr)"/>(). Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
     /// <param name="file">the file to load.</param>
-    /// <returns>a pointer to a new SDL_Surface structure or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <returns>a pointer to a new <see cref="Surface"/> structure or <c>null</c> on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
+    /// <seealso cref="DestroySurface(IntPtr)"/>
+    /// <seealso cref="LoadSurfaceIO(IntPtr, bool)"/>
     public static IntPtr LoadSurface([MarshalAs(UnmanagedType.LPUTF8Str)] string file)
     {
         return LoadSurfaceNativeFunction(file);
@@ -722,18 +724,18 @@ public static partial class SDL
     /// <para>This is intended as a convenience function for loading images from trusted
     /// sources. If you want to load arbitrary images you should use libjpeg or
     /// another image loading library designed with security in mind.</para>
-    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// <para>The new surface should be freed with <see cref="DestroySurface(IntPtr)"/>(). Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
     /// <param name="src">the data stream for the surface.</param>
-    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO"/> on <c>src</c> before returning, even
-    /// in the case of an error.</param>
-    /// <returns>a pointer to a new <c>SDL_Surface</c> structure or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <param name="closeio">if <c>true</c>, calls <see cref="CloseIO(IntPtr)"/>() on <c>src</c> before returning, even
+    ///                in the case of an error.</param>
+    /// <returns>a pointer to a new <see cref="Surface"/> structure or <c>null</c> on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="DestroySurface"/>
-    /// <seealso cref="LoadJPG"/>
+    /// <seealso cref="DestroySurface(IntPtr)"/>
+    /// <seealso cref="LoadJPG(string)"/>
     public static IntPtr LoadJPGIO(IntPtr src, [MarshalAs(UnmanagedType.I1)] bool closeio)
     {
         return LoadJPGIONativeFunction(src, closeio);
@@ -752,16 +754,16 @@ public static partial class SDL
     /// <para>This is intended as a convenience function for loading images from trusted
     /// sources. If you want to load arbitrary images you should use libjpeg or
     /// another image loading library designed with security in mind.</para>
-    /// <para>The new surface should be freed with <see cref="DestroySurface"/>. Not doing so
+    /// <para>The new surface should be freed with <see cref="DestroySurface(IntPtr)"/>(). Not doing so
     /// will result in a memory leak.</para>
     /// </summary>
     /// <param name="file">the JPG file to load.</param>
-    /// <returns>a pointer to a new <c>SDL_Surface</c> structure or <c>null</c> on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    /// <returns>a pointer to a new <see cref="Surface"/> structure or <c>null</c> on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="DestroySurface"/>
-    /// <seealso cref="LoadJPGIO"/>
+    /// <seealso cref="DestroySurface(IntPtr)"/>
+    /// <seealso cref="LoadJPGIO(IntPtr, bool)"/>
     public static IntPtr LoadJPG([MarshalAs(UnmanagedType.LPUTF8Str)] string file)
     {
         return LoadJPGNativeFunction(file);
@@ -3262,7 +3264,7 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);</code>
     /// <summary>
-    /// <para>Retrieves a single pixel from a surface.</para>
+    /// <para>Retrieves a single pixel from a surface as RGBA in the sRGB colorspace.</para>
     /// <para>This function prioritizes correctness over speed: it is suitable for unit
     /// tests, but is not intended for use in a game engine.</para>
     /// <para>Like <see cref="GetRGBA(uint, in PixelFormatDetails, IntPtr, out byte, out byte, out byte, out byte)"/>, this uses the entire 0..255 range when converting color
@@ -3272,18 +3274,18 @@ public static partial class SDL
     /// <param name="x">the horizontal coordinate, 0 &lt;= x &lt; width.</param>
     /// <param name="y">the vertical coordinate, 0 &lt;= y &lt; height.</param>
     /// <param name="r">a pointer filled in with the red channel, 0-255, or <c>null</c> to ignore
-    /// this channel.</param>
+    ///          this channel.</param>
     /// <param name="g">a pointer filled in with the green channel, 0-255, or <c>null</c> to
-    /// ignore this channel.</param>
+    ///          ignore this channel.</param>
     /// <param name="b">a pointer filled in with the blue channel, 0-255, or <c>null</c> to
-    /// ignore this channel.</param>
+    ///          ignore this channel.</param>
     /// <param name="a">a pointer filled in with the alpha channel, 0-255, or <c>null</c> to
-    /// ignore this channel.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///          ignore this channel.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function can be called on different threads with
-    /// different surfaces.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    ///               different surfaces.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static bool ReadSurfacePixel(IntPtr surface, int x, int y, out byte r, out byte g, out byte b, out byte a)
     {
         return ReadSurfacePixelNativeFunction(surface, x, y, out r, out g, out b, out a);
@@ -3299,7 +3301,7 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);</code>
     /// <summary>
-    /// <para>Retrieves a single pixel from a surface.</para>
+    /// <para>Retrieves a single pixel from a surface as RGBA in the sRGB colorspace.</para>
     /// <para>This function prioritizes correctness over speed: it is suitable for unit
     /// tests, but is not intended for use in a game engine.</para>
     /// </summary>
@@ -3307,18 +3309,18 @@ public static partial class SDL
     /// <param name="x">the horizontal coordinate, 0 &lt;= x &lt; width.</param>
     /// <param name="y">the vertical coordinate, 0 &lt;= y &lt; height.</param>
     /// <param name="r">a pointer filled in with the red channel, normally in the range
-    /// 0-1, or <c>null</c> to ignore this channel.</param>
+    ///          0-1, or <c>null</c> to ignore this channel.</param>
     /// <param name="g">a pointer filled in with the green channel, normally in the range
-    /// 0-1, or <c>null</c> to ignore this channel.</param>
+    ///          0-1, or <c>null</c> to ignore this channel.</param>
     /// <param name="b">a pointer filled in with the blue channel, normally in the range
-    /// 0-1, or <c>null</c> to ignore this channel.</param>
+    ///          0-1, or <c>null</c> to ignore this channel.</param>
     /// <param name="a">a pointer filled in with the alpha channel, normally in the range
-    /// 0-1, or <c>null</c> to ignore this channel.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///          0-1, or <c>null</c> to ignore this channel.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function can be called on different threads with
-    /// different surfaces.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    ///               different surfaces.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static bool ReadSurfacePixelFloat(IntPtr surface, int x, int y, out float r, out float g, out float b, out float a)
     {
         return ReadSurfacePixelFloatNativeFunction(surface, x, y, out r, out g, out b, out a);

@@ -43,11 +43,11 @@ public static partial class SDL
     /// and that the request for permission was successfully issued. It does not
     /// reflect any user settings to allow or deny notifications.</para>
     /// </summary>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="ShowNotification"/>
-    /// <seealso cref="ShowNotificationWithProperties"/>
+    /// <seealso cref="ShowNotification(string, string, IntPtr, NotificationAction[], int)"/>
+    /// <seealso cref="ShowNotificationWithProperties(uint)"/>
     /// <seealso cref="NotificationAction"/>
     public static bool RequestNotificationPermission()
     {
@@ -64,33 +64,64 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC SDL_NotificationID SDLCALL SDL_ShowNotificationWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Show a system notification.</para>
-    /// <para>These properties are supported:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.NotificationTitleString"/>: required UTF-8 title.</item>
-    /// <item><see cref="Props.NotificationActionsPointer"/>: array of
-    /// <see cref="NotificationAction"/> structs for buttons or menu items.</item>
-    /// <item><see cref="Props.NotificationActionCountNumber"/>: number of actions.</item>
-    /// <item><see cref="Props.NotificationImagePointer"/>: optional <c>SDL_Surface</c> image.</item>
-    /// <item><see cref="Props.NotificationMessageString"/>: optional UTF-8 message.</item>
-    /// <item><see cref="Props.NotificationPriorityNumber"/>: a
-    /// <see cref="NotificationPriority"/> value.</item>
-    /// <item><see cref="Props.NotificationReplacesNumber"/>: ID of a notification to replace.</item>
-    /// <item><see cref="Props.NotificationSoundString"/>: system default, silent, or a
-    /// platform-supported custom sound.</item>
-    /// <item><see cref="Props.NotificationTransientBoolean"/>: whether it should be transient.</item>
-    /// </list>
+    /// <para>System notifications are small, asynchronous popup windows that notify the
+    /// user of some information. How they are displayed is system dependent.</para>
+    /// <para>These are the supported properties:</para>
+    /// <para>- <see cref="Props.NotificationTitleString"/>: the title of the notification, in
+    ///   UTF-8 encoding. This property is required.
+    /// - <see cref="Props.NotificationActionsPointer"/>: An array of pointers to
+    ///   <see cref="NotificationAction"/> structs that will add actions to the
+    ///   notification, usually in the form of buttons or menu items. Note that
+    ///   systems may have a limit on the maximum number of actions that a
+    ///   notification can have.
+    /// - <c>SDL_PROP_NOTIFICATIONS_ACTION_COUNT_NUMBER</c>: the number of actions in
+    ///   the array of actions, if it exists.
+    /// - <see cref="Props.NotificationImagePointer"/>: a pointer to an <see cref="Surface"/>
+    ///   containing an image that will be attached to the notification. In most
+    ///   cases, the image is displayed in the form of a large icon or thumbnail
+    ///   alongside the message body. Notifications on Apple platforms can be
+    ///   expanded to show a larger format image.
+    /// - <see cref="Props.NotificationMessageString"/>: the message body of the
+    ///   notification, in UTF-8 encoding.
+    /// - <see cref="Props.NotificationPriorityNumber"/>: an <see cref="NotificationPriority"/>
+    ///   value representing the notification priority.
+    /// - <see cref="Props.NotificationReplacesNumber"/>: the <c>SDL_NotificationID</c> of a
+    ///   previously shown notification that this notification should replace.
+    /// - <see cref="Props.NotificationSoundString"/>: sets a sound to play when the
+    ///   notification is shown. This can have the value "default", to play the
+    ///   system default notification sound, "silent", to play no sound, or contain
+    ///   the path to a file with a custom sound. The paths and formats that can be
+    ///   used for custom sounds are system-specific, and can have some
+    ///   restrictions, depending on the platform:
+    /// - Apple platforms require that the sound file is contained within the app
+    ///   bundle. Supported formats are: Linear PCM, MA4 (IMA/ADPCM), uLaw, or
+    ///   aLaw, in an .aiff, .wav, or .caf file.
+    /// - Windows can only play custom notification sounds when the app is packaged
+    ///   inside an MSIX installer. Playback from arbitrary file paths is not
+    ///   supported. Supported formats are: .aac, .flac, .m4a, .mp3, .wav, and
+    ///   .wma.
+    /// - Unix platforms can generally load sounds from any arbitrary path, as long
+    ///   as the read permissions are correct. Supported formats are: ogg/opus,
+    ///   ogg/vorbis, and wav/pcm. If this property is not set, the system default
+    ///   sound will be used.
+    /// - <see cref="Props.NotificationTransientBoolean"/>: <c>true</c> if the notification
+    ///   should not persist in the system notification center after initially
+    ///   being shown.</para>
     /// <para>Not all properties are supported by all platforms.</para>
-    /// <para>Notifications are available on Windows 10 or higher, macOS 10.14 or higher,
-    /// iOS 11 or higher, and Unix platforms that support system notification interfaces.</para>
+    /// <para>Notifications are available on: - Windows 10 or higher - macOS 10.14 or
+    /// higher - iOS 11 or higher - *nix platforms that support the
+    /// org.freedesktop.Notifications, or org.freedesktop.portal.Notification
+    /// interfaces</para>
     /// </summary>
     /// <param name="props">the properties to be used when creating this notification.</param>
-    /// <returns>A non-zero notification ID on success or 0 on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns>A non-zero <c>SDL_NotificationID</c> on success or 0 on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="ShowNotification"/>
+    /// <seealso cref="ShowNotification(string, string, IntPtr, NotificationAction[], int)"/>
     /// <seealso cref="NotificationAction"/>
     /// <seealso cref="NotificationPriority"/>
     /// <seealso cref="NotificationEvent"/>
+    /// <remarks><c>SDL_NotificationPriority</c></remarks>
     public static uint ShowNotificationWithProperties(uint props)
     {
         return ShowNotificationWithPropertiesNativeFunction(props);
@@ -109,20 +140,25 @@ public static partial class SDL
     private static ShowNotificationNative ShowNotificationNativeFunction = SDL_ShowNotification;
 
     /// <code>extern SDL_DECLSPEC SDL_NotificationID SDLCALL SDL_ShowNotification(const char *title, const char *message, SDL_Surface *image, SDL_NotificationAction *actions, int num_actions);</code>
-    /// <summary>Show a system notification with normal priority.</summary>
+    /// <summary>
+    /// <para>Show a system notification with normal priority.</para>
+    /// </summary>
     /// <param name="title">UTF-8 title text, required.</param>
     /// <param name="message">UTF-8 message text, may be <c>null</c>.</param>
-    /// <param name="image">the image associated with this notification, may be <c>null</c>.</param>
-    /// <param name="actions">an array of actions to attach to the notification, may be <c>null</c>.</param>
-    /// <param name="numActions">the number of actions in the actions array.</param>
-    /// <returns>A non-zero notification ID on success or 0 on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <param name="image">The image associated with this notification, may be <c>null</c>.</param>
+    /// <param name="actions">An array of actions to attach to the notification, may be
+    ///                <c>null</c>.</param>
+    /// <param name="numActions">The number of actions in the actions array.</param>
+    /// <returns>A non-zero <c>SDL_NotificationID</c> on success or 0 on failure; call
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="ShowNotificationWithProperties"/>
+    /// <seealso cref="ShowNotificationWithProperties(uint)"/>
     /// <seealso cref="NotificationAction"/>
     /// <seealso cref="NotificationEvent"/>
     public static uint ShowNotification(string title, string? message, IntPtr image, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] NotificationAction[]? actions, int numActions)
     {
+        if (numActions < 0) throw new ArgumentOutOfRangeException(nameof(numActions));
+        if (numActions > (actions?.Length ?? 0)) throw new ArgumentOutOfRangeException(nameof(numActions));
         return ShowNotificationNativeFunction(title, message, image, actions, numActions);
     }
 
@@ -135,13 +171,15 @@ public static partial class SDL
     private static RemoveNotificationNative RemoveNotificationNativeFunction = SDL_RemoveNotification;
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RemoveNotification(SDL_NotificationID notification);</code>
-    /// <summary>Remove a notification.</summary>
+    /// <summary>
+    /// <para>Remove a notification.</para>
+    /// </summary>
     /// <param name="notification">the ID of the notification to remove.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <since>This function is available since SDL 3.6.0.</since>
-    /// <seealso cref="ShowNotificationWithProperties"/>
-    /// <seealso cref="ShowNotification"/>
+    /// <seealso cref="ShowNotificationWithProperties(uint)"/>
+    /// <seealso cref="ShowNotification(string, string, IntPtr, NotificationAction[], int)"/>
     public static bool RemoveNotification(uint notification)
     {
         return RemoveNotificationNativeFunction(notification);

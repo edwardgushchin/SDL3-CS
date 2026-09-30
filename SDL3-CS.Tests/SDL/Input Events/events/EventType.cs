@@ -9,7 +9,7 @@ internal static class EventTypeTests
         AssertBoundary(SDL3.SDL.EventType.KeyboardFirst, SDL3.SDL.EventType.KeyDown, SDL3.SDL.EventType.KeyboardLast, SDL3.SDL.EventType.ScreenKeyboardHidden, "keyboard");
         AssertBoundary(SDL3.SDL.EventType.MouseFirst, SDL3.SDL.EventType.MouseMotion, SDL3.SDL.EventType.MouseLast, SDL3.SDL.EventType.MouseRemoved, "mouse");
         AssertBoundary(SDL3.SDL.EventType.JoystickFirst, SDL3.SDL.EventType.JoystickAxisMotion, SDL3.SDL.EventType.JoystickLast, SDL3.SDL.EventType.JoystickUpdateComplete, "joystick");
-        AssertBoundary(SDL3.SDL.EventType.GamepadFirst, SDL3.SDL.EventType.GamepadAxisMotion, SDL3.SDL.EventType.GamepadLast, SDL3.SDL.EventType.GamepadSteamHandleUpdated, "gamepad");
+        AssertBoundary(SDL3.SDL.EventType.GamepadFirst, SDL3.SDL.EventType.GamepadAxisMotion, SDL3.SDL.EventType.GamepadLast, SDL3.SDL.EventType.GamepadCapSenseRelease, "gamepad");
         AssertBoundary(SDL3.SDL.EventType.FingerFirst, SDL3.SDL.EventType.FingerDown, SDL3.SDL.EventType.FingerLast, SDL3.SDL.EventType.FingerCanceled, "finger");
         AssertBoundary(SDL3.SDL.EventType.PinchFirst, SDL3.SDL.EventType.PinchBegin, SDL3.SDL.EventType.PinchLast, SDL3.SDL.EventType.PinchEnd, "pinch");
         AssertBoundary(SDL3.SDL.EventType.ClipboardFirst, SDL3.SDL.EventType.ClipboardUpdate, SDL3.SDL.EventType.ClipboardLast, SDL3.SDL.EventType.ClipboardUpdate, "clipboard");

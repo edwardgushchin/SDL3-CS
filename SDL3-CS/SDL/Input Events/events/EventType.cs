@@ -480,8 +480,13 @@ public static partial class SDL
         /// </summary>
         GamepadSteamHandleUpdated,
 
+        /// <summary>Gamepad capsense was touched.</summary>
+        GamepadCapSenseTouch,
+        /// <summary>Gamepad capsense was released.</summary>
+        GamepadCapSenseRelease,
+
         GamepadFirst = GamepadAxisMotion,
-        GamepadLast = GamepadSteamHandleUpdated,
+        GamepadLast = GamepadCapSenseRelease,
 
         #endregion
 

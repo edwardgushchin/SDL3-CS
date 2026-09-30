@@ -147,6 +147,23 @@ internal static class PInvokeTests
         TestAssert.Equal(true, testFreeFuncCalled, "SDL.SetMemoryFunctions hook must keep the free callback callable.");
     }
 
+    public static void AlignedAllocZero_AllocatesAlignedZeroedMemory()
+    {
+        MethodInfo method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.AlignedAllocZero))!;
+        TestAssert.Equal("SDL_aligned_alloc_zero", method.GetCustomAttribute<LibraryImportAttribute>()!.EntryPoint, "Zeroed allocator must bind exact native entry point.");
+        IntPtr memory = SDL3.SDL.AlignedAllocZero((UIntPtr)64, (UIntPtr)128);
+        TestAssert.True(memory != IntPtr.Zero, "Zeroed aligned allocation must succeed.");
+        try
+        {
+            TestAssert.Equal(0L, memory.ToInt64() % 64, "Zeroed allocation must preserve requested alignment.");
+            for (int index = 0; index < 128; index++)
+                TestAssert.Equal((byte)0, Marshal.ReadByte(memory, index), "Every allocated byte must be zero initialized.");
+            Marshal.WriteByte(memory, 127, 0x3C);
+            TestAssert.Equal((byte)0x3C, Marshal.ReadByte(memory, 127), "Aligned allocation must remain writable.");
+        }
+        finally { SDL3.SDL.AlignedFree(memory); }
+    }
+
     public static void AlignedAlloc_ReturnsAlignedMemory()
     {
         MethodInfo? method = typeof(SDL3.SDL).GetMethod(nameof(SDL3.SDL.AlignedAlloc), BindingFlags.Public | BindingFlags.Static);

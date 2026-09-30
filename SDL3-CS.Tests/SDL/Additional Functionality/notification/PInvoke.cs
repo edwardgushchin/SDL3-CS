@@ -22,8 +22,9 @@ internal static class PInvokeTests
         RequestNotificationPermission_ForwardsAndReturnsNativeValue();
         ShowNotificationWithProperties_ForwardsPropertiesAndReturnsNativeId();
         ShowNotification_ForwardsTextImageActionsAndReturnsNativeId();
+        ShowNotification_ValidatesCountsAndOptionalData();
         RemoveNotification_ForwardsIdAndReturnsNativeValue();
-        RemoveNotification_InvalidIdReturnsFalse();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_RemoveNotification")) RemoveNotification_InvalidIdReturnsFalse();
         NotificationTypes_MatchNativeAbi();
     }
 
@@ -79,6 +80,26 @@ internal static class PInvokeTests
         using NativeHookScope _ = NativeHookScope.Install("RemoveNotificationNativeFunction", nameof(CaptureRemoveNotification));
         TestAssert.Equal(true, SDL3.SDL.RemoveNotification(0xA331u), "SDL.RemoveNotification must return native hook value.");
         TestAssert.Equal(0xA331u, capturedNotificationId, "SDL.RemoveNotification must forward ID.");
+    }
+
+    public static void ShowNotification_ValidatesCountsAndOptionalData()
+    {
+        using NativeHookScope hook = NativeHookScope.Install("ShowNotificationNativeFunction", nameof(CaptureShowNotification));
+        capturedNotificationId = 0;
+        TestAssert.Equal(0u, SDL3.SDL.ShowNotification("title", null, IntPtr.Zero, null, 0), "Optional null data must preserve native failure ID.");
+        TestAssert.Equal<string?>(null, capturedMessage, "Optional message must preserve null.");
+        TestAssert.Equal<SDL3.SDL.NotificationAction[]?>(null, capturedActions, "Optional actions must preserve null.");
+        Action[] invalid = [
+            () => SDL3.SDL.ShowNotification("title", null, IntPtr.Zero, [], -1),
+            () => SDL3.SDL.ShowNotification("title", null, IntPtr.Zero, null, 1)
+        ];
+        foreach (Action action in invalid)
+        {
+            bool caught = false;
+            try { action(); }
+            catch (ArgumentOutOfRangeException) { caught = true; }
+            TestAssert.True(caught, "Notification count must be within the actual action array.");
+        }
     }
 
     public static void RemoveNotification_InvalidIdReturnsFalse()

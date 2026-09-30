@@ -1,0 +1,217 @@
+#region License
+/* Copyright (c) 2024-2026 Eduard Gushchin.
+ *
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software in a
+ * product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ *
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ *
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
+#endregion
+
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace SDL3;
+
+public static partial class SDL
+{
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUXRSession"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_CreateGPUXRSession(IntPtr device, IntPtr createInfo, out ulong session);
+    private delegate int CreateGPUXRSessionNative(IntPtr device, IntPtr createInfo, out ulong session);
+    private static CreateGPUXRSessionNative CreateGPUXRSessionNativeFunction = SDL_CreateGPUXRSession;
+
+    /// <code>extern SDL_DECLSPEC XrResult SDLCALL SDL_CreateGPUXRSession(SDL_GPUDevice *device, const XrSessionCreateInfo *createinfo, XrSession *session);</code>
+    /// <summary>
+    /// <para>Creates an OpenXR session.</para>
+    /// <para>The OpenXR system ID is pulled from the passed GPU context.</para>
+    /// </summary>
+    /// <param name="device">a GPU context.</param>
+    /// <param name="createInfo">the create info for the OpenXR session, sans the system
+    ///                   ID.</param>
+    /// <param name="session">a pointer filled in with an OpenXR session created for the
+    ///                given device.</param>
+    /// <returns>the result of the call.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPUDeviceWithProperties(uint)"/>
+    /// <remarks><paramref name="createInfo"/> points to a complete native <c>XrSessionCreateInfo</c> from the application's OpenXR binding. XR handles use the 64-bit ABI defined by SDL.</remarks>
+    public static int CreateGPUXRSession(IntPtr device, IntPtr createInfo, out ulong session)
+    {
+        return CreateGPUXRSessionNativeFunction(device, createInfo, out session);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetGPUXRSwapchainFormats"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_GetGPUXRSwapchainFormats(IntPtr device, ulong session, out int numFormats);
+    private delegate IntPtr GetGPUXRSwapchainFormatsNative(IntPtr device, ulong session, out int numFormats);
+    private static GetGPUXRSwapchainFormatsNative GetGPUXRSwapchainFormatsNativeFunction = SDL_GetGPUXRSwapchainFormats;
+
+    /// <code>extern SDL_DECLSPEC SDL_GPUTextureFormat * SDLCALL SDL_GetGPUXRSwapchainFormats(SDL_GPUDevice *device, XrSession session, int *num_formats);</code>
+    /// <summary>
+    /// <para>Queries the GPU device for supported XR swapchain image formats.</para>
+    /// <para>The returned pointer should be allocated with <see cref="Malloc(UIntPtr)"/>() and will be
+    /// passed to <see cref="Free(IntPtr)"/>().</para>
+    /// </summary>
+    /// <param name="device">a GPU context.</param>
+    /// <param name="session">an OpenXR session created for the given device.</param>
+    /// <param name="numFormats">a pointer filled with the number of supported XR
+    ///                    swapchain formats.</param>
+    /// <returns>a 0 terminated array of supported formats or <c>null</c> on failure; call
+    ///          <see cref="GetError()"/>() for more information. This should be freed with
+    ///          <see cref="Free(IntPtr)"/>() when it is no longer needed.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPUXRSwapchain(IntPtr, ulong, IntPtr, GPUTextureFormat, out ulong, out IntPtr)"/>
+    /// <remarks>The wrapper copies the native array and releases it using <see cref="Free"/>.</remarks>
+    public static unsafe GPUTextureFormat[]? GetGPUXRSwapchainFormats(IntPtr device, ulong session, out int numFormats)
+    {
+        IntPtr formats = GetGPUXRSwapchainFormatsNativeFunction(device, session, out numFormats);
+        try
+        {
+            if (formats == IntPtr.Zero) return null;
+            return new ReadOnlySpan<GPUTextureFormat>((void*)formats, numFormats).ToArray();
+        }
+        finally
+        {
+            if (formats != IntPtr.Zero) Free(formats);
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateGPUXRSwapchain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_CreateGPUXRSwapchain(IntPtr device, ulong session, IntPtr createInfo, GPUTextureFormat format, out ulong swapchain, out IntPtr textures);
+    private delegate int CreateGPUXRSwapchainNative(IntPtr device, ulong session, IntPtr createInfo, GPUTextureFormat format, out ulong swapchain, out IntPtr textures);
+    private static CreateGPUXRSwapchainNative CreateGPUXRSwapchainNativeFunction = SDL_CreateGPUXRSwapchain;
+
+    /// <code>extern SDL_DECLSPEC XrResult SDLCALL SDL_CreateGPUXRSwapchain( SDL_GPUDevice *device, XrSession session, const XrSwapchainCreateInfo *createinfo, SDL_GPUTextureFormat format, XrSwapchain *swapchain, SDL_GPUTexture ***textures);</code>
+    /// <summary>
+    /// <para>Creates an OpenXR swapchain.</para>
+    /// <para>The array returned via <c>textures</c> is sized according to
+    /// <c>xrEnumerateSwapchainImages</c>, and thus should only be accessed via index
+    /// values returned from <c>xrAcquireSwapchainImage</c>.</para>
+    /// <para>Applications are still allowed to call <c>xrEnumerateSwapchainImages</c> on the
+    /// returned XrSwapchain if they need to get the exact size of the array.</para>
+    /// </summary>
+    /// <param name="device">a GPU context.</param>
+    /// <param name="session">an OpenXR session created for the given device.</param>
+    /// <param name="createInfo">the create info for the OpenXR swapchain, sans the
+    ///                   format.</param>
+    /// <param name="format">a supported format for the OpenXR swapchain.</param>
+    /// <param name="swapchain">a pointer filled in with the created OpenXR swapchain.</param>
+    /// <param name="textures">a pointer filled in with the array of created swapchain
+    ///                 images.</param>
+    /// <returns>the result of the call.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPUDeviceWithProperties(uint)"/>
+    /// <seealso cref="CreateGPUXRSession(IntPtr, IntPtr, out ulong)"/>
+    /// <seealso cref="GetGPUXRSwapchainFormats(IntPtr, ulong, out int)"/>
+    /// <seealso cref="DestroyGPUXRSwapchain(IntPtr, ulong, IntPtr)"/>
+    /// <remarks>Pass the returned image-array pointer to <see cref="DestroyGPUXRSwapchain"/>. Do not free it separately.</remarks>
+    public static int CreateGPUXRSwapchain(IntPtr device, ulong session, IntPtr createInfo, GPUTextureFormat format, out ulong swapchain, out IntPtr textures)
+    {
+        return CreateGPUXRSwapchainNativeFunction(device, session, createInfo, format, out swapchain, out textures);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_DestroyGPUXRSwapchain"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial int SDL_DestroyGPUXRSwapchain(IntPtr device, ulong swapchain, IntPtr swapchainImages);
+    private delegate int DestroyGPUXRSwapchainNative(IntPtr device, ulong swapchain, IntPtr swapchainImages);
+    private static DestroyGPUXRSwapchainNative DestroyGPUXRSwapchainNativeFunction = SDL_DestroyGPUXRSwapchain;
+
+    /// <code>extern SDL_DECLSPEC XrResult SDLCALL SDL_DestroyGPUXRSwapchain(SDL_GPUDevice *device, XrSwapchain swapchain, SDL_GPUTexture **swapchainImages);</code>
+    /// <summary>
+    /// <para>Destroys and OpenXR swapchain previously returned by
+    /// <see cref="CreateGPUXRSwapchain(IntPtr, ulong, IntPtr, GPUTextureFormat, out ulong, out IntPtr)"/>.</para>
+    /// </summary>
+    /// <param name="device">a GPU context.</param>
+    /// <param name="swapchain">a swapchain previously returned by
+    ///                  <see cref="CreateGPUXRSwapchain(IntPtr, ulong, IntPtr, GPUTextureFormat, out ulong, out IntPtr)"/>.</param>
+    /// <param name="swapchainImages">an array of swapchain images returned by the same
+    ///                        call to <see cref="CreateGPUXRSwapchain(IntPtr, ulong, IntPtr, GPUTextureFormat, out ulong, out IntPtr)"/>.</param>
+    /// <returns>the result of the call.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="CreateGPUDeviceWithProperties(uint)"/>
+    /// <seealso cref="CreateGPUXRSession(IntPtr, IntPtr, out ulong)"/>
+    /// <seealso cref="CreateGPUXRSwapchain(IntPtr, ulong, IntPtr, GPUTextureFormat, out ulong, out IntPtr)"/>
+    public static int DestroyGPUXRSwapchain(IntPtr device, ulong swapchain, IntPtr swapchainImages)
+    {
+        return DestroyGPUXRSwapchainNativeFunction(device, swapchain, swapchainImages);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_LoadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_OpenXR_LoadLibrary();
+    private delegate bool OpenXRLoadLibraryNative();
+    private static OpenXRLoadLibraryNative OpenXRLoadLibraryNativeFunction = SDL_OpenXR_LoadLibrary;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_OpenXR_LoadLibrary(void);</code>
+    /// <summary>
+    /// <para>Dynamically load the OpenXR loader.</para>
+    /// <para>This can be called at any time.</para>
+    /// <para>SDL keeps a reference count of the OpenXR loader, calling this function
+    /// multiple times will increment that count, rather than loading the library
+    /// multiple times.</para>
+    /// <para>If not called, this will be implicitly called when creating a GPU device
+    /// with OpenXR.</para>
+    /// <para>This function will use the platform default OpenXR loader name, unless the
+    /// <see cref="Hints.OpenXRLibrary"/> hint is set.</para>
+    /// </summary>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="Hints.OpenXRLibrary"/>
+    public static bool OpenXRLoadLibrary() => OpenXRLoadLibraryNativeFunction();
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_UnloadLibrary"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_OpenXR_UnloadLibrary();
+    private delegate void OpenXRUnloadLibraryNative();
+    private static OpenXRUnloadLibraryNative OpenXRUnloadLibraryNativeFunction = SDL_OpenXR_UnloadLibrary;
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_OpenXR_UnloadLibrary(void);</code>
+    /// <summary>
+    /// <para>Unload the OpenXR loader previously loaded by <see cref="OpenXRLoadLibrary()"/>.</para>
+    /// <para>SDL keeps a reference count of the OpenXR loader, calling this function
+    /// will decrement that count. Once the reference count reaches zero, the
+    /// library is unloaded.</para>
+    /// </summary>
+    /// <threadsafety>This function is not thread safe.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static void OpenXRUnloadLibrary() => OpenXRUnloadLibraryNativeFunction();
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_OpenXR_GetXrGetInstanceProcAddr"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial IntPtr SDL_OpenXR_GetXrGetInstanceProcAddr();
+    private delegate IntPtr OpenXRGetXrGetInstanceProcAddrNative();
+    private static OpenXRGetXrGetInstanceProcAddrNative OpenXRGetXrGetInstanceProcAddrNativeFunction = SDL_OpenXR_GetXrGetInstanceProcAddr;
+
+    /// <code>extern SDL_DECLSPEC PFN_xrGetInstanceProcAddr SDLCALL SDL_OpenXR_GetXrGetInstanceProcAddr(void);</code>
+    /// <summary>
+    /// <para>Get the address of the <c>xrGetInstanceProcAddr</c> function.</para>
+    /// <para>This should be called after either calling <see cref="OpenXRLoadLibrary()"/>() or
+    /// creating an OpenXR <c>SDL_GPUDevice</c>.</para>
+    /// <para>The actual type of the returned function pointer is
+    /// PFN_xrGetInstanceProcAddr, but that isn't always available. You should
+    /// include the OpenXR headers before this header, or cast the return value of
+    /// this function to the correct type.</para>
+    /// </summary>
+    /// <returns>the function pointer for <c>xrGetInstanceProcAddr</c> or <c>null</c> on
+    ///          failure; call <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static IntPtr OpenXRGetXrGetInstanceProcAddr() => OpenXRGetXrGetInstanceProcAddrNativeFunction();
+}

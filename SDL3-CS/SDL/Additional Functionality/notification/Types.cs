@@ -31,9 +31,13 @@ public static partial class SDL
     /// <since>This enum is available since SDL 3.6.0.</since>
     public enum NotificationPriority
     {
+        /// <summary>Low priority.</summary>
         Low = -1,
+        /// <summary>Normal priority.</summary>
         Normal = 0,
+        /// <summary>High/important priority.</summary>
         High = 1,
+        /// <summary>Highest/critical priority. This may override any "Do Not Disturb" settings and wake the screen.</summary>
         Critical = 2
     }
 
@@ -41,6 +45,7 @@ public static partial class SDL
     /// <since>This enum is available since SDL 3.6.0.</since>
     public enum NotificationActionType
     {
+        /// <summary>Adds a button to the notification that generates feedback when activated.</summary>
         Button = 1
     }
 
@@ -48,12 +53,19 @@ public static partial class SDL
     [StructLayout(LayoutKind.Sequential)]
     public struct NotificationButtonAction
     {
+        /// <summary><see cref="NotificationActionType.Button"/>.</summary>
         public NotificationActionType Type;
+        /// <summary>The identifier string for the button. 'default' is a reserved identifier and must not be used.</summary>
         public IntPtr ActionId;
+        /// <summary>The localized label for the button associated with the action, in UTF-8 encoding.</summary>
         public IntPtr ActionLabel;
     }
 
-    /// <summary>Notification action data.</summary>
+    /// <summary>
+    /// Notification structure describing actions that can be used to allow users to interact with notification dialogs.
+    /// <para>Exactly how they are presented depends on the platform and implementation.</para>
+    /// <para>User interactions with a notification are reported via events with the type <see cref="EventType.NotificationActionInvoked"/>.</para>
+    /// </summary>
     /// <since>This union is available since SDL 3.6.0.</since>
     [StructLayout(LayoutKind.Explicit, Size = 128)]
     public struct NotificationAction

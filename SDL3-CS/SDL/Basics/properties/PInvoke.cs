@@ -383,8 +383,8 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC int SDLCALL SDL_GetNumProperties(SDL_PropertiesID props);</code>
     /// <summary>
-    /// Get the current number of items in a group of properties.
-    /// <para>For an invalid <c>SDL_PropertiesID</c>, this returns <c>0</c> and does not set an
+    /// <para>Get the current number of items in a group of properties.</para>
+    /// <para>For an invalid <c>SDL_PropertiesID</c>, this returns zero and does not set an
     /// error message.</para>
     /// </summary>
     /// <param name="props">the properties to query.</param>

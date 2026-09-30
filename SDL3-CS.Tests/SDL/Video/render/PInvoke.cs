@@ -30,6 +30,13 @@ internal static class PInvokeTests
     private static IntPtr capturedState;
     private static IntPtr capturedCreateInfo;
     private static SDL3.SDL.GPURenderStateCreateInfo capturedGPURenderStateCreateInfo;
+    private static SDL3.SDL.GPUTextureSamplerBinding[]? capturedSamplerBindings;
+    private static IntPtr[]? capturedStorageTextures;
+    private static IntPtr[]? capturedStorageBuffers;
+    private static int capturedSamplerBindingCount;
+    private static int capturedStorageTextureCount;
+    private static int capturedStorageBufferCount;
+    private static int gpuBindingHookCallCount;
     private static IntPtr capturedData;
     private static IntPtr capturedYPlane;
     private static IntPtr capturedUPlane;
@@ -174,7 +181,7 @@ internal static class PInvokeTests
             FloatViewportAndClipFunctions_UseNativeSoftwareRenderer();
         }
         GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata();
-        if (!string.Equals(SDL3.SDL.GetPlatform(), "GDK", StringComparison.OrdinalIgnoreCase))
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_GDKSuspendRenderer") && NativeLibraryProbe.SupportsSDL3Export("SDL_GDKResumeRenderer") && !string.Equals(SDL3.SDL.GetPlatform(), "GDK", StringComparison.OrdinalIgnoreCase))
         {
             GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer();
         }
@@ -191,6 +198,12 @@ internal static class PInvokeTests
         GPURenderStateCreateInfoTests.Layout_MatchesSdl3412Abi();
         CreateGPURenderStateTypedOverload_UsesInParameterAndForwardsAllFields();
         GpuRenderStateFunctions_ForwardPointersArraysAndReturnNativeValues();
+        GPURenderStateBindingSetters_ForwardArraysAndReturnNativeValues();
+        GPURenderStateBindingSetters_ValidateArrayCounts();
+        if (NativeLibraryProbe.SupportsSDL3Export("SDL_SetGPURenderStateSamplerBindings") && NativeLibraryProbe.SupportsSDL3Export("SDL_SetGPURenderStateStorageTextures") && NativeLibraryProbe.SupportsSDL3Export("SDL_SetGPURenderStateStorageBuffers"))
+        {
+            GPURenderStateBindingSetters_RejectNullStateOnNative();
+        }
     }
 
     public static void NativeEntryPoints_KeepExpectedLibraryImportMetadata()
@@ -392,6 +405,15 @@ internal static class PInvokeTests
         AssertNativeBoolImport(GetNativeMethod("SDL_GetDefaultTextureScaleMode"), "SDL_GetDefaultTextureScaleMode");
         AssertNativeImport(GetNativeMethod("SDL_CreateGPURenderState"), "SDL_CreateGPURenderState");
         AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderStateFragmentUniforms"), "SDL_SetGPURenderStateFragmentUniforms");
+        MethodInfo samplerBindings = GetNativeMethod("SDL_SetGPURenderStateSamplerBindings");
+        AssertNativeBoolImport(samplerBindings, "SDL_SetGPURenderStateSamplerBindings");
+        AssertArrayParameterMarshal(samplerBindings, 2, 1);
+        MethodInfo storageTextures = GetNativeMethod("SDL_SetGPURenderStateStorageTextures");
+        AssertNativeBoolImport(storageTextures, "SDL_SetGPURenderStateStorageTextures");
+        AssertArrayParameterMarshal(storageTextures, 2, 1);
+        MethodInfo storageBuffers = GetNativeMethod("SDL_SetGPURenderStateStorageBuffers");
+        AssertNativeBoolImport(storageBuffers, "SDL_SetGPURenderStateStorageBuffers");
+        AssertArrayParameterMarshal(storageBuffers, 2, 1);
         AssertNativeBoolImport(GetNativeMethod("SDL_SetGPURenderState"), "SDL_SetGPURenderState");
         AssertNativeImport(GetNativeMethod("SDL_DestroyGPURenderState"), "SDL_DestroyGPURenderState");
     }
@@ -2731,6 +2753,75 @@ internal static class PInvokeTests
         }
     }
 
+    public static void GPURenderStateBindingSetters_ForwardArraysAndReturnNativeValues()
+    {
+        SDL3.SDL.GPUTextureSamplerBinding[] samplerBindings = [new() { Texture = (IntPtr)0xB101, Sampler = (IntPtr)0xB102 }];
+        IntPtr[] storageTextures = [(IntPtr)0xB201, (IntPtr)0xB202];
+        IntPtr[] storageBuffers = [(IntPtr)0xB301];
+        nextBool = true;
+        gpuBindingHookCallCount = 0;
+
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateSamplerBindingsNativeFunction", nameof(CaptureSetGPURenderStateSamplerBindings)))
+        {
+            TestAssert.Equal(true, SDL3.SDL.SetGPURenderStateSamplerBindings((IntPtr)0xB110, samplerBindings.Length, samplerBindings), "SDL.SetGPURenderStateSamplerBindings must return native hook result.");
+            TestAssert.Equal((IntPtr)0xB110, capturedState, "SDL.SetGPURenderStateSamplerBindings must forward state.");
+            TestAssert.Equal(1, capturedSamplerBindingCount, "SDL.SetGPURenderStateSamplerBindings must forward count.");
+            TestAssert.True(ReferenceEquals(samplerBindings, capturedSamplerBindings), "SDL.SetGPURenderStateSamplerBindings must forward sampler array.");
+            TestAssert.Equal(1, gpuBindingHookCallCount, "SDL.SetGPURenderStateSamplerBindings must call its native hook once.");
+        }
+
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageTexturesNativeFunction", nameof(CaptureSetGPURenderStateStorageTextures)))
+        {
+            TestAssert.Equal(true, SDL3.SDL.SetGPURenderStateStorageTextures((IntPtr)0xB210, storageTextures.Length, storageTextures), "SDL.SetGPURenderStateStorageTextures must return native hook result.");
+            TestAssert.Equal((IntPtr)0xB210, capturedState, "SDL.SetGPURenderStateStorageTextures must forward state.");
+            TestAssert.Equal(2, capturedStorageTextureCount, "SDL.SetGPURenderStateStorageTextures must forward count.");
+            TestAssert.True(ReferenceEquals(storageTextures, capturedStorageTextures), "SDL.SetGPURenderStateStorageTextures must forward texture pointer array.");
+            TestAssert.Equal(2, gpuBindingHookCallCount, "SDL.SetGPURenderStateStorageTextures must call its native hook once after the sampler setter.");
+        }
+
+        using (NativeHookScope _ = NativeHookScope.Install("SetGPURenderStateStorageBuffersNativeFunction", nameof(CaptureSetGPURenderStateStorageBuffers)))
+        {
+            TestAssert.Equal(true, SDL3.SDL.SetGPURenderStateStorageBuffers((IntPtr)0xB310, storageBuffers.Length, storageBuffers), "SDL.SetGPURenderStateStorageBuffers must return native hook result.");
+            TestAssert.Equal((IntPtr)0xB310, capturedState, "SDL.SetGPURenderStateStorageBuffers must forward state.");
+            TestAssert.Equal(1, capturedStorageBufferCount, "SDL.SetGPURenderStateStorageBuffers must forward count.");
+            TestAssert.True(ReferenceEquals(storageBuffers, capturedStorageBuffers), "SDL.SetGPURenderStateStorageBuffers must forward buffer pointer array.");
+            TestAssert.Equal(3, gpuBindingHookCallCount, "SDL.SetGPURenderStateStorageBuffers must call its native hook once after prior setters.");
+        }
+    }
+
+    public static void GPURenderStateBindingSetters_RejectNullStateOnNative()
+    {
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, 0, Array.Empty<SDL3.SDL.GPUTextureSamplerBinding>()), "SDL sampler setter must reject null state.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, 0, Array.Empty<IntPtr>()), "SDL storage texture setter must reject null state.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, 0, Array.Empty<IntPtr>()), "SDL storage buffer setter must reject null state.");
+    }
+
+    public static void GPURenderStateBindingSetters_ValidateArrayCounts()
+    {
+        using NativeHookScope sampler = NativeHookScope.Install("SetGPURenderStateSamplerBindingsNativeFunction", nameof(CaptureSetGPURenderStateSamplerBindings));
+        using NativeHookScope textures = NativeHookScope.Install("SetGPURenderStateStorageTexturesNativeFunction", nameof(CaptureSetGPURenderStateStorageTextures));
+        using NativeHookScope buffers = NativeHookScope.Install("SetGPURenderStateStorageBuffersNativeFunction", nameof(CaptureSetGPURenderStateStorageBuffers));
+        nextBool = false;
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, 0, null), "Empty sampler array must preserve native failure.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, 0, null), "Empty texture array must preserve native failure.");
+        TestAssert.Equal(false, SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, 0, null), "Empty buffer array must preserve native failure.");
+        Action[] invalid = [
+            () => SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, -1, []),
+            () => SDL3.SDL.SetGPURenderStateSamplerBindings(IntPtr.Zero, 1, null),
+            () => SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, -1, []),
+            () => SDL3.SDL.SetGPURenderStateStorageTextures(IntPtr.Zero, 1, null),
+            () => SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, -1, []),
+            () => SDL3.SDL.SetGPURenderStateStorageBuffers(IntPtr.Zero, 1, null)
+        ];
+        foreach (Action action in invalid)
+        {
+            bool caught = false;
+            try { action(); }
+            catch (ArgumentOutOfRangeException) { caught = true; }
+            TestAssert.True(caught, "Count must be nonnegative and cannot exceed the actual native input array.");
+        }
+    }
+
     public static void GpuRenderStateFunctions_ForwardPointersArraysAndReturnNativeValues()
     {
         ResetCaptureState();
@@ -4046,6 +4137,33 @@ internal static class PInvokeTests
         capturedSlotIndex = slotIndex;
         capturedData = data;
         capturedLength = length;
+        return nextBool;
+    }
+
+    private static bool CaptureSetGPURenderStateSamplerBindings(IntPtr state, int count, SDL3.SDL.GPUTextureSamplerBinding[]? bindings)
+    {
+        gpuBindingHookCallCount++;
+        capturedState = state;
+        capturedSamplerBindingCount = count;
+        capturedSamplerBindings = bindings;
+        return nextBool;
+    }
+
+    private static bool CaptureSetGPURenderStateStorageTextures(IntPtr state, int count, IntPtr[]? textures)
+    {
+        gpuBindingHookCallCount++;
+        capturedState = state;
+        capturedStorageTextureCount = count;
+        capturedStorageTextures = textures;
+        return nextBool;
+    }
+
+    private static bool CaptureSetGPURenderStateStorageBuffers(IntPtr state, int count, IntPtr[]? buffers)
+    {
+        gpuBindingHookCallCount++;
+        capturedState = state;
+        capturedStorageBufferCount = count;
+        capturedStorageBuffers = buffers;
         return nextBool;
     }
 

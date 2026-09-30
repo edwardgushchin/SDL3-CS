@@ -63,71 +63,72 @@ public static partial class SDL
     public static partial IntPtr CreateProcess([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] args, [MarshalAs(UnmanagedType.I1)] bool pipeStdio);
     
     
-    /// <code>extern SDL_DECLSPEC SDL_Process *SDLCALL SDL_CreateProcessWithProperties(SDL_PropertiesID props);</code>
+    /// <code>extern SDL_DECLSPEC SDL_Process * SDLCALL SDL_CreateProcessWithProperties(SDL_PropertiesID props);</code>
     /// <summary>
     /// <para>Create a new process with the specified properties.</para>
     /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.ProcessCreateArgsPointer"/>: an array of strings containing
-    /// the program to run, any arguments, and a <c>null</c> pointer, e.g. const char
-    /// *args[] = { "myprogram", "argument", <c>null</c>}. This is a required property.</item>
-    /// <item><see cref="Props.ProcessCreateEnvironmentPointer"/>: an SDL_Environment
-    /// pointer. If this property is set, it will be the entire environment for
-    /// the process, otherwise the current environment is used.</item>
-    /// <item><see cref="Props.ProcessCreateWorkingDirectoryString"/>: a UTF-8 encoded
-    /// string representing the working directory for the process, defaults to
-    /// the current working directory.</item>
-    /// <item><see cref="Props.ProcessCreateSTDInNumber"/>: an SDL_ProcessIO value describing
-    /// where standard input for the process comes from, defaults to
-    /// <see cref="ProcessIO.Null"/>.</item>
-    /// <item><see cref="Props.ProcessCreateSTDInPointer"/>: an SDL_IOStream pointer used for
-    /// standard input when <see cref="Props.ProcessCreateSTDInNumber"/> is set to
-    /// <see cref="ProcessIO.Redirect"/>.</item>
-    /// <item><see cref="Props.ProcessCreateSTDOutNumber"/>: an SDL_ProcessIO value
-    /// describing where standard output for the process goes to, defaults to
-    /// <see cref="ProcessIO.Inherited"/>.</item>
-    /// <item><see cref="Props.ProcessCreateSTDOutPointer"/>: an SDL_IOStream pointer used
-    /// for standard output when <see cref="Props.ProcessCreateSTDOutNumber"/> is set
-    /// to <see cref="ProcessIO.Redirect"/>..</item>
-    /// <item><see cref="Props.ProcessCreateSTDErrNumber"/>: an SDL_ProcessIO value
-    /// describing where standard error for the process goes to, defaults to
-    /// <see cref="ProcessIO.Inherited"/>.</item>
-    /// <item><see cref="Props.ProcessCreateSTDErrPointer"/>: an SDL_IOStream pointer used
-    /// for standard error when <see cref="Props.ProcessCreateSTDErrNumber"/> is set to
-    /// <see cref="ProcessIO.Redirect"/>.</item>
-    /// <item><see cref="Props.ProcessCreateSTDErrToSTDOutBoolean"/>: <c>true</c> if the error
-    /// output of the process should be redirected into the standard output of
-    /// the process. This property has no effect if
-    /// <see cref="Props.ProcessCreateSTDErrNumber"/> is set.</item>
-    /// <item><see cref="Props.ProcessCreateBackgroundBoolean"/>: <c>true</c> if the process should
-    /// run in the background. In this case the default input and output is
-    /// <see cref="ProcessIO.Null"/> and the exitcode of the process is not
-    /// available, and will always be 0.</item>
-    /// <item><see cref="Props.ProcessCreateCMDLineString"/>: a string containing the program
-    /// to run and any parameters. This string is passed directly to
-    /// <c>CreateProcess</c> on Windows, and does nothing on other platforms. This
-    /// property is only important if you want to start programs that does
-    /// non-standard command-line processing, and in most cases using
-    /// <see cref="Props.ProcessCreateArgsPointer"/> is sufficient.</item>
-    /// </list>
+    /// <para>- <see cref="Props.ProcessCreateArgsPointer"/>: an array of strings containing
+    ///   the program to run, any arguments, and a <c>null</c> pointer, e.g. const char
+    ///   *args[] = { "myprogram", "argument", <c>null</c> }. This is a required property.
+    /// - <see cref="Props.ProcessCreateEnvironmentPointer"/>: an <c>SDL_Environment</c>
+    ///   pointer. If this property is set, it will be the entire environment for
+    ///   the process, otherwise the current environment is used.
+    /// - <see cref="Props.ProcessCreateWorkingDirectoryString"/>: a UTF-8 encoded
+    ///   string representing the working directory for the process, defaults to
+    ///   the current working directory.
+    /// - <see cref="Props.ProcessCreateSTDInNumber"/>: an <see cref="ProcessIO"/> value describing
+    ///   where standard input for the process comes from, defaults to
+    ///   <see cref="ProcessIO.Null"/>.
+    /// - <see cref="Props.ProcessCreateSTDInPointer"/>: an <c>SDL_IOStream</c> pointer used for
+    ///   standard input when <see cref="Props.ProcessCreateSTDInNumber"/> is set to
+    ///   <c>SDL_PROCESS_STDIO_REDIRECT</c>.
+    /// - <see cref="Props.ProcessCreateSTDOutNumber"/>: an <see cref="ProcessIO"/> value
+    ///   describing where standard output for the process goes to, defaults to
+    ///   <see cref="ProcessIO.Inherited"/>.
+    /// - <see cref="Props.ProcessCreateSTDOutPointer"/>: an <c>SDL_IOStream</c> pointer used
+    ///   for standard output when <see cref="Props.ProcessCreateSTDOutNumber"/> is set
+    ///   to <c>SDL_PROCESS_STDIO_REDIRECT</c>.
+    /// - <see cref="Props.ProcessCreateSTDErrNumber"/>: an <see cref="ProcessIO"/> value
+    ///   describing where standard error for the process goes to, defaults to
+    ///   <see cref="ProcessIO.Inherited"/>.
+    /// - <see cref="Props.ProcessCreateSTDErrPointer"/>: an <c>SDL_IOStream</c> pointer used
+    ///   for standard error when <see cref="Props.ProcessCreateSTDErrNumber"/> is set to
+    ///   <c>SDL_PROCESS_STDIO_REDIRECT</c>.
+    /// - <see cref="Props.ProcessCreateSTDErrToSTDOutBoolean"/>: <c>true</c> if the error
+    ///   output of the process should be redirected into the standard output of
+    ///   the process. This property has no effect if
+    ///   <see cref="Props.ProcessCreateSTDErrNumber"/> is set.
+    /// - <see cref="Props.ProcessCreateBackgroundBoolean"/>: <c>true</c> if the process should
+    ///   run in the background. In this case the default input and output is
+    ///   <see cref="ProcessIO.Null"/> and the exitcode of the process is not
+    ///   available, and will always be 0. This is not required to launch a program
+    ///   asynchronously, this is for detaching a child process from its parent
+    ///   completely (a so-called "double fork" on Unix). Created processes run
+    ///   asynchronously by default, regardless of this property.
+    /// - <see cref="Props.ProcessCreateCMDLineString"/>: a string containing the program
+    ///   to run and any parameters. This string is passed directly to
+    ///   <c>CreateProcess</c> on Windows, and does nothing on other platforms. This
+    ///   property is only important if you want to start programs that does
+    ///   non-standard command-line processing, and in most cases using
+    ///   <see cref="Props.ProcessCreateArgsPointer"/> is sufficient.</para>
     /// <para>On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
     /// SIGCHLD should not be ignored or handled because those would prevent SDL
     /// from properly tracking the lifetime of the underlying process. You should
-    /// use <see cref="WaitProcess"/> instead.</para>
+    /// use <see cref="WaitProcess(IntPtr, bool, out int)"/>() instead.</para>
     /// </summary>
     /// <param name="props">the properties to use.</param>
     /// <returns>the newly created and running process, or <c>null</c> if the process
-    /// couldn't be created.</returns>
+    ///          couldn't be created.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateProcess"/>
-    /// <seealso cref="GetProcessProperties"/>
-    /// <seealso cref="ReadProcess"/>
-    /// <seealso cref="GetProcessInput"/>
-    /// <seealso cref="GetProcessOutput"/>
-    /// <seealso cref="KillProcess"/>
-    /// <seealso cref="WaitProcess"/>
-    /// <seealso cref="DestroyProcess"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateProcess(string[], bool)"/>
+    /// <seealso cref="GetProcessProperties(IntPtr)"/>
+    /// <seealso cref="ReadProcess(IntPtr, out UIntPtr, out int)"/>
+    /// <seealso cref="GetProcessInput(IntPtr)"/>
+    /// <seealso cref="GetProcessOutput(IntPtr)"/>
+    /// <seealso cref="KillProcess(IntPtr, bool)"/>
+    /// <seealso cref="WaitProcess(IntPtr, bool, out int)"/>
+    /// <seealso cref="DestroyProcess(IntPtr)"/>
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_CreateProcessWithProperties"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr CreateProcessWithProperties(uint props);
     
