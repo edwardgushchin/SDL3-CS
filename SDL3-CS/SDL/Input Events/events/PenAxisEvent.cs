@@ -82,5 +82,10 @@ public static partial class SDL
         /// New value of axis
         /// </summary>
         public float Value;
+
+        /// <summary>
+        /// The device type of the pen, if known (added in 3.4.18).
+        /// </summary>
+        public PenDeviceType DeviceType;
     }
 }
