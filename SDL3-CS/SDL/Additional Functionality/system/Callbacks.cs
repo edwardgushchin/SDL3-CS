@@ -97,4 +97,15 @@ public static partial class SDL
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void RequestAndroidPermissionCallback(IntPtr userdata,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string permission, [MarshalAs(UnmanagedType.I1)] bool granted);
+
+    /// <code>typedef void (SDLCALL *SDL_RequestOpenHarmonyPermissionCallback)(void *userdata, const char *permission, bool granted);</code>
+    /// <summary>Callback that presents <see cref="RequestOpenHarmonyPermission"/> results.</summary>
+    /// <param name="userdata">an app-controlled pointer that is passed to the callback.</param>
+    /// <param name="permission">the OpenHarmony-specific permission name that was requested.</param>
+    /// <param name="granted"><c>true</c> if permission is granted, <c>false</c> if denied.</param>
+    /// <since>This datatype is available since SDL 3.6.0.</since>
+    /// <seealso cref="RequestOpenHarmonyPermission"/>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void RequestOpenHarmonyPermissionCallback(IntPtr userdata,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string permission, [MarshalAs(UnmanagedType.I1)] bool granted);
 }

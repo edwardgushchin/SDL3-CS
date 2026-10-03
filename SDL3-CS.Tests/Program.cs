@@ -1,16 +1,43 @@
 using SDL3;
 
-if (args.SequenceEqual(["--sdl-3.4.18-only"]))
+if (args.SequenceEqual(["--aligned-alloc-zero-only"]))
 {
-    SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.PenState_MatchesNativeLayout();
-    SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.DeviceType_MatchesNativeLayout();
-    SDL3.Tests.SDL.InputEvents.Events.PenMotionEventTests.DeviceType_MatchesNativeLayout();
-    SDL3.Tests.SDL.InputEvents.Events.PenTouchEventTests.DeviceType_MatchesNativeLayout();
-    SDL3.Tests.SDL.InputEvents.Events.PenButtonEventTests.DeviceType_MatchesNativeLayout();
-    SDL3.Tests.SDL.InputEvents.Events.PenAxisEventTests.DeviceType_MatchesNativeLayout();
-    SDL3.Tests.SDL.InputEvents.Keycode.KeycodeTests.Front_MatchesStableNativeValue();
-    SDL3.Tests.SDL.InputEvents.Scancode.ScancodeTests.Front_MatchesStableNativeValue();
-    Console.WriteLine("SDL 3.4.18 stable ABI and key constants tests passed.");
+    SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAllocZero_AllocatesAlignedZeroedMemory();
+    Console.WriteLine("SDL zeroed aligned allocator focused test passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--mainline-header-only"]))
+{
+    SDL3.Tests.SDL.Video.Video.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.Video.Render.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Keyboard.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.FileAndIOAbstractions.IOStream.MainlinePropsTests.RunAll();
+    SDL3.Tests.SDL.Basics.Hints.MainlineHintsTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Events.GamepadCapSenseEventTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Events.PinchFingerEventTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Scancode.MainlineScancodeTests.RunAll();
+    SDL3.Tests.SDL.InputEvents.Keycode.MainlineKeycodeTests.RunAll();
+    SDL3.Tests.SDL.Video.Pixels.MainlinePixelFormatTests.RunAll();
+    Console.WriteLine("SDL mainline header constants and ABI tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--openxr-only"]))
+{
+    SDL3.Tests.SDL.Video.OpenXR.PInvokeTests.RunAll();
+    Console.WriteLine("SDL OpenXR focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--openharmony-permission-only"]))
+{
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermission_ForwardsPermissionCallbackAndUserdata();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermissionCallback_UsesExpectedAbi();
+    if (!string.Equals(SDL3.SDL.GetPlatform(), "OpenHarmony", StringComparison.OrdinalIgnoreCase))
+        SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermission_UnsupportedStubDoesNotInvokeCallback();
+    Console.WriteLine("SDL OpenHarmony permission focused tests passed.");
     return;
 }
 
@@ -38,7 +65,185 @@ if (args.SequenceEqual(["--gpu-multisample-only"]))
     return;
 }
 
+if (args.SequenceEqual(["--properties-count-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetNumProperties"), "The focused SDL_GetNumProperties test requires a native SDL library that exports SDL_GetNumProperties.");
+    SDL3.Tests.SDL.Basics.Properties.PInvokeTests.GetNumProperties_ReturnsCountForValidProperties();
+    Console.WriteLine("SDL.GetNumProperties focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--sve2-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_HasSVE2"), "The focused SDL_HasSVE2 test requires a native SDL library that exports SDL_HasSVE2.");
+    SDL3.Tests.SDL.PlatformAndCPUInformation.Cpuinfo.PInvokeTests.HasSVE2_ReturnsNativeValues();
+    SDL3.Tests.SDL.PlatformAndCPUInformation.Cpuinfo.PInvokeTests.HasSVE2_InvokesNativeEntryPoint();
+    Console.WriteLine("SDL.HasSVE2 focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--audio-device-properties-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetAudioDeviceProperties"), "The focused SDL_GetAudioDeviceProperties test requires a native SDL library that exports SDL_GetAudioDeviceProperties.");
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.SDL_GetAudioDeviceProperties_UsesExpectedNativeMetadata();
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_ReturnsZeroForInvalidDevice();
+    Console.WriteLine("SDL.GetAudioDeviceProperties focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--try-lock-joysticks-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_TryLockJoysticks"), "The focused SDL_TryLockJoysticks test requires a native SDL library that exports SDL_TryLockJoysticks.");
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.TryLockJoysticks_ReturnsNativeValues();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.TryLockJoysticks_AcquiresAndReleasesTheNativeLock();
+    Console.WriteLine("SDL.TryLockJoysticks focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--device-form-factor-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetDeviceFormFactor"), "The focused form-factor tests require a native SDL library that exports SDL_GetDeviceFormFactor.");
+    SDL3.Tests.SDL.AdditionalFunctionality.System.FormFactorTests.FormFactor_UsesExpectedNativeValues();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_ReturnsNativeValues();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_ReturnsNativeValues();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_ReturnsNativeValue();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_ReturnsUtf8Name();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_InvokesNativeFormFactor();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_InvokesNativeEntryPoint();
+    Console.WriteLine("SDL device form-factor focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--jpg-loaders-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG_IO"), "The focused JPEG-loader tests require an SDL native library that exports both JPG loader APIs.");
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.NativeEntryPoints_KeepExpectedLibraryImportMetadata();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.SurfaceJpgLoadFunctions_ForwardInputsAndReturnNativeValues();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPG_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPGIO_InvokesNativeEntryPointAndClosesOwnedStream();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPG_ReturnsNullForMissingFile();
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.LoadJPGIO_ReturnsNullForNullStream();
+    Console.WriteLine("SDL JPEG loader focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--render-float-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_SetRenderViewportFloat"), "The focused float render tests require a native SDL library that exports SDL_SetRenderViewportFloat.");
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.NativeEntryPoints_KeepExpectedLibraryImportMetadata();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.FloatViewportAndClipFunctions_ForwardInputsOutputsAndReturnNativeValues();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.FloatViewportAndClipFunctions_UseNativeSoftwareRenderer();
+    Console.WriteLine("SDL float viewport/clip focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--capsense-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GamepadHasCapSense") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetGamepadCapSense"), "The focused capsense tests require an SDL native library that exports both capsense APIs.");
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GamepadCapSenseType_UsesExpectedNativeValues();
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GamepadHasCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GetGamepadCapSense_ForwardsGamepadAndTypeAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.GamepadCapSense_ReturnsFalseWithoutGamepad();
+    Console.WriteLine("SDL gamepad capsense focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--joystick-sensors-only"]))
+{
+    string[] exports = ["SDL_JoystickHasSensor", "SDL_SetJoystickSensorEnabled", "SDL_JoystickSensorEnabled", "SDL_GetJoystickSensorDataRate", "SDL_GetJoystickSensorData"];
+    SDL3.Tests.TestAssert.True(exports.All(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export), "The focused joystick sensor tests require an SDL native library that exports every joystick sensor API.");
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.JoystickHasSensor_ForwardsJoystickSensorAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.SetJoystickSensorEnabled_ForwardsJoystickSensorEnabledAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.JoystickSensorEnabled_ForwardsJoystickSensorAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.GetJoystickSensorDataRate_ForwardsJoystickSensorAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.GetJoystickSensorDataSpan_ForwardsPinnedBufferAndReturnsNativeValue();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.GetJoystickSensorDataSpan_RejectsInvalidNumValues();
+    SDL3.Tests.SDL.InputEvents.Joystick.PInvokeTests.JoystickSensorApis_ReturnDefaultsWithoutJoystick();
+    Console.WriteLine("SDL joystick sensor focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--tray-properties-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_CreateTrayWithProperties"), "The focused tray property test requires an SDL native library that exports SDL_CreateTrayWithProperties.");
+    SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTrayWithProperties_ForwardsPropertiesAndReturnsNativePointer();
+    SDL3.Tests.SDL.AdditionalFunctionality.Tray.PropsTests.TrayCreatePropertyNames_MatchNativeIdentifiers();
+    SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.TrayClickCallback_UsesExpectedNativeAbi();
+    Console.WriteLine("SDL tray properties focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--openharmony-queries-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetOpenHarmonySDKVersion") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetOpenHarmonyInternalStoragePath"), "The focused OpenHarmony query tests require an SDL native library that exports both query APIs.");
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonySDKVersion_ReturnsNativeValue();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonyInternalStoragePath_ReturnsStringAndNull();
+    if (!string.Equals(SDL3.SDL.GetPlatform(), "OpenHarmony", StringComparison.OrdinalIgnoreCase))
+    {
+        SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.OpenHarmonyQueryStubs_ReturnZeroAndNullOnOtherPlatforms();
+    }
+    Console.WriteLine("SDL OpenHarmony query focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--gdk-renderer-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GDKSuspendRenderer") && SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GDKResumeRenderer"), "The focused GDK renderer tests require an SDL native library that exports both lifecycle APIs.");
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GDKSuspendResumeRenderer_ForwardRendererAndPreserveNativeMetadata();
+    if (!string.Equals(SDL3.SDL.GetPlatform(), "GDK", StringComparison.OrdinalIgnoreCase))
+    {
+        SDL3.Tests.SDL.Video.Render.PInvokeTests.GDKSuspendResumeRenderer_UnsupportedStubsAreSafeForNullRenderer();
+    }
+    Console.WriteLine("SDL GDK renderer lifecycle focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--notifications-only"]))
+{
+    string[] exports = ["SDL_RequestNotificationPermission", "SDL_ShowNotificationWithProperties", "SDL_ShowNotification", "SDL_RemoveNotification"];
+    SDL3.Tests.TestAssert.True(exports.All(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export), "The focused notification tests require an SDL native library that exports every notification API.");
+    SDL3.Tests.SDL.AdditionalFunctionality.Notification.PInvokeTests.RunAll();
+    SDL3.Tests.SDL.AdditionalFunctionality.Notification.PropsTests.NotificationProps_MatchNativeNames();
+    SDL3.Tests.SDL.InputEvents.Events.EventTypeTests.GroupBoundaries_MatchSupportedEvents();
+    SDL3.Tests.SDL.InputEvents.Events.NotificationEventTests.NotificationEvent_UsesExpectedNativeLayoutAndEventUnion();
+    Console.WriteLine("SDL notification focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--gpu-render-state-bindings-only"]))
+{
+    string[] exports = ["SDL_SetGPURenderStateSamplerBindings", "SDL_SetGPURenderStateStorageTextures", "SDL_SetGPURenderStateStorageBuffers"];
+    SDL3.Tests.TestAssert.True(exports.All(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export), "The focused GPU render-state tests require an SDL native library that exports all binding setters.");
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GPURenderStateBindingSetters_ForwardArraysAndReturnNativeValues();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GPURenderStateBindingSetters_ValidateArrayCounts();
+    SDL3.Tests.SDL.Video.Render.PInvokeTests.GPURenderStateBindingSetters_RejectNullStateOnNative();
+    Console.WriteLine("SDL GPU render-state binding focused tests passed.");
+    return;
+}
+
+if (args.SequenceEqual(["--jpg-loaders-only"]))
+{
+    SDL3.Tests.TestAssert.True(SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_LoadJPG"), "The focused SDL_LoadJPG tests require a native SDL library that exports SDL_LoadJPG.");
+    SDL3.Tests.SDL.Video.Surface.PInvokeTests.RunAll();
+    Console.WriteLine("SDL surface focused tests passed.");
+    return;
+}
+
 SDL3.Tests.Repository.FileNameTests.TrackedFilePaths_DoNotContainCyrillicCharacters();
+SDL3.Tests.SDL.Video.Video.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.Video.Render.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.AdditionalFunctionality.System.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Keyboard.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.FileAndIOAbstractions.IOStream.MainlinePropsTests.RunAll();
+SDL3.Tests.SDL.Basics.Hints.MainlineHintsTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Events.GamepadCapSenseEventTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Events.PinchFingerEventTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Scancode.MainlineScancodeTests.RunAll();
+SDL3.Tests.SDL.InputEvents.Keycode.MainlineKeycodeTests.RunAll();
+SDL3.Tests.SDL.Video.Pixels.MainlinePixelFormatTests.RunAll();
 Console.WriteLine("Repository tracked file path Cyrillic guard test passed.");
 SDL3.Tests.Repository.FileNameTests.TrackedCSharpIdentifiers_DoNotContainCyrillicCharacters();
 Console.WriteLine("Repository tracked C# identifier Cyrillic guard test passed.");
@@ -216,6 +421,15 @@ SDL3.Tests.SDL.Basics.Properties.PInvokeTests.GetGlobalProperties_ReturnsNativeV
 Console.WriteLine("SDL.GetGlobalProperties binding test passed.");
 SDL3.Tests.SDL.Basics.Properties.PInvokeTests.CreateProperties_ReturnsNativeValue();
 Console.WriteLine("SDL.CreateProperties binding test passed.");
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetNumProperties"))
+{
+    SDL3.Tests.SDL.Basics.Properties.PInvokeTests.GetNumProperties_ReturnsCountForValidProperties();
+    Console.WriteLine("SDL.GetNumProperties binding integration test passed.");
+}
+else
+{
+    Console.WriteLine("SDL.GetNumProperties native integration test skipped; SDL_GetNumProperties is unavailable in the loaded native library.");
+}
 SDL3.Tests.SDL.Basics.Properties.PInvokeTests.CopyProperties_ForwardsSourceDestinationAndReturnsNativeValue();
 Console.WriteLine("SDL.CopyProperties binding test passed.");
 SDL3.Tests.SDL.Basics.Properties.PInvokeTests.LockProperties_ForwardsPropsAndReturnsNativeValue();
@@ -340,15 +554,16 @@ SDL3.Tests.SDL.InputEvents.Events.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Events binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.EventTypeTests.GroupBoundaries_MatchSupportedEvents();
 Console.WriteLine("SDL.EventType group boundary tests passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Notification.PInvokeTests.RunAll();
+SDL3.Tests.SDL.AdditionalFunctionality.Notification.PropsTests.NotificationProps_MatchNativeNames();
+Console.WriteLine("SDL.Notification binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.PenState_MatchesNativeLayout();
 SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.DeviceType_MatchesNativeLayout();
 SDL3.Tests.SDL.InputEvents.Events.PenMotionEventTests.DeviceType_MatchesNativeLayout();
 SDL3.Tests.SDL.InputEvents.Events.PenTouchEventTests.DeviceType_MatchesNativeLayout();
 SDL3.Tests.SDL.InputEvents.Events.PenButtonEventTests.DeviceType_MatchesNativeLayout();
 SDL3.Tests.SDL.InputEvents.Events.PenAxisEventTests.DeviceType_MatchesNativeLayout();
-SDL3.Tests.SDL.InputEvents.Keycode.KeycodeTests.Front_MatchesStableNativeValue();
-SDL3.Tests.SDL.InputEvents.Scancode.ScancodeTests.Front_MatchesStableNativeValue();
-Console.WriteLine("SDL 3.4.18 pen event and key constant tests passed.");
+Console.WriteLine("SDL pen event layout tests passed.");
 SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Gamepad binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Hidapi.PInvokeTests.RunAll();
@@ -412,6 +627,7 @@ Console.WriteLine("SDL.Surface macro tests passed.");
 SDL3.Tests.SDL.Video.Surface.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Surface binding tests passed.");
 SDL3.Tests.SDL.Video.Render.PInvokeTests.RunAll();
+SDL3.Tests.SDL.Video.OpenXR.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Render binding tests passed.");
 SDL3.Tests.SDL.Video.Video.MacroTests.RunAll();
 Console.WriteLine("SDL.Video macro tests passed.");
@@ -500,6 +716,8 @@ Console.WriteLine("SDL.GetMemoryFunctions binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.SetMemoryFunctions_ForwardsCallbacksThroughHook();
 Console.WriteLine("SDL.SetMemoryFunctions binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAlloc_ReturnsAlignedMemory();
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_aligned_alloc_zero"))
+    SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAllocZero_AllocatesAlignedZeroedMemory();
 Console.WriteLine("SDL.AlignedAlloc binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedFree_FreesAlignedMemoryAndAllowsNull();
 Console.WriteLine("SDL.AlignedFree binding test passed.");
@@ -583,6 +801,10 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetAndroidCachePath_R
 Console.WriteLine("SDL.GetAndroidCachePath binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestAndroidPermission_ForwardsPermissionCallbackAndUserdata();
 Console.WriteLine("SDL.RequestAndroidPermission binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermission_ForwardsPermissionCallbackAndUserdata();
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.RequestOpenHarmonyPermissionCallback_UsesExpectedAbi();
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonySDKVersion_ReturnsNativeValue();
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetOpenHarmonyInternalStoragePath_ReturnsStringAndNull();
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.ShowAndroidToast_ForwardsMessageAndLayout();
 Console.WriteLine("SDL.ShowAndroidToast binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.SendAndroidMessage_ForwardsCommandAndParam();
@@ -593,6 +815,28 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsTV_ReturnsNativeVal
 Console.WriteLine("SDL.IsTV binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetSandbox_ReturnsNativeValue();
 Console.WriteLine("SDL.GetSandbox binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_ReturnsNativeValues();
+Console.WriteLine("SDL.IsPhone binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_ReturnsNativeValues();
+Console.WriteLine("SDL.IsUbuntuTouch binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_ReturnsNativeValue();
+Console.WriteLine("SDL.GetDeviceFormFactor binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_ReturnsUtf8Name();
+Console.WriteLine("SDL.GetDeviceFormFactorName binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.System.FormFactorTests.FormFactor_UsesExpectedNativeValues();
+Console.WriteLine("SDL.FormFactor enum layout test passed.");
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetDeviceFormFactor"))
+{
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsPhone_InvokesNativeFormFactor();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.IsUbuntuTouch_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactor_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetDeviceFormFactorName_InvokesNativeEntryPoint();
+    Console.WriteLine("SDL device form-factor native integration tests passed.");
+}
+else
+{
+    Console.WriteLine("SDL device form-factor native integration tests skipped; SDL 3.6 exports are unavailable.");
+}
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.OnApplicationWillTerminate_ForwardsCall();
 Console.WriteLine("SDL.OnApplicationWillTerminate binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.OnApplicationDidReceiveMemoryWarning_ForwardsCall();
@@ -613,6 +857,9 @@ SDL3.Tests.SDL.AdditionalFunctionality.System.PInvokeTests.GetGDKDefaultUser_Ret
 Console.WriteLine("SDL.GetGDKDefaultUser binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTray_ForwardsIconAndTooltip();
 Console.WriteLine("SDL.CreateTray binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.CreateTrayWithProperties_ForwardsPropertiesAndReturnsNativePointer();
+SDL3.Tests.SDL.AdditionalFunctionality.Tray.PropsTests.TrayCreatePropertyNames_MatchNativeIdentifiers();
+SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.TrayClickCallback_UsesExpectedNativeAbi();
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.SetTrayIcon_ForwardsTrayAndIcon();
 Console.WriteLine("SDL.SetTrayIcon binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Tray.PInvokeTests.SetTrayTooltip_ForwardsTrayAndTooltip();
@@ -705,6 +952,20 @@ SDL3.Tests.SDL.Audio.Audio.PInvokeTests.AudioDevicePaused_ReturnsNativeValue();
 Console.WriteLine("SDL.AudioDevicePaused binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceGain_ReturnsNativeValue();
 Console.WriteLine("SDL.GetAudioDeviceGain binding test passed.");
+SDL3.Tests.SDL.Audio.Audio.PInvokeTests.SDL_GetAudioDeviceProperties_UsesExpectedNativeMetadata();
+Console.WriteLine("SDL.SDL_GetAudioDeviceProperties binding metadata test passed.");
+SDL3.Tests.SDL.Audio.Audio.PropsTests.AudioDeviceUniqueIdString_UsesNativePropertyName();
+Console.WriteLine("SDL.AudioDeviceUniqueIdString property test passed.");
+if (SDL3.Tests.NativeLibraryProbe.SupportsSDL3Export("SDL_GetAudioDeviceProperties"))
+{
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_InvokesNativeEntryPoint();
+    SDL3.Tests.SDL.Audio.Audio.PInvokeTests.GetAudioDeviceProperties_ReturnsZeroForInvalidDevice();
+    Console.WriteLine("SDL.GetAudioDeviceProperties native integration test passed.");
+}
+else
+{
+    Console.WriteLine("SDL.GetAudioDeviceProperties native integration test skipped; SDL_GetAudioDeviceProperties is unavailable in the loaded native library.");
+}
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.SetAudioDeviceGain_ForwardsDeviceAndGain();
 Console.WriteLine("SDL.SetAudioDeviceGain binding test passed.");
 SDL3.Tests.SDL.Audio.Audio.PInvokeTests.CloseAudioDevice_ForwardsDevice();

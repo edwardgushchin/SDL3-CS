@@ -39,7 +39,6 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);</code>
     /// <summary>
     /// <para>Displays a dialog that lets the user select a file on their filesystem.</para>
-    /// <para>This function should only be invoked from the main thread.</para>
     /// <para>This is an asynchronous function; it will return immediately, and the
     /// result will be passed to the callback.</para>
     /// <para>The callback will be invoked with a <c>null</c>-terminated list of files the user
@@ -53,31 +52,31 @@ public static partial class SDL
     /// requires an event-handling loop. Apps that do not use SDL to handle events
     /// should add a call to <see cref="PumpEvents()"/> in their main loop.</para>
     /// </summary>
-    /// <param name="callback">a function pointer to be invoked when the user
-    /// selects a file and accepts, or cancels the dialog, or an
-    /// error occurs.</param>
+    /// <param name="callback">a function pointer to be invoked when the user selects a
+    ///                 file and accepts, or cancels the dialog, or an error
+    ///                 occurs.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when
-    /// it will be invoked.</param>
+    ///                 it will be invoked.</param>
     /// <param name="window">the window that the dialog should be modal for, may be <c>null</c>.
-    /// Not all platforms support this option.</param>
+    ///               Not all platforms support this option.</param>
     /// <param name="filters">a list of filters, may be <c>null</c>. Not all platforms support
-    /// this option, and platforms that do support it may allow the
-    /// user to ignore the filters. If non-<c>null</c>, it must remain
-    /// valid at least until the callback is invoked.</param>
+    ///                this option, and platforms that do support it may allow the
+    ///                user to ignore the filters. If non-<c>null</c>, it must remain
+    ///                valid at least until the callback is invoked.</param>
     /// <param name="nfilters">the number of filters. Ignored if filters is <c>null</c>.</param>
     /// <param name="defaultLocation">the default folder or file to start the dialog at,
-    /// may be <c>null</c>. Not all platforms support this option.</param>
+    ///                         may be <c>null</c>. Not all platforms support this option.</param>
     /// <param name="allowMany">if non-zero, the user will be allowed to select multiple
-    /// entries. Not all platforms support this option.</param>
+    ///                   entries. Not all platforms support this option.</param>
     /// <threadsafety>This function should be called only from the main thread. The
-    /// callback may be invoked from the same thread or from a
-    /// different one, depending on the OS's constraints.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="DialogFileCallback"/>
-    /// <seealso cref="DialogFileFilter"/>
-    /// <seealso cref="ShowSaveFileDialog"/>
-    /// <seealso cref="ShowOpenFolderDialog"/>
-    /// <seealso cref="ShowFileDialogWithProperties"/>
+    ///               callback may be invoked from the same thread or from a
+    ///               different one, depending on the OS's constraints.</threadsafety>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <remarks><c>SDL_DialogFileCallback</c></remarks>
+    /// <remarks><c>SDL_DialogFileFilter</c></remarks>
+    /// <seealso cref="ShowSaveFileDialog(DialogFileCallback, IntPtr, IntPtr, DialogFileFilter[], int, string)"/>
+    /// <remarks><c>SDL_ShowOpenFolderDialog</c></remarks>
+    /// <seealso cref="ShowFileDialogWithProperties(FileDialogType, DialogFileCallback, IntPtr, uint)"/>
     public static void ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation, bool allowMany)
     {

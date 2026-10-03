@@ -506,7 +506,7 @@ public static partial class SDL
     /// <para>Release a frame of video acquired from a camera.</para>
     /// <para>Let the back-end reuse the internal buffer for camera.</para>
     /// <para>This function _must_ be called only on surface objects returned by
-    /// <see cref="AcquireCameraFrame"/>. This function should be called as quickly as
+    /// <see cref="AcquireCameraFrame(IntPtr, out ulong)"/>(). This function should be called as quickly as
     /// possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
     /// video frames; if surfaces aren't released in a timely manner, SDL may drop
     /// upcoming video frames from the camera.</para>
@@ -518,8 +518,8 @@ public static partial class SDL
     /// <param name="camera">opened camera device.</param>
     /// <param name="frame">the video frame surface to release.</param>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="AcquireCameraFrame"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="AcquireCameraFrame(IntPtr, out ulong)"/>
     public static void ReleaseCameraFrame(IntPtr camera, IntPtr frame)
     {
         ReleaseCameraFrameNativeFunction(camera, frame);

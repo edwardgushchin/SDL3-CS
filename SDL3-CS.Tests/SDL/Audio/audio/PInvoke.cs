@@ -298,6 +298,65 @@ internal static class PInvokeTests
         TestAssert.Equal(104u, capturedDevice, "SDL.GetAudioDeviceGain must forward device ID.");
     }
 
+    public static void SDL_GetAudioDeviceProperties_UsesExpectedNativeMetadata()
+    {
+        MethodInfo nativeMethod = GetNativeMethod("SDL_GetAudioDeviceProperties");
+        AssertSdlLibraryImport(nativeMethod, "SDL_GetAudioDeviceProperties");
+        TestAssert.Equal(typeof(uint), nativeMethod.GetParameters()[0].ParameterType, "SDL.SDL_GetAudioDeviceProperties must accept SDL_AudioDeviceID as uint.");
+        TestAssert.Equal(typeof(uint), nativeMethod.ReturnType, "SDL.SDL_GetAudioDeviceProperties must return SDL_PropertiesID as uint.");
+    }
+
+    public static void GetAudioDeviceProperties_ReturnsZeroForInvalidDevice()
+    {
+        string? originalDriver = SDL3.SDL.GetHint(SDL3.SDL.Hints.AudioDriver);
+        TestAssert.True(SDL3.SDL.SetHint(SDL3.SDL.Hints.AudioDriver, "dummy"), "SDL.Hints.AudioDriver must allow selecting the dummy audio driver.");
+        bool audioInitialized = false;
+        uint device = 0;
+
+        try
+        {
+            audioInitialized = SDL3.SDL.InitSubSystem(SDL3.SDL.InitFlags.Audio);
+            TestAssert.True(audioInitialized, "SDL.InitSubSystem must initialize the dummy audio driver.");
+
+            SDL3.SDL.AudioSpec spec = new()
+            {
+                Format = SDL3.SDL.AudioFormat.AudioS16LE,
+                Channels = 2,
+                Freq = 44100,
+            };
+            device = SDL3.SDL.OpenAudioDevice(SDL3.SDL.AudioDeviceDefaultPlayback, in spec);
+            TestAssert.True(device != 0, "SDL.OpenAudioDevice must open a logical dummy playback device.");
+
+            TestAssert.Equal(0u, SDL3.SDL.GetAudioDeviceProperties(0), "SDL.GetAudioDeviceProperties must return zero for an invalid device.");
+            TestAssert.True(SDL3.SDL.GetAudioDeviceProperties(device) != 0, "SDL.GetAudioDeviceProperties must return properties for a valid logical device.");
+        }
+        finally
+        {
+            if (device != 0)
+            {
+                SDL3.SDL.CloseAudioDevice(device);
+            }
+            if (audioInitialized)
+            {
+                SDL3.SDL.QuitSubSystem(SDL3.SDL.InitFlags.Audio);
+            }
+            if (originalDriver is null)
+            {
+                SDL3.SDL.ResetHint(SDL3.SDL.Hints.AudioDriver);
+            }
+            else
+            {
+                SDL3.SDL.SetHint(SDL3.SDL.Hints.AudioDriver, originalDriver);
+            }
+        }
+    }
+
+    public static void GetAudioDeviceProperties_InvokesNativeEntryPoint()
+    {
+        uint properties = SDL3.SDL.GetAudioDeviceProperties(0);
+        TestAssert.Equal(0u, properties, "SDL.GetAudioDeviceProperties must return zero for an invalid device.");
+    }
+
     public static void SetAudioDeviceGain_ForwardsDeviceAndGain()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_SetAudioDeviceGain");

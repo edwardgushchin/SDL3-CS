@@ -36,5 +36,7 @@ public static partial class SDL
 		public const string TextInputDefaultTextString = "SDL.textinput.default_text";
 		public const string TextInputMaxLengthNumber = "SDL.textinput.max_length";
 		public const string TextInputAndroidInputTypeNumber = "SDL.textinput.android.inputtype";
-	}
+        /// <summary>Identifier for the text input open harmony input type number property.</summary>
+        public const string TextInputOpenHarmonyInputTypeNumber = "SDL.textinput.openharmony.inputtype";
+    }
 }

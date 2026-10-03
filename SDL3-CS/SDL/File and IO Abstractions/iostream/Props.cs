@@ -39,5 +39,7 @@ public static partial class SDL
         public const string IOStreamDynamicChunkSizeNumber = "SDL.iostream.dynamic.chunksize";
 
         public const string IOStreamMemoryFreeFuncPointer = "SDL.iostream.memory.free";
+        /// <summary>Identifier for the iostream open harmony raw file64 pointer property.</summary>
+        public const string IOStreamOpenHarmonyRawFile64Pointer = "SDL.iostream.openharmony.rawfile64";
     }
 }

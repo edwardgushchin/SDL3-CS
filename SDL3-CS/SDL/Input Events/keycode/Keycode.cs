@@ -853,7 +853,7 @@ public static partial class SDL
         /// </summary>
         ExSel = 0x400000a4u,
 
-        /// <summary><see cref="Scancode.Front"/> with <see cref="Keycode.ScanCodeMask"/>.</summary>
+        /// <summary><see cref="Scancode.Front"/> with <see cref="ScanCodeMask"/>.</summary>
         Front = 0x400000a5u,
         
         /// <summary>

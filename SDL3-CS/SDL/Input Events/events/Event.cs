@@ -145,6 +145,9 @@ public static partial class SDL
         /// Gamepad button event data
         /// </summary>
         [FieldOffset(0)] public GamepadButtonEvent GButton;
+
+        /// <summary>Gamepad capsense event data.</summary>
+        [FieldOffset(0)] public GamepadCapSenseEvent GCapSense;
         
         /// <summary>
         /// Gamepad touchpad event data
@@ -165,6 +168,9 @@ public static partial class SDL
         /// Camera device event data
         /// </summary>
         [FieldOffset(0)] public CameraDeviceEvent CDevice;
+
+        /// <summary>Notification event data.</summary>
+        [FieldOffset(0)] public NotificationEvent Notification;
         
         // ReSharper disable once MemberHidesStaticFromOuterClass
         /// <summary>

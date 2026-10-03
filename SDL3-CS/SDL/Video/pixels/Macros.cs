@@ -140,7 +140,7 @@ public static partial class SDL
 	/// <since>This macro is available since SDL 3.2.0</since>
 	/// <seealso cref="BitsPerPixel"/>
 	[Macro]
-	public static uint BytesPerPixel(PixelFormat x) => IsPixelFormatFourCC(x) ? (((x == PixelFormat.YUY2) || (x == PixelFormat.UYVY) || (x == PixelFormat.YVYU) || (x == PixelFormat.P010)) ? 2u : 1u) : (((uint)x >> 0) & 0xFF);
+	public static uint BytesPerPixel(PixelFormat x) => IsPixelFormatFourCC(x) ? (((x == PixelFormat.YUY2) || (x == PixelFormat.UYVY) || (x == PixelFormat.YVYU) || (x == PixelFormat.P010) || (x == PixelFormat.I0FL) || (x == PixelFormat.I4FL)) ? 2u : 1u) : (((uint)x >> 0) & 0xFF);
 
 	
 	/// <summary>

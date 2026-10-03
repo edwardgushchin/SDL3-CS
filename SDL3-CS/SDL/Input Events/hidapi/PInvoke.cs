@@ -40,16 +40,16 @@ public static partial class SDL
     /// <summary>
     /// <para>Initialize the HIDAPI library.</para>
     /// <para>This function initializes the HIDAPI library. Calling it is not strictly
-    /// necessary, as it will be called automatically by <see cref="HIDEnumerate"/>,
-    /// <see cref="HIDOpen"/>, and <see cref="HIDOpenPath"/> if needed. This function should be
+    /// necessary, as it will be called automatically by <see cref="HIDEnumerate(ushort, ushort)"/>(),
+    /// <see cref="HIDOpen(ushort, ushort, string)"/>(), and <see cref="HIDOpenPath(string)"/>() if needed. This function should be
     /// called at the beginning of execution however, if there is a chance of
     /// HIDAPI handles being opened by different threads simultaneously.</para>
-    /// <para>Each call to this function should have a matching call to <see cref="HIDExit"/></para>
+    /// <para>Each call to this function should have a matching call to <see cref="HIDExit()"/>()</para>
     /// </summary>
     /// <returns>0 on success or a negative error code on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="HIDExit"/>
+    ///          <see cref="GetError()"/>() for more information.</returns>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="HIDExit()"/>
     public static int HIDInit()
     {
         return HIDInitNativeFunction();

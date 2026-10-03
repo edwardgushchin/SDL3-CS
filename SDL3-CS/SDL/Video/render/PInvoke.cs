@@ -163,59 +163,62 @@ public static partial class SDL
     /// <summary>
     /// <para>Create a 2D rendering context for a window, with the specified properties.</para>
     /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererCreateNameString"/>: the name of the rendering driver
-    /// to use, if a specific one is desired</item>
-    /// <item><see cref="Props.RendererCreateWindowPointer"/>: the window where rendering is
-    /// displayed, required if this isn't a software renderer using a surface</item>
-    /// <item><see cref="Props.RendererCreateSurfacePointer"/>: the surface where rendering
-    /// is displayed, if you want a software renderer without a window</item>
-    /// <item><see cref="Props.RendererCreateOutputColorspaceNumber"/>: an SDL_Colorspace
-    /// value describing the colorspace for output to the display, defaults to
-    /// <see cref="Colorspace.SRGB"/>. The direct3d11, direct3d12, and metal renderers
-    /// support <see cref="Colorspace.SRGBLinear"/>, which is a linear color space and
-    /// supports HDR output. If you select <see cref="Colorspace.SRGBLinear"/>, drawing
-    /// still uses the sRGB colorspace, but values can go beyond 1.0 and float
-    /// (linear) format textures can be used for HDR content.</item>
-    /// <item><see cref="Props.RendererCreatePresentVSyncNumber"/>: non-zero if you want
-    /// present synchronized with the refresh rate. This property can take any
-    /// value that is supported by <see cref="SetRenderVSync"/> for the renderer.</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererCreateNameString"/>: the name of the rendering driver
+    ///   to use, if a specific one is desired
+    /// - <see cref="Props.RendererCreateWindowPointer"/>: the window where rendering is
+    ///   displayed, required if this isn't a software renderer using a surface
+    /// - <see cref="Props.RendererCreateSurfacePointer"/>: the surface where rendering
+    ///   is displayed, if you want a software renderer without a window
+    /// - <see cref="Props.RendererCreateOutputColorspaceNumber"/>: an <see cref="Colorspace"/>
+    ///   value describing the colorspace for output to the display, defaults to
+    ///   <see cref="Colorspace.SRGB"/>. The direct3d11, direct3d12, and metal renderers
+    ///   support <see cref="Colorspace.SRGBLinear"/>, which is a linear color space and
+    ///   supports HDR output. If you select <see cref="Colorspace.SRGBLinear"/>, drawing
+    ///   still uses the sRGB colorspace, but values can go beyond 1.0 and float
+    ///   (linear) format textures can be used for HDR content.
+    /// - <see cref="Props.RendererCreatePresentVSyncNumber"/>: non-zero if you want
+    ///   present synchronized with the refresh rate. This property can take any
+    ///   value that is supported by <see cref="SetRenderVSync(IntPtr, int)"/>() for the renderer.</para>
     /// <para>With the SDL GPU renderer (since SDL 3.4.0):</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererCreateGPUShadersSPIRVBoolean"/>: the app is able to
-    /// provide SPIR-V shaders to SDL_GPURenderState, optional.</item>
-    /// <item><see cref="Props.RendererCreateGPUShadersDXILBoolean"/>: the app is able to
-    /// provide DXIL shaders to SDL_GPURenderState, optional.</item>
-    /// <item><see cref="Props.RendererCreateGPUShadersMSLBoolean"/>: the app is able to
-    /// provide MSL shaders to SDL_GPURenderState, optional.</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererCreateGPUDevicePointer"/>: the device to use with the
+    ///   renderer, optional.
+    /// - <see cref="Props.RendererCreateGPUShadersSPIRVBoolean"/>: the app is able to
+    ///   provide SPIR-V shaders to <c>SDL_GPURenderState</c>, optional.
+    /// - <see cref="Props.RendererCreateGPUShadersDXILBoolean"/>: the app is able to
+    ///   provide DXIL shaders to <c>SDL_GPURenderState</c>, optional.
+    /// - <see cref="Props.RendererCreateGPUShadersMSLBoolean"/>: the app is able to
+    ///   provide MSL shaders to <c>SDL_GPURenderState</c>, optional.</para>
+    /// <para>With the metal renderer:</para>
+    /// <para>- <see cref="Props.RendererCreateMetalDevicePointer"/>: the MTLDevice to use
+    ///   with the renderer, optional.
+    /// - <see cref="Props.RendererCreateMetalCommandQueuePointer"/>: the
+    ///   MTLCommandQueue to use with the renderer, optional. If you set this
+    ///   property it will implicitly set (and override)
+    ///   <see cref="Props.RendererCreateMetalDevicePointer"/>.</para>
     /// <para>With the vulkan renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererCreateVulkanInstancePointer"/>: the VkInstance to use
-    /// with the renderer, optional.</item>
-    /// <item><see cref="Props.RendererCreateVulkanSurfaceNumber"/>: the VkSurfaceKHR to use
-    /// with the renderer, optional.</item>
-    /// <item><see cref="Props.RendererCreateVulkanPhysicalDevicePointer"/>: the
-    /// VkPhysicalDevice to use with the renderer, optional.</item>
-    /// <item><see cref="Props.RendererCreateVulkanDevicePointer"/>: the VkDevice to use
-    /// with the renderer, optional.</item>
-    /// <item><see cref="Props.RendererCreateVulkanGraphicsQueueFamilyIndexNumber"/>: the
-    /// queue family index used for rendering.</item>
-    /// <item><see cref="Props.RendererCreateVulkanPresentQueueFamilyIndexNumber"/>: the
-    /// queue family index used for presentation.</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererCreateVulkanInstancePointer"/>: the VkInstance to use
+    ///   with the renderer, optional.
+    /// - <see cref="Props.RendererCreateVulkanSurfaceNumber"/>: the VkSurfaceKHR to use
+    ///   with the renderer, optional.
+    /// - <see cref="Props.RendererCreateVulkanPhysicalDevicePointer"/>: the
+    ///   VkPhysicalDevice to use with the renderer, optional.
+    /// - <see cref="Props.RendererCreateVulkanDevicePointer"/>: the VkDevice to use
+    ///   with the renderer, optional.
+    /// - <see cref="Props.RendererCreateVulkanGraphicsQueueFamilyIndexNumber"/>: the
+    ///   queue family index used for rendering.
+    /// - <see cref="Props.RendererCreateVulkanPresentQueueFamilyIndexNumber"/>: the
+    ///   queue family index used for presentation.</para>
     /// </summary>
     /// <param name="props">the properties to use.</param>
     /// <returns>a valid rendering context or <c>null</c> if there was an error; call
-    /// <see cref="GetError"/> for more information.</returns>
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateProperties"/>
-    /// <seealso cref="CreateRenderer"/>
-    /// <seealso cref="CreateSoftwareRenderer"/>
-    /// <seealso cref="DestroyRenderer"/>
-    /// <seealso cref="GetRendererName"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateProperties()"/>
+    /// <seealso cref="CreateRenderer(IntPtr, string)"/>
+    /// <seealso cref="CreateSoftwareRenderer(IntPtr)"/>
+    /// <seealso cref="DestroyRenderer(IntPtr)"/>
+    /// <seealso cref="GetRendererName(IntPtr)"/>
     public static IntPtr CreateRendererWithProperties(uint props)
     {
         return CreateRendererWithPropertiesNativeFunction(props);
@@ -384,86 +387,81 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the properties associated with a renderer.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererNameString"/>: the name of the rendering driver</item>
-    /// <item><see cref="Props.RendererWindowPointer"/>: the window where rendering is
-    /// displayed, if any</item>
-    /// <item><see cref="Props.RendererSurfacePointer"/>: the surface where rendering is
-    /// displayed, if this is a software renderer without a window</item>
-    /// <item><see cref="Props.RendererVSyncNumber"/>: the current vsync setting</item>
-    /// <item><see cref="Props.RendererMaxTextureSizeNumber"/>: the maximum texture width
-    /// and height</item>
-    /// <item><see cref="Props.RendererTextureFormatsPointer"/>: a (const SDL_PixelFormat *)
-    /// array of pixel formats, terminated with <see cref="PixelFormat.Unknown"/>,
-    /// representing the available texture formats for this renderer.</item>
-    /// <item> <seealso cref="Props.RendererTextureWrappingBoolean"/>: <c>true</c> if the renderer
-    /// supports SDL_TEXTURE_ADDRESS_WRAP on non-power-of-two textures.</item>
-    /// <item><see cref="Props.RendererOutputColorspaceNumber"/>: an SDL_Colorspace value
-    /// describing the colorspace for output to the display, defaults to
-    /// <see cref="Colorspace.SRGB"/>.</item>
-    /// <item><see cref="Props.RendererHDREnabledBoolean"/>: <c>true</c> if the output colorspace is
-    /// <see cref="Colorspace.SRGBLinear"/> and the renderer is showing on a display with
-    /// HDR enabled. This property can change dynamically when
-    /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
-    /// <item><see cref="Props.RendererSDRWhitePointFloat"/>: the value of SDR white in the
-    /// <see cref="Colorspace.SRGBLinear"/> colorspace. When HDR is enabled, this value is
-    /// automatically multiplied into the color scale. This property can change
-    /// dynamically when <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
-    /// <item><see cref="Props.RendererHDRHeadroomFloat"/>: the additional high dynamic range
-    /// that can be displayed, in terms of the SDR white point. When HDR is not
-    /// enabled, this will be 1.0. This property can change dynamically when
-    /// <see cref="EventType.WindowHDRStateChanged"/> is sent.</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererNameString"/>: the name of the rendering driver
+    /// - <see cref="Props.RendererWindowPointer"/>: the window where rendering is
+    ///   displayed, if any
+    /// - <see cref="Props.RendererSurfacePointer"/>: the surface where rendering is
+    ///   displayed, if this is a software renderer without a window
+    /// - <see cref="Props.RendererVSyncNumber"/>: the current vsync setting
+    /// - <see cref="Props.RendererMaxTextureSizeNumber"/>: the maximum texture width
+    ///   and height
+    /// - <see cref="Props.RendererTextureFormatsPointer"/>: a (const <see cref="PixelFormat"/> *)
+    ///   array of pixel formats, terminated with <see cref="PixelFormat.Unknown"/>,
+    ///   representing the available texture formats for this renderer.
+    /// - <see cref="Props.RendererTextureWrappingBoolean"/>: <c>true</c> if the renderer
+    ///   supports <c>SDL_TEXTURE_ADDRESS_WRAP</c> on non-power-of-two textures.
+    /// - <see cref="Props.RendererOutputColorspaceNumber"/>: an <see cref="Colorspace"/> value
+    ///   describing the colorspace for output to the display, defaults to
+    ///   <see cref="Colorspace.SRGB"/>.
+    /// - <see cref="Props.RendererHDREnabledBoolean"/>: <c>true</c> if the output colorspace is
+    ///   <see cref="Colorspace.SRGBLinear"/> and the renderer is showing on a display with
+    ///   HDR enabled. This property can change dynamically when
+    ///   <see cref="EventType.WindowHDRStateChanged"/> is sent.
+    /// - <see cref="Props.RendererSDRWhitePointFloat"/>: the value of SDR white in the
+    ///   <see cref="Colorspace.SRGBLinear"/> colorspace. When HDR is enabled, this value is
+    ///   automatically multiplied into the color scale. This property can change
+    ///   dynamically when <see cref="EventType.WindowHDRStateChanged"/> is sent.
+    /// - <see cref="Props.RendererHDRHeadroomFloat"/>: the additional high dynamic range
+    ///   that can be displayed, in terms of the SDR white point. When HDR is not
+    ///   enabled, this will be 1.0. This property can change dynamically when
+    ///   <see cref="EventType.WindowHDRStateChanged"/> is sent.</para>
     /// <para>With the direct3d renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererD3D9DevicePointer"/>: the IDirect3DDevice9 associated
-    /// with the renderer</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererD3D9DevicePointer"/>: the IDirect3DDevice9 associated
+    ///   with the renderer</para>
     /// <para>With the direct3d11 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererD3D11DevicePointer"/>: the ID3D11Device associated
-    /// with the renderer</item>
-    /// <item><see cref="Props.RendererD3D11SwapchainPointer"/>: the IDXGISwapChain1
-    /// associated with the renderer. This may change when the window is resized.</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererD3D11DevicePointer"/>: the ID3D11Device associated
+    ///   with the renderer
+    /// - <see cref="Props.RendererD3D11SwapchainPointer"/>: the IDXGISwapChain1
+    ///   associated with the renderer. This may change when the window is resized.</para>
     /// <para>With the direct3d12 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererD3D12DevicePointer"/>: the ID3D12Device associated
-    /// with the renderer</item>
-    /// <item><see cref="Props.RendererD3D12SwapchainPointer"/>: the IDXGISwapChain4
-    /// associated with the renderer.</item>
-    /// <item><see cref="Props.RendererD3D12CommandQueuePointer"/>: the ID3D12CommandQueue
-    /// associated with the renderer</item>
-    /// </list>
+    /// <para>- <see cref="Props.RendererD3D12DevicePointer"/>: the ID3D12Device associated
+    ///   with the renderer
+    /// - <see cref="Props.RendererD3D12SwapchainPointer"/>: the IDXGISwapChain4
+    ///   associated with the renderer.
+    /// - <see cref="Props.RendererD3D12CommandQueuePointer"/>: the ID3D12CommandQueue
+    ///   associated with the renderer</para>
+    /// <para>With the metal renderer:</para>
+    /// <para>- <see cref="Props.RendererMetalDevicePointer"/>: the MTLDevice associated with
+    ///   the renderer
+    /// - <see cref="Props.RendererMetalCommandQueuePointer"/>: the MTLCommandQueue
+    ///   associated with the renderer. Work submitted on this queue will be
+    ///   ordered relative to other rendering. <see cref="FlushRenderer(IntPtr)"/>() can be used to
+    ///   guarantee the current rendering has been submitted.</para>
     /// <para>With the vulkan renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererVulkanInstancePointer"/>: the VkInstance associated
-    /// with the renderer</item>
-    /// <item><see cref="Props.RendererVulkanSurfaceNumber"/>: the VkSurfaceKHR associated
-    /// with the renderer</item>
-    /// <item><see cref="Props.RendererVulkanPhysicalDevicePointer"/>: the VkPhysicalDevice
-    /// associated with the renderer</item>
-    /// <item><see cref="Props.RendererVulkanDevicePointer"/>: the VkDevice associated with
-    /// the renderer</item>
-    /// <item><see cref="Props.RendererVulkanGraphicsQueueFamilyIndexNumber"/>: the queue
-    /// family index used for rendering</item>
-    /// <item><see cref="Props.RendererVulkanPresentQueueFamilyIndexNumber"/>: the queue
-    /// family index used for presentation</item>
-    /// <item><see cref="Props.RendererVulkanSwapchainImageCountNumber"/>: the number of
-    /// swapchain images, or potential frames in flight, used by the Vulkan
-    /// renderer</item>
+    /// <para>- <see cref="Props.RendererVulkanInstancePointer"/>: the VkInstance associated
+    ///   with the renderer
+    /// - <see cref="Props.RendererVulkanSurfaceNumber"/>: the VkSurfaceKHR associated
+    ///   with the renderer
+    /// - <see cref="Props.RendererVulkanPhysicalDevicePointer"/>: the VkPhysicalDevice
+    ///   associated with the renderer
+    /// - <see cref="Props.RendererVulkanDevicePointer"/>: the VkDevice associated with
+    ///   the renderer
+    /// - <see cref="Props.RendererVulkanGraphicsQueueFamilyIndexNumber"/>: the queue
+    ///   family index used for rendering
+    /// - <see cref="Props.RendererVulkanPresentQueueFamilyIndexNumber"/>: the queue
+    ///   family index used for presentation
+    /// - <see cref="Props.RendererVulkanSwapchainImageCountNumber"/>: the number of
+    ///   swapchain images, or potential frames in flight, used by the Vulkan
+    ///   renderer</para>
     /// <para>With the gpu renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.RendererGPUDevicePointer"/>: the SDL_GPUDevice associated with
-    /// the renderer</item>
-    /// </list>
-    /// </list>
+    /// <para>- <see cref="Props.RendererGPUDevicePointer"/>: the <c>SDL_GPUDevice</c> associated with
+    ///   the renderer</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static uint GetRendererProperties(IntPtr renderer)
     {
         return GetRendererPropertiesNativeFunction(renderer);
@@ -601,125 +599,140 @@ public static partial class SDL
     /// <summary>
     /// <para>Create a texture for a rendering context with the specified properties.</para>
     /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateColorspaceNumber"/>: an <see cref="Colorspace"/> value
-    /// describing the texture colorspace, defaults to <see cref="Colorspace.SRGBLinear"/>
-    /// for floating point textures, <see cref="Colorspace.HDR10"/> for 10-bit textures,
-    /// <see cref="Colorspace.SRGB"/> for other RGB textures and <see cref="Colorspace.JPEG"/> for
-    /// YUV textures.</item>
-    /// <item><see cref="Props.TextureCreateFormatNumber"/>: one of the enumerated values in
-    /// <see cref="PixelFormat"/>, defaults to the best RGBA format for the renderer</item>
-    /// <item><see cref="Props.TextureCreateAccessNumber"/>: one of the enumerated values in
-    /// <see cref="TextureAccess"/>, defaults to <see cref="TextureAccess.Static"/></item>
-    /// <item><see cref="Props.TextureCreateWidthNumber"/>: the width of the texture in
-    /// pixels, required</item>
-    /// <item><see cref="Props.TextureCreateHeightNumber"/>: the height of the texture in
-    /// pixels, required</item>
-    /// <item><see cref="Props.TextureCreatePalettePointer"/>: an SDL_Palette to use with
-    /// palettized texture formats. This can be set later with
-    /// <see cref="SetTexturePalette"/></item>
-    /// <item><see cref="Props.TextureCreateSDRWhitePointFloat"/>: for HDR10 and floating
-    /// point textures, this defines the value of 100% diffuse white, with higher
-    /// values being displayed in the High Dynamic Range headroom. This defaults
-    /// to 100 for HDR10 textures and 1.0 for floating point textures.</item>
-    /// <item><see cref="Props.TextureCreateHDRHeadroomFloat"/>: for HDR10 and floating
-    /// point textures, this defines the maximum dynamic range used by the
-    /// content, in terms of the SDR white point. This would be equivalent to
-    /// maxCLL / <see cref="Props.TextureCreateSDRWhitePointFloat"/> for HDR10 content.
-    /// If this is defined, any values outside the range supported by the display
-    /// will be scaled into the available HDR headroom, otherwise they are
-    /// clipped.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateColorspaceNumber"/>: an <see cref="Colorspace"/> value
+    ///   describing the texture colorspace, defaults to <see cref="Colorspace.SRGBLinear"/>
+    ///   for floating point textures, <see cref="Colorspace.HDR10"/> for 10-bit textures,
+    ///   <see cref="Colorspace.SRGB"/> for other RGB textures and <see cref="Colorspace.JPEG"/> for
+    ///   YUV textures.
+    /// - <see cref="Props.TextureCreateFormatNumber"/>: one of the enumerated values in
+    ///   <see cref="PixelFormat"/>, defaults to the best RGBA format for the renderer
+    /// - <see cref="Props.TextureCreateAccessNumber"/>: one of the enumerated values in
+    ///   <see cref="TextureAccess"/>, defaults to <see cref="TextureAccess.Static"/>
+    /// - <see cref="Props.TextureCreateWidthNumber"/>: the width of the texture in
+    ///   pixels, required
+    /// - <see cref="Props.TextureCreateHeightNumber"/>: the height of the texture in
+    ///   pixels, required
+    /// - <see cref="Props.TextureCreatePalettePointer"/>: an <see cref="Palette"/> to use with
+    ///   palettized texture formats. This can be set later with
+    ///   <see cref="SetTexturePalette(IntPtr, IntPtr)"/>()
+    /// - <see cref="Props.TextureCreateSDRWhitePointFloat"/>: for HDR10 and floating
+    ///   point textures, this defines the value of 100% diffuse white, with higher
+    ///   values being displayed in the High Dynamic Range headroom. This defaults
+    ///   to 100 for HDR10 textures and 1.0 for floating point textures.
+    /// - <see cref="Props.TextureCreateHDRHeadroomFloat"/>: for HDR10 and floating
+    ///   point textures, this defines the maximum dynamic range used by the
+    ///   content, in terms of the SDR white point. This would be equivalent to
+    ///   maxCLL / <see cref="Props.TextureCreateSDRWhitePointFloat"/> for HDR10 content.
+    ///   If this is defined, any values outside the range supported by the display
+    ///   will be scaled into the available HDR headroom, otherwise they are
+    ///   clipped.</para>
     /// <para>With the direct3d11 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateD3D11TexturePointer"/>: the ID3D11Texture2D
-    /// associated with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateD3D11TextureUPointer"/>: the ID3D11Texture2D
-    /// associated with the U plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateD3D11TextureVPointer"/>: the ID3D11Texture2D
-    /// associated with the V plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateD3D11TexturePointer"/>: the ID3D11Texture2D
+    ///   associated with the texture, if you want to wrap an existing texture.
+    /// - <see cref="Props.TextureCreateD3D11TextureUPointer"/>: the ID3D11Texture2D
+    ///   associated with the U plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateD3D11TextureVPointer"/>: the ID3D11Texture2D
+    ///   associated with the V plane of a YUV texture, if you want to wrap an
+    ///   existing texture.</para>
     /// <para>With the direct3d12 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateD3D12TexturePointer"/>: the ID3D12Resource
-    /// associated with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateD3D12TextureUPointer"/>: the ID3D12Resource
-    /// associated with the U plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateD3D12TextureVPointer"/>: the ID3D12Resource
-    /// associated with the V plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateD3D12TexturePointer"/>: the ID3D12Resource
+    ///   associated with the texture, if you want to wrap an existing texture.
+    /// - <see cref="Props.TextureCreateD3D12TextureUPointer"/>: the ID3D12Resource
+    ///   associated with the U plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateD3D12TextureVPointer"/>: the ID3D12Resource
+    ///   associated with the V plane of a YUV texture, if you want to wrap an
+    ///   existing texture.</para>
     /// <para>With the metal renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateMetalPixelbufferPointer"/>: the CVPixelBufferRef
-    /// associated with the texture, if you want to create a texture from an
-    /// existing pixel buffer.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateMetalPixelbufferPointer"/>: the CVPixelBufferRef
+    ///   associated with the texture, if you want to create a texture from an
+    ///   existing pixel buffer.
+    /// - <see cref="Props.TextureCreateMetalTexturePointer"/>: the MTLTexture
+    ///   associated with the texture, if you want to wrap an existing texture.
+    /// - <see cref="Props.TextureCreateMetalTextureUVPointer"/>: the MTLTexture
+    ///   associated with the UV plane of an NV12 texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateMetalTextureUPointer"/>: the MTLTexture
+    ///   associated with the U plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateMetalTextureVPointer"/>: the MTLTexture
+    ///   associated with the V plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateMetalTextureUsageNumber"/>: any additional
+    ///   MTLTextureUsage that this texture should have, defaults to 0.</para>
     /// <para>With the opengl renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateOpenGLTextureNumber"/> the GLuint texture
-    /// associated with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGLTextureUVNumber"/>: the GLuint texture
-    /// associated with the UV plane of an NV12 texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGlTextureUNumber"/>: the GLuint texture
-    /// associated with the U plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGLTextureVNumber"/>: the GLuint texture
-    /// associated with the V plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateOpenGLTextureNumber"/>: the GLuint texture
+    ///   associated with the texture, if you want to wrap an existing texture.
+    /// - <see cref="Props.TextureCreateOpenGLTextureUVNumber"/>: the GLuint texture
+    ///   associated with the UV plane of an NV12 texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateOpenGlTextureUNumber"/>: the GLuint texture
+    ///   associated with the U plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateOpenGLTextureVNumber"/>: the GLuint texture
+    ///   associated with the V plane of a YUV texture, if you want to wrap an
+    ///   existing texture.</para>
     /// <para>With the opengles2 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateOpenGLES2TextureNumber"/>: the GLuint texture
-    /// associated with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGLES2TextureNumber"/>: the GLuint texture
-    /// associated with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGLES2TextureUVNumber"/>: the GLuint texture
-    /// associated with the UV plane of an NV12 texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGLES2TextureUNumber"/>: the GLuint texture
-    /// associated with the U plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateOpenGLES2TextureVNumber"/>: the GLuint texture
-    /// associated with the V plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateOpenGLES2TextureNumber"/>: the GLuint texture
+    ///   associated with the texture, if you want to wrap an existing texture.
+    /// - <see cref="Props.TextureCreateOpenGLES2TextureUVNumber"/>: the GLuint texture
+    ///   associated with the UV plane of an NV12 texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateOpenGLES2TextureUNumber"/>: the GLuint texture
+    ///   associated with the U plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <see cref="Props.TextureCreateOpenGLES2TextureVNumber"/>: the GLuint texture
+    ///   associated with the V plane of a YUV texture, if you want to wrap an
+    ///   existing texture.</para>
     /// <para>With the vulkan renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateVulkanTextureNumber"/>: the VkImage with layout
-    /// VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-    /// you want to wrap an existing texture.</item>
-    /// </list>
-    /// With the GPU renderer:
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureCreateGPUTexturePointer"/>: the SDL_GPUTexture
-    /// associated with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateGPUTextureUVNumber"/>: the SDL_GPUTexture
-    /// associated with the UV plane of an NV12 texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateGPUTextureUNumber"/>: the SDL_GPUTexture
-    /// associated with the U plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// <item><see cref="Props.TextureCreateGPUTextureVNumber"/>: the SDL_GPUTexture
-    /// associated with the V plane of a YUV texture, if you want to wrap an
-    /// existing texture.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureCreateVulkanTextureNumber"/>: the VkImage associated
+    ///   with the texture, if you want to wrap an existing texture. For NV12 style
+    ///   textures this is the single two plane VkImage holding both the Y and UV
+    ///   planes, and for YUV style textures it is the VkImage holding the Y plane.
+    /// - <see cref="Props.TextureCreateVulkanTextureUNumber"/>: the VkImage associated
+    ///   with the U plane of a YUV texture, if you want to wrap an existing
+    ///   texture.
+    /// - <see cref="Props.TextureCreateVulkanTextureVNumber"/>: the VkImage associated
+    ///   with the V plane of a YUV texture, if you want to wrap an existing
+    ///   texture.
+    /// - <see cref="Props.TextureCreateVulkanLayoutNumber"/>: the VkImageLayout for the
+    ///   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+    /// - <see cref="Props.TextureCreateVulkanUsageNumber"/>: additional VK_IMAGE_USAGE
+    ///   bits that should be used when creating the texture. VkImage, defaults to
+    ///   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+    /// - <see cref="Props.TextureCreateVulkanAndroidHardwareBufferPointer"/>: the
+    ///   AHardwareBuffer to sample from, if you want to use an existing Android
+    ///   hardware buffer as the texture. You must use <see cref="PixelFormat.ExternalOES"/>
+    ///   for the texture format. You can't directly update the texture or use it
+    ///   as a render target. If the Android buffer contents change, you must
+    ///   recreate the texture to pick up the changes. The texture holds a
+    ///   reference to the buffer, so you can release your own reference once the
+    ///   texture has been created.</para>
+    /// <para>With the GPU renderer:</para>
+    /// <para>- <see cref="Props.TextureCreateGPUTexturePointer"/>: the <c>SDL_GPUTexture</c>
+    ///   associated with the texture, if you want to wrap an existing texture.
+    /// - <c>SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER</c>: the <c>SDL_GPUTexture</c>
+    ///   associated with the UV plane of an NV12 texture, if you want to wrap an
+    ///   existing texture.
+    /// - <c>SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER</c>: the <c>SDL_GPUTexture</c>
+    ///   associated with the U plane of a YUV texture, if you want to wrap an
+    ///   existing texture.
+    /// - <c>SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER</c>: the <c>SDL_GPUTexture</c>
+    ///   associated with the V plane of a YUV texture, if you want to wrap an
+    ///   existing texture.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="props">the properties to use.</param>
-    /// <returns>the created texture or <c>null</c> on failure; call <see cref="GetError"/> for
-    /// more information.</returns>
+    /// <returns>the created texture or <c>null</c> on failure; call <see cref="GetError()"/>() for
+    ///          more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="CreateProperties"/>
-    /// <seealso cref="CreateTexture"/>
-    /// <seealso cref="CreateTextureFromSurface"/>
-    /// <seealso cref="DestroyTexture"/>
-    /// <seealso cref="GetTextureSize"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="CreateProperties()"/>
+    /// <seealso cref="CreateTexture(IntPtr, PixelFormat, TextureAccess, int, int)"/>
+    /// <seealso cref="CreateTextureFromSurface(IntPtr, IntPtr)"/>
+    /// <seealso cref="DestroyTexture(IntPtr)"/>
+    /// <seealso cref="GetTextureSize(IntPtr, out float, out float)"/>
     /// <seealso cref="UpdateTexture(IntPtr, IntPtr, IntPtr, int)"/>
     public static IntPtr CreateTextureWithProperties(IntPtr renderer, uint props)
     {
@@ -737,104 +750,98 @@ public static partial class SDL
     /// <summary>
     /// <para>Get the properties associated with a texture.</para>
     /// <para>The following read-only properties are provided by SDL:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureColorspaceNumber"/>: an SDL_Colorspace value describing
-    /// the texture colorspace.</item>
-    /// <item><see cref="Props.TextureFormatNumber"/>: one of the enumerated values in
-    /// <see cref="PixelFormat"/>.</item>
-    /// <item><see cref="Props.TextureAccessNumber"/>: one of the enumerated values in
-    /// <see cref="TextureAccess"/>.</item>
-    /// <item><see cref="Props.TextureWidthNumber"/>: the width of the texture in pixels.</item>
-    /// <item><see cref="Props.TextureHeightNumber"/>: the height of the texture in pixels.</item>
-    /// <item><see cref="Props.TextureSDRWhitePointFloat"/>: for HDR10 and floating point
-    /// textures, this defines the value of 100% diffuse white, with higher
-    /// values being displayed in the High Dynamic Range headroom. This defaults
-    /// to 100 for HDR10 textures and 1.0 for other textures.</item>
-    /// <item><see cref="Props.TextureHDRHeadroomFloat"/>: for HDR10 and floating point
-    /// textures, this defines the maximum dynamic range used by the content, in
-    /// terms of the SDR white point. If this is defined, any values outside the
-    /// range supported by the display will be scaled into the available HDR
-    /// headroom, otherwise they are clipped. This defaults to 1.0 for SDR
-    /// textures, 4.0 for HDR10 textures, and no default for floating point
-    /// textures.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureColorspaceNumber"/>: an <see cref="Colorspace"/> value describing
+    ///   the texture colorspace.
+    /// - <see cref="Props.TextureFormatNumber"/>: one of the enumerated values in
+    ///   <see cref="PixelFormat"/>.
+    /// - <see cref="Props.TextureAccessNumber"/>: one of the enumerated values in
+    ///   <see cref="TextureAccess"/>.
+    /// - <see cref="Props.TextureWidthNumber"/>: the width of the texture in pixels.
+    /// - <see cref="Props.TextureHeightNumber"/>: the height of the texture in pixels.
+    /// - <see cref="Props.TextureSDRWhitePointFloat"/>: for HDR10 and floating point
+    ///   textures, this defines the value of 100% diffuse white, with higher
+    ///   values being displayed in the High Dynamic Range headroom. This defaults
+    ///   to 100 for HDR10 textures and 1.0 for other textures.
+    /// - <see cref="Props.TextureHDRHeadroomFloat"/>: for HDR10 and floating point
+    ///   textures, this defines the maximum dynamic range used by the content, in
+    ///   terms of the SDR white point. If this is defined, any values outside the
+    ///   range supported by the display will be scaled into the available HDR
+    ///   headroom, otherwise they are clipped. This defaults to 1.0 for SDR
+    ///   textures, 4.0 for HDR10 textures, and no default for floating point
+    ///   textures.</para>
     /// <para>With the direct3d11 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureD3D11TexturePointer"/>: the ID3D11Texture2D associated
-    /// with the texture</item>
-    /// <item><see cref="Props.TextureD3D11TextureUPointer"/>: the ID3D11Texture2D
-    /// associated with the U plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureD3D11TextureVPointer"/>: the ID3D11Texture2D
-    /// associated with the V plane of a YUV texture</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureD3D11TexturePointer"/>: the ID3D11Texture2D associated
+    ///   with the texture
+    /// - <see cref="Props.TextureD3D11TextureUPointer"/>: the ID3D11Texture2D
+    ///   associated with the U plane of a YUV texture
+    /// - <see cref="Props.TextureD3D11TextureVPointer"/>: the ID3D11Texture2D
+    ///   associated with the V plane of a YUV texture</para>
     /// <para>With the direct3d12 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureD3D12TexturePointer"/>: the ID3D12Resource associated
-    /// with the texture</item>
-    /// <item><see cref="Props.TextureD3D12TextureUPointer"/>: the ID3D12Resource associated
-    /// with the U plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureD3D12TextureVPointer"/>: the ID3D12Resource associated
-    /// with the V plane of a YUV texture</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureD3D12TexturePointer"/>: the ID3D12Resource associated
+    ///   with the texture
+    /// - <see cref="Props.TextureD3D12TextureUPointer"/>: the ID3D12Resource associated
+    ///   with the U plane of a YUV texture
+    /// - <see cref="Props.TextureD3D12TextureVPointer"/>: the ID3D12Resource associated
+    ///   with the V plane of a YUV texture</para>
+    /// <para>With the metal renderer:</para>
+    /// <para>- <see cref="Props.TextureMetalTexturePointer"/>: the MTLTexture associated with
+    ///   the texture
+    /// - <see cref="Props.TextureMetalTextureUVPointer"/>: the MTLTexture associated
+    ///   with the UV plane of an NV12 texture
+    /// - <see cref="Props.TextureMetalTextureUPointer"/>: the MTLTexture associated
+    ///   with the U plane of a YUV texture style texture
+    /// - <see cref="Props.TextureMetalTextureVPointer"/>: the MTLTexture associated
+    ///   with the V plane of a YUV texture</para>
     /// <para>With the vulkan renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureVulkanTextureNumber"/>: the VkImage associated
-    /// with the texture, if you want to wrap an existing texture.</item>
-    /// <item><see cref="Props.TextureCreateVulkanLayoutNumber"/>: the VkImageLayout for the
-    /// VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureVulkanTextureNumber"/>: the VkImage associated with the
+    ///   texture. For NV12 style textures this is the single two plane VkImage
+    ///   holding both the Y and UV planes, and for YUV style textures it is the
+    ///   VkImage holding the Y plane.
+    /// - <see cref="Props.TextureVulkanTextureUNumber"/>: the VkImage associated with
+    ///   the U plane of a YUV texture
+    /// - <see cref="Props.TextureVulkanTextureVNumber"/>: the VkImage associated with
+    ///   the V plane of a YUV texture</para>
     /// <para>With the opengl renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureOpenGLTextureNumber"/>: the GLuint texture associated
-    /// with the texture</item>
-    /// <item><see cref="Props.TextureOpenGLTextureUVNumber"/>: the GLuint texture
-    /// associated with the UV plane of an NV12 texture</item>
-    /// <item><see cref="Props.TextureOpenGLTextureUNumber"/>: the GLuint texture associated
-    /// with the U plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureOpenGLTextureVNumber"/>: the GLuint texture associated
-    /// with the V plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureOpenGLTextureTargetNumber"/>: the GLenum for the
-    /// texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)</item>
-    /// <item><see cref="Props.TextureOpenGLTexWFloat"/>: the texture coordinate width of
-    /// the texture (0.0 - 1.0)</item>
-    /// <item><see cref="Props.TextureOpenGLTexHFloat"/>: the texture coordinate height of
-    /// the texture (0.0 - 1.0)</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureOpenGLTextureNumber"/>: the GLuint texture associated
+    ///   with the texture
+    /// - <see cref="Props.TextureOpenGLTextureUVNumber"/>: the GLuint texture
+    ///   associated with the UV plane of an NV12 texture
+    /// - <see cref="Props.TextureOpenGLTextureUNumber"/>: the GLuint texture associated
+    ///   with the U plane of a YUV texture
+    /// - <see cref="Props.TextureOpenGLTextureVNumber"/>: the GLuint texture associated
+    ///   with the V plane of a YUV texture
+    /// - <see cref="Props.TextureOpenGLTextureTargetNumber"/>: the GLenum for the
+    ///   texture target (<c>GL_TEXTURE_2D</c>, <c>GL_TEXTURE_RECTANGLE_ARB</c>, etc)
+    /// - <see cref="Props.TextureOpenGLTexWFloat"/>: the texture coordinate width of
+    ///   the texture (0.0 - 1.0)
+    /// - <see cref="Props.TextureOpenGLTexHFloat"/>: the texture coordinate height of
+    ///   the texture (0.0 - 1.0)</para>
     /// <para>With the opengles2 renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureOpenGLES2TextureNumber"/>: the GLuint texture
-    /// associated with the texture</item>
-    /// <item><see cref="Props.TextureOpenGLES2TextureUVNumber"/>: the GLuint texture
-    /// associated with the UV plane of an NV12 texture</item>
-    /// <item><see cref="Props.TextureOpenGLES2TextureUNumber"/>: the GLuint texture
-    /// associated with the U plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureOpenGLES2TextureVNumber"/>: the GLuint texture
-    /// associated with the V plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureOpenGLES2TextureTargetNumber"/>: the GLenum for the
-    /// texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureOpenGLES2TextureNumber"/>: the GLuint texture
+    ///   associated with the texture
+    /// - <see cref="Props.TextureOpenGLES2TextureUVNumber"/>: the GLuint texture
+    ///   associated with the UV plane of an NV12 texture
+    /// - <see cref="Props.TextureOpenGLES2TextureUNumber"/>: the GLuint texture
+    ///   associated with the U plane of a YUV texture
+    /// - <see cref="Props.TextureOpenGLES2TextureVNumber"/>: the GLuint texture
+    ///   associated with the V plane of a YUV texture
+    /// - <see cref="Props.TextureOpenGLES2TextureTargetNumber"/>: the GLenum for the
+    ///   texture target (<c>GL_TEXTURE_2D</c>, <c>GL_TEXTURE_EXTERNAL_OES</c>, etc)</para>
     /// <para>With the gpu renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureOpenGLES2TextureTargetNumber"/>: the SDL_GPUTexture associated
-    /// with the texture</item>
-    /// </list>
-    /// <para>With the gpu renderer:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextureGPUTexturePointer"/>: the SDL_GPUTexture associated
-    /// with the texture</item>
-    /// <item><see cref="Props.TextureGPUTextureUVPointer"/>: the SDL_GPUTexture associated
-    /// with the UV plane of an NV12 texture</item>
-    /// <item><see cref="Props.TextureGPUTextureUPointer"/>: the SDL_GPUTexture associated
-    /// with the U plane of a YUV texture</item>
-    /// <item><see cref="Props.TextureGPUTextureVPointer"/>: the SDL_GPUTexture associated
-    /// with the V plane of a YUV texture</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextureGPUTexturePointer"/>: the <c>SDL_GPUTexture</c> associated
+    ///   with the texture
+    /// - <see cref="Props.TextureGPUTextureUVPointer"/>: the <c>SDL_GPUTexture</c> associated
+    ///   with the UV plane of an NV12 texture
+    /// - <see cref="Props.TextureGPUTextureUPointer"/>: the <c>SDL_GPUTexture</c> associated
+    ///   with the U plane of a YUV texture
+    /// - <see cref="Props.TextureGPUTextureVPointer"/>: the <c>SDL_GPUTexture</c> associated
+    ///   with the V plane of a YUV texture</para>
     /// </summary>
     /// <param name="texture">the texture to query.</param>
     /// <returns>a valid property ID on success or 0 on failure; call
-    /// <see cref="GetError"/> for more information.</returns>
+    ///          <see cref="GetError()"/>() for more information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     public static uint GetTextureProperties(IntPtr texture)
     {
         return GetTexturePropertiesNativeFunction(texture);
@@ -1185,19 +1192,19 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode blendMode);</code>
     /// <summary>
-    /// <para>Set the blend mode for a texture, used by <see cref="RenderTexture(nint, nint, nint, nint)"/>.</para>
+    /// <para>Set the blend mode for a texture.</para>
     /// <para>This blend mode is used for any drawing that involves this texture.</para>
     /// <para>If the blend mode is not supported, the closest supported mode is chosen
     /// and this function returns <c>false</c>.</para>
     /// </summary>
     /// <param name="texture">the texture to update.</param>
-    /// <param name="blendMode">the <see cref="BlendMode"/> to use for texture blending.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <param name="blendMode">the <c>SDL_BlendMode</c> to use for texture blending.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetTextureBlendMode"/>
-    /// <seealso cref="SetRenderDrawBlendMode"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetTextureBlendMode(IntPtr, out BlendMode)"/>
+    /// <seealso cref="SetRenderDrawBlendMode(IntPtr, BlendMode)"/>
     public static bool SetTextureBlendMode(IntPtr texture, BlendMode blendMode)
     {
         return SetTextureBlendModeNativeFunction(texture, blendMode);
@@ -2152,21 +2159,22 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the drawing area for rendering on the current target.</para>
     /// <para>Drawing will clip to this area (separately from any clipping done with
-    /// <see cref="SetRenderClipRect(nint, in Rect)"/>), and the top left of the area will become coordinate
+    /// <see cref="SetRenderClipRect(IntPtr, IntPtr)"/>), and the top left of the area will become coordinate
     /// (0, 0) for future drawing commands.</para>
-    /// <para>The area's width and height must be >= 0.</para>
+    /// <para>The area's width and height must be &gt;= 0.</para>
     /// <para>Each render target has its own viewport. This function sets the viewport
     /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">the <see cref="Rect"/> structure representing the drawing area, or <c>null</c>
-    /// to set the viewport to the entire target.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///             to set the viewport to the entire target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderViewport"/>
-    /// <seealso cref="RenderViewportSet"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderViewport(IntPtr, out Rect)"/>
+    /// <seealso cref="RenderViewportSet(IntPtr)"/>
+    /// <seealso cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
     public static bool SetRenderViewport(IntPtr renderer, IntPtr rect)
     {
         return SetRenderViewportPointerNativeFunction(renderer, rect);
@@ -2184,18 +2192,22 @@ public static partial class SDL
     /// <summary>
     /// <para>Set the drawing area for rendering on the current target.</para>
     /// <para>Drawing will clip to this area (separately from any clipping done with
-    /// <see cref="SetRenderClipRect(nint, in Rect)"/>), and the top left of the area will become coordinate
+    /// <see cref="SetRenderClipRect(IntPtr, IntPtr)"/>), and the top left of the area will become coordinate
     /// (0, 0) for future drawing commands.</para>
-    /// <para>The area's width and height must be >= 0.</para>
+    /// <para>The area's width and height must be &gt;= 0.</para>
+    /// <para>Each render target has its own viewport. This function sets the viewport
+    /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
-    /// <param name="rect">the <see cref="Rect"/> structure representing the drawing area.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <param name="rect">the <see cref="Rect"/> structure representing the drawing area, or <c>null</c>
+    ///             to set the viewport to the entire target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderViewport"/>
-    /// <seealso cref="RenderViewportSet"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderViewport(IntPtr, out Rect)"/>
+    /// <seealso cref="RenderViewportSet(IntPtr)"/>
+    /// <seealso cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
     public static bool SetRenderViewport(IntPtr renderer, in Rect rect)
     {
         return SetRenderViewportRectNativeFunction(renderer, in rect);
@@ -2211,21 +2223,93 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
-    /// Get the drawing area for the current target.
+    /// <para>Get the drawing area for the current target.</para>
     /// <para>Each render target has its own viewport. This function gets the viewport
     /// for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure filled in with the current drawing area.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderViewportSet"/>
-    /// <seealso cref="SetRenderViewport(nint, nint)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderViewportFloat(IntPtr, out FRect)"/>
+    /// <seealso cref="RenderViewportSet(IntPtr)"/>
+    /// <seealso cref="SetRenderViewport(IntPtr, IntPtr)"/>
     public static bool GetRenderViewport(IntPtr renderer, out Rect rect)
     {
         return GetRenderViewportNativeFunction(renderer, out rect);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewportFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderViewportFloatPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool SetRenderViewportFloatPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static SetRenderViewportFloatPointerNativeDelegate SetRenderViewportFloatPointerNativeFunction = SDL_SetRenderViewportFloatPointer;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderViewportFloat(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Set the drawing area for rendering on the current target.</para>
+    /// <para>Drawing will clip to this area (separately from any clipping done with
+    /// <see cref="SetRenderClipRect(IntPtr, IntPtr)"/>), and the top left of the area will become coordinate
+    /// (0, 0) for future drawing commands.</para>
+    /// <para>The area's width and height must be &gt;= 0.</para>
+    /// <para>Each render target has its own viewport. This function sets the viewport
+    /// for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">the <see cref="FRect"/> structure representing the drawing area, or <c>null</c>
+    ///             to set the viewport to the entire target.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="GetRenderViewportFloat(IntPtr, out FRect)"/>
+    /// <seealso cref="RenderViewportSet(IntPtr)"/>
+    public static bool SetRenderViewportFloat(IntPtr renderer, IntPtr rect)
+    {
+        return SetRenderViewportFloatPointerNativeFunction(renderer, rect);
+    }
+
+    /// <inheritdoc cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
+    public static bool SetRenderViewportFloat(IntPtr renderer, in FRect rect)
+    {
+        return SetRenderViewportFloatRectNativeFunction(renderer, in rect);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderViewportFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderViewportFloatRect(IntPtr renderer, in FRect rect);
+    private delegate bool SetRenderViewportFloatRectNativeDelegate(IntPtr renderer, in FRect rect);
+    private static SetRenderViewportFloatRectNativeDelegate SetRenderViewportFloatRectNativeFunction = SDL_SetRenderViewportFloatRect;
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderViewportFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderViewportFloat(IntPtr renderer, out FRect rect);
+    private delegate bool GetRenderViewportFloatNativeDelegate(IntPtr renderer, out FRect rect);
+    private static GetRenderViewportFloatNativeDelegate GetRenderViewportFloatNativeFunction = SDL_GetRenderViewportFloat;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderViewportFloat(SDL_Renderer *renderer, SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Get the drawing area for the current target.</para>
+    /// <para>Each render target has its own viewport. This function gets the viewport
+    /// for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure filled in with the current drawing area.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="RenderViewportSet(IntPtr)"/>
+    /// <seealso cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
+    public static bool GetRenderViewportFloat(IntPtr renderer, out FRect rect)
+    {
+        return GetRenderViewportFloatNativeFunction(renderer, out rect);
     }
 
 
@@ -2246,11 +2330,13 @@ public static partial class SDL
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <returns><c>true</c> if the viewport was set to a specific rectangle, or <c>false</c> if
-    /// it was set to <c>null</c> (the entire target).</returns>
+    ///          it was set to <c>null</c> (the entire target).</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderViewport"/>
-    /// <seealso cref="SetRenderViewport(nint, nint)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderViewport(IntPtr, out Rect)"/>
+    /// <seealso cref="GetRenderViewportFloat(IntPtr, out FRect)"/>
+    /// <seealso cref="SetRenderViewport(IntPtr, IntPtr)"/>
+    /// <seealso cref="SetRenderViewportFloat(IntPtr, IntPtr)"/>
     public static bool RenderViewportSet(IntPtr renderer)
     {
         return RenderViewportSetNativeFunction(renderer);
@@ -2296,19 +2382,20 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
-    /// Set the clip rectangle for rendering on the specified target.
-    /// <para>Each render target has its own clip rectangle. This function
-    /// sets the cliprect for the current render target.</para>
+    /// <para>Set the clip rectangle for rendering on the specified target.</para>
+    /// <para>Each render target has its own clip rectangle. This function sets the
+    /// cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
-    /// the viewport, or <c>null</c> to disable clipping.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///             the viewport, or <c>null</c> to disable clipping.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="RenderClipEnabled"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderClipRect(IntPtr, out Rect)"/>
+    /// <seealso cref="RenderClipEnabled(IntPtr)"/>
+    /// <seealso cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
     public static bool SetRenderClipRect(IntPtr renderer, IntPtr rect)
     {
         return SetRenderClipRectPointerNativeFunction(renderer, rect);
@@ -2324,19 +2411,20 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);</code>
     /// <summary>
-    /// Set the clip rectangle for rendering on the specified target.
-    /// <para>Each render target has its own clip rectangle. This function
-    /// sets the cliprect for the current render target.</para>
+    /// <para>Set the clip rectangle for rendering on the specified target.</para>
+    /// <para>Each render target has its own clip rectangle. This function sets the
+    /// cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure representing the clip area, relative to
-    /// the viewport, or <c>null</c> to disable clipping.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///             the viewport, or <c>null</c> to disable clipping.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="RenderClipEnabled"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderClipRect(IntPtr, out Rect)"/>
+    /// <seealso cref="RenderClipEnabled(IntPtr)"/>
+    /// <seealso cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
     public static bool SetRenderClipRect(IntPtr renderer, in Rect rect)
     {
         return SetRenderClipRectRectNativeFunction(renderer, in rect);
@@ -2352,22 +2440,91 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);</code>
     /// <summary>
-    /// Get the clip rectangle for the current target.
-    /// <para>Each render target has its own clip rectangle. This function
-    /// gets the cliprect for the current render target.</para>
+    /// <para>Get the clip rectangle for the current target.</para>
+    /// <para>Each render target has its own clip rectangle. This function gets the
+    /// cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="rect">an <see cref="Rect"/> structure filled in with the current clipping area
-    /// or an empty rectangle if clipping is disabled.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    ///             or an empty rectangle if clipping is disabled.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderClipEnabled"/>
-    /// <seealso cref="SetRenderClipRect(nint, in Rect)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderClipRectFloat(IntPtr, out FRect)"/>
+    /// <seealso cref="RenderClipEnabled(IntPtr)"/>
+    /// <seealso cref="SetRenderClipRect(IntPtr, IntPtr)"/>
     public static bool GetRenderClipRect(IntPtr renderer, out Rect rect)
     {
         return GetRenderClipRectNativeFunction(renderer, out rect);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRectFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderClipRectFloatPointer(IntPtr renderer, IntPtr rect);
+    private delegate bool SetRenderClipRectFloatPointerNativeDelegate(IntPtr renderer, IntPtr rect);
+    private static SetRenderClipRectFloatPointerNativeDelegate SetRenderClipRectFloatPointerNativeFunction = SDL_SetRenderClipRectFloatPointer;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderClipRectFloat(SDL_Renderer *renderer, const SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Set the clip rectangle for rendering on the specified target.</para>
+    /// <para>Each render target has its own clip rectangle. This function sets the
+    /// cliprect for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure representing the clip area, relative to
+    ///             the viewport, or <c>null</c> to disable clipping.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="GetRenderClipRectFloat(IntPtr, out FRect)"/>
+    /// <seealso cref="RenderClipEnabled(IntPtr)"/>
+    public static bool SetRenderClipRectFloat(IntPtr renderer, IntPtr rect)
+    {
+        return SetRenderClipRectFloatPointerNativeFunction(renderer, rect);
+    }
+
+    /// <inheritdoc cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
+    public static bool SetRenderClipRectFloat(IntPtr renderer, in FRect rect)
+    {
+        return SetRenderClipRectFloatRectNativeFunction(renderer, in rect);
+    }
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetRenderClipRectFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetRenderClipRectFloatRect(IntPtr renderer, in FRect rect);
+    private delegate bool SetRenderClipRectFloatRectNativeDelegate(IntPtr renderer, in FRect rect);
+    private static SetRenderClipRectFloatRectNativeDelegate SetRenderClipRectFloatRectNativeFunction = SDL_SetRenderClipRectFloatRect;
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GetRenderClipRectFloat"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_GetRenderClipRectFloat(IntPtr renderer, out FRect rect);
+    private delegate bool GetRenderClipRectFloatNativeDelegate(IntPtr renderer, out FRect rect);
+    private static GetRenderClipRectFloatNativeDelegate GetRenderClipRectFloatNativeFunction = SDL_GetRenderClipRectFloat;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_GetRenderClipRectFloat(SDL_Renderer *renderer, SDL_FRect *rect);</code>
+    /// <summary>
+    /// <para>Get the clip rectangle for the current target.</para>
+    /// <para>Each render target has its own clip rectangle. This function gets the
+    /// cliprect for the current render target.</para>
+    /// </summary>
+    /// <param name="renderer">the rendering context.</param>
+    /// <param name="rect">an <see cref="FRect"/> structure filled in with the current clipping area
+    ///             or an empty rectangle if clipping is disabled.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should only be called on the main thread.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="RenderClipEnabled(IntPtr)"/>
+    /// <seealso cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
+    public static bool GetRenderClipRectFloat(IntPtr renderer, out FRect rect)
+    {
+        return GetRenderClipRectFloatNativeFunction(renderer, out rect);
     }
 
 
@@ -2381,16 +2538,18 @@ public static partial class SDL
     /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_RenderClipEnabled(SDL_Renderer *renderer);</code>
     /// <summary>
     /// <para>Get whether clipping is enabled on the given render target.</para>
-    /// <para> Each render target has its own clip rectangle. This function
-    /// checks the cliprect for the current render target.</para>
+    /// <para>Each render target has its own clip rectangle. This function checks the
+    /// cliprect for the current render target.</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
-    /// <returns><c>true</c> if clipping is enabled or <c>false</c> if not; call <see cref="GetError"/>
-    /// for more information.</returns>
+    /// <returns><c>true</c> if clipping is enabled or <c>false</c> if not; call <see cref="GetError()"/>()
+    ///          for more information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetRenderClipRect"/>
-    /// <seealso cref="SetRenderClipRect(nint, in Rect)"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetRenderClipRect(IntPtr, out Rect)"/>
+    /// <seealso cref="GetRenderClipRectFloat(IntPtr, out FRect)"/>
+    /// <seealso cref="SetRenderClipRect(IntPtr, IntPtr)"/>
+    /// <seealso cref="SetRenderClipRectFloat(IntPtr, IntPtr)"/>
     public static bool RenderClipEnabled(IntPtr renderer)
     {
         return RenderClipEnabledNativeFunction(renderer);
@@ -4615,23 +4774,23 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex array.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
     /// <param name="vertices">vertices.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
-    /// array, if <c>null</c> all vertices will be rendered in sequential
-    /// order.</param>
+    /// <param name="indices">(optional) An array of integer indices into the 'vertices'
+    ///                array, if <c>null</c> all vertices will be rendered in sequential
+    ///                order.</param>
     /// <param name="numIndices">number of indices.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, IntPtr indices, int numIndices)
     {
         return RenderGeometryPointerIndicesNativeFunction(renderer, texture, vertices, numVertices, indices, numIndices);
@@ -4649,23 +4808,23 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex array.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
     /// <param name="vertices">vertices.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
-    /// array, if <c>null</c> all vertices will be rendered in sequential
-    /// order.</param>
+    /// <param name="indices">(optional) An array of integer indices into the 'vertices'
+    ///                array, if <c>null</c> all vertices will be rendered in sequential
+    ///                order.</param>
     /// <param name="numIndices">number of indices.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static unsafe bool RenderGeometry(IntPtr renderer, IntPtr texture, ReadOnlySpan<Vertex> vertices, int numVertices, IntPtr indices, int numIndices)
     {
         fixed (Vertex* pVertices = vertices)
@@ -4686,23 +4845,23 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex array.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
     /// <param name="vertices">vertices.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
-    /// array, if <c>null</c> all vertices will be rendered in sequential
-    /// order.</param>
+    /// <param name="indices">(optional) An array of integer indices into the 'vertices'
+    ///                array, if <c>null</c> all vertices will be rendered in sequential
+    ///                order.</param>
     /// <param name="numIndices">number of indices.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static bool RenderGeometry(IntPtr renderer, IntPtr texture, Vertex[] vertices, int numVertices, int[] indices, int numIndices)
     {
         return RenderGeometryArrayIndicesNativeFunction(renderer, texture, vertices, numVertices, indices, numIndices);
@@ -4713,23 +4872,23 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex array.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
     /// <param name="vertices">vertices.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of integer indices into the <c>vertices</c>
-    /// array, if <c>null</c> all vertices will be rendered in sequential
-    /// order.</param>
+    /// <param name="indices">(optional) An array of integer indices into the 'vertices'
+    ///                array, if <c>null</c> all vertices will be rendered in sequential
+    ///                order.</param>
     /// <param name="numIndices">number of indices.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, float[], int, FColor[], int, float[], int, int, IntPtr, int, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="RenderGeometryRaw(IntPtr, IntPtr, IntPtr, int, IntPtr, int, IntPtr, int, int, IntPtr, int, int)"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static unsafe bool RenderGeometry(IntPtr renderer, IntPtr texture, ReadOnlySpan<Vertex> vertices, int numVertices, ReadOnlySpan<int> indices, int numIndices)
     {
         fixed (Vertex* pVertices = vertices)
@@ -4757,8 +4916,8 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -4769,16 +4928,16 @@ public static partial class SDL
     /// <param name="uv">vertex normalized texture coordinates.</param>
     /// <param name="uvStride">byte size to move from one element to the next element.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="indices">(optional) An array of indices into the 'vertices' arrays,
+    ///                if <c>null</c> all vertices will be rendered in sequential order.</param>
     /// <param name="numIndices">number of indices.</param>
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, IntPtr xy, int xyStride, IntPtr color,
         int colorStride, IntPtr uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices)
     {
@@ -4797,8 +4956,8 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -4809,16 +4968,16 @@ public static partial class SDL
     /// <param name="uv">vertex normalized texture coordinates.</param>
     /// <param name="uvStride">byte size to move from one element to the next element.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="indices">(optional) An array of indices into the 'vertices' arrays,
+    ///                if <c>null</c> all vertices will be rendered in sequential order.</param>
     /// <param name="numIndices">number of indices.</param>
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, IntPtr indices, int numIndices, int sizeIndices)
     {
         return RenderGeometryRawPointerIndicesNativeFunction(renderer, texture, xy, xyStride, color, colorStride, uv, uvStride, numVertices, indices, numIndices, sizeIndices);
@@ -4836,8 +4995,8 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -4848,16 +5007,16 @@ public static partial class SDL
     /// <param name="uv">vertex normalized texture coordinates.</param>
     /// <param name="uvStride">byte size to move from one element to the next element.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="indices">(optional) An array of indices into the 'vertices' arrays,
+    ///                if <c>null</c> all vertices will be rendered in sequential order.</param>
     /// <param name="numIndices">number of indices.</param>
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static bool RenderGeometryRaw(IntPtr renderer, IntPtr texture, float[] xy, int xyStride, FColor[] color, int colorStride, float[] uv, int uvStride, int numVertices, byte[] indices, int numIndices, int sizeIndices)
     {
         return RenderGeometryRawByteIndicesNativeFunction(renderer, texture, xy, xyStride, color, colorStride, uv, uvStride, numVertices, indices, numIndices, sizeIndices);
@@ -4868,8 +5027,8 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
@@ -4880,16 +5039,16 @@ public static partial class SDL
     /// <param name="uv">vertex normalized texture coordinates.</param>
     /// <param name="uvStride">byte size to move from one element to the next element.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="indices">(optional) An array of indices into the 'vertices' arrays,
+    ///                if <c>null</c> all vertices will be rendered in sequential order.</param>
     /// <param name="numIndices">number of indices.</param>
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, Span<float> xy,
         int xyStride, Span<FColor> color, int colorStride, Span<float> uv, int uvStride,
         int numVertices, Span<TIndex> indices, int numIndices, int sizeIndices) where TIndex : unmanaged
@@ -4919,28 +5078,28 @@ public static partial class SDL
     /// <summary>
     /// <para>Render a list of triangles, optionally using a texture and indices into the
     /// vertex arrays.</para>
-    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod"/> and
-    /// <see cref="SetTextureAlphaMod"/> are ignored).</para>
+    /// <para>Color and alpha modulation is done per vertex (<see cref="SetTextureColorMod(IntPtr, byte, byte, byte)"/> and
+    /// <see cref="SetTextureAlphaMod(IntPtr, byte)"/> are ignored).</para>
     /// </summary>
     /// <param name="renderer">the rendering context.</param>
     /// <param name="texture">(optional) The SDL texture to use.</param>
     /// <param name="xy">vertex positions.</param>
     /// <param name="xyStride">byte size to move from one element to the next element.</param>
-    /// <param name="color">vertex colors as consecutive float components matching <see cref="FColor"/> layout.</param>
+    /// <param name="color">vertex colors (as <see cref="FColor"/>).</param>
     /// <param name="colorStride">byte size to move from one element to the next element.</param>
     /// <param name="uv">vertex normalized texture coordinates.</param>
     /// <param name="uvStride">byte size to move from one element to the next element.</param>
     /// <param name="numVertices">number of vertices.</param>
-    /// <param name="indices">(optional) An array of indices into the <c>vertices</c> arrays,
-    /// if <c>null</c> all vertices will be rendered in sequential order.</param>
+    /// <param name="indices">(optional) An array of indices into the 'vertices' arrays,
+    ///                if <c>null</c> all vertices will be rendered in sequential order.</param>
     /// <param name="numIndices">number of indices.</param>
     /// <param name="sizeIndices">index size: 1 (byte), 2 (short), 4 (int).</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
+    /// <since>This function is available since SDL 3.2.0.</since>
     /// <seealso cref="RenderGeometry(IntPtr, IntPtr, Vertex[], int, IntPtr, int)"/>
-    /// <seealso cref="SetRenderTextureAddressMode"/>
+    /// <seealso cref="SetRenderTextureAddressMode(IntPtr, TextureAddressMode, TextureAddressMode)"/>
     public static unsafe bool RenderGeometryRaw<TIndex>(IntPtr renderer, IntPtr texture, ReadOnlySpan<float> xy,
         int xyStride, ReadOnlySpan<float> color, int colorStride, ReadOnlySpan<float> uv, int uvStride,
         int numVertices, ReadOnlySpan<TIndex> indices, int numIndices, int sizeIndices) where TIndex : unmanaged
@@ -5121,6 +5280,52 @@ public static partial class SDL
     public static bool RenderPresent(IntPtr renderer)
     {
         return RenderPresentNativeFunction(renderer);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKSuspendRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GDKSuspendRenderer(IntPtr renderer);
+    private delegate void GDKSuspendRendererNativeDelegate(IntPtr renderer);
+    private static GDKSuspendRendererNativeDelegate GDKSuspendRendererNativeFunction = SDL_GDKSuspendRenderer;
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKSuspendRenderer(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// <para>Call this to suspend Render operations on Xbox after receiving the
+    /// <see cref="EventType.DidEnterBackground"/> event.</para>
+    /// <para>Do NOT call any <c>SDL_Render</c> functions after calling this function! This must
+    /// also be called before calling <see cref="GDKSuspendComplete()"/>.</para>
+    /// <para>This function MUST be called on the application's render thread.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should suspend operation.</param>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AddEventWatch(EventFilter, IntPtr)"/>
+    public static void GDKSuspendRenderer(IntPtr renderer)
+    {
+        GDKSuspendRendererNativeFunction(renderer);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_GDKResumeRenderer"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial void SDL_GDKResumeRenderer(IntPtr renderer);
+    private delegate void GDKResumeRendererNativeDelegate(IntPtr renderer);
+    private static GDKResumeRendererNativeDelegate GDKResumeRendererNativeFunction = SDL_GDKResumeRenderer;
+
+    /// <code>extern SDL_DECLSPEC void SDLCALL SDL_GDKResumeRenderer(SDL_Renderer *renderer);</code>
+    /// <summary>
+    /// <para>Call this to resume Render operations on Xbox after receiving the
+    /// <see cref="EventType.WillEnterForeground"/> event.</para>
+    /// <para>When resuming, this function MUST be called before calling any other
+    /// <c>SDL_Render</c> functions.</para>
+    /// <para>This function MUST be called on the application's render thread.</para>
+    /// </summary>
+    /// <param name="renderer">the renderer which should resume operation.</param>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    /// <seealso cref="AddEventWatch(EventFilter, IntPtr)"/>
+    public static void GDKResumeRenderer(IntPtr renderer)
+    {
+        GDKResumeRendererNativeFunction(renderer);
     }
 
 
@@ -5575,13 +5780,101 @@ public static partial class SDL
 
 
     [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateSamplerBindings"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetGPURenderStateSamplerBindings(IntPtr state, int numSamplerBindings, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] GPUTextureSamplerBinding[]? samplerBindings);
+    private delegate bool SetGPURenderStateSamplerBindingsNativeDelegate(IntPtr state, int numSamplerBindings, GPUTextureSamplerBinding[]? samplerBindings);
+    private static SetGPURenderStateSamplerBindingsNativeDelegate SetGPURenderStateSamplerBindingsNativeFunction = SDL_SetGPURenderStateSamplerBindings;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateSamplerBindings(SDL_GPURenderState *state, int num_sampler_bindings, const SDL_GPUTextureSamplerBinding *sampler_bindings);</code>
+    /// <summary>
+    /// <para>Set sampler bindings variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be binded using <see cref="BindGPUFragmentSamplers(IntPtr, uint, GPUTextureSamplerBinding[], uint)"/>()
+    /// during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numSamplerBindings">The number of additional fragment samplers to
+    ///                             bind.</param>
+    /// <param name="samplerBindings">Additional fragment samplers to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    ///               renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static bool SetGPURenderStateSamplerBindings(IntPtr state, int numSamplerBindings, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] GPUTextureSamplerBinding[]? samplerBindings)
+    {
+        if (numSamplerBindings < 0) throw new ArgumentOutOfRangeException(nameof(numSamplerBindings));
+        if (numSamplerBindings > (samplerBindings?.Length ?? 0)) throw new ArgumentOutOfRangeException(nameof(numSamplerBindings));
+        return SetGPURenderStateSamplerBindingsNativeFunction(state, numSamplerBindings, samplerBindings);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageTextures"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetGPURenderStateStorageTextures(IntPtr state, int numStorageTextures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? storageTextures);
+    private delegate bool SetGPURenderStateStorageTexturesNativeDelegate(IntPtr state, int numStorageTextures, IntPtr[]? storageTextures);
+    private static SetGPURenderStateStorageTexturesNativeDelegate SetGPURenderStateStorageTexturesNativeFunction = SDL_SetGPURenderStateStorageTextures;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageTextures(SDL_GPURenderState *state, int num_storage_textures, SDL_GPUTexture *const *storage_textures);</code>
+    /// <summary>
+    /// <para>Set storage textures variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be binded using
+    /// <see cref="BindGPUFragmentStorageTextures(IntPtr, uint, IntPtr[], uint)"/>() during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numStorageTextures">The number of storage textures to bind.</param>
+    /// <param name="storageTextures">Storage textures to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    ///               renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static bool SetGPURenderStateStorageTextures(IntPtr state, int numStorageTextures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? storageTextures)
+    {
+        if (numStorageTextures < 0) throw new ArgumentOutOfRangeException(nameof(numStorageTextures));
+        if (numStorageTextures > (storageTextures?.Length ?? 0)) throw new ArgumentOutOfRangeException(nameof(numStorageTextures));
+        return SetGPURenderStateStorageTexturesNativeFunction(state, numStorageTextures, storageTextures);
+    }
+
+
+    [ExcludeFromCodeCoverage]
+    [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderStateStorageBuffers"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_SetGPURenderStateStorageBuffers(IntPtr state, int numStorageBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? storageBuffers);
+    private delegate bool SetGPURenderStateStorageBuffersNativeDelegate(IntPtr state, int numStorageBuffers, IntPtr[]? storageBuffers);
+    private static SetGPURenderStateStorageBuffersNativeDelegate SetGPURenderStateStorageBuffersNativeFunction = SDL_SetGPURenderStateStorageBuffers;
+
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderStateStorageBuffers(SDL_GPURenderState *state, int num_storage_buffers, SDL_GPUBuffer *const *storage_buffers);</code>
+    /// <summary>
+    /// <para>Set storage buffers variables in a custom GPU render state.</para>
+    /// <para>The data is copied and will be binded using
+    /// <see cref="BindGPUFragmentStorageBuffers(IntPtr, uint, IntPtr[], uint)"/>() during draw call execution.</para>
+    /// </summary>
+    /// <param name="state">the state to modify.</param>
+    /// <param name="numStorageBuffers">The number of storage buffers to bind.</param>
+    /// <param name="storageBuffers">Storage buffers to bind.</param>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
+    /// <threadsafety>This function should be called on the thread that created the
+    ///               renderer.</threadsafety>
+    /// <since>This function is available since SDL 3.6.0.</since>
+    public static bool SetGPURenderStateStorageBuffers(IntPtr state, int numStorageBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? storageBuffers)
+    {
+        if (numStorageBuffers < 0) throw new ArgumentOutOfRangeException(nameof(numStorageBuffers));
+        if (numStorageBuffers > (storageBuffers?.Length ?? 0)) throw new ArgumentOutOfRangeException(nameof(numStorageBuffers));
+        return SetGPURenderStateStorageBuffersNativeFunction(state, numStorageBuffers, storageBuffers);
+    }
+
+
+    [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPURenderState"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetGPURenderState(IntPtr renderer, IntPtr state);
     private delegate bool SetGPURenderStateNativeDelegate(IntPtr renderer, IntPtr state);
     private static SetGPURenderStateNativeDelegate SetGPURenderStateNativeFunction = SDL_SetGPURenderState;
 
-    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetRenderGPUState(SDL_Renderer *renderer, SDL_GPURenderState *state);</code>
+    /// <code>extern SDL_DECLSPEC bool SDLCALL SDL_SetGPURenderState(SDL_Renderer *renderer, SDL_GPURenderState *state);</code>
     /// <summary>
     /// <para>Set custom GPU render state.</para>
     /// <para>This function sets custom GPU render state for subsequent draw calls. This
@@ -5589,10 +5882,10 @@ public static partial class SDL
     /// </summary>
     /// <param name="renderer">the renderer to use.</param>
     /// <param name="state">the state to to use, or <c>null</c> to clear custom GPU render state.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should be called on the thread that created the
-    /// renderer.</threadsafety>
+    ///               renderer.</threadsafety>
     /// <since>This function is available since SDL 3.4.0.</since>
     public static bool SetGPURenderState(IntPtr renderer, IntPtr state)
     {

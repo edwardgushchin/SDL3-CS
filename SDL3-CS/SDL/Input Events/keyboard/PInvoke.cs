@@ -470,52 +470,52 @@ public static partial class SDL
     /// describing the input.</para>
     /// <para>This function will enable text input (<see cref="EventType.TextInput"/> and
     /// <see cref="EventType.TextEditing"/> events) in the specified window. Please use this
-    /// function paired with <see cref="StopTextInput"/>.</para>
+    /// function paired with <see cref="StopTextInput(IntPtr)"/>().</para>
     /// <para>Text input events are not received by default.</para>
     /// <para>On some platforms using this function shows the screen keyboard and/or
     /// activates an IME, which can prevent some key press events from being passed
     /// through.</para>
     /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextInputTypeNumber"/> - an <see cref="TextInputType"/> value that
-    /// describes text being input, defaults to <see cref="TextInputType.Text"/>.</item>
-    /// <item><see cref="Props.TextInputCapitalizationNumber"/> - an <see cref="Capitalization"/> value
-    /// that describes how text should be capitalized, defaults to
-    /// <see cref="Capitalization.Sentences"/> for normal text entry, <see cref="Capitalization.Words"/> for
-    /// <see cref="TextInputType.TextName"/>, and <see cref="Capitalization.None"/> for e-mail
-    /// addresses, usernames, and passwords.</item>
-    /// <item><see cref="Props.TextInputAutoCorrectBoolean"/> - <c>true</c> to enable auto completion
-    /// and auto correction, defaults to <c>true</c>.</item>
-    /// <item><see cref="Props.TextInputMultilineBoolean"/> - <c>true</c> if multiple lines of text
-    /// are allowed. This defaults to <c>true</c> if <see cref="Hints.ReturnKeyHidesIME"/> is
-    /// "0" or is not set, and defaults to <c>false</c> if <see cref="Hints.ReturnKeyHidesIME"/>
-    /// is "1".</item>
-    /// <item><see cref="Props.TextInputTitleString"/> - a title for the top of the on-screen
-    /// keyboard window, if it has one.</item>
-    /// <item><see cref="Props.TextInputPlaceholderString"/> - the placeholder shown before
-    /// the user starts typing, when the field is empty.</item>
-    /// <item><see cref="Props.TextInputDefaultTextString"/> - text to prefill the text field
-    /// with.</item>
-    /// <item><see cref="Props.TextInputMaxLengthNumber"/> - maximum length for the text
-    /// field, in characters (not bytes).</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextInputTypeNumber"/> - an <see cref="TextInputType"/> value that
+    ///   describes text being input, defaults to <see cref="TextInputType.Text"/>.
+    /// - <see cref="Props.TextInputCapitalizationNumber"/> - an <see cref="Capitalization"/> value
+    ///   that describes how text should be capitalized, defaults to
+    ///   <see cref="Capitalization.Sentences"/> for normal text entry, <see cref="Capitalization.Words"/> for
+    ///   <see cref="TextInputType.TextName"/>, and <see cref="Capitalization.None"/> for e-mail
+    ///   addresses, usernames, and passwords.
+    /// - <see cref="Props.TextInputAutoCorrectBoolean"/> - <c>true</c> to enable auto completion
+    ///   and auto correction, defaults to <c>true</c>.
+    /// - <see cref="Props.TextInputMultilineBoolean"/> - <c>true</c> if multiple lines of text
+    ///   are allowed. This defaults to <c>true</c> if <see cref="Hints.ReturnKeyHidesIME"/> is
+    ///   "0" or is not set, and defaults to <c>false</c> if <see cref="Hints.ReturnKeyHidesIME"/>
+    ///   is "1".
+    /// - <see cref="Props.TextInputTitleString"/> - a title for the top of the on-screen
+    ///   keyboard window, if it has one.
+    /// - <see cref="Props.TextInputPlaceholderString"/> - the placeholder shown before
+    ///   the user starts typing, when the field is empty.
+    /// - <see cref="Props.TextInputDefaultTextString"/> - text to prefill the text field
+    ///   with.
+    /// - <see cref="Props.TextInputMaxLengthNumber"/> - maximum length for the text
+    ///   field, in characters (not bytes).</para>
     /// <para>On Android you can directly specify the input type:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.TextInputAndroidInputTypeNumber"/> - the text input type to
-    /// use, overriding other properties. This is documented at
-    /// https://developer.android.com/reference/android/text/InputType</item>
-    /// </list>
+    /// <para>- <see cref="Props.TextInputAndroidInputTypeNumber"/> - the text input type to
+    ///   use, overriding other properties. This is documented at
+    ///   https://developer.android.com/reference/android/text/InputType</para>
+    /// <para>On HarmonyOS/OpenHarmony you can directly specify the input type:</para>
+    /// <para>- <see cref="Props.TextInputOpenHarmonyInputTypeNumber"/> - the text input type
+    ///   to use, overriding other properties. This is documented at
+    ///   https://developer.android.com/reference/android/text/InputType</para>
     /// </summary>
     /// <param name="window">the window to enable text input.</param>
     /// <param name="props">the properties to use.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>This function should only be called on the main thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="SetTextInputArea(nint, nint, int)"/>
-    /// <seealso cref="StartTextInput"/>
-    /// <seealso cref="StopTextInput"/>
-    /// <seealso cref="TextInputActive"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="SetTextInputArea(IntPtr, IntPtr, int)"/>
+    /// <seealso cref="StartTextInput(IntPtr)"/>
+    /// <seealso cref="StopTextInput(IntPtr)"/>
+    /// <seealso cref="TextInputActive(IntPtr)"/>
     public static bool StartTextInputWithProperties(IntPtr window, uint props)
     {
         return StartTextInputWithPropertiesNativeFunction(window, props);

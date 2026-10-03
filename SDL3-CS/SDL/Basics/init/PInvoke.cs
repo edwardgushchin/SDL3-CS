@@ -303,56 +303,54 @@ public static partial class SDL
     /// <para>Specify metadata about your app through a set of properties.</para>
     /// <para>You can optionally provide metadata about your app to SDL. This is not
     /// required, but strongly encouraged.</para>
-    /// <para>There are several locations where SDL can make use of metadata (an <c>"About"</c>
+    /// <para>There are several locations where SDL can make use of metadata (an "About"
     /// box in the macOS menu bar, the name of the app can be shown on some audio
     /// mixers, etc). Any piece of metadata can be left out, if a specific detail
     /// doesn't make sense for the app.</para>
-    /// <para>This function should be called as early as possible, before <see cref="Init"/>.
+    /// <para>This function should be called as early as possible, before <see cref="Init(InitFlags)"/>.
     /// Multiple calls to this function are allowed, but various state might not
     /// change once it has been set up with a previous call to this function.</para>
-    /// <para>Once set, this metadata can be read using <see cref="GetAppMetadataProperty"/>.</para>
+    /// <para>Once set, this metadata can be read using <see cref="GetAppMetadataProperty(string)"/>().</para>
     /// <para>These are the supported properties:</para>
-    /// <list type="bullet">
-    /// <item><see cref="Props.AppMetadataNameString"/>`: The human-readable name of the
-    /// application, like <c>"My Game 2: Bad Guy's Revenge!"</c>. This will show up
-    /// anywhere the OS shows the name of the application separately from window
-    /// titles, such as volume control applets, etc. If not provided by the app,
-    /// SDL will attempt to pick a reasonable default (the app's binary's name
-    /// if the platform can provide it, or <c>"SDL Application"</c> if all else fails).</item>
-    /// <item><see cref="Props.AppMetadataVersionString"/>: The version of the app that is
-    /// running; there are no rules on format, so <c>"1.0.3beta2"</c> and <c>"April 22nd,
-    /// 2024"</c> and a git hash are all valid options. This has no default.</item>
-    /// <item><see cref="Props.AppMetadataIdentifierString"/>: A unique string that
-    /// identifies this app. This must be in reverse-domain format, like
-    /// <c>"com.example.mygame2"</c>. This string is used by desktop compositors to
-    /// identify and group windows together, as well as match applications with
-    /// associated desktop settings and icons. If you plan to package your
-    /// application in a container such as Flatpak, the app ID should match the
-    /// name of your Flatpak container as well. This has no default.</item>
-    /// <item><see cref="Props.AppMetadataCreatorString"/>: The human-readable name of the
-    /// creator/developer/maker of this app, like <c>"MojoWorkshop, LLC"</c></item>
-    /// <item><see cref="Props.AppMetadataCopyrightString"/>: The human-readable copyright
-    /// notice, like <c>"Copyright (c) 2024 MojoWorkshop, LLC"</c> or whatnot. Keep this
-    /// to one line, don't paste a copy of a whole software license in here. This
-    /// has no default.</item>
-    /// <item><see cref="Props.AppMetadataURLString"/>: A URL to the app on the web. Maybe a
-    /// product page, or a storefront, or even a GitHub repository, for user's
-    /// further information This has no default.</item>
-    /// <item><see cref="Props.AppMetadataTypeString"/>: The type of application this is.
-    /// Currently this string can be <c>"game"</c> for a video game, <c>"mediaplayer"</c> for a
-    /// media player, or generically <c>"application"</c> if nothing else applies.
-    /// Future versions of SDL might add new types. This defaults to
-    /// <c>"application"</c>.</item>
-    /// </list>
+    /// <para>- <see cref="Props.AppMetadataNameString"/>: The human-readable name of the
+    ///   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+    ///   anywhere the OS shows the name of the application separately from window
+    ///   titles, such as volume control applets, etc. If not provided by the app,
+    ///   SDL will attempt to pick a reasonable default (the app's binary's name if
+    ///   the platform can provide it, or "SDL Application" if all else fails).
+    /// - <see cref="Props.AppMetadataVersionString"/>: The version of the app that is
+    ///   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
+    ///   2024" and a git hash are all valid options. This has no default.
+    /// - <see cref="Props.AppMetadataIdentifierString"/>: A unique string that
+    ///   identifies this app. This must be in reverse-domain format, like
+    ///   "com.example.mygame2". This string is used by desktop compositors to
+    ///   identify and group windows together, as well as match applications with
+    ///   associated desktop settings and icons. If you plan to package your
+    ///   application in a container such as Flatpak, the app ID should match the
+    ///   name of your Flatpak container as well. This has no default.
+    /// - <see cref="Props.AppMetadataCreatorString"/>: The human-readable name of the
+    ///   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+    /// - <see cref="Props.AppMetadataCopyrightString"/>: The human-readable copyright
+    ///   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
+    ///   to one line, don't paste a copy of a whole software license in here. This
+    ///   has no default.
+    /// - <see cref="Props.AppMetadataURLString"/>: A URL to the app on the web. Maybe a
+    ///   product page, or a storefront, or even a GitHub repository, for user's
+    ///   further information This has no default.
+    /// - <see cref="Props.AppMetadataTypeString"/>: The type of application this is.
+    ///   Currently this string can be "game" for a video game, "mediaplayer" for a
+    ///   media player, or generically "application" if nothing else applies.
+    ///   Future versions of SDL might add new types. This defaults to
+    ///   "application".</para>
     /// </summary>
     /// <param name="name">the name of the metadata property to set.</param>
     /// <param name="value">the value of the property, or <c>null</c> to remove that property.</param>
-    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError"/> for more
-    /// information.</returns>
+    /// <returns><c>true</c> on success or <c>false</c> on failure; call <see cref="GetError()"/>() for more
+    ///          information.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0</since>
-    /// <seealso cref="GetAppMetadataProperty"/>
-    /// <seealso cref="SetAppMetadata"/>
+    /// <since>This function is available since SDL 3.2.0.</since>
+    /// <seealso cref="GetAppMetadataProperty(string)"/>
+    /// <seealso cref="SetAppMetadata(string, string, string)"/>
     public static bool SetAppMetadataProperty(string name, string value)
     {
         return SetAppMetadataPropertyNativeFunction(name, value);
