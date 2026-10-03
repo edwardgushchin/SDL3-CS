@@ -82,5 +82,10 @@ public static partial class SDL
         /// <c>true</c> if the button is pressed
         /// </summary>
         [MarshalAs(UnmanagedType.I1)] public bool Down;
+
+        /// <summary>
+        /// The device type of the pen, if known (added in 3.4.18).
+        /// </summary>
+        public PenDeviceType DeviceType;
     }
 }

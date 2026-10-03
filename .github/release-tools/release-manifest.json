@@ -496,16 +496,16 @@
       "id": "SDL",
       "repository": "https://github.com/edwardgushchin/SDL",
       "upstreamRepository": "https://github.com/libsdl-org/SDL",
-      "sourceRef": "fa2c02bb6e21974a89ea9824bc53c9932abe5f9c",
+      "sourceRef": "829a65d769d935c4852f8159e964312c0957260a",
       "sourceFolder": "SDL",
-      "nativeVersion": "3.4.16",
+      "nativeVersion": "3.4.18",
       "packageNameSuffix": "",
       "dependencies": [],
       "cmakeArgs": [
         "-DSDL_INSTALL=ON",
         "-DSDL_TESTS=OFF",
         "-DSDL_EXAMPLES=OFF",
-        "-DSDL_REVISION=SDL-3.4.16-release-3.4.16"
+        "-DSDL_REVISION=SDL-3.4.18-release-3.4.18"
       ],
       "artifactPatterns": {
         "windows": [
