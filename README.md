@@ -251,6 +251,7 @@ More examples can be found in [SDL3-CS.Examples](https://github.com/edwardgushch
 - [concrete](https://github.com/sjoerdev/concrete) — a modern .NET game engine.
 - [Cut the Rope: DX](https://github.com/yell0wsuit/cuttherope-dx) — a fan-made enhancement of the Cut the Rope PC game.
 - [Dead Cells Core Modding](https://github.com/dead-cells-core-modding/core) — a modding API and loader for Dead Cells.
+- [Electron2D](https://github.com/edwardgushchin/Electron2D) — an agent-native, cross-platform C# 2D game engine.
 - [Genouka UndertaleModTool](https://github.com/Genouka/UndertaleModTool) — an UndertaleModTool fork with an Avalonia desktop frontend.
 - [OpenUtau](https://github.com/openutau/OpenUtau) — an open-source singing synthesis editor.
 - [QBX](https://github.com/logiclrd/QBX) — a cross-platform reimplementation of QuickBASIC 7.1.
