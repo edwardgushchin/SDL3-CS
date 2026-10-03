@@ -70,5 +70,10 @@ public static partial class SDL
         /// Complete pen input state at time of event (added in 3.4.16).
         /// </summary>
         public PenInputFlags PenState;
+
+        /// <summary>
+        /// The device type of the pen, if known (added in 3.4.18).
+        /// </summary>
+        public PenDeviceType DeviceType;
     }
 }

@@ -14,4 +14,13 @@ internal static class PenProximityEventTests
         TestAssert.Equal(24, Marshal.OffsetOf<SDL3.SDL.PenProximityEvent>(nameof(SDL3.SDL.PenProximityEvent.PenState)).ToInt32(), "SDL.PenProximityEvent.PenState must keep the native offset.");
         TestAssert.Equal(32, Marshal.SizeOf<SDL3.SDL.PenProximityEvent>(), "SDL.PenProximityEvent must match SDL 3.4.16 native size.");
     }
+
+    public static void DeviceType_MatchesNativeLayout()
+    {
+        FieldInfo? field = typeof(SDL3.SDL.PenProximityEvent).GetField(nameof(SDL3.SDL.PenProximityEvent.DeviceType));
+        TestAssert.NotNull(field, "SDL.PenProximityEvent.DeviceType must be public.");
+        TestAssert.Equal(typeof(SDL3.SDL.PenDeviceType), field!.FieldType, "SDL.PenProximityEvent.DeviceType must use SDL.PenDeviceType.");
+        TestAssert.Equal(28, Marshal.OffsetOf<SDL3.SDL.PenProximityEvent>(nameof(SDL3.SDL.PenProximityEvent.DeviceType)).ToInt32(), "SDL.PenProximityEvent.DeviceType must keep the SDL 3.4.18 native offset.");
+        TestAssert.Equal(32, Marshal.SizeOf<SDL3.SDL.PenProximityEvent>(), "SDL.PenProximityEvent must match SDL 3.4.18 native size.");
+    }
 }

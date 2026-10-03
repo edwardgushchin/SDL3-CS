@@ -1662,6 +1662,8 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -1710,6 +1712,8 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the vertex shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -1738,6 +1742,8 @@ public partial class SDL
     /// <para>Binds storage textures for use on the vertex shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -1818,6 +1824,8 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -1844,6 +1852,8 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the fragment shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <seealso cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -1882,6 +1892,8 @@ public partial class SDL
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -1907,6 +1919,8 @@ public partial class SDL
     /// <para>Binds storage textures for use on the fragment shader.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.GraphicsStorageRead"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUShader(nint, in GPUShaderCreateInfo)"/>.</para>
     /// </summary>
     /// <param name="renderPass">a render pass handle.</param>
@@ -2222,6 +2236,8 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
@@ -2248,6 +2264,8 @@ public partial class SDL
     /// <summary>
     /// <para>Binds texture-sampler pairs for use on the compute shader.</para>
     /// <para>The textures must have been created with <see cref="GPUTextureUsageFlags.Sampler"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, etc.). Multisample textures are not allowed.</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
@@ -2286,6 +2304,8 @@ public partial class SDL
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>
@@ -2311,6 +2331,8 @@ public partial class SDL
     /// <para>Binds storage textures as readonly for use on the compute pipeline.</para>
     /// <para>These textures must have been created with
     /// <see cref="GPUTextureUsageFlags.ComputeStorageRead"/>.</para>
+    /// <para>The textures being bound must have a matching type declared in the shader
+    /// (2D, 3D, 2DMS, etc.)</para>
     /// <para>Be sure your shader is set up according to the requirements documented in <see cref="CreateGPUComputePipeline"/>.</para>
     /// </summary>
     /// <param name="computePass">a compute pass handle.</param>

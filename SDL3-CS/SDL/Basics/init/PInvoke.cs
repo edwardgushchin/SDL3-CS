@@ -316,8 +316,9 @@ public static partial class SDL
     /// <item><see cref="Props.AppMetadataNameString"/>`: The human-readable name of the
     /// application, like <c>"My Game 2: Bad Guy's Revenge!"</c>. This will show up
     /// anywhere the OS shows the name of the application separately from window
-    /// titles, such as volume control applets, etc. This defaults to <c>"SDL
-    /// Application"</c>.</item>
+    /// titles, such as volume control applets, etc. If not provided by the app,
+    /// SDL will attempt to pick a reasonable default (the app's binary's name
+    /// if the platform can provide it, or <c>"SDL Application"</c> if all else fails).</item>
     /// <item><see cref="Props.AppMetadataVersionString"/>: The version of the app that is
     /// running; there are no rules on format, so <c>"1.0.3beta2"</c> and <c>"April 22nd,
     /// 2024"</c> and a git hash are all valid options. This has no default.</item>

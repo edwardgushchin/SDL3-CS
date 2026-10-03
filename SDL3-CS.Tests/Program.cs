@@ -1,5 +1,19 @@
 using SDL3;
 
+if (args.SequenceEqual(["--sdl-3.4.18-only"]))
+{
+    SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.PenState_MatchesNativeLayout();
+    SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.DeviceType_MatchesNativeLayout();
+    SDL3.Tests.SDL.InputEvents.Events.PenMotionEventTests.DeviceType_MatchesNativeLayout();
+    SDL3.Tests.SDL.InputEvents.Events.PenTouchEventTests.DeviceType_MatchesNativeLayout();
+    SDL3.Tests.SDL.InputEvents.Events.PenButtonEventTests.DeviceType_MatchesNativeLayout();
+    SDL3.Tests.SDL.InputEvents.Events.PenAxisEventTests.DeviceType_MatchesNativeLayout();
+    SDL3.Tests.SDL.InputEvents.Keycode.KeycodeTests.Front_MatchesStableNativeValue();
+    SDL3.Tests.SDL.InputEvents.Scancode.ScancodeTests.Front_MatchesStableNativeValue();
+    Console.WriteLine("SDL 3.4.18 stable ABI and key constants tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--argv-callbacks-only"]))
 {
     SDL3.Tests.SDL.Basics.Main.PInvokeTests.RunApp_AdaptsCompleteUtf8ArgumentsFromNativeCallback();
@@ -327,7 +341,14 @@ Console.WriteLine("SDL.Events binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.EventTypeTests.GroupBoundaries_MatchSupportedEvents();
 Console.WriteLine("SDL.EventType group boundary tests passed.");
 SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.PenState_MatchesNativeLayout();
-Console.WriteLine("SDL.PenProximityEvent layout test passed.");
+SDL3.Tests.SDL.InputEvents.Events.PenProximityEventTests.DeviceType_MatchesNativeLayout();
+SDL3.Tests.SDL.InputEvents.Events.PenMotionEventTests.DeviceType_MatchesNativeLayout();
+SDL3.Tests.SDL.InputEvents.Events.PenTouchEventTests.DeviceType_MatchesNativeLayout();
+SDL3.Tests.SDL.InputEvents.Events.PenButtonEventTests.DeviceType_MatchesNativeLayout();
+SDL3.Tests.SDL.InputEvents.Events.PenAxisEventTests.DeviceType_MatchesNativeLayout();
+SDL3.Tests.SDL.InputEvents.Keycode.KeycodeTests.Front_MatchesStableNativeValue();
+SDL3.Tests.SDL.InputEvents.Scancode.ScancodeTests.Front_MatchesStableNativeValue();
+Console.WriteLine("SDL 3.4.18 pen event and key constant tests passed.");
 SDL3.Tests.SDL.InputEvents.Gamepad.PInvokeTests.RunAll();
 Console.WriteLine("SDL.Gamepad binding tests passed.");
 SDL3.Tests.SDL.InputEvents.Hidapi.PInvokeTests.RunAll();

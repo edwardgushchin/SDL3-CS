@@ -75,5 +75,10 @@ public static partial class SDL
         /// Y coordinate, relative to window
         /// </summary>
         public float Y;
+
+        /// <summary>
+        /// The device type of the pen, if known (added in 3.4.18).
+        /// </summary>
+        public PenDeviceType DeviceType;
     }
 }
