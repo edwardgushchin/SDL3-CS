@@ -165,6 +165,36 @@ jobs:
         shell: bash
         run: python3 -B .github/release-tools/Test-LgplReplaceability.py
 
+  io-native-x86:
+    name: IO size_t ABI (Windows x86)
+    runs-on: windows-2025
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout SDL3-CS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish 32-bit IO regression tests
+        shell: pwsh
+        run: |
+          dotnet publish ./SDL3-CS.Tests/SDL3-CS.Tests.csproj -c Release `
+            -r win-x86 --self-contained true /p:GeneratePackageOnBuild=false `
+            --output ./artifacts/io-size-t-win-x86
+          if ($LASTEXITCODE -ne 0) { throw 'Publishing 32-bit IO regression tests failed.' }
+          Copy-Item -LiteralPath ./SDL3-CS.NativePackages/SDL3-CS.Windows/lib/win-x86/SDL3.dll `
+            -Destination ./artifacts/io-size-t-win-x86/SDL3.dll
+
+      - name: Run 32-bit native IO and managed Stream regression tests
+        shell: pwsh
+        run: |
+          ./artifacts/io-size-t-win-x86/SDL3-CS.Tests.exe --io-size-t-32-bit-only
+          if ($LASTEXITCODE -ne 0) { throw '32-bit IO regression tests failed.' }
+
   examples-desktop:
     name: Build desktop examples (${{ matrix.name }})
     runs-on: ${{ matrix.runner }}

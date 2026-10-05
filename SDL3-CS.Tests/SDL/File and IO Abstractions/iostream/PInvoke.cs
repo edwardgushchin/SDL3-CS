@@ -56,6 +56,7 @@ internal static class PInvokeTests
         TellIO_ForwardsContextAndReturnsNativeValue();
         ReadIO_ForwardsBufferAndReturnsNativeValue();
         WriteIO_ForwardsBufferAndReturnsNativeValue();
+        ReadIOAndWriteIO_NativeMemoryStreamCoversShortCountsEOFAndErrors();
         IOprintf_ForwardsFormatAndReturnsNativeValue();
         IOvprintf_ForwardsFormatArgumentsAndReturnsNativeValue();
         FlushIO_ForwardsContextAndReturnsNativeValue();
@@ -254,30 +255,96 @@ internal static class PInvokeTests
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_ReadIO");
         AssertSdlLibraryImport(nativeMethod, "SDL_ReadIO");
+        TestAssert.Equal(typeof(UIntPtr), nativeMethod.ReturnType, "SDL_ReadIO must return native size_t.");
+        TestAssert.Equal(typeof(UIntPtr), typeof(SDL3.SDL).GetNestedType("ReadIONative", BindingFlags.NonPublic)!.GetMethod("Invoke")!.ReturnType, "SDL_ReadIO hook must return native size_t.");
+        TestAssert.Equal(typeof(ulong), typeof(SDL3.SDL).GetMethod("ReadIO")!.ReturnType, "SDL.ReadIO must preserve its public ulong result.");
 
         ResetCaptureState();
-        nextULong = 6;
+        nextUIntPtr = (UIntPtr)6;
         using NativeHookScope _ = NativeHookScope.Install("ReadIONativeFunction", nameof(CaptureBufferIO));
 
         ulong result = SDL3.SDL.ReadIO((IntPtr)3001, (IntPtr)3002, (UIntPtr)6);
 
         TestAssert.Equal(6UL, result, "SDL.ReadIO must return native byte count.");
         AssertBufferArguments((IntPtr)3001, (IntPtr)3002, (UIntPtr)6, "SDL.ReadIO");
+        nextUIntPtr = UIntPtr.MaxValue;
+        TestAssert.Equal(UIntPtr.MaxValue.ToUInt64(), SDL3.SDL.ReadIO((IntPtr)3001, (IntPtr)3002, UIntPtr.MaxValue), "SDL.ReadIO must widen size_t without truncation or sign extension.");
+        nextUIntPtr = UIntPtr.Zero;
+        TestAssert.Equal(0UL, SDL3.SDL.ReadIO((IntPtr)3001, (IntPtr)3002, UIntPtr.Zero), "SDL.ReadIO must preserve zero results.");
     }
 
     public static void WriteIO_ForwardsBufferAndReturnsNativeValue()
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_WriteIO");
         AssertSdlLibraryImport(nativeMethod, "SDL_WriteIO");
+        TestAssert.Equal(typeof(UIntPtr), nativeMethod.ReturnType, "SDL_WriteIO must return native size_t.");
+        TestAssert.Equal(typeof(UIntPtr), typeof(SDL3.SDL).GetNestedType("WriteIONative", BindingFlags.NonPublic)!.GetMethod("Invoke")!.ReturnType, "SDL_WriteIO hook must return native size_t.");
+        TestAssert.Equal(typeof(ulong), typeof(SDL3.SDL).GetMethod("WriteIO")!.ReturnType, "SDL.WriteIO must preserve its public ulong result.");
 
         ResetCaptureState();
-        nextULong = 8;
+        nextUIntPtr = (UIntPtr)8;
         using NativeHookScope _ = NativeHookScope.Install("WriteIONativeFunction", nameof(CaptureBufferIO));
 
         ulong result = SDL3.SDL.WriteIO((IntPtr)3003, (IntPtr)3004, (UIntPtr)8);
 
         TestAssert.Equal(8UL, result, "SDL.WriteIO must return native byte count.");
         AssertBufferArguments((IntPtr)3003, (IntPtr)3004, (UIntPtr)8, "SDL.WriteIO");
+        nextUIntPtr = UIntPtr.MaxValue;
+        TestAssert.Equal(UIntPtr.MaxValue.ToUInt64(), SDL3.SDL.WriteIO((IntPtr)3003, (IntPtr)3004, UIntPtr.MaxValue), "SDL.WriteIO must widen size_t without truncation or sign extension.");
+        nextUIntPtr = UIntPtr.Zero;
+        TestAssert.Equal(0UL, SDL3.SDL.WriteIO((IntPtr)3003, (IntPtr)3004, UIntPtr.Zero), "SDL.WriteIO must preserve zero results.");
+    }
+
+    public static unsafe void ReadIOAndWriteIO_NativeMemoryStreamCoversShortCountsEOFAndErrors()
+    {
+        byte[] memory = new byte[6];
+        byte[] payload = [1, 2, 3, 4];
+        byte[] received = new byte[8];
+        fixed (byte* memoryPointer = &memory[0])
+        fixed (byte* payloadPointer = &payload[0])
+        fixed (byte* receivedPointer = &received[0])
+        {
+            IntPtr context = SDL3.SDL.IOFromMem((IntPtr)memoryPointer, (UIntPtr)memory.Length);
+            TestAssert.True(context != IntPtr.Zero, "Native memory stream must open.");
+            try
+            {
+                TestAssert.Equal(4UL, SDL3.SDL.WriteIO(context, (IntPtr)payloadPointer, (UIntPtr)payload.Length), "Native write must return the full byte count.");
+                TestAssert.Equal(2UL, SDL3.SDL.WriteIO(context, (IntPtr)payloadPointer, (UIntPtr)payload.Length), "Native write must report a short count at capacity.");
+                TestAssert.Equal(0L, SDL3.SDL.SeekIO(context, 0, SDL3.SDL.IOWhence.Set), "Native stream must rewind.");
+                TestAssert.Equal(6UL, SDL3.SDL.ReadIO(context, (IntPtr)receivedPointer, (UIntPtr)received.Length), "Native read must report a short count at capacity.");
+                TestAssert.True(received.AsSpan(0, 6).SequenceEqual(new byte[] { 1, 2, 3, 4, 1, 2 }), "Native read must preserve written bytes.");
+                TestAssert.Equal(0UL, SDL3.SDL.ReadIO(context, (IntPtr)receivedPointer, (UIntPtr)1), "Native EOF must return zero.");
+                TestAssert.Equal(SDL3.SDL.IOStatus.EOF, SDL3.SDL.GetIOStatus(context), "Native read must report EOF.");
+                TestAssert.Equal(0UL, SDL3.SDL.ReadIO(context, IntPtr.Zero, UIntPtr.Zero), "Zero-byte read must return zero.");
+                TestAssert.Equal(SDL3.SDL.IOStatus.EOF, SDL3.SDL.GetIOStatus(context), "Zero-byte read must preserve EOF.");
+                TestAssert.Equal(0UL, SDL3.SDL.WriteIO(context, IntPtr.Zero, UIntPtr.Zero), "Zero-byte write must return zero.");
+                TestAssert.Equal(SDL3.SDL.IOStatus.EOF, SDL3.SDL.GetIOStatus(context), "Zero-byte write must preserve EOF.");
+            }
+            finally
+            {
+                TestAssert.True(SDL3.SDL.CloseIO(context), "Native memory stream must close.");
+            }
+
+            context = SDL3.SDL.IOFromConstMem((IntPtr)payloadPointer, (UIntPtr)payload.Length);
+            TestAssert.True(context != IntPtr.Zero, "Native read-only stream must open.");
+            try
+            {
+                TestAssert.Equal(0UL, SDL3.SDL.WriteIO(context, (IntPtr)payloadPointer, (UIntPtr)1), "Read-only write must return zero.");
+                TestAssert.Equal(SDL3.SDL.IOStatus.ReadOnly, SDL3.SDL.GetIOStatus(context), "Read-only write must report ReadOnly.");
+            }
+            finally
+            {
+                TestAssert.True(SDL3.SDL.CloseIO(context), "Native read-only stream must close.");
+            }
+
+            SDL3.SDL.ClearError();
+            TestAssert.Equal(0UL, SDL3.SDL.ReadIO(IntPtr.Zero, (IntPtr)receivedPointer, (UIntPtr)1), "Null stream read must return zero.");
+            TestAssert.True(!string.IsNullOrEmpty(SDL3.SDL.GetError()), "Null stream read must set a native error.");
+            SDL3.SDL.ClearError();
+            TestAssert.Equal(0UL, SDL3.SDL.WriteIO(IntPtr.Zero, (IntPtr)payloadPointer, (UIntPtr)1), "Null stream write must return zero.");
+            TestAssert.True(!string.IsNullOrEmpty(SDL3.SDL.GetError()), "Null stream write must set a native error.");
+            SDL3.SDL.ClearError();
+        }
     }
 
     public static void IOprintf_ForwardsFormatAndReturnsNativeValue()
@@ -731,13 +798,13 @@ internal static class PInvokeTests
         return nextLong;
     }
 
-    private static ulong CaptureBufferIO(IntPtr context, IntPtr ptr, UIntPtr size)
+    private static UIntPtr CaptureBufferIO(IntPtr context, IntPtr ptr, UIntPtr size)
     {
         capturedContext = context;
         capturedPtr = ptr;
         capturedSize = size;
         capturedCallCount++;
-        return nextULong;
+        return nextUIntPtr;
     }
 
     private static UIntPtr CaptureIOprintf(IntPtr context, string fmt)

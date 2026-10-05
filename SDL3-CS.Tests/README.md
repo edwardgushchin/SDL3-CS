@@ -36,6 +36,14 @@ dotnet build .\SDL3-CS.Tests\SDL3-CS.Tests.csproj -c Release
 dotnet run --project .\SDL3-CS.Tests\SDL3-CS.Tests.csproj -c Release --no-build
 ```
 
+The IO regression profile checks pointer-sized native return metadata, unsigned widening to the unchanged public `ulong` result, native memory-stream read/write counts, EOF, zero-byte operations, errors, and the managed `Stream` adapter:
+
+```powershell
+dotnet run --project .\SDL3-CS.Tests\SDL3-CS.Tests.csproj -c Release -- --io-size-t-only
+```
+
+CI also publishes this profile as a self-contained `win-x86` executable, loads the tracked x86 SDL runtime, and uses `--io-size-t-32-bit-only` to require a genuinely 32-bit process. These tests do not validate WebAssembly execution.
+
 For wrapper documentation work, also run:
 
 ```powershell

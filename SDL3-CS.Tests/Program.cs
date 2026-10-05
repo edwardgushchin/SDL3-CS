@@ -1,5 +1,20 @@
 using SDL3;
 
+if (args.SequenceEqual(["--io-size-t-only"]) || args.SequenceEqual(["--io-size-t-32-bit-only"]))
+{
+    if (args[0] == "--io-size-t-32-bit-only")
+    {
+        SDL3.Tests.TestAssert.Equal(4, IntPtr.Size, "IO ABI regression tests must execute in a 32-bit process.");
+    }
+
+    SDL3.Tests.SDL.FileAndIOAbstractions.Iostream.PInvokeTests.ReadIO_ForwardsBufferAndReturnsNativeValue();
+    SDL3.Tests.SDL.FileAndIOAbstractions.Iostream.PInvokeTests.WriteIO_ForwardsBufferAndReturnsNativeValue();
+    SDL3.Tests.SDL.FileAndIOAbstractions.Iostream.PInvokeTests.ReadIOAndWriteIO_NativeMemoryStreamCoversShortCountsEOFAndErrors();
+    SDL3.Tests.SDL.StreamTests.RunAll();
+    Console.WriteLine($"SDL IO size_t ABI and Stream focused tests passed ({IntPtr.Size * 8}-bit).");
+    return;
+}
+
 if (args.SequenceEqual(["--aligned-alloc-zero-only"]))
 {
     SDL3.Tests.SDL.AdditionalFunctionality.Stdinc.PInvokeTests.AlignedAllocZero_AllocatesAlignedZeroedMemory();
