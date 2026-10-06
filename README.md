@@ -77,7 +77,7 @@ This source tree targets the following release lines:
 |-----------|-----------------|---------------|--------------|
 | SDL3 managed bindings | `SDL3-CS` | SDL `3.4.18` | `3.4.18.x` |
 | SDL3 native runtime | `SDL3-CS.{Platform}` | SDL `3.4.18` | `3.4.18.x` |
-| SDL_image native runtime | `SDL3-CS.{Platform}.Image` | SDL_image `3.4.6` | `3.4.6.x` |
+| SDL_image native runtime | `SDL3-CS.{Platform}.Image` | SDL_image `3.4.8` | `3.4.8.x` |
 | SDL_ttf native runtime | `SDL3-CS.{Platform}.TTF` | SDL_ttf `3.2.2` | `3.2.2.x` |
 | SDL_mixer native runtime | `SDL3-CS.{Platform}.Mixer` | SDL_mixer `3.2.4` | `3.2.4.x` |
 | SDL_shadercross native runtime | `SDL3-CS.{Platform}.Shadercross` | SDL_shadercross `3.0.0` | `3.0.0.x` |

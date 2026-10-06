@@ -34,10 +34,10 @@
         "SDL_shadercross": 13
       },
       "1": {
-        "SDL_image": 10,
-        "SDL_mixer": 9,
-        "SDL_ttf": 9,
-        "SDL_shadercross": 9
+        "SDL_image": 0,
+        "SDL_mixer": 13,
+        "SDL_ttf": 13,
+        "SDL_shadercross": 13
       },
       "2": {
         "SDL_image": 11,
@@ -541,9 +541,9 @@
       "id": "SDL_image",
       "repository": "https://github.com/edwardgushchin/SDL_image",
       "upstreamRepository": "https://github.com/libsdl-org/SDL_image",
-      "sourceRef": "f661fa1ad24ab1b81e43662532f9a6a9fcf67ea6",
+      "sourceRef": "0891fc30428b518e7d018677bd6fa95c1a50f4c6",
       "sourceFolder": "SDL_image",
-      "nativeVersion": "3.4.6",
+      "nativeVersion": "3.4.8",
       "packageNameSuffix": "Image",
       "dependencies": [
         "SDL"
