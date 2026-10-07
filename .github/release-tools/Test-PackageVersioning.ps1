@@ -125,16 +125,16 @@ else {
         }
         else {
             $requiredRevisionOneOverrides = [ordered]@{
-                SDL_image = 10
-                SDL_mixer = 9
-                SDL_ttf = 9
-                SDL_shadercross = 9
+                SDL_image = 0
+                SDL_mixer = 13
+                SDL_ttf = 13
+                SDL_shadercross = 13
             }
             foreach ($componentOverride in $requiredRevisionOneOverrides.GetEnumerator()) {
                 $componentId = $componentOverride.Key
                 $override = $revisionOne.Value.PSObject.Properties[$componentId]
                 if (-not $override -or [int] $override.Value -ne $componentOverride.Value) {
-                    Add-VersioningError "componentPackageRevisionOverrides.1.$componentId must be $($componentOverride.Value) for public release v3.4.14.1."
+                    Add-VersioningError "componentPackageRevisionOverrides.1.$componentId must be $($componentOverride.Value) for public release v3.4.18.1."
                 }
             }
             if ($revisionOne.Value.PSObject.Properties['SDL']) {

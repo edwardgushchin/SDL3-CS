@@ -57,7 +57,7 @@ else {
 
 $requiredReleaseOverrides = [ordered]@{
     '0' = [ordered]@{ SDL_image = 12; SDL_mixer = 13; SDL_ttf = 13; SDL_shadercross = 13 }
-    '1' = [ordered]@{ SDL_image = 10; SDL_mixer = 9; SDL_ttf = 9; SDL_shadercross = 9 }
+    '1' = [ordered]@{ SDL_image = 0; SDL_mixer = 13; SDL_ttf = 13; SDL_shadercross = 13 }
     '6' = [ordered]@{ SDL_image = 8; SDL_mixer = 7; SDL_ttf = 7; SDL_shadercross = 7 }
     '7' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
 }
@@ -381,7 +381,7 @@ if ($componentIds.Count -ne ($componentIds | Select-Object -Unique).Count) {
 
 $requiredComponentBaselines = [ordered]@{
     SDL = [ordered]@{ sourceRef = '829a65d769d935c4852f8159e964312c0957260a'; nativeVersion = '3.4.18' }
-    SDL_image = [ordered]@{ sourceRef = 'f661fa1ad24ab1b81e43662532f9a6a9fcf67ea6'; nativeVersion = '3.4.6' }
+    SDL_image = [ordered]@{ sourceRef = '0891fc30428b518e7d018677bd6fa95c1a50f4c6'; nativeVersion = '3.4.8' }
     SDL_shadercross = [ordered]@{ sourceRef = 'e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba'; nativeVersion = '3.0.0' }
 }
 foreach ($requiredComponent in $requiredComponentBaselines.GetEnumerator()) {
