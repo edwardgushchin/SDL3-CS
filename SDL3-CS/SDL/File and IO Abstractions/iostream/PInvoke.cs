@@ -454,8 +454,8 @@ public static partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_ReadIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_ReadIO(IntPtr context, IntPtr ptr, UIntPtr size);
-    private delegate ulong ReadIONative(IntPtr context, IntPtr ptr, UIntPtr size);
+    private static partial UIntPtr SDL_ReadIO(IntPtr context, IntPtr ptr, UIntPtr size);
+    private delegate UIntPtr ReadIONative(IntPtr context, IntPtr ptr, UIntPtr size);
     private static ReadIONative ReadIONativeFunction = SDL_ReadIO;
 
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);</code>
@@ -482,14 +482,14 @@ public static partial class SDL
     /// <seealso cref="GetIOStatus"/>
     public static ulong ReadIO(IntPtr context, IntPtr ptr, UIntPtr size)
     {
-        return ReadIONativeFunction(context, ptr, size);
+        return ReadIONativeFunction(context, ptr, size).ToUInt64();
     }
 
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_WriteIO"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial ulong SDL_WriteIO(IntPtr context, IntPtr ptr, UIntPtr size);
-    private delegate ulong WriteIONative(IntPtr context, IntPtr ptr, UIntPtr size);
+    private static partial UIntPtr SDL_WriteIO(IntPtr context, IntPtr ptr, UIntPtr size);
+    private delegate UIntPtr WriteIONative(IntPtr context, IntPtr ptr, UIntPtr size);
     private static WriteIONative WriteIONativeFunction = SDL_WriteIO;
 
     /// <code>extern SDL_DECLSPEC size_t SDLCALL SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);</code>
@@ -521,7 +521,7 @@ public static partial class SDL
     /// <seealso cref="GetIOStatus"/>
     public static ulong WriteIO(IntPtr context, IntPtr ptr, UIntPtr size)
     {
-        return WriteIONativeFunction(context, ptr, size);
+        return WriteIONativeFunction(context, ptr, size).ToUInt64();
     }
 
 

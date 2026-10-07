@@ -20,7 +20,7 @@ internal static class StreamTests
     private static IntPtr nextPointer;
     private static IntPtr nextErrorPointer;
     private static long nextLong;
-    private static ulong nextULong;
+    private static UIntPtr nextUIntPtr;
     private static bool nextBool;
     private static byte[]? nextReadBytes;
     private static int capturedCallCount;
@@ -233,7 +233,7 @@ internal static class StreamTests
         TestAssert.Equal(0, zeroRead, "SDL.IOStream.Read must return 0 for zero-count reads.");
 
         nextReadBytes = [7, 8, 9];
-        nextULong = 3;
+        nextUIntPtr = (UIntPtr)3;
         using NativeHookScope readHook = NativeHookScope.Install("ReadIONativeFunction", nameof(CaptureReadIO));
         int read = stream.Read(buffer, 1, 3);
 
@@ -259,7 +259,7 @@ internal static class StreamTests
         TestAssert.Equal(0, capturedCallCount, "SDL.IOStream.Write must not call native write for zero-count writes.");
 
         using NativeHookScope writeHook = NativeHookScope.Install("WriteIONativeFunction", nameof(CaptureWriteIO));
-        nextULong = 3;
+        nextUIntPtr = (UIntPtr)3;
         stream.Write(buffer, 1, 3);
 
         TestAssert.Equal((IntPtr)0x7006, capturedContext, "SDL.IOStream.Write must forward context.");
@@ -268,7 +268,7 @@ internal static class StreamTests
 
         IntPtr errorPointer = Marshal.StringToCoTaskMemUTF8("write failed");
         nextErrorPointer = errorPointer;
-        nextULong = 1;
+        nextUIntPtr = (UIntPtr)1;
 
         try
         {
@@ -434,7 +434,7 @@ internal static class StreamTests
         return nextLong;
     }
 
-    private static ulong CaptureReadIO(IntPtr context, IntPtr ptr, UIntPtr size)
+    private static UIntPtr CaptureReadIO(IntPtr context, IntPtr ptr, UIntPtr size)
     {
         capturedCallCount++;
         capturedContext = context;
@@ -445,10 +445,10 @@ internal static class StreamTests
             Marshal.Copy(nextReadBytes, 0, ptr, nextReadBytes.Length);
         }
 
-        return nextULong;
+        return nextUIntPtr;
     }
 
-    private static ulong CaptureWriteIO(IntPtr context, IntPtr ptr, UIntPtr size)
+    private static UIntPtr CaptureWriteIO(IntPtr context, IntPtr ptr, UIntPtr size)
     {
         capturedCallCount++;
         capturedContext = context;
@@ -461,7 +461,7 @@ internal static class StreamTests
             Marshal.Copy(ptr, capturedWriteBytes, 0, byteCount);
         }
 
-        return nextULong;
+        return nextUIntPtr;
     }
 
     private static IntPtr CaptureGetError()
@@ -484,7 +484,7 @@ internal static class StreamTests
         nextPointer = IntPtr.Zero;
         nextErrorPointer = IntPtr.Zero;
         nextLong = 0;
-        nextULong = 0;
+        nextUIntPtr = UIntPtr.Zero;
         nextBool = false;
         nextReadBytes = null;
         capturedCallCount = 0;
