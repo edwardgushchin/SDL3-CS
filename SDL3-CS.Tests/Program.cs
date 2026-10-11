@@ -1,5 +1,13 @@
 using SDL3;
 
+if (args.SequenceEqual(["--gpu-blend-constants-only"]))
+{
+    SDL3.Tests.SDL.GPU.Gpu.PInvokeTests.SetGPUBlendConstants_ForwardsBlendConstants();
+    SDL3.Tests.SDL.GPU.Gpu.PInvokeTests.SetGPUBlendConstants_NativeByValueColor();
+    Console.WriteLine("SDL GPU blend constants by-value ABI focused tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--io-size-t-only"]) || args.SequenceEqual(["--io-size-t-32-bit-only"]))
 {
     if (args[0] == "--io-size-t-32-bit-only")

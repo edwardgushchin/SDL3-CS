@@ -1757,8 +1757,8 @@ public partial class SDL
 
     [ExcludeFromCodeCoverage]
     [LibraryImport(SDLLibrary, EntryPoint = "SDL_SetGPUBlendConstants"), UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void SDL_SetGPUBlendConstants(IntPtr renderPass, in FColor blendConstants);
-    private delegate void SetGPUBlendConstantsNativeDelegate(IntPtr renderPass, in FColor blendConstants);
+    private static partial void SDL_SetGPUBlendConstants(IntPtr renderPass, FColor blendConstants);
+    private delegate void SetGPUBlendConstantsNativeDelegate(IntPtr renderPass, FColor blendConstants);
     private static SetGPUBlendConstantsNativeDelegate SetGPUBlendConstantsNativeFunction = SDL_SetGPUBlendConstants;
 
     /// <code>extern SDL_DECLSPEC void SDLCALL SDL_SetGPUBlendConstants(SDL_GPURenderPass *render_pass, SDL_FColor blend_constants);</code>
@@ -1772,7 +1772,7 @@ public partial class SDL
     /// <seealso cref="GPUBlendFactor.OneMinusConstantColor"/>
     public static void SetGPUBlendConstants(IntPtr renderPass, in FColor blendConstants)
     {
-        SetGPUBlendConstantsNativeFunction(renderPass, in blendConstants);
+        SetGPUBlendConstantsNativeFunction(renderPass, blendConstants);
     }
 
 
