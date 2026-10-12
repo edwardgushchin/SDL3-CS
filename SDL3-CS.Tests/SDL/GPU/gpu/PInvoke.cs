@@ -171,6 +171,7 @@ internal static class PInvokeTests
         SetGPUViewport_ForwardsViewport();
         SetGPUScissor_ForwardsScissor();
         SetGPUBlendConstants_ForwardsBlendConstants();
+        SetGPUBlendConstants_NativeByValueColor();
         SetGPUStencilReference_ForwardsReference();
         BindGPUVertexBuffersArray_ForwardsEmptyAndNonEmptyArrays();
         BindGPUVertexBuffersSpan_ForwardsArguments();
@@ -1187,7 +1188,9 @@ internal static class PInvokeTests
     {
         MethodInfo nativeMethod = GetNativeMethod("SDL_SetGPUBlendConstants");
         AssertSdlLibraryImport(nativeMethod, "SDL_SetGPUBlendConstants");
-        AssertByRefParameter(nativeMethod, "blendConstants");
+        TestAssert.Equal(typeof(SDL3.SDL.FColor), nativeMethod.GetParameters()[1].ParameterType, "SDL_SetGPUBlendConstants takes SDL_FColor by value in the C ABI.");
+        FieldInfo hook = typeof(SDL3.SDL).GetField("SetGPUBlendConstantsNativeFunction", BindingFlags.Static | BindingFlags.NonPublic)!;
+        TestAssert.Equal(typeof(SDL3.SDL.FColor), hook.FieldType.GetMethod("Invoke")!.GetParameters()[1].ParameterType, "The native hook must preserve the by-value color ABI.");
 
         ResetCaptureState();
         using NativeHookScope _ = NativeHookScope.Install("SetGPUBlendConstantsNativeFunction", nameof(CaptureSetGPUBlendConstants));
@@ -1197,8 +1200,41 @@ internal static class PInvokeTests
 
         TestAssert.Equal((IntPtr)2801, capturedRenderPass, "SDL.SetGPUBlendConstants must forward renderPass.");
         TestAssert.Equal(blendConstants.R, capturedBlendConstants.R, "SDL.SetGPUBlendConstants must forward blend R.");
+        TestAssert.Equal(blendConstants.G, capturedBlendConstants.G, "SDL.SetGPUBlendConstants must forward blend G.");
+        TestAssert.Equal(blendConstants.B, capturedBlendConstants.B, "SDL.SetGPUBlendConstants must forward blend B.");
         TestAssert.Equal(blendConstants.A, capturedBlendConstants.A, "SDL.SetGPUBlendConstants must forward blend A.");
         TestAssert.Equal(1, capturedCallCount, "SDL.SetGPUBlendConstants must call native hook once.");
+    }
+
+    public static void SetGPUBlendConstants_NativeByValueColor()
+    {
+        if (Environment.GetEnvironmentVariable("SDL3CS_TEST_NATIVE_GPU_BLEND") != "1") return;
+        TestAssert.True(SDL3.SDL.InitSubSystem(SDL3.SDL.InitFlags.Video), "Native GPU ABI test initializes video: " + SDL3.SDL.GetError());
+        var device = SDL3.SDL.CreateGPUDevice(SDL3.SDL.GPUShaderFormat.SPIRV, false, "vulkan");
+        TestAssert.True(device != IntPtr.Zero, "Native GPU ABI test requires a Vulkan device: " + SDL3.SDL.GetError());
+        IntPtr texture = IntPtr.Zero, command = IntPtr.Zero, pass = IntPtr.Zero;
+        try
+        {
+            texture = SDL3.SDL.CreateGPUTexture(device, new() { Type = SDL3.SDL.GPUTextureType.TextureType2D, Format = SDL3.SDL.GPUTextureFormat.R8G8B8A8Unorm, Width = 4, Height = 4, LayerCountOrDepth = 1, NumLevels = 1, Usage = SDL3.SDL.GPUTextureUsageFlags.ColorTarget });
+            TestAssert.True(texture != IntPtr.Zero, "Native GPU ABI test creates its color target.");
+            command = SDL3.SDL.AcquireGPUCommandBuffer(device); TestAssert.True(command != IntPtr.Zero, "Native GPU ABI test acquires commands.");
+            SDL3.SDL.GPUColorTargetInfo[] targets = [new() { Texture = texture, LoadOp = SDL3.SDL.GPULoadOp.Clear, StoreOp = SDL3.SDL.GPUStoreOp.Store }];
+            pass = SDL3.SDL.BeginGPURenderPass(command, targets, 1, IntPtr.Zero); TestAssert.True(pass != IntPtr.Zero, "Native GPU ABI test begins a valid render pass.");
+            var color = new SDL3.SDL.FColor(.25f, .5f, .75f, 1);
+            GetNativeMethod("SDL_SetGPUBlendConstants").Invoke(null, [pass, color]);
+            for (var i = 0; i < 32; i++) SDL3.SDL.SetGPUBlendConstants(pass, in color);
+            var allocated = GC.GetAllocatedBytesForCurrentThread();
+            for (var i = 0; i < 64; i++) SDL3.SDL.SetGPUBlendConstants(pass, in color);
+            TestAssert.Equal(0L, GC.GetAllocatedBytesForCurrentThread() - allocated, "Native blend-state updates allocate no warmed managed memory.");
+        }
+        finally
+        {
+            if (pass != IntPtr.Zero) SDL3.SDL.EndGPURenderPass(pass);
+            if (command != IntPtr.Zero) SDL3.SDL.CancelGPUCommandBuffer(command);
+            if (texture != IntPtr.Zero) SDL3.SDL.ReleaseGPUTexture(device, texture);
+            SDL3.SDL.DestroyGPUDevice(device);
+            SDL3.SDL.QuitSubSystem(SDL3.SDL.InitFlags.Video);
+        }
     }
 
     public static void SetGPUStencilReference_ForwardsReference()
@@ -2813,7 +2849,7 @@ internal static class PInvokeTests
         capturedCallCount++;
     }
 
-    private static void CaptureSetGPUBlendConstants(IntPtr renderPass, in SDL3.SDL.FColor blendConstants)
+    private static void CaptureSetGPUBlendConstants(IntPtr renderPass, SDL3.SDL.FColor blendConstants)
     {
         capturedRenderPass = renderPass;
         capturedBlendConstants = blendConstants;
