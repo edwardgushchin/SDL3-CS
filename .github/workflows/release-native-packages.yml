@@ -424,7 +424,7 @@ jobs:
             -InstallRoot 'artifacts/release/native/SDL_shadercross/${{ matrix.rid }}/install'
 
       - name: Upload native bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-bundle-${{ matrix.rid }}
           path: artifacts/release/bundles/native-all-components-${{ matrix.rid }}.zip
@@ -600,7 +600,7 @@ jobs:
             -StatePath 'artifacts/release/release-assembly-state.zip'
 
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nuget-packages
           path: artifacts/release/nuget/*.nupkg
@@ -608,7 +608,7 @@ jobs:
 
       - name: Upload release assembly state
         if: ${{ needs.plan.outputs.full_scope == 'true' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-assembly-state
           path: artifacts/release/release-assembly-state.zip
@@ -813,7 +813,7 @@ jobs:
 
       - name: Upload Android x64 runtime APK
         if: ${{ needs.plan.outputs.has_android_x64 == 'true' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: android-x64-runtime-apk
           path: artifacts/release/android-16kb-runtime/SDL3CSConsumer-android-x64-Signed.apk
@@ -936,7 +936,7 @@ jobs:
 
       - name: Upload Android 16 KB emulator log
         if: ${{ always() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: android-16kb-emulator-log
           path: ${{ runner.temp }}/android-16kb-emulator.log
@@ -1128,7 +1128,7 @@ jobs:
             -ManagedOnly
 
       - name: Upload managed NuGet package
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: managed-nuget-package
           path: artifacts/release/nuget/SDL3-CS.*.nupkg
@@ -1260,7 +1260,7 @@ jobs:
           }
 
       - name: Upload selected NuGet packages
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: selective-native-repack-packages
           path: artifacts/release/nuget/*.nupkg

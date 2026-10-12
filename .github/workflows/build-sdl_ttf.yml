@@ -192,7 +192,7 @@ jobs:
 
       # ---------- Artifacts (raw) ----------
       - name: Upload raw artifacts
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: SDL_ttf-${{ matrix.os }}-${{ matrix.arch_label }}
           path: |
@@ -248,7 +248,7 @@ jobs:
         run: zip -r SDL_ttf-libs.zip lib
 
       - name: Upload final packed archive
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: SDL_ttf-libs
           path: SDL_ttf-libs.zip
