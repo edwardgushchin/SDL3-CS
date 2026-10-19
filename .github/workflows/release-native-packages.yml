@@ -452,7 +452,7 @@ jobs:
             7.0.x
 
       - name: Setup exact Java for Android bridge
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: ${{ needs.plan.outputs.android_bridge_setup_java_version }}
@@ -512,7 +512,7 @@ jobs:
           ./.github/release-tools/Test-AndroidBridgeJar.ps1 -JarPath $trackedPath -SourceRoot 'native-forks/SDL'
 
       - name: Setup Java for Android package build
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: '21'
