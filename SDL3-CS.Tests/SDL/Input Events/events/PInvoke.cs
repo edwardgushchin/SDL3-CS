@@ -33,7 +33,6 @@ internal static class PInvokeTests
 
     public static void RunAll()
     {
-        NotificationEventTests.NotificationEvent_UsesExpectedNativeLayoutAndEventUnion();
         PumpEvents_CallsNativeHook();
         PeepEventsPointer_ForwardsArgumentsAndReturnsNativeValue();
         PeepEventsArray_ForwardsArgumentsAndReturnsNativeValue();

@@ -1608,20 +1608,6 @@ public static partial class SDL
         public const string JoystickHIDAPIFLYDIGI  = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
 
         /// <summary>
-        /// <para>A variable controlling whether the HIDAPI driver for GameSir controllers
-        /// should be used.</para>
-        /// <para>The variable can be set to the following values:</para>
-        /// <list type="bullet">
-        /// <item><c>"0"</c>: HIDAPI driver is not used.</item>
-        /// <item><c>"1"</c>: HIDAPI driver is used.</item>
-        /// </list>
-        /// <para>The default is the value of <see cref="JoystickHIDAPI"/>.</para>
-        /// </summary>
-        /// <remarks>This hint should be set before initializing joysticks and gamepads.</remarks>
-        /// <since>This hint is available since SDL 3.5.0.</since>
-        public const string JoystickHIDAPIGameSir = "SDL_JOYSTICK_HIDAPI_GAMESIR";
-        
-        /// <summary>
         /// <para>A variable controlling whether the HIDAPI driver for Nintendo Switch
         /// controllers should be used.</para>
         /// <para>The variable can be set to the following values:</para>
@@ -4046,19 +4032,5 @@ public static partial class SDL
         /// <remarks>This hint can be set anytime.</remarks>
         /// <since>This hint is available since SDL 3.2.0</since>
         public const string PenTouchEvents = "SDL_PEN_TOUCH_EVENTS";
-        /// <summary>Identifier for the android allow persistent folder access hint.</summary>
-        public const string AndroidAllowPersistentFolderAccess = "SDL_ANDROID_ALLOW_PERSISTENT_FOLDER_ACCESS";
-        /// <summary>Identifier for the audio duck others hint.</summary>
-        public const string AudioDuckOthers = "SDL_AUDIO_DUCK_OTHERS";
-        /// <summary>Identifier for the dosallow direct framebuffer hint.</summary>
-        public const string DOSAllowDirectFramebuffer = "SDL_DOS_ALLOW_DIRECT_FRAMEBUFFER";
-        /// <summary>Identifier for the open xrlibrary hint.</summary>
-        public const string OpenXRLibrary = "SDL_OPENXR_LIBRARY";
-        /// <summary>Identifier for the mac use gcmouse hint.</summary>
-        public const string MacUseGCMouse = "SDL_MAC_USE_GCMOUSE";
-        /// <summary>Identifier for the vision oshdrheadroom ui hint.</summary>
-        public const string VisionOSHDRHeadroomUI = "SDL_VISIONOS_HDR_HEADROOM_UI";
-        /// <summary>Identifier for the windows raw mouse no legacy hint.</summary>
-        public const string WindowsRawMouseNoLegacy = "SDL_WINDOWS_RAW_MOUSE_NOLEGACY";
     }
 }

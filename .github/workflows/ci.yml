@@ -86,6 +86,12 @@ jobs:
         shell: pwsh
         run: ./.github/release-tools/Test-PublicWrapperXmlDocs.ps1 -SourceRoot .\SDL3-CS
 
+      - name: Validate stable wrapper API boundary
+        shell: pwsh
+        run: |
+          ./.github/release-tools/Test-StableApiSurface.Tests.ps1
+          ./.github/release-tools/Test-StableApiSurface.ps1
+
       - name: Validate generated GitHub Wiki contract
         shell: pwsh
         run: |
