@@ -50,6 +50,11 @@ function Invoke-ReadinessStep {
 
 $results = New-Object System.Collections.Generic.List[object]
 
+Invoke-ReadinessStep -Name 'Stable wrapper API boundary' -Script {
+    & (Join-Path $PSScriptRoot 'Test-StableApiSurface.Tests.ps1')
+    & (Join-Path $PSScriptRoot 'Test-StableApiSurface.ps1') -ManifestPath $ManifestPath
+}
+
 Invoke-ReadinessStep -Name 'Release manifest' -Script {
     & (Join-Path $PSScriptRoot 'Test-ReleaseManifest.ps1') -ManifestPath $ManifestPath
 }

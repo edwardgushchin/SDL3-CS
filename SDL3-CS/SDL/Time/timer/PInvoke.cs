@@ -104,14 +104,12 @@ public static partial class SDL
 
     /// <code>extern SDL_DECLSPEC Uint64 SDLCALL SDL_GetPerformanceFrequency(void);</code>
     /// <summary>
-    /// <para>Get the count per second of the high resolution counter.</para>
+    /// Get the count per second of the high resolution counter.
     /// </summary>
-    /// <returns>the frequency at which the result from <see cref="GetPerformanceCounter()"/>
-    ///          is adjusted, measured in counts per second. This value is
-    ///          platform-dependent.</returns>
+    /// <returns>a platform-specific count per second.</returns>
     /// <threadsafety>It is safe to call this function from any thread.</threadsafety>
-    /// <since>This function is available since SDL 3.2.0.</since>
-    /// <seealso cref="GetPerformanceCounter()"/>
+    /// <since>This function is available since SDL 3.2.0</since>
+    /// <seealso cref="GetPerformanceCounter"/>
     public static ulong GetPerformanceFrequency()
     {
         return GetPerformanceFrequencyNativeFunction();

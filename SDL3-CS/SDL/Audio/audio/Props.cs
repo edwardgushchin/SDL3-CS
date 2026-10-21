@@ -27,7 +27,6 @@ public static partial class SDL
 {
     public static partial class Props
     {
-        public const string AudioDeviceUniqueIdString = "SDL.audio.device.unique_id";
         public const string AudioStreamAutoCleanupBoolean = "SDL.audiostream.auto_cleanup";
     }
 }

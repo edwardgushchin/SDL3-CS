@@ -383,7 +383,7 @@ public static partial class SDL
         CrSel = 163,
         ExSel = 164,
 
-        /// <summary>Window Front.</summary>
+        /// <summary>Front (Sun keyboards).</summary>
         Front = 165,
 
         Kp00 = 176,
