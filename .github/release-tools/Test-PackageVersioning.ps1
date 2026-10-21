@@ -126,9 +126,9 @@ else {
         else {
             $requiredRevisionOneOverrides = [ordered]@{
                 SDL_image = 0
-                SDL_mixer = 13
-                SDL_ttf = 13
-                SDL_shadercross = 13
+                SDL_mixer = 14
+                SDL_ttf = 14
+                SDL_shadercross = 14
             }
             foreach ($componentOverride in $requiredRevisionOneOverrides.GetEnumerator()) {
                 $componentId = $componentOverride.Key
