@@ -24,7 +24,7 @@
     {
       "id": "vkd3d",
       "component": "SDL_shadercross",
-      "componentSourceRef": "e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba",
+      "componentSourceRef": "1ff05bec573988a98ef9e0260b4da44f512b8367",
       "upstream": "https://dl.winehq.org/vkd3d/source/vkd3d-2.0.tar.xz",
       "revision": "2.0",
       "archive": "vkd3d-2.0.tar.xz",
