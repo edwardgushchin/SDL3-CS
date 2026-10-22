@@ -943,7 +943,7 @@
       "id": "SDL_shadercross",
       "repository": "https://github.com/edwardgushchin/SDL_shadercross",
       "upstreamRepository": "https://github.com/libsdl-org/SDL_shadercross",
-      "sourceRef": "e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba",
+      "sourceRef": "1ff05bec573988a98ef9e0260b4da44f512b8367",
       "sourceFolder": "SDL_shadercross",
       "nativeVersion": "3.0.0",
       "packageNameSuffix": "Shadercross",
