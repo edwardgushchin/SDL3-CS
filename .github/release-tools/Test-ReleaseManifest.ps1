@@ -382,7 +382,7 @@ if ($componentIds.Count -ne ($componentIds | Select-Object -Unique).Count) {
 $requiredComponentBaselines = [ordered]@{
     SDL = [ordered]@{ sourceRef = '829a65d769d935c4852f8159e964312c0957260a'; nativeVersion = '3.4.18' }
     SDL_image = [ordered]@{ sourceRef = '0891fc30428b518e7d018677bd6fa95c1a50f4c6'; nativeVersion = '3.4.8' }
-    SDL_shadercross = [ordered]@{ sourceRef = 'e55cf5e31ced6f3d1be5cc6d0c50e99384f9f4ba'; nativeVersion = '3.0.0' }
+    SDL_shadercross = [ordered]@{ sourceRef = '1ff05bec573988a98ef9e0260b4da44f512b8367'; nativeVersion = '3.0.0' }
 }
 foreach ($requiredComponent in $requiredComponentBaselines.GetEnumerator()) {
     $matches = @($manifest.components | Where-Object id -EQ $requiredComponent.Key)
