@@ -9,7 +9,7 @@
     "androidPlatformArchiveUrl": "https://dl.google.com/android/repository/platform-35_r02.zip",
     "androidPlatformArchiveSha256": "0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0",
     "androidPlatformJarSha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b",
-    "androidBridgeJarSha256": "e399299d0669a0db00d956eb3e5e1344265376c98919f0c681eadfa627c63525",
+    "androidBridgeJarSha256": "90d76b320d1a98871db2619dbbe7f9dccd43bc2392c1517d612f6391e44ac803",
     "androidBridgeJavaRelease": 11,
     "androidBridgeSetupJavaVersion": "11.0.32+9",
     "androidBridgeJavacVersion": "11.0.32",
@@ -23,15 +23,15 @@
     "appleDotnetWorkloadVersion": "10.0.302.1"
   },
   "versioning": {
-    "packageRevisionDefault": 1,
+    "packageRevisionDefault": 0,
     "packageVersionPattern": "{nativeVersion}.{packageRevision}",
     "wrapperVersionComponent": "SDL",
     "componentPackageRevisionOverrides": {
       "0": {
-        "SDL_image": 12,
-        "SDL_mixer": 13,
-        "SDL_ttf": 13,
-        "SDL_shadercross": 13
+        "SDL_image": 1,
+        "SDL_mixer": 15,
+        "SDL_ttf": 15,
+        "SDL_shadercross": 15
       },
       "1": {
         "SDL_image": 0,
@@ -496,16 +496,16 @@
       "id": "SDL",
       "repository": "https://github.com/edwardgushchin/SDL",
       "upstreamRepository": "https://github.com/libsdl-org/SDL",
-      "sourceRef": "829a65d769d935c4852f8159e964312c0957260a",
+      "sourceRef": "f00dc919ca35b9756316e86c4777392de442f9b2",
       "sourceFolder": "SDL",
-      "nativeVersion": "3.4.18",
+      "nativeVersion": "3.4.20",
       "packageNameSuffix": "",
       "dependencies": [],
       "cmakeArgs": [
         "-DSDL_INSTALL=ON",
         "-DSDL_TESTS=OFF",
         "-DSDL_EXAMPLES=OFF",
-        "-DSDL_REVISION=SDL-3.4.18-release-3.4.18"
+        "-DSDL_REVISION=SDL-3.4.20-release-3.4.20"
       ],
       "artifactPatterns": {
         "windows": [

@@ -160,6 +160,7 @@ public static partial class SDL
     /// <para>Calculate the size of each audio frame (in bytes) from an <see cref="AudioSpec"/>.</para>
     /// <para>This reports on the size of an audio sample frame: stereo Sint16 data (2
     /// channels of 2 bytes each) would be 4 bytes per frame, for example.</para>
+    /// <para>This casts the value to unsigned int to avoid implicit sign conversion.</para>
     /// </summary>
     /// <param name="x">an <see cref="AudioSpec"/> to query.</param>
     /// <returns>the number of bytes used per sample frame.</returns>

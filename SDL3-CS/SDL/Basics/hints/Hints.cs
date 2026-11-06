@@ -2879,6 +2879,18 @@ public static partial class SDL
         /// </summary>
         /// <since>This hint is available since SDL 3.4.0.</since>
         public const string PS2GSMode = "SDL_PS2_GS_MODE";
+
+        /// <summary>
+        /// <para>A variable controlling the pixel storage mode of the PS2's framebuffer.</para>
+        /// <para>The variable can be set to the following values:</para>
+        /// <list type="bullet">
+        /// <item><c>"32"</c></item>
+        /// <item><c>"24"</c> (default)</item>
+        /// <item><c>"16"</c></item>
+        /// </list>
+        /// </summary>
+        /// <since>This hint is available since SDL 3.4.20.</since>
+        public const string PS2GSColorDepth = "SDL_PS2_GS_COLOR_DEPTH";
         
         /// <summary>
         /// <para>A variable controlling which Dispmanx layer to use on a Raspberry PI.</para>

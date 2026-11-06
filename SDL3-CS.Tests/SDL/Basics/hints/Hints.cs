@@ -4,6 +4,11 @@ namespace SDL3.Tests.SDL.Basics.Hints;
 
 internal static class HintTests
 {
+    public static void PS2GSColorDepth_UsesNativeName()
+    {
+        TestAssert.Equal("SDL_PS2_GS_COLOR_DEPTH", SDL3.SDL.Hints.PS2GSColorDepth, "SDL.Hints.PS2GSColorDepth must match SDL 3.4.20.");
+    }
+
     public static void AndroidAAudioInputPreset_UsesNativeName()
     {
         TestAssert.Equal("SDL_ANDROID_AAUDIO_INPUT_PRESET", SDL3.SDL.Hints.AndroidAAudioInputPreset, "SDL.Hints.AndroidAAudioInputPreset must match SDL 3.4.16.");

@@ -119,26 +119,26 @@ else {
             }
         }
 
-        $revisionOne = $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties['1']
-        if (-not $revisionOne) {
-            Add-VersioningError "componentPackageRevisionOverrides must declare release revision '1'."
+        $revisionZero = $manifest.versioning.componentPackageRevisionOverrides.PSObject.Properties['0']
+        if (-not $revisionZero) {
+            Add-VersioningError "componentPackageRevisionOverrides must declare release revision '0'."
         }
         else {
-            $requiredRevisionOneOverrides = [ordered]@{
-                SDL_image = 0
-                SDL_mixer = 14
-                SDL_ttf = 14
-                SDL_shadercross = 14
+            $requiredRevisionZeroOverrides = [ordered]@{
+                SDL_image = 1
+                SDL_mixer = 15
+                SDL_ttf = 15
+                SDL_shadercross = 15
             }
-            foreach ($componentOverride in $requiredRevisionOneOverrides.GetEnumerator()) {
+            foreach ($componentOverride in $requiredRevisionZeroOverrides.GetEnumerator()) {
                 $componentId = $componentOverride.Key
-                $override = $revisionOne.Value.PSObject.Properties[$componentId]
+                $override = $revisionZero.Value.PSObject.Properties[$componentId]
                 if (-not $override -or [int] $override.Value -ne $componentOverride.Value) {
-                    Add-VersioningError "componentPackageRevisionOverrides.1.$componentId must be $($componentOverride.Value) for public release v3.4.18.1."
+                    Add-VersioningError "componentPackageRevisionOverrides.0.$componentId must be $($componentOverride.Value) for release v3.4.20.0."
                 }
             }
-            if ($revisionOne.Value.PSObject.Properties['SDL']) {
-                Add-VersioningError "componentPackageRevisionOverrides.1 must not override core SDL revision 1."
+            if ($revisionZero.Value.PSObject.Properties['SDL']) {
+                Add-VersioningError "componentPackageRevisionOverrides.0 must not override core SDL revision 0."
             }
         }
     }
