@@ -103,6 +103,11 @@ internal static class MacroTests
 
         TestAssert.Equal(4u, SDL3.SDL.AudioFrameSize(stereo16), "SDL.AudioFrameSize must multiply 2-byte samples by 2 channels.");
         TestAssert.Equal(24u, SDL3.SDL.AudioFrameSize(surroundFloat), "SDL.AudioFrameSize must multiply 4-byte samples by 6 channels.");
+        foreach (int channels in new[] { 0, -1, int.MinValue, int.MaxValue })
+        {
+            surroundFloat.Channels = channels;
+            TestAssert.Equal(unchecked(4u * (uint)channels), SDL3.SDL.AudioFrameSize(surroundFloat), "SDL.AudioFrameSize must preserve SDL 3.4.20 unsigned channel multiplication.");
+        }
     }
 
     private static void AssertMacro(string methodName)

@@ -27,7 +27,7 @@ $requiredToolchains = [ordered]@{
     androidPlatformArchiveUrl = 'https://dl.google.com/android/repository/platform-35_r02.zip'
     androidPlatformArchiveSha256 = '0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0'
     androidPlatformJarSha256 = '4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b'
-    androidBridgeJarSha256 = 'e399299d0669a0db00d956eb3e5e1344265376c98919f0c681eadfa627c63525'
+    androidBridgeJarSha256 = '90d76b320d1a98871db2619dbbe7f9dccd43bc2392c1517d612f6391e44ac803'
     androidBridgeJavaRelease = '11'
     androidBridgeSetupJavaVersion = '11.0.32+9'
     androidBridgeJavacVersion = '11.0.32'
@@ -56,7 +56,7 @@ else {
 }
 
 $requiredReleaseOverrides = [ordered]@{
-    '0' = [ordered]@{ SDL_image = 12; SDL_mixer = 13; SDL_ttf = 13; SDL_shadercross = 13 }
+    '0' = [ordered]@{ SDL_image = 1; SDL_mixer = 15; SDL_ttf = 15; SDL_shadercross = 15 }
     '1' = [ordered]@{ SDL_image = 0; SDL_mixer = 14; SDL_ttf = 14; SDL_shadercross = 14 }
     '6' = [ordered]@{ SDL_image = 8; SDL_mixer = 7; SDL_ttf = 7; SDL_shadercross = 7 }
     '7' = [ordered]@{ SDL_image = 9; SDL_mixer = 8; SDL_ttf = 8; SDL_shadercross = 8 }
@@ -380,8 +380,10 @@ if ($componentIds.Count -ne ($componentIds | Select-Object -Unique).Count) {
 }
 
 $requiredComponentBaselines = [ordered]@{
-    SDL = [ordered]@{ sourceRef = '829a65d769d935c4852f8159e964312c0957260a'; nativeVersion = '3.4.18' }
+    SDL = [ordered]@{ sourceRef = 'f00dc919ca35b9756316e86c4777392de442f9b2'; nativeVersion = '3.4.20' }
     SDL_image = [ordered]@{ sourceRef = '0891fc30428b518e7d018677bd6fa95c1a50f4c6'; nativeVersion = '3.4.8' }
+    SDL_mixer = [ordered]@{ sourceRef = '72a81869b45e249e8e67102db4e98dd2441f05a1'; nativeVersion = '3.2.4' }
+    SDL_ttf = [ordered]@{ sourceRef = 'a1ce3670aec736ecbf0936c43f2f0cc53aa61e5b'; nativeVersion = '3.2.2' }
     SDL_shadercross = [ordered]@{ sourceRef = '1ff05bec573988a98ef9e0260b4da44f512b8367'; nativeVersion = '3.0.0' }
 }
 foreach ($requiredComponent in $requiredComponentBaselines.GetEnumerator()) {
@@ -401,7 +403,7 @@ foreach ($requiredComponent in $requiredComponentBaselines.GetEnumerator()) {
 
 $sdlComponents = @($manifest.components | Where-Object id -EQ 'SDL')
 if ($sdlComponents.Count -eq 1) {
-    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.18-release-3.4.18'
+    $expectedSdlRevisionArg = '-DSDL_REVISION=SDL-3.4.20-release-3.4.20'
     if (@($sdlComponents[0].cmakeArgs) -notcontains $expectedSdlRevisionArg) {
         Add-ValidationError "Component SDL must pin its exact release identity with cmake argument '$expectedSdlRevisionArg'."
     }

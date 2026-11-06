@@ -1,5 +1,13 @@
 using SDL3;
 
+if (args.SequenceEqual(["--sdl-3.4.20-only"]))
+{
+    SDL3.Tests.SDL.Basics.Hints.HintTests.PS2GSColorDepth_UsesNativeName();
+    SDL3.Tests.SDL.Audio.Audio.MacroTests.AudioFrameSize_MultipliesSampleBytesByChannels();
+    Console.WriteLine("SDL 3.4.20 hint and unsigned audio frame size tests passed.");
+    return;
+}
+
 if (args.SequenceEqual(["--gpu-blend-constants-only"]))
 {
     SDL3.Tests.SDL.GPU.Gpu.PInvokeTests.SetGPUBlendConstants_ForwardsBlendConstants();
@@ -114,6 +122,7 @@ Console.WriteLine("SDL.AddHintCallback binding test passed.");
 SDL3.Tests.SDL.Basics.Hints.PInvokeTests.RemoveHintCallback_ForwardsNameCallbackUserdata();
 Console.WriteLine("SDL.RemoveHintCallback binding test passed.");
 SDL3.Tests.SDL.Basics.Hints.HintTests.AndroidAAudioInputPreset_UsesNativeName();
+SDL3.Tests.SDL.Basics.Hints.HintTests.PS2GSColorDepth_UsesNativeName();
 Console.WriteLine("SDL Android AAudio input preset hint test passed.");
 SDL3.Tests.SDL.Basics.Init.PInvokeTests.Init_ForwardsFlagsAndReturnsNativeValue();
 Console.WriteLine("SDL.Init binding test passed.");
