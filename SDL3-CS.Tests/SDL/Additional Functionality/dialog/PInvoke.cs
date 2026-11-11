@@ -12,6 +12,8 @@ internal static class PInvokeTests
     private static DialogCapture? openFolderDialogCapture;
     private static DialogCapture? fileDialogWithPropertiesCapture;
     private static readonly SDL3.SDL.DialogFileCallback NoopDialogFileCallbackDelegate = NoopDialogFileCallback;
+    private static readonly SDL3.SDL.DialogFileCallback RecordingDialogFileCallbackDelegate = RecordingDialogFileCallback;
+    private static (IntPtr Userdata, IntPtr FileList, int Filter)? recordedCallback;
 
     public static void SDL_ShowOpenFileDialog_UsesExpectedNativeMetadata()
     {
@@ -28,7 +30,7 @@ internal static class PInvokeTests
         TestAssert.NotNull(method, "SDL.ShowOpenFileDialog method must be public static.");
 
         using NativeHookScope _ = NativeHookScope.Install("ShowOpenFileDialogNativeFunction", nameof(CaptureShowOpenFileDialog));
-        SDL3.SDL.DialogFileCallback callback = NoopDialogFileCallbackDelegate;
+        SDL3.SDL.DialogFileCallback callback = RecordingDialogFileCallbackDelegate;
         callback(IntPtr.Zero, IntPtr.Zero, -1);
         SDL3.SDL.DialogFileFilter[] filters = [new("Text files", "txt;md")];
 
@@ -36,18 +38,19 @@ internal static class PInvokeTests
         {
             SDL3.SDL.ShowOpenFileDialog(callback, (IntPtr)123, (IntPtr)456, filters, filters.Length, "C:/Temp", allowMany: true);
             TestAssert.NotNull(openFileDialogCapture, "SDL.ShowOpenFileDialog must call the native hook.");
-            TestAssert.Equal((IntPtr)123, openFileDialogCapture!.Userdata, "SDL.ShowOpenFileDialog must forward userdata.");
-            TestAssert.Equal((IntPtr)456, openFileDialogCapture.Window, "SDL.ShowOpenFileDialog must forward the window pointer.");
+            TestAssert.Equal((IntPtr)456, openFileDialogCapture!.Window, "SDL.ShowOpenFileDialog must forward the window pointer.");
             TestAssert.Equal(1, openFileDialogCapture.NFilters, "SDL.ShowOpenFileDialog must forward the filter count.");
             TestAssert.Equal("Text files", openFileDialogCapture.FilterName, "SDL.ShowOpenFileDialog must pin and forward the filter name.");
             TestAssert.Equal("txt;md", openFileDialogCapture.FilterPattern, "SDL.ShowOpenFileDialog must pin and forward the filter pattern.");
             TestAssert.Equal("C:/Temp", openFileDialogCapture.DefaultLocation, "SDL.ShowOpenFileDialog must convert defaultLocation to UTF-8.");
             TestAssert.Equal(true, openFileDialogCapture.AllowMany, "SDL.ShowOpenFileDialog must forward allowMany.");
+            AssertCallbackOutlivesCall(openFileDialogCapture, "ShowOpenFileDialog", "Text files", "txt;md", (IntPtr)123);
 
             SDL3.SDL.ShowOpenFileDialog(callback, IntPtr.Zero, IntPtr.Zero, null, 0, null, allowMany: false);
             TestAssert.Equal(IntPtr.Zero, openFileDialogCapture.Filters, "SDL.ShowOpenFileDialog must forward null filters as IntPtr.Zero.");
             TestAssert.Equal<string?>(null, openFileDialogCapture.DefaultLocation, "SDL.ShowOpenFileDialog must forward null defaultLocation as IntPtr.Zero.");
             TestAssert.Equal(false, openFileDialogCapture.AllowMany, "SDL.ShowOpenFileDialog must forward allowMany false.");
+            AssertCallbackOutlivesCall(openFileDialogCapture, "ShowOpenFileDialog", null, null, IntPtr.Zero);
         }
         finally
         {
@@ -74,7 +77,7 @@ internal static class PInvokeTests
         TestAssert.NotNull(method, "SDL.ShowSaveFileDialog method must be public static.");
 
         using NativeHookScope _ = NativeHookScope.Install("ShowSaveFileDialogNativeFunction", nameof(CaptureShowSaveFileDialog));
-        SDL3.SDL.DialogFileCallback callback = NoopDialogFileCallbackDelegate;
+        SDL3.SDL.DialogFileCallback callback = RecordingDialogFileCallbackDelegate;
         callback(IntPtr.Zero, IntPtr.Zero, -1);
         SDL3.SDL.DialogFileFilter[] filters = [new("Images", "png;jpg")];
 
@@ -82,16 +85,17 @@ internal static class PInvokeTests
         {
             SDL3.SDL.ShowSaveFileDialog(callback, (IntPtr)222, (IntPtr)333, filters, filters.Length, "C:/Save/file.txt");
             TestAssert.NotNull(saveFileDialogCapture, "SDL.ShowSaveFileDialog must call the native hook.");
-            TestAssert.Equal((IntPtr)222, saveFileDialogCapture!.Userdata, "SDL.ShowSaveFileDialog must forward userdata.");
-            TestAssert.Equal((IntPtr)333, saveFileDialogCapture.Window, "SDL.ShowSaveFileDialog must forward the window pointer.");
+            TestAssert.Equal((IntPtr)333, saveFileDialogCapture!.Window, "SDL.ShowSaveFileDialog must forward the window pointer.");
             TestAssert.Equal(1, saveFileDialogCapture.NFilters, "SDL.ShowSaveFileDialog must forward the filter count.");
             TestAssert.Equal("Images", saveFileDialogCapture.FilterName, "SDL.ShowSaveFileDialog must pin and forward the filter name.");
             TestAssert.Equal("png;jpg", saveFileDialogCapture.FilterPattern, "SDL.ShowSaveFileDialog must pin and forward the filter pattern.");
             TestAssert.Equal("C:/Save/file.txt", saveFileDialogCapture.DefaultLocation, "SDL.ShowSaveFileDialog must convert defaultLocation to UTF-8.");
+            AssertCallbackOutlivesCall(saveFileDialogCapture, "ShowSaveFileDialog", "Images", "png;jpg", (IntPtr)222);
 
             SDL3.SDL.ShowSaveFileDialog(callback, IntPtr.Zero, IntPtr.Zero, null, 0, null);
             TestAssert.Equal(IntPtr.Zero, saveFileDialogCapture.Filters, "SDL.ShowSaveFileDialog must forward null filters as IntPtr.Zero.");
             TestAssert.Equal<string?>(null, saveFileDialogCapture.DefaultLocation, "SDL.ShowSaveFileDialog must forward null defaultLocation as IntPtr.Zero.");
+            AssertCallbackOutlivesCall(saveFileDialogCapture, "ShowSaveFileDialog", null, null, IntPtr.Zero);
         }
         finally
         {
@@ -102,6 +106,54 @@ internal static class PInvokeTests
         }
 
         GC.KeepAlive(callback);
+    }
+
+    public static void ShowFileDialogs_ReleaseTheFiltersWhenSdlCannotBeCalled()
+    {
+        foreach ((string hook, string throwing, Action<SDL3.SDL.DialogFileFilter[]> show) in new (string, string, Action<SDL3.SDL.DialogFileFilter[]>)[]
+        {
+            ("ShowOpenFileDialogNativeFunction", nameof(ThrowShowOpenFileDialog),
+                filters => SDL3.SDL.ShowOpenFileDialog(RecordingDialogFileCallbackDelegate, (IntPtr)1, IntPtr.Zero, filters, filters.Length, "C:/Temp", allowMany: false)),
+            ("ShowSaveFileDialogNativeFunction", nameof(ThrowShowSaveFileDialog),
+                filters => SDL3.SDL.ShowSaveFileDialog(RecordingDialogFileCallbackDelegate, (IntPtr)1, IntPtr.Zero, filters, filters.Length, "C:/Temp"))
+        })
+        {
+            using NativeHookScope _ = NativeHookScope.Install(hook, throwing);
+            recordedCallback = null;
+            WeakReference filters = ShowWithFailingSdl(show);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            TestAssert.True(!filters.IsAlive, $"{hook} failing must unpin the filters rather than leak them.");
+            TestAssert.True(recordedCallback is null, $"{hook} failing must not call the caller's callback.");
+        }
+    }
+
+    // Shows a dialog whose native call throws, and gives back the filters only weakly, so a leaked pin would keep
+    // them alive through a collection.
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference ShowWithFailingSdl(Action<SDL3.SDL.DialogFileFilter[]> show)
+    {
+        SDL3.SDL.DialogFileFilter[] filters = [new("Text files", "txt")];
+        bool threw = false;
+        try
+        {
+            show(filters);
+        }
+        catch (DllNotFoundException)
+        {
+            threw = true;
+        }
+        finally
+        {
+            foreach (SDL3.SDL.DialogFileFilter filter in filters)
+            {
+                filter.Dispose();
+            }
+        }
+
+        TestAssert.True(threw, "A failing native call must reach the caller.");
+        return new WeakReference(filters);
     }
 
     public static void SDL_ShowOpenFolderDialog_UsesExpectedNativeMetadata()
@@ -218,6 +270,46 @@ internal static class PInvokeTests
 
     private static void NoopDialogFileCallback(IntPtr userdata, IntPtr filelist, int filter)
     {
+    }
+
+    private static void RecordingDialogFileCallback(IntPtr userdata, IntPtr filelist, int filter)
+    {
+        recordedCallback = (userdata, filelist, filter);
+    }
+
+    private static void ThrowShowOpenFileDialog(SDL3.SDL.DialogFileCallback callback, IntPtr userdata, IntPtr window, IntPtr filters, int nfilters, IntPtr defaultLocation, bool allowMany)
+    {
+        throw new DllNotFoundException("SDL3");
+    }
+
+    private static void ThrowShowSaveFileDialog(SDL3.SDL.DialogFileCallback callback, IntPtr userdata, IntPtr window, IntPtr filters, int nfilters, IntPtr defaultLocation)
+    {
+        throw new DllNotFoundException("SDL3");
+    }
+
+    // SDL calls back after the call that showed the dialog returns: the filters must still be valid then, through a
+    // garbage collection, and the caller's callback must get the caller's userdata, not what SDL was given.
+    private static void AssertCallbackOutlivesCall(DialogCapture capture, string name, string? filterName, string? filterPattern, IntPtr userdata)
+    {
+        TestAssert.NotNull(capture.Callback, $"SDL.{name} must pass SDL a callback.");
+        TestAssert.True(!ReferenceEquals(capture.Callback, RecordingDialogFileCallbackDelegate),
+            $"SDL.{name} must pass SDL its own long-lived callback, not the caller's.");
+        TestAssert.True(capture.Userdata != IntPtr.Zero, $"SDL.{name} must pass SDL its pending request as userdata.");
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+        if (filterName is not null)
+        {
+            SDL3.SDL.DialogFileFilter filter = Marshal.PtrToStructure<SDL3.SDL.DialogFileFilter>(capture.Filters);
+            TestAssert.Equal(filterName, Marshal.PtrToStringUTF8(filter.Name), $"SDL.{name} must keep the filters pinned until SDL calls back.");
+            TestAssert.Equal(filterPattern, Marshal.PtrToStringUTF8(filter.Pattern), $"SDL.{name} must keep the filter patterns until SDL calls back.");
+        }
+
+        recordedCallback = null;
+        capture.Callback!(capture.Userdata, (IntPtr)99, 3);
+        TestAssert.Equal(((IntPtr, IntPtr, int)?)(userdata, (IntPtr)99, 3), recordedCallback,
+            $"SDL.{name} must call the caller's callback with the caller's userdata and SDL's results.");
     }
 
     private static void AssertSdlLibraryImport(MethodInfo method, string entryPoint)
