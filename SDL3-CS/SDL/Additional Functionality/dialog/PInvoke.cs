@@ -82,23 +82,22 @@ public static partial class SDL
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation, bool allowMany)
     {
         var pathPointer = IntPtr.Zero;
-        var filterPointer = IntPtr.Zero;
-        GCHandle? filterHandle = null;
+        var pending = PendingFileDialog.Begin(callback, userdata, filters);
 
         try
         {
-            if (filters != null)
-            {
-                filterHandle = GCHandle.Alloc(filters, GCHandleType.Pinned);
-                filterPointer = filterHandle.Value.AddrOfPinnedObject();
-            }
-
             if (defaultLocation != null)
             {
                 pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
             }
 
-            ShowOpenFileDialogNativeFunction(callback, userdata, window, filterPointer, nfilters, pathPointer, allowMany);
+            ShowOpenFileDialogNativeFunction(FileDialogCompletedCallback, pending.Handle, window, pending.Filters, nfilters,
+                pathPointer, allowMany);
+        }
+        catch
+        {
+            pending.Cancel();
+            throw;
         }
         finally
         {
@@ -106,8 +105,6 @@ public static partial class SDL
             {
                 Marshal.FreeCoTaskMem(pathPointer);
             }
-
-            filterHandle?.Free();
         }
     }
 
@@ -163,23 +160,22 @@ public static partial class SDL
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation)
     {
         var pathPointer = IntPtr.Zero;
-        var filterPointer = IntPtr.Zero;
-        GCHandle? filterHandle = null;
+        var pending = PendingFileDialog.Begin(callback, userdata, filters);
 
         try
         {
-            if (filters != null)
-            {
-                filterHandle = GCHandle.Alloc(filters, GCHandleType.Pinned);
-                filterPointer = filterHandle.Value.AddrOfPinnedObject();
-            }
-
             if (defaultLocation != null)
             {
                 pathPointer = Marshal.StringToCoTaskMemUTF8(defaultLocation);
             }
 
-            ShowSaveFileDialogNativeFunction(callback, userdata, window, filterPointer, nfilters, pathPointer);
+            ShowSaveFileDialogNativeFunction(FileDialogCompletedCallback, pending.Handle, window, pending.Filters, nfilters,
+                pathPointer);
+        }
+        catch
+        {
+            pending.Cancel();
+            throw;
         }
         finally
         {
@@ -187,8 +183,6 @@ public static partial class SDL
             {
                 Marshal.FreeCoTaskMem(pathPointer);
             }
-
-            filterHandle?.Free();
         }
     }
 
@@ -310,6 +304,70 @@ public static partial class SDL
     public static void ShowFileDialogWithProperties(FileDialogType type, DialogFileCallback callback, IntPtr userdata, uint props)
     {
         ShowFileDialogWithPropertiesNativeFunction(type, callback, userdata, props);
+    }
+
+    // SDL calls a file dialog's callback after the call that shows the dialog returns, and reads its filters until
+    // then, so both must outlive that call. Every open and save dialog passes this one callback, which lives for the
+    // process, with a handle to the pending request as its userdata; the request keeps the caller's callback and
+    // userdata and pins the filters until SDL calls back.
+    private static readonly DialogFileCallback FileDialogCompletedCallback = FileDialogCompleted;
+
+    private static void FileDialogCompleted(IntPtr userdata, IntPtr filelist, int filter)
+    {
+        var pending = PendingFileDialog.End(userdata);
+        pending.Callback(pending.Userdata, filelist, filter);
+    }
+
+    private sealed class PendingFileDialog
+    {
+        private GCHandle self;
+        private GCHandle filtersHandle;
+
+        private PendingFileDialog(DialogFileCallback callback, IntPtr userdata)
+        {
+            Callback = callback;
+            Userdata = userdata;
+        }
+
+        internal DialogFileCallback Callback { get; }
+
+        internal IntPtr Userdata { get; }
+
+        internal IntPtr Handle => GCHandle.ToIntPtr(self);
+
+        internal IntPtr Filters => filtersHandle.IsAllocated ? filtersHandle.AddrOfPinnedObject() : IntPtr.Zero;
+
+        internal static PendingFileDialog Begin(DialogFileCallback callback, IntPtr userdata, DialogFileFilter[]? filters)
+        {
+            var pending = new PendingFileDialog(callback, userdata);
+            if (filters != null)
+            {
+                pending.filtersHandle = GCHandle.Alloc(filters, GCHandleType.Pinned);
+            }
+
+            pending.self = GCHandle.Alloc(pending);
+            return pending;
+        }
+
+        internal static PendingFileDialog End(IntPtr handle)
+        {
+            var pending = (PendingFileDialog)GCHandle.FromIntPtr(handle).Target!;
+            pending.Cancel();
+            return pending;
+        }
+
+        internal void Cancel()
+        {
+            if (filtersHandle.IsAllocated)
+            {
+                filtersHandle.Free();
+            }
+
+            if (self.IsAllocated)
+            {
+                self.Free();
+            }
+        }
     }
 
 }
