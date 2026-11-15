@@ -108,6 +108,15 @@ internal static class PInvokeTests
         GC.KeepAlive(callback);
     }
 
+    public static void ShowFileDialogs_DoesNotCallNativeWhenCallbackIsNull()
+    {
+        using NativeHookScope openHook = NativeHookScope.Install("ShowOpenFileDialogNativeFunction", nameof(ThrowShowOpenFileDialog));
+        using NativeHookScope saveHook = NativeHookScope.Install("ShowSaveFileDialogNativeFunction", nameof(ThrowShowSaveFileDialog));
+
+        SDL3.SDL.ShowOpenFileDialog(null!, IntPtr.Zero, IntPtr.Zero, null, 0, null, allowMany: false);
+        SDL3.SDL.ShowSaveFileDialog(null!, IntPtr.Zero, IntPtr.Zero, null, 0, null);
+    }
+
     public static void ShowFileDialogs_ReleaseTheFiltersWhenSdlCannotBeCalled()
     {
         foreach ((string hook, string throwing, Action<SDL3.SDL.DialogFileFilter[]> show) in new (string, string, Action<SDL3.SDL.DialogFileFilter[]>)[]

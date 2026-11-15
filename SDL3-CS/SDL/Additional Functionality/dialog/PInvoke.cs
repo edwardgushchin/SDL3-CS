@@ -81,6 +81,11 @@ public static partial class SDL
     public static void ShowOpenFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation, bool allowMany)
     {
+        if (callback is null)
+        {
+            return;
+        }
+
         var pathPointer = IntPtr.Zero;
         var pending = PendingFileDialog.Begin(callback, userdata, filters);
 
@@ -159,6 +164,11 @@ public static partial class SDL
     public static void ShowSaveFileDialog(DialogFileCallback callback, IntPtr userdata, IntPtr window,
         DialogFileFilter[]? filters, int nfilters, string? defaultLocation)
     {
+        if (callback is null)
+        {
+            return;
+        }
+
         var pathPointer = IntPtr.Zero;
         var pending = PendingFileDialog.Begin(callback, userdata, filters);
 
