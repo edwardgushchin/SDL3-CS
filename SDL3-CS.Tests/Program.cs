@@ -461,6 +461,10 @@ SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.SDL_ShowSaveFileDialo
 Console.WriteLine("SDL.SDL_ShowSaveFileDialog binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.ShowSaveFileDialog_PinsFiltersAndConvertsDefaultLocation();
 Console.WriteLine("SDL.ShowSaveFileDialog binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.ShowFileDialogs_DoesNotCallNativeWhenCallbackIsNull();
+Console.WriteLine("SDL file dialogs ignore a null callback binding test passed.");
+SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.ShowFileDialogs_ReleaseTheFiltersWhenSdlCannotBeCalled();
+Console.WriteLine("SDL.ShowOpenFileDialog and SDL.ShowSaveFileDialog failure binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.SDL_ShowOpenFolderDialog_UsesExpectedNativeMetadata();
 Console.WriteLine("SDL.SDL_ShowOpenFolderDialog binding test passed.");
 SDL3.Tests.SDL.AdditionalFunctionality.Dialog.PInvokeTests.ShowOpenFolderDialog_ConvertsDefaultLocation();
